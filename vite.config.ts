@@ -18,7 +18,8 @@ export default defineConfig({
         short_name: 'Stage',
         description: 'IPSC stage designer: 2D plan, 3D preview, PDF briefing export',
         theme_color: '#0f172a',
-        background_color: '#0f172a',
+        /** Splash behind icon; match generated PNG tiles (white + dark SB mark) */
+        background_color: '#ffffff',
         display: 'standalone',
         orientation: 'any',
         lang: 'uk',
