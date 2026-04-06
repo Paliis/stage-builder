@@ -439,27 +439,24 @@ export default function App() {
       </header>
 
       <dialog ref={onboardingDialogRef} className="app__onboarding-dialog">
+        <button type="button" className="app__onboarding-close" onClick={dismissOnboarding} aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <path d="M4 4l10 10M14 4L4 14" />
+          </svg>
+        </button>
         <h2 className="app__onboarding-title">{tree.app.onboardingTitle}</h2>
-        <p className="app__onboarding-lead">{tree.app.onboardingLead}</p>
-        <ul className="app__onboarding-list">
-          <li>{tree.app.onboardingP1}</li>
-          <li>{tree.app.onboardingP2}</li>
-          <li>{tree.app.onboardingP3}</li>
-          <li>{tree.app.onboardingP4}</li>
-          <li>{tree.app.onboardingP5}</li>
-        </ul>
-
-        <h3 className="app__onboarding-subtitle">{tree.view.controlsDetails}</h3>
-        <div className="app__onboarding-controls">
-          <p><strong>Plan 2D:</strong> {tree.view.plan2dControls}</p>
-          <p>{tree.view.plan2dControlsDetail}</p>
-          <p><strong>3D:</strong> {tree.view.threeDControls}</p>
-          <p>{tree.view.threeDControlsDetail}</p>
+        <div className="app__onboarding-sections">
+          {([1, 2, 3, 4, 5, 6] as const).map((n) => (
+            <div key={n} className="app__onboarding-section">
+              <h3 className="app__onboarding-sh">{tree.app[`onboardingS${n}Title`]}</h3>
+              <p className="app__onboarding-sp">{tree.app[`onboardingS${n}Text`]}</p>
+            </div>
+          ))}
         </div>
-
+        <p className="app__onboarding-note">{tree.app.onboardingNote}</p>
         <div className="app__onboarding-actions">
-          <button type="button" className="app__onboarding-dismiss" onClick={dismissOnboarding}>
-            {tree.app.onboardingDismiss}
+          <button type="button" className="app__onboarding-cta" onClick={dismissOnboarding}>
+            {tree.app.onboardingCta}
           </button>
         </div>
       </dialog>

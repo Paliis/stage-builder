@@ -122,14 +122,17 @@
 
 /* Онбординг-модалка */
 .app__onboarding-dialog {
-  max-width: min(36rem, calc(100vw - 2rem));
+  position: relative;
+  max-width: min(38rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 3rem);
   width: 100%;
-  padding: 1.5rem 1.75rem;
+  padding: 1.5rem 1.75rem 1.25rem;
   border-radius: 14px;
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text);
   box-shadow: 0 8px 32px rgba(15, 23, 42, 0.18);
+  overflow-y: auto;
 }
 
 .app__onboarding-dialog::backdrop {
@@ -137,82 +140,105 @@
   backdrop-filter: blur(2px);
 }
 
-.app__onboarding-dialog .app__onboarding-title {
-  margin: 0 0 0.55rem;
-  font-size: 1.1rem;
+.app__onboarding-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.app__onboarding-close:hover {
+  opacity: 1;
+  background: var(--accent-bg);
+}
+
+.app__onboarding-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.app__onboarding-title {
+  margin: 0 2rem 0.85rem 0;
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   color: var(--text-h);
 }
 
-.app__onboarding-dialog .app__onboarding-lead {
-  margin: 0 0 0.75rem;
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: var(--text);
+.app__onboarding-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
-.app__onboarding-dialog .app__onboarding-list {
-  margin: 0 0 1rem;
-  padding-left: 1.25rem;
+.app__onboarding-section {
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.app__onboarding-sh {
+  margin: 0 0 0.2rem;
   font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.app__onboarding-sp {
+  margin: 0;
+  font-size: 0.82rem;
   line-height: 1.52;
   color: var(--text);
 }
 
-.app__onboarding-dialog .app__onboarding-list li {
-  margin: 0.4rem 0;
-}
-
-.app__onboarding-dialog .app__onboarding-list li::marker {
+.app__onboarding-note {
+  margin: 0.75rem 0 0;
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  background: var(--accent-bg);
   color: var(--accent);
+  border-left: 3px solid var(--accent);
 }
 
 .app__onboarding-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.85rem;
 }
 
-.app__onboarding-subtitle {
-  margin: 1.25rem 0 0.5rem;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.app__onboarding-controls {
-  font-size: 0.84rem;
-  line-height: 1.5;
-  color: var(--text);
-}
-
-.app__onboarding-controls p {
-  margin: 0.4rem 0 0;
-}
-
-.app__onboarding-controls p:first-child {
-  margin-top: 0;
-}
-
-.app__onboarding-dismiss {
+.app__onboarding-cta {
   font: inherit;
-  font-size: 0.88rem;
-  font-weight: 600;
-  padding: 0.45rem 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.5rem 1.25rem;
   border-radius: 8px;
   border: 1px solid var(--accent-border);
   background: var(--accent-bg);
   color: var(--accent);
   cursor: pointer;
   touch-action: manipulation;
+  transition: filter 0.12s;
 }
 
-.app__onboarding-dismiss:hover {
-  filter: brightness(1.03);
+.app__onboarding-cta:hover {
+  filter: brightness(1.04);
 }
 
-.app__onboarding-dismiss:focus-visible {
+.app__onboarding-cta:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
