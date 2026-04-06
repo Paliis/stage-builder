@@ -72,6 +72,12 @@ npm run check     # як у CI: lint + test + build
 - **Vercel** — у `vercel.json` заголовок `Content-Type` для `/sitemap.xml`.
 - **Після змін домену** — [Google Search Console](https://search.google.com/search-console): додати властивість, підтвердити, надіслати sitemap `https://…/sitemap.xml`. Для повного рендеру сторінки Google вже виконує JS; додатковий SSR/prerender — окреме покращення.
 
+## Аналітика
+
+- **Vercel Web Analytics** — у коді підключено `<Analytics />` з `@vercel/analytics/react` у `main.tsx`. У [Vercel Dashboard](https://vercel.com) → проєкт → **Analytics** увімкніть Web Analytics для production (дані з’являться після трафіку). Preview-деплої зазвичай не потребують окремого налаштування для тестів.
+- **Google Analytics 4 (опційно)** — якщо потрібен GA: створити потік даних у GA4, скопіювати **Measurement ID** (`G-…`), додати в Vercel **Environment Variables**: `VITE_GA_MEASUREMENT_ID` = цей ID (для Production; за бажанням Preview). Після redeploy підвантажиться `gtag` лише на production-бандлі (у `dev` вимкнено). Локально можна скопіювати `.env.example` → `.env` і задати змінну для перевірки збірки (`npm run build` + `npm run preview`).
+- **Юридичне** — для GA у юрисдикціях з вимогами до cookies/згоди може знадобитися банер згоди та політика приватності; Vercel Analytics зазвичай трактують як менш інвазивні візити/метрики, але остаточне рішення — на стороні власника продукту.
+
 ## CI та деплой
 
 - **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у `main`.

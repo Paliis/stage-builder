@@ -63,6 +63,8 @@ npm run check        # lint + тести + build (як у CI)
 
 **SEO:** `robots.txt`, `sitemap.xml` у `public/` (після деплою — `https://stage-builder.vercel.app/sitemap.xml`). Мета-теги та JSON-LD — у `index.html`. Для індексації в Google варто додати сайт у Search Console і вказати sitemap.
 
+**Аналітика:** у `main.tsx` підключено [Vercel Web Analytics](https://vercel.com/docs/analytics) (`@vercel/analytics/react`) — увімкніть **Analytics** у налаштуваннях проєкту на Vercel. Опційно: змінна `VITE_GA_MEASUREMENT_ID` (GA4) у Vercel Environment Variables; приклад — `.env.example`. Деталі в `docs/TECH.md` → «Аналітика».
+
 ## Структура
 
 ```
