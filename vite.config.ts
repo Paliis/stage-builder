@@ -3,10 +3,26 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+/**
+ * Bump when favicons, PWA icons, or og-image change. Same path is cached for days
+ * (Telegram, Chrome, CDN); query forces a fresh fetch.
+ */
+const ASSET_QUERY = '?v=20260407-sb'
+
+function htmlAssetQueryPlugin() {
+  return {
+    name: 'html-asset-query',
+    transformIndexHtml(html: string) {
+      return html.replaceAll('__ASSET_Q__', ASSET_QUERY)
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    htmlAssetQueryPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [
@@ -36,18 +52,18 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: '/favicon.svg',
+            src: `/favicon.svg${ASSET_QUERY}`,
             sizes: 'any',
             type: 'image/svg+xml',
           },
           {
-            src: '/icon-192.png',
+            src: `/icon-192.png${ASSET_QUERY}`,
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any maskable',
           },
           {
-            src: '/icon-512.png',
+            src: `/icon-512.png${ASSET_QUERY}`,
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable',
