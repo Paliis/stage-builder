@@ -24,9 +24,51 @@ const PWA_SAFE_INNER = 0.86
 /** Favicons: keep a thin margin */
 const FAV_SAFE_INNER = 0.9
 
-/** Replace transparency with solid white so previews don’t show a checkerboard pattern. */
+/**
+ * Many exports bake the editor “checkerboard” as real light-gray pixels (no alpha).
+ * `flatten()` only fixes transparency — we also map neutral light grays to white.
+ */
+const BG_GRAY_MIN_AVG = 148
+const BG_NEUTRAL_SPREAD_MAX = 48
+
+/**
+ * Opaque RGBA buffer: transparent → white; baked checker neutrals → white; else unchanged.
+ */
 async function masterPngBuffer() {
-  return sharp(src).flatten({ background: '#ffffff' }).png().toBuffer()
+  const { data, info } = await sharp(src).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
+  const w = info.width
+  const h = info.height
+  const ch = 4
+  const out = Buffer.alloc(w * h * ch)
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * ch
+      let r = data[i]
+      let g = data[i + 1]
+      let b = data[i + 2]
+      let a = data[i + 3]
+
+      if (a < 220) {
+        r = g = b = 255
+        a = 255
+      } else {
+        const avg = (r + g + b) / 3
+        const spread = Math.max(r, g, b) - Math.min(r, g, b)
+        if (spread <= BG_NEUTRAL_SPREAD_MAX && avg >= BG_GRAY_MIN_AVG) {
+          r = g = b = 255
+        }
+        a = 255
+      }
+
+      out[i] = r
+      out[i + 1] = g
+      out[i + 2] = b
+      out[i + 3] = a
+    }
+  }
+
+  return sharp(out, { raw: { width: w, height: h, channels: ch } }).png().toBuffer()
 }
 
 /**
@@ -125,7 +167,7 @@ async function main() {
   await sharp(base).png().toFile(join(root, 'public', 'icon-preview.png'))
 
   console.log(
-    'Wrote icon-preview.png (flattened), icon-512.png, icon-192.png, favicon-32.png, favicon-48.png, og-image.png, favicon.svg',
+    'Wrote icon-preview.png (checker stripped), icon-512.png, icon-192.png, favicon-32.png, favicon-48.png, og-image.png, favicon.svg',
   )
 }
 
