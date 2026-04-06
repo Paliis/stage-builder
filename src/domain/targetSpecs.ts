@@ -36,6 +36,16 @@ function paperA4HalfExtentsM(): { hw: number; hh: number } {
 
 const STEEL_TARGET_TYPES = new Set<TargetType>(['popper', 'miniPopper', 'metalPlate', 'ceramicPlate'])
 
+const CERAMIC_TARGET_TYPES = new Set<TargetType>([
+  'ceramicPlate',
+  'swingerSingleCeramic',
+  'swingerDoubleCeramic',
+])
+
+export function isCeramicTargetType(t: TargetType): boolean {
+  return CERAMIC_TARGET_TYPES.has(t)
+}
+
 export function isPaperTargetType(t: TargetType): boolean {
   if (isSwingerTargetType(t)) return swingerIsPaperLoad(t)
   return !STEEL_TARGET_TYPES.has(t)

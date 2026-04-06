@@ -41,7 +41,8 @@ export default defineConfig({
       },
       manifest: {
         name: 'Stage Builder',
-        short_name: 'Stage',
+        /** Launcher label on home screen (Chrome/Android prefer short_name over name). */
+        short_name: 'Stage Builder',
         description: 'IPSC stage designer: 2D plan, 3D preview, PDF briefing export',
         theme_color: '#0f172a',
         /** Splash behind icon; match generated PNG tiles (white + dark SB mark) */
