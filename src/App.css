@@ -234,7 +234,7 @@
 }
 
 .app__onboarding-note {
-  margin: 0.75rem 0 0;
+  margin: 0;
   padding: 0.45rem 0.7rem;
   border-radius: 8px;
   font-size: 0.8rem;
@@ -244,17 +244,58 @@
   border-left: 3px solid var(--accent);
 }
 
-.app__onboarding-actions {
+.app__onboarding-bottom {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
   margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.app__onboarding-install {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+  transition: filter 0.12s, box-shadow 0.12s;
+}
+
+.app__onboarding-install:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+}
+
+.app__onboarding-install:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.app__onboarding-install-hint {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-left: 0.25rem;
 }
 
 .app__onboarding-cta {
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
-  padding: 0.5rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 1.1rem;
   border-radius: 8px;
   border: 1px solid var(--accent-border);
   background: var(--accent-bg);
@@ -1421,6 +1462,12 @@
 
 .app__footer-link--accent:hover {
   filter: brightness(1.05);
+}
+
+button.app__btn-pwa-install {
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .stage-canvas-3d {

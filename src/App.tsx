@@ -30,12 +30,14 @@ import { type StageCanvasHandle, StageCanvas } from './presentation/components/S
 import { StageMinimap } from './presentation/components/StageMinimap'
 import { type CameraMode3D, type StageView3DHandle, StageView3D } from './presentation/components/StageView3D'
 import type { WorldViewportRect } from './presentation/lib/viewTransform'
+import { usePwaInstall } from './presentation/hooks/usePwaInstall'
 import './App.css'
 
 const ONBOARDING_LS_KEY = 'stage-builder-onboarding-collapsed'
 
 export default function App() {
   const { locale, setLocale, t, tree } = useI18n()
+  const { canInstall, promptInstall } = usePwaInstall()
 
   const name = useStageStore((s) => s.name)
   const weaponClass = useStageStore((s) => s.weaponClass)
@@ -460,8 +462,16 @@ export default function App() {
             </div>
           ))}
         </div>
-        <p className="app__onboarding-note">{tree.app.onboardingNote}</p>
-        <div className="app__onboarding-actions">
+        <div className="app__onboarding-bottom">
+          {canInstall ? (
+            <button type="button" className="app__onboarding-install" onClick={() => void promptInstall()}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="m8 11 4 4 4-4"/><path d="M20 21H4"/></svg>
+              {tree.pwa.installButton}
+              <span className="app__onboarding-install-hint">{tree.pwa.installHint}</span>
+            </button>
+          ) : (
+            <p className="app__onboarding-note">{tree.app.onboardingNote}</p>
+          )}
           <button type="button" className="app__onboarding-cta" onClick={dismissOnboarding}>
             {tree.app.onboardingCta}
           </button>
@@ -669,6 +679,18 @@ export default function App() {
             </a>
           </div>
         </div>
+        {canInstall && (
+          <div className="app__footer-card app__footer-card--install">
+            <h3 className="app__footer-heading">{tree.footer.installHeading}</h3>
+            <p className="app__footer-text">{tree.footer.installText}</p>
+            <div className="app__footer-links">
+              <button type="button" className="app__footer-link app__footer-link--accent app__btn-pwa-install" onClick={() => void promptInstall()}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="m8 11 4 4 4-4"/><path d="M20 21H4"/></svg>
+                {tree.footer.installButton}
+              </button>
+            </div>
+          </div>
+        )}
       </footer>
 
       <button
