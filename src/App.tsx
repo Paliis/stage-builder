@@ -445,6 +445,13 @@ export default function App() {
           </svg>
         </button>
         <h2 className="app__onboarding-title">{tree.app.onboardingTitle}</h2>
+        <p className="app__onboarding-lead">{tree.app.onboardingLead}</p>
+        <ul className="app__onboarding-benefits">
+          {tree.app.onboardingBenefits.map((b, i) => (
+            <li key={i}>{b}</li>
+          ))}
+        </ul>
+        <h3 className="app__onboarding-how">{tree.app.onboardingHowTitle}</h3>
         <div className="app__onboarding-sections">
           {([1, 2, 3, 4, 5, 6] as const).map((n) => (
             <div key={n} className="app__onboarding-section">
