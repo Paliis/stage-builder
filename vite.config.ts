@@ -33,7 +33,7 @@ export default defineConfig({
             src: '/icon-192.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any',
+            purpose: 'any maskable',
           },
           {
             src: '/icon-512.png',
