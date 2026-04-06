@@ -18,6 +18,7 @@
 - **3D перегляд** — камера «огляд» і «зона стрільця», тіні, знімок для PDF.
 - **PDF брифінг** — таблиця полів як у класифікаційних вправах, знімок 3D-сцени, QR-код на додаток.
 - **Файл вправи** — збереження / відкриття `*.stage.json` (сцена + брифінг).
+- **Чернетка в браузері** — сцена й брифінг автоматично зберігаються в `localStorage` між візитами (окремо від файлу вправи).
 - **PWA** — сервіс-воркер, офлайн-режим, встановлення на домашній екран.
 - **Двомовність** — повний інтерфейс UK / EN.
 
@@ -69,6 +70,12 @@ src/
 └── i18n/             # повідомлення UK / EN
 ```
 
+**Текст мішеней для брифінгу/PDF** формується в `summarizeTargets` (`src/domain/targetSummary.ts`): окремо **метал** (сталь), **кераміка** (тарілки та керамічні ківаки), **папір**, no-shoot. Мінімум пострілів — `computeMinRounds` (папір ×2, сталь/кераміка ×1 на одиницю).
+
+## Технічна документація для розробників
+
+Детальніший опис архітектури, домену, формату `*.stage.json`, PWA, CI та напрямів рефакторингу: **[docs/TECH.md](docs/TECH.md)**.
+
 ## Зворотний зв'язок
 
 - Email: parshencevdenis@gmail.com
@@ -81,4 +88,4 @@ src/
 
 ---
 
-*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan, 3D preview, targets and props placement, bilingual UI (UK/EN), JSON project files, and PDF briefing export with QR code. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*
+*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan, 3D preview, targets and props placement, bilingual UI (UK/EN), JSON project files, PDF briefing export with QR code, and a browser draft saved between visits. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*

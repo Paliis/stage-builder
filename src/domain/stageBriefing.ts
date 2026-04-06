@@ -4,7 +4,7 @@ import type { StageCategory } from './models'
 export type StageBriefing = {
   documentTitle: string
   exerciseType: StageCategory
-  /** Вільний текст, напр. «8 металевих тарілок + 2 штрафні тарілки». */
+  /** Вільний текст, напр. «2 сталеві + 4 керамічні + 3 паперові мішені». */
   targetsDescription: string
   recommendedShots: string
   allowedAmmo: string
@@ -28,7 +28,7 @@ export function defaultStageBriefing(): StageBriefing {
     readyCondition: 'Заряджено (Положення 1)',
     startPosition: '',
     procedure:
-      'За сигналом таймера, вразити всі мішені, не виходячи за межі штрафних ліній. Металеві мішені мають впасти для заліку.',
+      'За сигналом таймера, вразити всі мішені, не виходячи за межі штрафних ліній. Металеві мішені мають впасти для заліку. Керамічні мішені (якщо є) мають мати явні сліди ураження.',
     safetyAngles: '90/90/90',
   }
 }

@@ -5,9 +5,8 @@ import { summarizeTargets } from './targetSummary'
 function baseTarget(over: Partial<Target> & Pick<Target, 'type'>): Target {
   return {
     id: 't1',
-    x: 0,
-    y: 0,
-    rot: 0,
+    position: { x: 0, y: 0 },
+    rotationRad: 0,
     isNoShoot: false,
     ...over,
   }

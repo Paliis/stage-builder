@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -8,6 +10,7 @@ import {
   type CSSProperties,
 } from 'react'
 import { useShallow } from 'zustand/react/shallow'
+import { SessionDraftPersist } from './application/SessionDraftPersist'
 import { useBriefingStore } from './application/briefingStore'
 import { useStageStore } from './application/stageStore'
 import { computeMinRounds, countStageTargetUnits } from './domain/computeMinRounds'
@@ -24,14 +27,17 @@ import { summarizeTargets } from './domain/targetSummary'
 import { useI18n } from './i18n/useI18n'
 import { formatTemplate } from './i18n/format'
 import type { BriefingPdfLabels } from './domain/stageBriefing'
-import { exportBriefingPdf } from './presentation/lib/exportBriefingPdf'
 import { StageBuilderToolbar } from './presentation/components/StageBuilderToolbar'
 import { type StageCanvasHandle, StageCanvas } from './presentation/components/StageCanvas'
 import { StageMinimap } from './presentation/components/StageMinimap'
-import { type CameraMode3D, type StageView3DHandle, StageView3D } from './presentation/components/StageView3D'
+import type { CameraMode3D, StageView3DHandle } from './presentation/components/StageView3D'
 import type { WorldViewportRect } from './presentation/lib/viewTransform'
 import { usePwaInstall } from './presentation/hooks/usePwaInstall'
 import './App.css'
+
+const StageView3DLazy = lazy(() =>
+  import('./presentation/components/StageView3D').then((m) => ({ default: m.StageView3D })),
+)
 
 const ONBOARDING_LS_KEY = 'stage-builder-onboarding-collapsed'
 
@@ -199,6 +205,7 @@ export default function App() {
         snap = view3dRef.current?.capturePngDataUrl() ?? null
       }
       const safeName = `${briefing.documentTitle.replace(/[\\/:*?"<>|]/g, '').slice(0, 80) || 'briefing'}.pdf`
+      const { exportBriefingPdf } = await import('./presentation/lib/exportBriefingPdf')
       await exportBriefingPdf({
         snapshotDataUrl: snap,
         briefing: { ...briefing },
@@ -368,6 +375,7 @@ export default function App() {
 
   return (
     <div className="app">
+      <SessionDraftPersist />
       <header className="app__header">
         <div className="app__header-inner">
           <div className="app__header-top-row">
@@ -550,7 +558,15 @@ export default function App() {
                   </div>
                 ) : (
                   <div className="app__stage-print-frame">
-                    <StageView3D ref={view3dRef} targets={targets} props={props} cameraMode={camera3d} />
+                    <Suspense
+                      fallback={
+                        <div className="app__view-3d-suspense" role="status" aria-live="polite">
+                          {tree.view.loading3d}
+                        </div>
+                      }
+                    >
+                      <StageView3DLazy ref={view3dRef} targets={targets} props={props} cameraMode={camera3d} />
+                    </Suspense>
                   </div>
                 )}
               </main>
