@@ -40,6 +40,7 @@
 - Під час старту `main.tsx` викликає `hydrateSessionDraft()` **до** першого рендеру: обгортка проганяється через `parseStageProjectJson`, той самий контракт що й `*.stage.json`.
 - Після відновлення історія undo очищається (`temporal.clear()`). Пошкоджений чернетковий JSON видаляється зі сховища.
 - `SessionDraftPersist` у `App.tsx` підписується на обидва стори й зберігає з debounce ~450 ms.
+- Очистити вправу: кнопка-іконка кошика у нижньому правому куті 2D-карти (`App.tsx` + `.app__plan-clear-btn`); `window.confirm` з текстом `project.clearConfirm`, далі `resetSceneToDefaults`, `defaultStageBriefing()`, `temporal.clear`, `clearSessionDraftStorage`.
 
 ## PWA
 

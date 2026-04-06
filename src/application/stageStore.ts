@@ -122,6 +122,8 @@ export type StageState = {
   setPropGeometry: (id: string, position: Vec2, sizeM: Vec2) => void
   removeTarget: (id: string) => void
   removeProp: (id: string) => void
+  /** Порожня сцена, дефолтний розмір поля та ім’я (кнопка «нова вправа»). */
+  resetSceneToDefaults: () => void
 }
 
 export const useStageStore = create<StageState>()(temporal((set) => ({
@@ -146,6 +148,18 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         fieldSizeM: next,
         targets,
         props,
+      }
+    }),
+
+  resetSceneToDefaults: () =>
+    set(() => {
+      const fieldSizeM = clampFieldDimensions(DEFAULT_FIELD_WIDTH_M, DEFAULT_FIELD_HEIGHT_M)
+      return {
+        name: 'Нова вправа',
+        weaponClass: 'handgun',
+        fieldSizeM,
+        targets: [],
+        props: [],
       }
     }),
 

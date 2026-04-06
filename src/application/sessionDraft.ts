@@ -100,6 +100,14 @@ export function hydrateSessionDraft(): void {
 }
 
 /** Підписка з debounce: викликати з useEffect у корені застосунку. */
+export function clearSessionDraftStorage(): void {
+  try {
+    localStorage.removeItem(SESSION_DRAFT_STORAGE_KEY)
+  } catch {
+    /* ignore */
+  }
+}
+
 export function subscribeSessionDraftPersist(): () => void {
   let timer: ReturnType<typeof setTimeout> | undefined
   const schedule = () => {

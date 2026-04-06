@@ -120,6 +120,38 @@
   text-align: center;
 }
 
+/* Кошик: очистити вправу — нижній правий кут 2D-карти */
+.app__plan-clear-btn {
+  position: absolute;
+  bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  right: max(0.75rem, env(safe-area-inset-right, 0px));
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid rgba(220, 38, 38, 0.38);
+  background: color-mix(in srgb, var(--toolbar-bg) 94%, transparent);
+  color: #b91c1c;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.app__plan-clear-btn:hover {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(185, 28, 28, 0.55);
+}
+
+.app__plan-clear-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent, #6366f1) 85%, transparent);
+  outline-offset: 2px;
+}
+
 /* Онбординг-модалка */
 .app__onboarding-dialog {
   position: relative;
