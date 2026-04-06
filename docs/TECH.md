@@ -63,6 +63,15 @@ npm run check     # як у CI: lint + test + build
 - `tsconfig.app.json` **виключає** `src/**/*.test.ts` з перевірки `tsc -b`, тому тестові фікстури повинні вручну відповідати типам домену (`Target.position`, `rotationRad`, тощо).
 - Рекомендація: періодично проганяти `tsc` з включеними тестами або тримати фікстури строго типізованими.
 
+## SEO та індексація
+
+- **`index.html`** — `title`, `meta description` (UK), `canonical`, `hreflang` (uk/en/x-default на той самий URL — мова в UI), Open Graph + Twitter Card, `robots` / `googlebot` (index, follow, прев’ю зображень).
+- **`public/robots.txt`** — `Allow: /` і рядок **`Sitemap:`** на абсолютний URL.
+- **`public/sitemap.xml`** — одна URL-адреса головної сторінки (SPA без маршрутів). Якщо з’явиться власний домен — оновити домен у `sitemap.xml`, `robots.txt`, `index.html` (canonical, og:url, JSON-LD).
+- **JSON-LD** (`WebApplication`) у `index.html` для розуміння сервісу пошуковиками.
+- **Vercel** — у `vercel.json` заголовок `Content-Type` для `/sitemap.xml`.
+- **Після змін домену** — [Google Search Console](https://search.google.com/search-console): додати властивість, підтвердити, надіслати sitemap `https://…/sitemap.xml`. Для повного рендеру сторінки Google вже виконує JS; додатковий SSR/prerender — окреме покращення.
+
 ## CI та деплой
 
 - **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у `main`.

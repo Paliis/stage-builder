@@ -61,6 +61,8 @@ npm run check        # lint + тести + build (як у CI)
 
 Конфігурація: `vercel.json` (Vite framework, `dist/` output).
 
+**SEO:** `robots.txt`, `sitemap.xml` у `public/` (після деплою — `https://stage-builder.vercel.app/sitemap.xml`). Мета-теги та JSON-LD — у `index.html`. Для індексації в Google варто додати сайт у Search Console і вказати sitemap.
+
 ## Структура
 
 ```
