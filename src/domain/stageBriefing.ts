@@ -18,7 +18,7 @@ export type StageBriefing = {
 
 export function defaultStageBriefing(): StageBriefing {
   return {
-    documentTitle: 'Класифікаційна вправа',
+    documentTitle: '\u0412\u043f\u0440\u0430\u0432\u0430 \u21161',
     exerciseType: 'short',
     targetsDescription: '',
     recommendedShots: '',

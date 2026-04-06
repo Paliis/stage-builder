@@ -222,6 +222,19 @@ export default function App() {
   }
 
 
+  const autoGrow = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
+    const el = e.currentTarget
+    el.style.height = 'auto'
+    el.style.height = `${el.scrollHeight}px`
+  }, [])
+
+  const autoGrowRef = useCallback((el: HTMLTextAreaElement) => {
+    requestAnimationFrame(() => {
+      el.style.height = 'auto'
+      el.style.height = `${el.scrollHeight}px`
+    })
+  }, [])
+
   const dismissOnboarding = useCallback(() => {
     try {
       localStorage.setItem(ONBOARDING_LS_KEY, '1')
@@ -578,9 +591,10 @@ export default function App() {
           <label className="app__field app__field--wide">
             {tree.briefing.targetsText}
             <textarea
-              rows={2}
+              rows={1}
               value={briefing.targetsDescription}
-              onChange={(e) => setBriefing({ targetsDescription: e.target.value })}
+              onChange={(e) => { autoGrow(e); setBriefing({ targetsDescription: e.target.value }) }}
+              ref={(el) => { if (el) autoGrowRef(el) }}
             />
           </label>
           <label className="app__field">
@@ -593,9 +607,10 @@ export default function App() {
           <label className="app__field app__field--wide">
             {tree.briefing.allowedAmmo}
             <textarea
-              rows={2}
+              rows={1}
               value={briefing.allowedAmmo}
-              onChange={(e) => setBriefing({ allowedAmmo: e.target.value })}
+              onChange={(e) => { autoGrow(e); setBriefing({ allowedAmmo: e.target.value }) }}
+              ref={(el) => { if (el) autoGrowRef(el) }}
             />
           </label>
           <label className="app__field">
@@ -612,25 +627,28 @@ export default function App() {
           <label className="app__field app__field--wide">
             {tree.briefing.readyCondition}
             <textarea
-              rows={2}
+              rows={1}
               value={briefing.readyCondition}
-              onChange={(e) => setBriefing({ readyCondition: e.target.value })}
+              onChange={(e) => { autoGrow(e); setBriefing({ readyCondition: e.target.value }) }}
+              ref={(el) => { if (el) autoGrowRef(el) }}
             />
           </label>
           <label className="app__field app__field--wide">
             {tree.briefing.startPosition}
             <textarea
-              rows={3}
+              rows={1}
               value={briefing.startPosition}
-              onChange={(e) => setBriefing({ startPosition: e.target.value })}
+              onChange={(e) => { autoGrow(e); setBriefing({ startPosition: e.target.value }) }}
+              ref={(el) => { if (el) autoGrowRef(el) }}
             />
           </label>
           <label className="app__field app__field--wide">
             {tree.briefing.procedure}
             <textarea
-              rows={3}
+              rows={1}
               value={briefing.procedure}
-              onChange={(e) => setBriefing({ procedure: e.target.value })}
+              onChange={(e) => { autoGrow(e); setBriefing({ procedure: e.target.value }) }}
+              ref={(el) => { if (el) autoGrowRef(el) }}
             />
           </label>
           <label className="app__field">

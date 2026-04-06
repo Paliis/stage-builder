@@ -1314,6 +1314,12 @@
   color: var(--text-h);
 }
 
+.app__field textarea {
+  overflow: hidden;
+  resize: none;
+  line-height: 1.45;
+}
+
 .app__briefing-autofill {
   display: flex;
   margin: 0.5rem 0 0.15rem;
