@@ -1,0 +1,1505 @@
+.app {
+  --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: max(1rem, env(safe-area-inset-top, 0px))
+    max(1.25rem, env(safe-area-inset-right, 0px))
+    max(1.5rem, env(safe-area-inset-bottom, 0px))
+    max(1.25rem, env(safe-area-inset-left, 0px));
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  text-align: left;
+}
+
+.app__header {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-self: stretch;
+}
+
+.app__header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.app__header-top-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem 1.25rem;
+}
+
+.app__title-heading {
+  margin: 0;
+  font-size: 1.65rem;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.app__header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.65rem;
+}
+
+.app__header-file-buttons {
+  justify-content: center;
+}
+
+.app__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+.app__lang {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.15rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--toolbar-bg);
+}
+
+.app__lang button {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.35rem 0.6rem 0.35rem 1.55rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  background-repeat: no-repeat;
+  background-position: 0.35rem center;
+  background-size: 1rem 0.72rem;
+  color: var(--text-h);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app__lang button[lang='uk'] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Crect width='60' height='20' fill='%230057B8'/%3E%3Crect y='20' width='60' height='20' fill='%23FFD700'/%3E%3C/svg%3E");
+}
+
+.app__lang button[lang='en'] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Crect width='60' height='30' fill='%23012169'/%3E%3Cpath d='M0 0L60 30M60 0L0 30' stroke='%23FFF' stroke-width='6'/%3E%3Cpath d='M0 0L60 30M60 0L0 30' stroke='%23C8102E' stroke-width='2'/%3E%3Cpath d='M30 0V30M0 15H60' stroke='%23FFF' stroke-width='10'/%3E%3Cpath d='M30 0V30M0 15H60' stroke='%23C8102E' stroke-width='6'/%3E%3C/svg%3E");
+}
+
+.app__lang button.is-active {
+  border-color: var(--accent-border);
+  background-color: var(--accent-bg);
+}
+
+
+/* Кнопка «?» в хедері */
+.app__btn-help {
+  font-weight: 700;
+  min-width: 2rem;
+  text-align: center;
+}
+
+/* Онбординг-модалка */
+.app__onboarding-dialog {
+  max-width: min(36rem, calc(100vw - 2rem));
+  width: 100%;
+  padding: 1.5rem 1.75rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.18);
+}
+
+.app__onboarding-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.app__onboarding-dialog .app__onboarding-title {
+  margin: 0 0 0.55rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text-h);
+}
+
+.app__onboarding-dialog .app__onboarding-lead {
+  margin: 0 0 0.75rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.app__onboarding-dialog .app__onboarding-list {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  font-size: 0.88rem;
+  line-height: 1.52;
+  color: var(--text);
+}
+
+.app__onboarding-dialog .app__onboarding-list li {
+  margin: 0.4rem 0;
+}
+
+.app__onboarding-dialog .app__onboarding-list li::marker {
+  color: var(--accent);
+}
+
+.app__onboarding-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.app__onboarding-subtitle {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.app__onboarding-controls {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.app__onboarding-controls p {
+  margin: 0.4rem 0 0;
+}
+
+.app__onboarding-controls p:first-child {
+  margin-top: 0;
+}
+
+.app__onboarding-dismiss {
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.app__onboarding-dismiss:hover {
+  filter: brightness(1.03);
+}
+
+.app__onboarding-dismiss:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.app__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.35rem;
+  font-size: 0.9rem;
+}
+
+.app__stats--toolbar {
+  display: none;
+}
+
+.app__stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.app__stat-label {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.app__stat-value,
+.app__stats .app__stat strong {
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.app__stat--min .app__stat-label {
+  max-width: 11rem;
+  line-height: 1.25;
+}
+
+.app__toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.55rem 1rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--toolbar-bg);
+}
+
+.app__weapon-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+}
+
+.app__weapon-switch {
+  flex: 1 1 auto;
+  min-width: min(100%, 10rem);
+}
+
+.app__weapon-mismatch {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: #b45309;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app__weapon-mismatch {
+    color: #fbbf24;
+  }
+}
+
+.app__toolbar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.app__toolbar-section--first {
+  padding-top: 0;
+  border-top: none;
+}
+
+.app__toolbar-section--first .app__weapon-bar {
+  margin-top: 0;
+}
+
+.app__toolbar-section--infra .app__section-hint {
+  margin: 0;
+  max-width: 44rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text);
+  opacity: 0.92;
+}
+
+.app__section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+}
+
+.app__section-title {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-h);
+}
+
+.app__stage-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-h);
+  margin-right: auto;
+}
+
+.app__stage-name--inline {
+  margin-right: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.app__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.app__targets-ns-caption {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-h);
+  opacity: 0.92;
+}
+
+.app__buttons--targets-ns {
+  margin-top: 0.3rem;
+  padding-top: 0.35rem;
+  border-top: 1px dashed var(--border);
+}
+
+.app__buttons button {
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 0.4rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text-h);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app__buttons button:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.app__buttons button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.app__buttons .app__btn-secondary {
+  background: var(--btn-secondary-bg);
+}
+
+/* Кольорова маркування кнопок «додати» в тулбарі (мішені / реквізит). */
+.app__buttons button.app__tb {
+  font-weight: 600;
+}
+
+.app__buttons button.app__tb--paper {
+  background: rgba(255, 255, 255, 0.62);
+  border-color: rgba(148, 163, 184, 0.45);
+  color: #1e293b;
+}
+
+.app__buttons button.app__tb--paper:hover {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(100, 116, 139, 0.55);
+}
+
+.app__buttons button.app__tb--metal {
+  background: rgba(148, 163, 184, 0.28);
+  border-color: rgba(100, 116, 139, 0.42);
+  color: #1e293b;
+}
+
+.app__buttons button.app__tb--metal:hover {
+  background: rgba(148, 163, 184, 0.42);
+  border-color: rgba(71, 85, 105, 0.5);
+}
+
+.app__buttons button.app__tb--ceramic {
+  background: rgba(255, 102, 0, 0.22);
+  border-color: rgba(234, 88, 12, 0.4);
+  color: #9a3412;
+}
+
+.app__buttons button.app__tb--ceramic:hover {
+  background: rgba(255, 102, 0, 0.34);
+  border-color: rgba(194, 65, 12, 0.48);
+  color: #7c2d12;
+}
+
+.app__buttons button.app__tb--ns {
+  background: rgba(220, 38, 38, 0.26);
+  border-color: rgba(185, 28, 28, 0.42);
+  color: #7f1d1d;
+}
+
+.app__buttons button.app__tb--ns:hover {
+  background: rgba(220, 38, 38, 0.38);
+  border-color: rgba(153, 27, 27, 0.5);
+  color: #450a0a;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--shield {
+  background: rgba(74, 222, 128, 0.24);
+  border-color: rgba(22, 163, 74, 0.38);
+  color: #14532d;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--shield:hover {
+  background: rgba(74, 222, 128, 0.38);
+  border-color: rgba(21, 128, 61, 0.5);
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--door {
+  background: rgba(180, 83, 9, 0.22);
+  border-color: rgba(146, 64, 14, 0.4);
+  color: #713f12;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--door:hover {
+  background: rgba(180, 83, 9, 0.34);
+  border-color: rgba(120, 53, 15, 0.48);
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--fault {
+  background: rgba(248, 113, 113, 0.28);
+  border-color: rgba(220, 38, 38, 0.4);
+  color: #7f1d1d;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--fault:hover {
+  background: rgba(248, 113, 113, 0.42);
+  border-color: rgba(185, 28, 28, 0.5);
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--barrel {
+  background: rgba(37, 99, 235, 0.22);
+  border-color: rgba(29, 78, 216, 0.4);
+  color: #1e3a8a;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--barrel:hover {
+  background: rgba(37, 99, 235, 0.34);
+  border-color: rgba(30, 64, 175, 0.48);
+  color: #172554;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--tire {
+  background: rgba(23, 23, 23, 0.18);
+  border-color: rgba(10, 10, 10, 0.35);
+  color: #171717;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--tire:hover {
+  background: rgba(23, 23, 23, 0.3);
+  border-color: rgba(10, 10, 10, 0.45);
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--seesaw,
+.app__buttons button.app__btn-secondary.app__tb-prop--cooper {
+  background: rgba(146, 64, 14, 0.22);
+  border-color: rgba(120, 53, 15, 0.4);
+  color: #5c2d0a;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--seesaw:hover,
+.app__buttons button.app__btn-secondary.app__tb-prop--cooper:hover {
+  background: rgba(146, 64, 14, 0.34);
+  border-color: rgba(69, 26, 3, 0.45);
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--moving {
+  background: linear-gradient(
+    135deg,
+    rgba(141, 110, 72, 0.28) 55%,
+    rgba(100, 116, 139, 0.24) 55%
+  );
+  border-color: rgba(87, 83, 78, 0.38);
+  color: #44403c;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--moving:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(141, 110, 72, 0.4) 55%,
+    rgba(100, 116, 139, 0.34) 55%
+  );
+  border-color: rgba(68, 64, 60, 0.48);
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--start {
+  background: rgba(29, 78, 216, 0.22);
+  border-color: rgba(30, 58, 138, 0.4);
+  color: #1e3a8a;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--start:hover {
+  background: rgba(29, 78, 216, 0.34);
+  border-color: rgba(23, 37, 84, 0.48);
+  color: #172554;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app__buttons button.app__tb--paper {
+    background: rgba(248, 250, 252, 0.14);
+    border-color: rgba(148, 163, 184, 0.35);
+    color: #e2e8f0;
+  }
+
+  .app__buttons button.app__tb--paper:hover {
+    background: rgba(248, 250, 252, 0.24);
+    border-color: rgba(148, 163, 184, 0.48);
+  }
+
+  .app__buttons button.app__tb--metal {
+    background: rgba(148, 163, 184, 0.18);
+    border-color: rgba(100, 116, 139, 0.38);
+    color: #e2e8f0;
+  }
+
+  .app__buttons button.app__tb--metal:hover {
+    background: rgba(148, 163, 184, 0.3);
+    border-color: rgba(148, 163, 184, 0.5);
+  }
+
+  .app__buttons button.app__tb--ceramic {
+    background: rgba(255, 102, 0, 0.2);
+    border-color: rgba(234, 88, 12, 0.42);
+    color: #fdba74;
+  }
+
+  .app__buttons button.app__tb--ceramic:hover {
+    background: rgba(255, 102, 0, 0.3);
+    color: #fed7aa;
+  }
+
+  .app__buttons button.app__tb--ns {
+    background: rgba(220, 38, 38, 0.22);
+    border-color: rgba(185, 28, 28, 0.4);
+    color: #fecaca;
+  }
+
+  .app__buttons button.app__tb--ns:hover {
+    background: rgba(220, 38, 38, 0.34);
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--shield {
+    color: #bbf7d0;
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--fault {
+    color: #fecaca;
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--barrel,
+  .app__buttons button.app__btn-secondary.app__tb-prop--start {
+    color: #bfdbfe;
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--tire {
+    background: rgba(250, 250, 250, 0.08);
+    border-color: rgba(148, 163, 184, 0.3);
+    color: #e5e5e5;
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--tire:hover {
+    background: rgba(250, 250, 250, 0.14);
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--moving {
+    color: #e7e5e4;
+    border-color: rgba(120, 113, 108, 0.45);
+  }
+}
+
+.app__main {
+  flex: 1 1 0;
+  min-height: clamp(16rem, 42dvh, 56rem);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--canvas-bg);
+}
+
+/**
+ * 2D і 3D: одна картка; висота не більше --_plan-vmax, але якщо колонка вужча за «letterbox» від ліміту висоти —
+ * звужуємо бюджет висоти до висоти при повній ширині 100cqw, щоб заповнити горизонт без смуг.
+ * --stage-card-h трохи менше за довжину площадки в м; PDF лишається зі своєю логікою.
+ */
+.app__main.app__main--stage-card {
+  position: relative;
+  flex: 0 0 auto;
+  align-self: center;
+  min-height: unset;
+  /* --_dvh-cap: ліміт по вікну; на широкому макеті додаємо 100cqh, щоб сцена займала висоту робочої колонки. */
+  --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
+  --_h-if-full-w: calc(100cqw * var(--stage-card-h, 35.7) / var(--stage-card-w, 30));
+  --_plan-cap: min(var(--_dvh-cap), var(--_h-if-full-w));
+  width: min(100%, calc(var(--_plan-cap) * var(--stage-card-w, 30) / var(--stage-card-h, 35.7)));
+  max-width: 100%;
+  aspect-ratio: var(--stage-card-w, 30) / var(--stage-card-h, 35.7);
+  height: auto;
+  max-height: var(--_plan-cap);
+}
+
+/* Вузькі екрани: більше місця під картку, на всю ширину без «вух». */
+@media (max-width: 40rem) {
+  .app__main.app__main--stage-card {
+    align-self: stretch;
+    width: 100%;
+    --_plan-cap: min(70dvh, calc(100dvh - 10.5rem));
+  }
+
+  .app__plan-stage-stack {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 24rem) {
+  .app__main.app__main--stage-card {
+    --_plan-cap: min(68dvh, calc(100dvh - 9rem));
+  }
+}
+
+/* 2D / 3D вміст на всю картку */
+.app__main > * {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+}
+
+/** 2D: канвас + міні-карта як накладення в куті карти. */
+.app__plan-map-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.app__plan-map-shell .stage-canvas {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Обов’язково з’їдає висоту колонки .app__main (інакше % і aspect «ламаються»). */
+.app__main > .app__stage-print-frame {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.app__stage-print-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  padding: 2px;
+  min-height: 0;
+}
+
+.app__main--stage-card .app__stage-print-frame {
+  justify-content: stretch;
+}
+
+/**
+ * 3D за замовчуванням: aspect змінних на батьку (fallback для старої розмітки).
+ * Усередині .app__main--stage-card пропорції задає main — канвас лише заповнює картку.
+ */
+.app__main .app__r3f-canvas-wrap {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  height: auto !important;
+  /* Не flex-grow — інакше колонка ламає aspect-ratio. */
+  flex: 0 1 auto;
+  aspect-ratio: var(--stage-aspect-w, 30) / var(--stage-aspect-h, 80);
+}
+
+.app__main--stage-card .app__r3f-canvas-wrap {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: none;
+  height: 100% !important;
+  aspect-ratio: unset;
+}
+
+/** Вкладки 2D/3D, розмір поля, статистика — центрований рядок. */
+.app__view-controls-strip {
+  padding: 0.35rem 0 0.55rem;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+  width: 100%;
+  align-self: stretch;
+  box-sizing: border-box;
+}
+
+.app__view-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.85rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.app__view-controls-strip .app__view-row {
+  flex: 0 1 auto;
+  min-width: min(100%, 12rem);
+}
+
+
+/* Робоча зона: тягнеться по висоті колонки .app; ширина = кластер (fit-content). */
+.app__plan-workspace {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/**
+ * Кластер: ширина другої колонки = ширина картки при максимальній висоті.
+ * fit-content + margin:auto → кластер по центру, без порожніх 1fr «крил».
+ */
+.app__plan-workspace-cluster {
+  --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
+  --_card-col-w: calc(var(--_dvh-cap) * var(--stage-card-w, 30) / var(--stage-card-h, 35.7));
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(13.25rem, 18.75rem) minmax(20rem, var(--_card-col-w));
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0.65rem 0.85rem;
+  align-items: stretch;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Бічна панель лишається по висоті контенту; ряд сітки тягнеться через .app__plan-main. */
+.app__toolbar.app__plan-rail {
+  position: relative;
+  box-sizing: border-box;
+  align-self: start;
+  min-width: 0;
+  min-height: 0;
+  max-height: min(88dvh, 100%);
+  overflow-y: auto;
+  padding: 0.4rem 0.45rem;
+  gap: 0.3rem;
+  border-radius: 8px;
+}
+
+.app__toolbar.app__plan-rail .app__section-hint,
+.app__toolbar.app__plan-rail .app__stage-name--inline {
+  display: none;
+}
+
+.app__toolbar.app__plan-rail .app__toolbar-section {
+  gap: 0.22rem;
+  padding-top: 0.32rem;
+}
+
+.app__toolbar.app__plan-rail .app__toolbar-section--first {
+  padding-top: 0;
+}
+
+.app__toolbar.app__plan-rail .app__section-head {
+  gap: 0.2rem 0.4rem;
+  align-items: center;
+}
+
+.app__toolbar.app__plan-rail .app__section-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.app__toolbar.app__plan-rail .app__buttons {
+  gap: 0.3rem;
+}
+
+.app__toolbar.app__plan-rail .app__buttons button {
+  font-size: 0.76rem;
+  padding: 0.28rem 0.5rem;
+  border-radius: 6px;
+}
+
+.app__toolbar.app__plan-rail .app__targets-ns-caption {
+  margin: 0.1rem 0 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.2;
+  opacity: 0.9;
+}
+
+.app__toolbar.app__plan-rail .app__buttons--targets-ns {
+  margin-top: 0.15rem;
+  padding-top: 0.22rem;
+}
+
+.app__plan-main {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  min-width: 0;
+  min-height: min(58dvh, 34rem);
+  height: 100%;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+}
+
+.app__plan-stage-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 0 1 auto;
+}
+
+/* Кнопка виклику бічної панелі — прихована на широких екранах */
+.app__toolbar-drawer-toggle {
+  display: none;
+}
+
+.app__toolbar-drawer-toggle-label {
+  display: none;
+}
+
+/* Обгортка drawer — на широких екранах прозора, display: contents */
+.app__toolbar-drawer {
+  display: contents;
+}
+
+@media (max-width: 52rem) {
+  .app__plan-workspace {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .app__plan-workspace-cluster {
+    grid-template-columns: 1fr;
+    flex: 1 1 auto;
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  /* Фіксована бічна вкладка-тригер зліва */
+  .app__toolbar-drawer-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 910;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.55rem 0.3rem;
+    gap: 0.35rem;
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    background: var(--toolbar-bg);
+    color: var(--text-h);
+    cursor: pointer;
+    touch-action: manipulation;
+    box-shadow: 2px 0 8px rgba(15, 23, 42, 0.1);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .app__toolbar-drawer-toggle svg {
+    writing-mode: horizontal-tb;
+    flex-shrink: 0;
+  }
+
+  .app__toolbar-drawer-toggle-label {
+    display: block;
+  }
+
+  .app__toolbar-drawer-toggle:hover {
+    background: var(--accent-bg);
+    color: var(--accent);
+  }
+
+  .app__toolbar-drawer-toggle[aria-expanded='true'] {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  /* Drawer: backdrop overlay */
+  .app__toolbar-drawer {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: rgba(15, 23, 42, 0);
+    visibility: hidden;
+    pointer-events: none;
+    transition: background 0.3s, visibility 0.3s;
+  }
+
+  .app__toolbar-drawer.is-open {
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(2px);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Drawer: панель зліва з анімацією виїзду */
+  .app__toolbar-drawer .app__toolbar.app__plan-rail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(80vw, 20rem);
+    max-width: none;
+    max-height: none;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 4px 0 24px rgba(15, 23, 42, 0.22);
+    border: none;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 0 14px 14px 0;
+    padding: 1rem 0.85rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 901;
+  }
+
+  .app__toolbar-drawer.is-open .app__toolbar.app__plan-rail {
+    transform: translateX(0);
+  }
+
+  .app__plan-main {
+    height: auto;
+    min-height: min(55dvh, 30rem);
+    width: 100%;
+    max-width: none;
+    justify-content: flex-start;
+  }
+
+  .app__plan-stage-stack {
+    flex: 1 1 auto;
+    align-items: stretch;
+  }
+
+  .app__main.app__main--stage-card {
+    align-self: stretch;
+    flex: 1 1 auto;
+  }
+}
+
+.app__plan-map-shell .stage-minimap {
+  position: absolute;
+  top: 1.15rem;
+  right: 1.15rem;
+  width: 4.5rem;
+  max-width: min(26%, 5.75rem);
+  z-index: 2;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--toolbar-bg) 92%, transparent);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.app__plan-map-shell .stage-minimap:focus {
+  outline: none;
+}
+
+.app__plan-map-shell .stage-minimap:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent, #6366f1) 85%, transparent);
+  outline-offset: 2px;
+}
+
+.stage-minimap__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.app__view-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+}
+
+.app__field-size {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.app__field-size-label {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.app__field-size select {
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text-h);
+}
+
+.app__view-hint-wrap {
+  max-width: 52rem;
+}
+
+.app__view-hint {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.app__hint-expand {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.app__hint-expand summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+  list-style-position: outside;
+  padding: 0.15rem 0;
+}
+
+.app__hint-expand summary:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.app__hint-expand p {
+  margin: 0.4rem 0 0;
+  border-left: 2px solid var(--border);
+  padding-left: 0.65rem;
+  opacity: 0.95;
+}
+
+.app__viewtabs,
+.app__camtabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.15rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--toolbar-bg);
+}
+
+.app__viewtabs button,
+.app__camtabs button {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app__weapon-switch button.is-active,
+.app__viewtabs button.is-active,
+.app__camtabs button.is-active {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.app__weapon-switch button:focus-visible,
+.app__viewtabs button:focus-visible,
+.app__camtabs button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app__weapon-switch button.is-active,
+  .app__viewtabs button.is-active,
+  .app__camtabs button.is-active {
+    color: var(--accent);
+  }
+}
+
+.app__briefing {
+  width: 100%;
+  max-width: 64rem;
+  align-self: center;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.35rem 0.85rem 0.85rem;
+  background: var(--toolbar-bg);
+}
+
+.app__briefing > summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-h);
+  padding: 0.45rem 0;
+}
+
+.app__briefing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.65rem 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.app__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.app__field--wide {
+  grid-column: 1 / -1;
+}
+
+.app__field input,
+.app__field select,
+.app__field textarea {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text-h);
+}
+
+.app__briefing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.app__briefing-actions button {
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text-h);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.app__briefing-actions button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.app__briefing-hint {
+  margin: 0.65rem 0 0;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.45;
+}
+
+/* Footer: зворотний зв'язок + підтримка */
+.app__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 64rem;
+  align-self: center;
+  box-sizing: border-box;
+}
+
+.app__footer-card {
+  flex: 1 1 min(100%, 28rem);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  background: var(--toolbar-bg);
+}
+
+.app__footer-heading {
+  margin: 0 0 0.3rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.app__footer-text {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.app__footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.app__footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 0.38rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text-h);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.app__footer-link:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.app__footer-link--accent {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.app__footer-link--accent:hover {
+  filter: brightness(1.05);
+}
+
+.stage-canvas-3d {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  touch-action: none;
+}
+
+.stage-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  touch-action: none;
+  cursor: default;
+  -webkit-touch-callout: none;
+}
+
+.stage-canvas:focus {
+  outline: none;
+}
+
+.stage-canvas:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent, #6366f1) 85%, transparent);
+  outline-offset: 2px;
+}
+
+/* Mobile overflow-menu — прихований на десктопі */
+.app__mobile-menu {
+  display: none;
+  position: relative;
+}
+
+.app__mobile-menu-toggle {
+  font: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--toolbar-bg);
+  color: var(--text-h);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.app__mobile-menu-toggle:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.app__mobile-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  z-index: 800;
+  display: flex;
+  flex-direction: column;
+  min-width: 11rem;
+  padding: 0.3rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.16);
+}
+
+.app__mobile-menu-dropdown button {
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 500;
+  padding: 0.5rem 0.65rem;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-h);
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.app__mobile-menu-dropdown button:hover {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* Floating stats badge — на канвасі */
+.app__stats-float {
+  display: inline-flex;
+  width: fit-content;
+  gap: 0.55rem;
+  position: absolute;
+  top: 1.15rem;
+  left: 1.15rem;
+  z-index: 2;
+  padding: 0.2rem 0.5rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(4px);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text);
+  pointer-events: none;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.app__stats-float strong {
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+@media (max-width: 52rem) {
+  /* --- Хедер: один компактний рядок --- */
+  .app__header-inner {
+    gap: 0.3rem;
+  }
+
+  .app__header-top-row {
+    justify-content: space-between;
+    gap: 0.4rem 0.65rem;
+    width: 100%;
+  }
+
+  .app__title-heading {
+    font-size: 1.1rem;
+  }
+
+  .app__header-actions {
+    gap: 0.35rem;
+  }
+
+  /* Ховаємо кнопки файлів — вони в overflow-меню */
+  .app__header-file-buttons {
+    display: none;
+  }
+
+  /* Показуємо overflow-меню */
+  .app__mobile-menu {
+    display: block;
+  }
+
+  /* --- Контролі: один рядок --- */
+  .app__view-controls-strip {
+    padding: 0.25rem 0 0.35rem;
+  }
+
+  .app__view-controls-row {
+    gap: 0.35rem 0.55rem;
+  }
+
+  .app__field-size-label {
+    display: none;
+  }
+
+  .app__stats-float {
+    font-size: 0.68rem;
+    top: 0.4rem;
+    left: 0.4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .app__title-heading {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .app {
+    gap: 0.5rem;
+    padding: max(0.65rem, env(safe-area-inset-top, 0px))
+      max(0.65rem, env(safe-area-inset-right, 0px))
+      max(1rem, env(safe-area-inset-bottom, 0px))
+      max(0.65rem, env(safe-area-inset-left, 0px));
+  }
+
+  .app__view-row {
+    gap: 0.35rem 0.45rem;
+  }
+}
