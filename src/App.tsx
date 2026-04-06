@@ -13,7 +13,7 @@ import { useStageStore } from './application/stageStore'
 import { computeMinRounds, countStageTargetUnits } from './domain/computeMinRounds'
 import type { PropType, StageCategory, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
-import { FIELD_SIZE_PRESETS, GRID_SNAP_M, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
+import { FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
 import {
   buildStageProjectFile,
   parseStageProjectJson,
