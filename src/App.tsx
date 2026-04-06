@@ -538,6 +538,14 @@ export default function App() {
 
       <details className="app__briefing">
         <summary>{tree.briefing.summary}</summary>
+
+        <div className="app__briefing-autofill">
+          <button type="button" className="app__btn-secondary app__btn-autofill" onClick={applySceneToBriefing}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+            {tree.briefing.applyFromScene}
+          </button>
+        </div>
+
         <div className="app__briefing-grid">
           <label className="app__field">
             {tree.briefing.documentTitle}
@@ -623,18 +631,17 @@ export default function App() {
             />
           </label>
         </div>
-        <div className="app__briefing-actions">
-          <button type="button" className="app__btn-secondary" onClick={applySceneToBriefing}>
-            {tree.briefing.applyFromScene}
-          </button>
-          <button type="button" disabled={pdfBusy} onClick={() => void handleExportPdf()}>
+
+        <div className="app__briefing-export">
+          <button type="button" className="app__btn-export" disabled={pdfBusy} onClick={() => void handleExportPdf()}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
             {pdfBusy ? tree.briefing.downloadPdfBusy : tree.briefing.downloadPdf}
           </button>
+          <p className="app__briefing-hint">
+            {tree.briefing.hintBefore} <strong>{tree.briefing.hintEm}</strong>
+            {tree.briefing.hintAfter}
+          </p>
         </div>
-        <p className="app__briefing-hint">
-          {tree.briefing.hintBefore} <strong>{tree.briefing.hintEm}</strong>
-          {tree.briefing.hintAfter}
-        </p>
       </details>
 
       <footer className="app__footer">

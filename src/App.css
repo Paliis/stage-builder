@@ -1273,35 +1273,83 @@
   color: var(--text-h);
 }
 
-.app__briefing-actions {
+.app__briefing-autofill {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.85rem;
+  margin: 0.5rem 0 0.15rem;
 }
 
-.app__briefing-actions button {
+.app__btn-autofill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   font: inherit;
-  font-size: 0.88rem;
-  padding: 0.45rem 0.75rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--btn-bg);
-  color: var(--text-h);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.35rem 0.7rem;
+  border-radius: 7px;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent);
   cursor: pointer;
   touch-action: manipulation;
+  transition: filter 0.12s;
 }
 
-.app__briefing-actions button:disabled {
-  opacity: 0.65;
+.app__btn-autofill:hover {
+  filter: brightness(1.06);
+}
+
+.app__briefing-export {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.app__btn-export {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.65rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+  transition: filter 0.12s, box-shadow 0.12s;
+}
+
+.app__btn-export:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+}
+
+.app__btn-export:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.app__btn-export:disabled {
+  opacity: 0.6;
   cursor: wait;
 }
 
 .app__briefing-hint {
-  margin: 0.65rem 0 0;
-  font-size: 0.82rem;
+  margin: 0;
+  font-size: 0.78rem;
   color: var(--text);
-  line-height: 1.45;
+  line-height: 1.4;
+  text-align: center;
+  max-width: 30rem;
 }
 
 /* Footer: зворотний зв'язок + підтримка */
