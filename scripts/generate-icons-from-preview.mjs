@@ -1,40 +1,48 @@
+/**
+ * Single source: public/icon-preview.png
+ *
+ * Lessons baked in:
+ * - Baked editor “checkerboard” = light neutral gray pixels → force white (not only alpha flatten).
+ * - PWA / iOS squircle masks → keep artwork inside ~82% safe ellipse (Material maskable).
+ * - Non-square masters → normalize to a square canvas so every export has predictable padding.
+ * - Black line-art → light tile (APP_ICON_BG); theme bar stays dark in index.html.
+ */
 import sharp from 'sharp'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import pngToIco from 'png-to-ico'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 const src = join(root, 'public', 'icon-preview.png')
 
-/** OG / social preview canvas */
 const white = { r: 255, g: 255, b: 255, alpha: 1 }
 
-/**
- * PWA / favicon tile behind transparent line-art (black SB logo).
- * Light so the glyph stays readable; outer padding still helps round/squircle masks.
- */
+/** Tile behind logo (line-art); matches manifest background_color */
 const APP_ICON_BG = { r: 255, g: 255, b: 255, alpha: 1 }
 
-/**
- * Inner safe area for maskable / circular home-screen icons (Material ~80% ellipse).
- */
-const PWA_SAFE_INNER = 0.86
+/** Square master — all derivatives scale from this for consistent “forms” */
+const MASTER_SQUARE = 1024
 
-/** Favicons: keep a thin margin */
+/**
+ * Inner fraction of the final square for the mark (maskable / round icon safe zone).
+ * ~0.80 is Material minimum; we use a bit more margin.
+ */
+const PWA_SAFE_INNER = 0.84
+
+/** Browser favicons: slightly tighter safe area is OK */
 const FAV_SAFE_INNER = 0.9
 
-/**
- * Many exports bake the editor “checkerboard” as real light-gray pixels (no alpha).
- * `flatten()` only fixes transparency — we also map neutral light grays to white.
- */
 const BG_GRAY_MIN_AVG = 148
 const BG_NEUTRAL_SPREAD_MAX = 48
 
-/**
- * Opaque RGBA buffer: transparent → white; baked checker neutrals → white; else unchanged.
- */
-async function masterPngBuffer() {
+/** OG artboard */
+const OG_W = 1200
+const OG_H = 630
+const OG_ICON = 580
+
+async function stripCheckerAndAlphaToWhite() {
   const { data, info } = await sharp(src).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
   const w = info.width
   const h = info.height
@@ -71,9 +79,14 @@ async function masterPngBuffer() {
   return sharp(out, { raw: { width: w, height: h, channels: ch } }).png().toBuffer()
 }
 
-/**
- * App icon: solid tile + logo scaled inside safe region without cropping the mark.
- */
+async function toSquareMaster(cleanedBuffer) {
+  return sharp(cleanedBuffer)
+    .resize(MASTER_SQUARE, MASTER_SQUARE, { fit: 'contain', position: 'centre', background: APP_ICON_BG })
+    .png()
+    .toBuffer()
+}
+
+/** PWA / Android / maskable-friendly app tile */
 async function appIconPng(baseBuffer, canvasSize, innerRatio, bg) {
   const inner = Math.max(2, Math.round(canvasSize * innerRatio))
   const innerImg = await sharp(baseBuffer)
@@ -118,30 +131,41 @@ async function main() {
   const meta = await sharp(src).metadata()
   console.log('Source:', meta.width, 'x', meta.height, meta.hasAlpha ? '(alpha)' : '')
 
-  const base = await masterPngBuffer()
+  const cleaned = await stripCheckerAndAlphaToWhite()
+  const square = await toSquareMaster(cleaned)
 
-  const buf512 = await appIconPng(base, 512, PWA_SAFE_INNER, APP_ICON_BG)
+  await sharp(square).png().toFile(join(root, 'public', 'icon-preview.png'))
+
+  const buf512 = await appIconPng(square, 512, PWA_SAFE_INNER, APP_ICON_BG)
   await sharp(buf512).toFile(join(root, 'public', 'icon-512.png'))
 
-  const buf192 = await appIconPng(base, 192, PWA_SAFE_INNER, APP_ICON_BG)
+  const buf192 = await appIconPng(square, 192, PWA_SAFE_INNER, APP_ICON_BG)
   await sharp(buf192).toFile(join(root, 'public', 'icon-192.png'))
 
-  const fav32 = await faviconPng(base, 32, FAV_SAFE_INNER, APP_ICON_BG)
-  await sharp(fav32).toFile(join(root, 'public', 'favicon-32.png'))
+  const apple180 = await appIconPng(square, 180, PWA_SAFE_INNER, APP_ICON_BG)
+  await sharp(apple180).toFile(join(root, 'public', 'apple-touch-icon.png'))
 
-  const fav48 = await faviconPng(base, 48, FAV_SAFE_INNER, APP_ICON_BG)
-  await sharp(fav48).toFile(join(root, 'public', 'favicon-48.png'))
+  const b16 = await faviconPng(square, 16, FAV_SAFE_INNER, APP_ICON_BG)
+  await sharp(b16).toFile(join(root, 'public', 'favicon-16.png'))
 
-  const ogIconSize = 580
-  const iconForOg = await sharp(base)
-    .resize(ogIconSize, ogIconSize, { fit: 'contain', background: white })
+  const b32 = await faviconPng(square, 32, FAV_SAFE_INNER, APP_ICON_BG)
+  await sharp(b32).toFile(join(root, 'public', 'favicon-32.png'))
+
+  const b48 = await faviconPng(square, 48, FAV_SAFE_INNER, APP_ICON_BG)
+  await sharp(b48).toFile(join(root, 'public', 'favicon-48.png'))
+
+  const icoBin = await pngToIco([b16, b32, b48])
+  writeFileSync(join(root, 'public', 'favicon.ico'), icoBin)
+
+  const iconForOg = await sharp(square)
+    .resize(OG_ICON, OG_ICON, { fit: 'contain', background: white })
     .png()
     .toBuffer()
 
   await sharp({
     create: {
-      width: 1200,
-      height: 630,
+      width: OG_W,
+      height: OG_H,
       channels: 4,
       background: white,
     },
@@ -149,25 +173,22 @@ async function main() {
     .composite([
       {
         input: iconForOg,
-        left: Math.round((1200 - ogIconSize) / 2),
-        top: Math.round((630 - ogIconSize) / 2),
+        left: Math.round((OG_W - OG_ICON) / 2),
+        top: Math.round((OG_H - OG_ICON) / 2),
       },
     ])
     .png()
     .toFile(join(root, 'public', 'og-image.png'))
 
-  const fav32File = readFileSync(join(root, 'public', 'favicon-32.png'))
-  const favB64 = fav32File.toString('base64')
+  const favB64 = Buffer.from(b32).toString('base64')
   writeFileSync(
     join(root, 'public', 'favicon.svg'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">\n  <image width="32" height="32" href="data:image/png;base64,${favB64}"/>\n</svg>\n`,
     'utf8',
   )
 
-  await sharp(base).png().toFile(join(root, 'public', 'icon-preview.png'))
-
   console.log(
-    'Wrote icon-preview.png (checker stripped), icon-512.png, icon-192.png, favicon-32.png, favicon-48.png, og-image.png, favicon.svg',
+    'Wrote icon-preview.png (square master), icon-512/192, apple-touch-icon.png, favicon-16/32/48, favicon.ico, og-image.png, favicon.svg',
   )
 }
 
