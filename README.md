@@ -1,55 +1,84 @@
 # Stage Builder
 
-Веб-застосунок для **проєктування стрільбищних вправ** (пісочниця на сітці в метрах): розставляння мішеней і реквізиту на площадці, **план 2D** і **візуалізація 3D**, підготовка тексту для брифінгу та **експорт PDF**. Інтерфейс **українською та англійською**.
+[![CI](https://github.com/Paliis/stage-builder/actions/workflows/ci.yml/badge.svg)](https://github.com/Paliis/stage-builder/actions/workflows/ci.yml)
+[![Deploy](https://img.shields.io/badge/live-stage--builder.vercel.app-black?logo=vercel)](https://stage-builder.vercel.app)
 
-## Можливості
+**[stage-builder.vercel.app](https://stage-builder.vercel.app)** — безкоштовний онлайн-редактор стрільбищних вправ IPSC.
 
-- **Площадка** — налаштовуваний розмір (пресети), прив’язка до сітки в метрах.
-- **Мішені** — папір IPSC (B2), A4; метал (квадратні пластини за Appendix C3: 15 / 20 / 30 см), кераміка (Ø110 мм), поппери, ківаки (свінгери) з папером або керамікою; no-shoot.
-- **Реквізит** — щити, двері, штрафні лінії, бочки, стос шин, качель, рухома платформа, тунель Купера, стартова позиція тощо.
-- **2D** — панорама й зум плану, міні-карта, виділення, переміщення, обертання; для металевої пластини на плані клавіші `[` / `]` змінюють сторону (15 → 20 → 30 см).
-- **3D** — огляд і «зона стрільця», тіні, знімок сцени може потрапити в PDF.
-- **Файл вправи** — збереження / відкриття JSON `*.stage.json` (сцена + поля брифінгу).
-- **PWA** — збірка з сервіс-воркером для офлайн-встановлення (за настройкою хостингу).
-
-Габарити мішеней узгоджені з **доменною логікою** (`src/domain`): IPSC B2, Appendix C3 для квадратного металу, типова керамічна тарілка Ø110 мм тощо.
-
-## Технології
-
-| Шар        | Стек                                      |
-|-----------|--------------------------------------------|
-| UI        | React 19, TypeScript                       |
-| Стан      | Zustand                                    |
-| Збірка    | Vite 8, PWA (`vite-plugin-pwa`)          |
-| 2D план   | Canvas 2D                                  |
-| 3D        | Three.js, React Three Fiber, Drei         |
-| PDF       | jsPDF, html2canvas                         |
-| Тести     | Vitest                                     |
-| Лінт      | ESLint                                     |
-
-## Команди
-
-```bash
-npm install       # залежності
-npm run dev       # розробка (http://localhost:5173)
-npm run build     # TypeScript + production bundle у dist/
-npm run preview   # перегляд збірки
-npm test          # unit-тести
-npm run lint      # ESLint
-npm run check     # lint + тести + build
-```
-
-## Структура (скорочено)
-
-- `src/domain/` — моделі, геометрія мішеней і реквізиту, розрахунки, парсинг `*.stage.json`.
-- `src/application/` — Zustand-стори (сцена, брифінг).
-- `src/presentation/` — React-компоненти (план, 3D, тулбар, міні-карта).
-- `src/i18n/` — повідомлення UK / EN.
-
-## Ліцензія та версія
-
-Проєкт приватний (`private` у `package.json`). Версія в маніфесті наразі `0.0.0` — за потреби синхронізуйте з релізами.
+Розставляйте мішені й реквізит на площадці з метричною сіткою, переглядайте сцену в 3D, готуйте текст брифінгу та експортуйте PDF. Інтерфейс **українською та англійською**, працює офлайн (PWA).
 
 ---
 
-*English: **Stage Builder** is a browser-based stage designer for practical shooting courses: 2D grid plan and 3D view, targets and props placement, JSON project files, bilingual UI (UK/EN), and PDF briefing export. Stack: React, TypeScript, Vite, Three.js (R3F), Zustand.*
+## Можливості
+
+- **Площадка** — налаштовуваний розмір (пресети), прив'язка до сітки в метрах.
+- **Мішені** — папір IPSC (B2), A4; метал (квадратні пластини за Appendix C3: 15 / 20 / 30 см), кераміка (Ø110 мм), поппери, ківаки (свінгери); no-shoot.
+- **Реквізит** — щити, двері, штрафні лінії, бочки, стос шин, качель, рухома платформа, тунель Купера, стартова позиція.
+- **2D план** — панорама, зум, міні-карта, переміщення, обертання; `[`/`]` для зміни сторони металевої пластини.
+- **3D перегляд** — камера «огляд» і «зона стрільця», тіні, знімок для PDF.
+- **PDF брифінг** — таблиця полів як у класифікаційних вправах, знімок 3D-сцени, QR-код на додаток.
+- **Файл вправи** — збереження / відкриття `*.stage.json` (сцена + брифінг).
+- **PWA** — сервіс-воркер, офлайн-режим, встановлення на домашній екран.
+- **Двомовність** — повний інтерфейс UK / EN.
+
+Габарити мішеней узгоджені з доменною логікою (`src/domain`): IPSC B2, Appendix C3, Ø110 мм кераміка тощо.
+
+## Технології
+
+| Шар | Стек |
+|-----|------|
+| UI | React 19, TypeScript |
+| Стан | Zustand + zundo (undo/redo) |
+| Збірка | Vite 8, vite-plugin-pwa |
+| 2D план | Canvas 2D |
+| 3D | Three.js, React Three Fiber, Drei |
+| PDF | jsPDF, jspdf-autotable, qrcode |
+| Тести | Vitest |
+| Лінт | ESLint |
+| CI/CD | GitHub Actions, Vercel |
+
+## Розробка
+
+```bash
+npm install          # залежності
+npm run dev          # розробка (http://localhost:5173)
+npm run build        # TypeScript + production bundle → dist/
+npm run preview      # перегляд збірки
+npm test             # unit-тести
+npm run lint         # ESLint
+npm run check        # lint + тести + build (як у CI)
+```
+
+## Деплой
+
+Проєкт автоматично деплоїться на **Vercel** з гілки `main`:
+
+- Push в `main` → production deploy на [stage-builder.vercel.app](https://stage-builder.vercel.app)
+- Pull request → preview deploy з унікальним URL
+- CI (GitHub Actions) перевіряє lint + тести + build на кожному push/PR
+
+Конфігурація: `vercel.json` (Vite framework, `dist/` output).
+
+## Структура
+
+```
+src/
+├── domain/           # моделі, геометрія, розрахунки, парсинг *.stage.json
+├── application/      # Zustand-стори (сцена, брифінг)
+├── presentation/     # React-компоненти (план, 3D, тулбар, міні-карта, PDF)
+└── i18n/             # повідомлення UK / EN
+```
+
+## Зворотний зв'язок
+
+- Email: parshencevdenis@gmail.com
+- Telegram: [@denysparshentsev](https://t.me/denysparshentsev)
+- Підтримати проєкт: [Monobank](https://send.monobank.ua/jar/2gUdnYvDXy)
+
+## Ліцензія
+
+Версія 1.0.0. Проєкт `private` в `package.json` (не публікується на npm).
+
+---
+
+*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan, 3D preview, targets and props placement, bilingual UI (UK/EN), JSON project files, and PDF briefing export with QR code. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*
