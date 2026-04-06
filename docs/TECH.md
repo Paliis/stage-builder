@@ -75,8 +75,26 @@ npm run check     # як у CI: lint + test + build
 ## Аналітика
 
 - **Vercel Web Analytics** — у коді підключено `<Analytics />` з `@vercel/analytics/react` у `main.tsx`. У [Vercel Dashboard](https://vercel.com) → проєкт → **Analytics** увімкніть Web Analytics для production (дані з’являться після трафіку). Preview-деплої зазвичай не потребують окремого налаштування для тестів.
-- **Google Analytics 4 (опційно)** — якщо потрібен GA: створити потік даних у GA4, скопіювати **Measurement ID** (`G-…`), додати в Vercel **Environment Variables**: `VITE_GA_MEASUREMENT_ID` = цей ID (для Production; за бажанням Preview). Після redeploy підвантажиться `gtag` лише на production-бандлі (у `dev` вимкнено). Локально можна скопіювати `.env.example` → `.env` і задати змінну для перевірки збірки (`npm run build` + `npm run preview`).
-- **Юридичне** — для GA у юрисдикціях з вимогами до cookies/згоди може знадобитися банер згоди та політика приватності; Vercel Analytics зазвичай трактують як менш інвазивні візити/метрики, але остаточне рішення — на стороні власника продукту.
+
+### Google Analytics 4 (покроково)
+
+У проєкті вже є компонент `GoogleAnalytics` (`src/presentation/components/GoogleAnalytics.tsx`): він підвантажує `gtag.js` **тільки** якщо задано змінну середовища `VITE_GA_MEASUREMENT_ID` і зібрано **production**-бандл (`import.meta.env.PROD`). У режимі `npm run dev` GA **не** викликається, щоб не забруднювати звіти.
+
+1. **Створити ресурс GA4** — увійдіть у [Google Analytics](https://analytics.google.com) → **Admin** (шестерня) → у колонці **Account** створіть акаунт (якщо ще немає) → у колонці **Property** натисніть **Create Property**, заповніть назву, часовий пояс, валюту.
+2. **Потік даних (Web)** — після створення ресурсу оберіть **Web**, вкажіть **Website URL** (наприклад `https://stage-builder.vercel.app`) і назву потоку → **Create stream**.
+3. **Measurement ID** — на сторінці потоку скопіюйте **Measurement ID** у форматі `G-XXXXXXXXXX` (не плутати з legacy Universal Analytics).
+4. **Vercel** — [Project → Settings → Environment Variables](https://vercel.com/docs/projects/environment-variables): додайте `VITE_GA_MEASUREMENT_ID` = `G-XXXXXXXXXX`, середовище **Production** (за бажанням також **Preview** для тесту preview-URL). Збережіть.
+5. **Redeploy** — Vite підставляє `VITE_*` **на етапі збірки**: після додавання змінної виконайте **Redeploy** останнього production-деплою (або порожній commit / push у `main`), інакше в клієнтському JS старий бандл без ID.
+6. **Перевірка** — у GA4 відкрийте **Reports → Realtime** і відкрийте production-сайт у браузері; протягом хвилини має з’явитися активний користувач. У **Network** (DevTools) мають бути запити до `google-analytics.com` / `googletagmanager.com`.
+7. **Локальна перевірка збірки** — скопіюйте `.env.example` у `.env`, розкоментуйте/додайте `VITE_GA_MEASUREMENT_ID=G-…`, виконайте `npm run build` і `npm run preview`, зайдіть на `localhost` — у Realtime також має бути візит (не використовуйте той самий ID для довгої розробки, щоб не змішувати тест і прод).
+
+**Разом із Vercel Analytics** — обидва інструменти можуть працювати паралельно: Vercel дає швидкий огляд у своєму дашборді, GA4 — глибші звіти, аудиторії, експорт у BigQuery (на платних планах GA), інтеграції.
+
+**Google Search Console** — за бажанням у **Admin → Product links** зв’яжіть ресурс GA4 з Search Console, щоб бачити пошукові запити в контексті аналітики (потрібні права на обидві властивості).
+
+**Приватність і cookies** — GA4 використовує файли cookie та обробку персональних даних; для відвідувачів з ЄС/Великої Британії тощо часто потрібні **політика конфіденційності**, механізм **згоди (consent)** перед завантаженням скрипта та налаштування в **Admin → Data collection** (наприклад consent mode, якщо підключите банер). Це не реалізовано в коді проєкту — відповідальність на власнику сайту.
+
+**Кастомні події** — за потреби можна викликати `window.gtag('event', 'event_name', { ... })` після ініціалізації; для чистого TypeScript варто оголосити тип для `window.gtag` або винести обгортку в окремий модуль.
 
 ## CI та деплой
 
