@@ -24,8 +24,9 @@ const PWA_SAFE_INNER = 0.86
 /** Favicons: keep a thin margin */
 const FAV_SAFE_INNER = 0.9
 
+/** Replace transparency with solid white so previews don’t show a checkerboard pattern. */
 async function masterPngBuffer() {
-  return sharp(src).ensureAlpha().png().toBuffer()
+  return sharp(src).flatten({ background: '#ffffff' }).png().toBuffer()
 }
 
 /**
@@ -121,7 +122,11 @@ async function main() {
     'utf8',
   )
 
-  console.log('Wrote icon-512.png, icon-192.png, favicon-32.png, favicon-48.png, og-image.png, favicon.svg')
+  await sharp(base).png().toFile(join(root, 'public', 'icon-preview.png'))
+
+  console.log(
+    'Wrote icon-preview.png (flattened), icon-512.png, icon-192.png, favicon-32.png, favicon-48.png, og-image.png, favicon.svg',
+  )
 }
 
 main().catch((e) => {
