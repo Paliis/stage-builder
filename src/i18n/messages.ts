@@ -62,6 +62,8 @@ export type MessageTree = {
     faultLine: string
     barrel: string
     tireStack: string
+    woodTable: string
+    weaponRackPyramid: string
     seesaw: string
     movingPlatform: string
     cooperTunnel: string
@@ -318,6 +320,8 @@ export const ukMessages: MessageTree = {
     faultLine: '+ \u0428\u0442\u0440\u0430\u0444\u043d\u0430 \u043b\u0456\u043d\u0456\u044f',
     barrel: '+ \u0411\u043e\u0447\u043a\u0430',
     tireStack: '+ \u0421\u0442\u043e\u0441 \u0448\u0438\u043d',
+    woodTable: '+ \u0421\u0442\u0456\u043b (\u0434\u0435\u0440\u0435\u0432\u2019\u044f\u043d\u0438\u0439)',
+    weaponRackPyramid: '+ \u041f\u0456\u0440\u0430\u043c\u0456\u0434\u0430 \u0434\u043b\u044f \u0437\u0431\u0440\u043e\u0457 (\u0440\u0443\u0448\u043d\u0438\u0446\u044f)',
     seesaw: '+ \u041a\u0430\u0447\u0435\u043b\u044c',
     movingPlatform: '+ \u0420\u0443\u0445. \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430',
     cooperTunnel: '+ \u0422\u0443\u043d\u0435\u043b\u044c \u041a\u0443\u043f\u0435\u0440\u0430',
@@ -555,6 +559,8 @@ export const enMessages: MessageTree = {
     faultLine: '+ Penalty line',
     barrel: '+ Barrel',
     tireStack: '+ Tire stack',
+    woodTable: '+ Wood table',
+    weaponRackPyramid: '+ Weapon rack (pyramid, rifle)',
     seesaw: '+ Seesaw',
     movingPlatform: '+ Moving platform',
     cooperTunnel: '+ Cooper tunnel',

@@ -160,6 +160,11 @@ export const START_POSITION_DEFAULT_SIZE_M: Vec2 = { x: 0.52, y: 0.72 }
 export const WOOD_TABLE_DEFAULT_SIZE_M: Vec2 = { x: 1.2, y: 0.65 }
 export const WOOD_TABLE_HEIGHT_M = 0.76
 
+/** Піраміда для зброї на плані: розмах по довзькій стороні стійки × глибина (м). */
+export const WEAPON_RACK_PYRAMID_DEFAULT_SIZE_M: Vec2 = { x: 0.82, y: 0.46 }
+/** Висота стійки ~пояс людини (м). */
+export const WEAPON_RACK_PYRAMID_HEIGHT_M = 1.02
+
 /** Позиції центрів штрафних планок уздовж локальної X (симетричні поля, рівний крок між центрами). */
 export function cooperTunnelPenaltyPlankOffsetsXM(p: Prop): number[] {
   if (p.type !== 'cooperTunnel') return []
@@ -285,6 +290,8 @@ export function defaultPropSizeM(type: PropType): Vec2 {
       return { x: START_POSITION_DEFAULT_SIZE_M.x, y: START_POSITION_DEFAULT_SIZE_M.y }
     case 'woodTable':
       return { x: WOOD_TABLE_DEFAULT_SIZE_M.x, y: WOOD_TABLE_DEFAULT_SIZE_M.y }
+    case 'weaponRackPyramid':
+      return { x: WEAPON_RACK_PYRAMID_DEFAULT_SIZE_M.x, y: WEAPON_RACK_PYRAMID_DEFAULT_SIZE_M.y }
     default: {
       const _e: never = type
       return _e
@@ -320,6 +327,8 @@ export function propHeightM(p: Prop): number {
       return 0.02
     case 'woodTable':
       return WOOD_TABLE_HEIGHT_M
+    case 'weaponRackPyramid':
+      return WEAPON_RACK_PYRAMID_HEIGHT_M
     default: {
       const _e: never = p.type
       return _e

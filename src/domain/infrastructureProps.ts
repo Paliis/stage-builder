@@ -13,6 +13,8 @@ export const INFRASTRUCTURE_PROP_ORDER: readonly PropType[] = [
   'faultLine',
   'barrel',
   'tireStack',
+  'woodTable',
+  'weaponRackPyramid',
   'seesaw',
   'movingPlatform',
   'cooperTunnel',

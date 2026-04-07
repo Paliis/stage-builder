@@ -1113,6 +1113,114 @@ function drawStartPositionPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: Vie
   }
 }
 
+function drawWoodTablePlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransform) {
+  const outline = propOutlineWorld(p)
+  const corners = outline.map((q) => worldToScreen(q.x, q.y, tf))
+  const { dx, dy } = EXTRUDE_SCREEN_PX
+  ctx.beginPath()
+  tracePropOutline(ctx, corners, dx, dy)
+  ctx.fillStyle = 'rgba(25, 25, 28, 0.92)'
+  ctx.fill()
+  ctx.beginPath()
+  tracePropOutline(ctx, corners, 0, 0)
+  ctx.fillStyle = 'rgba(176, 141, 92, 0.9)'
+  ctx.fill()
+  ctx.strokeStyle = 'rgba(15, 23, 42, 0.45)'
+  ctx.lineWidth = 1.5
+  ctx.stroke()
+
+  const { x: cx, y: cy } = p.position
+  const rot = p.rotationRad
+  const ux = Math.cos(rot)
+  const uy = Math.sin(rot)
+  const vx = -Math.sin(rot)
+  const vy = Math.cos(rot)
+  const hw = p.sizeM.x / 2
+  const hz = p.sizeM.y / 2
+  const longIsX = p.sizeM.x >= p.sizeM.y
+  const longLen = Math.max(p.sizeM.x, p.sizeM.y)
+  const stripeHalf = Math.min(0.055, longLen * 0.043)
+
+  const w = (su: number, sv: number): Vec2 => ({
+    x: cx + ux * su + vx * sv,
+    y: cy + uy * su + vy * sv,
+  })
+
+  let stripeWorld: Vec2[]
+  if (longIsX) {
+    const h2 = hz * 0.88
+    stripeWorld = [
+      w(-stripeHalf, -h2),
+      w(stripeHalf, -h2),
+      w(stripeHalf, h2),
+      w(-stripeHalf, h2),
+    ]
+  } else {
+    const h2 = hw * 0.88
+    stripeWorld = [
+      w(-h2, -stripeHalf),
+      w(h2, -stripeHalf),
+      w(h2, stripeHalf),
+      w(-h2, stripeHalf),
+    ]
+  }
+  const stripeScr = stripeWorld.map((q) => worldToScreen(q.x, q.y, tf))
+  ctx.beginPath()
+  tracePropOutline(ctx, stripeScr, 0, 0)
+  ctx.fillStyle = 'rgba(29, 78, 216, 0.9)'
+  ctx.fill()
+  ctx.strokeStyle = 'rgba(30, 58, 138, 0.45)'
+  ctx.lineWidth = 1
+  ctx.stroke()
+}
+
+/** Червона стійка на плані + схематична рушниця в лівому слоті (узгоджено з 3D). */
+function drawWeaponRackPyramidPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransform) {
+  const outline = propOutlineWorld(p)
+  const corners = outline.map((q) => worldToScreen(q.x, q.y, tf))
+  const { dx, dy } = EXTRUDE_SCREEN_PX
+  ctx.beginPath()
+  tracePropOutline(ctx, corners, dx, dy)
+  ctx.fillStyle = 'rgba(25, 25, 28, 0.92)'
+  ctx.fill()
+  ctx.beginPath()
+  tracePropOutline(ctx, corners, 0, 0)
+  ctx.fillStyle = 'rgba(229, 57, 53, 0.88)'
+  ctx.fill()
+  ctx.strokeStyle = 'rgba(15, 23, 42, 0.45)'
+  ctx.lineWidth = 1.5
+  ctx.stroke()
+
+  const { x: cx, y: cy } = p.position
+  const rot = p.rotationRad
+  const ux = Math.cos(rot)
+  const uy = Math.sin(rot)
+  const vx = -Math.sin(rot)
+  const vy = Math.cos(rot)
+  const hw = p.sizeM.x / 2
+  const hz = p.sizeM.y / 2
+  const w = (su: number, sv: number): Vec2 => ({
+    x: cx + ux * su + vx * sv,
+    y: cy + uy * su + vy * sv,
+  })
+  const slotX = -hw * 0.66
+  const zGun = hz * 0.22
+  const butt = w(slotX - 0.06, zGun)
+  const muzzle = w(slotX + 0.05, -zGun * 0.35)
+  const b = worldToScreen(butt.x, butt.y, tf)
+  const m = worldToScreen(muzzle.x, muzzle.y, tf)
+  ctx.beginPath()
+  ctx.moveTo(b.x, b.y)
+  ctx.lineTo(m.x, m.y)
+  ctx.strokeStyle = 'rgba(38, 50, 56, 0.92)'
+  ctx.lineWidth = Math.max(2, 0.018 * tf.pxPerMeter)
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.arc(b.x, b.y, Math.max(2.5, 0.035 * tf.pxPerMeter), 0, Math.PI * 2)
+  ctx.fillStyle = 'rgba(62, 39, 35, 0.9)'
+  ctx.fill()
+}
+
 function drawSafetyZone(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
@@ -1218,6 +1326,10 @@ function redraw(
       return { face: 'rgba(185, 190, 200, 0.52)', depth: 'rgba(25, 25, 28, 0.9)' }
     if (p.type === 'cooperTunnel')
       return { face: 'rgba(185, 170, 140, 0.62)', depth: 'rgba(25, 25, 28, 0.9)' }
+    if (p.type === 'woodTable')
+      return { face: 'rgba(176, 141, 92, 0.9)', depth: 'rgba(25, 25, 28, 0.9)' }
+    if (p.type === 'weaponRackPyramid')
+      return { face: 'rgba(229, 57, 53, 0.88)', depth: 'rgba(25, 25, 28, 0.9)' }
     return { face: 'rgba(148, 163, 184, 0.94)', depth: 'rgba(71, 85, 105, 0.9)' }
   }
 
@@ -1255,6 +1367,14 @@ function redraw(
     }
     if (p.type === 'startPosition') {
       drawStartPositionPlan2D(ctx, p, tf)
+      continue
+    }
+    if (p.type === 'woodTable') {
+      drawWoodTablePlan2D(ctx, p, tf)
+      continue
+    }
+    if (p.type === 'weaponRackPyramid') {
+      drawWeaponRackPyramidPlan2D(ctx, p, tf)
       continue
     }
 

@@ -32,6 +32,8 @@ const PROP_TYPES: PropType[] = [
   'shieldWithPortDoor',
   'barrel',
   'tireStack',
+  'woodTable',
+  'weaponRackPyramid',
   'seesaw',
   'movingPlatform',
   'cooperTunnel',

@@ -46,6 +46,10 @@ function propAddButtonClass(type: PropType): string {
       return 'app__tb-prop app__tb-prop--barrel'
     case 'tireStack':
       return 'app__tb-prop app__tb-prop--tire'
+    case 'woodTable':
+      return 'app__tb-prop app__tb-prop--woodTable'
+    case 'weaponRackPyramid':
+      return 'app__tb-prop app__tb-prop--weaponRack'
     case 'seesaw':
       return 'app__tb-prop app__tb-prop--seesaw'
     case 'movingPlatform':

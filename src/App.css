@@ -690,6 +690,52 @@
   border-color: rgba(10, 10, 10, 0.45);
 }
 
+.app__buttons button.app__btn-secondary.app__tb-prop--woodTable {
+  background: linear-gradient(
+    90deg,
+    rgba(141, 110, 72, 0.32) 42%,
+    rgba(29, 78, 216, 0.26) 42%,
+    rgba(29, 78, 216, 0.26) 58%,
+    rgba(141, 110, 72, 0.32) 58%
+  );
+  border-color: rgba(87, 70, 48, 0.42);
+  color: #3f2f1c;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--woodTable:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(141, 110, 72, 0.44) 42%,
+    rgba(29, 78, 216, 0.34) 42%,
+    rgba(29, 78, 216, 0.34) 58%,
+    rgba(141, 110, 72, 0.44) 58%
+  );
+  border-color: rgba(68, 55, 38, 0.52);
+  color: #2a1f12;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--weaponRack {
+  background: linear-gradient(
+    135deg,
+    rgba(229, 57, 53, 0.38) 0%,
+    rgba(183, 28, 28, 0.28) 55%,
+    rgba(55, 71, 79, 0.22) 55%
+  );
+  border-color: rgba(198, 40, 40, 0.45);
+  color: #7f1d1d;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--weaponRack:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(229, 57, 53, 0.5) 0%,
+    rgba(183, 28, 28, 0.38) 55%,
+    rgba(55, 71, 79, 0.3) 55%
+  );
+  border-color: rgba(153, 27, 27, 0.55);
+  color: #450a0a;
+}
+
 .app__buttons button.app__btn-secondary.app__tb-prop--seesaw,
 .app__buttons button.app__btn-secondary.app__tb-prop--cooper {
   background: rgba(146, 64, 14, 0.22);
@@ -789,6 +835,15 @@
   .app__buttons button.app__btn-secondary.app__tb-prop--barrel,
   .app__buttons button.app__btn-secondary.app__tb-prop--start {
     color: #bfdbfe;
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--woodTable {
+    color: #fde68a;
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--weaponRack {
+    color: #fecaca;
+    border-color: rgba(248, 113, 113, 0.42);
   }
 
   .app__buttons button.app__btn-secondary.app__tb-prop--tire {
