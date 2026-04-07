@@ -31,7 +31,7 @@
 - **2D рамка та копіювання** — виділення зоною за центром об’єкта, внутрішній буфер + Ctrl+C/Ctrl+V, кнопки на карті (`StageCanvas.tsx`, `planClipboard.ts`, `App.tsx`).
 - **Нові мішені** — паперова Mini IPSC (B3 номінал); металева пластина на стійці 50 см і 1 м (низ лиця в 3D; на плані як квадрат C3) — `models.ts`, `targetSpecs.ts`, `StageView3D.tsx`, i18n.
 - **Щити з портом** — низький/високий порт 30×60 см; косий — паралелограм 7 см від кутів, планки AB/DC, сітка двома чотирикутниками (без `ExtrudeGeometry` holes); дверцята 30×30 — `propGeometry.ts`, `StageView3D.tsx`, `StageCanvas.tsx`, i18n.
-- **Піраміда для зброї** — 2 прямокутники (низ + верхня планка) і 2 бічні трикутники; план без рушниці — `WeaponRackPyramid3D` (`StageView3D.tsx`), `drawWeaponRackPyramidPlan2D` (`StageCanvas.tsx`).
+- **Піраміда для зброї** — низ + верхній брусок (~8,8 см), бічні трикутники до нижньої грані бруска, спрощена вертикальна M4 — `WeaponRackPyramid3D`, `WeaponRackM4Vertical3D` (`StageView3D.tsx`); план — `drawWeaponRackPyramidPlan2D` (`StageCanvas.tsx`).
 
 ---
 
