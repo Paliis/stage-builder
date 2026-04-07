@@ -65,7 +65,7 @@ npm run check     # як у CI: lint + test + build
 
 ## SEO та індексація
 
-- **`index.html`** — `title`, `meta description` (UK), `canonical`, `hreflang` (uk/en/x-default на той самий URL — мова в UI), Open Graph + Twitter Card, `robots` / `googlebot` (index, follow, прев’ю зображень).
+- **`index.html`** — `title`, `meta description` (UK), `canonical`, `hreflang` (uk/en/x-default на той самий URL — мова в UI), Open Graph + Twitter Card, `robots` / `googlebot` (index, follow, прев’ю зображень). Абсолютні `og:image` / `twitter:image` з query-бастом з `vite.config.ts` (`ASSET_QUERY`): після зміни `public/og-image.png` збільште версію в query і задеплойте — інакше Telegram/інші клієнти можуть показувати старе прев’ю. У Telegram можна надіслати посилання боту **[@WebpageBot](https://t.me/WebpageBot)** (оновлення кешу прев’ю).
 - **`public/robots.txt`** — `Allow: /` і рядок **`Sitemap:`** на абсолютний URL.
 - **`public/sitemap.xml`** — одна URL-адреса головної сторінки (SPA без маршрутів). Якщо з’явиться власний домен — оновити домен у `sitemap.xml`, `robots.txt`, `index.html` (canonical, og:url, JSON-LD).
 - **JSON-LD** (`WebApplication`) у `index.html` для розуміння сервісу пошуковиками.

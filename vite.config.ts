@@ -7,7 +7,7 @@ import { VitePWA } from 'vite-plugin-pwa'
  * Bump when favicons, PWA icons, or og-image change. Same path is cached for days
  * (Telegram, Chrome, CDN); query forces a fresh fetch.
  */
-const ASSET_QUERY = '?v=20260407-sb'
+const ASSET_QUERY = '?v=20260409-tg-og'
 
 function htmlAssetQueryPlugin() {
   return {
