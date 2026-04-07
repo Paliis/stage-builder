@@ -30,7 +30,7 @@
 - **Документація** — розділ у [TECH.md](./TECH.md) про лінійки та вимір; цей файл версійності.
 - **2D рамка та копіювання** — виділення зоною за центром об’єкта, внутрішній буфер + Ctrl+C/Ctrl+V, кнопки на карті (`StageCanvas.tsx`, `planClipboard.ts`, `App.tsx`).
 - **Нові мішені** — паперова Mini IPSC (B3 номінал); металева пластина на стійці 50 см і 1 м (низ лиця в 3D; на плані як квадрат C3) — `models.ts`, `targetSpecs.ts`, `StageView3D.tsx`, i18n.
-- **Щити з портом** — низький / високий / косий порт; щит із дверцями в порті (дерев’яна панель + ручка) — `PropType`, `propGeometry.ts` (`isShieldWithPortFamily`, косий отвір на плані), `StageView3D.tsx`, `StageCanvas.tsx`, i18n.
+- **Щити з портом** — низький/високий порт 30×60 см (прив’язка до низу/верху лиця); косий — тонка діагональна щілина; дверцята в центральному 30×30 — `propGeometry.ts` (`PORT_TALL_*`, `shieldPortDiagonalSlitLocalM`), `StageView3D.tsx`, `StageCanvas.tsx`, i18n.
 
 ---
 

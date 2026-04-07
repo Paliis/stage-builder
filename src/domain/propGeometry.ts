@@ -46,31 +46,72 @@ export function isShieldWithPortFamily(type: PropType): boolean {
   )
 }
 
-/** Нахил «косого» порту в площині лиця (рад), для 2D/3D. */
-export const SHIELD_PORT_SLANT_RAD = 0.45
+/** Плаский отвір «порту» у метрах (квадрат 300×300 мм). */
+export const PORT_HOLE_HALF_M = 0.15
 
-/** Внутрішній отвір 300×300 мм (світ); косий — повернутий квадрат у площині щита. */
+/** Низький/високий порт: 30×60 см на лиці (напівширина / напіввисота в м). */
+export const PORT_TALL_HALF_W_M = 0.15
+export const PORT_TALL_HALF_H_M = 0.3
+
+/** Напівтовщина тонкої діагональної щілини «косого» порту (м). */
+export const SHIELD_PORT_SLIT_HALF_M = 0.045
+
+/**
+ * Чотирикутник щілини в локальних осях лиця щита (+Y вгору): діагональ від верхнього лівого
+ * до нижнього правого кута внутрішнього прямокутника.
+ */
+export function shieldPortDiagonalSlitLocalM(innerW: number, innerH: number): Vec2[] {
+  const w = SHIELD_PORT_SLIT_HALF_M
+  const x0 = -innerW / 2
+  const y0 = innerH / 2
+  const x1 = innerW / 2
+  const y1 = -innerH / 2
+  const dx = x1 - x0
+  const dy = y1 - y0
+  const len = Math.hypot(dx, dy)
+  if (len < 1e-6) {
+    return [
+      { x: x0, y: y0 },
+      { x: x1, y: y1 },
+      { x: x1, y: y1 },
+      { x: x0, y: y0 },
+    ]
+  }
+  const tx = dx / len
+  const ty = dy / len
+  const nx = -ty
+  const ny = tx
+  return [
+    { x: x0 + nx * w, y: y0 + ny * w },
+    { x: x1 + nx * w, y: y1 + ny * w },
+    { x: x1 - nx * w, y: y1 - ny * w },
+    { x: x0 - nx * w, y: y0 - ny * w },
+  ]
+}
+
+function localFaceToWorldPlan(lx: number, ly: number, cx: number, cy: number, rotRad: number): Vec2 {
+  const c = Math.cos(rotRad)
+  const s = Math.sin(rotRad)
+  return { x: cx + lx * c - ly * s, y: cy + lx * s + ly * c }
+}
+
+/** Внутрішній отвір порту на плані (світ): квадрат 30×30; низ/верх — 30×60; косий — діагональна щілина. */
 export function propPortHoleWorld(p: Prop): Vec2[] | null {
   if (!isShieldWithPortFamily(p.type)) return null
   const { x: cx, y: cy } = p.position
   const rot = p.rotationRad
   const g = PORT_HOLE_HALF_M
+  if (p.type === 'shieldPortLow' || p.type === 'shieldPortHigh') {
+    return rectWorldCorners(cx, cy, PORT_TALL_HALF_W_M, PORT_TALL_HALF_H_M, rot)
+  }
   if (p.type === 'shieldPortSlanted') {
-    const th = SHIELD_PORT_SLANT_RAD
-    const c = Math.cos(rot)
-    const s = Math.sin(rot)
-    const out: Vec2[] = []
-    for (const [lx, ly] of [
-      [-g, -g],
-      [g, -g],
-      [g, g],
-      [-g, g],
-    ] as const) {
-      const rx = lx * Math.cos(th) - ly * Math.sin(th)
-      const ry = lx * Math.sin(th) + ly * Math.cos(th)
-      out.push({ x: cx + rx * c - ry * s, y: cy + rx * s + ry * c })
-    }
-    return out
+    const h = propHeightM(p)
+    const f = SHIELD_FRAME_SECTION_M
+    const innerH = Math.max(h - 2 * f, 0.15)
+    const innerW = Math.max(p.sizeM.x - 2 * f, 0.15)
+    return shieldPortDiagonalSlitLocalM(innerW, innerH).map((q) =>
+      localFaceToWorldPlan(q.x, q.y, cx, cy, rot),
+    )
   }
   return rectWorldCorners(cx, cy, g, g, rot)
 }
@@ -82,9 +123,6 @@ export function movingPlatformDeckOutlineWorld(p: Prop): Vec2[] | null {
   const h = MOVING_PLATFORM_DECK_M / 2
   return rectWorldCorners(cx, cy, h, h, p.rotationRad)
 }
-
-/** Плаский отвір «порту» у метрах (квадрат 300×300 мм). */
-export const PORT_HOLE_HALF_M = 0.15
 
 /** Металева рамка щита IPSC: квадратний переріз 5×5 см (план / 3D). */
 export const SHIELD_FRAME_SECTION_M = 0.05

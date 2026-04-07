@@ -21,10 +21,11 @@ import {
   isShieldWithPortFamily,
   MOVING_PLATFORM_DECK_M,
   PORT_HOLE_HALF_M,
+  PORT_TALL_HALF_H_M,
   propHeightM,
   SEESAW_PIPE_RADIUS_M,
   SHIELD_FRAME_SECTION_M,
-  SHIELD_PORT_SLANT_RAD,
+  shieldPortDiagonalSlitLocalM,
 } from '../../domain/propGeometry'
 import {
   isPaperTargetType,
@@ -727,7 +728,7 @@ function ShieldBarrier3D({
   )
 }
 
-/** Косий порт: сітка з отвором — квадрат, повернутий у площині лиця. */
+/** Косий порт: сітка з тонкою діагональною щілиною на все внутрішнє лице. */
 function SlantedShieldPortFace3D({
   innerW,
   innerH,
@@ -744,20 +745,10 @@ function SlantedShieldPortFace3D({
     s.lineTo(innerW / 2, innerH / 2)
     s.lineTo(-innerW / 2, innerH / 2)
     s.closePath()
-    const g = PORT_HOLE_HALF_M
-    const th = SHIELD_PORT_SLANT_RAD
     const hole = new THREE.Path()
-    const corners = [
-      [-g, -g],
-      [g, -g],
-      [g, g],
-      [-g, g],
-    ].map(([lx, ly]) => ({
-      x: lx * Math.cos(th) - ly * Math.sin(th),
-      y: lx * Math.sin(th) + ly * Math.cos(th),
-    }))
-    hole.moveTo(corners[0]!.x, corners[0]!.y)
-    for (let i = 1; i < 4; i++) hole.lineTo(corners[i]!.x, corners[i]!.y)
+    const pts = shieldPortDiagonalSlitLocalM(innerW, innerH)
+    hole.moveTo(pts[0]!.x, pts[0]!.y)
+    for (let i = 1; i < 4; i++) hole.lineTo(pts[i]!.x, pts[i]!.y)
     hole.closePath()
     s.holes.push(hole)
     const extr = new THREE.ExtrudeGeometry(s, {
@@ -786,7 +777,7 @@ function SlantedShieldPortFace3D({
   )
 }
 
-/** Щит із портом 300×300 мм: центр / низ / верх / косий / дверцята в отворі. */
+/** Щит із портом: 30×30 центр/двері; 30×60 низ/верх (прив’язка до краю лиця); косий — діагональна щілина. */
 function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const h = propHeightM(p)
   const W = p.sizeM.x
@@ -794,14 +785,15 @@ function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number })
   const f = SHIELD_FRAME_SECTION_M
   const innerH = Math.max(h - 2 * f, 0.15)
   const innerW = Math.max(W - 2 * f, 0.15)
-  const g = PORT_HOLE_HALF_M
-  const margin = 0.04
-  const minCy = -innerH / 2 + g + margin
-  const maxCy = innerH / 2 - g - margin
+  const margin = 0.02
+  const isTall = p.type === 'shieldPortLow' || p.type === 'shieldPortHigh'
+  const gw = PORT_HOLE_HALF_M
+  let gh = isTall ? PORT_TALL_HALF_H_M : PORT_HOLE_HALF_M
+  gh = Math.min(gh, Math.max(innerH / 2 - margin, 0.05))
   let holeCy = 0
-  if (p.type === 'shieldPortLow') holeCy = minCy
-  if (p.type === 'shieldPortHigh') holeCy = maxCy
-  holeCy = Math.max(minCy, Math.min(maxCy, holeCy))
+  if (p.type === 'shieldPortLow') holeCy = -innerH / 2 + gh
+  else if (p.type === 'shieldPortHigh') holeCy = innerH / 2 - gh
+  const g = PORT_HOLE_HALF_M
 
   const gridTex = useShieldGridTexture(W, h)
   useEffect(() => () => gridTex.dispose(), [gridTex])
@@ -821,9 +813,9 @@ function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number })
 
   const isSlanted = p.type === 'shieldPortSlanted'
   const isDoor = p.type === 'shieldWithPortDoor'
-  const yHoleBot = holeCy - g
-  const yHoleTop = holeCy + g
-  const wLr = innerW / 2 - g
+  const yHoleBot = holeCy - gh
+  const yHoleTop = holeCy + gh
+  const wLr = innerW / 2 - gw
   const xLeft = -innerW / 2 + wLr / 2
   const xRight = innerW / 2 - wLr / 2
   const bottomStripH = yHoleBot + innerH / 2
@@ -863,11 +855,11 @@ function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number })
               <meshStandardMaterial {...gridMatProps} />
             </mesh>
             <mesh position={[xLeft, holeCy, 0]} receiveShadow castShadow={false}>
-              <planeGeometry args={[wLr, 2 * g]} />
+              <planeGeometry args={[wLr, 2 * gh]} />
               <meshStandardMaterial {...gridMatProps} />
             </mesh>
             <mesh position={[xRight, holeCy, 0]} receiveShadow castShadow={false}>
-              <planeGeometry args={[wLr, 2 * g]} />
+              <planeGeometry args={[wLr, 2 * gh]} />
               <meshStandardMaterial {...gridMatProps} />
             </mesh>
             {isDoor ? (
@@ -893,20 +885,20 @@ function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number })
       </group>
       {!isSlanted ? (
         <group position={[0, h / 2, zRim]}>
-          <mesh position={[0, holeCy + g + f / 2, 0]} castShadow receiveShadow>
-            <boxGeometry args={[2 * g + 2 * f, f, D * 0.15]} />
+          <mesh position={[0, holeCy + gh + f / 2, 0]} castShadow receiveShadow>
+            <boxGeometry args={[2 * gw + 2 * f, f, D * 0.15]} />
             <meshStandardMaterial {...shieldFrameMat} />
           </mesh>
-          <mesh position={[0, holeCy - g - f / 2, 0]} castShadow receiveShadow>
-            <boxGeometry args={[2 * g + 2 * f, f, D * 0.15]} />
+          <mesh position={[0, holeCy - gh - f / 2, 0]} castShadow receiveShadow>
+            <boxGeometry args={[2 * gw + 2 * f, f, D * 0.15]} />
             <meshStandardMaterial {...shieldFrameMat} />
           </mesh>
-          <mesh position={[-g - f / 2, holeCy, 0]} castShadow receiveShadow>
-            <boxGeometry args={[f, 2 * g, D * 0.15]} />
+          <mesh position={[-gw - f / 2, holeCy, 0]} castShadow receiveShadow>
+            <boxGeometry args={[f, 2 * gh, D * 0.15]} />
             <meshStandardMaterial {...shieldFrameMat} />
           </mesh>
-          <mesh position={[g + f / 2, holeCy, 0]} castShadow receiveShadow>
-            <boxGeometry args={[f, 2 * g, D * 0.15]} />
+          <mesh position={[gw + f / 2, holeCy, 0]} castShadow receiveShadow>
+            <boxGeometry args={[f, 2 * gh, D * 0.15]} />
             <meshStandardMaterial {...shieldFrameMat} />
           </mesh>
         </group>
