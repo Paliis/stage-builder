@@ -122,6 +122,8 @@ export type StageState = {
   setPropGeometry: (id: string, position: Vec2, sizeM: Vec2) => void
   removeTarget: (id: string) => void
   removeProp: (id: string) => void
+  /** Вставка клонів (нові id); позиції вже зміщені та clamp у полі. */
+  pasteCloneEntities: (targets: Target[], props: Prop[]) => void
   /** Порожня сцена, дефолтний розмір поля та ім’я (кнопка «нова вправа»). */
   resetSceneToDefaults: () => void
 }
@@ -258,6 +260,12 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   removeProp: (id) =>
     set((s) => ({
       props: s.props.filter((x) => x.id !== id),
+    })),
+
+  pasteCloneEntities: (targets, props) =>
+    set((s) => ({
+      targets: [...s.targets, ...targets.map((t) => ({ ...t, id: newId() }))],
+      props: [...s.props, ...props.map((p) => ({ ...p, id: newId() }))],
     })),
 }), {
   limit: 50,

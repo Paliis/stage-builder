@@ -109,6 +109,13 @@ export type MessageTree = {
     measureToolTitle: string
     /** `{{m}}` — відформатована відстань у метрах */
     measureDistanceMeters: string
+    marqueeMode: string
+    marqueeModeTitle: string
+    copySelection: string
+    copySelectionTitle: string
+    pasteSelection: string
+    pasteSelectionTitle: string
+    planMapActionsAria: string
   }
   briefing: {
     summary: string
@@ -320,6 +327,17 @@ export const ukMessages: MessageTree = {
     measureToolTitle:
       '\u0412\u0438\u043c\u0456\u0440\u044e\u0432\u0430\u043d\u043d\u044f \u0432\u0456\u0434\u0441\u0442\u0430\u043d\u0456: \u0434\u0432\u0430 \u043a\u043b\u0456\u043a\u0438 \u043f\u043e \u043f\u043b\u0430\u043d\u0443. \u041d\u0430\u0441\u0442\u0443\u043f\u043d\u0438\u0439 \u043a\u043b\u0456\u043a \u2014 \u043d\u043e\u0432\u0430 \u043f\u0430\u0440\u0430. Esc \u2014 \u0441\u043a\u0438\u043d\u0443\u0442\u0438 \u043b\u0456\u043d\u0456\u044e. \u041a\u043b\u0430\u0432\u0456\u0448\u0430 M.',
     measureDistanceMeters: '{{m}} \u043c',
+    marqueeMode: '\u0420\u0430\u043c\u043a\u0430',
+    marqueeModeTitle:
+      '\u0412\u0438\u0434\u0456\u043b\u0435\u043d\u043d\u044f \u0437\u043e\u043d\u043e\u044e: \u043f\u0440\u043e\u0442\u044f\u0433\u043d\u0456\u0442\u044c \u043f\u043e \u043f\u043b\u0430\u043d\u0443. \u041f\u043e\u043f\u0430\u0434\u0430\u044e\u0442\u044c \u043e\u0431\u2019\u0454\u043a\u0442\u0438, \u0447\u0438\u0439 \u0446\u0435\u043d\u0442\u0440 \u0432\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0456 \u0440\u0430\u043c\u043a\u0438. Esc \u2014 \u0432\u0438\u043c\u043a\u043d\u0443\u0442\u0438 \u0440\u0435\u0436\u0438\u043c.',
+    copySelection: '\u041a\u043e\u043f\u0456\u044f',
+    copySelectionTitle:
+      '\u041a\u043e\u043f\u0456\u044e\u0432\u0430\u0442\u0438 \u0432\u0438\u0434\u0456\u043b\u0435\u043d\u0435 (Ctrl+C). \u0421\u043f\u043e\u0447\u0430\u0442\u043a\u0443 \u2014 \u0432\u043d\u0443\u0442\u0440\u0456\u0448\u043d\u0454 \u0437\u0431\u0435\u0440\u0456\u0433\u0430\u043d\u043d\u044f \u0442\u0430\u043a\u043e\u0436 \u0443 \u0431\u0443\u0444\u0435\u0440 \u043e\u0431\u043c\u0456\u043d\u0443.',
+    pasteSelection: '\u0412\u0441\u0442\u0430\u0432\u0438\u0442\u0438',
+    pasteSelectionTitle:
+      '\u0412\u0441\u0442\u0430\u0432\u0438\u0442\u0438 \u043a\u043e\u043f\u0456\u044e \u0432 \u0446\u0435\u043d\u0442\u0440 \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u0433\u043e \u0432\u0438\u0434\u0443 (Ctrl+V).',
+    planMapActionsAria:
+      '\u0414\u0456\u0457 \u043d\u0430 2D-\u043f\u043b\u0430\u043d\u0456: \u0440\u0430\u043c\u043a\u0430, \u043a\u043e\u043f\u0456\u044e\u0432\u0430\u043d\u043d\u044f, \u0432\u0441\u0442\u0430\u0432\u043b\u044f\u043d\u043d\u044f, \u0432\u0438\u043c\u0456\u0440, \u043e\u0447\u0438\u0449\u0435\u043d\u043d\u044f \u0432\u043f\u0440\u0430\u0432\u0438',
   },
   briefing: {
     summary: '\u0422\u0435\u043a\u0441\u0442 \u0434\u043b\u044f PDF (\u0442\u0430\u0431\u043b\u0438\u0446\u044f \u0431\u0440\u0438\u0444\u0456\u043d\u0433\u0443)',
@@ -536,6 +554,15 @@ export const enMessages: MessageTree = {
     measureToolTitle:
       'Distance: two clicks on the plan. Next click starts a new pair. Esc clears the line. M key toggles.',
     measureDistanceMeters: '{{m}} m',
+    marqueeMode: 'Marquee',
+    marqueeModeTitle:
+      'Drag on the plan to select. Objects whose center lies inside the box are selected. Esc exits the mode.',
+    copySelection: 'Copy',
+    copySelectionTitle:
+      'Copy selection (Ctrl+C). Also saved to the internal buffer; tries system clipboard when allowed.',
+    pasteSelection: 'Paste',
+    pasteSelectionTitle: 'Paste copy centered in the current view (Ctrl+V).',
+    planMapActionsAria: '2D plan actions: marquee, copy, paste, measure, clear exercise',
   },
   briefing: {
     summary: 'PDF copy (briefing table)',

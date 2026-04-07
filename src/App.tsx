@@ -16,7 +16,8 @@ import { useBriefingStore } from './application/briefingStore'
 import { useStageStore } from './application/stageStore'
 import { computeMinRounds, countStageTargetUnits } from './domain/computeMinRounds'
 import type { PlacementMode } from './domain/placementMode'
-import type { PropType, StageCategory, TargetType } from './domain/models'
+import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
+import type { Prop, PropType, StageCategory, Target, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
 import { FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
 import {
@@ -65,6 +66,7 @@ export default function App() {
   const setFieldSizeM = useStageStore((s) => s.setFieldSizeM)
   const replaceStageState = useStageStore((s) => s.replaceStageState)
   const resetSceneToDefaults = useStageStore((s) => s.resetSceneToDefaults)
+  const pasteCloneEntities = useStageStore((s) => s.pasteCloneEntities)
 
   const briefing = useBriefingStore(
     useShallow((s) => ({
@@ -108,6 +110,10 @@ export default function App() {
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const [measureToolActive, setMeasureToolActive] = useState(false)
   const [placementMode, setPlacementMode] = useState<PlacementMode>(null)
+  const [marqueeModeActive, setMarqueeModeActive] = useState(false)
+  const [planSelectionSummary, setPlanSelectionSummary] = useState({ empty: true, count: 0 })
+  const [hasPlanClipboard, setHasPlanClipboard] = useState(false)
+  const internalClipboardRef = useRef<{ targets: Target[]; props: Prop[] } | null>(null)
 
   useEffect(() => {
     if (!measureToolActive) planCanvasRef.current?.clearMeasure()
@@ -188,6 +194,9 @@ export default function App() {
     clearSessionDraftStorage()
     setMobileMenuOpen(false)
     setPlacementMode(null)
+    setMarqueeModeActive(false)
+    setHasPlanClipboard(false)
+    internalClipboardRef.current = null
   }, [resetSceneToDefaults, setBriefing, t, setMobileMenuOpen])
 
   const applySceneToBriefing = () => {
@@ -205,8 +214,24 @@ export default function App() {
     if (viewMode === '3d') {
       setMeasureToolActive(false)
       setPlacementMode(null)
+      setMarqueeModeActive(false)
     }
   }, [viewMode])
+
+  useEffect(() => {
+    if (marqueeModeActive) {
+      setMeasureToolActive(false)
+      setPlacementMode(null)
+    }
+  }, [marqueeModeActive])
+
+  useEffect(() => {
+    if (measureToolActive) setMarqueeModeActive(false)
+  }, [measureToolActive])
+
+  useEffect(() => {
+    if (placementMode) setMarqueeModeActive(false)
+  }, [placementMode])
 
   useEffect(() => {
     if (viewMode !== '2d') return
@@ -229,13 +254,18 @@ export default function App() {
       if (e.code !== 'Escape' || e.repeat) return
       const el = e.target
       if (el instanceof HTMLElement && el.closest('input, textarea, select, [contenteditable="true"]')) return
+      if (marqueeModeActive) {
+        e.preventDefault()
+        setMarqueeModeActive(false)
+        return
+      }
       if (!placementMode) return
       e.preventDefault()
       setPlacementMode(null)
     }
     window.addEventListener('keydown', onKey, { passive: false })
     return () => window.removeEventListener('keydown', onKey)
-  }, [viewMode, placementMode])
+  }, [viewMode, placementMode, marqueeModeActive])
 
   const formatMeasureDistance = useCallback(
     (m: number) => formatTemplate(tree.view.measureDistanceMeters, { m: m.toFixed(2) }),
@@ -269,6 +299,61 @@ export default function App() {
     },
     [placementMode, addTarget, addProp],
   )
+
+  const runCopySelection = useCallback(() => {
+    const snap = planCanvasRef.current?.getSelectionForCopy()
+    if (!snap || (snap.targets.length === 0 && snap.props.length === 0)) return
+    internalClipboardRef.current = snap
+    setHasPlanClipboard(true)
+    void (async () => {
+      try {
+        await navigator.clipboard.writeText(
+          JSON.stringify({ v: 1, targets: snap.targets, props: snap.props }),
+        )
+      } catch {
+        /* ignore */
+      }
+    })()
+  }, [])
+
+  const runPasteSelection = useCallback(() => {
+    const clip = internalClipboardRef.current
+    if (!clip || (clip.targets.length === 0 && clip.props.length === 0)) return
+    if (viewMode !== '2d') return
+    const anchor =
+      planCanvasRef.current?.getSpawnCenterWorld() ?? {
+        x: fieldSizeM.x / 2,
+        y: fieldSizeM.y / 2,
+      }
+    const c = centroidOfEntities(clip.targets, clip.props)
+    const shifted = shiftClonesForPaste(
+      clip.targets,
+      clip.props,
+      { x: anchor.x - c.x, y: anchor.y - c.y },
+      fieldSizeM.x,
+      fieldSizeM.y,
+    )
+    pasteCloneEntities(shifted.targets, shifted.props)
+  }, [fieldSizeM.x, fieldSizeM.y, pasteCloneEntities, viewMode])
+
+  useEffect(() => {
+    if (viewMode !== '2d') return
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey)) return
+      if (e.code !== 'KeyC' && e.code !== 'KeyV') return
+      const el = e.target
+      if (el instanceof HTMLElement && el.closest('input, textarea, select, [contenteditable="true"]')) return
+      if (e.code === 'KeyC') {
+        e.preventDefault()
+        runCopySelection()
+      } else {
+        e.preventDefault()
+        runPasteSelection()
+      }
+    }
+    window.addEventListener('keydown', onKey, { passive: false })
+    return () => window.removeEventListener('keydown', onKey)
+  }, [viewMode, runCopySelection, runPasteSelection])
 
   const handleExportPdf = async () => {
     setPdfBusy(true)
@@ -632,48 +717,123 @@ export default function App() {
                       formatMeasureDistance={formatMeasureDistance}
                       placementArmed={placementMode !== null}
                       onPlacementWorldClick={handlePlacementWorldClick}
+                      marqueeModeActive={marqueeModeActive}
+                      onPlanSelectionChange={setPlanSelectionSummary}
                     />
-                    <button
-                      type="button"
-                      className={`app__plan-measure-btn${measureToolActive ? ' is-active' : ''}`}
-                      aria-pressed={measureToolActive}
-                      aria-label={tree.view.measureTool}
-                      title={tree.view.measureToolTitle}
-                      onClick={() => {
-                        setPlacementMode(null)
-                        setMeasureToolActive((v) => !v)
-                      }}
-                    >
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
+                    <div className="app__plan-map-actions" role="toolbar" aria-label={tree.view.planMapActionsAria}>
+                      <button
+                        type="button"
+                        className={`app__plan-map-action-btn${marqueeModeActive ? ' is-active' : ''}`}
+                        aria-pressed={marqueeModeActive}
+                        aria-label={tree.view.marqueeMode}
+                        title={tree.view.marqueeModeTitle}
+                        onClick={() => {
+                          setMarqueeModeActive((v) => !v)
+                        }}
                       >
-                        <path d="M3 18h18" />
-                        <path d="M5 18v-3M8 18V9M11 18v-2M14 18V7M17 18v-4M20 18v-2" />
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      className="app__plan-clear-btn"
-                      onClick={handleClearExercise}
-                      aria-label={t('project.clearAria')}
-                      title={tree.project.clearConfirm}
-                    >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M3 6h18" />
-                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                        <line x1="10" x2="10" y1="11" y2="17" />
-                        <line x1="14" x2="14" y1="11" y2="17" />
-                      </svg>
-                    </button>
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <rect x="3" y="3" width="18" height="18" rx="2" />
+                          <path d="M9 9h6v6H9z" strokeDasharray="2 2" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        className="app__plan-map-action-btn"
+                        aria-label={tree.view.copySelection}
+                        title={tree.view.copySelectionTitle}
+                        disabled={planSelectionSummary.empty}
+                        onClick={runCopySelection}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <rect x="9" y="9" width="13" height="13" rx="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        className="app__plan-map-action-btn"
+                        aria-label={tree.view.pasteSelection}
+                        title={tree.view.pasteSelectionTitle}
+                        disabled={!hasPlanClipboard}
+                        onClick={runPasteSelection}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                          <rect x="8" y="2" width="8" height="4" rx="1" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        className={`app__plan-map-action-btn${measureToolActive ? ' is-active' : ''}`}
+                        aria-pressed={measureToolActive}
+                        aria-label={tree.view.measureTool}
+                        title={tree.view.measureToolTitle}
+                        onClick={() => {
+                          setPlacementMode(null)
+                          setMeasureToolActive((v) => !v)
+                        }}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M3 18h18" />
+                          <path d="M5 18v-3M8 18V9M11 18v-2M14 18V7M17 18v-4M20 18v-2" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        className="app__plan-map-action-btn app__plan-map-action-btn--danger"
+                        onClick={handleClearExercise}
+                        aria-label={t('project.clearAria')}
+                        title={tree.project.clearConfirm}
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M3 6h18" />
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                          <line x1="10" x2="10" y1="11" y2="17" />
+                          <line x1="14" x2="14" y1="11" y2="17" />
+                        </svg>
+                      </button>
+                    </div>
                     <StageMinimap
                       fieldWidthM={fieldSizeM.x}
                       fieldHeightM={fieldSizeM.y}

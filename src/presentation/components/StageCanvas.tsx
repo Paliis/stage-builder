@@ -69,12 +69,141 @@ const ROTATION_SNAP_RAD = Math.PI / 36
 
 type Vec2 = { x: number; y: number }
 
-type Selection = { kind: 'target' | 'prop'; id: string }
+/** Виділення на плані: одне або кілька (рамка за центром об’єкта). */
+export type PlanSelectState =
+  | { mode: 'none' }
+  | { mode: 'single'; kind: 'target' | 'prop'; id: string }
+  | { mode: 'multi'; targetIds: string[]; propIds: string[] }
+
+function snapshotEntitiesForCopy(
+  planSelect: PlanSelectState,
+  targets: readonly Target[],
+  props: readonly Prop[],
+): { targets: Target[]; props: Prop[] } | null {
+  if (planSelect.mode === 'none') return null
+  if (planSelect.mode === 'single') {
+    if (planSelect.kind === 'target') {
+      const t = targets.find((x) => x.id === planSelect.id)
+      return t ? { targets: [structuredClone(t)], props: [] } : null
+    }
+    const p = props.find((x) => x.id === planSelect.id)
+    return p ? { targets: [], props: [structuredClone(p)] } : null
+  }
+  const ts = planSelect.targetIds
+    .map((id) => targets.find((t) => t.id === id))
+    .filter((x): x is Target => x !== undefined)
+  const ps = planSelect.propIds
+    .map((id) => props.find((p) => p.id === id))
+    .filter((x): x is Prop => x !== undefined)
+  if (ts.length === 0 && ps.length === 0) return null
+  return { targets: ts.map((t) => structuredClone(t)), props: ps.map((p) => structuredClone(p)) }
+}
+
+type MarqueeDragState = {
+  pointerId: number
+  startSx: number
+  startSy: number
+  curSx: number
+  curSy: number
+}
 
 type DragMode =
   | { mode: 'move'; kind: 'target' | 'prop'; id: string; grabOffset: { x: number; y: number } }
   | { mode: 'rotate'; kind: 'target' | 'prop'; id: string }
   | { mode: 'stretchFaultLine'; id: string; anchor: 'neg' | 'pos' }
+
+function collectIdsInWorldRect(
+  targets: readonly Target[],
+  props: readonly Prop[],
+  minX: number,
+  maxX: number,
+  minY: number,
+  maxY: number,
+): { targetIds: string[]; propIds: string[] } {
+  const inR = (p: Vec2) => p.x >= minX && p.x <= maxX && p.y >= minY && p.y <= maxY
+  return {
+    targetIds: targets.filter((t) => inR(t.position)).map((t) => t.id),
+    propIds: props.filter((p) => inR(p.position)).map((p) => p.id),
+  }
+}
+
+function drawPlanSelectOutlines(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  targets: readonly Target[],
+  props: readonly Prop[],
+  planSelect: PlanSelectState,
+) {
+  const strokeOne = (outline: Vec2[]) => {
+    if (outline.length === 0) return
+    const scr = outline.map((p) => worldToScreen(p.x, p.y, tf))
+    ctx.strokeStyle = 'rgba(79, 70, 229, 0.95)'
+    ctx.lineWidth = 2
+    ctx.setLineDash([6, 4])
+    ctx.beginPath()
+    ctx.moveTo(scr[0]!.x, scr[0]!.y)
+    for (let i = 1; i < scr.length; i++) ctx.lineTo(scr[i]!.x, scr[i]!.y)
+    ctx.closePath()
+    ctx.stroke()
+    ctx.setLineDash([])
+  }
+
+  if (planSelect.mode === 'single') {
+    const selT = planSelect.kind === 'target' ? targets.find((x) => x.id === planSelect.id) : undefined
+    const selP = planSelect.kind === 'prop' ? props.find((x) => x.id === planSelect.id) : undefined
+    let outline: Vec2[] = []
+    if (planSelect.kind === 'target' && selT) outline = targetRenderPolygonWorld(selT)
+    else if (planSelect.kind === 'prop' && selP) outline = propOutlineWorld(selP)
+    strokeOne(outline)
+
+    if (planSelect.kind === 'prop' && selP?.type === 'faultLine') {
+      const ends = faultLineEndPointsWorld(selP)
+      if (ends) {
+        const hr = Math.max(8, 0.18 * tf.pxPerMeter)
+        const s = worldToScreen(ends.neg.x, ends.neg.y, tf)
+        ctx.fillStyle = '#f97316'
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.55)'
+        ctx.lineWidth = 1.5
+        ctx.beginPath()
+        ctx.arc(s.x, s.y, hr, 0, Math.PI * 2)
+        ctx.fill()
+        ctx.stroke()
+      }
+    }
+
+    let hw: Vec2 | null = null
+    if (planSelect.kind === 'target' && selT) hw = handleWorldPosTarget(selT)
+    if (planSelect.kind === 'prop' && selP) hw = handleWorldPosProp(selP)
+    if (hw) {
+      const hs = worldToScreen(hw.x, hw.y, tf)
+      const hr = Math.max(9, 0.22 * tf.pxPerMeter)
+      ctx.fillStyle = 'rgba(79, 70, 229, 0.95)'
+      ctx.strokeStyle = '#ffffff'
+      ctx.lineWidth = 2
+      ctx.beginPath()
+      ctx.arc(hs.x, hs.y, hr, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.stroke()
+      ctx.fillStyle = '#ffffff'
+      ctx.font = `${Math.round(hr * 1.1)}px system-ui, sans-serif`
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText('↻', hs.x, hs.y + 0.5)
+    }
+    return
+  }
+
+  if (planSelect.mode === 'multi') {
+    for (const id of planSelect.targetIds) {
+      const selT = targets.find((x) => x.id === id)
+      if (selT) strokeOne(targetRenderPolygonWorld(selT))
+    }
+    for (const id of planSelect.propIds) {
+      const selP = props.find((x) => x.id === id)
+      if (selP) strokeOne(propOutlineWorld(selP))
+    }
+  }
+}
 
 type ViewPanDragState = {
   pointerId: number
@@ -957,7 +1086,8 @@ function redraw(
   tf: ViewTransform,
   targets: readonly Target[],
   props: readonly Prop[],
-  selection: Selection | null,
+  planSelect: PlanSelectState,
+  marqueeScreen: { x1: number; y1: number; x2: number; y2: number } | null,
   gridHoverSnapped: Vec2 | null,
   viewZoom: number,
   safetyAnglesText: string,
@@ -1159,61 +1289,21 @@ function redraw(
     }
   }
 
-  if (selection) {
-    const selT = targets.find((x) => x.id === selection.id)
-    const selP = props.find((x) => x.id === selection.id)
-    let outline: Vec2[] = []
-    if (selection.kind === 'target' && selT) {
-      outline = targetRenderPolygonWorld(selT)
-    } else if (selection.kind === 'prop' && selP) {
-      outline = propOutlineWorld(selP)
-    }
-    if (outline.length > 0) {
-      const scr = outline.map((p) => worldToScreen(p.x, p.y, tf))
-      ctx.strokeStyle = 'rgba(79, 70, 229, 0.95)'
-      ctx.lineWidth = 2
-      ctx.setLineDash([6, 4])
-      ctx.beginPath()
-      ctx.moveTo(scr[0]!.x, scr[0]!.y)
-      for (let i = 1; i < scr.length; i++) ctx.lineTo(scr[i]!.x, scr[i]!.y)
-      ctx.closePath()
-      ctx.stroke()
-      ctx.setLineDash([])
-    }
-    if (selection.kind === 'prop' && selP?.type === 'faultLine') {
-      const ends = faultLineEndPointsWorld(selP)
-      if (ends) {
-        const hr = Math.max(8, 0.18 * tf.pxPerMeter)
-        const s = worldToScreen(ends.neg.x, ends.neg.y, tf)
-        ctx.fillStyle = '#f97316'
-        ctx.strokeStyle = 'rgba(15, 23, 42, 0.55)'
-        ctx.lineWidth = 1.5
-        ctx.beginPath()
-        ctx.arc(s.x, s.y, hr, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.stroke()
-      }
-    }
+  drawPlanSelectOutlines(ctx, tf, targets, props, planSelect)
 
-    let hw: Vec2 | null = null
-    if (selection.kind === 'target' && selT) hw = handleWorldPosTarget(selT)
-    if (selection.kind === 'prop' && selP) hw = handleWorldPosProp(selP)
-    if (hw) {
-      const hs = worldToScreen(hw.x, hw.y, tf)
-      const hr = Math.max(9, 0.22 * tf.pxPerMeter)
-      ctx.fillStyle = 'rgba(79, 70, 229, 0.95)'
-      ctx.strokeStyle = '#ffffff'
-      ctx.lineWidth = 2
-      ctx.beginPath()
-      ctx.arc(hs.x, hs.y, hr, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.stroke()
-      ctx.fillStyle = '#ffffff'
-      ctx.font = `${Math.round(hr * 1.1)}px system-ui, sans-serif`
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.fillText('↻', hs.x, hs.y + 0.5)
-    }
+  if (marqueeScreen) {
+    const { x1, y1, x2, y2 } = marqueeScreen
+    const l = Math.min(x1, x2)
+    const r = Math.max(x1, x2)
+    const t = Math.min(y1, y2)
+    const b = Math.max(y1, y2)
+    ctx.save()
+    ctx.fillStyle = 'rgba(79, 70, 229, 0.1)'
+    ctx.strokeStyle = 'rgba(79, 70, 229, 0.55)'
+    ctx.lineWidth = 1
+    ctx.fillRect(l, t, r - l, b - t)
+    ctx.strokeRect(l, t, r - l, b - t)
+    ctx.restore()
   }
 
   const measureLabel =
@@ -1247,6 +1337,9 @@ export type StageCanvasProps = {
   /** Режим розстановки з тулбару: клік по полю ставить об’єкт (без hit-test). */
   placementArmed: boolean
   onPlacementWorldClick: (world: { x: number; y: number }) => void
+  /** Рамка виділення: ЛКМ-тягнення; центр об’єкта всередині прямокутника. */
+  marqueeModeActive: boolean
+  onPlanSelectionChange?: (summary: { empty: boolean; count: number }) => void
 }
 
 export type StageCanvasHandle = {
@@ -1256,6 +1349,8 @@ export type StageCanvasHandle = {
   centerOnWorldPoint: (worldX: number, worldY: number) => void
   /** Скидає точки вимірювання (виклик з App при вимкненні режиму). */
   clearMeasure: () => void
+  /** Знімок виділених сутностей для копіювання (глибокі копії). */
+  getSelectionForCopy: () => { targets: Target[]; props: Prop[] } | null
 }
 
 const MINIMAP_NAV_ZOOM = 1.42
@@ -1286,6 +1381,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   formatMeasureDistance,
   placementArmed,
   onPlacementWorldClick,
+  marqueeModeActive,
+  onPlanSelectionChange,
 }: StageCanvasProps,
   ref,
 ) {
@@ -1314,11 +1411,23 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   const viewPanDragRef = useRef<ViewPanDragState | null>(null)
   /** ЛКМ по порожньому полю при zoom: очікування руху — або скасування виділення, або панорама. */
   const pendingEmptyPanRef = useRef<PendingEmptyPan | null>(null)
-  const [selection, setSelection] = useState<Selection | null>(null)
-  const selectionRef = useRef<Selection | null>(null)
+  const [planSelect, setPlanSelect] = useState<PlanSelectState>({ mode: 'none' })
+  const planSelectRef = useRef<PlanSelectState>({ mode: 'none' })
   useEffect(() => {
-    selectionRef.current = selection
-  }, [selection])
+    planSelectRef.current = planSelect
+  }, [planSelect])
+
+  const marqueeDragRef = useRef<MarqueeDragState | null>(null)
+
+  useEffect(() => {
+    const c =
+      planSelect.mode === 'none'
+        ? 0
+        : planSelect.mode === 'single'
+          ? 1
+          : planSelect.targetIds.length + planSelect.propIds.length
+    onPlanSelectionChange?.({ empty: c === 0, count: c })
+  }, [planSelect, onPlanSelectionChange])
   const [spaceHeld, setSpaceHeld] = useState(false)
   const [isPanningView, setIsPanningView] = useState(false)
   const [measurePoints, setMeasurePoints] = useState<{ a: Vec2 | null; b: Vec2 | null }>({
@@ -1357,6 +1466,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const ctx = canvas.getContext('2d')
     const mA = measureToolActive ? measurePoints.a : null
     const mB = measureToolActive ? measurePoints.b : null
+    const md = marqueeDragRef.current
+    const marqueeScreen = md
+      ? { x1: md.startSx, y1: md.startSy, x2: md.curSx, y2: md.curSy }
+      : null
     if (ctx)
       redraw(
         ctx,
@@ -1364,7 +1477,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         transformRef.current,
         targets,
         props,
-        selection,
+        planSelect,
+        marqueeScreen,
         gridHoverRef.current,
         viewZoomRef.current,
         safetyAnglesText,
@@ -1383,7 +1497,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   }, [
     targets,
     props,
-    selection,
+    planSelect,
     fw,
     fh,
     safetyAnglesText,
@@ -1436,6 +1550,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       },
       clearMeasure: () => {
         setMeasurePoints({ a: null, b: null })
+      },
+      getSelectionForCopy: () => {
+        const ps = planSelectRef.current
+        const { targets: ts, props: ps2 } = useStageStore.getState()
+        return snapshotEntitiesForCopy(ps, ts, ps2)
       },
     }),
     [fw, fh, repaint],
@@ -1509,20 +1628,25 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       if (e.code === 'Delete' || e.code === 'Backspace') {
         if (e.repeat) return
         if (inFormField(e.target)) return
-        const sel = selectionRef.current
-        if (!sel) return
+        const ps = planSelectRef.current
+        if (ps.mode === 'none') return
         e.preventDefault()
-        if (sel.kind === 'target') onDeleteTarget(sel.id)
-        else onDeleteProp(sel.id)
-        setSelection(null)
+        if (ps.mode === 'multi') {
+          for (const id of ps.targetIds) onDeleteTarget(id)
+          for (const id of ps.propIds) onDeleteProp(id)
+        } else if (ps.mode === 'single') {
+          if (ps.kind === 'target') onDeleteTarget(ps.id)
+          else onDeleteProp(ps.id)
+        }
+        setPlanSelect({ mode: 'none' })
         return
       }
       if (e.code === 'BracketLeft' || e.code === 'BracketRight') {
         if (e.repeat) return
         if (inFormField(e.target)) return
-        const sel = selectionRef.current
-        if (!sel || sel.kind !== 'target') return
-        const hit = targets.find((x) => x.id === sel.id)
+        const ps = planSelectRef.current
+        if (ps.mode !== 'single' || ps.kind !== 'target') return
+        const hit = targets.find((x) => x.id === ps.id)
         if (!hit || hit.type !== 'metalPlate') return
         e.preventDefault()
         const order: readonly MetalPlateRectSideCm[] = [15, 20, 30]
@@ -1530,7 +1654,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         const idx = order.indexOf(cur)
         const i = idx >= 0 ? idx : 0
         const next = e.code === 'BracketRight' ? order[(i + 1) % 3]! : order[(i + 2) % 3]!
-        onSetTargetMetalRectSideCm(sel.id, next)
+        onSetTargetMetalRectSideCm(ps.id, next)
         return
       }
       if (e.code !== 'Space' || e.repeat) return
@@ -1563,6 +1687,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   useEffect(() => {
     repaint()
   }, [measurePoints, repaint])
+
+  useEffect(() => {
+    if (!marqueeModeActive) {
+      marqueeDragRef.current = null
+      repaint()
+    }
+  }, [marqueeModeActive, repaint])
 
   const beginViewPan = (ev: PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
@@ -1612,7 +1743,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const p = { x: wx, y: wy }
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
-      setSelection(null)
+      setPlanSelect({ mode: 'none' })
       setMeasurePoints((prev) => {
         if (!prev.a) return { a: p, b: null }
         if (!prev.b) return { a: prev.a, b: p }
@@ -1628,6 +1759,27 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const wx = Math.min(Math.max(w.x, 0), fw)
       const wy = Math.min(Math.max(w.y, 0), fh)
       onPlacementWorldClick({ x: wx, y: wy })
+      return
+    }
+
+    if (marqueeModeActive && ev.button === 0) {
+      ev.preventDefault()
+      pendingEmptyPanRef.current = null
+      gridHoverRef.current = null
+      pinchMapRef.current.clear()
+      marqueeDragRef.current = {
+        pointerId: ev.pointerId,
+        startSx: sx,
+        startSy: sy,
+        curSx: sx,
+        curSy: sy,
+      }
+      try {
+        canvas.setPointerCapture(ev.pointerId)
+      } catch {
+        /* ignore */
+      }
+      repaint()
       return
     }
 
@@ -1648,8 +1800,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const ppm = transformRef.current.pxPerMeter
     const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
 
-    if (selection?.kind === 'prop') {
-      const selP = props.find((x) => x.id === selection.id)
+    if (planSelect.mode === 'single' && planSelect.kind === 'prop') {
+      const selP = props.find((x) => x.id === planSelect.id)
       if (selP?.type === 'faultLine') {
         const hwFl = handleWorldPosProp(selP)
         if (pickHandle(w.x, w.y, hwFl, ppm)) {
@@ -1668,18 +1820,18 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       }
     }
 
-    if (selection) {
-      const selT = targets.find((x) => x.id === selection.id)
-      const selP = props.find((x) => x.id === selection.id)
+    if (planSelect.mode === 'single') {
+      const selT = planSelect.kind === 'target' ? targets.find((x) => x.id === planSelect.id) : undefined
+      const selP = planSelect.kind === 'prop' ? props.find((x) => x.id === planSelect.id) : undefined
       const hw =
-        selection.kind === 'target' && selT
+        planSelect.kind === 'target' && selT
           ? handleWorldPosTarget(selT)
-          : selection.kind === 'prop' && selP
+          : planSelect.kind === 'prop' && selP
             ? handleWorldPosProp(selP)
             : null
       if (hw && pickHandle(w.x, w.y, hw, ppm)) {
         gridHoverRef.current = null
-        dragRef.current = { mode: 'rotate', kind: selection.kind, id: selection.id }
+        dragRef.current = { mode: 'rotate', kind: planSelect.kind, id: planSelect.id }
         canvas.setPointerCapture(ev.pointerId)
         return
       }
@@ -1688,7 +1840,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const hitT = pickTargetAt(targets, w.x, w.y, touchPad)
     if (hitT) {
       gridHoverRef.current = null
-      setSelection({ kind: 'target', id: hitT.id })
+      setPlanSelect({ mode: 'single', kind: 'target', id: hitT.id })
       dragRef.current = {
         mode: 'move',
         kind: 'target',
@@ -1701,7 +1853,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const hitP = pickPropAt(props, w.x, w.y, touchPad)
     if (hitP) {
       gridHoverRef.current = null
-      setSelection({ kind: 'prop', id: hitP.id })
+      setPlanSelect({ mode: 'single', kind: 'prop', id: hitP.id })
       dragRef.current = {
         mode: 'move',
         kind: 'prop',
@@ -1719,7 +1871,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         clientY: ev.clientY,
       }
     } else {
-      setSelection(null)
+      setPlanSelect({ mode: 'none' })
     }
   }
 
@@ -1729,6 +1881,14 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const rect = canvas.getBoundingClientRect()
     const sx = ev.clientX - rect.left
     const sy = ev.clientY - rect.top
+
+    const mq = marqueeDragRef.current
+    if (mq && ev.pointerId === mq.pointerId) {
+      mq.curSx = sx
+      mq.curSy = sy
+      repaint()
+      return
+    }
 
     if (pinchMapRef.current.has(ev.pointerId)) {
       pinchMapRef.current.set(ev.pointerId, { x: sx, y: sy })
@@ -1908,7 +2068,43 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
     if (pendingEmptyPanRef.current?.pointerId === ev.pointerId) {
       pendingEmptyPanRef.current = null
-      setSelection(null)
+      setPlanSelect({ mode: 'none' })
+      return
+    }
+
+    const mqd = marqueeDragRef.current
+    if (mqd && mqd.pointerId === ev.pointerId) {
+      marqueeDragRef.current = null
+      const dx = Math.abs(mqd.curSx - mqd.startSx)
+      const dy = Math.abs(mqd.curSy - mqd.startSy)
+      try {
+        canvas?.releasePointerCapture(ev.pointerId)
+      } catch {
+        /* ignore */
+      }
+      if (dx < 4 && dy < 4) {
+        setPlanSelect({ mode: 'none' })
+        repaint()
+        return
+      }
+      const l = Math.min(mqd.startSx, mqd.curSx)
+      const r = Math.max(mqd.startSx, mqd.curSx)
+      const t = Math.min(mqd.startSy, mqd.curSy)
+      const b = Math.max(mqd.startSy, mqd.curSy)
+      const tf = transformRef.current
+      const w1 = screenToWorld(l, t, tf)
+      const w2 = screenToWorld(r, b, tf)
+      const minX = Math.min(w1.x, w2.x)
+      const maxX = Math.max(w1.x, w2.x)
+      const minY = Math.min(w1.y, w2.y)
+      const maxY = Math.max(w1.y, w2.y)
+      const { targetIds, propIds } = collectIdsInWorldRect(targets, props, minX, maxX, minY, maxY)
+      if (targetIds.length === 0 && propIds.length === 0) {
+        setPlanSelect({ mode: 'none' })
+      } else {
+        setPlanSelect({ mode: 'multi', targetIds, propIds })
+      }
+      repaint()
       return
     }
 
@@ -2006,7 +2202,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         ? 'crosshair'
         : placementArmed
           ? 'crosshair'
-          : undefined
+          : marqueeModeActive
+            ? 'crosshair'
+            : undefined
 
   return (
     <canvas
