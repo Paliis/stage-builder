@@ -1174,7 +1174,7 @@ function drawWoodTablePlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTra
   ctx.stroke()
 }
 
-/** Червона стійка на плані + схематична рушниця в лівому слоті (узгоджено з 3D). */
+/** Червона стійка на плані: контур основи + схема вужчої верхньої планки (як у 3D). */
 function drawWeaponRackPyramidPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransform) {
   const outline = propOutlineWorld(p)
   const corners = outline.map((q) => worldToScreen(q.x, q.y, tf))
@@ -1203,22 +1203,19 @@ function drawWeaponRackPyramidPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf:
     x: cx + ux * su + vx * sv,
     y: cy + uy * su + vy * sv,
   })
-  const slotX = -hw * 0.66
-  const zGun = hz * 0.22
-  const butt = w(slotX - 0.06, zGun)
-  const muzzle = w(slotX + 0.05, -zGun * 0.35)
-  const b = worldToScreen(butt.x, butt.y, tf)
-  const m = worldToScreen(muzzle.x, muzzle.y, tf)
+  const ihw = hw * 0.94 * 0.9
+  const ihz = hz * 0.92 * 0.88
+  const innerScr = [
+    w(-ihw, -ihz),
+    w(ihw, -ihz),
+    w(ihw, ihz),
+    w(-ihw, ihz),
+  ].map((q) => worldToScreen(q.x, q.y, tf))
   ctx.beginPath()
-  ctx.moveTo(b.x, b.y)
-  ctx.lineTo(m.x, m.y)
-  ctx.strokeStyle = 'rgba(38, 50, 56, 0.92)'
-  ctx.lineWidth = Math.max(2, 0.018 * tf.pxPerMeter)
+  tracePropOutline(ctx, innerScr, 0, 0)
+  ctx.strokeStyle = 'rgba(127, 29, 29, 0.75)'
+  ctx.lineWidth = 1.25
   ctx.stroke()
-  ctx.beginPath()
-  ctx.arc(b.x, b.y, Math.max(2.5, 0.035 * tf.pxPerMeter), 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(62, 39, 35, 0.9)'
-  ctx.fill()
 }
 
 function drawSafetyZone(

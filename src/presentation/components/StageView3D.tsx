@@ -1195,136 +1195,79 @@ function CooperTunnel3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   )
 }
 
-/** Прямокутна ніжка від точки (ax,ay,az) до (bx,by,bz), перетин thick×thick. */
-function WeaponRackLegBox3D({
-  ax,
-  ay,
-  az,
-  bx,
-  by,
-  bz,
-  thick,
-  mat,
-}: {
-  ax: number
-  ay: number
-  az: number
-  bx: number
-  by: number
-  bz: number
-  thick: number
-  mat: { color: string; roughness: number; metalness: number }
-}) {
-  const { mid, quat, len } = useMemo(() => {
-    const va = new THREE.Vector3(ax, ay, az)
-    const vb = new THREE.Vector3(bx, by, bz)
-    const dir = vb.clone().sub(va)
-    const len = Math.max(dir.length(), 1e-6)
-    const mid = va.clone().add(vb).multiplyScalar(0.5)
-    const quat = new THREE.Quaternion().setFromUnitVectors(
-      new THREE.Vector3(0, 1, 0),
-      dir.clone().normalize(),
-    )
-    return { mid, quat, len }
-  }, [ax, ay, az, bx, by, bz])
-  return (
-    <mesh position={[mid.x, mid.y, mid.z]} quaternion={quat} castShadow receiveShadow>
-      <boxGeometry args={[thick, len, thick]} />
-      <meshStandardMaterial {...mat} />
-    </mesh>
-  )
+/** Бічна площина-трикутник (профіль стійки): основа на верхній грані нижньої планки, вершина — центр верхньої. */
+function buildWeaponRackSideTriangleGeometry(
+  halfW: number,
+  halfD: number,
+  yBase: number,
+  yTop: number,
+  sign: 1 | -1,
+): THREE.BufferGeometry {
+  const x = sign * halfW
+  const positions = new Float32Array(9)
+  if (sign < 0) {
+    positions.set([x, yBase, halfD, x, yBase, -halfD, x, yTop, 0])
+  } else {
+    positions.set([x, yBase, -halfD, x, yBase, halfD, x, yTop, 0])
+  }
+  const geo = new THREE.BufferGeometry()
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  geo.setIndex([0, 1, 2])
+  geo.computeVertexNormals()
+  return geo
 }
 
-/** Червона A-подібна стійка з верхньою планкою (пази), одна рушниця без чохла в лівому слоті. */
+/** Стійка «піраміда»: лише 2 прямокутники (низ + верхня планка) і 2 трикутники з боків. */
 function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const hw = p.sizeM.x / 2
   const hz = p.sizeM.y / 2
   const H = propHeightM(p)
   const t = 0.036
   const red = { color: '#e53935', roughness: 0.74, metalness: 0.06 } as const
-  const redDark = { color: '#c62828', roughness: 0.78, metalness: 0.05 } as const
-  const stock = { color: '#4e342e', roughness: 0.82, metalness: 0.04 } as const
-  const receiver = { color: '#37474f', roughness: 0.48, metalness: 0.42 } as const
-  const barrel = { color: '#263238', roughness: 0.38, metalness: 0.62 } as const
 
-  const footX = hw * 0.84
-  const footZ = hz * 0.84
-  const yFoot = t * 0.32
-  const apexY = H - t * 0.48
+  const halfW = hw * 0.94
+  const halfD = hz * 0.92
+  const yBotC = t * 0.55
+  const yTopC = H - t * 0.55
+  const yTriBase = yBotC + t * 0.27
 
-  const shelfY = t * 0.85
-  const topY = H - t * 0.75
-  const midY = H * 0.38
-  const zFront = footZ * 0.92
-  const notchXs = [-0.66, -0.33, 0, 0.33, 0.66] as const
+  const wTop = halfW * 2 * 0.9
+  const dTop = halfD * 2 * 0.88
 
-  const wBot = footX * 2 * 1.06
-  const dBot = footZ * 2 * 1.05
-  const wMid = footX * 2 * 0.94
-  const dMid = footZ * 2 * 0.92
-  const wTop = footX * 2 * 0.86
-  const dTop = footZ * 2 * 0.84
+  const triGeos = useMemo(
+    () => ({
+      left: buildWeaponRackSideTriangleGeometry(halfW, halfD, yTriBase, yTopC, -1),
+      right: buildWeaponRackSideTriangleGeometry(halfW, halfD, yTriBase, yTopC, 1),
+    }),
+    [halfW, halfD, yTriBase, yTopC],
+  )
 
-  const feet: [number, number, number][] = [
-    [-footX, yFoot, footZ],
-    [footX, yFoot, footZ],
-    [-footX, yFoot, -footZ],
-    [footX, yFoot, -footZ],
-  ]
+  useEffect(
+    () => () => {
+      triGeos.left.dispose()
+      triGeos.right.dispose()
+    },
+    [triGeos],
+  )
+
+  const triMat = { ...red, side: THREE.DoubleSide } as const
 
   return (
     <group position={[x, 0, z]} rotation={[0, p.rotationRad, 0]}>
-      {feet.map(([fx, fy, fz], i) => (
-        <WeaponRackLegBox3D
-          key={`leg-${i}`}
-          ax={fx}
-          ay={fy}
-          az={fz}
-          bx={0}
-          by={apexY}
-          bz={0}
-          thick={t}
-          mat={red}
-        />
-      ))}
-      <mesh position={[0, shelfY, 0]} castShadow receiveShadow>
-        <boxGeometry args={[wBot, t * 0.55, dBot]} />
+      <mesh position={[0, yBotC, 0]} castShadow receiveShadow>
+        <boxGeometry args={[halfW * 2, t * 0.52, halfD * 2]} />
         <meshStandardMaterial {...red} />
       </mesh>
-      <mesh position={[0, midY, 0]} castShadow receiveShadow>
-        <boxGeometry args={[wMid, t * 0.48, dMid]} />
+      <mesh position={[0, yTopC, 0]} castShadow receiveShadow>
+        <boxGeometry args={[wTop, t * 0.5, dTop]} />
         <meshStandardMaterial {...red} />
       </mesh>
-      <mesh position={[0, topY, 0]} castShadow receiveShadow>
-        <boxGeometry args={[wTop, t * 0.52, dTop]} />
-        <meshStandardMaterial {...red} />
+      <mesh geometry={triGeos.left} castShadow receiveShadow>
+        <meshStandardMaterial {...triMat} />
       </mesh>
-      {notchXs.map((kx, i) => (
-        <mesh
-          key={i}
-          position={[kx * hw, topY - t * 0.12, zFront + t * 0.18]}
-          rotation={[Math.PI / 2, 0, 0]}
-          castShadow
-          receiveShadow
-        >
-          <torusGeometry args={[t * 0.5, t * 0.16, 6, 14, Math.PI]} />
-          <meshStandardMaterial {...redDark} />
-        </mesh>
-      ))}
-      <group position={[-hw * 0.68, shelfY + t * 0.42, hz * 0.18]} rotation={[0, 0.1, -0.11]}>
-        <mesh position={[0.09, 0.1, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.2, 0.05, 0.042]} />
-          <meshStandardMaterial {...stock} />
-        </mesh>
-        <mesh position={[0.03, 0.38, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.11, 0.24, 0.038]} />
-          <meshStandardMaterial {...receiver} />
-        </mesh>
-        <mesh position={[-0.015, 0.86, 0]} rotation={[0.06, 0, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.011, 0.012, 0.88, 10]} />
-          <meshStandardMaterial {...barrel} />
-        </mesh>
-      </group>
+      <mesh geometry={triGeos.right} castShadow receiveShadow>
+        <meshStandardMaterial {...triMat} />
+      </mesh>
     </group>
   )
 }
