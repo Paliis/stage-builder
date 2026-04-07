@@ -1195,33 +1195,43 @@ function CooperTunnel3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   )
 }
 
-function WeaponRackLegPair({
-  hw,
-  H,
-  t,
-  z0,
-  ang,
-  red,
+/** Прямокутна ніжка від точки (ax,ay,az) до (bx,by,bz), перетин thick×thick. */
+function WeaponRackLegBox3D({
+  ax,
+  ay,
+  az,
+  bx,
+  by,
+  bz,
+  thick,
+  mat,
 }: {
-  hw: number
-  H: number
-  t: number
-  z0: number
-  ang: number
-  red: { color: string; roughness: number; metalness: number }
+  ax: number
+  ay: number
+  az: number
+  bx: number
+  by: number
+  bz: number
+  thick: number
+  mat: { color: string; roughness: number; metalness: number }
 }) {
-  const legLen = Math.hypot(hw, H)
+  const { mid, quat, len } = useMemo(() => {
+    const va = new THREE.Vector3(ax, ay, az)
+    const vb = new THREE.Vector3(bx, by, bz)
+    const dir = vb.clone().sub(va)
+    const len = Math.max(dir.length(), 1e-6)
+    const mid = va.clone().add(vb).multiplyScalar(0.5)
+    const quat = new THREE.Quaternion().setFromUnitVectors(
+      new THREE.Vector3(0, 1, 0),
+      dir.clone().normalize(),
+    )
+    return { mid, quat, len }
+  }, [ax, ay, az, bx, by, bz])
   return (
-    <>
-      <mesh position={[-hw / 2, H / 2, z0]} rotation={[0, 0, ang]} castShadow receiveShadow>
-        <boxGeometry args={[t, legLen, t]} />
-        <meshStandardMaterial {...red} />
-      </mesh>
-      <mesh position={[hw / 2, H / 2, z0]} rotation={[0, 0, -ang]} castShadow receiveShadow>
-        <boxGeometry args={[t, legLen, t]} />
-        <meshStandardMaterial {...red} />
-      </mesh>
-    </>
+    <mesh position={[mid.x, mid.y, mid.z]} quaternion={quat} castShadow receiveShadow>
+      <boxGeometry args={[thick, len, thick]} />
+      <meshStandardMaterial {...mat} />
+    </mesh>
   )
 }
 
@@ -1237,34 +1247,62 @@ function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const receiver = { color: '#37474f', roughness: 0.48, metalness: 0.42 } as const
   const barrel = { color: '#263238', roughness: 0.38, metalness: 0.62 } as const
 
-  const ang = Math.atan2(hw, H)
+  const footX = hw * 0.84
+  const footZ = hz * 0.84
+  const yFoot = t * 0.32
+  const apexY = H - t * 0.48
 
   const shelfY = t * 0.85
   const topY = H - t * 0.75
-  const midY = H * 0.4
-  const zFront = hz - t * 0.55
+  const midY = H * 0.38
+  const zFront = footZ * 0.92
   const notchXs = [-0.66, -0.33, 0, 0.33, 0.66] as const
+
+  const wBot = footX * 2 * 1.06
+  const dBot = footZ * 2 * 1.05
+  const wMid = footX * 2 * 0.94
+  const dMid = footZ * 2 * 0.92
+  const wTop = footX * 2 * 0.86
+  const dTop = footZ * 2 * 0.84
+
+  const feet: [number, number, number][] = [
+    [-footX, yFoot, footZ],
+    [footX, yFoot, footZ],
+    [-footX, yFoot, -footZ],
+    [footX, yFoot, -footZ],
+  ]
 
   return (
     <group position={[x, 0, z]} rotation={[0, p.rotationRad, 0]}>
-      <WeaponRackLegPair hw={hw} H={H} t={t} z0={zFront} ang={ang} red={red} />
-      <WeaponRackLegPair hw={hw} H={H} t={t} z0={-hz + t * 0.55} ang={ang} red={red} />
+      {feet.map(([fx, fy, fz], i) => (
+        <WeaponRackLegBox3D
+          key={`leg-${i}`}
+          ax={fx}
+          ay={fy}
+          az={fz}
+          bx={0}
+          by={apexY}
+          bz={0}
+          thick={t}
+          mat={red}
+        />
+      ))}
       <mesh position={[0, shelfY, 0]} castShadow receiveShadow>
-        <boxGeometry args={[hw * 1.88, t * 0.55, hz * 1.78]} />
+        <boxGeometry args={[wBot, t * 0.55, dBot]} />
         <meshStandardMaterial {...red} />
       </mesh>
       <mesh position={[0, midY, 0]} castShadow receiveShadow>
-        <boxGeometry args={[hw * 1.82, t * 0.48, hz * 1.68]} />
+        <boxGeometry args={[wMid, t * 0.48, dMid]} />
         <meshStandardMaterial {...red} />
       </mesh>
       <mesh position={[0, topY, 0]} castShadow receiveShadow>
-        <boxGeometry args={[hw * 1.86, t * 0.52, hz * 1.74]} />
+        <boxGeometry args={[wTop, t * 0.52, dTop]} />
         <meshStandardMaterial {...red} />
       </mesh>
       {notchXs.map((kx, i) => (
         <mesh
           key={i}
-          position={[kx * hw, topY - t * 0.12, zFront + t * 0.2]}
+          position={[kx * hw, topY - t * 0.12, zFront + t * 0.18]}
           rotation={[Math.PI / 2, 0, 0]}
           castShadow
           receiveShadow
