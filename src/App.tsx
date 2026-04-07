@@ -111,6 +111,9 @@ export default function App() {
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const [measureToolActive, setMeasureToolActive] = useState(false)
   const [placementMode, setPlacementMode] = useState<PlacementMode>(null)
+  const [layoutNarrow, setLayoutNarrow] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 52rem)').matches : false,
+  )
   const [marqueeModeActive, setMarqueeModeActive] = useState(false)
   const [planSelectionSummary, setPlanSelectionSummary] = useState({ empty: true, count: 0 })
   const [hasPlanClipboard, setHasPlanClipboard] = useState(false)
@@ -124,6 +127,14 @@ export default function App() {
   useEffect(() => {
     if (planSelectionSummary.empty) setSelectionSheetOpen(false)
   }, [planSelectionSummary.empty])
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 52rem)')
+    const update = () => setLayoutNarrow(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
 
   /** Спільна «ширша» картка для 2D і 3D (лише CSS-пропорції). */
   const stageCardDisplayH = fieldSizeM.y / STAGE_CARD_UI_DEPTH_FACTOR
@@ -302,8 +313,9 @@ export default function App() {
       } else {
         addProp(placementMode.type, undefined, p)
       }
+      if (layoutNarrow) setPlacementMode(null)
     },
-    [placementMode, addTarget, addProp],
+    [placementMode, addTarget, addProp, layoutNarrow],
   )
 
   const runCopySelection = useCallback(() => {
@@ -531,6 +543,7 @@ export default function App() {
     name,
     allowedTargetTypes,
     placementMode,
+    layoutNarrow,
     onArmTarget: armTargetPlacement,
     onArmProp: armPropPlacement,
   }

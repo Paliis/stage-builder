@@ -1598,6 +1598,10 @@ export type StageCanvasHandle = {
 }
 
 const MINIMAP_NAV_ZOOM = 1.42
+/** Long-press для меню виділення на touch; має бути > типового slop. */
+const LONG_PRESS_MS = 560
+const LONG_PRESS_MOVE_CANCEL_PX = 18
+const TOUCH_DRAG_SLOP_PX = 14
 
 function viewportRectsClose(a: WorldViewportRect, b: WorldViewportRect, eps = 1e-4): boolean {
   return (
@@ -1625,9 +1629,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   formatMeasureDistance,
   placementArmed,
   onPlacementWorldClick,
-    marqueeModeActive,
-    onPlanSelectionChange,
-    onSelectionLongPress,
+  marqueeModeActive,
+  onPlanSelectionChange,
+  onSelectionLongPress,
 }: StageCanvasProps,
   ref,
 ) {
@@ -1663,6 +1667,16 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   }, [planSelect])
 
   const marqueeDragRef = useRef<MarqueeDragState | null>(null)
+  const longPressTimerRef = useRef<number | null>(null)
+  const longPressArmRef = useRef<{ pointerId: number; x: number; y: number } | null>(null)
+  const touchPendingDragRef = useRef<{
+    pointerId: number
+    startX: number
+    startY: number
+    kind: 'target' | 'prop'
+    id: string
+    grabOffset: Vec2
+  } | null>(null)
 
   useEffect(() => {
     const c =
@@ -1686,6 +1700,14 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
     setPlanSelect({ mode: 'none' })
   }, [onDeleteTarget, onDeleteProp])
+
+  const clearLongPressTimer = useCallback(() => {
+    if (longPressTimerRef.current != null) {
+      window.clearTimeout(longPressTimerRef.current)
+      longPressTimerRef.current = null
+    }
+    longPressArmRef.current = null
+  }, [])
 
   const [spaceHeld, setSpaceHeld] = useState(false)
   const [isPanningView, setIsPanningView] = useState(false)
@@ -1827,60 +1849,6 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     onSelectionLongPressRef.current = onSelectionLongPress
   }, [onSelectionLongPress])
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    let timerId: number | null = null
-    let arm: { x: number; y: number; pointerId: number } | null = null
-
-    const disarm = () => {
-      if (timerId != null) {
-        window.clearTimeout(timerId)
-        timerId = null
-      }
-      arm = null
-    }
-
-    const onDown = (ev: PointerEvent) => {
-      if (ev.button !== 0) return
-      if (placementArmed || marqueeModeActive || measureToolActive) return
-      if (planSelectRef.current.mode === 'none') return
-      if (!onSelectionLongPressRef.current) return
-      arm = { x: ev.clientX, y: ev.clientY, pointerId: ev.pointerId }
-      timerId = window.setTimeout(() => {
-        timerId = null
-        if (!arm) return
-        if (planSelectRef.current.mode === 'none') return
-        if (dragRef.current) return
-        if (pinchMapRef.current.size > 1) return
-        onSelectionLongPressRef.current?.()
-        arm = null
-      }, 520)
-    }
-
-    const onMove = (ev: PointerEvent) => {
-      if (!arm || ev.pointerId !== arm.pointerId) return
-      if (Math.hypot(ev.clientX - arm.x, ev.clientY - arm.y) > 12) disarm()
-      if (pinchMapRef.current.size > 1) disarm()
-    }
-
-    const onUp = (ev: PointerEvent) => {
-      if (arm && ev.pointerId === arm.pointerId) disarm()
-    }
-
-    canvas.addEventListener('pointerdown', onDown)
-    canvas.addEventListener('pointermove', onMove)
-    canvas.addEventListener('pointerup', onUp)
-    canvas.addEventListener('pointercancel', onUp)
-    return () => {
-      disarm()
-      canvas.removeEventListener('pointerdown', onDown)
-      canvas.removeEventListener('pointermove', onMove)
-      canvas.removeEventListener('pointerup', onUp)
-      canvas.removeEventListener('pointercancel', onUp)
-    }
-  }, [placementArmed, marqueeModeActive, measureToolActive])
-
   const prevFieldWH = useRef<{ w: number; h: number } | null>(null)
   useEffect(() => {
     const p = prevFieldWH.current
@@ -2012,6 +1980,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   const beginViewPan = (ev: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     if (!canvas) return
+    clearLongPressTimer()
     pendingEmptyPanRef.current = null
     gridHoverRef.current = null
     viewPanDragRef.current = {
@@ -2052,6 +2021,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
     if (measureToolActive && ev.button === 0) {
       ev.preventDefault()
+      clearLongPressTimer()
       const wx = Math.min(Math.max(w.x, 0), fw)
       const wy = Math.min(Math.max(w.y, 0), fh)
       const p = { x: wx, y: wy }
@@ -2068,6 +2038,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
     if (placementArmed && ev.button === 0) {
       ev.preventDefault()
+      clearLongPressTimer()
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
       const wx = Math.min(Math.max(w.x, 0), fw)
@@ -2078,6 +2049,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
     if (marqueeModeActive && ev.button === 0) {
       ev.preventDefault()
+      clearLongPressTimer()
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
       pinchMapRef.current.clear()
@@ -2097,8 +2069,40 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
+    if (
+      ev.button === 0 &&
+      ev.pointerType === 'touch' &&
+      onSelectionLongPress &&
+      !placementArmed &&
+      !measureToolActive &&
+      planSelect.mode !== 'none'
+    ) {
+      clearLongPressTimer()
+      longPressArmRef.current = { pointerId: ev.pointerId, x: ev.clientX, y: ev.clientY }
+      longPressTimerRef.current = window.setTimeout(() => {
+        longPressTimerRef.current = null
+        const arm = longPressArmRef.current
+        longPressArmRef.current = null
+        if (!arm) return
+        if (planSelectRef.current.mode === 'none') return
+        if (dragRef.current) return
+        if (viewPanDragRef.current) return
+        if (marqueeDragRef.current) return
+        if (pinchMapRef.current.size > 1) return
+        touchPendingDragRef.current = null
+        onSelectionLongPressRef.current?.()
+        try {
+          canvasRef.current?.releasePointerCapture(arm.pointerId)
+        } catch {
+          /* ignore */
+        }
+        repaint()
+      }, LONG_PRESS_MS)
+    }
+
     pinchMapRef.current.set(ev.pointerId, { x: sx, y: sy })
     if (pinchMapRef.current.size === 2) {
+      clearLongPressTimer()
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
       dragRef.current = null
@@ -2120,6 +2124,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         const hwFl = handleWorldPosProp(selP)
         if (pickHandle(w.x, w.y, hwFl, ppm)) {
           gridHoverRef.current = null
+          clearLongPressTimer()
           dragRef.current = { mode: 'rotate', kind: 'prop', id: selP.id }
           canvas.setPointerCapture(ev.pointerId)
           return
@@ -2127,6 +2132,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         const ends = faultLineEndPointsWorld(selP)
         if (ends && pickFaultStretchNegEnd(w.x, w.y, ends, ppm)) {
           gridHoverRef.current = null
+          clearLongPressTimer()
           dragRef.current = { mode: 'stretchFaultLine', id: selP.id, anchor: 'pos' }
           canvas.setPointerCapture(ev.pointerId)
           return
@@ -2145,6 +2151,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
             : null
       if (hw && pickHandle(w.x, w.y, hw, ppm)) {
         gridHoverRef.current = null
+        clearLongPressTimer()
         dragRef.current = { mode: 'rotate', kind: planSelect.kind, id: planSelect.id }
         canvas.setPointerCapture(ev.pointerId)
         return
@@ -2155,6 +2162,23 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     if (hitT) {
       gridHoverRef.current = null
       setPlanSelect({ mode: 'single', kind: 'target', id: hitT.id })
+      if (ev.pointerType === 'touch') {
+        touchPendingDragRef.current = {
+          pointerId: ev.pointerId,
+          startX: ev.clientX,
+          startY: ev.clientY,
+          kind: 'target',
+          id: hitT.id,
+          grabOffset: { x: w.x - hitT.position.x, y: w.y - hitT.position.y },
+        }
+        try {
+          canvas.setPointerCapture(ev.pointerId)
+        } catch {
+          /* ignore */
+        }
+        return
+      }
+      clearLongPressTimer()
       dragRef.current = {
         mode: 'move',
         kind: 'target',
@@ -2168,6 +2192,23 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     if (hitP) {
       gridHoverRef.current = null
       setPlanSelect({ mode: 'single', kind: 'prop', id: hitP.id })
+      if (ev.pointerType === 'touch') {
+        touchPendingDragRef.current = {
+          pointerId: ev.pointerId,
+          startX: ev.clientX,
+          startY: ev.clientY,
+          kind: 'prop',
+          id: hitP.id,
+          grabOffset: { x: w.x - hitP.position.x, y: w.y - hitP.position.y },
+        }
+        try {
+          canvas.setPointerCapture(ev.pointerId)
+        } catch {
+          /* ignore */
+        }
+        return
+      }
+      clearLongPressTimer()
       dragRef.current = {
         mode: 'move',
         kind: 'prop',
@@ -2185,6 +2226,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         clientY: ev.clientY,
       }
     } else {
+      clearLongPressTimer()
       setPlanSelect({ mode: 'none' })
     }
   }
@@ -2202,6 +2244,28 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       mq.curSy = sy
       repaint()
       return
+    }
+
+    const lpa = longPressArmRef.current
+    if (lpa && ev.pointerId === lpa.pointerId) {
+      if (Math.hypot(ev.clientX - lpa.x, ev.clientY - lpa.y) > LONG_PRESS_MOVE_CANCEL_PX) {
+        clearLongPressTimer()
+      }
+    }
+
+    const tpdMove = touchPendingDragRef.current
+    if (tpdMove && ev.pointerId === tpdMove.pointerId && !dragRef.current) {
+      const dSlop = Math.hypot(ev.clientX - tpdMove.startX, ev.clientY - tpdMove.startY)
+      if (dSlop > TOUCH_DRAG_SLOP_PX) {
+        clearLongPressTimer()
+        dragRef.current = {
+          mode: 'move',
+          kind: tpdMove.kind,
+          id: tpdMove.id,
+          grabOffset: tpdMove.grabOffset,
+        }
+        touchPendingDragRef.current = null
+      }
     }
 
     if (pinchMapRef.current.has(ev.pointerId)) {
@@ -2236,6 +2300,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     ) {
       const d = Math.hypot(ev.clientX - pend.clientX, ev.clientY - pend.clientY)
       if (d > EMPTY_PAN_THRESHOLD_PX) {
+        clearLongPressTimer()
         viewPanDragRef.current = {
           pointerId: ev.pointerId,
           startClientX: ev.clientX,
@@ -2368,6 +2433,21 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const canvas = canvasRef.current
     pinchMapRef.current.delete(ev.pointerId)
     if (pinchMapRef.current.size < 2) pinchLastDistRef.current = 0
+
+    if (longPressArmRef.current?.pointerId === ev.pointerId) {
+      clearLongPressTimer()
+    }
+
+    const tpdEnd = touchPendingDragRef.current
+    if (tpdEnd && tpdEnd.pointerId === ev.pointerId) {
+      touchPendingDragRef.current = null
+      try {
+        canvas?.releasePointerCapture(ev.pointerId)
+      } catch {
+        /* ignore */
+      }
+      return
+    }
 
     if (viewPanDragRef.current?.pointerId === ev.pointerId) {
       viewPanDragRef.current = null
@@ -2531,6 +2611,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       onPointerLeave={onPointerLeave}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
+      onContextMenu={(e) => e.preventDefault()}
     />
   )
 })

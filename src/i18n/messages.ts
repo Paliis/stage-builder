@@ -51,6 +51,10 @@ export type MessageTree = {
     /** Підказка, коли обрано тип — клацати по 2D-плану. */
     placementClickPlan: string
     placementCancelEsc: string
+    /** Підказка про розстановку на вузькому екрані (одне торкання = один об’єкт + вихід). */
+    placementHintNarrow: string
+    /** Короткий текст для title кнопок у режимі розстановки на вузькому екрані. */
+    placementArmedTitleNarrow: string
   }
   props: {
     shield: string
@@ -292,6 +296,10 @@ export const ukMessages: MessageTree = {
     placementClickPlan:
       '\u041a\u043b\u0430\u0446\u043d\u0456\u0442\u044c \u043f\u043e \u043f\u043b\u0430\u043d\u0443, \u0449\u043e\u0431 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u0438. \u041f\u043e\u0432\u0442\u043e\u0440\u043d\u0438\u0439 \u043a\u043b\u0456\u043a \u043f\u043e \u0442\u0438\u043f\u0443 \u0432 \u043c\u0435\u043d\u044e \u2014 \u0432\u0438\u0439\u0442\u0438 \u0437 \u0440\u0435\u0436\u0438\u043c\u0443.',
     placementCancelEsc: 'Esc \u2014 \u0441\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438 \u0440\u0435\u0436\u0438\u043c \u0440\u043e\u0437\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438.',
+    placementHintNarrow:
+      '\u041d\u0430 \u0432\u0443\u0437\u044c\u043a\u043e\u043c\u0443 \u0435\u043a\u0440\u0430\u043d\u0456 \u043e\u0434\u043d\u0435 \u0442\u043e\u0440\u043a\u0430\u043d\u043d\u044f \u043f\u043e \u043f\u043b\u0430\u043d\u0443 \u0441\u0442\u0430\u0432\u0438\u0442\u044c \u043e\u0434\u0438\u043d \u043e\u0431\u2019\u0454\u043a\u0442 \u0456 \u0432\u0438\u043c\u0438\u043a\u0430\u0454 \u0440\u0435\u0436\u0438\u043c. Esc \u2014 \u0441\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438 (\u0437 \u043a\u043b\u0430\u0432\u0456\u0430\u0442\u0443\u0440\u0438).',
+    placementArmedTitleNarrow:
+      '\u0422\u043e\u0440\u043a\u043d\u0456\u0442\u044c \u043f\u043b\u0430\u043d \u2014 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u0438 \u0456 \u0432\u0438\u0439\u0442\u0438 \u0437 \u0440\u0435\u0436\u0438\u043c\u0443. Esc \u2014 \u0441\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438 (\u043a\u043b\u0430\u0432\u0456\u0430\u0442\u0443\u0440\u0430).',
   },
   weapon: {
     sectionTitle: '\u041a\u043b\u0430\u0441 \u0437\u0431\u0440\u043e\u0457',
@@ -546,6 +554,10 @@ export const enMessages: MessageTree = {
     placementClickPlan:
       'Click the plan to place. Click the same type again in the menu to leave placement mode.',
     placementCancelEsc: 'Esc — cancel placement mode.',
+    placementHintNarrow:
+      'On a narrow screen, one tap on the plan places one item and exits placement mode. Esc still cancels (with a keyboard).',
+    placementArmedTitleNarrow:
+      'Tap the plan to place and exit mode. Esc — cancel (keyboard).',
   },
   weapon: {
     sectionTitle: 'Weapon class',

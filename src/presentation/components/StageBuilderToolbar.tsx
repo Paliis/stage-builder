@@ -77,8 +77,11 @@ function placementTitle(
   armed: boolean,
   clickPlan: string,
   escHint: string,
+  layoutNarrow: boolean,
+  armedNarrow: string,
 ): string {
   if (!armed) return baseLabel
+  if (layoutNarrow) return `${baseLabel} — ${armedNarrow}`
   return `${baseLabel} — ${clickPlan} ${escHint}`
 }
 
@@ -88,6 +91,8 @@ export type StageBuilderToolbarProps = {
   name: string
   allowedTargetTypes: TargetType[]
   placementMode: PlacementMode
+  /** Matches plan toolbar breakpoint (~52rem): one tap places one item and exits placement. */
+  layoutNarrow: boolean
   onArmTarget: (type: TargetType, isNoShoot?: boolean) => void
   onArmProp: (type: PropType) => void
 }
@@ -98,6 +103,7 @@ export function StageBuilderToolbar({
   name,
   allowedTargetTypes,
   placementMode,
+  layoutNarrow,
   onArmTarget,
   onArmProp,
 }: StageBuilderToolbarProps) {
@@ -116,6 +122,8 @@ export function StageBuilderToolbar({
             armed,
             tree.toolbar.placementClickPlan,
             tree.toolbar.placementCancelEsc,
+            layoutNarrow,
+            tree.toolbar.placementArmedTitleNarrow,
           )}
           onClick={() => onArmProp(pt)}
         >
@@ -128,7 +136,7 @@ export function StageBuilderToolbar({
     <section className={className ?? 'app__toolbar'} aria-label={tree.toolbar.aria}>
       {placementMode ? (
         <p className="app__toolbar-placement-hint" role="status" aria-live="polite">
-          {tree.toolbar.placementClickPlan} {tree.toolbar.placementCancelEsc}
+          {layoutNarrow ? tree.toolbar.placementHintNarrow : `${tree.toolbar.placementClickPlan} ${tree.toolbar.placementCancelEsc}`}
         </p>
       ) : null}
       <div
@@ -157,6 +165,8 @@ export function StageBuilderToolbar({
                   armed,
                   tree.toolbar.placementClickPlan,
                   tree.toolbar.placementCancelEsc,
+                  layoutNarrow,
+                  tree.toolbar.placementArmedTitleNarrow,
                 )}
                 onClick={() => onArmTarget(ty, false)}
               >
@@ -194,6 +204,8 @@ export function StageBuilderToolbar({
                   armed,
                   tree.toolbar.placementClickPlan,
                   tree.toolbar.placementCancelEsc,
+                  layoutNarrow,
+                  tree.toolbar.placementArmedTitleNarrow,
                 )}
                 onClick={() => onArmTarget(ty, true)}
               >
