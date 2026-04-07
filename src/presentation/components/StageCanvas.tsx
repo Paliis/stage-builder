@@ -547,77 +547,131 @@ function rulerTickLenWorldM(pxPerMeter: number, minPx: number, baseM: number): n
   return Math.max(baseM, minPx / Math.max(pxPerMeter, 1e-6))
 }
 
-/** Лінійка: ліва сторона поля (вісь Y), нижній край y=0 (вісь X); поділки в «метрах» поля. */
-function drawFieldRulers(ctx: CanvasRenderingContext2D, tf: ViewTransform) {
-  const fw = tf.fieldWidthM
-  const fh = tf.fieldHeightM
+/** Смуги лінійки (CSS px) — закріплені на вікні, щоб залишатись видимими при пані та зумі. */
+const RULER_VIEW_STRIP_LEFT_PX = 34
+const RULER_VIEW_STRIP_BOTTOM_PX = 22
+
+/**
+ * Лінійки уздовж лівого та нижнього краю канваса: поділки за видимим діапазоном світу (м),
+ * без прив’язки до країв поля на екрані.
+ */
+function drawViewportFixedRulers(
+  ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  tf: ViewTransform,
+) {
+  const w = canvas.clientWidth
+  const h = canvas.clientHeight
+  if (w <= 0 || h <= 0) return
+
+  const vw = computeWorldViewportRect(w, h, tf)
   const step = pickRulerStepM(tf.pxPerMeter)
   const minorStep = step >= 1 ? step * 0.5 : 0
 
-  const majorLen = rulerTickLenWorldM(tf.pxPerMeter, RULER_TICK_MIN_PX_MAJOR, RULER_TICK_LEN_M)
-  const minorLen = rulerTickLenWorldM(tf.pxPerMeter, RULER_TICK_MIN_PX_MINOR, RULER_TICK_LEN_M * 0.55)
+  const majorLenM = rulerTickLenWorldM(tf.pxPerMeter, RULER_TICK_MIN_PX_MAJOR, RULER_TICK_LEN_M)
+  const minorLenM = rulerTickLenWorldM(tf.pxPerMeter, RULER_TICK_MIN_PX_MINOR, RULER_TICK_LEN_M * 0.55)
+  const majorTickPx = majorLenM * tf.pxPerMeter
+  const minorTickPx = minorLenM * tf.pxPerMeter
+
+  const stripL = RULER_VIEW_STRIP_LEFT_PX
+  const stripB = RULER_VIEW_STRIP_BOTTOM_PX
+  const plotTop = 0
+  const plotBottom = h - stripB
 
   ctx.save()
-  ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
-  ctx.fillStyle = 'rgba(30, 41, 59, 0.95)'
-  ctx.lineWidth = 1.35
+
+  ctx.fillStyle = 'rgba(248, 250, 252, 0.92)'
+  ctx.fillRect(0, plotBottom, w, stripB)
+  ctx.fillRect(0, plotTop, stripL, plotBottom)
+
+  ctx.strokeStyle = 'rgba(148, 163, 184, 0.55)'
+  ctx.lineWidth = 1
+  ctx.beginPath()
+  ctx.moveTo(stripL, 0)
+  ctx.lineTo(stripL, plotBottom)
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(0, plotBottom)
+  ctx.lineTo(w, plotBottom)
+  ctx.stroke()
+
   const fontPx = Math.max(9, Math.min(12, Math.round(10 * Math.sqrt(tf.pxPerMeter / 14))))
   ctx.font = `${fontPx}px system-ui, sans-serif`
-  ctx.textAlign = 'right'
-  ctx.textBaseline = 'middle'
+  ctx.fillStyle = 'rgba(30, 41, 59, 0.95)'
 
-  const drawTickVerticalEdge = (yWorld: number, lenM: number, withLabel: boolean, label: string) => {
-    const pa = worldToScreen(0, yWorld, tf)
-    const pb = worldToScreen(-lenM, yWorld, tf)
-    ctx.beginPath()
-    ctx.moveTo(pa.x, pa.y)
-    ctx.lineTo(pb.x, pb.y)
-    ctx.stroke()
-    if (withLabel) {
-      ctx.fillText(label, pb.x - 5, pa.y)
-    }
-  }
+  const yK0 = Math.floor(vw.minY / step)
+  const yK1 = Math.ceil(vw.maxY / step)
+  for (let k = yK0; k <= yK1; k++) {
+    const yWorld = k * step
+    const sy = worldToScreen(0, yWorld, tf).y
+    if (sy < plotTop - 40 || sy > plotBottom + 40) continue
 
-  const drawTickBottomEdge = (xWorld: number, lenM: number, withLabel: boolean, label: string) => {
-    const pa = worldToScreen(xWorld, 0, tf)
-    const pb = worldToScreen(xWorld, -lenM, tf)
-    ctx.beginPath()
-    ctx.moveTo(pa.x, pa.y)
-    ctx.lineTo(pb.x, pb.y)
-    ctx.stroke()
-    if (withLabel) {
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'top'
-      ctx.fillText(label, pa.x, pb.y + 3)
-      ctx.textAlign = 'right'
-      ctx.textBaseline = 'middle'
-    }
-  }
-
-  for (let y = 0; y <= fh + 1e-9; y += step) {
-    const yy = Math.min(y, fh)
-    drawTickVerticalEdge(yy, majorLen, true, formatRulerTickLabel(yy, step))
-  }
-  if (minorStep > 0) {
-    ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
-    ctx.lineWidth = 1
-    for (let y = minorStep; y < fh - 1e-9; y += step) {
-      drawTickVerticalEdge(y, minorLen, false, '')
-    }
     ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
     ctx.lineWidth = 1.35
+    ctx.beginPath()
+    ctx.moveTo(stripL, sy)
+    ctx.lineTo(stripL + majorTickPx, sy)
+    ctx.stroke()
+
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(formatRulerTickLabel(yWorld, step), stripL - 4, sy)
   }
 
-  for (let x = 0; x <= fw + 1e-9; x += step) {
-    const xx = Math.min(x, fw)
-    const showLabel = xx > 1e-6
-    drawTickBottomEdge(xx, majorLen, showLabel, formatRulerTickLabel(xx, step))
-  }
   if (minorStep > 0) {
+    const m0 = Math.floor(vw.minY / minorStep)
+    const m1 = Math.ceil(vw.maxY / minorStep)
     ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
     ctx.lineWidth = 1
-    for (let x = minorStep; x < fw - 1e-9; x += step) {
-      drawTickBottomEdge(x, minorLen, false, '')
+    for (let k = m0; k <= m1; k++) {
+      const yWorld = k * minorStep
+      if (Math.abs(yWorld / step - Math.round(yWorld / step)) < 1e-6) continue
+      const sy = worldToScreen(0, yWorld, tf).y
+      if (sy < plotTop - 40 || sy > plotBottom + 40) continue
+      ctx.beginPath()
+      ctx.moveTo(stripL, sy)
+      ctx.lineTo(stripL + minorTickPx, sy)
+      ctx.stroke()
+    }
+  }
+
+  const xK0 = Math.floor(vw.minX / step)
+  const xK1 = Math.ceil(vw.maxX / step)
+  const yBaseline = plotBottom
+  for (let k = xK0; k <= xK1; k++) {
+    const xWorld = k * step
+    const sx = worldToScreen(xWorld, 0, tf).x
+    if (sx < stripL - 40 || sx > w + 40) continue
+
+    ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
+    ctx.lineWidth = 1.35
+    ctx.beginPath()
+    ctx.moveTo(sx, yBaseline)
+    ctx.lineTo(sx, yBaseline - majorTickPx)
+    ctx.stroke()
+
+    if (xWorld > 1e-6) {
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'top'
+      ctx.fillText(formatRulerTickLabel(xWorld, step), sx, yBaseline + 3)
+    }
+  }
+
+  if (minorStep > 0) {
+    const m0 = Math.floor(vw.minX / minorStep)
+    const m1 = Math.ceil(vw.maxX / minorStep)
+    ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
+    ctx.lineWidth = 1
+    for (let k = m0; k <= m1; k++) {
+      const xWorld = k * minorStep
+      const onMajor = Math.abs(xWorld / step - Math.round(xWorld / step)) < 1e-6
+      if (onMajor) continue
+      const sx = worldToScreen(xWorld, 0, tf).x
+      if (sx < stripL - 40 || sx > w + 40) continue
+      ctx.beginPath()
+      ctx.moveTo(sx, yBaseline)
+      ctx.lineTo(sx, yBaseline - minorTickPx)
+      ctx.stroke()
     }
   }
 
@@ -1116,7 +1170,7 @@ function redraw(
   ctx.fill()
 
   drawGrid(ctx, tf)
-  drawFieldRulers(ctx, tf)
+  drawViewportFixedRulers(ctx, canvas, tf)
 
   const parsedAngles = parseSafetyAngles(safetyAnglesText)
   const startPosProp = props.find((p) => p.type === 'startPosition')
