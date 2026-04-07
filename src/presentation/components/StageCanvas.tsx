@@ -1977,6 +1977,24 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
   }, [marqueeModeActive, repaint])
 
+  /** Clears in-flight gesture state for a pointer (pinch, pan, drag, long-press arm). */
+  const releaseGestureStateForPointer = useCallback(
+    (pointerId: number) => {
+      pinchMapRef.current.delete(pointerId)
+      if (pendingEmptyPanRef.current?.pointerId === pointerId) pendingEmptyPanRef.current = null
+      if (touchPendingDragRef.current?.pointerId === pointerId) touchPendingDragRef.current = null
+      if (longPressArmRef.current?.pointerId === pointerId) clearLongPressTimer()
+      if (viewPanDragRef.current?.pointerId === pointerId) {
+        viewPanDragRef.current = null
+        setIsPanningView(false)
+      }
+      if (marqueeDragRef.current?.pointerId === pointerId) marqueeDragRef.current = null
+      dragRef.current = null
+      repaint()
+    },
+    [clearLongPressTimer, repaint],
+  )
+
   const beginViewPan = (ev: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -2090,12 +2108,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         if (marqueeDragRef.current) return
         if (pinchMapRef.current.size > 1) return
         touchPendingDragRef.current = null
-        onSelectionLongPressRef.current?.()
-        try {
-          canvasRef.current?.releasePointerCapture(arm.pointerId)
-        } catch {
-          /* ignore */
+        if (pendingEmptyPanRef.current?.pointerId === arm.pointerId) {
+          pendingEmptyPanRef.current = null
         }
+        onSelectionLongPressRef.current?.()
+        // Keep pointer capture until pointerup/cancel so events still target this canvas.
+        // Releasing here sends pointerup to the sheet overlay; endDrag never runs and
+        // pinchMap / pending pan state stays stale (stuck pan, broken UI).
         repaint()
       }, LONG_PRESS_MS)
     }
@@ -2611,6 +2630,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       onPointerLeave={onPointerLeave}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
+      onLostPointerCapture={(ev) => releaseGestureStateForPointer(ev.pointerId)}
       onContextMenu={(e) => e.preventDefault()}
     />
   )
