@@ -1161,6 +1161,88 @@ function CooperTunnel3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   )
 }
 
+/** Червона A-подібна стійка з верхньою планкою (пази), одна рушниця без чохла в лівому слоті. */
+function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
+  const hw = p.sizeM.x / 2
+  const hz = p.sizeM.y / 2
+  const H = propHeightM(p)
+  const t = 0.036
+  const red = { color: '#e53935', roughness: 0.74, metalness: 0.06 } as const
+  const redDark = { color: '#c62828', roughness: 0.78, metalness: 0.05 } as const
+  const stock = { color: '#4e342e', roughness: 0.82, metalness: 0.04 } as const
+  const receiver = { color: '#37474f', roughness: 0.48, metalness: 0.42 } as const
+  const barrel = { color: '#263238', roughness: 0.38, metalness: 0.62 } as const
+
+  const legLen = Math.hypot(hw, H)
+  const ang = Math.atan2(hw, H)
+
+  function LegPair({ z0 }: { z0: number }) {
+    return (
+      <>
+        <mesh position={[-hw / 2, H / 2, z0]} rotation={[0, 0, ang]} castShadow receiveShadow>
+          <boxGeometry args={[t, legLen, t]} />
+          <meshStandardMaterial {...red} />
+        </mesh>
+        <mesh position={[hw / 2, H / 2, z0]} rotation={[0, 0, -ang]} castShadow receiveShadow>
+          <boxGeometry args={[t, legLen, t]} />
+          <meshStandardMaterial {...red} />
+        </mesh>
+      </>
+    )
+  }
+
+  const shelfY = t * 0.85
+  const topY = H - t * 0.75
+  const midY = H * 0.4
+  const zFront = hz - t * 0.55
+  const notchXs = [-0.66, -0.33, 0, 0.33, 0.66] as const
+
+  return (
+    <group position={[x, 0, z]} rotation={[0, p.rotationRad, 0]}>
+      <LegPair z0={zFront} />
+      <LegPair z0={-hz + t * 0.55} />
+      <mesh position={[0, shelfY, 0]} castShadow receiveShadow>
+        <boxGeometry args={[hw * 1.88, t * 0.55, hz * 1.78]} />
+        <meshStandardMaterial {...red} />
+      </mesh>
+      <mesh position={[0, midY, 0]} castShadow receiveShadow>
+        <boxGeometry args={[hw * 1.82, t * 0.48, hz * 1.68]} />
+        <meshStandardMaterial {...red} />
+      </mesh>
+      <mesh position={[0, topY, 0]} castShadow receiveShadow>
+        <boxGeometry args={[hw * 1.86, t * 0.52, hz * 1.74]} />
+        <meshStandardMaterial {...red} />
+      </mesh>
+      {notchXs.map((kx, i) => (
+        <mesh
+          key={i}
+          position={[kx * hw, topY - t * 0.12, zFront + t * 0.2]}
+          rotation={[Math.PI / 2, 0, 0]}
+          castShadow
+          receiveShadow
+        >
+          <torusGeometry args={[t * 0.5, t * 0.16, 6, 14, Math.PI]} />
+          <meshStandardMaterial {...redDark} />
+        </mesh>
+      ))}
+      <group position={[-hw * 0.68, shelfY + t * 0.42, hz * 0.18]} rotation={[0, 0.1, -0.11]}>
+        <mesh position={[0.09, 0.1, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.2, 0.05, 0.042]} />
+          <meshStandardMaterial {...stock} />
+        </mesh>
+        <mesh position={[0.03, 0.38, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.11, 0.24, 0.038]} />
+          <meshStandardMaterial {...receiver} />
+        </mesh>
+        <mesh position={[-0.015, 0.86, 0]} rotation={[0.06, 0, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.011, 0.012, 0.88, 10]} />
+          <meshStandardMaterial {...barrel} />
+        </mesh>
+      </group>
+    </group>
+  )
+}
+
 /** Дерев’яний стіл: стільниця, 4 ніжки, синя смуга вздовж коротшої сторони столу (паралельно коротким краям). */
 function WoodTable3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const sx = p.sizeM.x
@@ -1343,6 +1425,10 @@ function Prop3D({ p }: { p: Prop }) {
 
   if (p.type === 'woodTable') {
     return <WoodTable3D p={p} x={x} z={z} />
+  }
+
+  if (p.type === 'weaponRackPyramid') {
+    return <WeaponRackPyramid3D p={p} x={x} z={z} />
   }
 
   return null
