@@ -2,6 +2,8 @@
 
 Документ для розробників: архітектура, домен, формати даних, збірка та відомі обмеження.
 
+**Продуктові версії V0 / V1** (що входить у який зріз, накопичувальний опис V1) — у **[VERSIONING.md](./VERSIONING.md)**. Це окремо від `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (версія схеми `*.stage.json`).
+
 ## Архітектура
 
 Проєкт дотримується шаруватої структури:
@@ -149,6 +151,7 @@ npm run check     # як у CI: lint + test + build
 
 | Тема | Файл |
 |------|------|
+| Продуктові версії V0 / V1 | `docs/VERSIONING.md` |
 | Моделі сцени | `src/domain/models.ts` |
 | 2D канвас (мішені, лінійки, вимір) | `src/presentation/components/StageCanvas.tsx` |
 | Увімкнення виміру (M, кнопка, 2D/3D) | `src/App.tsx` |
