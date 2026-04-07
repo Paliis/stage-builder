@@ -42,7 +42,8 @@ export default defineConfig({
     react(),
     htmlTransformPlugin(),
     VitePWA({
-      registerType: 'autoUpdate',
+      /** User activates new SW via UI; see `pwaUpdateGate` + `PwaUpdateBanner` (max one prompt / 24h). */
+      registerType: 'prompt',
       includeAssets: [
         'favicon.ico',
         'favicon.svg',

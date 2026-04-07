@@ -27,6 +27,7 @@ import {
   SHIELD_FRAME_SECTION_M,
   SHIELD_PORT_SLANT_INSET_M,
   shieldPortSlantOpeningLocalM,
+  WOOD_CHAIR_HEIGHT_M,
   WOOD_TABLE_HEIGHT_M,
 } from '../../domain/propGeometry'
 import {
@@ -1290,7 +1291,51 @@ function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   )
 }
 
-/** Дерев’яний стіл: стільниця, 4 ніжки, синя смуга вздовж коротшої сторони столу (паралельно коротким краям). */
+/** Дерев’яний стілець: ніжки, сидіння, спинка з боку локального −Z. */
+function WoodChair3D({ p, x, z }: { p: Prop; x: number; z: number }) {
+  const sx = p.sizeM.x
+  const sz = p.sizeM.y
+  const hw = sx / 2
+  const hz = sz / 2
+  const chairH = WOOD_CHAIR_HEIGHT_M
+  const legH = 0.38
+  const seatT = 0.032
+  const backH = Math.max(0.36, chairH - legH - seatT - 0.02)
+  const backT = 0.026
+  const legW = 0.038
+  const insetX = Math.min(0.08, hw * 0.28)
+  const insetZ = Math.min(0.08, hz * 0.28)
+  const wood = { color: '#a67c52', roughness: 0.84, metalness: 0.04 } as const
+  const woodLeg = { color: '#6b4e32', roughness: 0.88, metalness: 0.03 } as const
+  const woodBack = { color: '#8f6840', roughness: 0.82, metalness: 0.04 } as const
+  const ySeat = legH + seatT / 2
+  const yBack = legH + seatT + backH / 2
+  return (
+    <group position={[x, 0, z]} rotation={[0, p.rotationRad, 0]}>
+      {([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([lx, lz], i) => (
+        <mesh
+          key={i}
+          position={[lx * (hw - insetX), legH / 2, lz * (hz - insetZ)]}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[legW, legH, legW]} />
+          <meshStandardMaterial {...woodLeg} />
+        </mesh>
+      ))}
+      <mesh position={[0, ySeat, 0]} castShadow receiveShadow>
+        <boxGeometry args={[sx * 0.96, seatT, sz * 0.96]} />
+        <meshStandardMaterial {...wood} />
+      </mesh>
+      <mesh position={[0, yBack, -hz + backT / 2 + 0.004]} castShadow receiveShadow>
+        <boxGeometry args={[sx * 0.9, backH, backT]} />
+        <meshStandardMaterial {...woodBack} />
+      </mesh>
+    </group>
+  )
+}
+
+/** Дерев’яний стіл: стільниця, 4 ніжки, синя смуга вздовж коротшої сторони столу (паралельно коротшим краям). */
 function WoodTable3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const sx = p.sizeM.x
   const sz = p.sizeM.y
@@ -1472,6 +1517,10 @@ function Prop3D({ p }: { p: Prop }) {
 
   if (p.type === 'woodTable') {
     return <WoodTable3D p={p} x={x} z={z} />
+  }
+
+  if (p.type === 'woodChair') {
+    return <WoodChair3D p={p} x={x} z={z} />
   }
 
   if (p.type === 'weaponRackPyramid') {

@@ -13,6 +13,66 @@
   border: 1px solid rgba(250, 204, 21, 0.5);
 }
 
+.app__pwa-update-banner {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #e0f2fe;
+  background: linear-gradient(90deg, #0c4a6e, #0369a1, #0c4a6e);
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+}
+
+.app__pwa-update-banner__text {
+  flex: 1 1 12rem;
+  text-align: center;
+  min-width: 0;
+}
+
+.app__pwa-update-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 0.5rem;
+}
+
+.app__pwa-update-banner__btn {
+  margin: 0;
+  padding: 0.28rem 0.65rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+  border-radius: 6px;
+  border: 1px solid rgba(224, 242, 254, 0.45);
+  color: #e0f2fe;
+  background: rgba(15, 23, 42, 0.25);
+  cursor: pointer;
+}
+
+.app__pwa-update-banner__btn:hover {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.app__pwa-update-banner__btn--primary {
+  border-color: rgba(224, 242, 254, 0.65);
+  background: rgba(14, 165, 233, 0.35);
+}
+
+.app__pwa-update-banner__btn--primary:hover {
+  background: rgba(14, 165, 233, 0.5);
+}
+
 .app {
   --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
   display: flex;
@@ -714,6 +774,18 @@
   color: #2a1f12;
 }
 
+.app__buttons button.app__btn-secondary.app__tb-prop--woodChair {
+  background: rgba(143, 104, 64, 0.3);
+  border-color: rgba(91, 66, 40, 0.42);
+  color: #3d2a18;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--woodChair:hover {
+  background: rgba(143, 104, 64, 0.42);
+  border-color: rgba(62, 44, 28, 0.5);
+  color: #2a1c0f;
+}
+
 .app__buttons button.app__btn-secondary.app__tb-prop--weaponRack {
   background: linear-gradient(
     135deg,
@@ -839,6 +911,10 @@
 
   .app__buttons button.app__btn-secondary.app__tb-prop--woodTable {
     color: #fde68a;
+  }
+
+  .app__buttons button.app__btn-secondary.app__tb-prop--woodChair {
+    color: #fcd34d;
   }
 
   .app__buttons button.app__btn-secondary.app__tb-prop--weaponRack {

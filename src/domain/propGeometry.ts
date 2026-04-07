@@ -159,6 +159,10 @@ export const START_POSITION_DEFAULT_SIZE_M: Vec2 = { x: 0.52, y: 0.72 }
 /** Стіл у плані: довга сторона × коротша (м); висота столу в 3D фіксована. */
 export const WOOD_TABLE_DEFAULT_SIZE_M: Vec2 = { x: 1.2, y: 0.65 }
 export const WOOD_TABLE_HEIGHT_M = 0.76
+/** Стілець на плані: ширина сидіння × глибина (м). */
+export const WOOD_CHAIR_DEFAULT_SIZE_M: Vec2 = { x: 0.46, y: 0.44 }
+/** Висота 3D: ніжки + сидіння + спинка. */
+export const WOOD_CHAIR_HEIGHT_M = 0.86
 
 /** Піраміда для зброї на плані: розмах по довзькій стороні стійки × глибина (м). */
 export const WEAPON_RACK_PYRAMID_DEFAULT_SIZE_M: Vec2 = { x: 0.82, y: 0.46 }
@@ -290,6 +294,8 @@ export function defaultPropSizeM(type: PropType): Vec2 {
       return { x: START_POSITION_DEFAULT_SIZE_M.x, y: START_POSITION_DEFAULT_SIZE_M.y }
     case 'woodTable':
       return { x: WOOD_TABLE_DEFAULT_SIZE_M.x, y: WOOD_TABLE_DEFAULT_SIZE_M.y }
+    case 'woodChair':
+      return { x: WOOD_CHAIR_DEFAULT_SIZE_M.x, y: WOOD_CHAIR_DEFAULT_SIZE_M.y }
     case 'weaponRackPyramid':
       return { x: WEAPON_RACK_PYRAMID_DEFAULT_SIZE_M.x, y: WEAPON_RACK_PYRAMID_DEFAULT_SIZE_M.y }
     default: {
@@ -327,6 +333,8 @@ export function propHeightM(p: Prop): number {
       return 0.02
     case 'woodTable':
       return WOOD_TABLE_HEIGHT_M
+    case 'woodChair':
+      return WOOD_CHAIR_HEIGHT_M
     case 'weaponRackPyramid':
       return WEAPON_RACK_PYRAMID_HEIGHT_M
     default: {

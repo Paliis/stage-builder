@@ -35,6 +35,7 @@ import { type StageCanvasHandle, StageCanvas } from './presentation/components/S
 import { StageMinimap } from './presentation/components/StageMinimap'
 import type { CameraMode3D, StageView3DHandle } from './presentation/components/StageView3D'
 import type { WorldViewportRect } from './presentation/lib/viewTransform'
+import { PwaUpdateBanner } from './presentation/components/PwaUpdateBanner'
 import { usePwaInstall } from './presentation/hooks/usePwaInstall'
 import './App.css'
 
@@ -543,6 +544,7 @@ export default function App() {
           {tree.app.stagingRibbon}
         </div>
       ) : null}
+      <PwaUpdateBanner />
       <SessionDraftPersist />
       <header className="app__header">
         <div className="app__header-inner">

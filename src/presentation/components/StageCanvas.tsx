@@ -1174,6 +1174,47 @@ function drawWoodTablePlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTra
   ctx.stroke()
 }
 
+/** Стілець на плані: як стіл без смуги; товстіша лінія з боку спинки (локальний −sizeM.y/2). */
+function drawWoodChairPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransform) {
+  const outline = propOutlineWorld(p)
+  const corners = outline.map((q) => worldToScreen(q.x, q.y, tf))
+  const { dx, dy } = EXTRUDE_SCREEN_PX
+  ctx.beginPath()
+  tracePropOutline(ctx, corners, dx, dy)
+  ctx.fillStyle = 'rgba(25, 25, 28, 0.92)'
+  ctx.fill()
+  ctx.beginPath()
+  tracePropOutline(ctx, corners, 0, 0)
+  ctx.fillStyle = 'rgba(166, 124, 82, 0.9)'
+  ctx.fill()
+  ctx.strokeStyle = 'rgba(15, 23, 42, 0.45)'
+  ctx.lineWidth = 1.5
+  ctx.stroke()
+
+  const { x: cx, y: cy } = p.position
+  const rot = p.rotationRad
+  const ux = Math.cos(rot)
+  const uy = Math.sin(rot)
+  const vx = -Math.sin(rot)
+  const vy = Math.cos(rot)
+  const hw = p.sizeM.x / 2
+  const hz = p.sizeM.y / 2
+  const w = (su: number, sv: number): Vec2 => ({
+    x: cx + ux * su + vx * sv,
+    y: cy + uy * su + vy * sv,
+  })
+  const e0 = w(-hw, -hz)
+  const e1 = w(hw, -hz)
+  const p0 = worldToScreen(e0.x, e0.y, tf)
+  const p1 = worldToScreen(e1.x, e1.y, tf)
+  ctx.beginPath()
+  ctx.moveTo(p0.x, p0.y)
+  ctx.lineTo(p1.x, p1.y)
+  ctx.strokeStyle = 'rgba(62, 44, 28, 0.88)'
+  ctx.lineWidth = Math.max(2.5, 0.022 * tf.pxPerMeter)
+  ctx.stroke()
+}
+
 /** Червона стійка на плані: контур основи + схема вужчої верхньої планки (як у 3D). */
 function drawWeaponRackPyramidPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransform) {
   const outline = propOutlineWorld(p)
@@ -1325,6 +1366,8 @@ function redraw(
       return { face: 'rgba(185, 170, 140, 0.62)', depth: 'rgba(25, 25, 28, 0.9)' }
     if (p.type === 'woodTable')
       return { face: 'rgba(176, 141, 92, 0.9)', depth: 'rgba(25, 25, 28, 0.9)' }
+    if (p.type === 'woodChair')
+      return { face: 'rgba(166, 124, 82, 0.9)', depth: 'rgba(25, 25, 28, 0.9)' }
     if (p.type === 'weaponRackPyramid')
       return { face: 'rgba(229, 57, 53, 0.88)', depth: 'rgba(25, 25, 28, 0.9)' }
     return { face: 'rgba(148, 163, 184, 0.94)', depth: 'rgba(71, 85, 105, 0.9)' }
@@ -1368,6 +1411,10 @@ function redraw(
     }
     if (p.type === 'woodTable') {
       drawWoodTablePlan2D(ctx, p, tf)
+      continue
+    }
+    if (p.type === 'woodChair') {
+      drawWoodChairPlan2D(ctx, p, tf)
       continue
     }
     if (p.type === 'weaponRackPyramid') {

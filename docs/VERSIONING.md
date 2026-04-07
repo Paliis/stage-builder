@@ -32,6 +32,7 @@
 - **Нові мішені** — паперова Mini IPSC (B3 номінал); металева пластина на стійці 50 см і 1 м (низ лиця в 3D; на плані як квадрат C3) — `models.ts`, `targetSpecs.ts`, `StageView3D.tsx`, i18n.
 - **Щити з портом** — низький/високий порт 30×60 см; косий — паралелограм 7 см від кутів, планки AB/DC, сітка двома чотирикутниками (без `ExtrudeGeometry` holes); дверцята 30×30 — `propGeometry.ts`, `StageView3D.tsx`, `StageCanvas.tsx`, i18n.
 - **Піраміда для зброї** — низ + верхній брусок **квадратного перерізу** (довжина вздовж X), трикутники, **труба** з виступом **20 см** над верхом — `WeaponRackPyramid3D`, `WEAPON_RACK_PIPE_ABOVE_TOP_M` (`StageView3D.tsx`); план — `drawWeaponRackPyramidPlan2D` (`StageCanvas.tsx`).
+- **Стілець** — `woodChair`: `WOOD_CHAIR_*` у `propGeometry.ts`, `WoodChair3D`, `drawWoodChairPlan2D`, тулбар, `*.stage.json`.
 
 ---
 

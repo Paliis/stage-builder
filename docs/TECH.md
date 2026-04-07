@@ -2,7 +2,8 @@
 
 Документ для розробників: архітектура, домен, формати даних, збірка та відомі обмеження.
 
-**Продуктові версії V0 / V1** (що входить у який зріз, накопичувальний опис V1) — у **[VERSIONING.md](./VERSIONING.md)**. Це окремо від `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (версія схеми `*.stage.json`).
+**Пов’язані документи:** продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**.  
+**Важливо:** позначки V0 / V1 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **1**).
 
 ## Архітектура
 
@@ -10,109 +11,166 @@
 
 | Шар | Каталог | Відповідальність |
 |-----|---------|------------------|
-| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней/реквізиту, розрахунки (мін. постріли, підсумок мішеней), парсинг/збірка `*.stage.json`, константи IPSC-подібних габаритів |
-| **Application** | `src/application/` | Zustand-стори: сцена (`stageStore`, undo/redo через `zundo`), брифінг (`briefingStore`) |
-| **Presentation** | `src/presentation/` | React: `App.tsx`, Canvas 2D, Three.js 3D, тулбар, міні-карта, експорт PDF, хуки |
-| **i18n** | `src/i18n/` | Дерева рядків UK/EN, провайдер, `localStorage` для мови |
+| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
+| **Application** | `src/application/` | Zustand: сцена (`stageStore`, undo/redo через `zundo`), брифінг (`briefingStore`), чернетка `localStorage` (`sessionDraft.ts`), компонент **`SessionDraftPersist.tsx`** (підписка + debounce) |
+| **Presentation** | `src/presentation/` | React-компоненти: `StageCanvas`, `StageView3D`, `StageBuilderToolbar`, `StageMinimap`, `GoogleAnalytics`; хуки (`usePwaInstall`); бібліотеки: `exportBriefingPdf`, `pdfFonts`, `viewTransform` |
+| **Корінь UI** | `src/App.tsx` | Композиція layout, брифінг-форма, гарячі клавіші, lazy-3D, стрічка staging, посилання на канвас через `ref` (`StageCanvasHandle`) |
+| **i18n** | `src/i18n/` | Дерева рядків UK/EN (`messages.ts`), `I18nProvider`, `getMessage` / `formatTemplate`, `localStorage` для мови (`storage.ts`) |
 
-Корінь UI — `src/main.tsx` → `App.tsx`. **Code splitting:** модуль `StageView3D` (Three.js, R3F) підвантажується через `React.lazy` лише в режимі «3D»; `exportBriefingPdf` (jsPDF, qrcode, autotable) — через динамічний `import()` при експорті PDF. Це зменшує початковий JS для користувачів, які лишаються в 2D.
+Точка входу: `src/main.tsx` — `hydrateSessionDraft()`, реєстрація PWA (`virtual:pwa-register`), обгортка `I18nProvider`, далі `App`, **Vercel Analytics** і **Google Analytics**.
+
+**Code splitting:** `StageView3D` підвантажується через `React.lazy` у `App.tsx` лише в режимі «3D», всередині `<Suspense>`. Експорт PDF — динамічний `import()` модуля `exportBriefingPdf` у момент натискання кнопки.
+
+## Площадка, пресети та прив’язка
+
+- **Стан сцени** — `StageState` у `stageStore.ts`: `name`, `weaponClass`, **`fieldSizeM`** (`Vec2`: ширина × довжина в метрах), масиви `targets` і `props`. Тип `Stage` у `models.ts` (поля `category`, `maxPoints` тощо) у рантаймі сцени **не** використовується — категорія вправи живе в брифінгу (`StageBriefing.exerciseType` / `StageCategory`).
+- **`field.ts`** — `FIELD_SIZE_PRESETS`, `FIELD_SIZE_LIMITS` (8–120 м), `clampFieldDimensions`, дефолт 30×40. Для пропорцій картки прев’ю в UI: `STAGE_CARD_UI_DEPTH_FACTOR`.
+- **Сітка та snap** — `GRID_SNAP_M = 0.5`; для центрів після перетягування: `TARGET_PLACEMENT_SNAP_M` і `PROP_PLACEMENT_SNAP_M` (0,05 м), щоб дрібно позиціонувати мішені й стикувати реквізит.
+- **Зміна розміру поля** — `setFieldSizeM` і завантаження файлу викликають `reclampTargetsProps`: усі позиції обмежуються новими межами; реквізит проходить через `migrateProp` (старі типи `wall`/`window` прибираються, `port` → `shieldWithPort`, корекція розміру `tireStack`).
 
 ## Розстановка з тулбару (placement)
 
-- Клік по типу мішені або реквізиту в **`StageBuilderToolbar`** увімкнює **`PlacementMode`** (`src/domain/placementMode.ts`): далі кожен **ЛКМ по 2D-плану** викликає `addTarget` / `addProp` з координатами кліку (snap/clamp у `stageStore`). **Hit-test ігнорується** — можна ставити «поверх» існуючих об’єктів. Повторний клік по тій самій кнопці або **Esc** вимикає режим. **Вимір** і placement **взаємовиключні** (увімкнення одного вимикає інший). Реалізація кліку — `StageCanvas` (`placementArmed`, `onPlacementWorldClick`).
+- Клік по типу мішені або реквізиту в **`StageBuilderToolbar`** увімкнює **`PlacementMode`** (`placementMode.ts`): далі кожен **ЛКМ по 2D-плану** викликає `addTarget` / `addProp` з координатами кліку (snap/clamp у `stageStore`). **Hit-test ігнорується** — можна ставити «поверх» існуючих об’єктів. Повторний клік по тій самій кнопці або **Esc** вимикає режим. **Вимір** і placement **взаємовиключні**. Реалізація кліку — `StageCanvas` (`placementArmed`, `onPlacementWorldClick`).
+- **Порядок кнопок реквізиту** — `INFRASTRUCTURE_PROP_ORDER` у `infrastructureProps.ts` (узгоджено з парсером `PROP_TYPES` у `stageProjectFile.ts`).
+- **Генерація `id`** — `newId()` у `stageStore` і `newEntityId()` у `stageProjectFile`: за можливості `crypto.randomUUID()`; на **HTTP (наприклад LAN без TLS)** `crypto.randomUUID` може бути недоступний — тоді fallback на префікс `sb-` + час/випадковість (див. коментар у `stageStore`).
+
+## Клас зброї
+
+- У знімку сцени та в `*.stage.json` зберігається **`weaponClass`**: `handgun` | `rifle` | `shotgun` (`weaponClass.ts`).
+- Набори мішеней за класом описані в `weaponClass.ts`; наразі **всі класи отримують той самий повний список** `ALL_TARGET_TYPES`. У `addTarget` фільтрація за класом **вимкнена** (коментар у `stageStore` — UI перемикання класу для обмеження палітри тимчасово прибрано).
 
 ## План 2D: лінійки та вимір
 
-- **Лінійки** — `drawViewportFixedRulers` у `StageCanvas.tsx`: смуги **закріплені на вікні** (ліворуч і вздовж низу канваса), поділки будуються за **видимим** прямокутником світу (`computeWorldViewportRect`); значення в метрах поля ті самі, що й раніше (X по горизонталі, Y по вертикалі), але лінійка не «їде» з краями поля при пані/зумі. Крок — `pickRulerStepM` (мін. **0,5 м**), дрібні поділки при кроці ≥ 1 м, довжина рисок — `rulerTickLenWorldM`. Підпис **«0»** на нижній осі не дублюється (лишається на лівій).
-- **Інструмент вимірювання** — лише в **2D**. Увімкнення: **іконка лінійки** у стовпчику дій праворуч унизу (`app__plan-map-actions`, клас кнопки `app__plan-map-action-btn`) і клавіша **M**, коли `viewMode === '2d'` і фокус не в полі форми (`App.tsx`). Підказки: `view.measureTool`, `view.measureToolTitle`. Два послідовні **ліві кліки** задають кінці відрізка; координати **обмежуються полем**, **без** прив’язки до сітки. Після двох точок лінія (пунктир) і число відстані **залишаються** на полотні; **наступний клік** починає нову пару (нова точка A). **Esc** скидає поточний незавершений відрізок (є A або B). У режимі **3D** вимір вимикається. Оверлей малюється лише коли режим увімкнений; при вимкненні `App` викликає `StageCanvasHandle.clearMeasure()`, щоб скинути збережені точки. Формат підпису — `view.measureDistanceMeters` у `messages.ts`, через `formatTemplate` з `formatMeasureDistance` у пропсах канвасу.
+- **Лінійки** — `drawViewportFixedRulers` у `StageCanvas.tsx`: смуги **закріплені на вікні** (ліворуч і вздовж низу), поділки за **видимим** прямокутником світу (`computeWorldViewportRect`). Крок — `pickRulerStepM` (мін. **0,5 м**), дрібні поділки при кроці ≥ 1 м. Підпис **«0»** на нижній осі не дублюється.
+- **Інструмент вимірювання** — лише в **2D**: кнопка в `app__plan-map-actions`, клавіша **M** (коли `viewMode === '2d'` і фокус не в полі форми). Два **ліві кліки** — кінці відрізка; координати в межах поля, **без** snap сітки. Після двох точок лінія й підпис лишаються; наступний клік починає нову пару. **Esc** скидає незавершений відрізок. У **3D** вимір вимикається; при вимкненні інструмента `App` викликає `StageCanvasHandle.clearMeasure()`.
+
+## План 2D: зона безпеки та попередження
+
+- Текст **«Кути безпеки»** у брифінгу (`briefingStore` / поле `safetyAngles`) парситься як `лівий/правий[/верх]` у **`parseSafetyAngles`** (`safetyAngles.ts`).
+- Якщо на плані є реквізит **`startPosition`** і рядок успішно розібрано, на 2D малюється клин **`drawSafetyZone`** (напрямок «вниз по полю» = downrange).
+- Мішені, чий центр **поза** цим клином відносно старту, отримують червоний пунктирний контур і маркер **⚠** (`isTargetInSafetyZone` у циклі малювання мішеней у `StageCanvas`).
 
 ## План 2D: рамка, копіювання, вставка
 
-- **Режим рамки** (`marqueeModeActive` у `App.tsx` → `StageCanvas`): ЛКМ тягне прямокутник у екранних координатах; у світ перетворюється AABB. У виділення потрапляють мішені та реквізит, у яких **центр** (`position`) лежить усередині цього прямокутника (`collectIdsInWorldRect`). Одиночний клік по об’єкту лишає попередню логіку виділення/руху.
-- **Копіювання** — **Ctrl+C** (або Cmd+C) і кнопка «Копія»: знімок поточного виділення через `getSelectionForCopy()` (deep clone). Зберігається у **внутрішньому буфері** в `App`; додатково намагається записати JSON у системний clipboard (ігнорує помилки, наприклад HTTP).
-- **Вставка** — **Ctrl+V** / кнопка: центр мас скопійованого набору вирівнюється з **центром поточного виду** (`getSpawnCenterWorld`), зі зміщенням і snap/clamp як у `shiftClonesForPaste` (`planClipboard.ts`); нові сутності через `pasteCloneEntities` у `stageStore` (нові `id`).
-- **Взаємовиключення**: рамка, вимір і placement не вмикаються одночасно; перехід у **3D** або **очищення вправи** вимикає рамку й скидає внутрішній буфер копіювання.
+- **Режим рамки** (`marqueeModeActive` у `App.tsx` → `StageCanvas`): ЛКМ тягне прямокутник; у світі AABB. У виділення потрапляють об’єкти, у яких **центр** (`position`) всередині прямокутника (`collectIdsInWorldRect` / логіка в канвасі).
+- **API канваса** — `StageCanvasHandle`: `getSelectionForCopy()`, `getSpawnCenterWorld()` (центр поточного видимого вікна в світових метрах); виклики з `App.tsx`.
+- **Копіювання** — **Ctrl+C** / Cmd+C і кнопка: deep clone виділення; внутрішній буфер у `App`; додатково спроба записати JSON у системний clipboard (помилки ігноруються).
+- **Вставка** — **Ctrl+V** / кнопка: `shiftClonesForPaste` і пов’язана логіка в **`planClipboard.ts`**; центр мас набору вирівнюється з `getSpawnCenterWorld`; нові сутності через `pasteCloneEntities` у `stageStore` (нові `id`).
+- **Взаємовиключення**: рамка, вимір і placement; перехід у **3D** або **очищення вправи** вимикає рамку й скидає внутрішній буфер.
 
 ## Домен: мішені та підрахунки
 
-- **Типи мішеней** — `TargetType` у `models.ts` (папір IPSC/A4, метал: пластина/поппери, кераміка, ківаки папір/кераміка).
-- **`isPaperTargetType` / `isCeramicTargetType`** (`targetSpecs.ts`) — класифікація для геометрії та тексту. Кераміка окремо від сталі для тексту брифінгу.
-- **`computeMinRounds`** (`computeMinRounds.ts`) — евристика мінімуму пострілів: папір ×2, сталь/кераміка ×1 на «одиницю»; подвійний ківак рахується як дві мішені.
-- **`summarizeTargets`** (`targetSummary.ts`) — рядок для поля «Мішені» у брифінгу/PDF: метал, **кераміка**, папір, no-shoot (UK/EN).
-- **`countStageTargetUnits`** — кількість «одиниць» на плані (подвійний ківак = 2).
+Повний перелік — **`TargetType`** у `models.ts`. Коротко:
+
+- **Папір:** `paperIpsc` (B2), `paperA4`, `paperMiniIpsc` (номінал B3).
+- **Метал:** `metalPlate` (квадрат Appendix C3: 15 / 20 / 30 см, поле `metalRectSideCm`), `metalPlateStand50`, `metalPlateStand100`, `popper`, `miniPopper`.
+- **Кераміка:** `ceramicPlate` (радіус і колір — `ceramicPlateSpec.ts`).
+- **Ківаки:** `swingerSinglePaper` / `Double`, `swingerSingleCeramic` / `Double` (геометрія — `swingerGeometry.ts`).
+
+Допоміжна логіка:
+
+- **`targetSpecs.ts`** — `isPaperTargetType`, `isCeramicTargetType`, `isSquareSteelPlateTargetType`, тощо.
+- **`computeMinRounds.ts`** — евристика мінімуму пострілів (папір ×2, сталь/кераміка ×1; подвійний ківак = дві одиниці).
+- **`targetSummary.ts`** — текст для брифінгу/PDF (метал, кераміка, папір, NS).
+- **`countStageTargetUnits`** — одиниці на плані для підказок UI.
+
+## Домен: реквізит
+
+Повний перелік — **`PropType`** у `models.ts` (двері, штрафна лінія, щити звичайні/подвійні/з портом і варіантами порту, дверцята в порті, бочка, шини, **стіл** `woodTable`, **стілець** `woodChair`, **стійка** `weaponRackPyramid`, качель, платформа, тунель Купера, стартова позиція). Дефолтні розміри та геометрія плану/3D — **`propGeometry.ts`** (у т.ч. спеціалізовані малювалки для щитів з портом, качелі тощо в `StageCanvas` / `StageView3D`).
 
 ## Файл вправи (`*.stage.json`)
 
-- Формат описаний у `stageProjectFile.ts`: константи `STAGE_PROJECT_FORMAT`, `STAGE_PROJECT_VERSION`, розширення `.stage.json`.
-- Містить знімок сцени (ім’я, клас зброї, розмір поля, `targets`, `props`) та об’єкт брифінгу.
-- При завантаженні застосовуються міграції реквізиту (`migrateProp` у `stageStore.ts`, узгоджено з парсером).
+- Контракт: `stageProjectFile.ts` — `STAGE_PROJECT_FORMAT`, `STAGE_PROJECT_VERSION`, розширення `.stage.json`.
+- Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `targets`, `props`) + об’єкт брифінгу.
+- Для квадратних сталевих мішеней у JSON зберігається опційне **`metalRectSideCm`** (15 | 20 | 30).
+- При завантаженні: `migrateProp` у `stageStore` (узгоджено з парсером).
 
 ## Стан і undo
 
-- **Сцена** — `useStageStore` з `temporal` (zundo): undo/redo для мішеней, реквізиту, поля.
-- **Брифінг** — окремий `useBriefingStore` без undo (зміни брифінгу не відкочуються разом із сценою).
+- **Сцена** — `useStageStore` + `temporal` (zundo): undo/redo для мішеней, реквізиту, розміру поля, імені, класу зброї.
+- **Брифінг** — `useBriefingStore` **без** undo (зміни брифінгу не відкочуються разом із сценою).
 
 ## Чернетка сесії (localStorage)
 
-- Ключ `stage-builder-session-draft-v1` (`SESSION_DRAFT_STORAGE_KEY` у `src/application/sessionDraft.ts`).
-- Під час старту `main.tsx` викликає `hydrateSessionDraft()` **до** першого рендеру: обгортка проганяється через `parseStageProjectJson`, той самий контракт що й `*.stage.json`.
-- Після відновлення історія undo очищається (`temporal.clear()`). Пошкоджений чернетковий JSON видаляється зі сховища.
-- `SessionDraftPersist` у `App.tsx` підписується на обидва стори й зберігає з debounce ~450 ms.
-- Очистити вправу: кнопка-іконка кошика у стовпчику дій 2D-карти (`App.tsx`, `app__plan-map-action-btn--danger`); `window.confirm` з текстом `project.clearConfirm`, далі `resetSceneToDefaults`, `defaultStageBriefing()`, `temporal.clear`, `clearSessionDraftStorage`.
+- Ключ **`stage-builder-session-draft-v1`** (`SESSION_DRAFT_STORAGE_KEY` у `sessionDraft.ts`).
+- Обгортка зберігання містить **`draftMetaVersion`** (`SESSION_DRAFT_META_VERSION`), час `savedAt`, знімок `stage` + `briefing`.
+- Старт: `hydrateSessionDraft()` у `main.tsx` **до** першого рендеру; парсинг через `parseStageProjectJson`. Після відновлення — `temporal.clear()`. Пошкоджений JSON видаляється зі сховища.
+- `SessionDraftPersist` — debounce **450 ms** (`DEBOUNCE_MS`).
+- Очистити вправу: кнопка кошика на 2D-карті; `resetSceneToDefaults`, `defaultStageBriefing()`, `temporal.clear`, `clearSessionDraftStorage`.
 
-## PWA
+## 3D
 
-- Конфігурація у `vite.config.ts` (`vite-plugin-pwa`): `manifest` (`name`, `short_name`, іконки), `workbox` для прекешу.
-- `short_name` використовується як підпис під іконкою на частині платформ; має збігатися з бажаною короткою назвою для домашнього екрана.
-- У `index.html`: `theme-color`, `apple-mobile-web-app-title`, OG/Twitter meta.
+- **`StageView3D.tsx`** — R3F + Drei; імпорт маппінгу площадки X/Y → Three.js через `stageCoordinates3d.ts`.
+- Знімок сцени для PDF знімається через ref/handle компонента 3D (узгоджено з `App.tsx` / експортом).
+
+## PDF брифінгу
+
+- **`exportBriefingPdf.ts`** — таблиця полів брифінгу, вбудований знімок 3D, QR.
+- **`pdfFonts.ts`** — підвантаження **Roboto** (Regular/Bold) у base64 і реєстрація в jsPDF, щоб коректно рендерити кирилицю.
+- **`a4PrintLayout.ts`** — розміри A4 в мм/px, співвідношення для знімка плану в UI (узгоджено з PDF).
+
+## PWA та встановлення
+
+- **`vite.config.ts`** — `vite-plugin-pwa`: **`registerType: 'prompt'`** — новий service worker не активується сам, поки користувач не натисне оновлення в UI (див. нижче). `workbox.globPatterns` включає `ttf` (шрифти для PDF у кеші), `manifest` (іконки з query **`ASSET_QUERY`**).
+- **`main.tsx`** — `registerSW` з `onNeedRefresh` → **`notifyPwaUpdateAvailable()`** (`pwaUpdateGate.ts`). Повернута функція зберігається через **`setPwaApplyUpdate`** і викликається з банера при «Оновити».
+- **Обмеження частоти повідомлення** — ключ `localStorage` **`stage-builder-pwa-update-prompt-at`**: банер про нову версію показується не частіше ніж раз на **24 години** (`PWA_UPDATE_PROMPT_COOLDOWN_MS`). Час фіксується при відкритті банера; якщо оновлення є, але інтервал не вийшов, подія не шлеться (без спаму). Після закінчення доби наступний `onNeedRefresh` знову може показати банер.
+- **`PwaUpdateBanner.tsx`** — рядок під стрічкою staging у `App.tsx`; кнопки «Оновити» / «Пізніше», рядки в `messages.ts` (`pwa.update*`).
+- **`usePwaInstall`** — обробка `beforeinstallprompt` для кнопки встановлення в UI (якщо браузер пропонує).
+- У `index.html`: `theme-color`, Apple / OG / Twitter meta; плейсхолдер **`__ASSET_Q__`** підставляється плагіном (той самий bust кешу, що й у конфігу).
 
 ## Збірка та якість
 
 ```bash
-npm run dev       # розробка
-npm run build     # tsc (app) + vite build → dist/
-npm test          # Vitest; файли *.test.ts виключені з tsconfig.app (див. нижче)
-npm run lint
+npm run dev       # розробка (Vite)
+npm run build     # tsc -b && vite build → dist/
+npm test          # Vitest (src/**/*.test.ts)
+npm run lint      # ESLint
 npm run check     # як у CI: lint + test + build
+npm run icons     # node scripts/generate-icons-from-preview.mjs
 ```
 
 ### TypeScript і тести
 
-- `tsconfig.app.json` **виключає** `src/**/*.test.ts` з перевірки `tsc -b`, тому тестові фікстури повинні вручну відповідати типам домену (`Target.position`, `rotationRad`, тощо).
-- Рекомендація: періодично проганяти `tsc` з включеними тестами або тримати фікстури строго типізованими.
+- `tsconfig.app.json` **виключає** `src/**/*.test.ts` з `tsc -b`; фікстури в тестах мають відповідати доменним типам.
+- Наявні unit-файли: `computeMinRounds.test.ts`, `targetSummary.test.ts`, `stageProjectFile.test.ts`.
+
+### Конфігурація Vite / прев’ю ассетів
+
+- Константа **`ASSET_QUERY`** у `vite.config.ts` — після зміни `public/og-image.png`, PWA-іконок або favicon збільште версію в query і задеплойте (кеш Telegram/CDN).
 
 ## SEO та індексація
 
-- **`index.html`** — `title`, `meta description` (UK), `canonical`, `hreflang` (uk/en/x-default на той самий URL — мова в UI), Open Graph + Twitter Card, `robots` / `googlebot` (index, follow, прев’ю зображень). Абсолютні `og:image` / `twitter:image` з query-бастом з `vite.config.ts` (`ASSET_QUERY`): після зміни `public/og-image.png` збільште версію в query і задеплойте — інакше Telegram/інші клієнти можуть показувати старе прев’ю. У Telegram можна надіслати посилання боту **[@WebpageBot](https://t.me/WebpageBot)** (оновлення кешу прев’ю).
+- **`index.html`** — `title`, `meta description` (UK), `canonical`, `hreflang` (uk/en/x-default на той самий URL — мова в UI), Open Graph + Twitter Card, `robots` / `googlebot` (index, follow, прев’ю зображень). Абсолютні `og:image` / `twitter:image` з query-параметром: плейсхолдер **`__ASSET_Q__`** замінюється на `ASSET_QUERY` з `vite.config.ts` — після зміни `public/og-image.png` збільште версію в query і задеплойте (Telegram та інші клієнти інакше можуть показувати старе прев’ю). Оновити кеш прев’ю в Telegram можна через бота **[@WebpageBot](https://t.me/WebpageBot)**.
 - **`public/robots.txt`** — `Allow: /` і рядок **`Sitemap:`** на абсолютний URL.
-- **`public/sitemap.xml`** — одна URL-адреса головної сторінки (SPA без маршрутів). Якщо з’явиться власний домен — оновити домен у `sitemap.xml`, `robots.txt`, `index.html` (canonical, og:url, JSON-LD).
-- **JSON-LD** (`WebApplication`) у `index.html` для розуміння сервісу пошуковиками.
+- **`public/sitemap.xml`** — одна URL головної сторінки (SPA без маршрутів). При зміні домену оновити `sitemap.xml`, `robots.txt`, `index.html` (canonical, og:url, JSON-LD).
+- **JSON-LD** (`WebApplication`) у `index.html`.
 - **Vercel** — у `vercel.json` заголовок `Content-Type` для `/sitemap.xml`.
-- **Після змін домену** — [Google Search Console](https://search.google.com/search-console): додати властивість, підтвердити, надіслати sitemap `https://…/sitemap.xml`. Для повного рендеру сторінки Google вже виконує JS; додатковий SSR/prerender — окреме покращення.
+- **Search Console** — після зміни домену додати властивість і надіслати sitemap. Google виконує JS; SSR/prerender — окреме покращення.
+- **Staging-білд:** якщо `VITE_SITE_ENV=staging`, плагін `htmlTransformPlugin` у `vite.config.ts` підміняє `robots`/`googlebot` на **noindex, nofollow**, змінює `<title>` на варіант з позначкою staging. У **`App.tsx`** при `import.meta.env.VITE_SITE_ENV === 'staging'` показується стрічка **`app__staging-ribbon`** (рядок `tree.app.stagingRibbon` у `messages.ts`).
 
 ## Аналітика
 
-- **Vercel Web Analytics** — у коді підключено `<Analytics />` з `@vercel/analytics/react` у `main.tsx`. У [Vercel Dashboard](https://vercel.com) → проєкт → **Analytics** увімкніть Web Analytics для production (дані з’являться після трафіку). Preview-деплої зазвичай не потребують окремого налаштування для тестів.
+- **Vercel Web Analytics** — у коді підключено `<Analytics />` з `@vercel/analytics/react` у `main.tsx`. У [Vercel Dashboard](https://vercel.com) → проєкт → **Analytics** увімкніть Web Analytics для production (дані після трафіку). Preview-деплої зазвичай не потребують окремого налаштування для тестів.
 
 ### Google Analytics 4 (покроково)
 
-У проєкті вже є компонент `GoogleAnalytics` (`src/presentation/components/GoogleAnalytics.tsx`): він підвантажує `gtag.js` **тільки** якщо задано змінну середовища `VITE_GA_MEASUREMENT_ID` і зібрано **production**-бандл (`import.meta.env.PROD`). У режимі `npm run dev` GA **не** викликається, щоб не забруднювати звіти.
+Компонент `GoogleAnalytics` (`src/presentation/components/GoogleAnalytics.tsx`) підвантажує `gtag.js` **тільки** якщо задано **`VITE_GA_MEASUREMENT_ID`** і зібрано **production**-бандл (`import.meta.env.PROD`). У `npm run dev` GA не викликається.
 
-1. **Створити ресурс GA4** — увійдіть у [Google Analytics](https://analytics.google.com) → **Admin** (шестерня) → у колонці **Account** створіть акаунт (якщо ще немає) → у колонці **Property** натисніть **Create Property**, заповніть назву, часовий пояс, валюту.
-2. **Потік даних (Web)** — після створення ресурсу оберіть **Web**, вкажіть **Website URL** (наприклад `https://stage-builder.vercel.app`) і назву потоку → **Create stream**.
-3. **Measurement ID** — на сторінці потоку скопіюйте **Measurement ID** у форматі `G-XXXXXXXXXX` (не плутати з legacy Universal Analytics).
-4. **Vercel** — [Project → Settings → Environment Variables](https://vercel.com/docs/projects/environment-variables): додайте `VITE_GA_MEASUREMENT_ID` = `G-XXXXXXXXXX`, середовище **Production** (за бажанням також **Preview** для тесту preview-URL). Збережіть.
-5. **Redeploy** — Vite підставляє `VITE_*` **на етапі збірки**: після додавання змінної виконайте **Redeploy** останнього production-деплою (або порожній commit / push у `main`), інакше в клієнтському JS старий бандл без ID.
-6. **Перевірка** — у GA4 відкрийте **Reports → Realtime** і відкрийте production-сайт у браузері; протягом хвилини має з’явитися активний користувач. У **Network** (DevTools) мають бути запити до `google-analytics.com` / `googletagmanager.com`.
-7. **Локальна перевірка збірки** — скопіюйте `.env.example` у `.env`, розкоментуйте/додайте `VITE_GA_MEASUREMENT_ID=G-…`, виконайте `npm run build` і `npm run preview`, зайдіть на `localhost` — у Realtime також має бути візит (не використовуйте той самий ID для довгої розробки, щоб не змішувати тест і прод).
+1. **Створити ресурс GA4** — [Google Analytics](https://analytics.google.com) → Admin → **Create Property**.
+2. **Потік Web** — URL сайту (наприклад `https://stage-builder.vercel.app`).
+3. **Measurement ID** — формат `G-XXXXXXXXXX`.
+4. **Vercel** — [Environment Variables](https://vercel.com/docs/projects/environment-variables): `VITE_GA_MEASUREMENT_ID` = `G-…`, середовище Production (за бажанням Preview).
+5. **Redeploy** — змінні `VITE_*` вбудовуються на **збірці**; після додавання змінної потрібен новий deploy.
+6. **Перевірка** — GA4 **Realtime** і запити в Network до `google-analytics.com` / `googletagmanager.com`.
+7. **Локально** — `.env` з `VITE_GA_MEASUREMENT_ID`, `npm run build` + `npm run preview` (не змішувати тестовий трафік з продом на одному ID).
 
-**Разом із Vercel Analytics** — обидва інструменти можуть працювати паралельно: Vercel дає швидкий огляд у своєму дашборді, GA4 — глибші звіти, аудиторії, експорт у BigQuery (на платних планах GA), інтеграції.
+**Разом із Vercel Analytics** — можна використовувати паралельно.
 
-**Google Search Console** — за бажанням у **Admin → Product links** зв’яжіть ресурс GA4 з Search Console, щоб бачити пошукові запити в контексті аналітики (потрібні права на обидві властивості).
+**Google Search Console** — за бажанням зв’язати з GA4 у Admin → Product links.
 
-**Приватність і cookies** — GA4 використовує файли cookie та обробку персональних даних; для відвідувачів з ЄС/Великої Британії тощо часто потрібні **політика конфіденційності**, механізм **згоди (consent)** перед завантаженням скрипта та налаштування в **Admin → Data collection** (наприклад consent mode, якщо підключите банер). Це не реалізовано в коді проєкту — відповідальність на власнику сайту.
+**Приватність і cookies** — GA4 використовує cookie; для ЄС/Великої Британії часто потрібні політика, **consent** перед скриптом, налаштування в GA — у коді проєкту не реалізовано.
 
-**Кастомні події** — за потреби можна викликати `window.gtag('event', 'event_name', { ... })` після ініціалізації; для чистого TypeScript варто оголосити тип для `window.gtag` або винести обгортку в окремий модуль.
+**Кастомні події** — `window.gtag('event', …)` після ініціалізації; для TypeScript варто типізувати `window.gtag` або обгортку-модуль.
 
 ## CI та деплой
 
@@ -120,23 +178,18 @@ npm run check     # як у CI: lint + test + build
 
 | Середовище | Що це | Типова перевірка |
 |------------|--------|------------------|
-| **Local** | `npm run dev` (порт Vite) або `npm run build` + `npm run preview` | Швидкі зміни UI/логіки без хмари. |
-| **Staging** | Окремий деплой на Vercel з гілки **`staging`** (див. нижче) | Повна збірка як у проді, стабільний URL для команди/клієнта. |
-| **Production** | Поточний бойовий сайт (`main` → Vercel Production) | Те, що бачать користувачі та індексує пошук. |
+| **Local** | `npm run dev` або `npm run build` + `npm run preview` | Швидкі зміни без хмари. |
+| **Staging** | Окремий деплой на Vercel з гілки **`staging`** | Повна збірка як у проді, стабільний URL. |
+| **Production** | `main` → Vercel Production | Бойовий сайт і індексація. |
 
-У **одному** Vercel-проєкті за замовчуванням лише **`main`** дає Production URL; інші гілки отримують **Preview** з унікальним URL на кожен commit (зручно для PR, але URL «плаває»). Щоб мати **постійний staging** (одна й та сама адреса для гілки `staging`):
+Щоб мати **постійний staging** (одна адреса для гілки `staging`):
 
-1. У [Vercel Dashboard](https://vercel.com) створіть **другий проєкт** (наприклад `stage-builder-staging`), підключіть **той самий** GitHub-репозиторій.
-2. У налаштуваннях цього проєкту: **Production Branch** = `staging` (не `main`).
-3. Після першого push у гілку `staging` з’явиться стабільний домен виду `…vercel.app` — це і є **staging**.
-4. Робочий цикл: зміни → merge/push у **`staging`** → перевірка на staging URL → коли все ок — merge **`staging` → `main`** (або PR у `main`) для продакшену.
+1. У [Vercel Dashboard](https://vercel.com) створіть **другий проєкт**, підключіть той самий репозиторій.
+2. **Production Branch** цього проєкту = `staging`.
+3. У змінних цього проєкту (Production): **`VITE_SITE_ENV=staging`** — HTML отримає noindex, змінений title і стрічку в UI (див. SEO вище).
+4. Робочий цикл: зміни → `staging` → перевірка → merge у `main` для продакшену.
 
-**Змінні середовища (staging-проєкт на Vercel):**
-
-- Обов’язково для «маркованого» staging у коді: **`VITE_SITE_ENV=staging`** (Environment Variables → Production у цьому проєкті, бо для нього production-гілка = `staging`). Тоді збірка підставляє **`noindex`** у `index.html`, змінює `<title>` і показує жовту стрічку в UI.
-- Скопіюйте інші змінні з production за потреби; для GA можна **не** задавати `VITE_GA_MEASUREMENT_ID` (аналітика не підвантажиться) або окремий тестовий потік GA4.
-
-**SEO / індексація:** додатково можна увімкнути **Deployment Protection** на staging-проєкті. Статичний `public/robots.txt` у репозиторії один на всі деплої — для окремого `robots.txt` на staging потрібні були б Edge middleware / окремий билд-скрипт.
+**Примітка:** статичний `public/robots.txt` один на всі деплої; окремий robots для staging лише через middleware / окремий билд-скрипт.
 
 ### CI
 
@@ -145,29 +198,40 @@ npm run check     # як у CI: lint + test + build
 
 ### Як задеплоїти production
 
-1. Переконайтесь, що локально проходить **`npm run check`**.
-2. Закомітьте зміни в **`main`** і виконайте **`git push origin main`** (або merge PR у `main`).
-3. У [Vercel Dashboard](https://vercel.com) дочекайтесь завершення **Deployment** для production-гілки; після успіху оновиться бойовий URL проєкту.
-
-Окремого скрипта `npm run deploy` у репозиторії немає — деплой тригериться **Git**-подією на підключеному репозиторії.
+1. Локально має проходити **`npm run check`**.
+2. Push у **`main`** (або merge PR).
+3. Дочекатися деплою в Vercel. Окремого `npm run deploy` у репозиторії немає.
 
 ## Відомі напрями покращень (рев’ю)
 
-1. **Розмір `App.tsx`** — великий монолітний компонент; логічно винести панелі брифінгу, хедер, onboarding у окремі модулі.
-2. **Code splitting** — додатково можна винести важкі частини брифінгу або мінімізувати чанк `StageCanvas`, якщо знадобиться.
-3. **Дублікат генерації id** — `newId` у `stageStore` та `newEntityId` у `stageProjectFile`; можна винести в спільний `domain/id.ts`.
-4. **Покриття тестами** — розширити тести для `targetSpecs`/`swingerGeometry` кутових випадків і для критичних гілок `stageProjectFile` (вже є базові тести).
+1. **Розмір `App.tsx`** — великий моноліт; винести панелі брифінгу, хедер, onboarding у окремі модулі.
+2. **Code splitting** — за потреби винести важкі частини брифінгу або зменшити чанк `StageCanvas`.
+3. **Дублікат генерації id** — узгодити `newId` і `newEntityId` (спільний `domain/id.ts`).
+4. **Тести** — `targetSpecs` / `swingerGeometry` / `safetyAngles` / гілки `stageProjectFile`; розширити покриття.
+5. **Клас зброї в UI** — за потреби знову обмежити палітру мішеней у тулбарі відповідно до `weaponClass`.
 
 ## Корисні файли для орієнтації
 
 | Тема | Файл |
 |------|------|
 | Продуктові версії V0 / V1 | `docs/VERSIONING.md` |
-| Моделі сцени | `src/domain/models.ts` |
-| 2D канвас (мішені, лінійки, вимір) | `src/presentation/components/StageCanvas.tsx` |
-| Увімкнення виміру (M, кнопка, 2D/3D) | `src/App.tsx` |
-| Режим розстановки (placement) | `src/domain/placementMode.ts`, `StageBuilderToolbar.tsx` |
+| Зворотний зв’язок (ідеї) | `docs/USER_FEEDBACK.md` |
+| Моделі мішеней і реквізиту | `src/domain/models.ts` |
+| Розмір поля, пресети, snap | `src/domain/field.ts`, `src/application/stageStore.ts` |
+| Парсинг / збірка JSON | `src/domain/stageProjectFile.ts` |
+| Копіювання на плані | `src/domain/planClipboard.ts`, `StageCanvasHandle` у `StageCanvas.tsx` |
+| 2D канвас | `src/presentation/components/StageCanvas.tsx` |
+| Вимір, рамка, гарячі клавіші (частина) | `src/App.tsx` |
+| Режим розстановки | `src/domain/placementMode.ts`, `StageBuilderToolbar.tsx` |
+| Порядок реквізиту в UI | `src/domain/infrastructureProps.ts` |
 | 3D | `src/presentation/components/StageView3D.tsx` |
-| PDF | `src/presentation/lib/exportBriefingPdf.ts` |
-| Рядки UI/PDF | `src/i18n/messages.ts` |
+| Координати Three.js | `src/presentation/lib/stageCoordinates3d.ts` |
+| PDF | `src/presentation/lib/exportBriefingPdf.ts`, `pdfFonts.ts` |
+| A4 / пропорції знімка | `src/domain/a4PrintLayout.ts` |
+| Кути безпеки на плані | `src/domain/safetyAngles.ts` |
+| Рядки UI / PDF таблиці | `src/i18n/messages.ts` |
+| Чернетка сесії | `src/application/sessionDraft.ts`, `SessionDraftPersist.tsx` |
+| PWA: реєстрація SW, ліміт банера | `src/main.tsx`, `src/application/pwaUpdateGate.ts` |
+| PWA: банер оновлення | `src/presentation/components/PwaUpdateBanner.tsx` |
+| PWA + HTML transform | `vite.config.ts` |
 | Генерація іконок | `scripts/generate-icons-from-preview.mjs` |
