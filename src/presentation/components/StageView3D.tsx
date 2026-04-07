@@ -1217,70 +1217,36 @@ function buildWeaponRackSideTriangleGeometry(
   return geo
 }
 
-/** Спрощена вертикальна M4 (карабін), стволом угору (+Y); для стійки-піраміди. */
-function WeaponRackM4Vertical3D({ yStockBottom }: { yStockBottom: number }) {
-  const polymer = { color: '#1a2228', roughness: 0.82, metalness: 0.07 } as const
-  const alum = { color: '#4a5d6a', roughness: 0.36, metalness: 0.5 } as const
-  const barrelM = { color: '#0c1216', roughness: 0.4, metalness: 0.62 } as const
+/** Виступ труби над верхом стійки (м). */
+const WEAPON_RACK_PIPE_ABOVE_TOP_M = 0.2
 
-  return (
-    <group position={[0, yStockBottom, 0]}>
-      <mesh position={[0, 0.052, 0]} castShadow receiveShadow>
-        <boxGeometry args={[0.044, 0.104, 0.05]} />
-        <meshStandardMaterial {...polymer} />
-      </mesh>
-      <mesh position={[0.006, 0.118, 0.022]} rotation={[0.12, 0, 0]} castShadow receiveShadow>
-        <boxGeometry args={[0.032, 0.084, 0.04]} />
-        <meshStandardMaterial {...polymer} />
-      </mesh>
-      <mesh position={[0, 0.198, 0]} castShadow receiveShadow>
-        <boxGeometry args={[0.148, 0.068, 0.036]} />
-        <meshStandardMaterial {...alum} />
-      </mesh>
-      <mesh position={[0.002, 0.278, 0]} castShadow receiveShadow>
-        <boxGeometry args={[0.158, 0.052, 0.04]} />
-        <meshStandardMaterial {...alum} />
-      </mesh>
-      <mesh position={[0.008, 0.308, 0.024]} castShadow receiveShadow>
-        <boxGeometry args={[0.026, 0.1, 0.034]} />
-        <meshStandardMaterial {...polymer} />
-      </mesh>
-      <mesh position={[0, 0.438, 0]} castShadow receiveShadow>
-        <boxGeometry args={[0.248, 0.048, 0.048]} />
-        <meshStandardMaterial {...alum} />
-      </mesh>
-      <mesh position={[0, 0.648, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[0.0085, 0.009, 0.3, 10]} />
-        <meshStandardMaterial {...barrelM} />
-      </mesh>
-      <mesh position={[0, 0.812, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[0.011, 0.0135, 0.034, 8]} />
-        <meshStandardMaterial {...barrelM} />
-      </mesh>
-    </group>
-  )
-}
-
-/** Стійка: низ + верхній брусок + 2 бічні трикутники; вершини трикутників на нижній грані бруска. */
+/** Стійка: низ + верхній брусок (квадратне січення, довжина вздовж X) + 2 трикутники; вертикальна труба з виступом зверху. */
 function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const hw = p.sizeM.x / 2
   const hz = p.sizeM.y / 2
   const H = propHeightM(p)
   const t = 0.036
   const red = { color: '#e53935', roughness: 0.74, metalness: 0.06 } as const
+  const pipeMat = { color: '#2d3844', roughness: 0.48, metalness: 0.42 } as const
 
   const halfW = hw * 0.94
   const halfD = hz * 0.92
   const yBotC = t * 0.55
   const botHalfH = (t * 0.52) / 2
   const yShelfTop = yBotC + botHalfH
-  const beamH = 0.088
-  const yTopC = H - beamH / 2
-  const yTriApex = yTopC - beamH / 2
+  /** Квадратний переріз бруска (Y і Z однакові), довжина бруска вздовж X. */
+  const beamSection = 0.072
+  const beamLen = halfW * 2 * 0.9
+  const yTopC = H - beamSection / 2
+  const yTriApex = yTopC - beamSection / 2
   const yTriBase = yBotC + t * 0.27
 
-  const wTop = halfW * 2 * 0.9
-  const dTop = halfD * 2 * 0.88
+  const yBeamTop = H
+  const yPipeTop = yBeamTop + WEAPON_RACK_PIPE_ABOVE_TOP_M
+  const yPipeBottom = yShelfTop + 0.012
+  const pipeLen = Math.max(yPipeTop - yPipeBottom, 0.05)
+  const yPipeMid = (yPipeBottom + yPipeTop) / 2
+  const pipeR = 0.014
 
   const triGeos = useMemo(
     () => ({
@@ -1307,7 +1273,7 @@ function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
         <meshStandardMaterial {...red} />
       </mesh>
       <mesh position={[0, yTopC, 0]} castShadow receiveShadow>
-        <boxGeometry args={[wTop, beamH, dTop]} />
+        <boxGeometry args={[beamLen, beamSection, beamSection]} />
         <meshStandardMaterial {...red} />
       </mesh>
       <mesh geometry={triGeos.left} castShadow receiveShadow>
@@ -1316,7 +1282,10 @@ function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
       <mesh geometry={triGeos.right} castShadow receiveShadow>
         <meshStandardMaterial {...triMat} />
       </mesh>
-      <WeaponRackM4Vertical3D yStockBottom={yShelfTop + 0.008} />
+      <mesh position={[0, yPipeMid, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[pipeR, pipeR, pipeLen, 16]} />
+        <meshStandardMaterial {...pipeMat} />
+      </mesh>
     </group>
   )
 }
