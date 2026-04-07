@@ -371,6 +371,7 @@
   font-size: 0.82rem;
   line-height: 1.52;
   color: var(--text);
+  white-space: pre-line;
 }
 
 .app__onboarding-note {
