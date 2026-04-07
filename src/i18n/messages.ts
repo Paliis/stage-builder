@@ -54,6 +54,10 @@ export type MessageTree = {
     shield: string
     shieldDouble: string
     shieldWithPort: string
+    shieldPortLow: string
+    shieldPortHigh: string
+    shieldPortSlanted: string
+    shieldWithPortDoor: string
     door: string
     faultLine: string
     barrel: string
@@ -74,7 +78,10 @@ export type MessageTree = {
   targets: {
     paperIpsc: string
     paperA4: string
+    paperMiniIpsc: string
     metalPlate: string
+    metalPlateStand50: string
+    metalPlateStand100: string
     popper: string
     miniPopper: string
     ceramicPlate: string
@@ -84,7 +91,10 @@ export type MessageTree = {
     swingerDoubleCeramic: string
     noShootPaper: string
     noShootPaperA4: string
+    noShootPaperMini: string
     noShootMetal: string
+    noShootMetalStand50: string
+    noShootMetalStand100: string
     noShootPopper: string
     noShootMiniPopper: string
   }
@@ -276,7 +286,10 @@ export const ukMessages: MessageTree = {
   targets: {
     paperIpsc: '+ \u041f\u0430\u043f\u0456\u0440 IPSC',
     paperA4: '+ A4 \u043f\u0430\u043f\u0456\u0440',
+    paperMiniIpsc: '+ Mini IPSC (\u043f\u0430\u043f\u0456\u0440)',
     metalPlate: '+ \u041c\u0435\u0442\u0430\u043b (\u043a\u0432\u0430\u0434\u0440.)',
+    metalPlateStand50: '+ \u041c\u0435\u0442\u0430\u043b, \u0441\u0442\u0456\u0439\u043a\u0430 50 \u0441\u043c',
+    metalPlateStand100: '+ \u041c\u0435\u0442\u0430\u043b, \u0441\u0442\u0456\u0439\u043a\u0430 1 \u043c',
     popper: '+ \u041f\u043e\u043f\u043f\u0435\u0440',
     miniPopper: '+ \u041c\u0456\u043d\u0456-\u043f\u043e\u043f\u043f\u0435\u0440',
     ceramicPlate: '+ \u041a\u0435\u0440\u0430\u043c\u0456\u043a\u0430',
@@ -286,7 +299,10 @@ export const ukMessages: MessageTree = {
     swingerDoubleCeramic: '+ \u041a\u0456\u0432\u0430\u043a 2\u00d7 \u043a\u0435\u0440.',
     noShootPaper: '+ NS \u043f\u0430\u043f\u0456\u0440 IPSC',
     noShootPaperA4: '+ NS A4',
+    noShootPaperMini: '+ NS Mini IPSC',
     noShootMetal: '+ NS \u043c\u0435\u0442\u0430\u043b',
+    noShootMetalStand50: '+ NS \u043c\u0435\u0442\u0430\u043b 50 \u0441\u043c',
+    noShootMetalStand100: '+ NS \u043c\u0435\u0442\u0430\u043b 1 \u043c',
     noShootPopper: '+ NS \u043f\u043e\u043f\u043f\u0435\u0440',
     noShootMiniPopper: '+ NS \u043c\u0456\u043d\u0456',
   },
@@ -294,6 +310,10 @@ export const ukMessages: MessageTree = {
     shield: '+ \u0429\u0438\u0442',
     shieldDouble: '+ \u0429\u0438\u0442 2\u00d72 \u043c',
     shieldWithPort: '+ \u0429\u0438\u0442 \u0437 \u043f\u043e\u0440\u0442\u043e\u043c',
+    shieldPortLow: '+ \u0429\u0438\u0442, \u043d\u0438\u0437\u044c\u043a\u0438\u0439 \u043f\u043e\u0440\u0442',
+    shieldPortHigh: '+ \u0429\u0438\u0442, \u0432\u0438\u0441\u043e\u043a\u0438\u0439 \u043f\u043e\u0440\u0442',
+    shieldPortSlanted: '+ \u0429\u0438\u0442, \u043a\u043e\u0441\u0438\u0439 \u043f\u043e\u0440\u0442',
+    shieldWithPortDoor: '+ \u0429\u0438\u0442, \u0434\u0432\u0435\u0440\u0446\u044f\u0442\u0430 \u0432 \u043f\u043e\u0440\u0442\u0456',
     door: '+ \u0414\u0432\u0435\u0440\u0456',
     faultLine: '+ \u0428\u0442\u0440\u0430\u0444\u043d\u0430 \u043b\u0456\u043d\u0456\u044f',
     barrel: '+ \u0411\u043e\u0447\u043a\u0430',
@@ -503,7 +523,10 @@ export const enMessages: MessageTree = {
   targets: {
     paperIpsc: '+ IPSC paper',
     paperA4: '+ A4 paper',
+    paperMiniIpsc: '+ Mini IPSC paper',
     metalPlate: '+ Steel plate',
+    metalPlateStand50: '+ Steel plate, 50 cm stand',
+    metalPlateStand100: '+ Steel plate, 1 m stand',
     popper: '+ Popper',
     miniPopper: '+ Mini popper',
     ceramicPlate: '+ Ceramic',
@@ -513,7 +536,10 @@ export const enMessages: MessageTree = {
     swingerDoubleCeramic: '+ Swinger 2\u00d7 ceramic',
     noShootPaper: '+ NS IPSC paper',
     noShootPaperA4: '+ NS A4',
+    noShootPaperMini: '+ NS Mini IPSC',
     noShootMetal: '+ NS steel',
+    noShootMetalStand50: '+ NS steel 50 cm',
+    noShootMetalStand100: '+ NS steel 1 m',
     noShootPopper: '+ NS popper',
     noShootMiniPopper: '+ NS mini',
   },
@@ -521,6 +547,10 @@ export const enMessages: MessageTree = {
     shield: '+ Shield',
     shieldDouble: '+ Shield 2\u00d72 m',
     shieldWithPort: '+ Shield w/ port',
+    shieldPortLow: '+ Shield, low port',
+    shieldPortHigh: '+ Shield, high port',
+    shieldPortSlanted: '+ Shield, slanted port',
+    shieldWithPortDoor: '+ Shield, door in port',
     door: '+ Door',
     faultLine: '+ Penalty line',
     barrel: '+ Barrel',

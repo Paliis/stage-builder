@@ -7,10 +7,13 @@ function targetAddButtonClass(type: TargetType): string {
   switch (type) {
     case 'paperIpsc':
     case 'paperA4':
+    case 'paperMiniIpsc':
     case 'swingerSinglePaper':
     case 'swingerDoublePaper':
       return 'app__tb app__tb--paper'
     case 'metalPlate':
+    case 'metalPlateStand50':
+    case 'metalPlateStand100':
     case 'popper':
     case 'miniPopper':
       return 'app__tb app__tb--metal'
@@ -30,6 +33,10 @@ function propAddButtonClass(type: PropType): string {
     case 'shield':
     case 'shieldDouble':
     case 'shieldWithPort':
+    case 'shieldPortLow':
+    case 'shieldPortHigh':
+    case 'shieldPortSlanted':
+    case 'shieldWithPortDoor':
       return 'app__tb-prop app__tb-prop--shield'
     case 'door':
       return 'app__tb-prop app__tb-prop--door'
@@ -130,7 +137,10 @@ export function StageBuilderToolbar({
             [
               ['paperIpsc', tree.targets.noShootPaper] as const,
               ['paperA4', tree.targets.noShootPaperA4] as const,
+              ['paperMiniIpsc', tree.targets.noShootPaperMini] as const,
               ['metalPlate', tree.targets.noShootMetal] as const,
+              ['metalPlateStand50', tree.targets.noShootMetalStand50] as const,
+              ['metalPlateStand100', tree.targets.noShootMetalStand100] as const,
               ['popper', tree.targets.noShootPopper] as const,
               ['miniPopper', tree.targets.noShootMiniPopper] as const,
             ] as const

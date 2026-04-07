@@ -12,8 +12,14 @@ export type TargetType =
   | 'paperIpsc'
   /** Біла мішень на аркуші A4 (210×297 мм). */
   | 'paperA4'
+  /** Паперова Mini IPSC (номінал B3: 30×37,5 см; контур як масштабований B2). */
+  | 'paperMiniIpsc'
   /** Квадратна металева пластина; NS — червона. */
   | 'metalPlate'
+  /** Та сама пластина (Appendix C3), низ лиця ~50 см від підлоги у 3D. */
+  | 'metalPlateStand50'
+  /** Та сама пластина, низ лиця ~1 м від підлоги у 3D. */
+  | 'metalPlateStand100'
   | 'popper'
   | 'miniPopper'
   /** Кругла керамічна тарілка (типово Ø 110 мм, помаранчева). */
@@ -35,6 +41,14 @@ export type PropType =
   | 'shieldDouble'
   /** Щит із отвором 300×300 мм по центру лиця (рамка отвору як частина конструкції). */
   | 'shieldWithPort'
+  /** Той самий порт, зміщений униз лиця (низ отвору ближче до підніжжя щита). */
+  | 'shieldPortLow'
+  /** Порт зміщений угору лиця. */
+  | 'shieldPortHigh'
+  /** Порт у вигляді квадрата, повернутого на площині лиця (~26°). */
+  | 'shieldPortSlanted'
+  /** Центральний порт закритий «дверцями»: дерев’яна панель і ручка (як у дверей). */
+  | 'shieldWithPortDoor'
   | 'barrel'
   | 'tireStack'
   /** Качель: планка 3×0,3 м, обертання в плані навколо центральної труби Ø0,3 м. */
@@ -51,7 +65,7 @@ export type Target = {
   type: TargetType
   isNoShoot: boolean
   position: Vec2
-  /** Лише `metalPlate`; якщо немає — трактується як 30 см (старі файли). */
+  /** Квадратна сталь (Appendix C3); якщо немає — 30 см (старі файли). */
   metalRectSideCm?: MetalPlateRectSideCm
   rotationRad: number
 }

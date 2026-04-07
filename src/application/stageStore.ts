@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { temporal } from 'zundo'
 import type { MetalPlateRectSideCm, Prop, PropType, Target, TargetType, Vec2 } from '../domain/models'
+import { isSquareSteelPlateTargetType } from '../domain/targetSpecs'
 import {
   clampFieldDimensions,
   clampVec2ToField,
@@ -193,7 +194,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         rotationRad: 0,
       }
       const t: Target =
-        type === 'metalPlate' ? { ...base, metalRectSideCm: 15 } : base
+        isSquareSteelPlateTargetType(type) ? { ...base, metalRectSideCm: 15 } : base
       return {
         targets: [...s.targets, t],
       }
@@ -238,7 +239,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   setTargetMetalRectSideCm: (id, cm) =>
     set((s) => ({
       targets: s.targets.map((x) =>
-        x.id === id && x.type === 'metalPlate' ? { ...x, metalRectSideCm: cm } : x,
+        x.id === id && isSquareSteelPlateTargetType(x.type) ? { ...x, metalRectSideCm: cm } : x,
       ),
     })),
 

@@ -13,19 +13,22 @@ import { PerspectiveCamera, type Scene, type WebGLRenderer } from 'three'
 import { useStageStore } from '../../application/stageStore'
 import { pdfSnapshotPixelSize } from '../../domain/a4PrintLayout'
 import type { OrbitControls as OrbitControlsType } from 'three-stdlib'
-import type { Prop, Target } from '../../domain/models'
+import type { Prop, Target, TargetType } from '../../domain/models'
 import { CERAMIC_FACE_HEX, CERAMIC_RADIUS_M } from '../../domain/ceramicPlateSpec'
 import {
   cooperTunnelPenaltyPlankOffsetsXM,
   COOPER_TUNNEL_HEIGHT_M,
+  isShieldWithPortFamily,
   MOVING_PLATFORM_DECK_M,
   PORT_HOLE_HALF_M,
   propHeightM,
   SEESAW_PIPE_RADIUS_M,
   SHIELD_FRAME_SECTION_M,
+  SHIELD_PORT_SLANT_RAD,
 } from '../../domain/propGeometry'
 import {
   isPaperTargetType,
+  isSquareSteelPlateTargetType,
   popperBaseOnlyLocal,
   popperHeadCenterLocal,
   popperHeadRadiusM,
@@ -211,11 +214,17 @@ function PerimeterWoodWall() {
   )
 }
 
+function steelPlateStandHeightM(type: TargetType): number {
+  if (type === 'metalPlateStand50') return 0.5
+  if (type === 'metalPlateStand100') return 1
+  return 0.1
+}
+
 function targetColor(t: Target): string {
   if (t.isNoShoot) return '#e11d48'
   if (t.type === 'ceramicPlate') return CERAMIC_FACE_HEX
   if (t.type === 'swingerSingleCeramic' || t.type === 'swingerDoubleCeramic') return CERAMIC_FACE_HEX
-  if (t.type === 'metalPlate') return '#f4f4f5'
+  if (isSquareSteelPlateTargetType(t.type)) return '#f4f4f5'
   if (isPaperTargetType(t.type)) return '#ffffff'
   /* Поппери: світле тіло; голова окремо в меші. */
   return '#f4f4f5'
@@ -473,7 +482,11 @@ function Target3D({ t }: { t: Target }) {
   const c = targetColor(t)
   const { w, h } = targetFaceSizeM(t)
   const standH =
-    t.type === 'paperIpsc' || t.type === 'paperA4' ? PAPER_TARGET_STAND_HEIGHT_M : 0.1
+    t.type === 'paperIpsc' || t.type === 'paperA4' || t.type === 'paperMiniIpsc'
+      ? PAPER_TARGET_STAND_HEIGHT_M
+      : isSquareSteelPlateTargetType(t.type)
+        ? steelPlateStandHeightM(t.type)
+        : 0.1
   const faceDepth = 0.052
   const isMiniPop = t.type === 'miniPopper'
 
@@ -490,7 +503,7 @@ function Target3D({ t }: { t: Target }) {
     return extrudeOutlineGeometry(popperBaseOnlyLocal(isMiniPop), faceDepth)
   }, [t.type, isMiniPop, faceDepth])
 
-  const steelFaceMinY = t.type === 'metalPlate' ? -h / 2 : 0
+  const steelFaceMinY = isSquareSteelPlateTargetType(t.type) ? -h / 2 : 0
 
   const paperOutline = useMemo(() => targetFaceOutlineLocalMForType(t.type), [t.type])
 
@@ -545,7 +558,7 @@ function Target3D({ t }: { t: Target }) {
     )
   }
 
-  if (t.type === 'metalPlate') {
+  if (isSquareSteelPlateTargetType(t.type)) {
     return (
       <group position={[x, 0, z]} rotation={[0, t.rotationRad, 0]}>
         <TargetStandPost standH={standH} />
@@ -714,7 +727,66 @@ function ShieldBarrier3D({
   )
 }
 
-/** Щит із центральним отвором 300×300 мм: сітка навколо, тонка рамка отвору. */
+/** Косий порт: сітка з отвором — квадрат, повернутий у площині лиця. */
+function SlantedShieldPortFace3D({
+  innerW,
+  innerH,
+  gridTex,
+}: {
+  innerW: number
+  innerH: number
+  gridTex: THREE.CanvasTexture
+}) {
+  const geo = useMemo(() => {
+    const s = new THREE.Shape()
+    s.moveTo(-innerW / 2, -innerH / 2)
+    s.lineTo(innerW / 2, -innerH / 2)
+    s.lineTo(innerW / 2, innerH / 2)
+    s.lineTo(-innerW / 2, innerH / 2)
+    s.closePath()
+    const g = PORT_HOLE_HALF_M
+    const th = SHIELD_PORT_SLANT_RAD
+    const hole = new THREE.Path()
+    const corners = [
+      [-g, -g],
+      [g, -g],
+      [g, g],
+      [-g, g],
+    ].map(([lx, ly]) => ({
+      x: lx * Math.cos(th) - ly * Math.sin(th),
+      y: lx * Math.sin(th) + ly * Math.cos(th),
+    }))
+    hole.moveTo(corners[0]!.x, corners[0]!.y)
+    for (let i = 1; i < 4; i++) hole.lineTo(corners[i]!.x, corners[i]!.y)
+    hole.closePath()
+    s.holes.push(hole)
+    const extr = new THREE.ExtrudeGeometry(s, {
+      depth: 0.004,
+      bevelEnabled: false,
+      curveSegments: 12,
+    })
+    extr.translate(0, 0, -0.002)
+    return extr
+  }, [innerW, innerH])
+  useEffect(() => () => geo.dispose(), [geo])
+  const gridMatProps = {
+    map: gridTex,
+    color: '#daf5e3',
+    transparent: true,
+    opacity: 0.62,
+    metalness: 0.02,
+    roughness: 0.42,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  } as const
+  return (
+    <mesh geometry={geo} receiveShadow castShadow={false}>
+      <meshStandardMaterial {...gridMatProps} />
+    </mesh>
+  )
+}
+
+/** Щит із портом 300×300 мм: центр / низ / верх / косий / дверцята в отворі. */
 function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const h = propHeightM(p)
   const W = p.sizeM.x
@@ -723,16 +795,17 @@ function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number })
   const innerH = Math.max(h - 2 * f, 0.15)
   const innerW = Math.max(W - 2 * f, 0.15)
   const g = PORT_HOLE_HALF_M
+  const margin = 0.04
+  const minCy = -innerH / 2 + g + margin
+  const maxCy = innerH / 2 - g - margin
+  let holeCy = 0
+  if (p.type === 'shieldPortLow') holeCy = minCy
+  if (p.type === 'shieldPortHigh') holeCy = maxCy
+  holeCy = Math.max(minCy, Math.min(maxCy, holeCy))
+
   const gridTex = useShieldGridTexture(W, h)
   useEffect(() => () => gridTex.dispose(), [gridTex])
   const zPanel = Math.max(0.004, D * 0.12)
-
-  const wLr = innerW / 2 - g
-  const hBt = innerH / 2 - g
-  const xLeft = -innerW / 2 + wLr / 2
-  const xRight = innerW / 2 - wLr / 2
-  const yBot = -innerH / 2 + hBt / 2
-  const yTop = innerH / 2 - hBt / 2
   const zRim = zPanel + 0.004
 
   const gridMatProps = {
@@ -745,6 +818,18 @@ function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number })
     side: THREE.DoubleSide,
     depthWrite: false,
   } as const
+
+  const isSlanted = p.type === 'shieldPortSlanted'
+  const isDoor = p.type === 'shieldWithPortDoor'
+  const yHoleBot = holeCy - g
+  const yHoleTop = holeCy + g
+  const wLr = innerW / 2 - g
+  const xLeft = -innerW / 2 + wLr / 2
+  const xRight = innerW / 2 - wLr / 2
+  const bottomStripH = yHoleBot + innerH / 2
+  const bottomStripCy = (-innerH / 2 + yHoleBot) / 2
+  const topStripH = innerH / 2 - yHoleTop
+  const topStripCy = (yHoleTop + innerH / 2) / 2
 
   return (
     <group position={[x, 0, z]} rotation={[0, p.rotationRad, 0]}>
@@ -765,41 +850,67 @@ function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number })
         <meshStandardMaterial {...shieldFrameMat} />
       </mesh>
       <group position={[0, h / 2, zPanel]}>
-        <mesh position={[xLeft, 0, 0]} receiveShadow castShadow={false}>
-          <planeGeometry args={[wLr, innerH]} />
-          <meshStandardMaterial {...gridMatProps} />
-        </mesh>
-        <mesh position={[xRight, 0, 0]} receiveShadow castShadow={false}>
-          <planeGeometry args={[wLr, innerH]} />
-          <meshStandardMaterial {...gridMatProps} />
-        </mesh>
-        <mesh position={[0, yBot, 0]} receiveShadow castShadow={false}>
-          <planeGeometry args={[2 * g, hBt]} />
-          <meshStandardMaterial {...gridMatProps} />
-        </mesh>
-        <mesh position={[0, yTop, 0]} receiveShadow castShadow={false}>
-          <planeGeometry args={[2 * g, hBt]} />
-          <meshStandardMaterial {...gridMatProps} />
-        </mesh>
+        {isSlanted ? (
+          <SlantedShieldPortFace3D innerW={innerW} innerH={innerH} gridTex={gridTex} />
+        ) : (
+          <>
+            <mesh position={[0, bottomStripCy, 0]} receiveShadow castShadow={false}>
+              <planeGeometry args={[innerW, Math.max(bottomStripH, 0.01)]} />
+              <meshStandardMaterial {...gridMatProps} />
+            </mesh>
+            <mesh position={[0, topStripCy, 0]} receiveShadow castShadow={false}>
+              <planeGeometry args={[innerW, Math.max(topStripH, 0.01)]} />
+              <meshStandardMaterial {...gridMatProps} />
+            </mesh>
+            <mesh position={[xLeft, holeCy, 0]} receiveShadow castShadow={false}>
+              <planeGeometry args={[wLr, 2 * g]} />
+              <meshStandardMaterial {...gridMatProps} />
+            </mesh>
+            <mesh position={[xRight, holeCy, 0]} receiveShadow castShadow={false}>
+              <planeGeometry args={[wLr, 2 * g]} />
+              <meshStandardMaterial {...gridMatProps} />
+            </mesh>
+            {isDoor ? (
+              <group position={[0, holeCy, 0.016]}>
+                <mesh receiveShadow castShadow>
+                  <planeGeometry args={[2 * g, 2 * g]} />
+                  <meshStandardMaterial color="#5c4033" roughness={0.88} metalness={0.05} />
+                </mesh>
+                <group position={[g * 0.38, 0, 0.012]}>
+                  <mesh rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
+                    <cylinderGeometry args={[0.028, 0.028, 0.008, 20]} />
+                    <meshStandardMaterial {...doorHandleMat} />
+                  </mesh>
+                  <mesh position={[-0.045, 0, 0.01]} castShadow receiveShadow>
+                    <boxGeometry args={[0.1, 0.014, 0.022]} />
+                    <meshStandardMaterial {...doorHandleMat} />
+                  </mesh>
+                </group>
+              </group>
+            ) : null}
+          </>
+        )}
       </group>
-      <group position={[0, h / 2, zRim]}>
-        <mesh position={[0, g + f / 2, 0]} castShadow receiveShadow>
-          <boxGeometry args={[2 * g + 2 * f, f, D * 0.15]} />
-          <meshStandardMaterial {...shieldFrameMat} />
-        </mesh>
-        <mesh position={[0, -g - f / 2, 0]} castShadow receiveShadow>
-          <boxGeometry args={[2 * g + 2 * f, f, D * 0.15]} />
-          <meshStandardMaterial {...shieldFrameMat} />
-        </mesh>
-        <mesh position={[-g - f / 2, 0, 0]} castShadow receiveShadow>
-          <boxGeometry args={[f, 2 * g, D * 0.15]} />
-          <meshStandardMaterial {...shieldFrameMat} />
-        </mesh>
-        <mesh position={[g + f / 2, 0, 0]} castShadow receiveShadow>
-          <boxGeometry args={[f, 2 * g, D * 0.15]} />
-          <meshStandardMaterial {...shieldFrameMat} />
-        </mesh>
-      </group>
+      {!isSlanted ? (
+        <group position={[0, h / 2, zRim]}>
+          <mesh position={[0, holeCy + g + f / 2, 0]} castShadow receiveShadow>
+            <boxGeometry args={[2 * g + 2 * f, f, D * 0.15]} />
+            <meshStandardMaterial {...shieldFrameMat} />
+          </mesh>
+          <mesh position={[0, holeCy - g - f / 2, 0]} castShadow receiveShadow>
+            <boxGeometry args={[2 * g + 2 * f, f, D * 0.15]} />
+            <meshStandardMaterial {...shieldFrameMat} />
+          </mesh>
+          <mesh position={[-g - f / 2, holeCy, 0]} castShadow receiveShadow>
+            <boxGeometry args={[f, 2 * g, D * 0.15]} />
+            <meshStandardMaterial {...shieldFrameMat} />
+          </mesh>
+          <mesh position={[g + f / 2, holeCy, 0]} castShadow receiveShadow>
+            <boxGeometry args={[f, 2 * g, D * 0.15]} />
+            <meshStandardMaterial {...shieldFrameMat} />
+          </mesh>
+        </group>
+      ) : null}
     </group>
   )
 }
@@ -1079,7 +1190,7 @@ function Prop3D({ p }: { p: Prop }) {
     return <ShieldBarrier3D p={p} x={x} z={z} innerFill="grid" />
   }
 
-  if (p.type === 'shieldWithPort') {
+  if (isShieldWithPortFamily(p.type)) {
     return <ShieldWithPortBarrier3D p={p} x={x} z={z} />
   }
 

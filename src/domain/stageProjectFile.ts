@@ -11,6 +11,7 @@ import type {
 import type { StageBriefing } from './stageBriefing'
 import { defaultStageBriefing } from './stageBriefing'
 import type { WeaponClass } from './weaponClass'
+import { isSquareSteelPlateTargetType } from './targetSpecs'
 import { ALL_TARGET_TYPES } from './weaponClass'
 
 export const STAGE_PROJECT_FORMAT = 'stage-builder' as const
@@ -25,6 +26,10 @@ const PROP_TYPES: PropType[] = [
   'shield',
   'shieldDouble',
   'shieldWithPort',
+  'shieldPortLow',
+  'shieldPortHigh',
+  'shieldPortSlanted',
+  'shieldWithPortDoor',
   'barrel',
   'tireStack',
   'seesaw',
@@ -104,7 +109,9 @@ function parseTarget(raw: unknown, idx: number): Target | null {
   const rotationRad = o.rotationRad
   if (typeof rotationRad !== 'number' || !Number.isFinite(rotationRad)) return null
   const tt = type as TargetType
-  const metalRectSideCm = tt === 'metalPlate' ? parseMetalRectSideCm(o.metalRectSideCm) : undefined
+  const metalRectSideCm = isSquareSteelPlateTargetType(tt)
+    ? parseMetalRectSideCm(o.metalRectSideCm)
+    : undefined
   return {
     id: id || `t-${idx}`,
     type: tt,

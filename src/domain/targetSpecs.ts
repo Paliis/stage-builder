@@ -1,8 +1,8 @@
 /**
  * Габарити мішеней у метрах (IPSC / узгоджені додатки).
  *
- * Папір IPSC — зовнішній контур B2 (45×57 см). A4 — масштаб 1,5× від 210×297 мм (візуально крупніше на плані).
- * Метал Appendix C3 — квадрат 15/20/30 см (нова мішень за замовч. 15 см; без поля в сцені — 30 см).
+ * Папір IPSC — зовнішній контур B2 (45×57 см). Mini IPSC — B3 номінал 30×37,5 см (пропорційно стиснутий B2). A4 — масштаб 1,5× від 210×297 мм (візуально крупніше на плані).
+ * Метал Appendix C3 — квадрат 15/20/30 см; варіанти зі стійкою 50 см / 1 м (низ лиця у 3D). Нова мішень за замовч. 15 см; без поля — 30 см.
  * Керамічна тарілка Ø 110 мм (див. ceramicPlateSpec). Поппери C2.
  */
 import type { Target, TargetType } from './models'
@@ -18,8 +18,13 @@ const MM = 0.001
 /** Додатки B2: координати на кресленні в сантиметрах. */
 const CM = 0.01
 
+/** Квадратна сталева пластина (на підлозі або на стійці 50 см / 1 м у 3D). */
+export function isSquareSteelPlateTargetType(type: TargetType): boolean {
+  return type === 'metalPlate' || type === 'metalPlateStand50' || type === 'metalPlateStand100'
+}
+
 function metalPlateSquareSideM(t: Target): number {
-  if (t.type !== 'metalPlate') return 300 * MM
+  if (!isSquareSteelPlateTargetType(t.type)) return 300 * MM
   /** `metalRectSideCm` у сантиметрах → метри через CM, не MM (інакше 15 см стають 15 мм). */
   return (t.metalRectSideCm ?? 30) * CM
 }
@@ -34,7 +39,14 @@ function paperA4HalfExtentsM(): { hw: number; hh: number } {
   }
 }
 
-const STEEL_TARGET_TYPES = new Set<TargetType>(['popper', 'miniPopper', 'metalPlate', 'ceramicPlate'])
+const STEEL_TARGET_TYPES = new Set<TargetType>([
+  'popper',
+  'miniPopper',
+  'metalPlate',
+  'metalPlateStand50',
+  'metalPlateStand100',
+  'ceramicPlate',
+])
 
 const CERAMIC_TARGET_TYPES = new Set<TargetType>([
   'ceramicPlate',
@@ -86,6 +98,13 @@ function ipscClassicOutlineLocalM(): Vec2[] {
   return pts.map(([xa, ya]) => diagramToLocalMeters(xa, ya, cx, cy))
 }
 
+/** Appendix B3 номінал 30×37,5 см — силует як пропорційно стиснутий B2 (45×57 см). */
+function ipscMiniOutlineLocalM(): Vec2[] {
+  const sx = 30 / 45
+  const sy = 37.5 / 57
+  return ipscClassicOutlineLocalM().map((p) => ({ x: p.x * sx, y: p.y * sy }))
+}
+
 function circleOutlineLocal(r: number, n: number): Vec2[] {
   const out: Vec2[] = []
   for (let i = 0; i < n; i++) {
@@ -106,6 +125,8 @@ export function targetFootprintLocalM(t: Target): Vec2[] {
   switch (t.type) {
     case 'paperIpsc':
       return ipscClassicOutlineLocalM()
+    case 'paperMiniIpsc':
+      return ipscMiniOutlineLocalM()
     case 'paperA4': {
       const { hw, hh } = paperA4HalfExtentsM()
       return rectLocal(hw, hh)
@@ -114,7 +135,9 @@ export function targetFootprintLocalM(t: Target): Vec2[] {
       return rectLocal(300 * MM * 0.5, 850 * MM * 0.5)
     case 'miniPopper':
       return rectLocal(200 * MM * 0.5, 560 * MM * 0.5)
-    case 'metalPlate': {
+    case 'metalPlate':
+    case 'metalPlateStand50':
+    case 'metalPlateStand100': {
       const half = metalPlateSquareSideM(t) * 0.5
       return rectLocal(half, half)
     }
@@ -253,8 +276,14 @@ export function targetFaceOutlineLocalM(t: Target): Vec2[] {
  */
 export function targetFaceOutlineLocalMForType(type: TargetType): Vec2[] | null {
   if (isSwingerTargetType(type)) return null
-  if (type === 'popper' || type === 'miniPopper' || type === 'ceramicPlate' || type === 'metalPlate')
+  if (
+    type === 'popper' ||
+    type === 'miniPopper' ||
+    type === 'ceramicPlate' ||
+    isSquareSteelPlateTargetType(type)
+  )
     return null
+  if (type === 'paperMiniIpsc') return ipscMiniOutlineLocalM()
   return targetFaceOutlineLocalM({ type } as Target)
 }
 
@@ -274,7 +303,7 @@ export function targetMetalPedestalLocal(t: Target): Vec2[] | null {
       { x: -hwp, y: yMid + hhp },
     ]
   }
-  if (t.type === 'metalPlate') {
+  if (isSquareSteelPlateTargetType(t.type)) {
     const { w, h } = targetFaceSizeM(t)
     const hh = h * 0.5
     const pw = Math.min(w * 0.62, w * 0.9)
@@ -337,13 +366,17 @@ export function targetFaceSizeM(t: Target): { w: number; h: number } {
   switch (t.type) {
     case 'paperIpsc':
       return { w: 450 * MM, h: 570 * MM }
+    case 'paperMiniIpsc':
+      return { w: 300 * MM, h: 375 * MM }
     case 'paperA4':
       return { w: 210 * MM * PAPER_A4_VISUAL_SCALE, h: 297 * MM * PAPER_A4_VISUAL_SCALE }
     case 'popper':
       return { w: 300 * MM, h: 850 * MM }
     case 'miniPopper':
       return { w: 200 * MM, h: 560 * MM }
-    case 'metalPlate': {
+    case 'metalPlate':
+    case 'metalPlateStand50':
+    case 'metalPlateStand100': {
       const s = metalPlateSquareSideM(t)
       return { w: s, h: s }
     }

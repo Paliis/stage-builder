@@ -17,6 +17,7 @@ import {
   faultLinePoseForRotateAboutNegEnd,
   faultLineWithLength,
   FAULT_LINE_SECTION_M,
+  isShieldWithPortFamily,
   propOutlineWorld,
   movingPlatformDeckOutlineWorld,
   propPortHoleWorld,
@@ -25,6 +26,7 @@ import {
 } from '../../domain/propGeometry'
 import {
   isPaperTargetType,
+  isSquareSteelPlateTargetType,
   popper2DDrawSpec,
   targetFootprintWorld,
   targetMetalPedestalWorld,
@@ -344,7 +346,7 @@ function pickHandle(wx: number, wy: number, h: Vec2, pxPerMeter: number): boolea
 function targetFill(type: Target['type'], isNoShoot: boolean): string {
   if (isNoShoot) return 'rgba(239, 68, 68, 0.9)'
   if (type === 'ceramicPlate') return CERAMIC_FACE_RGBA
-  if (type === 'metalPlate') return 'rgba(248, 250, 252, 0.96)'
+  if (isSquareSteelPlateTargetType(type)) return 'rgba(248, 250, 252, 0.96)'
   if (isPaperTargetType(type)) return 'rgba(255, 255, 255, 0.98)'
   return 'rgba(244, 244, 245, 0.96)'
 }
@@ -783,7 +785,7 @@ function tracePropOutline(ctx: CanvasRenderingContext2D, corners: Vec2[], ox: nu
 /** Щит, щит з портом, двері: та сама рамка на плані; сітка / отвір 30×30 / суцільна панель. */
 function drawShieldPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransform) {
   const isDoor = p.type === 'door'
-  const withPort = p.type === 'shieldWithPort'
+  const withPort = isShieldWithPortFamily(p.type)
   const outline = propOutlineWorld(p)
   const corners = outline.map((q) => worldToScreen(q.x, q.y, tf))
   const holeWorld = withPort ? propPortHoleWorld(p) : null
@@ -856,6 +858,27 @@ function drawShieldPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransf
       ctx.stroke()
     }
     ctx.restore()
+  }
+
+  if (p.type === 'shieldWithPortDoor' && holeScr && holeScr.length >= 3) {
+    ctx.beginPath()
+    tracePropOutline(ctx, holeScr, 0, 0)
+    ctx.fillStyle = 'rgba(92, 64, 51, 0.92)'
+    ctx.fill()
+    const mx = holeScr.reduce((a, q) => a + q.x, 0) / holeScr.length
+    const my = holeScr.reduce((a, q) => a + q.y, 0) / holeScr.length
+    const hr = Math.max(2.2, Math.min(5, 0.034 * tf.pxPerMeter))
+    ctx.fillStyle = 'rgba(226, 230, 235, 0.96)'
+    ctx.strokeStyle = 'rgba(100, 108, 120, 0.5)'
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.arc(mx + hr * 0.42, my, hr, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.rect(mx - hr * 0.75, my - 1.3, hr * 1.1, 2.6)
+    ctx.fill()
+    ctx.stroke()
   }
 
   ctx.beginPath()
@@ -1182,7 +1205,11 @@ function redraw(
     if (p.type === 'faultLine')
       return { face: 'rgba(249, 115, 22, 0.72)', depth: 'rgba(194, 65, 12, 0.78)' }
     if (p.type === 'door') return { face: 'rgba(92, 64, 51, 0.88)', depth: 'rgba(25, 25, 28, 0.9)' }
-    if (p.type === 'shield' || p.type === 'shieldDouble' || p.type === 'shieldWithPort')
+    if (
+      p.type === 'shield' ||
+      p.type === 'shieldDouble' ||
+      isShieldWithPortFamily(p.type)
+    )
       return { face: 'rgba(198, 236, 212, 0.46)', depth: 'rgba(25, 25, 28, 0.9)' }
     if (p.type === 'barrel') return { face: 'rgba(29, 78, 216, 0.92)', depth: 'rgba(30, 58, 138, 0.96)' }
     if (p.type === 'tireStack') return { face: 'rgba(30, 41, 59, 0.92)', depth: 'rgba(15, 23, 42, 0.96)' }
@@ -1210,12 +1237,7 @@ function redraw(
     const { face, depth } = propFaceDepth(p)
     const { dx, dy } = EXTRUDE_SCREEN_PX
 
-    if (
-      p.type === 'shield' ||
-      p.type === 'shieldDouble' ||
-      p.type === 'shieldWithPort' ||
-      p.type === 'door'
-    ) {
+    if (p.type === 'shield' || p.type === 'shieldDouble' || isShieldWithPortFamily(p.type) || p.type === 'door') {
       drawShieldPlan2D(ctx, p, tf)
       continue
     }
@@ -1701,7 +1723,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         const ps = planSelectRef.current
         if (ps.mode !== 'single' || ps.kind !== 'target') return
         const hit = targets.find((x) => x.id === ps.id)
-        if (!hit || hit.type !== 'metalPlate') return
+        if (!hit || !isSquareSteelPlateTargetType(hit.type)) return
         e.preventDefault()
         const order: readonly MetalPlateRectSideCm[] = [15, 20, 30]
         const cur = hit.metalRectSideCm ?? 30

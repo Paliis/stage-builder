@@ -10,7 +10,10 @@ export type WeaponClass = 'handgun' | 'rifle' | 'shotgun'
 export const ALL_TARGET_TYPES: readonly TargetType[] = [
   'paperIpsc',
   'paperA4',
+  'paperMiniIpsc',
   'metalPlate',
+  'metalPlateStand50',
+  'metalPlateStand100',
   'popper',
   'miniPopper',
   'ceramicPlate',

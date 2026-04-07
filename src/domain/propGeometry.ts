@@ -35,11 +35,44 @@ export function propOutlineWorld(p: Prop): Vec2[] {
   return rectWorldCorners(cx, cy, hw, hh, rot)
 }
 
-/** Внутрішній отвір 300×300 мм для щита з портом (світові координати). */
+/** Усі варіанти щита з портом / дверцями в порті. */
+export function isShieldWithPortFamily(type: PropType): boolean {
+  return (
+    type === 'shieldWithPort' ||
+    type === 'shieldPortLow' ||
+    type === 'shieldPortHigh' ||
+    type === 'shieldPortSlanted' ||
+    type === 'shieldWithPortDoor'
+  )
+}
+
+/** Нахил «косого» порту в площині лиця (рад), для 2D/3D. */
+export const SHIELD_PORT_SLANT_RAD = 0.45
+
+/** Внутрішній отвір 300×300 мм (світ); косий — повернутий квадрат у площині щита. */
 export function propPortHoleWorld(p: Prop): Vec2[] | null {
-  if (p.type !== 'shieldWithPort') return null
+  if (!isShieldWithPortFamily(p.type)) return null
   const { x: cx, y: cy } = p.position
-  return rectWorldCorners(cx, cy, PORT_HOLE_HALF_M, PORT_HOLE_HALF_M, p.rotationRad)
+  const rot = p.rotationRad
+  const g = PORT_HOLE_HALF_M
+  if (p.type === 'shieldPortSlanted') {
+    const th = SHIELD_PORT_SLANT_RAD
+    const c = Math.cos(rot)
+    const s = Math.sin(rot)
+    const out: Vec2[] = []
+    for (const [lx, ly] of [
+      [-g, -g],
+      [g, -g],
+      [g, g],
+      [-g, g],
+    ] as const) {
+      const rx = lx * Math.cos(th) - ly * Math.sin(th)
+      const ry = lx * Math.sin(th) + ly * Math.cos(th)
+      out.push({ x: cx + rx * c - ry * s, y: cy + rx * s + ry * c })
+    }
+    return out
+  }
+  return rectWorldCorners(cx, cy, g, g, rot)
 }
 
 /** Контур настилу 0,8×0,8 м по центру (світові координати). */
@@ -184,6 +217,10 @@ export function defaultPropSizeM(type: PropType): Vec2 {
     case 'door':
     case 'shield':
     case 'shieldWithPort':
+    case 'shieldPortLow':
+    case 'shieldPortHigh':
+    case 'shieldPortSlanted':
+    case 'shieldWithPortDoor':
       return { x: 1, y: 0.05 }
     case 'shieldDouble':
       return { x: 2, y: 0.05 }
@@ -221,6 +258,10 @@ export function propHeightM(p: Prop): number {
     case 'shield':
     case 'shieldDouble':
     case 'shieldWithPort':
+    case 'shieldPortLow':
+    case 'shieldPortHigh':
+    case 'shieldPortSlanted':
+    case 'shieldWithPortDoor':
     case 'door':
       return 2
     case 'seesaw':
