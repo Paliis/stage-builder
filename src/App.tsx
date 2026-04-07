@@ -15,6 +15,7 @@ import { clearSessionDraftStorage } from './application/sessionDraft'
 import { useBriefingStore } from './application/briefingStore'
 import { useStageStore } from './application/stageStore'
 import { computeMinRounds, countStageTargetUnits } from './domain/computeMinRounds'
+import type { PlacementMode } from './domain/placementMode'
 import type { PropType, StageCategory, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
 import { FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
@@ -106,6 +107,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const [measureToolActive, setMeasureToolActive] = useState(false)
+  const [placementMode, setPlacementMode] = useState<PlacementMode>(null)
 
   useEffect(() => {
     if (!measureToolActive) planCanvasRef.current?.clearMeasure()
@@ -185,6 +187,7 @@ export default function App() {
     temporal.resume()
     clearSessionDraftStorage()
     setMobileMenuOpen(false)
+    setPlacementMode(null)
   }, [resetSceneToDefaults, setBriefing, t, setMobileMenuOpen])
 
   const applySceneToBriefing = () => {
@@ -199,7 +202,10 @@ export default function App() {
   }, [viewMode])
 
   useEffect(() => {
-    if (viewMode === '3d') setMeasureToolActive(false)
+    if (viewMode === '3d') {
+      setMeasureToolActive(false)
+      setPlacementMode(null)
+    }
   }, [viewMode])
 
   useEffect(() => {
@@ -210,31 +216,58 @@ export default function App() {
       if (el instanceof HTMLElement && el.closest('input, textarea, select, [contenteditable="true"]'))
         return
       e.preventDefault()
+      setPlacementMode(null)
       setMeasureToolActive((v) => !v)
     }
     window.addEventListener('keydown', onKey, { passive: false })
     return () => window.removeEventListener('keydown', onKey)
   }, [viewMode])
 
+  useEffect(() => {
+    if (viewMode !== '2d') return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code !== 'Escape' || e.repeat) return
+      const el = e.target
+      if (el instanceof HTMLElement && el.closest('input, textarea, select, [contenteditable="true"]')) return
+      if (!placementMode) return
+      e.preventDefault()
+      setPlacementMode(null)
+    }
+    window.addEventListener('keydown', onKey, { passive: false })
+    return () => window.removeEventListener('keydown', onKey)
+  }, [viewMode, placementMode])
+
   const formatMeasureDistance = useCallback(
     (m: number) => formatTemplate(tree.view.measureDistanceMeters, { m: m.toFixed(2) }),
     [tree.view.measureDistanceMeters],
   )
 
-  const handleAddTarget = useCallback(
-    (type: TargetType, isNoShoot?: boolean) => {
-      const hint = viewMode === '2d' ? planCanvasRef.current?.getSpawnCenterWorld() ?? undefined : undefined
-      addTarget(type, isNoShoot, hint)
-    },
-    [viewMode, addTarget],
-  )
+  const armTargetPlacement = useCallback((type: TargetType, isNoShoot = false) => {
+    setMeasureToolActive(false)
+    setPlacementMode((prev) =>
+      prev?.kind === 'target' && prev.type === type && prev.isNoShoot === isNoShoot
+        ? null
+        : { kind: 'target', type, isNoShoot },
+    )
+  }, [])
 
-  const handleAddProp = useCallback(
-    (type: PropType) => {
-      const hint = viewMode === '2d' ? planCanvasRef.current?.getSpawnCenterWorld() ?? undefined : undefined
-      addProp(type, undefined, hint)
+  const armPropPlacement = useCallback((type: PropType) => {
+    setMeasureToolActive(false)
+    setPlacementMode((prev) =>
+      prev?.kind === 'prop' && prev.type === type ? null : { kind: 'prop', type },
+    )
+  }, [])
+
+  const handlePlacementWorldClick = useCallback(
+    (p: { x: number; y: number }) => {
+      if (!placementMode) return
+      if (placementMode.kind === 'target') {
+        addTarget(placementMode.type, placementMode.isNoShoot, p)
+      } else {
+        addProp(placementMode.type, undefined, p)
+      }
     },
-    [viewMode, addProp],
+    [placementMode, addTarget, addProp],
   )
 
   const handleExportPdf = async () => {
@@ -406,8 +439,9 @@ export default function App() {
     tree,
     name,
     allowedTargetTypes,
-    onAddTarget: handleAddTarget,
-    onAddProp: handleAddProp,
+    placementMode,
+    onArmTarget: armTargetPlacement,
+    onArmProp: armPropPlacement,
   }
 
   const mainStageStyle = {
@@ -596,6 +630,8 @@ export default function App() {
                       onViewportWorldChange={setPlanViewportWorld}
                       measureToolActive={measureToolActive}
                       formatMeasureDistance={formatMeasureDistance}
+                      placementArmed={placementMode !== null}
+                      onPlacementWorldClick={handlePlacementWorldClick}
                     />
                     <button
                       type="button"
@@ -603,7 +639,10 @@ export default function App() {
                       aria-pressed={measureToolActive}
                       aria-label={tree.view.measureTool}
                       title={tree.view.measureToolTitle}
-                      onClick={() => setMeasureToolActive((v) => !v)}
+                      onClick={() => {
+                        setPlacementMode(null)
+                        setMeasureToolActive((v) => !v)
+                      }}
                     >
                       <svg
                         width="20"

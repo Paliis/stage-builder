@@ -444,6 +444,21 @@
   background: var(--toolbar-bg);
 }
 
+.app__toolbar-placement-hint {
+  margin: 0;
+  padding: 0.45rem 0.55rem;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--accent, #6366f1);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+}
+
+.app__buttons button.is-placement-armed {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent, #6366f1) 55%, transparent);
+}
+
 .app__weapon-bar {
   display: flex;
   flex-wrap: wrap;

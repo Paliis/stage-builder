@@ -17,6 +17,10 @@
 
 Корінь UI — `src/main.tsx` → `App.tsx`. **Code splitting:** модуль `StageView3D` (Three.js, R3F) підвантажується через `React.lazy` лише в режимі «3D»; `exportBriefingPdf` (jsPDF, qrcode, autotable) — через динамічний `import()` при експорті PDF. Це зменшує початковий JS для користувачів, які лишаються в 2D.
 
+## Розстановка з тулбару (placement)
+
+- Клік по типу мішені або реквізиту в **`StageBuilderToolbar`** увімкнює **`PlacementMode`** (`src/domain/placementMode.ts`): далі кожен **ЛКМ по 2D-плану** викликає `addTarget` / `addProp` з координатами кліку (snap/clamp у `stageStore`). **Hit-test ігнорується** — можна ставити «поверх» існуючих об’єктів. Повторний клік по тій самій кнопці або **Esc** вимикає режим. **Вимір** і placement **взаємовиключні** (увімкнення одного вимикає інший). Реалізація кліку — `StageCanvas` (`placementArmed`, `onPlacementWorldClick`).
+
 ## План 2D: лінійки та вимір
 
 - **Лінійки** — `drawFieldRulers` у `StageCanvas.tsx`: вісь **Y** вздовж **лівого** краю поля в світових метрах; вісь **X** вздовж лінії **`y = 0`** (нижня межа поля). Крок поділок залежить від масштабу (`pickRulerStepM`, мінімальний кандидат **0,5 м**); при основному кроці ≥ 1 м додатково малюються **дрібні** поділки (половина кроку). Довжина рисок у світі обмежена знизу через **мінімум у пікселях** (`rulerTickLenWorldM`), щоб при масштабі «вмістити поле» лінійка лишалась видимою. Підпис **«0»** на осях не дублюється (один раз на лівій осі для `y = 0`).
@@ -155,6 +159,7 @@ npm run check     # як у CI: lint + test + build
 | Моделі сцени | `src/domain/models.ts` |
 | 2D канвас (мішені, лінійки, вимір) | `src/presentation/components/StageCanvas.tsx` |
 | Увімкнення виміру (M, кнопка, 2D/3D) | `src/App.tsx` |
+| Режим розстановки (placement) | `src/domain/placementMode.ts`, `StageBuilderToolbar.tsx` |
 | 3D | `src/presentation/components/StageView3D.tsx` |
 | PDF | `src/presentation/lib/exportBriefingPdf.ts` |
 | Рядки UI/PDF | `src/i18n/messages.ts` |

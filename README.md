@@ -11,7 +11,7 @@
 
 ## Можливості
 
-- **Площадка** — налаштовуваний розмір (пресети), прив'язка до сітки в метрах.
+- **Площадка** — налаштовуваний розмір (пресети), прив'язка до сітки в метрах; мішені й реквізит додаються **кліками по плану** після вибору типу в панелі.
 - **Мішені** — папір IPSC (B2), A4; метал (квадратні пластини за Appendix C3: 15 / 20 / 30 см), кераміка (Ø110 мм), поппери, ківаки (свінгери); no-shoot.
 - **Реквізит** — щити, двері, штрафні лінії, бочки, стос шин, качель, рухома платформа, тунель Купера, стартова позиція.
 - **2D план** — панорама, зум, міні-карта, переміщення, обертання; `[`/`]` для зміни сторони металевої пластини.
@@ -100,4 +100,4 @@ src/
 
 ---
 
-*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan, 3D preview, targets and props placement, bilingual UI (UK/EN), JSON project files, PDF briefing export with QR code, and a browser draft saved between visits. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*
+*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan, 3D preview, pick a target or prop type then click the plan to place objects, bilingual UI (UK/EN), JSON project files, PDF briefing export with QR code, and a browser draft saved between visits. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*

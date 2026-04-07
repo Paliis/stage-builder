@@ -1,4 +1,5 @@
 import { INFRASTRUCTURE_PROP_ORDER } from '../../domain/infrastructureProps'
+import type { PlacementMode } from '../../domain/placementMode'
 import type { PropType, TargetType } from '../../domain/models'
 import type { MessageTree } from '../../i18n/messages'
 
@@ -53,13 +54,24 @@ function propAddButtonClass(type: PropType): string {
   }
 }
 
+function placementTitle(
+  baseLabel: string,
+  armed: boolean,
+  clickPlan: string,
+  escHint: string,
+): string {
+  if (!armed) return baseLabel
+  return `${baseLabel} — ${clickPlan} ${escHint}`
+}
+
 export type StageBuilderToolbarProps = {
   className?: string
   tree: MessageTree
   name: string
   allowedTargetTypes: TargetType[]
-  onAddTarget: (type: TargetType, isNoShoot?: boolean) => void
-  onAddProp: (type: PropType) => void
+  placementMode: PlacementMode
+  onArmTarget: (type: TargetType, isNoShoot?: boolean) => void
+  onArmProp: (type: PropType) => void
 }
 
 export function StageBuilderToolbar({
@@ -67,12 +79,17 @@ export function StageBuilderToolbar({
   tree,
   name,
   allowedTargetTypes,
-  onAddTarget,
-  onAddProp,
+  placementMode,
+  onArmTarget,
+  onArmProp,
 }: StageBuilderToolbarProps) {
-  /* Клас зброї тимчасово приховано (див. stageStore addTarget). */
   return (
     <section className={className ?? 'app__toolbar'} aria-label={tree.toolbar.aria}>
+      {placementMode ? (
+        <p className="app__toolbar-placement-hint" role="status" aria-live="polite">
+          {tree.toolbar.placementClickPlan} {tree.toolbar.placementCancelEsc}
+        </p>
+      ) : null}
       <div
         className="app__toolbar-section app__toolbar-section--first"
         role="region"
@@ -83,29 +100,63 @@ export function StageBuilderToolbar({
           <span className="app__stage-name app__stage-name--inline">{name}</span>
         </div>
         <div className="app__buttons">
-          {allowedTargetTypes.map((ty) => (
-            <button key={ty} type="button" className={targetAddButtonClass(ty)} onClick={() => onAddTarget(ty)}>
-              {tree.targets[ty]}
-            </button>
-          ))}
+          {allowedTargetTypes.map((ty) => {
+            const armed =
+              placementMode?.kind === 'target' &&
+              placementMode.type === ty &&
+              placementMode.isNoShoot === false
+            return (
+              <button
+                key={ty}
+                type="button"
+                className={`${targetAddButtonClass(ty)}${armed ? ' is-placement-armed' : ''}`}
+                aria-pressed={armed}
+                title={placementTitle(
+                  tree.targets[ty],
+                  armed,
+                  tree.toolbar.placementClickPlan,
+                  tree.toolbar.placementCancelEsc,
+                )}
+                onClick={() => onArmTarget(ty, false)}
+              >
+                {tree.targets[ty]}
+              </button>
+            )
+          })}
         </div>
         <p className="app__targets-ns-caption">{tree.toolbar.targetsNsCaption}</p>
         <div className="app__buttons app__buttons--targets-ns" role="group" aria-label={tree.toolbar.targetsNsAria}>
-          <button type="button" className="app__tb app__tb--ns" onClick={() => onAddTarget('paperIpsc', true)}>
-            {tree.targets.noShootPaper}
-          </button>
-          <button type="button" className="app__tb app__tb--ns" onClick={() => onAddTarget('paperA4', true)}>
-            {tree.targets.noShootPaperA4}
-          </button>
-          <button type="button" className="app__tb app__tb--ns" onClick={() => onAddTarget('metalPlate', true)}>
-            {tree.targets.noShootMetal}
-          </button>
-          <button type="button" className="app__tb app__tb--ns" onClick={() => onAddTarget('popper', true)}>
-            {tree.targets.noShootPopper}
-          </button>
-          <button type="button" className="app__tb app__tb--ns" onClick={() => onAddTarget('miniPopper', true)}>
-            {tree.targets.noShootMiniPopper}
-          </button>
+          {(
+            [
+              ['paperIpsc', tree.targets.noShootPaper] as const,
+              ['paperA4', tree.targets.noShootPaperA4] as const,
+              ['metalPlate', tree.targets.noShootMetal] as const,
+              ['popper', tree.targets.noShootPopper] as const,
+              ['miniPopper', tree.targets.noShootMiniPopper] as const,
+            ] as const
+          ).map(([ty, label]) => {
+            const armed =
+              placementMode?.kind === 'target' &&
+              placementMode.type === ty &&
+              placementMode.isNoShoot === true
+            return (
+              <button
+                key={ty}
+                type="button"
+                className={`app__tb app__tb--ns${armed ? ' is-placement-armed' : ''}`}
+                aria-pressed={armed}
+                title={placementTitle(
+                  label,
+                  armed,
+                  tree.toolbar.placementClickPlan,
+                  tree.toolbar.placementCancelEsc,
+                )}
+                onClick={() => onArmTarget(ty, true)}
+              >
+                {label}
+              </button>
+            )
+          })}
         </div>
       </div>
       <div
@@ -116,16 +167,26 @@ export function StageBuilderToolbar({
         <h2 className="app__section-title">{tree.toolbar.infrastructureHeading}</h2>
         <p className="app__section-hint">{tree.toolbar.infrastructureHint}</p>
         <div className="app__buttons">
-          {INFRASTRUCTURE_PROP_ORDER.map((pt: PropType) => (
-            <button
-              key={pt}
-              type="button"
-              className={`app__btn-secondary ${propAddButtonClass(pt)}`}
-              onClick={() => onAddProp(pt)}
-            >
-              {tree.props[pt]}
-            </button>
-          ))}
+          {INFRASTRUCTURE_PROP_ORDER.map((pt: PropType) => {
+            const armed = placementMode?.kind === 'prop' && placementMode.type === pt
+            return (
+              <button
+                key={pt}
+                type="button"
+                className={`app__btn-secondary ${propAddButtonClass(pt)}${armed ? ' is-placement-armed' : ''}`}
+                aria-pressed={armed}
+                title={placementTitle(
+                  tree.props[pt],
+                  armed,
+                  tree.toolbar.placementClickPlan,
+                  tree.toolbar.placementCancelEsc,
+                )}
+                onClick={() => onArmProp(pt)}
+              >
+                {tree.props[pt]}
+              </button>
+            )
+          })}
         </div>
       </div>
     </section>

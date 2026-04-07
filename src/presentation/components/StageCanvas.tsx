@@ -1244,6 +1244,9 @@ export type StageCanvasProps = {
   measureToolActive: boolean
   /** Формат підпису відстані (м), напр. «12,34 м». */
   formatMeasureDistance: (meters: number) => string
+  /** Режим розстановки з тулбару: клік по полю ставить об’єкт (без hit-test). */
+  placementArmed: boolean
+  onPlacementWorldClick: (world: { x: number; y: number }) => void
 }
 
 export type StageCanvasHandle = {
@@ -1281,6 +1284,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   onViewportWorldChange,
   measureToolActive,
   formatMeasureDistance,
+  placementArmed,
+  onPlacementWorldClick,
 }: StageCanvasProps,
   ref,
 ) {
@@ -1613,6 +1618,16 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         if (!prev.b) return { a: prev.a, b: p }
         return { a: p, b: null }
       })
+      return
+    }
+
+    if (placementArmed && ev.button === 0) {
+      ev.preventDefault()
+      pendingEmptyPanRef.current = null
+      gridHoverRef.current = null
+      const wx = Math.min(Math.max(w.x, 0), fw)
+      const wy = Math.min(Math.max(w.y, 0), fh)
+      onPlacementWorldClick({ x: wx, y: wy })
       return
     }
 
@@ -1989,7 +2004,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       ? 'grab'
       : measureToolActive
         ? 'crosshair'
-        : undefined
+        : placementArmed
+          ? 'crosshair'
+          : undefined
 
   return (
     <canvas
