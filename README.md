@@ -83,6 +83,7 @@ src/
 
 ## Зворотний зв'язок
 
+- Збір відгуків для розробки (чернетка): [docs/USER_FEEDBACK.md](docs/USER_FEEDBACK.md)
 - Email: parshencevdenis@gmail.com
 - Telegram: [@denysparshentsev](https://t.me/denysparshentsev)
 - Підтримати проєкт: [Monobank](https://send.monobank.ua/jar/2gUdnYvDXy)
