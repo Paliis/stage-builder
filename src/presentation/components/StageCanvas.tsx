@@ -1677,6 +1677,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     id: string
     grabOffset: Vec2
   } | null>(null)
+  /** After selection long-press opens the sheet: ignore pan/pending-empty for this pointer until up (avoids stray pan). */
+  const blockPlanPanPointerIdRef = useRef<number | null>(null)
 
   useEffect(() => {
     const c =
@@ -1980,6 +1982,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   /** Clears in-flight gesture state for a pointer (pinch, pan, drag, long-press arm). */
   const releaseGestureStateForPointer = useCallback(
     (pointerId: number) => {
+      if (blockPlanPanPointerIdRef.current === pointerId) blockPlanPanPointerIdRef.current = null
       pinchMapRef.current.delete(pointerId)
       if (pendingEmptyPanRef.current?.pointerId === pointerId) pendingEmptyPanRef.current = null
       if (touchPendingDragRef.current?.pointerId === pointerId) touchPendingDragRef.current = null
@@ -2108,9 +2111,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         if (marqueeDragRef.current) return
         if (pinchMapRef.current.size > 1) return
         touchPendingDragRef.current = null
-        if (pendingEmptyPanRef.current?.pointerId === arm.pointerId) {
-          pendingEmptyPanRef.current = null
-        }
+        pendingEmptyPanRef.current = null
+        blockPlanPanPointerIdRef.current = arm.pointerId
         onSelectionLongPressRef.current?.()
         // Keep pointer capture until pointerup/cancel so events still target this canvas.
         // Releasing here sends pointerup to the sheet overlay; endDrag never runs and
@@ -2291,6 +2293,21 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       pinchMapRef.current.set(ev.pointerId, { x: sx, y: sy })
     }
 
+    const blockPanPid = blockPlanPanPointerIdRef.current
+    if (blockPanPid === ev.pointerId) {
+      if (viewPanDragRef.current?.pointerId === ev.pointerId) {
+        viewPanDragRef.current = null
+        setIsPanningView(false)
+      }
+      if (pendingEmptyPanRef.current?.pointerId === ev.pointerId) {
+        pendingEmptyPanRef.current = null
+      }
+      if (pinchMapRef.current.size < 2) {
+        repaint()
+        return
+      }
+    }
+
     const pd = viewPanDragRef.current
     if (pd && ev.pointerId === pd.pointerId) {
       viewPanRef.current = {
@@ -2450,6 +2467,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
   const endDrag = (ev: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
+    if (blockPlanPanPointerIdRef.current === ev.pointerId) {
+      blockPlanPanPointerIdRef.current = null
+    }
     pinchMapRef.current.delete(ev.pointerId)
     if (pinchMapRef.current.size < 2) pinchLastDistRef.current = 0
 
