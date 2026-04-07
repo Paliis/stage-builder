@@ -115,10 +115,15 @@ export default function App() {
   const [planSelectionSummary, setPlanSelectionSummary] = useState({ empty: true, count: 0 })
   const [hasPlanClipboard, setHasPlanClipboard] = useState(false)
   const internalClipboardRef = useRef<{ targets: Target[]; props: Prop[] } | null>(null)
+  const [selectionSheetOpen, setSelectionSheetOpen] = useState(false)
 
   useEffect(() => {
     if (!measureToolActive) planCanvasRef.current?.clearMeasure()
   }, [measureToolActive])
+
+  useEffect(() => {
+    if (planSelectionSummary.empty) setSelectionSheetOpen(false)
+  }, [planSelectionSummary.empty])
 
   /** Спільна «ширша» картка для 2D і 3D (лише CSS-пропорції). */
   const stageCardDisplayH = fieldSizeM.y / STAGE_CARD_UI_DEPTH_FACTOR
@@ -720,6 +725,7 @@ export default function App() {
                       onPlacementWorldClick={handlePlacementWorldClick}
                       marqueeModeActive={marqueeModeActive}
                       onPlanSelectionChange={setPlanSelectionSummary}
+                      onSelectionLongPress={() => setSelectionSheetOpen(true)}
                     />
                     <div className="app__plan-map-actions" role="toolbar" aria-label={tree.view.planMapActionsAria}>
                       <button
@@ -821,6 +827,29 @@ export default function App() {
                       </button>
                       <button
                         type="button"
+                        className="app__plan-map-action-btn app__plan-map-action-btn--remove"
+                        aria-label={tree.view.deleteSelection}
+                        title={tree.view.deleteSelectionTitle}
+                        disabled={planSelectionSummary.empty}
+                        onClick={() => planCanvasRef.current?.deleteSelection()}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M18 6 6 18" />
+                          <path d="m6 6 12 12" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
                         className="app__plan-map-action-btn app__plan-map-action-btn--danger"
                         onClick={handleClearExercise}
                         aria-label={t('project.clearAria')}
@@ -863,6 +892,56 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      {selectionSheetOpen ? (
+        <div
+          className="app__selection-sheet-backdrop"
+          role="presentation"
+          onClick={() => setSelectionSheetOpen(false)}
+        >
+          <div
+            className="app__selection-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="selection-sheet-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p id="selection-sheet-title" className="app__selection-sheet__title">
+              {tree.view.selectionSheetTitle}
+            </p>
+            <p className="app__selection-sheet__hint">{tree.view.selectionSheetHint}</p>
+            <button
+              type="button"
+              className="app__selection-sheet__btn app__selection-sheet__btn--primary"
+              disabled={planSelectionSummary.empty}
+              onClick={() => {
+                planCanvasRef.current?.deleteSelection()
+                setSelectionSheetOpen(false)
+              }}
+            >
+              {tree.view.deleteSelection}
+            </button>
+            <button
+              type="button"
+              className="app__selection-sheet__btn"
+              disabled={planSelectionSummary.empty}
+              onClick={() => {
+                runCopySelection()
+                setSelectionSheetOpen(false)
+              }}
+            >
+              {tree.view.selectionSheetCopy}
+            </button>
+            <button
+              type="button"
+              className="app__selection-sheet__btn app__selection-sheet__btn--ghost"
+              onClick={() => setSelectionSheetOpen(false)}
+            >
+              {tree.view.selectionSheetDismiss}
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       <details className="app__briefing">
         <summary>{tree.briefing.summary}</summary>

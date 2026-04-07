@@ -2,7 +2,7 @@
 
 Документ для розробників: архітектура, домен, формати даних, збірка та відомі обмеження.
 
-**Пов’язані документи:** продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**.  
+**Пов’язані документи:** повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**.  
 **Важливо:** позначки V0 / V1 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **1**).
 
 ## Архітектура

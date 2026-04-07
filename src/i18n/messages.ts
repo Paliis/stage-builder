@@ -131,6 +131,14 @@ export type MessageTree = {
     pasteSelection: string
     pasteSelectionTitle: string
     planMapActionsAria: string
+    /** Видалити лише виділені об’єкти (не всю вправу) */
+    deleteSelection: string
+    deleteSelectionTitle: string
+    /** Нижня панель після довгого тапу */
+    selectionSheetTitle: string
+    selectionSheetHint: string
+    selectionSheetCopy: string
+    selectionSheetDismiss: string
   }
   briefing: {
     summary: string
@@ -238,7 +246,7 @@ export const ukMessages: MessageTree = {
       'Розмір поля — у верхній панелі (від 20×30 м до 120 м).\nКрок сітки 0,5 м. Уздовж краю плану — метричні лінійки з поділками від 0,5 м.\nМасштаб: коліщатко або pinch. Зсув: пробіл або середня кнопка миші + перетягування.',
     onboardingS2Title: '2. План 2D: об’єкти та інструменти',
     onboardingS2Text:
-      'Розстановка: оберіть тип у бічній панелі (мішень, щит, реквізит) → клацайте по плану. Кожен клік додає один об’єкт у точці курсора (навіть поверх інших). Вийти з режиму: Esc або знову та сама кнопка типу.\n\nПісля виходу: клік — виділити; перетягування — перемістити (прив’язка до сітки вмикається сама). «↻» — поворот. Delete / Backspace — видалити.\n\nВимір: іконка лінійки біля карти або клавіша M у 2D — два кліки задають відрізок і довжину в метрах; Esc скасовує незавершений вимір.\nРамка на карті — виділити зону. Копія / вставка: Ctrl+C / Ctrl+V або кнопки «Копія» / «Вставити»; копія з’являється в тій частині плану, яку зараз видно.',
+      'Розстановка: оберіть тип у бічній панелі (мішень, щит, реквізит) → клацайте по плану. Кожен клік додає один об’єкт у точці курсора (навіть поверх інших). Вийти з режиму: Esc або знову та сама кнопка типу.\n\nПісля виходу: клік — виділити; перетягування — перемістити (прив’язка до сітки вмикається сама). «↻» — поворот. На клавіатурі: Delete / Backspace — видалити виділене. На телефоні: кнопка з хрестиком біля карти — те саме; довгий тап по плану (~0,5 с) з виділенням відкриває меню дій. Нижня червона кнопка з кошиком — очистити всю вправу (не плутати з видаленням виділення).\n\nВимір: іконка лінійки біля карти або клавіша M у 2D — два кліки задають відрізок і довжину в метрах; Esc скасовує незавершений вимір.\nРамка на карті — виділити зону. Копія / вставка: Ctrl+C / Ctrl+V або кнопки «Копія» / «Вставити»; копія з’являється в тій частині плану, яку зараз видно.',
     onboardingS3Title: '3. Мішені, NS і реквізит',
     onboardingS3Text:
       'NS (No-Shoot) — окремі кнопки в палітрі.\nШтрафна лінія: тягніть помаранчевий маркер, щоб змінити довжину; другий кінець нерухомий.\nКвадратний метал: [ і ] — розмір лиця 15 / 20 / 30 см (типові габарити IPSC).\n\nТакож у палітрі: Mini IPSC, метал на стійці (у 3D видно висоту лиця близько 50 см або 1 м), міні-поппер.\nРеквізит: щити з портами (зокрема з дверцятами в отворі), стіл, стілець, стійка для довгоствольної зброї.\n\nЯкщо на плані є стартова позиція, у брифінгу в полі «Кути безпеки» можна ввести, наприклад, 90/90/90 — на плані з’являться допоміжні сектори, мішені поза ними підсвічуються. Це підказка для перевірки схеми, не заміна рішення РО чи регламенту.',
@@ -371,7 +379,14 @@ export const ukMessages: MessageTree = {
     pasteSelectionTitle:
       '\u0412\u0441\u0442\u0430\u0432\u0438\u0442\u0438 \u043a\u043e\u043f\u0456\u044e \u0432 \u0446\u0435\u043d\u0442\u0440 \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u0433\u043e \u0432\u0438\u0434\u0443 (Ctrl+V).',
     planMapActionsAria:
-      '\u0414\u0456\u0457 \u043d\u0430 2D-\u043f\u043b\u0430\u043d\u0456: \u0440\u0430\u043c\u043a\u0430, \u043a\u043e\u043f\u0456\u044e\u0432\u0430\u043d\u043d\u044f, \u0432\u0441\u0442\u0430\u0432\u043b\u044f\u043d\u043d\u044f, \u0432\u0438\u043c\u0456\u0440, \u043e\u0447\u0438\u0449\u0435\u043d\u043d\u044f \u0432\u043f\u0440\u0430\u0432\u0438',
+      'Дії на 2D-плані: рамка, копія, вставка, вимір, видалити виділене, очистити всю вправу',
+    deleteSelection: 'Видалити виділене',
+    deleteSelectionTitle:
+      'Прибрати з плану лише виділені об’єкти (як Delete на клавіатурі). Червона кнопка з кошиком нижче — очистити всю вправу.',
+    selectionSheetTitle: 'Виділення',
+    selectionSheetHint: 'Тримайте палець ~0,5 с на плані, коли об’єкти вже виділені.',
+    selectionSheetCopy: 'Копіювати',
+    selectionSheetDismiss: 'Закрити',
   },
   briefing: {
     summary: '\u0422\u0435\u043a\u0441\u0442 \u0434\u043b\u044f PDF (\u0442\u0430\u0431\u043b\u0438\u0446\u044f \u0431\u0440\u0438\u0444\u0456\u043d\u0433\u0443)',
@@ -485,7 +500,7 @@ export const enMessages: MessageTree = {
       'Set the field size in the top bar (from 20×30 m up to 120 m).\nGrid step is 0.5 m. Metric rulers along the plan edge show ticks from 0.5 m.\nZoom: scroll or pinch. Pan: Space or middle mouse button + drag.',
     onboardingS2Title: '2. 2D plan: objects and tools',
     onboardingS2Text:
-      'Placement: pick a type in the sidebar (target, shield, prop), then click the plan. Each click adds one object at the cursor (even on top of others). Exit placement: Esc or click the same type button again.\n\nAfter that: click to select; drag to move (grid snap is on). «↻» rotates in steps. Delete / Backspace removes the selection.\n\nMeasure: ruler icon by the map, or M in 2D — two clicks set a segment and length in metres; Esc cancels an unfinished line.\nMarquee on the map selects a region. Copy / paste: Ctrl+C / Ctrl+V or Copy / Paste; the duplicate lands in the part of the plan you are viewing.',
+      'Placement: pick a type in the sidebar (target, shield, prop), then click the plan. Each click adds one object at the cursor (even on top of others). Exit placement: Esc or click the same type button again.\n\nAfter that: click to select; drag to move (grid snap is on). «↻» rotates in steps. Keyboard: Delete / Backspace removes the selection. Phone: the X button by the map does the same; long-press the plan (~0.5 s) with a selection to open quick actions. The red trash button at the bottom clears the entire exercise — not the same as deleting the selection.\n\nMeasure: ruler icon by the map, or M in 2D — two clicks set a segment and length in metres; Esc cancels an unfinished line.\nMarquee on the map selects a region. Copy / paste: Ctrl+C / Ctrl+V or Copy / Paste; the duplicate lands in the part of the plan you are viewing.',
     onboardingS3Title: '3. Targets, NS, and props',
     onboardingS3Text:
       'NS (No-Shoot) targets have their own buttons in the palette.\nPenalty line: drag the orange marker to change length; the other end stays fixed.\nSquare steel: [ and ] change face size (15 / 20 / 30 cm, typical IPSC-style sizes).\n\nThe palette also has Mini IPSC paper, steel on a stand (in 3D you see face height about 50 cm or 1 m from the floor), and a mini popper.\nProps include shields with ports (including a door in the port), a table, chair, and long-gun rack.\n\nWith a start position on the plan, the briefing field «Safety angles» can take values like 90/90/90 — helper sectors appear on the plan and targets outside are highlighted. That is a layout aid, not a substitute for the RO or the rulebook.',
@@ -615,7 +630,15 @@ export const enMessages: MessageTree = {
       'Copy selection (Ctrl+C). Also saved to the internal buffer; tries system clipboard when allowed.',
     pasteSelection: 'Paste',
     pasteSelectionTitle: 'Paste copy centered in the current view (Ctrl+V).',
-    planMapActionsAria: '2D plan actions: marquee, copy, paste, measure, clear exercise',
+    planMapActionsAria:
+      '2D plan actions: marquee, copy, paste, measure, delete selection, clear entire exercise',
+    deleteSelection: 'Delete selection',
+    deleteSelectionTitle:
+      'Remove only selected objects from the plan (same as Delete key). The red trash button below clears the whole exercise.',
+    selectionSheetTitle: 'Selection',
+    selectionSheetHint: 'Long-press the plan with something selected to open this menu.',
+    selectionSheetCopy: 'Copy',
+    selectionSheetDismiss: 'Close',
   },
   briefing: {
     summary: 'PDF copy (briefing table)',

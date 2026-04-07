@@ -5,7 +5,7 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-  type PointerEvent,
+  type PointerEvent as ReactPointerEvent,
 } from 'react'
 import { useStageStore } from '../../application/stageStore'
 import { CERAMIC_FACE_RGBA } from '../../domain/ceramicPlateSpec'
@@ -1580,6 +1580,8 @@ export type StageCanvasProps = {
   /** Рамка виділення: ЛКМ-тягнення; центр об’єкта всередині прямокутника. */
   marqueeModeActive: boolean
   onPlanSelectionChange?: (summary: { empty: boolean; count: number }) => void
+  /** Довгий тап по плану при непорожньому виділенні (мобільні дії). */
+  onSelectionLongPress?: () => void
 }
 
 export type StageCanvasHandle = {
@@ -1591,6 +1593,8 @@ export type StageCanvasHandle = {
   clearMeasure: () => void
   /** Знімок виділених сутностей для копіювання (глибокі копії). */
   getSelectionForCopy: () => { targets: Target[]; props: Prop[] } | null
+  /** Видаляє поточне виділення (те саме, що Delete / Backspace). */
+  deleteSelection: () => void
 }
 
 const MINIMAP_NAV_ZOOM = 1.42
@@ -1621,8 +1625,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   formatMeasureDistance,
   placementArmed,
   onPlacementWorldClick,
-  marqueeModeActive,
-  onPlanSelectionChange,
+    marqueeModeActive,
+    onPlanSelectionChange,
+    onSelectionLongPress,
 }: StageCanvasProps,
   ref,
 ) {
@@ -1668,6 +1673,20 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
           : planSelect.targetIds.length + planSelect.propIds.length
     onPlanSelectionChange?.({ empty: c === 0, count: c })
   }, [planSelect, onPlanSelectionChange])
+
+  const performDeleteSelection = useCallback(() => {
+    const ps = planSelectRef.current
+    if (ps.mode === 'none') return
+    if (ps.mode === 'multi') {
+      for (const id of ps.targetIds) onDeleteTarget(id)
+      for (const id of ps.propIds) onDeleteProp(id)
+    } else if (ps.mode === 'single') {
+      if (ps.kind === 'target') onDeleteTarget(ps.id)
+      else onDeleteProp(ps.id)
+    }
+    setPlanSelect({ mode: 'none' })
+  }, [onDeleteTarget, onDeleteProp])
+
   const [spaceHeld, setSpaceHeld] = useState(false)
   const [isPanningView, setIsPanningView] = useState(false)
   const [measurePoints, setMeasurePoints] = useState<{ a: Vec2 | null; b: Vec2 | null }>({
@@ -1796,9 +1815,71 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         const { targets: ts, props: ps2 } = useStageStore.getState()
         return snapshotEntitiesForCopy(ps, ts, ps2)
       },
+      deleteSelection: () => {
+        performDeleteSelection()
+      },
     }),
-    [fw, fh, repaint],
+    [fw, fh, repaint, performDeleteSelection],
   )
+
+  const onSelectionLongPressRef = useRef(onSelectionLongPress)
+  useEffect(() => {
+    onSelectionLongPressRef.current = onSelectionLongPress
+  }, [onSelectionLongPress])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    let timerId: number | null = null
+    let arm: { x: number; y: number; pointerId: number } | null = null
+
+    const disarm = () => {
+      if (timerId != null) {
+        window.clearTimeout(timerId)
+        timerId = null
+      }
+      arm = null
+    }
+
+    const onDown = (ev: PointerEvent) => {
+      if (ev.button !== 0) return
+      if (placementArmed || marqueeModeActive || measureToolActive) return
+      if (planSelectRef.current.mode === 'none') return
+      if (!onSelectionLongPressRef.current) return
+      arm = { x: ev.clientX, y: ev.clientY, pointerId: ev.pointerId }
+      timerId = window.setTimeout(() => {
+        timerId = null
+        if (!arm) return
+        if (planSelectRef.current.mode === 'none') return
+        if (dragRef.current) return
+        if (pinchMapRef.current.size > 1) return
+        onSelectionLongPressRef.current?.()
+        arm = null
+      }, 520)
+    }
+
+    const onMove = (ev: PointerEvent) => {
+      if (!arm || ev.pointerId !== arm.pointerId) return
+      if (Math.hypot(ev.clientX - arm.x, ev.clientY - arm.y) > 12) disarm()
+      if (pinchMapRef.current.size > 1) disarm()
+    }
+
+    const onUp = (ev: PointerEvent) => {
+      if (arm && ev.pointerId === arm.pointerId) disarm()
+    }
+
+    canvas.addEventListener('pointerdown', onDown)
+    canvas.addEventListener('pointermove', onMove)
+    canvas.addEventListener('pointerup', onUp)
+    canvas.addEventListener('pointercancel', onUp)
+    return () => {
+      disarm()
+      canvas.removeEventListener('pointerdown', onDown)
+      canvas.removeEventListener('pointermove', onMove)
+      canvas.removeEventListener('pointerup', onUp)
+      canvas.removeEventListener('pointercancel', onUp)
+    }
+  }, [placementArmed, marqueeModeActive, measureToolActive])
 
   const prevFieldWH = useRef<{ w: number; h: number } | null>(null)
   useEffect(() => {
@@ -1868,17 +1949,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       if (e.code === 'Delete' || e.code === 'Backspace') {
         if (e.repeat) return
         if (inFormField(e.target)) return
-        const ps = planSelectRef.current
-        if (ps.mode === 'none') return
+        if (planSelectRef.current.mode === 'none') return
         e.preventDefault()
-        if (ps.mode === 'multi') {
-          for (const id of ps.targetIds) onDeleteTarget(id)
-          for (const id of ps.propIds) onDeleteProp(id)
-        } else if (ps.mode === 'single') {
-          if (ps.kind === 'target') onDeleteTarget(ps.id)
-          else onDeleteProp(ps.id)
-        }
-        setPlanSelect({ mode: 'none' })
+        performDeleteSelection()
         return
       }
       if (e.code === 'BracketLeft' || e.code === 'BracketRight') {
@@ -1915,6 +1988,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       window.removeEventListener('blur', onBlur)
     }
   }, [
+    performDeleteSelection,
     onDeleteTarget,
     onDeleteProp,
     onSetTargetMetalRectSideCm,
@@ -1935,7 +2009,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
   }, [marqueeModeActive, repaint])
 
-  const beginViewPan = (ev: PointerEvent<HTMLCanvasElement>) => {
+  const beginViewPan = (ev: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     if (!canvas) return
     pendingEmptyPanRef.current = null
@@ -1955,7 +2029,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
   }
 
-  const onPointerDown = (ev: PointerEvent<HTMLCanvasElement>) => {
+  const onPointerDown = (ev: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     if (!canvas) return
     const rect = canvas.getBoundingClientRect()
@@ -2115,7 +2189,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
   }
 
-  const onPointerMove = (ev: PointerEvent<HTMLCanvasElement>) => {
+  const onPointerMove = (ev: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     if (!canvas) return
     const rect = canvas.getBoundingClientRect()
@@ -2290,7 +2364,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     else onMoveProp(drag.id, snapVec2(clamped, PROP_PLACEMENT_SNAP_M))
   }
 
-  const endDrag = (ev: PointerEvent<HTMLCanvasElement>) => {
+  const endDrag = (ev: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     pinchMapRef.current.delete(ev.pointerId)
     if (pinchMapRef.current.size < 2) pinchLastDistRef.current = 0
