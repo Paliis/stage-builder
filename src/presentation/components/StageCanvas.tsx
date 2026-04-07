@@ -394,7 +394,10 @@ function drawGrid(ctx: CanvasRenderingContext2D, t: ViewTransform) {
 }
 
 const RULER_TARGET_TICK_PX = 52
+/** Базова довжина риски в метрах (при великому зумі); при «вмістити поле» інакше риски бу б ~1–2 px. */
 const RULER_TICK_LEN_M = 0.07
+const RULER_TICK_MIN_PX_MAJOR = 12
+const RULER_TICK_MIN_PX_MINOR = 7
 /** Мінімальний крок поділок лінійки (м); далі адаптивно 1, 2, 5… */
 const RULER_STEP_CANDIDATES_M = [0.5, 1, 2, 5, 10, 20, 50, 100] as const
 
@@ -411,6 +414,10 @@ function formatRulerTickLabel(v: number, step: number): string {
   return (Math.round(v * 10) / 10).toFixed(1)
 }
 
+function rulerTickLenWorldM(pxPerMeter: number, minPx: number, baseM: number): number {
+  return Math.max(baseM, minPx / Math.max(pxPerMeter, 1e-6))
+}
+
 /** Лінійка: ліва сторона поля (вісь Y), нижній край y=0 (вісь X); поділки в «метрах» поля. */
 function drawFieldRulers(ctx: CanvasRenderingContext2D, tf: ViewTransform) {
   const fw = tf.fieldWidthM
@@ -418,10 +425,13 @@ function drawFieldRulers(ctx: CanvasRenderingContext2D, tf: ViewTransform) {
   const step = pickRulerStepM(tf.pxPerMeter)
   const minorStep = step >= 1 ? step * 0.5 : 0
 
+  const majorLen = rulerTickLenWorldM(tf.pxPerMeter, RULER_TICK_MIN_PX_MAJOR, RULER_TICK_LEN_M)
+  const minorLen = rulerTickLenWorldM(tf.pxPerMeter, RULER_TICK_MIN_PX_MINOR, RULER_TICK_LEN_M * 0.55)
+
   ctx.save()
   ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
   ctx.fillStyle = 'rgba(30, 41, 59, 0.95)'
-  ctx.lineWidth = 1
+  ctx.lineWidth = 1.35
   const fontPx = Math.max(9, Math.min(12, Math.round(10 * Math.sqrt(tf.pxPerMeter / 14))))
   ctx.font = `${fontPx}px system-ui, sans-serif`
   ctx.textAlign = 'right'
@@ -435,7 +445,7 @@ function drawFieldRulers(ctx: CanvasRenderingContext2D, tf: ViewTransform) {
     ctx.lineTo(pb.x, pb.y)
     ctx.stroke()
     if (withLabel) {
-      ctx.fillText(label, pb.x - 3, pa.y)
+      ctx.fillText(label, pb.x - 5, pa.y)
     }
   }
 
@@ -449,14 +459,11 @@ function drawFieldRulers(ctx: CanvasRenderingContext2D, tf: ViewTransform) {
     if (withLabel) {
       ctx.textAlign = 'center'
       ctx.textBaseline = 'top'
-      ctx.fillText(label, pa.x, pb.y + 2)
+      ctx.fillText(label, pa.x, pb.y + 3)
       ctx.textAlign = 'right'
       ctx.textBaseline = 'middle'
     }
   }
-
-  const majorLen = RULER_TICK_LEN_M
-  const minorLen = RULER_TICK_LEN_M * 0.55
 
   for (let y = 0; y <= fh + 1e-9; y += step) {
     const yy = Math.min(y, fh)
@@ -464,10 +471,12 @@ function drawFieldRulers(ctx: CanvasRenderingContext2D, tf: ViewTransform) {
   }
   if (minorStep > 0) {
     ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
+    ctx.lineWidth = 1
     for (let y = minorStep; y < fh - 1e-9; y += step) {
       drawTickVerticalEdge(y, minorLen, false, '')
     }
     ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
+    ctx.lineWidth = 1.35
   }
 
   for (let x = 0; x <= fw + 1e-9; x += step) {
@@ -477,6 +486,7 @@ function drawFieldRulers(ctx: CanvasRenderingContext2D, tf: ViewTransform) {
   }
   if (minorStep > 0) {
     ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
+    ctx.lineWidth = 1
     for (let x = minorStep; x < fw - 1e-9; x += step) {
       drawTickBottomEdge(x, minorLen, false, '')
     }
