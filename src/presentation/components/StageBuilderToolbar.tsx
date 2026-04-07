@@ -1,4 +1,9 @@
-import { INFRASTRUCTURE_PROP_ORDER } from '../../domain/infrastructureProps'
+import {
+  INFRASTRUCTURE_PROPS_FURNITURE_RACK,
+  INFRASTRUCTURE_PROPS_PRIMARY,
+  INFRASTRUCTURE_PROPS_TAIL,
+} from '../../domain/infrastructureProps'
+import { useId } from 'react'
 import type { PlacementMode } from '../../domain/placementMode'
 import type { PropType, TargetType } from '../../domain/models'
 import type { MessageTree } from '../../i18n/messages'
@@ -96,6 +101,29 @@ export function StageBuilderToolbar({
   onArmTarget,
   onArmProp,
 }: StageBuilderToolbarProps) {
+  const furnitureGroupId = useId()
+  const infraPropButtons = (types: readonly PropType[]) =>
+    types.map((pt) => {
+      const armed = placementMode?.kind === 'prop' && placementMode.type === pt
+      return (
+        <button
+          key={pt}
+          type="button"
+          className={`app__btn-secondary ${propAddButtonClass(pt)}${armed ? ' is-placement-armed' : ''}`}
+          aria-pressed={armed}
+          title={placementTitle(
+            tree.props[pt],
+            armed,
+            tree.toolbar.placementClickPlan,
+            tree.toolbar.placementCancelEsc,
+          )}
+          onClick={() => onArmProp(pt)}
+        >
+          {tree.props[pt]}
+        </button>
+      )
+    })
+
   return (
     <section className={className ?? 'app__toolbar'} aria-label={tree.toolbar.aria}>
       {placementMode ? (
@@ -182,28 +210,14 @@ export function StageBuilderToolbar({
       >
         <h2 className="app__section-title">{tree.toolbar.infrastructureHeading}</h2>
         <p className="app__section-hint">{tree.toolbar.infrastructureHint}</p>
-        <div className="app__buttons">
-          {INFRASTRUCTURE_PROP_ORDER.map((pt: PropType) => {
-            const armed = placementMode?.kind === 'prop' && placementMode.type === pt
-            return (
-              <button
-                key={pt}
-                type="button"
-                className={`app__btn-secondary ${propAddButtonClass(pt)}${armed ? ' is-placement-armed' : ''}`}
-                aria-pressed={armed}
-                title={placementTitle(
-                  tree.props[pt],
-                  armed,
-                  tree.toolbar.placementClickPlan,
-                  tree.toolbar.placementCancelEsc,
-                )}
-                onClick={() => onArmProp(pt)}
-              >
-                {tree.props[pt]}
-              </button>
-            )
-          })}
+        <div className="app__buttons">{infraPropButtons(INFRASTRUCTURE_PROPS_PRIMARY)}</div>
+        <p id={furnitureGroupId} className="app__toolbar-infra-sub">
+          {tree.toolbar.furnitureGroupLabel}
+        </p>
+        <div className="app__buttons" role="group" aria-labelledby={furnitureGroupId}>
+          {infraPropButtons(INFRASTRUCTURE_PROPS_FURNITURE_RACK)}
         </div>
+        <div className="app__buttons">{infraPropButtons(INFRASTRUCTURE_PROPS_TAIL)}</div>
       </div>
     </section>
   )

@@ -660,9 +660,8 @@ export default function App() {
               {tree.pwa.installButton}
               <span className="app__onboarding-install-hint">{tree.pwa.installHint}</span>
             </button>
-          ) : (
-            <p className="app__onboarding-note">{tree.app.onboardingNote}</p>
-          )}
+          ) : null}
+          <p className="app__onboarding-note">{tree.app.onboardingNote}</p>
           <button type="button" className="app__onboarding-cta" onClick={dismissOnboarding}>
             {tree.app.onboardingCta}
           </button>

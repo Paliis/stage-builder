@@ -41,6 +41,8 @@ export type MessageTree = {
     infrastructureHeading: string
     infrastructureAria: string
     infrastructureHint: string
+    /** Підпис над блоком кнопок «стіл / стілець / стійка» у панелі інфраструктури */
+    furnitureGroupLabel: string
     targetsNsAria: string
     targetsNsCaption: string
     fieldSizeOption: string
@@ -226,6 +228,7 @@ export const ukMessages: MessageTree = {
       '\u041f\u0435\u0440\u0435\u0432\u0456\u0440\u0438\u0442\u0438, \u0447\u0438 \u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e \u0437\u0430\u043a\u0440\u0438\u0442\u0456 \u043c\u0456\u0448\u0435\u043d\u0456 \u0449\u0438\u0442\u0430\u043c\u0438 \u0442\u0430 \u0434\u0435\u043a\u043e\u0440\u0430\u0446\u0456\u044f\u043c\u0438',
       '\u041e\u0446\u0456\u043d\u0438\u0442\u0438 \u0441\u0442\u0440\u0456\u043b\u0435\u0446\u044c\u043a\u0456 \u043f\u043e\u0437\u0438\u0446\u0456\u0457 \u0442\u0430 \u0432\u0438\u0434\u0438\u043c\u0456\u0441\u0442\u044c \u043c\u0456\u0448\u0435\u043d\u0435\u0439 \u0437 \u043a\u043e\u0436\u043d\u043e\u0457',
       '\u0428\u0432\u0438\u0434\u043a\u043e \u0441\u0444\u043e\u0440\u043c\u0443\u0432\u0430\u0442\u0438 \u0431\u0440\u0438\u0444\u0456\u043d\u0433 \u0456 \u0437\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0438\u0442\u0438 \u0433\u043e\u0442\u043e\u0432\u0438\u0439 PDF',
+      '\u041c\u0456\u0440\u044f\u0442\u0438 \u0432\u0456\u0434\u0441\u0442\u0430\u043d\u0456 \u043d\u0430 \u043f\u043b\u0430\u043d\u0456, \u0432\u0438\u0434\u0456\u043b\u044f\u0442\u0438 \u0433\u0440\u0443\u043f\u0438 \u043e\u0431\u2019\u0454\u043a\u0442\u0456\u0432 \u0456 \u0448\u0432\u0438\u0434\u043a\u043e \u0457\u0445 \u0434\u0443\u0431\u043b\u044e\u0432\u0430\u0442\u0438',
       '\u041f\u043e\u0434\u0456\u043b\u0438\u0442\u0438\u0441\u044c \u0432\u043f\u0440\u0430\u0432\u043e\u044e \u0437 \u0456\u043d\u0448\u0438\u043c\u0438 \u043e\u0440\u0433\u0430\u043d\u0456\u0437\u0430\u0442\u043e\u0440\u0430\u043c\u0438 \u0430\u0431\u043e \u0437\u0431\u0435\u0440\u0435\u0433\u0442\u0438 \u044f\u043a \u0448\u0430\u0431\u043b\u043e\u043d',
       '\u0412\u0437\u044f\u0442\u0438 \u0456\u0441\u043d\u0443\u044e\u0447\u0443 \u0432\u043f\u0440\u0430\u0432\u0443 \u0437\u0430 \u043e\u0441\u043d\u043e\u0432\u0443 \u0442\u0430 \u0448\u0432\u0438\u0434\u043a\u043e \u043f\u0435\u0440\u0435\u0431\u0443\u0434\u0443\u0432\u0430\u0442\u0438 \u043d\u043e\u0432\u0443',
     ],
@@ -249,7 +252,7 @@ export const ukMessages: MessageTree = {
     onboardingS6Text:
       '«Зберегти вправу» — файл .stage.json із повною геометрією сцени та текстом брифінгу. Його можна відкрити пізніше або передати іншим організаторам. Чернетка також зберігається в цьому браузері між візитами, поки ви не очистите вправу кнопкою на карті.',
     onboardingNote:
-      'Додаток можна додати на робочий стіл як встановлюваний веб-додаток — зручно на стрільбищі, коли зв’язок нестабільний. Коли з’явиться оновлена версія на сайті, зверху може з’явитися синя смуга з пропозицією оновитися — натисніть «Оновити», щоб отримати останні зміни; такі нагадування не показуються частіше ніж раз на добу.',
+      'Редактор працює в браузері або як встановлений додаток — зручно брати з собою на стрільбище. Коли на сайті з’явиться нова версія, зверху може з’явитися синя смуга з кнопкою «Оновити»; такі нагадування не показуються частіше ніж раз на добу.',
     onboardingCta: '\u041f\u043e\u0433\u043d\u0430\u043b\u0438 \u0434\u043e \u0440\u043e\u0431\u043e\u0442\u0438!',
     onboardingReopen: '\u0406\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0456\u044f',
     contextHint: '\u0417\u0430\u0440\u0430\u0437: \u043f\u043e\u043b\u0435 {{w}}\u00d7{{h}} \u043c, \u0441\u0456\u0442\u043a\u0430 {{grid}} \u043c.',
@@ -271,6 +274,7 @@ export const ukMessages: MessageTree = {
     infrastructureAria: '\u0414\u043e\u0434\u0430\u0442\u0438 \u0440\u0435\u043a\u0432\u0456\u0437\u0438\u0442 \u0456 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0456\u0457 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438',
     infrastructureHint:
       '\u0429\u0438\u0442\u0438, \u0434\u0432\u0435\u0440\u0456, \u0448\u0442\u0440\u0430\u0444\u043d\u0456 \u043b\u0456\u043d\u0456\u0457 \u0442\u0430 \u0456\u043d\u0448\u0438\u0439 \u0440\u0435\u043a\u0432\u0456\u0437\u0438\u0442 \u2014 \u043e\u0434\u043d\u0430\u043a\u043e\u0432\u0438\u0439 \u043d\u0430\u0431\u0456\u0440 \u0434\u043b\u044f \u0431\u0443\u0434\u044c-\u044f\u043a\u043e\u0457 \u0434\u0438\u0441\u0446\u0438\u043f\u043b\u0456\u043d\u0438.',
+    furnitureGroupLabel: '\u0421\u0442\u0456\u043b, \u0441\u0442\u0456\u043b\u0435\u0446\u044c, \u0441\u0442\u0456\u0439\u043a\u0430 \u0434\u043b\u044f \u0437\u0431\u0440\u043e\u0457',
     targetsNsAria: '\u0414\u043e\u0434\u0430\u0442\u0438 no-shoot (NS) \u043c\u0456\u0448\u0435\u043d\u0456 \u2014 \u0432\u043b\u0443\u0447\u0430\u043d\u043d\u044f \u043d\u0435 \u0437\u0430\u0440\u0430\u0445\u043e\u0432\u0443\u044e\u0442\u044c\u0441\u044f',
     targetsNsCaption: 'NS:',
     fieldSizeOption: '{{w}} \u00d7 {{h}} \u043c',
@@ -326,7 +330,7 @@ export const ukMessages: MessageTree = {
     barrel: '+ \u0411\u043e\u0447\u043a\u0430',
     tireStack: '+ \u0421\u0442\u043e\u0441 \u0448\u0438\u043d',
     woodTable: '+ \u0421\u0442\u0456\u043b (\u0434\u0435\u0440\u0435\u0432\u2019\u044f\u043d\u0438\u0439)',
-    woodChair: '+ \u0421\u0442\u0456\u043b\u0435\u0446\u044c (\u0434\u0435\u0440\u0435\u0432\u2019\u044f\u043d\u0438\u0439)',
+    woodChair: '+ \u0421\u0442\u0456\u043b\u0435\u0446\u044c',
     weaponRackPyramid: '+ \u041f\u0456\u0440\u0430\u043c\u0456\u0434\u0430 \u0434\u043b\u044f \u0437\u0431\u0440\u043e\u0457 (\u0440\u0443\u0448\u043d\u0438\u0446\u044f)',
     seesaw: '+ \u041a\u0430\u0447\u0435\u043b\u044c',
     movingPlatform: '+ \u0420\u0443\u0445. \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430',
@@ -472,30 +476,31 @@ export const enMessages: MessageTree = {
       'Verify that targets are properly concealed behind barriers and props',
       'Evaluate shooting positions and target visibility from each one',
       'Quickly build a briefing and download a ready-to-print PDF',
+      'Measure distances on the plan, select groups of objects, and duplicate them quickly',
       'Share stages with other match directors or save them as templates',
       'Take an existing stage as a base and rapidly redesign a new one',
     ],
     onboardingHowTitle: 'How to use',
     onboardingS1Title: '1. Setting up the range',
     onboardingS1Text:
-      'Pick the range size from the top bar (from 20\u00d730 m up to 120 m). Grid step is 0.5 m for precise target spacing. Zoom \u2014 scroll or pinch; pan \u2014 Space or middle mouse button + drag.',
+      'Pick the range size from the top bar (from 20\u00d730 m up to 120 m). Grid step is 0.5 m for precise spacing. Metric rulers along the plan edge show ticks from 0.5 m upward so you can read distances at a glance. Zoom \u2014 scroll or pinch; pan \u2014 Space or middle mouse button + drag.',
     onboardingS2Title: '2. Building the stage (2D plan)',
     onboardingS2Text:
-      'Pick a type in the sidebar (target, shield, prop), then click the 2D plan \u2014 each click adds one such object at the cursor (even on top of others). Esc or click the same type button again exits placement. When placement is off, click an object to select it; drag to move (grid snap is automatic). \u00ab\u21bb\u00bb rotates in steps. Delete / Backspace removes it.',
+      'Pick a type in the sidebar (target, shield, prop), then click the 2D plan \u2014 each click adds one such object at the cursor (even on top of others). Esc or click the same type button again exits placement. When placement is off, click an object to select it; drag to move (grid snap is automatic). \u00ab\u21bb\u00bb rotates in steps. Delete / Backspace removes it. Measure tool: the ruler icon by the map (or M in 2D) \u2014 two clicks define a segment and show length in metres; Esc cancels an unfinished measure. Marquee mode on the map selects everything inside the box; copy and paste with Ctrl+C / Ctrl+V or the Copy / Paste buttons \u2014 the duplicate appears in the part of the plan you are viewing.',
     onboardingS3Title: '3. Object specifics',
     onboardingS3Text:
-      'Targets can be marked as NS (No-Shoot) with dedicated buttons. Penalty line: drag the orange marker to change length; the other end stays fixed. Steel plates: [ and ] keys change the side (15 / 20 / 30 cm per Appendix C3).',
+      'Targets can be marked as NS (No-Shoot) with dedicated buttons. Penalty line: drag the orange marker to change length; the other end stays fixed. Square steel plates: [ and ] change face size (15 / 20 / 30 cm, usual IPSC-style sizes). The palette includes Mini IPSC paper, steel on a stand (in 3D you see face height from the floor \u2014 about 50 cm or 1 m), and a mini popper. Props include shields with ports in several layouts (including a door in the port), a table and chair, and a long-gun rack. If you place a start position, the briefing field \u00abSafety angles\u00bb accepts values like 90/90/90 \u2014 the plan shows helper sectors; targets outside are highlighted (a layout check, not a substitute for the RO or rules).',
     onboardingS4Title: '4. 3D preview & audit',
     onboardingS4Text:
-      'Switch to 3D in the top menu. Orbit with left mouse, zoom with scroll. Check target visibility through ports and rotation angles. \u00abShooter\u2019s view\u00bb shows the stage from the competitor\u2019s perspective.',
+      'Switch to 3D in the top menu. Orbit with left mouse, zoom with scroll. Check target visibility through ports and rotation angles. \u00abShooter\u2019s view\u00bb shows the stage from the competitor\u2019s perspective. For plates on stands, note face height relative to the ground.',
     onboardingS5Title: '5. Briefing & PDF',
     onboardingS5Text:
-      'Fill the briefing table (title, procedure, start position). The system counts targets and estimates a minimum round count (indicative). \u00abDownload PDF\u00bb produces a document with the table and a 3D scene snapshot. Open 3D before exporting for the snapshot.',
+      'Fill the briefing table: title, procedure, start position, ammunition, safety angles, and so on. The system counts targets and estimates a minimum round count (indicative). \u00abDownload PDF\u00bb produces a document with the table and a 3D scene snapshot; open 3D first so the snapshot matches what you see. The safety angles field is included in the PDF like the other rows.',
     onboardingS6Title: '6. Saving',
     onboardingS6Text:
-      '\u00abSave stage\u00bb creates a .stage.json file with the full scene geometry and briefing text. You can reload it later or share it with other match organizers. A draft is also kept in this browser between visits.',
+      '\u00abSave stage\u00bb creates a .stage.json file with the full scene geometry and briefing text. You can reload it later or share it with other match organizers. A draft is also kept in this browser between visits until you clear the stage with the trash button on the map.',
     onboardingNote:
-      'The app works as a PWA \u2014 add it to your home screen for offline access at the range.',
+      'The editor runs in the browser or as an installed app \u2014 handy to bring to the range. When a newer version is published, a blue bar may appear at the top with an Update button; you will not be prompted more than once a day.',
     onboardingCta: "Let's get to work!",
     onboardingReopen: 'Guide',
     contextHint: 'Current field: {{w}}\u00d7{{h}} m, grid {{grid}} m.',
@@ -517,6 +522,7 @@ export const enMessages: MessageTree = {
     infrastructureAria: 'Add range props and structures',
     infrastructureHint:
       'Shields, doors, penalty lines, and other props — the same palette for any discipline.',
+    furnitureGroupLabel: 'Table, chair & rack',
     targetsNsAria: 'Add no-shoot (NS) targets \u2014 hits do not score',
     targetsNsCaption: 'NS:',
     fieldSizeOption: '{{w}} \u00d7 {{h}} m',
@@ -571,7 +577,7 @@ export const enMessages: MessageTree = {
     barrel: '+ Barrel',
     tireStack: '+ Tire stack',
     woodTable: '+ Wood table',
-    woodChair: '+ Wood chair',
+    woodChair: '+ Chair',
     weaponRackPyramid: '+ Weapon rack (pyramid, rifle)',
     seesaw: '+ Seesaw',
     movingPlatform: '+ Moving platform',
