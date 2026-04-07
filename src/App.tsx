@@ -357,19 +357,6 @@ export default function App() {
           {tree.view.visual3d}
         </button>
       </div>
-      {viewMode === '2d' && (
-        <div className="app__viewtabs" role="group" aria-label={tree.view.measureTool}>
-          <button
-            type="button"
-            aria-pressed={measureToolActive}
-            className={measureToolActive ? 'is-active' : ''}
-            title={tree.view.measureToolTitle}
-            onClick={() => setMeasureToolActive((v) => !v)}
-          >
-            {tree.view.measureTool}
-          </button>
-        </div>
-      )}
       <label className="app__field-size">
         <span className="app__field-size-label">{tree.toolbar.fieldSizeLabel}</span>
         <select
@@ -610,6 +597,29 @@ export default function App() {
                       measureToolActive={measureToolActive}
                       formatMeasureDistance={formatMeasureDistance}
                     />
+                    <button
+                      type="button"
+                      className={`app__plan-measure-btn${measureToolActive ? ' is-active' : ''}`}
+                      aria-pressed={measureToolActive}
+                      aria-label={tree.view.measureTool}
+                      title={tree.view.measureToolTitle}
+                      onClick={() => setMeasureToolActive((v) => !v)}
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M3 18h18" />
+                        <path d="M5 18v-3M8 18V9M11 18v-2M14 18V7M17 18v-4M20 18v-2" />
+                      </svg>
+                    </button>
                     <button
                       type="button"
                       className="app__plan-clear-btn"
