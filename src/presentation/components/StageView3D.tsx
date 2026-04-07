@@ -747,8 +747,9 @@ function SlantedShieldPortFace3D({
     s.closePath()
     const hole = new THREE.Path()
     const pts = shieldPortDiagonalSlitLocalM(innerW, innerH)
-    hole.moveTo(pts[0]!.x, pts[0]!.y)
-    for (let i = 1; i < 4; i++) hole.lineTo(pts[i]!.x, pts[i]!.y)
+    const rev = [...pts].reverse()
+    hole.moveTo(rev[0]!.x, rev[0]!.y)
+    for (let i = 1; i < 4; i++) hole.lineTo(rev[i]!.x, rev[i]!.y)
     hole.closePath()
     s.holes.push(hole)
     const extr = new THREE.ExtrudeGeometry(s, {

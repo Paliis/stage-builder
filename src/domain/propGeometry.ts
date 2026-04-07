@@ -79,13 +79,35 @@ export function shieldPortDiagonalSlitLocalM(innerW: number, innerH: number): Ve
   }
   const tx = dx / len
   const ty = dy / len
-  const nx = -ty
-  const ny = tx
+  let nx = -ty
+  let ny = tx
+  const eps = 1e-4
+  const inFace = (x: number, y: number) =>
+    Math.abs(x) < innerW / 2 - eps && Math.abs(y) < innerH / 2 - eps
+  if (!inFace(x0 + nx * w, y0 + ny * w)) {
+    nx = ty
+    ny = -tx
+  }
   return [
     { x: x0 + nx * w, y: y0 + ny * w },
     { x: x1 + nx * w, y: y1 + ny * w },
     { x: x1 - nx * w, y: y1 - ny * w },
     { x: x0 - nx * w, y: y0 - ny * w },
+  ]
+}
+
+/**
+ * Проєкція косої щілини на план зверху: вузька смуга на всю внутрішню ширину лиця
+ * (вісь довжини щита × товщина на плані). Вертикаль лиця на план не відображається.
+ */
+export function shieldPortSlitFootprintPlanLocalM(innerW: number, planHalfThicknessM: number): Vec2[] {
+  const t = Math.min(SHIELD_PORT_SLIT_HALF_M, Math.max(planHalfThicknessM * 0.85, 0.004))
+  const hw = innerW / 2
+  return [
+    { x: -hw, y: -t },
+    { x: hw, y: -t },
+    { x: hw, y: t },
+    { x: -hw, y: t },
   ]
 }
 
@@ -105,11 +127,10 @@ export function propPortHoleWorld(p: Prop): Vec2[] | null {
     return rectWorldCorners(cx, cy, PORT_TALL_HALF_W_M, PORT_TALL_HALF_H_M, rot)
   }
   if (p.type === 'shieldPortSlanted') {
-    const h = propHeightM(p)
     const f = SHIELD_FRAME_SECTION_M
-    const innerH = Math.max(h - 2 * f, 0.15)
     const innerW = Math.max(p.sizeM.x - 2 * f, 0.15)
-    return shieldPortDiagonalSlitLocalM(innerW, innerH).map((q) =>
+    const planHt = p.sizeM.y / 2
+    return shieldPortSlitFootprintPlanLocalM(innerW, planHt).map((q) =>
       localFaceToWorldPlan(q.x, q.y, cx, cy, rot),
     )
   }
