@@ -730,6 +730,57 @@ function ShieldBarrier3D({
   )
 }
 
+/**
+ * Сітка косого порту без ExtrudeGeometry/holes (у Three.js вони часто дають суцільну площину).
+ * Два чотирикутники: A–TL–TR–B (верх/право) та D–BL–BR–C (низ/ліво) — разом покривають лице
+ * без паралелограма A–B–C–D.
+ */
+function buildSlantedShieldGridBufferGeometry(innerW: number, innerH: number): THREE.BufferGeometry {
+  const [A, B, C, D] = shieldPortSlantOpeningLocalM(innerW, innerH)
+  const hw = innerW / 2
+  const hh = innerH / 2
+  const TL = { x: -hw, y: hh }
+  const TR = { x: hw, y: hh }
+  const BR = { x: hw, y: -hh }
+  const BL = { x: -hw, y: -hh }
+
+  const uv = (x: number, y: number): [number, number] => [
+    (x + hw) / innerW,
+    (y + hh) / innerH,
+  ]
+
+  const pos: number[] = []
+  const uvs: number[] = []
+  const idx: number[] = []
+  let next = 0
+  const pushTri = (
+    ax: number,
+    ay: number,
+    bx: number,
+    by: number,
+    cx: number,
+    cy: number,
+  ) => {
+    const ia = next
+    next += 3
+    pos.push(ax, ay, 0, bx, by, 0, cx, cy, 0)
+    uvs.push(...uv(ax, ay), ...uv(bx, by), ...uv(cx, cy))
+    idx.push(ia, ia + 1, ia + 2)
+  }
+
+  pushTri(A.x, A.y, TL.x, TL.y, TR.x, TR.y)
+  pushTri(A.x, A.y, TR.x, TR.y, B.x, B.y)
+  pushTri(D.x, D.y, BL.x, BL.y, BR.x, BR.y)
+  pushTri(D.x, D.y, BR.x, BR.y, C.x, C.y)
+
+  const geo = new THREE.BufferGeometry()
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3))
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2))
+  geo.setIndex(idx)
+  geo.computeVertexNormals()
+  return geo
+}
+
 /** Косий порт: сітка з вирізаним паралелограмом; планки вздовж довгих сторін (7 см від кутів по ребрах). */
 function SlantedShieldPortFace3D({
   innerW,
@@ -740,27 +791,10 @@ function SlantedShieldPortFace3D({
   innerH: number
   gridTex: THREE.CanvasTexture
 }) {
-  const geo = useMemo(() => {
-    const s = new THREE.Shape()
-    s.moveTo(-innerW / 2, -innerH / 2)
-    s.lineTo(innerW / 2, -innerH / 2)
-    s.lineTo(innerW / 2, innerH / 2)
-    s.lineTo(-innerW / 2, innerH / 2)
-    s.closePath()
-    const hole = new THREE.Path()
-    const open = shieldPortSlantOpeningLocalM(innerW, innerH)
-    hole.moveTo(open[0]!.x, open[0]!.y)
-    for (let i = 1; i < 4; i++) hole.lineTo(open[i]!.x, open[i]!.y)
-    hole.closePath()
-    s.holes.push(hole)
-    const extr = new THREE.ExtrudeGeometry(s, {
-      depth: 0.004,
-      bevelEnabled: false,
-      curveSegments: 12,
-    })
-    extr.translate(0, 0, -0.002)
-    return extr
-  }, [innerW, innerH])
+  const geo = useMemo(
+    () => buildSlantedShieldGridBufferGeometry(innerW, innerH),
+    [innerW, innerH],
+  )
   useEffect(() => () => geo.dispose(), [geo])
   const gridMatProps = {
     map: gridTex,
@@ -815,7 +849,7 @@ function SlantedShieldPortPlanks3D({
   }, [innerW, innerH, inset])
 
   const plankW = SHIELD_FRAME_SECTION_M
-  const z = 0.003
+  const z = 0.006
 
   return (
     <>
@@ -1161,6 +1195,36 @@ function CooperTunnel3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   )
 }
 
+function WeaponRackLegPair({
+  hw,
+  H,
+  t,
+  z0,
+  ang,
+  red,
+}: {
+  hw: number
+  H: number
+  t: number
+  z0: number
+  ang: number
+  red: { color: string; roughness: number; metalness: number }
+}) {
+  const legLen = Math.hypot(hw, H)
+  return (
+    <>
+      <mesh position={[-hw / 2, H / 2, z0]} rotation={[0, 0, ang]} castShadow receiveShadow>
+        <boxGeometry args={[t, legLen, t]} />
+        <meshStandardMaterial {...red} />
+      </mesh>
+      <mesh position={[hw / 2, H / 2, z0]} rotation={[0, 0, -ang]} castShadow receiveShadow>
+        <boxGeometry args={[t, legLen, t]} />
+        <meshStandardMaterial {...red} />
+      </mesh>
+    </>
+  )
+}
+
 /** Червона A-подібна стійка з верхньою планкою (пази), одна рушниця без чохла в лівому слоті. */
 function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const hw = p.sizeM.x / 2
@@ -1173,23 +1237,7 @@ function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const receiver = { color: '#37474f', roughness: 0.48, metalness: 0.42 } as const
   const barrel = { color: '#263238', roughness: 0.38, metalness: 0.62 } as const
 
-  const legLen = Math.hypot(hw, H)
   const ang = Math.atan2(hw, H)
-
-  function LegPair({ z0 }: { z0: number }) {
-    return (
-      <>
-        <mesh position={[-hw / 2, H / 2, z0]} rotation={[0, 0, ang]} castShadow receiveShadow>
-          <boxGeometry args={[t, legLen, t]} />
-          <meshStandardMaterial {...red} />
-        </mesh>
-        <mesh position={[hw / 2, H / 2, z0]} rotation={[0, 0, -ang]} castShadow receiveShadow>
-          <boxGeometry args={[t, legLen, t]} />
-          <meshStandardMaterial {...red} />
-        </mesh>
-      </>
-    )
-  }
 
   const shelfY = t * 0.85
   const topY = H - t * 0.75
@@ -1199,8 +1247,8 @@ function WeaponRackPyramid3D({ p, x, z }: { p: Prop; x: number; z: number }) {
 
   return (
     <group position={[x, 0, z]} rotation={[0, p.rotationRad, 0]}>
-      <LegPair z0={zFront} />
-      <LegPair z0={-hz + t * 0.55} />
+      <WeaponRackLegPair hw={hw} H={H} t={t} z0={zFront} ang={ang} red={red} />
+      <WeaponRackLegPair hw={hw} H={H} t={t} z0={-hz + t * 0.55} ang={ang} red={red} />
       <mesh position={[0, shelfY, 0]} castShadow receiveShadow>
         <boxGeometry args={[hw * 1.88, t * 0.55, hz * 1.78]} />
         <meshStandardMaterial {...red} />
