@@ -393,6 +393,159 @@ function drawGrid(ctx: CanvasRenderingContext2D, t: ViewTransform) {
   ctx.restore()
 }
 
+const RULER_TARGET_TICK_PX = 52
+const RULER_TICK_LEN_M = 0.07
+/** Мінімальний крок поділок лінійки (м); далі адаптивно 1, 2, 5… */
+const RULER_STEP_CANDIDATES_M = [0.5, 1, 2, 5, 10, 20, 50, 100] as const
+
+function pickRulerStepM(pxPerMeter: number): number {
+  const targetM = RULER_TARGET_TICK_PX / Math.max(pxPerMeter, 1e-6)
+  for (const s of RULER_STEP_CANDIDATES_M) {
+    if (s >= targetM * 0.72) return s
+  }
+  return 100
+}
+
+function formatRulerTickLabel(v: number, step: number): string {
+  if (step >= 1) return String(Math.round(v))
+  return (Math.round(v * 10) / 10).toFixed(1)
+}
+
+/** Лінійка: ліва сторона поля (вісь Y), нижній край y=0 (вісь X); поділки в «метрах» поля. */
+function drawFieldRulers(ctx: CanvasRenderingContext2D, tf: ViewTransform) {
+  const fw = tf.fieldWidthM
+  const fh = tf.fieldHeightM
+  const step = pickRulerStepM(tf.pxPerMeter)
+  const minorStep = step >= 1 ? step * 0.5 : 0
+
+  ctx.save()
+  ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
+  ctx.fillStyle = 'rgba(30, 41, 59, 0.95)'
+  ctx.lineWidth = 1
+  const fontPx = Math.max(9, Math.min(12, Math.round(10 * Math.sqrt(tf.pxPerMeter / 14))))
+  ctx.font = `${fontPx}px system-ui, sans-serif`
+  ctx.textAlign = 'right'
+  ctx.textBaseline = 'middle'
+
+  const drawTickVerticalEdge = (yWorld: number, lenM: number, withLabel: boolean, label: string) => {
+    const pa = worldToScreen(0, yWorld, tf)
+    const pb = worldToScreen(-lenM, yWorld, tf)
+    ctx.beginPath()
+    ctx.moveTo(pa.x, pa.y)
+    ctx.lineTo(pb.x, pb.y)
+    ctx.stroke()
+    if (withLabel) {
+      ctx.fillText(label, pb.x - 3, pa.y)
+    }
+  }
+
+  const drawTickBottomEdge = (xWorld: number, lenM: number, withLabel: boolean, label: string) => {
+    const pa = worldToScreen(xWorld, 0, tf)
+    const pb = worldToScreen(xWorld, -lenM, tf)
+    ctx.beginPath()
+    ctx.moveTo(pa.x, pa.y)
+    ctx.lineTo(pb.x, pb.y)
+    ctx.stroke()
+    if (withLabel) {
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'top'
+      ctx.fillText(label, pa.x, pb.y + 2)
+      ctx.textAlign = 'right'
+      ctx.textBaseline = 'middle'
+    }
+  }
+
+  const majorLen = RULER_TICK_LEN_M
+  const minorLen = RULER_TICK_LEN_M * 0.55
+
+  for (let y = 0; y <= fh + 1e-9; y += step) {
+    const yy = Math.min(y, fh)
+    drawTickVerticalEdge(yy, majorLen, true, formatRulerTickLabel(yy, step))
+  }
+  if (minorStep > 0) {
+    ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
+    for (let y = minorStep; y < fh - 1e-9; y += step) {
+      drawTickVerticalEdge(y, minorLen, false, '')
+    }
+    ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
+  }
+
+  for (let x = 0; x <= fw + 1e-9; x += step) {
+    const xx = Math.min(x, fw)
+    const showLabel = xx > 1e-6
+    drawTickBottomEdge(xx, majorLen, showLabel, formatRulerTickLabel(xx, step))
+  }
+  if (minorStep > 0) {
+    ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
+    for (let x = minorStep; x < fw - 1e-9; x += step) {
+      drawTickBottomEdge(x, minorLen, false, '')
+    }
+  }
+
+  ctx.restore()
+}
+
+function drawMeasureOverlay(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  a: Vec2 | null,
+  b: Vec2 | null,
+  distanceLabel: string | null,
+) {
+  ctx.save()
+  if (a) {
+    const sa = worldToScreen(a.x, a.y, tf)
+    const r = Math.max(4, 0.09 * tf.pxPerMeter)
+    ctx.strokeStyle = 'rgba(217, 119, 6, 0.95)'
+    ctx.fillStyle = 'rgba(251, 191, 36, 0.35)'
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.arc(sa.x, sa.y, r, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.stroke()
+  }
+  if (a && b) {
+    const sa = worldToScreen(a.x, a.y, tf)
+    const sb = worldToScreen(b.x, b.y, tf)
+    ctx.strokeStyle = 'rgba(217, 119, 6, 0.95)'
+    ctx.lineWidth = 2
+    ctx.setLineDash([8, 5])
+    ctx.beginPath()
+    ctx.moveTo(sa.x, sa.y)
+    ctx.lineTo(sb.x, sb.y)
+    ctx.stroke()
+    ctx.setLineDash([])
+    const r = Math.max(4, 0.09 * tf.pxPerMeter)
+    ctx.fillStyle = 'rgba(251, 191, 36, 0.35)'
+    ctx.strokeStyle = 'rgba(217, 119, 6, 0.95)'
+    ctx.beginPath()
+    ctx.arc(sb.x, sb.y, r, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.stroke()
+    if (distanceLabel) {
+      const mx = (sa.x + sb.x) / 2
+      const my = (sa.y + sb.y) / 2
+      ctx.font = `${Math.max(11, Math.round(12 * Math.sqrt(tf.pxPerMeter / 14)))}px system-ui, sans-serif`
+      const tw = ctx.measureText(distanceLabel).width
+      const pad = 6
+      ctx.fillStyle = 'rgba(255, 251, 235, 0.96)'
+      ctx.strokeStyle = 'rgba(180, 83, 9, 0.55)'
+      ctx.lineWidth = 1
+      const bx = mx - tw / 2 - pad
+      const by = my - 11 - pad
+      const bw = tw + pad * 2
+      const bh = 22 + pad * 0.5
+      ctx.fillRect(bx, by, bw, bh)
+      ctx.strokeRect(bx, by, bw, bh)
+      ctx.fillStyle = 'rgba(120, 53, 15, 0.98)'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(distanceLabel, mx, my)
+    }
+  }
+  ctx.restore()
+}
+
 /** Підказка вузла сітки під курсором при наближенні (світові м вже на кроці GRID_SNAP_M). */
 function drawGridSnapCursor(ctx: CanvasRenderingContext2D, tf: ViewTransform, snapped: Vec2) {
   const p = worldToScreen(snapped.x, snapped.y, tf)
@@ -798,6 +951,9 @@ function redraw(
   gridHoverSnapped: Vec2 | null,
   viewZoom: number,
   safetyAnglesText: string,
+  measureA: Vec2 | null,
+  measureB: Vec2 | null,
+  formatMeasureDistance: (m: number) => string,
 ) {
   const dpr = window.devicePixelRatio || 1
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -820,6 +976,7 @@ function redraw(
   ctx.fill()
 
   drawGrid(ctx, tf)
+  drawFieldRulers(ctx, tf)
 
   const parsedAngles = parseSafetyAngles(safetyAnglesText)
   const startPosProp = props.find((p) => p.type === 'startPosition')
@@ -1049,6 +1206,12 @@ function redraw(
     }
   }
 
+  const measureLabel =
+    measureA && measureB
+      ? formatMeasureDistance(Math.hypot(measureB.x - measureA.x, measureB.y - measureA.y))
+      : null
+  drawMeasureOverlay(ctx, tf, measureA, measureB, measureLabel)
+
   if (gridHoverSnapped && viewZoom > 1.001) {
     drawGridSnapCursor(ctx, tf, gridHoverSnapped)
   }
@@ -1067,6 +1230,10 @@ export type StageCanvasProps = {
   onSetTargetMetalRectSideCm: (id: string, cm: MetalPlateRectSideCm) => void
   /** Під час панорами/зуму — межі видимого фрагменту поля в метрах (для міні-карти). */
   onViewportWorldChange?: (rect: WorldViewportRect) => void
+  /** Режим вимірювання відстані (два кліки на плані). */
+  measureToolActive: boolean
+  /** Формат підпису відстані (м), напр. «12,34 м». */
+  formatMeasureDistance: (meters: number) => string
 }
 
 export type StageCanvasHandle = {
@@ -1074,6 +1241,8 @@ export type StageCanvasHandle = {
   getSpawnCenterWorld: () => { x: number; y: number } | null
   /** Центрує вид на світовій точці (м); при масштабі 1 трохи наближає. координати площадки. */
   centerOnWorldPoint: (worldX: number, worldY: number) => void
+  /** Скидає точки вимірювання (виклик з App при вимкненні режиму). */
+  clearMeasure: () => void
 }
 
 const MINIMAP_NAV_ZOOM = 1.42
@@ -1100,6 +1269,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   onDeleteProp,
   onSetTargetMetalRectSideCm,
   onViewportWorldChange,
+  measureToolActive,
+  formatMeasureDistance,
 }: StageCanvasProps,
   ref,
 ) {
@@ -1135,7 +1306,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   }, [selection])
   const [spaceHeld, setSpaceHeld] = useState(false)
   const [isPanningView, setIsPanningView] = useState(false)
-
+  const [measurePoints, setMeasurePoints] = useState<{ a: Vec2 | null; b: Vec2 | null }>({
+    a: null,
+    b: null,
+  })
   const lastReportedViewportRef = useRef<WorldViewportRect | null>(null)
   const onViewportWorldChangeRef = useRef(onViewportWorldChange)
   useEffect(() => {
@@ -1166,6 +1340,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       fh,
     )
     const ctx = canvas.getContext('2d')
+    const mA = measureToolActive ? measurePoints.a : null
+    const mB = measureToolActive ? measurePoints.b : null
     if (ctx)
       redraw(
         ctx,
@@ -1177,6 +1353,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         gridHoverRef.current,
         viewZoomRef.current,
         safetyAnglesText,
+        mA,
+        mB,
+        formatMeasureDistance,
       )
 
     const t = transformRef.current
@@ -1186,7 +1365,18 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       lastReportedViewportRef.current = vp
       onViewportWorldChangeRef.current?.(vp)
     }
-  }, [targets, props, selection, fw, fh, safetyAnglesText])
+  }, [
+    targets,
+    props,
+    selection,
+    fw,
+    fh,
+    safetyAnglesText,
+    measurePoints.a,
+    measurePoints.b,
+    measureToolActive,
+    formatMeasureDistance,
+  ])
 
   useImperativeHandle(
     ref,
@@ -1228,6 +1418,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         }
         gridHoverRef.current = null
         repaint()
+      },
+      clearMeasure: () => {
+        setMeasurePoints({ a: null, b: null })
       },
     }),
     [fw, fh, repaint],
@@ -1286,6 +1479,18 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       t instanceof HTMLElement && t.closest('input, textarea, select, [contenteditable="true"]') !== null
 
     const onKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Escape') {
+        if (e.repeat) return
+        if (inFormField(e.target)) return
+        if (
+          measureToolActive &&
+          (measurePoints.a !== null || measurePoints.b !== null)
+        ) {
+          e.preventDefault()
+          setMeasurePoints({ a: null, b: null })
+          return
+        }
+      }
       if (e.code === 'Delete' || e.code === 'Backspace') {
         if (e.repeat) return
         if (inFormField(e.target)) return
@@ -1330,7 +1535,19 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       window.removeEventListener('keyup', onKeyUp)
       window.removeEventListener('blur', onBlur)
     }
-  }, [onDeleteTarget, onDeleteProp, onSetTargetMetalRectSideCm, targets])
+  }, [
+    onDeleteTarget,
+    onDeleteProp,
+    onSetTargetMetalRectSideCm,
+    targets,
+    measurePoints.a,
+    measurePoints.b,
+    measureToolActive,
+  ])
+
+  useEffect(() => {
+    repaint()
+  }, [measurePoints, repaint])
 
   const beginViewPan = (ev: PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
@@ -1371,6 +1588,24 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
+    const w = screenToWorld(sx, sy, transformRef.current)
+
+    if (measureToolActive && ev.button === 0) {
+      ev.preventDefault()
+      const wx = Math.min(Math.max(w.x, 0), fw)
+      const wy = Math.min(Math.max(w.y, 0), fh)
+      const p = { x: wx, y: wy }
+      pendingEmptyPanRef.current = null
+      gridHoverRef.current = null
+      setSelection(null)
+      setMeasurePoints((prev) => {
+        if (!prev.a) return { a: p, b: null }
+        if (!prev.b) return { a: prev.a, b: p }
+        return { a: p, b: null }
+      })
+      return
+    }
+
     pinchMapRef.current.set(ev.pointerId, { x: sx, y: sy })
     if (pinchMapRef.current.size === 2) {
       pendingEmptyPanRef.current = null
@@ -1385,7 +1620,6 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
-    const w = screenToWorld(sx, sy, transformRef.current)
     const ppm = transformRef.current.pxPerMeter
     const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
 
@@ -1739,7 +1973,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
   }
 
-  const canvasCursor = isPanningView ? 'grabbing' : spaceHeld ? 'grab' : undefined
+  const canvasCursor = isPanningView
+    ? 'grabbing'
+    : spaceHeld
+      ? 'grab'
+      : measureToolActive
+        ? 'crosshair'
+        : undefined
 
   return (
     <canvas

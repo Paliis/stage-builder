@@ -15,6 +15,11 @@
 
 Корінь UI — `src/main.tsx` → `App.tsx`. **Code splitting:** модуль `StageView3D` (Three.js, R3F) підвантажується через `React.lazy` лише в режимі «3D»; `exportBriefingPdf` (jsPDF, qrcode, autotable) — через динамічний `import()` при експорті PDF. Це зменшує початковий JS для користувачів, які лишаються в 2D.
 
+## План 2D: лінійки та вимір
+
+- **Лінійки** — `drawFieldRulers` у `StageCanvas.tsx`: вісь **Y** вздовж **лівого** краю поля в світових метрах; вісь **X** вздовж лінії **`y = 0`** (нижня межа поля). Крок поділок залежить від масштабу (`pickRulerStepM`, мінімальний кандидат **0,5 м**); при основному кроці ≥ 1 м додатково малюються **дрібні** поділки (половина кроку). Підпис **«0»** на осях не дублюється (один раз на лівій осі для `y = 0`).
+- **Інструмент вимірювання** — лише в **2D**. Увімкнення: кнопка поруч із табами 2D/3D (`view.measureTool`, `view.measureToolTitle`) і клавіша **M**, коли `viewMode === '2d'` і фокус не в полі форми (`App.tsx`). Два послідовні **ліві кліки** задають кінці відрізка; координати **обмежуються полем**, **без** прив’язки до сітки. Після двох точок лінія (пунктир) і число відстані **залишаються** на полотні; **наступний клік** починає нову пару (нова точка A). **Esc** скидає поточний незавершений відрізок (є A або B). У режимі **3D** вимір вимикається. Оверлей малюється лише коли режим увімкнений; при вимкненні `App` викликає `StageCanvasHandle.clearMeasure()`, щоб скинути збережені точки. Формат підпису — `view.measureDistanceMeters` у `messages.ts`, через `formatTemplate` з `formatMeasureDistance` у пропсах канвасу.
+
 ## Домен: мішені та підрахунки
 
 - **Типи мішеней** — `TargetType` у `models.ts` (папір IPSC/A4, метал: пластина/поппери, кераміка, ківаки папір/кераміка).
@@ -125,6 +130,14 @@ npm run check     # як у CI: lint + test + build
 - **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у **`main`** та **`staging`**.
 - **Vercel (production-проєкт)** — `vercel.json`: Vite, `dist/`. Production з гілки `main`.
 
+### Як задеплоїти production
+
+1. Переконайтесь, що локально проходить **`npm run check`**.
+2. Закомітьте зміни в **`main`** і виконайте **`git push origin main`** (або merge PR у `main`).
+3. У [Vercel Dashboard](https://vercel.com) дочекайтесь завершення **Deployment** для production-гілки; після успіху оновиться бойовий URL проєкту.
+
+Окремого скрипта `npm run deploy` у репозиторії немає — деплой тригериться **Git**-подією на підключеному репозиторії.
+
 ## Відомі напрями покращень (рев’ю)
 
 1. **Розмір `App.tsx`** — великий монолітний компонент; логічно винести панелі брифінгу, хедер, onboarding у окремі модулі.
@@ -137,7 +150,8 @@ npm run check     # як у CI: lint + test + build
 | Тема | Файл |
 |------|------|
 | Моделі сцени | `src/domain/models.ts` |
-| 2D малювання мішеней | `src/presentation/components/StageCanvas.tsx` |
+| 2D канвас (мішені, лінійки, вимір) | `src/presentation/components/StageCanvas.tsx` |
+| Увімкнення виміру (M, кнопка, 2D/3D) | `src/App.tsx` |
 | 3D | `src/presentation/components/StageView3D.tsx` |
 | PDF | `src/presentation/lib/exportBriefingPdf.ts` |
 | Рядки UI/PDF | `src/i18n/messages.ts` |

@@ -105,6 +105,11 @@ export default function App() {
   const [toolbarDrawerOpen, setToolbarDrawerOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
+  const [measureToolActive, setMeasureToolActive] = useState(false)
+
+  useEffect(() => {
+    if (!measureToolActive) planCanvasRef.current?.clearMeasure()
+  }, [measureToolActive])
 
   /** Спільна «ширша» картка для 2D і 3D (лише CSS-пропорції). */
   const stageCardDisplayH = fieldSizeM.y / STAGE_CARD_UI_DEPTH_FACTOR
@@ -192,6 +197,29 @@ export default function App() {
   useEffect(() => {
     if (viewMode !== '2d') setPlanViewportWorld(null)
   }, [viewMode])
+
+  useEffect(() => {
+    if (viewMode === '3d') setMeasureToolActive(false)
+  }, [viewMode])
+
+  useEffect(() => {
+    if (viewMode !== '2d') return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code !== 'KeyM' || e.repeat) return
+      const el = e.target
+      if (el instanceof HTMLElement && el.closest('input, textarea, select, [contenteditable="true"]'))
+        return
+      e.preventDefault()
+      setMeasureToolActive((v) => !v)
+    }
+    window.addEventListener('keydown', onKey, { passive: false })
+    return () => window.removeEventListener('keydown', onKey)
+  }, [viewMode])
+
+  const formatMeasureDistance = useCallback(
+    (m: number) => formatTemplate(tree.view.measureDistanceMeters, { m: m.toFixed(2) }),
+    [tree.view.measureDistanceMeters],
+  )
 
   const handleAddTarget = useCallback(
     (type: TargetType, isNoShoot?: boolean) => {
@@ -329,6 +357,19 @@ export default function App() {
           {tree.view.visual3d}
         </button>
       </div>
+      {viewMode === '2d' && (
+        <div className="app__viewtabs" role="group" aria-label={tree.view.measureTool}>
+          <button
+            type="button"
+            aria-pressed={measureToolActive}
+            className={measureToolActive ? 'is-active' : ''}
+            title={tree.view.measureToolTitle}
+            onClick={() => setMeasureToolActive((v) => !v)}
+          >
+            {tree.view.measureTool}
+          </button>
+        </div>
+      )}
       <label className="app__field-size">
         <span className="app__field-size-label">{tree.toolbar.fieldSizeLabel}</span>
         <select
@@ -566,6 +607,8 @@ export default function App() {
                       onDeleteProp={removeProp}
                       onSetTargetMetalRectSideCm={setTargetMetalRectSideCm}
                       onViewportWorldChange={setPlanViewportWorld}
+                      measureToolActive={measureToolActive}
+                      formatMeasureDistance={formatMeasureDistance}
                     />
                     <button
                       type="button"

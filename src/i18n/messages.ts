@@ -101,6 +101,11 @@ export type MessageTree = {
     minimapAria: string
     /** Підказка під час lazy-load чанку Three.js / R3F */
     loading3d: string
+    /** Кнопка режиму вимірювання на 2D-плані */
+    measureTool: string
+    measureToolTitle: string
+    /** `{{m}}` — відформатована відстань у метрах */
+    measureDistanceMeters: string
   }
   briefing: {
     summary: string
@@ -305,6 +310,10 @@ export const ukMessages: MessageTree = {
     minimapAria:
       '\u041c\u0456\u043d\u0456-\u043a\u0430\u0440\u0442\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438: \u0441\u0438\u043d\u0456 \u0442\u043e\u0447\u043a\u0438-\u043f\u0430\u043f\u0456\u0440 \u0456 \u043c\u0435\u0442\u0430\u043b, \u043f\u043e\u043c\u0430\u0440\u0430\u043d\u0436\u0435\u0432\u0456 \u043a\u0432\u0430\u0434\u0440\u0430\u0442\u0438-\u0440\u0435\u043a\u0432\u0456\u0437\u0438\u0442, \u0440\u043e\u0436\u0435\u0432\u0430 \u0440\u0430\u043c\u043a\u0430-\u0432\u0438\u0434\u0438\u043c\u0438\u0439 \u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442. \u041a\u043b\u0430\u0446\u043d\u0456\u0442\u044c, \u0449\u043e\u0431 \u043f\u043e\u043a\u0430\u0437\u0430\u0442\u0438 \u0446\u044e \u0442\u043e\u0447\u043a\u0443 \u0432 \u0446\u0435\u043d\u0442\u0440\u0456 \u043f\u043b\u0430\u043d\u0443.',
     loading3d: '\u0417\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f 3D\u2026',
+    measureTool: '\u0412\u0438\u043c\u0456\u0440',
+    measureToolTitle:
+      '\u0412\u0438\u043c\u0456\u0440\u044e\u0432\u0430\u043d\u043d\u044f \u0432\u0456\u0434\u0441\u0442\u0430\u043d\u0456: \u0434\u0432\u0430 \u043a\u043b\u0456\u043a\u0438 \u043f\u043e \u043f\u043b\u0430\u043d\u0443. \u041d\u0430\u0441\u0442\u0443\u043f\u043d\u0438\u0439 \u043a\u043b\u0456\u043a \u2014 \u043d\u043e\u0432\u0430 \u043f\u0430\u0440\u0430. Esc \u2014 \u0441\u043a\u0438\u043d\u0443\u0442\u0438 \u043b\u0456\u043d\u0456\u044e. \u041a\u043b\u0430\u0432\u0456\u0448\u0430 M.',
+    measureDistanceMeters: '{{m}} \u043c',
   },
   briefing: {
     summary: '\u0422\u0435\u043a\u0441\u0442 \u0434\u043b\u044f PDF (\u0442\u0430\u0431\u043b\u0438\u0446\u044f \u0431\u0440\u0438\u0444\u0456\u043d\u0433\u0443)',
@@ -514,6 +523,10 @@ export const enMessages: MessageTree = {
     minimapAria:
       'Stage minimap: blue dots are targets, orange squares are props; pink frame is the current view. Click to center the plan on that point.',
     loading3d: 'Loading 3D\u2026',
+    measureTool: 'Measure',
+    measureToolTitle:
+      'Distance: two clicks on the plan. Next click starts a new pair. Esc clears the line. M key toggles.',
+    measureDistanceMeters: '{{m}} m',
   },
   briefing: {
     summary: 'PDF copy (briefing table)',
