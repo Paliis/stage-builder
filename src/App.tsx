@@ -387,8 +387,15 @@ export default function App() {
     '--stage-card-h': stageCardDisplayH,
   } as CSSProperties
 
+  const isStagingSite = import.meta.env.VITE_SITE_ENV === 'staging'
+
   return (
     <div className="app">
+      {isStagingSite ? (
+        <div className="app__staging-ribbon" role="status">
+          {tree.app.stagingRibbon}
+        </div>
+      ) : null}
       <SessionDraftPersist />
       <header className="app__header">
         <div className="app__header-inner">

@@ -9,11 +9,29 @@ import { VitePWA } from 'vite-plugin-pwa'
  */
 const ASSET_QUERY = '?v=20260409-tg-og'
 
-function htmlAssetQueryPlugin() {
+/** Set `VITE_SITE_ENV=staging` on the staging Vercel project so builds get noindex + UI ribbon. */
+const SITE_ENV = process.env.VITE_SITE_ENV ?? ''
+
+function htmlTransformPlugin() {
   return {
-    name: 'html-asset-query',
+    name: 'html-transform-assets-staging',
     transformIndexHtml(html: string) {
-      return html.replaceAll('__ASSET_Q__', ASSET_QUERY)
+      let out = html.replaceAll('__ASSET_Q__', ASSET_QUERY)
+      if (SITE_ENV === 'staging') {
+        out = out.replace(
+          /<meta name="robots" content="[^"]*"\s*\/>/,
+          '<meta name="robots" content="noindex, nofollow" />',
+        )
+        out = out.replace(
+          /<meta name="googlebot" content="[^"]*"\s*\/>/,
+          '<meta name="googlebot" content="noindex, nofollow" />',
+        )
+        out = out.replace(
+          /<title>Stage Builder — IPSC Stage Designer<\/title>/,
+          '<title>Stage Builder — IPSC Stage Designer (staging)</title>',
+        )
+      }
+      return out
     },
   }
 }
@@ -22,7 +40,7 @@ function htmlAssetQueryPlugin() {
 export default defineConfig({
   plugins: [
     react(),
-    htmlAssetQueryPlugin(),
+    htmlTransformPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [

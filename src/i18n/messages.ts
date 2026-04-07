@@ -26,6 +26,8 @@ export type MessageTree = {
     contextHint: string
     toolbarDrawerOpen: string
     toolbarDrawerClose: string
+    /** Показується лише при VITE_SITE_ENV=staging */
+    stagingRibbon: string
   }
   stats: {
     targets: string
@@ -221,6 +223,8 @@ export const ukMessages: MessageTree = {
     contextHint: '\u0417\u0430\u0440\u0430\u0437: \u043f\u043e\u043b\u0435 {{w}}\u00d7{{h}} \u043c, \u0441\u0456\u0442\u043a\u0430 {{grid}} \u043c.',
     toolbarDrawerOpen: '\u041c\u0456\u0448\u0435\u043d\u0456 \u0442\u0430 \u043e\u0431\u2019\u0454\u043a\u0442\u0438',
     toolbarDrawerClose: '\u0421\u0445\u043e\u0432\u0430\u0442\u0438 \u043f\u0430\u043d\u0435\u043b\u044c',
+    stagingRibbon:
+      '\u0422\u0435\u0441\u0442\u043e\u0432\u0435 \u0441\u0435\u0440\u0435\u0434\u043e\u0432\u0438\u0449\u0435 (staging). \u0414\u043b\u044f \u0431\u043e\u044e \u0432\u0438\u043a\u043e\u0440\u0438\u0441\u0442\u043e\u0432\u0443\u0439\u0442\u0435 stage-builder.vercel.app.',
   },
   stats: {
     targets: '\u041c\u0456\u0448\u0435\u043d\u0456',
@@ -429,6 +433,8 @@ export const enMessages: MessageTree = {
     contextHint: 'Current field: {{w}}\u00d7{{h}} m, grid {{grid}} m.',
     toolbarDrawerOpen: 'Targets & objects',
     toolbarDrawerClose: 'Hide panel',
+    stagingRibbon:
+      'Staging environment — not the live site. Use stage-builder.vercel.app for production.',
   },
   stats: {
     targets: 'Targets',

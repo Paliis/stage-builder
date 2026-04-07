@@ -113,9 +113,12 @@ npm run check     # як у CI: lint + test + build
 3. Після першого push у гілку `staging` з’явиться стабільний домен виду `…vercel.app` — це і є **staging**.
 4. Робочий цикл: зміни → merge/push у **`staging`** → перевірка на staging URL → коли все ок — merge **`staging` → `main`** (або PR у `main`) для продакшену.
 
-**Змінні середовища:** у staging-проєкті скопіюйте потрібні змінні з production; для GA можна **не** задавати `VITE_GA_MEASUREMENT_ID` у staging (аналітика не підвантажиться) або використати окремий тестовий потік GA4.
+**Змінні середовища (staging-проєкт на Vercel):**
 
-**SEO / індексація:** пошуковикам не варто індексувати staging. Варіанти: пароль на деплой (Vercel Deployment Protection), окремий `robots.txt` через middleware/headers на staging-проєкті, або пізніше — умовний `noindex` у збірці за env (окремий таск).
+- Обов’язково для «маркованого» staging у коді: **`VITE_SITE_ENV=staging`** (Environment Variables → Production у цьому проєкті, бо для нього production-гілка = `staging`). Тоді збірка підставляє **`noindex`** у `index.html`, змінює `<title>` і показує жовту стрічку в UI.
+- Скопіюйте інші змінні з production за потреби; для GA можна **не** задавати `VITE_GA_MEASUREMENT_ID` (аналітика не підвантажиться) або окремий тестовий потік GA4.
+
+**SEO / індексація:** додатково можна увімкнути **Deployment Protection** на staging-проєкті. Статичний `public/robots.txt` у репозиторії один на всі деплої — для окремого `robots.txt` на staging потрібні були б Edge middleware / окремий билд-скрипт.
 
 ### CI
 

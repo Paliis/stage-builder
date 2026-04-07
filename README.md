@@ -59,7 +59,7 @@ npm run check        # lint + тести + build (як у CI)
 - Pull request → preview deploy з унікальним URL
 - CI (GitHub Actions) перевіряє lint + тести + build на push/PR у **`main`** і **`staging`**
 
-**Staging (перевірка перед продом):** окремий Vercel-проєкт з **Production Branch** = `staging` і тим самим репозиторієм дає стабільний URL для прев’ю змін до merge в `main`. Детально — `docs/TECH.md` → **«CI та деплой»** → «Три рівні: локально → staging → production».
+**Staging (перевірка перед продом):** окремий Vercel-проєкт з **Production Branch** = `staging` і тим самим репозиторієм дає стабільний URL для прев’ю змін до merge в `main`. У змінних цього проєкту задайте **`VITE_SITE_ENV=staging`** — тоді HTML отримає `noindex` і з’явиться попереджувальна стрічка в інтерфейсі. Детально — `docs/TECH.md` → **«CI та деплой»**.
 
 Конфігурація: `vercel.json` (Vite framework, `dist/` output).
 
