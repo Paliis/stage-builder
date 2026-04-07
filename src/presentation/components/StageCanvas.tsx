@@ -554,8 +554,9 @@ const RULER_VIEW_STRIP_LEFT_PX = 34
 const RULER_VIEW_STRIP_BOTTOM_PX = 22
 
 /**
- * Лінійки уздовж лівого та нижнього краю канваса: поділки за видимим діапазоном світу (м),
- * без прив’язки до країв поля на екрані.
+ * Лінійки уздовж лівого та нижнього краю канваса: поділки в метрах **лише в межах поля**
+ * (0…ширина, 0…довжина). Інакше при відступах/панорамі viewport у світі виходить за сітку,
+ * і на шкалі з’являються «фантомні» значення (наприклад до 80 м при полі 40 м).
  */
 function drawViewportFixedRulers(
   ctx: CanvasRenderingContext2D,
@@ -567,6 +568,12 @@ function drawViewportFixedRulers(
   if (w <= 0 || h <= 0) return
 
   const vw = computeWorldViewportRect(w, h, tf)
+  const fw = tf.fieldWidthM
+  const fh = tf.fieldHeightM
+  const rxMin = Math.max(0, vw.minX)
+  const rxMax = Math.min(fw, vw.maxX)
+  const ryMin = Math.max(0, vw.minY)
+  const ryMax = Math.min(fh, vw.maxY)
   const step = pickRulerStepM(tf.pxPerMeter)
   const minorStep = step >= 1 ? step * 0.5 : 0
 
@@ -601,32 +608,36 @@ function drawViewportFixedRulers(
   ctx.font = `${fontPx}px system-ui, sans-serif`
   ctx.fillStyle = 'rgba(30, 41, 59, 0.95)'
 
-  const yK0 = Math.floor(vw.minY / step)
-  const yK1 = Math.ceil(vw.maxY / step)
-  for (let k = yK0; k <= yK1; k++) {
-    const yWorld = k * step
-    const sy = worldToScreen(0, yWorld, tf).y
-    if (sy < plotTop - 40 || sy > plotBottom + 40) continue
+  if (ryMin <= ryMax) {
+    const yK0 = Math.floor(ryMin / step)
+    const yK1 = Math.ceil(ryMax / step)
+    for (let k = yK0; k <= yK1; k++) {
+      const yWorld = k * step
+      if (yWorld < -1e-6 || yWorld > fh + 1e-6) continue
+      const sy = worldToScreen(0, yWorld, tf).y
+      if (sy < plotTop - 40 || sy > plotBottom + 40) continue
 
-    ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
-    ctx.lineWidth = 1.35
-    ctx.beginPath()
-    ctx.moveTo(stripL, sy)
-    ctx.lineTo(stripL + majorTickPx, sy)
-    ctx.stroke()
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
+      ctx.lineWidth = 1.35
+      ctx.beginPath()
+      ctx.moveTo(stripL, sy)
+      ctx.lineTo(stripL + majorTickPx, sy)
+      ctx.stroke()
 
-    ctx.textAlign = 'right'
-    ctx.textBaseline = 'middle'
-    ctx.fillText(formatRulerTickLabel(yWorld, step), stripL - 4, sy)
+      ctx.textAlign = 'right'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(formatRulerTickLabel(yWorld, step), stripL - 4, sy)
+    }
   }
 
-  if (minorStep > 0) {
-    const m0 = Math.floor(vw.minY / minorStep)
-    const m1 = Math.ceil(vw.maxY / minorStep)
+  if (minorStep > 0 && ryMin <= ryMax) {
+    const m0 = Math.floor(ryMin / minorStep)
+    const m1 = Math.ceil(ryMax / minorStep)
     ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
     ctx.lineWidth = 1
     for (let k = m0; k <= m1; k++) {
       const yWorld = k * minorStep
+      if (yWorld < -1e-6 || yWorld > fh + 1e-6) continue
       if (Math.abs(yWorld / step - Math.round(yWorld / step)) < 1e-6) continue
       const sy = worldToScreen(0, yWorld, tf).y
       if (sy < plotTop - 40 || sy > plotBottom + 40) continue
@@ -637,35 +648,39 @@ function drawViewportFixedRulers(
     }
   }
 
-  const xK0 = Math.floor(vw.minX / step)
-  const xK1 = Math.ceil(vw.maxX / step)
   const yBaseline = plotBottom
-  for (let k = xK0; k <= xK1; k++) {
-    const xWorld = k * step
-    const sx = worldToScreen(xWorld, 0, tf).x
-    if (sx < stripL - 40 || sx > w + 40) continue
+  if (rxMin <= rxMax) {
+    const xK0 = Math.floor(rxMin / step)
+    const xK1 = Math.ceil(rxMax / step)
+    for (let k = xK0; k <= xK1; k++) {
+      const xWorld = k * step
+      if (xWorld < -1e-6 || xWorld > fw + 1e-6) continue
+      const sx = worldToScreen(xWorld, 0, tf).x
+      if (sx < stripL - 40 || sx > w + 40) continue
 
-    ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
-    ctx.lineWidth = 1.35
-    ctx.beginPath()
-    ctx.moveTo(sx, yBaseline)
-    ctx.lineTo(sx, yBaseline - majorTickPx)
-    ctx.stroke()
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.92)'
+      ctx.lineWidth = 1.35
+      ctx.beginPath()
+      ctx.moveTo(sx, yBaseline)
+      ctx.lineTo(sx, yBaseline - majorTickPx)
+      ctx.stroke()
 
-    if (xWorld > 1e-6) {
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'top'
-      ctx.fillText(formatRulerTickLabel(xWorld, step), sx, yBaseline + 3)
+      if (xWorld > 1e-6) {
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'top'
+        ctx.fillText(formatRulerTickLabel(xWorld, step), sx, yBaseline + 3)
+      }
     }
   }
 
-  if (minorStep > 0) {
-    const m0 = Math.floor(vw.minX / minorStep)
-    const m1 = Math.ceil(vw.maxX / minorStep)
+  if (minorStep > 0 && rxMin <= rxMax) {
+    const m0 = Math.floor(rxMin / minorStep)
+    const m1 = Math.ceil(rxMax / minorStep)
     ctx.strokeStyle = 'rgba(100, 116, 139, 0.65)'
     ctx.lineWidth = 1
     for (let k = m0; k <= m1; k++) {
       const xWorld = k * minorStep
+      if (xWorld < -1e-6 || xWorld > fw + 1e-6) continue
       const onMajor = Math.abs(xWorld / step - Math.round(xWorld / step)) < 1e-6
       if (onMajor) continue
       const sx = worldToScreen(xWorld, 0, tf).x
