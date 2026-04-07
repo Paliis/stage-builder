@@ -53,62 +53,41 @@ export const PORT_HOLE_HALF_M = 0.15
 export const PORT_TALL_HALF_W_M = 0.15
 export const PORT_TALL_HALF_H_M = 0.3
 
-/** Напівтовщина тонкої діагональної щілини «косого» порту (м). */
-export const SHIELD_PORT_SLIT_HALF_M = 0.045
+/** Відступ точок кріплення планок від кутів лиця по ребрах (м), типово 7 см. */
+export const SHIELD_PORT_SLANT_INSET_M = 0.07
 
 /**
- * Чотирикутник щілини в локальних осях лиця щита (+Y вгору): діагональ від верхнього лівого
- * до нижнього правого кута внутрішнього прямокутника.
+ * Відкритий контур косого порту на лиці (центр лиця, +Y вгору): паралелограм між двома
+ * паралельними «планками». Точки на ребрах: зверху — inset від TL по горизонталі; зліва —
+ * inset від TL по вертикалі; знизу — inset від BR по горизонталі; справа — inset від BR по вертикалі.
+ * Вершини за обходом A→B→C→D (проти годинникової з +Z).
  */
-export function shieldPortDiagonalSlitLocalM(innerW: number, innerH: number): Vec2[] {
-  const w = SHIELD_PORT_SLIT_HALF_M
-  const x0 = -innerW / 2
-  const y0 = innerH / 2
-  const x1 = innerW / 2
-  const y1 = -innerH / 2
-  const dx = x1 - x0
-  const dy = y1 - y0
-  const len = Math.hypot(dx, dy)
-  if (len < 1e-6) {
-    return [
-      { x: x0, y: y0 },
-      { x: x1, y: y1 },
-      { x: x1, y: y1 },
-      { x: x0, y: y0 },
-    ]
-  }
-  const tx = dx / len
-  const ty = dy / len
-  let nx = -ty
-  let ny = tx
-  const eps = 1e-4
-  const inFace = (x: number, y: number) =>
-    Math.abs(x) < innerW / 2 - eps && Math.abs(y) < innerH / 2 - eps
-  if (!inFace(x0 + nx * w, y0 + ny * w)) {
-    nx = ty
-    ny = -tx
-  }
-  return [
-    { x: x0 + nx * w, y: y0 + ny * w },
-    { x: x1 + nx * w, y: y1 + ny * w },
-    { x: x1 - nx * w, y: y1 - ny * w },
-    { x: x0 - nx * w, y: y0 - ny * w },
-  ]
+export function shieldPortSlantOpeningLocalM(
+  innerW: number,
+  innerH: number,
+  insetM: number = SHIELD_PORT_SLANT_INSET_M,
+): Vec2[] {
+  const hw = innerW / 2
+  const hh = innerH / 2
+  const inset = Math.min(insetM, Math.max(hw - 0.02, 0), Math.max(hh - 0.02, 0))
+  const A = { x: -hw + inset, y: hh }
+  const B = { x: hw, y: -hh + inset }
+  const C = { x: hw - inset, y: -hh }
+  const D = { x: -hw, y: hh - inset }
+  return [A, B, C, D]
 }
 
-/**
- * Проєкція косої щілини на план зверху: вузька смуга на всю внутрішню ширину лиця
- * (вісь довжини щита × товщина на плані). Вертикаль лиця на план не відображається.
- */
-export function shieldPortSlitFootprintPlanLocalM(innerW: number, planHalfThicknessM: number): Vec2[] {
-  const t = Math.min(SHIELD_PORT_SLIT_HALF_M, Math.max(planHalfThicknessM * 0.85, 0.004))
-  const hw = innerW / 2
-  return [
-    { x: -hw, y: -t },
-    { x: hw, y: -t },
-    { x: hw, y: t },
-    { x: -hw, y: t },
-  ]
+/** Схема на плані: координата Y лиця відображається вздовж товщини щита (коса смуга видно зверху). */
+export function slantOpeningFaceToPlanLocal(
+  facePt: Vec2,
+  innerH: number,
+  planHalfThicknessM: number,
+): Vec2 {
+  const halfH = innerH / 2
+  if (halfH < 1e-6) return { x: facePt.x, y: 0 }
+  const ny = (facePt.y / halfH) * planHalfThicknessM * 0.92
+  const cap = planHalfThicknessM
+  return { x: facePt.x, y: Math.max(-cap, Math.min(cap, ny)) }
 }
 
 function localFaceToWorldPlan(lx: number, ly: number, cx: number, cy: number, rotRad: number): Vec2 {
@@ -129,10 +108,12 @@ export function propPortHoleWorld(p: Prop): Vec2[] | null {
   if (p.type === 'shieldPortSlanted') {
     const f = SHIELD_FRAME_SECTION_M
     const innerW = Math.max(p.sizeM.x - 2 * f, 0.15)
+    const innerH = Math.max(propHeightM(p) - 2 * f, 0.15)
     const planHt = p.sizeM.y / 2
-    return shieldPortSlitFootprintPlanLocalM(innerW, planHt).map((q) =>
-      localFaceToWorldPlan(q.x, q.y, cx, cy, rot),
-    )
+    return shieldPortSlantOpeningLocalM(innerW, innerH).map((face) => {
+      const pl = slantOpeningFaceToPlanLocal(face, innerH, planHt)
+      return localFaceToWorldPlan(pl.x, pl.y, cx, cy, rot)
+    })
   }
   return rectWorldCorners(cx, cy, g, g, rot)
 }
@@ -174,6 +155,10 @@ export const COOPER_TUNNEL_DEFAULT_WIDTH_M = 1
 
 /** Стартова позиція на плані: розмах «стоп» × глибина кроку (м). */
 export const START_POSITION_DEFAULT_SIZE_M: Vec2 = { x: 0.52, y: 0.72 }
+
+/** Стіл у плані: довга сторона × коротша (м); висота столу в 3D фіксована. */
+export const WOOD_TABLE_DEFAULT_SIZE_M: Vec2 = { x: 1.2, y: 0.65 }
+export const WOOD_TABLE_HEIGHT_M = 0.76
 
 /** Позиції центрів штрафних планок уздовж локальної X (симетричні поля, рівний крок між центрами). */
 export function cooperTunnelPenaltyPlankOffsetsXM(p: Prop): number[] {
@@ -298,6 +283,8 @@ export function defaultPropSizeM(type: PropType): Vec2 {
       return { x: COOPER_TUNNEL_DEFAULT_LENGTH_M, y: COOPER_TUNNEL_DEFAULT_WIDTH_M }
     case 'startPosition':
       return { x: START_POSITION_DEFAULT_SIZE_M.x, y: START_POSITION_DEFAULT_SIZE_M.y }
+    case 'woodTable':
+      return { x: WOOD_TABLE_DEFAULT_SIZE_M.x, y: WOOD_TABLE_DEFAULT_SIZE_M.y }
     default: {
       const _e: never = type
       return _e
@@ -331,6 +318,8 @@ export function propHeightM(p: Prop): number {
       return COOPER_TUNNEL_HEIGHT_M
     case 'startPosition':
       return 0.02
+    case 'woodTable':
+      return WOOD_TABLE_HEIGHT_M
     default: {
       const _e: never = p.type
       return _e

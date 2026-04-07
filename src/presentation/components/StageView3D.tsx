@@ -25,7 +25,9 @@ import {
   propHeightM,
   SEESAW_PIPE_RADIUS_M,
   SHIELD_FRAME_SECTION_M,
-  shieldPortDiagonalSlitLocalM,
+  SHIELD_PORT_SLANT_INSET_M,
+  shieldPortSlantOpeningLocalM,
+  WOOD_TABLE_HEIGHT_M,
 } from '../../domain/propGeometry'
 import {
   isPaperTargetType,
@@ -728,7 +730,7 @@ function ShieldBarrier3D({
   )
 }
 
-/** Косий порт: сітка з тонкою діагональною щілиною на все внутрішнє лице. */
+/** Косий порт: сітка з вирізаним паралелограмом; планки вздовж довгих сторін (7 см від кутів по ребрах). */
 function SlantedShieldPortFace3D({
   innerW,
   innerH,
@@ -746,10 +748,9 @@ function SlantedShieldPortFace3D({
     s.lineTo(-innerW / 2, innerH / 2)
     s.closePath()
     const hole = new THREE.Path()
-    const pts = shieldPortDiagonalSlitLocalM(innerW, innerH)
-    const rev = [...pts].reverse()
-    hole.moveTo(rev[0]!.x, rev[0]!.y)
-    for (let i = 1; i < 4; i++) hole.lineTo(rev[i]!.x, rev[i]!.y)
+    const open = shieldPortSlantOpeningLocalM(innerW, innerH)
+    hole.moveTo(open[0]!.x, open[0]!.y)
+    for (let i = 1; i < 4; i++) hole.lineTo(open[i]!.x, open[i]!.y)
     hole.closePath()
     s.holes.push(hole)
     const extr = new THREE.ExtrudeGeometry(s, {
@@ -778,7 +779,73 @@ function SlantedShieldPortFace3D({
   )
 }
 
-/** Щит із портом: 30×30 центр/двері; 30×60 низ/верх (прив’язка до краю лиця); косий — діагональна щілина. */
+function SlantedShieldPortPlanks3D({
+  innerW,
+  innerH,
+  inset,
+  depthAlongZ,
+}: {
+  innerW: number
+  innerH: number
+  inset: number
+  depthAlongZ: number
+}) {
+  const segs = useMemo(() => {
+    const [A, B, C, D] = shieldPortSlantOpeningLocalM(innerW, innerH, inset)
+    const mk = (ax: number, ay: number, bx: number, by: number) => {
+      const dx = bx - ax
+      const dy = by - ay
+      const len = Math.hypot(dx, dy)
+      if (len < 1e-6) return null
+      const quat = new THREE.Quaternion().setFromUnitVectors(
+        new THREE.Vector3(0, 1, 0),
+        new THREE.Vector3(dx / len, dy / len, 0),
+      )
+      return {
+        midX: (ax + bx) / 2,
+        midY: (ay + by) / 2,
+        len,
+        quat,
+      }
+    }
+    return {
+      ab: mk(A.x, A.y, B.x, B.y),
+      dc: mk(D.x, D.y, C.x, C.y),
+    }
+  }, [innerW, innerH, inset])
+
+  const plankW = SHIELD_FRAME_SECTION_M
+  const z = 0.003
+
+  return (
+    <>
+      {segs.ab ? (
+        <mesh
+          position={[segs.ab.midX, segs.ab.midY, z]}
+          quaternion={segs.ab.quat}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[plankW, segs.ab.len, depthAlongZ]} />
+          <meshStandardMaterial {...shieldFrameMat} />
+        </mesh>
+      ) : null}
+      {segs.dc ? (
+        <mesh
+          position={[segs.dc.midX, segs.dc.midY, z]}
+          quaternion={segs.dc.quat}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[plankW, segs.dc.len, depthAlongZ]} />
+          <meshStandardMaterial {...shieldFrameMat} />
+        </mesh>
+      ) : null}
+    </>
+  )
+}
+
+/** Щит із портом: 30×30 центр/двері; 30×60 низ/верх; косий — паралелограм + планки 7 см від кутів. */
 function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const h = propHeightM(p)
   const W = p.sizeM.x
@@ -844,7 +911,15 @@ function ShieldWithPortBarrier3D({ p, x, z }: { p: Prop; x: number; z: number })
       </mesh>
       <group position={[0, h / 2, zPanel]}>
         {isSlanted ? (
-          <SlantedShieldPortFace3D innerW={innerW} innerH={innerH} gridTex={gridTex} />
+          <>
+            <SlantedShieldPortFace3D innerW={innerW} innerH={innerH} gridTex={gridTex} />
+            <SlantedShieldPortPlanks3D
+              innerW={innerW}
+              innerH={innerH}
+              inset={SHIELD_PORT_SLANT_INSET_M}
+              depthAlongZ={Math.max(0.008, D * 0.14)}
+            />
+          </>
         ) : (
           <>
             <mesh position={[0, bottomStripCy, 0]} receiveShadow castShadow={false}>
@@ -1086,6 +1161,65 @@ function CooperTunnel3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   )
 }
 
+/** Дерев’яний стіл: стільниця, 4 ніжки, синя смуга вздовж коротшої сторони столу (паралельно коротким краям). */
+function WoodTable3D({ p, x, z }: { p: Prop; x: number; z: number }) {
+  const sx = p.sizeM.x
+  const sz = p.sizeM.y
+  const hw = sx / 2
+  const hz = sz / 2
+  const tableH = WOOD_TABLE_HEIGHT_M
+  const topT = 0.038
+  const legH = tableH - topT
+  const legW = 0.044
+  const insetX = Math.min(0.11, hw * 0.32)
+  const insetZ = Math.min(0.11, hz * 0.32)
+  const wood = { color: '#b8925c', roughness: 0.82, metalness: 0.04 } as const
+  const woodLeg = { color: '#7a5a36', roughness: 0.88, metalness: 0.03 } as const
+  const blue = {
+    color: '#1d4ed8',
+    roughness: 0.52,
+    metalness: 0.06,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -2,
+  } as const
+  const longIsX = sx >= sz
+  const longLen = Math.max(sx, sz)
+  const stripeW = Math.min(0.1, longLen * 0.085)
+  const yStripe = tableH + 0.012
+
+  return (
+    <group position={[x, 0, z]} rotation={[0, p.rotationRad, 0]}>
+      <mesh position={[0, tableH - topT / 2, 0]} castShadow receiveShadow>
+        <boxGeometry args={[sx, topT, sz]} />
+        <meshStandardMaterial {...wood} />
+      </mesh>
+      {longIsX ? (
+        <mesh position={[0, yStripe, 0]} castShadow receiveShadow>
+          <boxGeometry args={[stripeW, 0.024, sz * 0.9]} />
+          <meshStandardMaterial {...blue} />
+        </mesh>
+      ) : (
+        <mesh position={[0, yStripe, 0]} castShadow receiveShadow>
+          <boxGeometry args={[sx * 0.9, 0.024, stripeW]} />
+          <meshStandardMaterial {...blue} />
+        </mesh>
+      )}
+      {([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([lx, lz], i) => (
+        <mesh
+          key={i}
+          position={[lx * (hw - insetX), legH / 2, lz * (hz - insetZ)]}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[legW, legH, legW]} />
+          <meshStandardMaterial {...woodLeg} />
+        </mesh>
+      ))}
+    </group>
+  )
+}
+
 function StartPosition3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   const sx = p.sizeM.x
   const sy = p.sizeM.y
@@ -1205,6 +1339,10 @@ function Prop3D({ p }: { p: Prop }) {
 
   if (p.type === 'startPosition') {
     return <StartPosition3D p={p} x={x} z={z} />
+  }
+
+  if (p.type === 'woodTable') {
+    return <WoodTable3D p={p} x={x} z={z} />
   }
 
   return null
