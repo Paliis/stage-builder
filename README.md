@@ -57,7 +57,9 @@ npm run check        # lint + тести + build (як у CI)
 
 - Push в `main` → production deploy на [stage-builder.vercel.app](https://stage-builder.vercel.app)
 - Pull request → preview deploy з унікальним URL
-- CI (GitHub Actions) перевіряє lint + тести + build на кожному push/PR
+- CI (GitHub Actions) перевіряє lint + тести + build на push/PR у **`main`** і **`staging`**
+
+**Staging (перевірка перед продом):** окремий Vercel-проєкт з **Production Branch** = `staging` і тим самим репозиторієм дає стабільний URL для прев’ю змін до merge в `main`. Детально — `docs/TECH.md` → **«CI та деплой»** → «Три рівні: локально → staging → production».
 
 Конфігурація: `vercel.json` (Vite framework, `dist/` output).
 

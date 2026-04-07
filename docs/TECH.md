@@ -98,8 +98,29 @@ npm run check     # як у CI: lint + test + build
 
 ## CI та деплой
 
-- **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у `main`.
-- **Vercel** — `vercel.json`: Vite, `dist/`. Production з гілки `main`.
+### Три рівні: локально → staging → production
+
+| Середовище | Що це | Типова перевірка |
+|------------|--------|------------------|
+| **Local** | `npm run dev` (порт Vite) або `npm run build` + `npm run preview` | Швидкі зміни UI/логіки без хмари. |
+| **Staging** | Окремий деплой на Vercel з гілки **`staging`** (див. нижче) | Повна збірка як у проді, стабільний URL для команди/клієнта. |
+| **Production** | Поточний бойовий сайт (`main` → Vercel Production) | Те, що бачать користувачі та індексує пошук. |
+
+У **одному** Vercel-проєкті за замовчуванням лише **`main`** дає Production URL; інші гілки отримують **Preview** з унікальним URL на кожен commit (зручно для PR, але URL «плаває»). Щоб мати **постійний staging** (одна й та сама адреса для гілки `staging`):
+
+1. У [Vercel Dashboard](https://vercel.com) створіть **другий проєкт** (наприклад `stage-builder-staging`), підключіть **той самий** GitHub-репозиторій.
+2. У налаштуваннях цього проєкту: **Production Branch** = `staging` (не `main`).
+3. Після першого push у гілку `staging` з’явиться стабільний домен виду `…vercel.app` — це і є **staging**.
+4. Робочий цикл: зміни → merge/push у **`staging`** → перевірка на staging URL → коли все ок — merge **`staging` → `main`** (або PR у `main`) для продакшену.
+
+**Змінні середовища:** у staging-проєкті скопіюйте потрібні змінні з production; для GA можна **не** задавати `VITE_GA_MEASUREMENT_ID` у staging (аналітика не підвантажиться) або використати окремий тестовий потік GA4.
+
+**SEO / індексація:** пошуковикам не варто індексувати staging. Варіанти: пароль на деплой (Vercel Deployment Protection), окремий `robots.txt` через middleware/headers на staging-проєкті, або пізніше — умовний `noindex` у збірці за env (окремий таск).
+
+### CI
+
+- **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у **`main`** та **`staging`**.
+- **Vercel (production-проєкт)** — `vercel.json`: Vite, `dist/`. Production з гілки `main`.
 
 ## Відомі напрями покращень (рев’ю)
 
