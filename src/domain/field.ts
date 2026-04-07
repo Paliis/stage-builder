@@ -17,6 +17,8 @@ export const FIELD_SIZE_PRESETS: FieldSizePreset[] = [
   { id: '30x50', widthM: 30, heightM: 50 },
   { id: '25x35', widthM: 25, heightM: 35 },
   { id: '20x30', widthM: 20, heightM: 30 },
+  { id: '20x20', widthM: 20, heightM: 20 },
+  { id: '15x20', widthM: 15, heightM: 20 },
 ]
 
 /**
