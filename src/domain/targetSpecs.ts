@@ -83,11 +83,6 @@ export function paperTwoPostFaceBottomHeightM(type: TargetType): number {
   return 1.0
 }
 
-/** @deprecated Використовуйте `paperTwoPostFaceBottomHeightM` — та сама семантика для всіх двостійкових паперових типів. */
-export function paperIpscTwoPostFaceBottomHeightM(type: TargetType): number {
-  return paperTwoPostFaceBottomHeightM(type)
-}
-
 function metalPlateSquareSideM(t: Target): number {
   if (!isSquareSteelPlateTargetType(t.type)) return 300 * MM
   /** `metalRectSideCm` у сантиметрах → метри через CM, не MM (інакше 15 см стають 15 мм). */

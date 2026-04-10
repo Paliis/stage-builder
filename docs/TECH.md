@@ -136,7 +136,8 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 ### TypeScript і тести
 
 - `tsconfig.app.json` **виключає** `src/**/*.test.ts` з `tsc -b`; фікстури в тестах мають відповідати доменним типам.
-- Наявні unit-файли: `computeMinRounds.test.ts`, `targetSummary.test.ts`, `stageProjectFile.test.ts`.
+- Unit-тести в `src/domain/`: `computeMinRounds.test.ts`, `targetSummary.test.ts`, `stageProjectFile.test.ts` (у т. ч. міграції застарілих типів мішеней у JSON), `fieldResizeImpact.test.ts`.
+- **Перевірка як у CI:** `npm run check` → ESLint, Vitest, `tsc -b`, production `vite build` (успішний вихід = готово до push у `main` / `staging`).
 
 ### Конфігурація Vite / прев’ю ассетів
 
@@ -209,10 +210,16 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 ## Відомі напрями покращень (рев’ю)
 
 1. **Розмір `App.tsx`** — великий моноліт; винести панелі брифінгу, хедер, onboarding у окремі модулі.
-2. **Code splitting** — за потреби винести важкі частини брифінгу або зменшити чанк `StageCanvas`.
-3. **Дублікат генерації id** — узгодити `newId` і `newEntityId` (спільний `domain/id.ts`).
-4. **Тести** — `targetSpecs` / `swingerGeometry` / `safetyAngles` / гілки `stageProjectFile`; розширити покриття.
-5. **Клас зброї в UI** — за потреби знову обмежити палітру мішеней у тулбарі відповідно до `weaponClass`.
+2. **Розмір бандла 3D** — після збірки чанк `StageView3D` + залежності (Three.js, Drei) займає порядку **~0,9 MB** (raw) / **~0,24 MB** (gzip); **уже** підвантажується через `React.lazy` лише у режимі 3D. Подальший спліт (підмодулі всередині сцени) — лише за потреби, через ускладнення. Поріг попередження Vite про чанки >500 KB можна підняти в `vite.config.ts`, якщо шум у логах заважає — це не помилка збірки.
+3. **PDF / знімок** — `exportBriefingPdf` і залежності підвантажуються **динамічно** при експорті; `html2canvas` тягнеться транзитивно — прийнятно для рідкої дії.
+4. **Code splitting 2D** — `StageCanvas.tsx` великий; винесення підфункцій малювання — рефакторинг на майбутнє, не критично для продуктивності (один sync-чанк для головного UI).
+5. **Дублікат генерації id** — узгодити `newId` і `newEntityId` (спільний `domain/id.ts`).
+6. **Тести** — розширити покриття: `targetSpecs.ts`, `swingerGeometry.ts`, `safetyAngles.ts`; гілки помилок `parseStageProjectJson`. E2E (Playwright/Cypress) — опційно для критичних сценаріїв.
+7. **Клас зброї в UI** — за потреби знову обмежити палітру мішеней у тулбарі відповідно до `weaponClass`.
+
+### PWA precache
+
+- Збірка повідомляє про **precache** Workbox (порядку кількох MB разом із шрифтами) — очікувано для офлайн; при скаргах на «важкий» перший візит можна звузити `globPatterns` у `vite-plugin-pwa` (компроміс із офлайн-кешем).
 
 ## Корисні файли для орієнтації
 
@@ -221,6 +228,7 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 | Продуктові версії V0 / V1 | `docs/VERSIONING.md` |
 | Зворотний зв’язок (ідеї) | `docs/USER_FEEDBACK.md` |
 | Моделі мішеней і реквізиту | `src/domain/models.ts` |
+| Габарити мішеней, контур 2D/3D, паперові стійки | `src/domain/targetSpecs.ts` |
 | Розмір поля, пресети, snap | `src/domain/field.ts`, `src/application/stageStore.ts` |
 | Парсинг / збірка JSON | `src/domain/stageProjectFile.ts` |
 | Копіювання на плані | `src/domain/planClipboard.ts`, `StageCanvasHandle` у `StageCanvas.tsx` |
