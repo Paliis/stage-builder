@@ -1665,6 +1665,37 @@
   outline-offset: 2px;
 }
 
+.app__ground-cover {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--toolbar-bg);
+  font-size: 0.82rem;
+  color: var(--text-h);
+}
+
+.app__ground-cover-label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.app__ground-cover select {
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  min-width: 7rem;
+  max-width: 12rem;
+  cursor: pointer;
+}
+
 .app__briefing {
   width: 100%;
   max-width: 64rem;

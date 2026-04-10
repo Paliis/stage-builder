@@ -11,7 +11,7 @@
 
 | Шар | Каталог | Відповідальність |
 |-----|---------|------------------|
-| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
+| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), покриття площадки в 3D (`fieldGround3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
 | **Application** | `src/application/` | Zustand: сцена (`stageStore`, undo/redo через `zundo`), брифінг (`briefingStore`), чернетка `localStorage` (`sessionDraft.ts`), компонент **`SessionDraftPersist.tsx`** (підписка + debounce) |
 | **Presentation** | `src/presentation/` | React-компоненти: `StageCanvas`, `StageView3D`, `StageBuilderToolbar`, `StageMinimap`, `GoogleAnalytics`; хуки (`usePwaInstall`); бібліотеки: `exportBriefingPdf`, `pdfFonts`, `viewTransform` |
 | **Корінь UI** | `src/App.tsx` | Композиція layout, брифінг-форма, гарячі клавіші, lazy-3D, стрічка staging, посилання на канвас через `ref` (`StageCanvasHandle`) |
@@ -83,13 +83,13 @@
 ## Файл вправи (`*.stage.json`)
 
 - Контракт: `stageProjectFile.ts` — `STAGE_PROJECT_FORMAT`, `STAGE_PROJECT_VERSION`, розширення `.stage.json`.
-- Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `targets`, `props`) + об’єкт брифінгу.
+- Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `fieldGroundCover3d`, `targets`, `props`) + об’єкт брифінгу.
 - Для квадратних сталевих мішеней у JSON зберігається опційне **`metalRectSideCm`** (15 | 20 | 30).
 - При завантаженні: `migrateProp` у `stageStore` (узгоджено з парсером).
 
 ## Стан і undo
 
-- **Сцена** — `useStageStore` + `temporal` (zundo): undo/redo для мішеней, реквізиту, розміру поля, імені, класу зброї.
+- **Сцена** — `useStageStore` + `temporal` (zundo): undo/redo для мішеней, реквізиту, розміру поля, покриття 3D, імені, класу зброї.
 - **Брифінг** — `useBriefingStore` **без** undo (зміни брифінгу не відкочуються разом із сценою).
 
 ## Чернетка сесії (localStorage)
@@ -104,7 +104,7 @@
 
 - **`StageView3D.tsx`** — R3F + Drei; імпорт маппінгу площадки X/Y → Three.js через `stageCoordinates3d.ts`.
 - **Розмір WebGL:** обгортка з `ResizeObserver` задає піксельні `width`/`height` для `Canvas`; у `App.css` — **absolute inset 0** на `.app__r3f-canvas-outer` (не PDF), **stretch** на `.app__stage-print-frame`, **`min-height`** на картці (коли `100cqw === 0`, `height` міг бути 0px).
-- **Земля:** площина поля — `Ground`, `meshStandardMaterial` зеленого газону (`GROUND_GRASS_HEX`), `receiveShadow`.
+- **Земля:** площина поля — `Ground`, `meshStandardMaterial`, `receiveShadow`; колір з **`fieldGroundCover3d`** (`earth` / `grass` / `sand` у `fieldGround3d.ts`), зберігається в **`.stage.json`** і чернетці сесії.
 - Знімок сцени для PDF знімається через ref/handle компонента 3D (узгоджено з `App.tsx` / експортом).
 
 ## PDF брифінгу

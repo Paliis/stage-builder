@@ -121,6 +121,12 @@ export type MessageTree = {
     /** Кадр 1:1 з PNG у PDF (aspect як у знімка) */
     camPdf: string
     camPdfTitle: string
+    /** Покриття площадки в 3D (земля / трава / пісок) */
+    groundCoverLabel: string
+    groundCoverAria: string
+    groundEarth: string
+    groundGrass: string
+    groundSand: string
     threeDControls: string
     threeDControlsDetail: string
     plan2dControls: string
@@ -374,6 +380,11 @@ export const ukMessages: MessageTree = {
     camPdf: '\u042f\u043a \u0443 PDF',
     camPdfTitle:
       '\u041a\u0430\u0434\u0440 \u0442\u0430\u043a\u043e\u0433\u043e \u0436 \u0441\u043f\u0456\u0432\u0432\u0456\u0434\u043d\u043e\u0448\u0435\u043d\u043d\u044f \u0441\u0442\u043e\u0440\u0456\u043d, \u0449\u043e \u0439 \u0437\u043d\u0456\u043c\u043e\u043a 3D \u0443 \u0431\u0440\u0438\u0444\u0456\u043d\u0433\u0443 (\u0440\u0430\u043c\u043a\u0430 \u2014 \u043c\u0435\u0436\u0456 \u043a\u0430\u0434\u0440\u0443)',
+    groundCoverLabel: '\u041f\u043e\u043a\u0440\u0438\u0442\u0442\u044f:',
+    groundCoverAria: '\u041f\u043e\u043a\u0440\u0438\u0442\u0442\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438 \u0432 3D',
+    groundEarth: '\u0417\u0435\u043c\u043b\u044f',
+    groundGrass: '\u0422\u0440\u0430\u0432\u0430',
+    groundSand: '\u041f\u0456\u0441\u043e\u043a',
     threeDControls:
       '\u041e\u0431\u0435\u0440\u0442\u0430\u043d\u043d\u044f \u2014 \u043f\u0435\u0440\u0435\u0442\u044f\u0433\u0443\u0432\u0430\u043d\u043d\u044f\u043c \u043c\u0438\u0448\u0435\u044e; \u043c\u0430\u0441\u0448\u0442\u0430\u0431 \u2014 \u043a\u043e\u043b\u0456\u0449\u0430\u0442\u043a\u043e\u043c \u0430\u0431\u043e \u0437\u0432\u0435\u0434\u0435\u043d\u043d\u044f\u043c \u043f\u0430\u043b\u044c\u0446\u0456\u0432. \u0414\u043e\u0434\u0430\u0432\u0430\u0442\u0438 \u0442\u0430 \u0440\u0443\u0445\u0430\u0442\u0438 \u043e\u0431\u2019\u0454\u043a\u0442\u0438 \u043a\u0440\u0430\u0449\u0435 \u0432 \u0440\u0435\u0436\u0438\u043c\u0456 \u00ab\u041f\u043b\u0430\u043d 2D\u00bb (\u043f\u0440\u0438\u0432\u2019\u044f\u0437\u043a\u0430 \u0434\u043e \u0441\u0456\u0442\u043a\u0438).',
     threeDControlsDetail:
@@ -638,6 +649,11 @@ export const enMessages: MessageTree = {
     camPdf: 'PDF frame',
     camPdfTitle:
       'Same aspect ratio as the 3D snapshot in the briefing PDF (dashed frame shows the crop).',
+    groundCoverLabel: 'Surface:',
+    groundCoverAria: '3D stage ground cover',
+    groundEarth: 'Earth',
+    groundGrass: 'Grass',
+    groundSand: 'Sand',
     threeDControls:
       'Drag to orbit; scroll or pinch to zoom. Add and move objects in \u00ab2D plan\u00bb (grid snap).',
     threeDControlsDetail:

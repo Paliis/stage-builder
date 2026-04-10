@@ -19,6 +19,7 @@ import type { PlacementMode } from './domain/placementMode'
 import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
 import type { Prop, PropType, StageCategory, Target, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
+import { FIELD_GROUND_COVER_3D_VALUES, type FieldGroundCover3d } from './domain/fieldGround3d'
 import { FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
 import {
   buildStageProjectFile,
@@ -71,6 +72,8 @@ export default function App() {
   const setTargetMetalRectSideCm = useStageStore((s) => s.setTargetMetalRectSideCm)
   const removeProp = useStageStore((s) => s.removeProp)
   const fieldSizeM = useStageStore((s) => s.fieldSizeM)
+  const fieldGroundCover3d = useStageStore((s) => s.fieldGroundCover3d)
+  const setFieldGroundCover3d = useStageStore((s) => s.setFieldGroundCover3d)
   const setFieldSizeM = useStageStore((s) => s.setFieldSizeM)
   const replaceStageState = useStageStore((s) => s.replaceStageState)
   const resetSceneToDefaults = useStageStore((s) => s.resetSceneToDefaults)
@@ -182,7 +185,7 @@ export default function App() {
 
   const saveStageProject = useCallback(() => {
     const file = buildStageProjectFile({
-      stage: { name, weaponClass, fieldSizeM, targets, props },
+      stage: { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props },
       briefing: { ...briefing },
     })
     const json = serializeStageProject(file)
@@ -194,7 +197,7 @@ export default function App() {
     a.download = fname
     a.click()
     URL.revokeObjectURL(url)
-  }, [name, weaponClass, fieldSizeM, targets, props, briefing])
+  }, [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, briefing])
 
   const onProjectFileSelected = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -591,30 +594,50 @@ export default function App() {
         </div>
       </label>
       {viewMode === '3d' && (
-        <div className="app__camtabs" role="group" aria-label={tree.view.camAria}>
-          <button
-            type="button"
-            className={camera3d === 'overview' ? 'is-active' : ''}
-            onClick={() => setCamera3d('overview')}
-          >
-            {tree.view.camOverview}
-          </button>
-          <button
-            type="button"
-            className={camera3d === 'shooter' ? 'is-active' : ''}
-            onClick={() => setCamera3d('shooter')}
-          >
-            {tree.view.camShooter}
-          </button>
-          <button
-            type="button"
-            className={camera3d === 'pdf' ? 'is-active' : ''}
-            title={tree.view.camPdfTitle}
-            onClick={() => setCamera3d('pdf')}
-          >
-            {tree.view.camPdf}
-          </button>
-        </div>
+        <>
+          <div className="app__camtabs" role="group" aria-label={tree.view.camAria}>
+            <button
+              type="button"
+              className={camera3d === 'overview' ? 'is-active' : ''}
+              onClick={() => setCamera3d('overview')}
+            >
+              {tree.view.camOverview}
+            </button>
+            <button
+              type="button"
+              className={camera3d === 'shooter' ? 'is-active' : ''}
+              onClick={() => setCamera3d('shooter')}
+            >
+              {tree.view.camShooter}
+            </button>
+            <button
+              type="button"
+              className={camera3d === 'pdf' ? 'is-active' : ''}
+              title={tree.view.camPdfTitle}
+              onClick={() => setCamera3d('pdf')}
+            >
+              {tree.view.camPdf}
+            </button>
+          </div>
+          <label className="app__ground-cover">
+            <span className="app__ground-cover-label">{tree.view.groundCoverLabel}</span>
+            <select
+              aria-label={tree.view.groundCoverAria}
+              value={fieldGroundCover3d}
+              onChange={(e) => setFieldGroundCover3d(e.target.value as FieldGroundCover3d)}
+            >
+              {FIELD_GROUND_COVER_3D_VALUES.map((id) => (
+                <option key={id} value={id}>
+                  {id === 'earth'
+                    ? tree.view.groundEarth
+                    : id === 'grass'
+                      ? tree.view.groundGrass
+                      : tree.view.groundSand}
+                </option>
+              ))}
+            </select>
+          </label>
+        </>
       )}
     </div>
   )

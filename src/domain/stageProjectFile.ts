@@ -1,3 +1,4 @@
+import { normalizeFieldGroundCover3d, type FieldGroundCover3d } from './fieldGround3d'
 import { clampFieldDimensions, FIELD_SIZE_LIMITS } from './field'
 import type {
   MetalPlateRectSideCm,
@@ -87,6 +88,8 @@ export type StageProjectSnapshot = {
   fieldSizeM: Vec2
   targets: Target[]
   props: Prop[]
+  /** Покриття площадки в 3D; для старих файлів — дефолт при парсингу. */
+  fieldGroundCover3d: FieldGroundCover3d
 }
 
 export type StageProjectFileV1 = {
@@ -182,6 +185,7 @@ export function buildStageProjectFile(snapshot: {
       fieldSizeM: { ...snapshot.stage.fieldSizeM },
       targets: snapshot.stage.targets.map((t) => ({ ...t })),
       props: snapshot.stage.props.map((p) => ({ ...p })),
+      fieldGroundCover3d: snapshot.stage.fieldGroundCover3d,
     },
     briefing: { ...snapshot.briefing },
   }
@@ -242,6 +246,8 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
     return { ok: false, errorKey: 'invalidShape' }
   }
 
+  const fieldGroundCover3d = normalizeFieldGroundCover3d(stageObj.fieldGroundCover3d)
+
   const data: StageProjectFileV1 = {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
@@ -251,6 +257,7 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
       fieldSizeM: fw,
       targets: ensureUniqueTargetIds(targets),
       props: ensureUniquePropIds(props),
+      fieldGroundCover3d,
     },
     briefing: parseBriefing(root.briefing),
   }

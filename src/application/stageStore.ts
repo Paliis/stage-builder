@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { temporal } from 'zundo'
 import type { MetalPlateRectSideCm, Prop, PropType, Target, TargetType, Vec2 } from '../domain/models'
 import { isSquareSteelPlateTargetType } from '../domain/targetSpecs'
+import { DEFAULT_FIELD_GROUND_COVER_3D, type FieldGroundCover3d } from '../domain/fieldGround3d'
 import {
   clampFieldDimensions,
   clampVec2ToField,
@@ -100,9 +101,12 @@ export type StageState = {
   weaponClass: WeaponClass
   /** Розмір площадки в метрах: x = ширина, y = довжина (як FIELD_*). */
   fieldSizeM: Vec2
+  /** Покриття підлоги в 3D (земля / трава / пісок). */
+  fieldGroundCover3d: FieldGroundCover3d
   targets: Target[]
   props: Prop[]
   setStageName: (name: string) => void
+  setFieldGroundCover3d: (cover: FieldGroundCover3d) => void
   /** Повна заміна сцени (напр. з файлу вправи). */
   replaceStageState: (snapshot: {
     name: string
@@ -110,6 +114,7 @@ export type StageState = {
     fieldSizeM: Vec2
     targets: Target[]
     props: Prop[]
+    fieldGroundCover3d?: FieldGroundCover3d
   }) => void
   setWeaponClass: (wc: WeaponClass) => void
   setFieldSizeM: (size: Vec2) => void
@@ -133,6 +138,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   name: 'Нова вправа',
   weaponClass: 'handgun',
   fieldSizeM: { x: DEFAULT_FIELD_WIDTH_M, y: DEFAULT_FIELD_HEIGHT_M },
+  fieldGroundCover3d: DEFAULT_FIELD_GROUND_COVER_3D,
   targets: [],
   props: [],
 
@@ -141,14 +147,18 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       name: name.trim().slice(0, 200) || 'Нова вправа',
     }),
 
+  setFieldGroundCover3d: (cover) => set({ fieldGroundCover3d: cover }),
+
   replaceStageState: (snapshot) =>
     set((s) => {
       const next = clampFieldDimensions(snapshot.fieldSizeM.x, snapshot.fieldSizeM.y)
       const { targets, props } = reclampTargetsProps(snapshot.targets, snapshot.props, next.x, next.y)
+      const fieldGroundCover3d = snapshot.fieldGroundCover3d ?? DEFAULT_FIELD_GROUND_COVER_3D
       return {
         name: snapshot.name.trim().slice(0, 200) || s.name,
         weaponClass: snapshot.weaponClass,
         fieldSizeM: next,
+        fieldGroundCover3d,
         targets,
         props,
       }
@@ -161,6 +171,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         name: 'Нова вправа',
         weaponClass: 'handgun',
         fieldSizeM,
+        fieldGroundCover3d: DEFAULT_FIELD_GROUND_COVER_3D,
         targets: [],
         props: [],
       }
@@ -271,7 +282,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
 }), {
   limit: 50,
   partialize: (state) => {
-    const { name, weaponClass, fieldSizeM, targets, props } = state
-    return { name, weaponClass, fieldSizeM, targets, props }
+    const { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props } = state
+    return { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props }
   },
 }))

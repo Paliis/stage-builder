@@ -54,6 +54,7 @@ import {
   swingerIsPaperLoad,
   SWINGER_DIM,
 } from '../../domain/swingerGeometry'
+import { groundCoverColorHex } from '../../domain/fieldGround3d'
 import { stageToThreeXZ, type StageFieldM } from '../lib/stageCoordinates3d'
 
 function useStageFieldM(): StageFieldM {
@@ -149,15 +150,14 @@ function StageNavigator({ mode }: { mode: CameraMode3D }) {
   )
 }
 
-/** Площадка в 3D — зелений газон (крокове покращення візуалу). */
-const GROUND_GRASS_HEX = '#3d7a38'
-
 function Ground() {
   const { widthM, heightM } = useStageFieldM()
+  const cover = useStageStore((s) => s.fieldGroundCover3d)
+  const color = groundCoverColorHex(cover)
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
       <planeGeometry args={[widthM, heightM]} />
-      <meshStandardMaterial color={GROUND_GRASS_HEX} roughness={0.9} metalness={0.02} />
+      <meshStandardMaterial color={color} roughness={0.9} metalness={0.02} />
     </mesh>
   )
 }
