@@ -345,25 +345,80 @@ export function targetMetalPedestalLocal(t: Target): Vec2[] | null {
   return null
 }
 
-/** Дві підошви стійок під паперовою IPSC на двох стійках (локальні координати лиця). */
-export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
-  const ph = 0.028
-  const footW = 0.044
-  /** Відстань між осями стійок (м). */
-  const span = 0.34
+/**
+ * Два нижні «кути» плоского низу B2 (кінці нижнього ребра) — сюди в 3D прикріплюються стійки.
+ * Локальні координати лиця (+Y вгору).
+ */
+export function paperIpscTwoPostBottomCornerAnchorsLocalM(): Vec2[] {
   const outline = ipscClassicOutlineLocalM()
   let minY = Infinity
   for (const p of outline) minY = Math.min(minY, p.y)
-  const yMid = minY - ph * 0.5
+  const eps = 1e-5
+  const atBottom = outline.filter((p) => Math.abs(p.y - minY) < eps)
+  atBottom.sort((a, b) => a.x - b.x)
+  if (atBottom.length >= 2) {
+    return [atBottom[0]!, atBottom[atBottom.length - 1]!]
+  }
+  return [
+    { x: -0.075, y: minY },
+    { x: 0.075, y: minY },
+  ]
+}
+
+function quadCentroidLocal(pts: Vec2[]): Vec2 {
+  let sx = 0
+  let sy = 0
+  for (const p of pts) {
+    sx += p.x
+    sy += p.y
+  }
+  const n = pts.length
+  return { x: sx / n, y: sy / n }
+}
+
+/** Дві підошви стійок (локально); центри під кутами нижнього ребра. */
+export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
+  const anchors = paperIpscTwoPostBottomCornerAnchorsLocalM()
+  const ph = 0.028
+  const footW = 0.044
   const hwp = footW * 0.5
   const hhp = ph * 0.5
-  const mk = (cx: number): Vec2[] => [
-    { x: cx - hwp, y: yMid - hhp },
-    { x: cx + hwp, y: yMid - hhp },
-    { x: cx + hwp, y: yMid + hhp },
-    { x: cx - hwp, y: yMid + hhp },
-  ]
-  return [mk(-span * 0.5), mk(span * 0.5)]
+  return anchors.map((a) => {
+    const yMid = a.y - ph * 0.5
+    return [
+      { x: a.x - hwp, y: yMid - hhp },
+      { x: a.x + hwp, y: yMid - hhp },
+      { x: a.x + hwp, y: yMid + hhp },
+      { x: a.x - hwp, y: yMid + hhp },
+    ]
+  })
+}
+
+/**
+ * На 2D-плані: від центру кожної підошви до центру мішені — довжина лінії залежить від висоти стійки в 3D.
+ */
+export function targetPaperTwoPostStickIndicatorsWorld(t: Target): { from: Vec2; to: Vec2 }[] | null {
+  if (!isPaperIpscTwoPostTargetType(t.type)) return null
+  const bases = paperIpscTwoPostBasesLocalM()
+  const h = paperIpscTwoPostFaceBottomHeightM(t.type)
+  const planLenM = 0.06 + 0.52 * h
+  const { x: cx, y: cy } = t.position
+  const rot = t.rotationRad
+  const out: { from: Vec2; to: Vec2 }[] = []
+  for (const poly of bases) {
+    const c = quadCentroidLocal(poly)
+    const fromW = localToWorldPoint(c.x, c.y, cx, cy, rot)
+    const dx = cx - fromW.x
+    const dy = cy - fromW.y
+    const dist = Math.hypot(dx, dy) || 1
+    const ux = dx / dist
+    const uy = dy / dist
+    out.push({
+      from: fromW,
+      to: { x: fromW.x + ux * planLenM, y: fromW.y + uy * planLenM },
+    })
+  }
+  return out
 }
 
 export function targetPaperTwoPostBasesWorld(t: Target): Vec2[][] | null {

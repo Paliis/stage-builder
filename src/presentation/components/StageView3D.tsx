@@ -38,6 +38,7 @@ import {
 import {
   isPaperIpscTwoPostTargetType,
   isPaperTargetType,
+  paperIpscTwoPostBottomCornerAnchorsLocalM,
   paperIpscTwoPostFaceBottomHeightM,
   isSquareSteelPlateTargetType,
   popperBaseOnlyLocal,
@@ -291,17 +292,16 @@ function TargetStandPost({ standH }: { standH: number }) {
   )
 }
 
-/** Паперова IPSC на двох стійках: відстань між осями узгоджена з `paperIpscTwoPostBasesLocalM`. */
+/** Паперова IPSC на двох стійках: стійки під нижніми кутами плоского низу B2 (`paperIpscTwoPostBottomCornerAnchorsLocalM`). */
 function PaperTwoPostStands3D({ standH }: { standH: number }) {
-  const half = 0.17
+  const anchors = useMemo(() => paperIpscTwoPostBottomCornerAnchorsLocalM(), [])
   return (
     <>
-      <group position={[-half, 0, 0]}>
-        <TargetStandPost standH={standH} />
-      </group>
-      <group position={[half, 0, 0]}>
-        <TargetStandPost standH={standH} />
-      </group>
+      {anchors.map((a, i) => (
+        <group key={i} position={[a.x, 0, 0]}>
+          <TargetStandPost standH={standH} />
+        </group>
+      ))}
     </>
   )
 }

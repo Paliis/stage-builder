@@ -31,6 +31,7 @@ import {
   targetFootprintWorld,
   targetMetalPedestalWorld,
   targetPaperTwoPostBasesWorld,
+  targetPaperTwoPostStickIndicatorsWorld,
   targetRenderPolygonWorld,
   targetsDrawOrder,
 } from '../../domain/targetSpecs'
@@ -1545,6 +1546,21 @@ function redraw(
         ctx.strokeStyle = 'rgba(28, 22, 18, 0.55)'
         ctx.lineWidth = 1
         ctx.stroke()
+      }
+      const stickSegs = targetPaperTwoPostStickIndicatorsWorld(g)
+      if (stickSegs) {
+        ctx.lineCap = 'round'
+        ctx.lineJoin = 'round'
+        for (const seg of stickSegs) {
+          const a = worldToScreen(seg.from.x, seg.from.y, tf)
+          const b = worldToScreen(seg.to.x, seg.to.y, tf)
+          ctx.beginPath()
+          ctx.moveTo(a.x, a.y)
+          ctx.lineTo(b.x, b.y)
+          ctx.strokeStyle = 'rgba(42, 32, 24, 0.92)'
+          ctx.lineWidth = Math.max(1.25, tf.pxPerMeter * 0.045)
+          ctx.stroke()
+        }
       }
     } else if (ped && ped.length >= 3) {
       const ps = ped.map((p) => worldToScreen(p.x, p.y, tf))
