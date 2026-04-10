@@ -39,7 +39,8 @@ async function generateQrDataUrl(url: string): Promise<string> {
 
 const TABLE_FONT_SIZE = 9
 const TABLE_CELL_PADDING = { top: 2.2, right: 3, bottom: 2.2, left: 3 }
-const GAP_TITLE_IMAGE = 4
+/** Мінімальний зазор під заголовком перед знімком (QR накладається зверху, не зсуває знімок). */
+const GAP_TITLE_IMAGE = 2
 const GAP_IMAGE_TABLE = 5
 const GAP_TABLE_FOOTER = 3
 /** Відступ знімка від країв колонки PDF (1 = майже на всю ширину). */
@@ -84,6 +85,32 @@ function buildTableOpts(
   }
 }
 
+function drawPdfQrOverlay(
+  doc: InstanceType<typeof jsPDF>,
+  qrDataUrl: string,
+  pdf: BriefingPdfExportStrings,
+  pageW: number,
+  margin: number,
+): void {
+  doc.setFillColor(255, 255, 255)
+  doc.roundedRect(pageW - margin - QR_SIZE - 0.6, margin - 0.4, QR_SIZE + 1.2, QR_SIZE + 1, 0.8, 0.8, 'F')
+  doc.addImage(qrDataUrl, 'PNG', pageW - margin - QR_SIZE, margin, QR_SIZE, QR_SIZE)
+  const brandRight = pageW - margin
+  const urlLines = doc.splitTextToSize(APP_URL, 42) as string[]
+  doc.setFont(PDF_FONT_FAMILY, 'normal')
+  doc.setFontSize(6.5)
+  doc.setTextColor(107, 114, 128)
+  doc.text(pdf.generatedBy, brandRight, margin + QR_SIZE + 2, { align: 'right' })
+  doc.setFontSize(6)
+  doc.setTextColor(148, 163, 184)
+  let urlY = margin + QR_SIZE + 5
+  for (const line of urlLines) {
+    doc.text(line, brandRight, urlY, { align: 'right' })
+    urlY += 3
+  }
+  doc.setTextColor(0, 0, 0)
+}
+
 function measureTableHeight(
   tableBody: string[][],
   margin: number,
@@ -119,36 +146,15 @@ export async function exportBriefingPdf(opts: {
     qrDataUrl = null
   }
 
-  /* ── Title (ліворуч) + QR та брендинг (правий верхній кут) — звільняє низ сторінки для знімка ── */
+  /* ── Заголовок (текст ліворуч, справа резерв під QR — без накладання на назву) ── */
   const titleMaxW = contentW - (qrDataUrl ? QR_SIZE + QR_GAP_MM : 0)
   doc.setFont(PDF_FONT_FAMILY, 'bold')
   doc.setFontSize(14)
   const titleLines = doc.splitTextToSize(briefing.documentTitle, titleMaxW) as string[]
   doc.text(titleLines, margin, margin + 5)
   const titleH = titleLines.length * 6 + 4
-  const urlLinesForLayout = qrDataUrl ? (doc.splitTextToSize(APP_URL, 42) as string[]) : []
-
-  if (qrDataUrl) {
-    doc.addImage(qrDataUrl, 'PNG', pageW - margin - QR_SIZE, margin, QR_SIZE, QR_SIZE)
-    const brandRight = pageW - margin
-    doc.setFont(PDF_FONT_FAMILY, 'normal')
-    doc.setFontSize(6.5)
-    doc.setTextColor(107, 114, 128)
-    doc.text(pdf.generatedBy, brandRight, margin + QR_SIZE + 2, { align: 'right' })
-    doc.setFontSize(6)
-    doc.setTextColor(148, 163, 184)
-    let urlY = margin + QR_SIZE + 5
-    for (const line of urlLinesForLayout) {
-      doc.text(line, brandRight, urlY, { align: 'right' })
-      urlY += 3
-    }
-    doc.setTextColor(0, 0, 0)
-  }
-
-  const qrColumnBottom = qrDataUrl
-    ? margin + QR_SIZE + 5 + urlLinesForLayout.length * 3 + 2
-    : margin + titleH
-  const yAfterTopBand = Math.max(margin + titleH, qrColumnBottom)
+  /** Висота смуги лише під заголовок: знімок починається одразу під нею — QR малюємо поверх знімка пізніше. */
+  const yAfterTitle = margin + titleH
 
   /* ── Table data & measurement ── */
   const rows = briefingTableRows(briefing, pdf.labels, pdf.categoryLabel, pdf.emptyCell)
@@ -162,14 +168,14 @@ export async function exportBriefingPdf(opts: {
   const maxImgH =
     pageH -
     margin -
-    yAfterTopBand -
+    yAfterTitle -
     GAP_TITLE_IMAGE -
     GAP_IMAGE_TABLE -
     tableH -
     GAP_TABLE_FOOTER
 
   /* ── Image ── */
-  let cursorY = yAfterTopBand + GAP_TITLE_IMAGE
+  let cursorY = yAfterTitle + GAP_TITLE_IMAGE
   if (snapshotDataUrl) {
     try {
       const img = await loadImage(snapshotDataUrl)
@@ -192,6 +198,8 @@ export async function exportBriefingPdf(opts: {
 
       doc.addImage(snapshotDataUrl, 'PNG', imgX, cursorY, finalW, finalH)
       cursorY += finalH + GAP_IMAGE_TABLE
+
+      if (qrDataUrl) drawPdfQrOverlay(doc, qrDataUrl, pdf, pageW, margin)
     } catch {
       doc.setFont(PDF_FONT_FAMILY, 'normal')
       doc.setFontSize(9)
@@ -199,6 +207,7 @@ export async function exportBriefingPdf(opts: {
       doc.text(pdf.noSnapshot, pageW / 2, cursorY + 4, { align: 'center' })
       doc.setTextColor(0, 0, 0)
       cursorY += 8
+      if (qrDataUrl) drawPdfQrOverlay(doc, qrDataUrl, pdf, pageW, margin)
     }
   } else {
     doc.setFont(PDF_FONT_FAMILY, 'normal')
@@ -207,6 +216,7 @@ export async function exportBriefingPdf(opts: {
     doc.text(pdf.noSnapshot, pageW / 2, cursorY + 4, { align: 'center' })
     doc.setTextColor(0, 0, 0)
     cursorY += 8
+    if (qrDataUrl) drawPdfQrOverlay(doc, qrDataUrl, pdf, pageW, margin)
   }
 
   /* ── Table ── */
