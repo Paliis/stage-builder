@@ -19,7 +19,7 @@ import type { PlacementMode } from './domain/placementMode'
 import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
 import type { Prop, PropType, StageCategory, Target, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
-import { FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
+import { FIELD_SIZE_LIMITS, FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
 import {
   buildStageProjectFile,
   parseStageProjectJson,
@@ -493,29 +493,67 @@ export default function App() {
           {tree.view.visual3d}
         </button>
       </div>
-      <label className="app__field-size">
+      <label className="app__field-size" title={tree.toolbar.fieldSizeHint}>
         <span className="app__field-size-label">{tree.toolbar.fieldSizeLabel}</span>
-        <select
-          value={`${fieldSizeM.x}x${fieldSizeM.y}`}
-          title={tree.toolbar.fieldSizeHint}
-          onChange={(e) => {
-            const [w, h] = e.target.value.split('x').map(Number)
-            setFieldSizeM({ x: w, y: h })
-          }}
-        >
-          {!FIELD_SIZE_PRESETS.some(
-            (p) => p.widthM === fieldSizeM.x && p.heightM === fieldSizeM.y,
-          ) ? (
-            <option value={`${fieldSizeM.x}x${fieldSizeM.y}`}>
-              {formatTemplate(tree.toolbar.fieldSizeOption, { w: fieldSizeM.x, h: fieldSizeM.y })}
-            </option>
-          ) : null}
-          {FIELD_SIZE_PRESETS.map((p) => (
-            <option key={p.id} value={`${p.widthM}x${p.heightM}`}>
-              {formatTemplate(tree.toolbar.fieldSizeOption, { w: p.widthM, h: p.heightM })}
-            </option>
-          ))}
-        </select>
+        <div className="app__field-size-controls">
+          <div className="app__field-size-inputs">
+            <input
+              type="number"
+              className="app__field-size-input"
+              inputMode="decimal"
+              min={FIELD_SIZE_LIMITS.minM}
+              max={FIELD_SIZE_LIMITS.maxWidthM}
+              step={0.5}
+              aria-label={tree.toolbar.fieldSizeWidthAria}
+              value={fieldSizeM.x}
+              onChange={(e) => {
+                const v = parseFloat(e.target.value)
+                if (Number.isNaN(v)) return
+                setFieldSizeM({ x: v, y: fieldSizeM.y })
+              }}
+            />
+            <span className="app__field-size-times" aria-hidden="true">
+              ×
+            </span>
+            <input
+              type="number"
+              className="app__field-size-input"
+              inputMode="decimal"
+              min={FIELD_SIZE_LIMITS.minM}
+              max={FIELD_SIZE_LIMITS.maxHeightM}
+              step={0.5}
+              aria-label={tree.toolbar.fieldSizeLengthAria}
+              value={fieldSizeM.y}
+              onChange={(e) => {
+                const v = parseFloat(e.target.value)
+                if (Number.isNaN(v)) return
+                setFieldSizeM({ x: fieldSizeM.x, y: v })
+              }}
+            />
+            <span className="app__field-size-unit" aria-hidden="true">
+              m
+            </span>
+          </div>
+          <select
+            className="app__field-size-presets"
+            aria-label={tree.toolbar.fieldSizePresetsAria}
+            value=""
+            onChange={(e) => {
+              const val = e.target.value
+              if (!val) return
+              const [w, h] = val.split('x').map(Number)
+              setFieldSizeM({ x: w, y: h })
+              e.currentTarget.selectedIndex = 0
+            }}
+          >
+            <option value="">{tree.toolbar.fieldSizePresetsPlaceholder}</option>
+            {FIELD_SIZE_PRESETS.map((p) => (
+              <option key={p.id} value={`${p.widthM}x${p.heightM}`}>
+                {formatTemplate(tree.toolbar.fieldSizeOption, { w: p.widthM, h: p.heightM })}
+              </option>
+            ))}
+          </select>
+        </div>
       </label>
       {viewMode === '3d' && (
         <div className="app__camtabs" role="group" aria-label={tree.view.camAria}>

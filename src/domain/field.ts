@@ -8,11 +8,14 @@ export const DEFAULT_FIELD_HEIGHT_M = 40
 export const FIELD_WIDTH_M = DEFAULT_FIELD_WIDTH_M
 export const FIELD_HEIGHT_M = DEFAULT_FIELD_HEIGHT_M
 
-export const FIELD_SIZE_LIMITS = { minM: 8, maxM: 120 } as const
+/** Мінімальна сторона поля; максимум окремо по ширині (X) і довжині (Y) у метрах. */
+export const FIELD_SIZE_LIMITS = { minM: 8, maxWidthM: 50, maxHeightM: 100 } as const
 
 export type FieldSizePreset = Readonly<{ id: string; widthM: number; heightM: number }>
 
 export const FIELD_SIZE_PRESETS: FieldSizePreset[] = [
+  { id: '50x100', widthM: 50, heightM: 100 },
+  { id: '40x80', widthM: 40, heightM: 80 },
   { id: '30x40', widthM: 30, heightM: 40 },
   { id: '30x50', widthM: 30, heightM: 50 },
   { id: '25x35', widthM: 25, heightM: 35 },
@@ -28,10 +31,10 @@ export const FIELD_SIZE_PRESETS: FieldSizePreset[] = [
 export const STAGE_CARD_UI_DEPTH_FACTOR = 1.12
 
 export function clampFieldDimensions(w: number, h: number): Vec2 {
-  const { minM, maxM } = FIELD_SIZE_LIMITS
+  const { minM, maxWidthM, maxHeightM } = FIELD_SIZE_LIMITS
   return {
-    x: Math.min(maxM, Math.max(minM, Math.round(w * 10) / 10)),
-    y: Math.min(maxM, Math.max(minM, Math.round(h * 10) / 10)),
+    x: Math.min(maxWidthM, Math.max(minM, Math.round(w * 10) / 10)),
+    y: Math.min(maxHeightM, Math.max(minM, Math.round(h * 10) / 10)),
   }
 }
 

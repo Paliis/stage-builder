@@ -235,9 +235,9 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
   const fw = clampFieldDimensions(stageObj.fieldSizeM.x, stageObj.fieldSizeM.y)
   if (
     fw.x < FIELD_SIZE_LIMITS.minM ||
-    fw.x > FIELD_SIZE_LIMITS.maxM ||
+    fw.x > FIELD_SIZE_LIMITS.maxWidthM ||
     fw.y < FIELD_SIZE_LIMITS.minM ||
-    fw.y > FIELD_SIZE_LIMITS.maxM
+    fw.y > FIELD_SIZE_LIMITS.maxHeightM
   ) {
     return { ok: false, errorKey: 'invalidShape' }
   }

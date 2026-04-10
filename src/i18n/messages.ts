@@ -48,6 +48,10 @@ export type MessageTree = {
     fieldSizeOption: string
     fieldSizeLabel: string
     fieldSizeHint: string
+    fieldSizeWidthAria: string
+    fieldSizeLengthAria: string
+    fieldSizePresetsAria: string
+    fieldSizePresetsPlaceholder: string
     /** Підказка, коли обрано тип — клацати по 2D-плану. */
     placementClickPlan: string
     placementCancelEsc: string
@@ -247,7 +251,7 @@ export const ukMessages: MessageTree = {
     onboardingHowTitle: 'Крок за кроком',
     onboardingS1Title: '1. Майданчик і сітка',
     onboardingS1Text:
-      'Розмір поля — у верхній панелі (від 20×30 м до 120 м).\nКрок сітки 0,5 м. Уздовж краю плану — метричні лінійки з поділками від 0,5 м.\nМасштаб: коліщатко або pinch. Зсув: пробіл або середня кнопка миші + перетягування.',
+      'Розмір поля — у верхній панелі: введіть ширину й довжину в метрах (8–50 × 8–100 м) або оберіть пресет.\nКрок сітки 0,5 м. Уздовж краю плану — метричні лінійки з поділками від 0,5 м.\nМасштаб: коліщатко або pinch. Зсув: пробіл або середня кнопка миші + перетягування.',
     onboardingS2Title: '2. План 2D: об’єкти та інструменти',
     onboardingS2Text:
       'Розстановка: оберіть тип у бічній панелі (мішень, щит, реквізит) → клацайте по плану. Кожен клік додає один об’єкт у точці курсора (навіть поверх інших). Вийти з режиму: Esc або знову та сама кнопка типу.\n\nПісля виходу: клік — виділити; перетягування — перемістити (прив’язка до сітки вмикається сама). «↻» — поворот. На клавіатурі: Delete / Backspace — видалити виділене. На телефоні: кнопка з хрестиком біля карти — те саме; довгий тап по плану (~0,5 с) з виділенням відкриває меню дій. Нижня червона кнопка з кошиком — очистити всю вправу (не плутати з видаленням виділення).\n\nВимір: іконка лінійки біля карти або клавіша M у 2D — два кліки задають відрізок і довжину в метрах; Esc скасовує незавершений вимір.\nРамка на карті — виділити зону. Копія / вставка: Ctrl+C / Ctrl+V або кнопки «Копія» / «Вставити»; копія з’являється в тій частині плану, яку зараз видно.',
@@ -292,7 +296,11 @@ export const ukMessages: MessageTree = {
     fieldSizeOption: '{{w}} \u00d7 {{h}} \u043c',
     fieldSizeLabel: '\u041f\u043b\u043e\u0449\u0430\u0434\u043a\u0430 (\u0448\u0438\u0440 \u00d7 \u0434\u043e\u0432)',
     fieldSizeHint:
-      '\u0417\u043c\u0456\u043d\u044e\u0454 \u0441\u0456\u0442\u043a\u0443 2D, \u043c\u0435\u0436\u0456, 3D \u0456 PDF. \u041e\u0431\u2019\u0454\u043a\u0442\u0438 \u0441\u0442\u0438\u0441\u043a\u0430\u044e\u0442\u044c\u0441\u044f \u0434\u043e \u043d\u043e\u0432\u0438\u0445 \u043c\u0435\u0436 (\u0441\u043f\u0440\u043e\u0449\u0435\u043d\u043e \u0437\u0430 \u0446\u0435\u043d\u0442\u0440\u043e\u043c).',
+      '\u0417\u043c\u0456\u043d\u044e\u0454 \u0441\u0456\u0442\u043a\u0443 2D, \u043c\u0435\u0436\u0456, 3D \u0456 PDF. \u041e\u0431\u2019\u0454\u043a\u0442\u0438 \u0441\u0442\u0438\u0441\u043a\u0430\u044e\u0442\u044c\u0441\u044f \u0434\u043e \u043d\u043e\u0432\u0438\u0445 \u043c\u0435\u0436 (\u0441\u043f\u0440\u043e\u0449\u0435\u043d\u043e \u0437\u0430 \u0446\u0435\u043d\u0442\u0440\u043e\u043c). \u0414\u0456\u0430\u043f\u0430\u0437\u043e\u043d: \u0448\u0438\u0440\u0438\u043d\u0430 8\u201350 \u043c, \u0434\u043e\u0432\u0436\u0438\u043d\u0430 8\u2013100 \u043c, \u043a\u0440\u043e\u043a 0,5 \u043c.',
+    fieldSizeWidthAria: '\u0428\u0438\u0440\u0438\u043d\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438, \u043c',
+    fieldSizeLengthAria: '\u0414\u043e\u0432\u0436\u0438\u043d\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438, \u043c',
+    fieldSizePresetsAria: '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u0432\u0438\u0431\u0456\u0440 \u0440\u043e\u0437\u043c\u0456\u0440\u0443 \u0437 \u043f\u0440\u0435\u0441\u0435\u0442\u0456\u0432',
+    fieldSizePresetsPlaceholder: '\u041f\u0440\u0435\u0441\u0435\u0442\u0438\u2026',
     placementClickPlan:
       '\u041a\u043b\u0430\u0446\u043d\u0456\u0442\u044c \u043f\u043e \u043f\u043b\u0430\u043d\u0443, \u0449\u043e\u0431 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u0438. \u041f\u043e\u0432\u0442\u043e\u0440\u043d\u0438\u0439 \u043a\u043b\u0456\u043a \u043f\u043e \u0442\u0438\u043f\u0443 \u0432 \u043c\u0435\u043d\u044e \u2014 \u0432\u0438\u0439\u0442\u0438 \u0437 \u0440\u0435\u0436\u0438\u043c\u0443.',
     placementCancelEsc: 'Esc \u2014 \u0441\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438 \u0440\u0435\u0436\u0438\u043c \u0440\u043e\u0437\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438.',
@@ -505,7 +513,7 @@ export const enMessages: MessageTree = {
     onboardingHowTitle: 'Step by step',
     onboardingS1Title: '1. Range and grid',
     onboardingS1Text:
-      'Set the field size in the top bar (from 20×30 m up to 120 m).\nGrid step is 0.5 m. Metric rulers along the plan edge show ticks from 0.5 m.\nZoom: scroll or pinch. Pan: Space or middle mouse button + drag.',
+      'Set the field size in the top bar: enter width and length in metres (8–50 × 8–100 m) or pick a preset.\nGrid step is 0.5 m. Metric rulers along the plan edge show ticks from 0.5 m.\nZoom: scroll or pinch. Pan: Space or middle mouse button + drag.',
     onboardingS2Title: '2. 2D plan: objects and tools',
     onboardingS2Text:
       'Placement: pick a type in the sidebar (target, shield, prop), then click the plan. Each click adds one object at the cursor (even on top of others). Exit placement: Esc or click the same type button again.\n\nAfter that: click to select; drag to move (grid snap is on). «↻» rotates in steps. Keyboard: Delete / Backspace removes the selection. Phone: the X button by the map does the same; long-press the plan (~0.5 s) with a selection to open quick actions. The red trash button at the bottom clears the entire exercise — not the same as deleting the selection.\n\nMeasure: ruler icon by the map, or M in 2D — two clicks set a segment and length in metres; Esc cancels an unfinished line.\nMarquee on the map selects a region. Copy / paste: Ctrl+C / Ctrl+V or Copy / Paste; the duplicate lands in the part of the plan you are viewing.',
@@ -550,7 +558,11 @@ export const enMessages: MessageTree = {
     fieldSizeOption: '{{w}} \u00d7 {{h}} m',
     fieldSizeLabel: 'Range (w \u00d7 l)',
     fieldSizeHint:
-      'Updates 2D grid, bounds, 3D, and PDF. Objects are clamped into the new bounds (simplified).',
+      'Updates 2D grid, bounds, 3D, and PDF. Objects are clamped into the new bounds (simplified). Width 8–50 m, length 8–100 m, step 0.5 m.',
+    fieldSizeWidthAria: 'Range width, m',
+    fieldSizeLengthAria: 'Range length, m',
+    fieldSizePresetsAria: 'Quick size presets',
+    fieldSizePresetsPlaceholder: 'Presets…',
     placementClickPlan:
       'Click the plan to place. Click the same type again in the menu to leave placement mode.',
     placementCancelEsc: 'Esc — cancel placement mode.',

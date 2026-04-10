@@ -1461,7 +1461,53 @@
   color: var(--text-h);
 }
 
-.app__field-size select {
+.app__field-size-controls {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+}
+
+.app__field-size-inputs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.35rem;
+}
+
+.app__field-size-input {
+  box-sizing: border-box;
+  width: 4.1rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.3rem 0.35rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text-h);
+}
+
+.app__field-size-input::-webkit-outer-spin-button,
+.app__field-size-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.app__field-size-input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.app__field-size-times,
+.app__field-size-unit {
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.72;
+  user-select: none;
+}
+
+.app__field-size-presets {
   font: inherit;
   font-size: 0.82rem;
   padding: 0.35rem 0.5rem;
@@ -1469,6 +1515,7 @@
   border: 1px solid var(--border);
   background: var(--btn-bg);
   color: var(--text-h);
+  max-width: min(12rem, 100vw);
 }
 
 .app__view-hint-wrap {
