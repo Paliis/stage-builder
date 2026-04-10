@@ -40,6 +40,7 @@ import {
   clampVec2ToField,
   DEFAULT_FIELD_HEIGHT_M,
   DEFAULT_FIELD_WIDTH_M,
+  GRID_CHESS_M,
   GRID_SNAP_M,
   snapMeters,
   snapVec2,
@@ -484,10 +485,66 @@ function drawPopper2D(
   ctx.stroke()
 }
 
+/** Мінімальний розмір клітини шахматки в px — інакше малюнок нечитабельний, пропускаємо. */
+const CHESS_MIN_CELL_PX = 2.5
+/** Захист від деградації FPS на великому полі при «вмістити все» — тоді лишаються лише лінії 0,5 м. */
+const CHESS_MAX_DRAWN_CELLS = 8000
+
+/**
+ * Шахматка кроком `GRID_CHESS_M` у межах поля; лише клітини, що перетинають видимий viewport.
+ * Дві світлі тоновані заливки для контрасту на світлому тлі канваса.
+ */
+function drawChessboard1m(ctx: CanvasRenderingContext2D, t: ViewTransform) {
+  const canvas = ctx.canvas
+  const cw = canvas.clientWidth
+  const ch = canvas.clientHeight
+  if (cw <= 0 || ch <= 0) return
+
+  const ppm = t.pxPerMeter
+  if (ppm * GRID_CHESS_M < CHESS_MIN_CELL_PX) return
+
+  const vw = computeWorldViewportRect(cw, ch, t)
+  const fw = t.fieldWidthM
+  const fh = t.fieldHeightM
+
+  const ix0 = Math.max(0, Math.floor(vw.minX))
+  const ix1 = Math.min(Math.ceil(fw - 1e-9), Math.ceil(vw.maxX))
+  const iy0 = Math.max(0, Math.floor(vw.minY))
+  const iy1 = Math.min(Math.ceil(fh - 1e-9), Math.ceil(vw.maxY))
+
+  const nx = Math.max(0, ix1 - ix0)
+  const ny = Math.max(0, iy1 - iy0)
+  if (nx === 0 || ny === 0) return
+  if (nx * ny > CHESS_MAX_DRAWN_CELLS) return
+
+  const fillA = 'rgba(148, 163, 184, 0.045)'
+  const fillB = 'rgba(148, 163, 184, 0.09)'
+
+  ctx.save()
+  for (let iy = iy0; iy < iy1; iy++) {
+    const ya = iy
+    const yb = Math.min(iy + GRID_CHESS_M, fh)
+    if (ya >= yb - 1e-9) continue
+    for (let ix = ix0; ix < ix1; ix++) {
+      const xa = ix
+      const xb = Math.min(ix + GRID_CHESS_M, fw)
+      if (xa >= xb - 1e-9) continue
+      const parity = (ix + iy) & 1
+      ctx.fillStyle = parity ? fillB : fillA
+      const tl = worldToScreen(xa, yb, t)
+      const w = (xb - xa) * ppm
+      const h = (yb - ya) * ppm
+      ctx.fillRect(tl.x, tl.y, w, h)
+    }
+  }
+  ctx.restore()
+}
+
 function drawGrid(ctx: CanvasRenderingContext2D, t: ViewTransform) {
   const fw = t.fieldWidthM
   const fh = t.fieldHeightM
   ctx.save()
+  drawChessboard1m(ctx, t)
   ctx.lineWidth = 1
   ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)'
 

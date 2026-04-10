@@ -40,6 +40,9 @@ export function clampFieldDimensions(w: number, h: number): Vec2 {
 
 export const GRID_SNAP_M = 0.5
 
+/** Крок «шахматки» на 2D-плані (м); тонкі лінії сітки лишаються з кроком `GRID_SNAP_M`. */
+export const GRID_CHESS_M = 1
+
 /** Крок прив’язки центру мішені після перетягування (дрібніший за сітку поля, щоб NS і папір могли частково перекриватись). */
 export const TARGET_PLACEMENT_SNAP_M = 0.05
 
