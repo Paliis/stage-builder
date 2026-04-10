@@ -48,6 +48,9 @@ const IMAGE_SHRINK = 1
 const QR_SIZE = 14
 /** Горизонтальний зазор між заголовком і QR у верхньому рядку. */
 const QR_GAP_MM = 5
+/** Рамка навколо знімка сцени (мм), щоб у PDF було видно межі кадру як у прев’ю. */
+const SNAPSHOT_FRAME_LINE_MM = 0.35
+const SNAPSHOT_FRAME_RADIUS_MM = 0.9
 
 function buildTableOpts(
   tableBody: string[][],
@@ -197,6 +200,19 @@ export async function exportBriefingPdf(opts: {
       const imgX = margin + (contentW - finalW) / 2
 
       doc.addImage(snapshotDataUrl, 'PNG', imgX, cursorY, finalW, finalH)
+      doc.setDrawColor(99, 102, 241)
+      doc.setLineWidth(SNAPSHOT_FRAME_LINE_MM)
+      doc.roundedRect(
+        imgX,
+        cursorY,
+        finalW,
+        finalH,
+        SNAPSHOT_FRAME_RADIUS_MM,
+        SNAPSHOT_FRAME_RADIUS_MM,
+        'S',
+      )
+      doc.setDrawColor(0, 0, 0)
+      doc.setLineWidth(0.2)
       cursorY += finalH + GAP_IMAGE_TABLE
 
       if (qrDataUrl) drawPdfQrOverlay(doc, qrDataUrl, pdf, pageW, margin)
