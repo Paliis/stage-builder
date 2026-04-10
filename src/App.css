@@ -1355,9 +1355,57 @@
     align-items: stretch;
   }
 
+.app__main.app__main--stage-card {
+  align-self: stretch;
+  flex: 1 1 auto;
+  }
+}
+
+/**
+ * Великі десктопи: більший бюджет висоти для картки 2D/3D (фаза R плану).
+ * Картка обмежена max-height через --_plan-cap; трохи вищий cap → ширший кадр при тій самій пропорції поля.
+ */
+@media (min-width: 80rem) and (min-height: 32rem) {
+  .app {
+    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem));
+  }
+
+  .app__plan-workspace-cluster {
+    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem));
+  }
+
   .app__main.app__main--stage-card {
-    align-self: stretch;
-    flex: 1 1 auto;
+    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem));
+  }
+
+  .app__plan-main {
+    min-height: min(60dvh, 38rem);
+  }
+}
+
+@media (min-width: 100rem) and (min-height: 36rem) {
+  .app {
+    --_dvh-cap: min(96dvh, calc(100dvh - 5rem));
+  }
+
+  .app__plan-workspace-cluster {
+    --_dvh-cap: min(96dvh, calc(100dvh - 5rem));
+  }
+
+  .app__main.app__main--stage-card {
+    --_dvh-cap: min(96dvh, calc(100dvh - 5rem));
+  }
+
+  .app__plan-main {
+    min-height: min(62dvh, 42rem);
+  }
+
+  .app__briefing {
+    max-width: min(80rem, 96vw);
+  }
+
+  .app__view-hint-wrap {
+    max-width: min(72rem, 96vw);
   }
 }
 
