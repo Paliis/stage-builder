@@ -52,6 +52,8 @@ export type MessageTree = {
     fieldSizeLengthAria: string
     fieldSizePresetsAria: string
     fieldSizePresetsPlaceholder: string
+    /** Підтвердження зміни розміру поля, якщо об’єкти змістяться */
+    fieldResizeConfirm: string
     /** Підказка, коли обрано тип — клацати по 2D-плану. */
     placementClickPlan: string
     placementCancelEsc: string
@@ -310,6 +312,8 @@ export const ukMessages: MessageTree = {
     fieldSizeLengthAria: '\u0414\u043e\u0432\u0436\u0438\u043d\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438, \u043c',
     fieldSizePresetsAria: '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u0432\u0438\u0431\u0456\u0440 \u0440\u043e\u0437\u043c\u0456\u0440\u0443 \u0437 \u043f\u0440\u0435\u0441\u0435\u0442\u0456\u0432',
     fieldSizePresetsPlaceholder: '\u041f\u0440\u0435\u0441\u0435\u0442\u0438\u2026',
+    fieldResizeConfirm:
+      '\u041d\u043e\u0432\u0438\u0439 \u0440\u043e\u0437\u043c\u0456\u0440 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438 \u043c\u0435\u043d\u0448\u0438\u0439 \u0437\u0430 \u043f\u043e\u0442\u043e\u0447\u043d\u0438\u0439: \u043c\u0456\u0448\u0435\u043d\u0456 \u0442\u0430 \u0440\u0435\u043a\u0432\u0456\u0437\u0438\u0442 \u0431\u0443\u0434\u0443\u0442\u044c \u0437\u043c\u0456\u0449\u0435\u043d\u0456 \u0432\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0443 \u043d\u043e\u0432\u0438\u0445 \u043c\u0435\u0436. \u041f\u0440\u043e\u0434\u043e\u0432\u0436\u0438\u0442\u0438?',
     placementClickPlan:
       '\u041a\u043b\u0430\u0446\u043d\u0456\u0442\u044c \u043f\u043e \u043f\u043b\u0430\u043d\u0443, \u0449\u043e\u0431 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u0438. \u041f\u043e\u0432\u0442\u043e\u0440\u043d\u0438\u0439 \u043a\u043b\u0456\u043a \u043f\u043e \u0442\u0438\u043f\u0443 \u0432 \u043c\u0435\u043d\u044e \u2014 \u0432\u0438\u0439\u0442\u0438 \u0437 \u0440\u0435\u0436\u0438\u043c\u0443.',
     placementCancelEsc: 'Esc \u2014 \u0441\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438 \u0440\u0435\u0436\u0438\u043c \u0440\u043e\u0437\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438.',
@@ -580,6 +584,8 @@ export const enMessages: MessageTree = {
     fieldSizeLengthAria: 'Range length, m',
     fieldSizePresetsAria: 'Quick size presets',
     fieldSizePresetsPlaceholder: 'Presets…',
+    fieldResizeConfirm:
+      'The new stage size is smaller than the current one: some targets or props will be moved inward to fit. Continue?',
     placementClickPlan:
       'Click the plan to place. Click the same type again in the menu to leave placement mode.',
     placementCancelEsc: 'Esc — cancel placement mode.',

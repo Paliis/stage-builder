@@ -16,6 +16,7 @@ describe('stageProjectFile', () => {
         name: 'Test',
         weaponClass: 'handgun',
         fieldSizeM: { x: 30, y: 40 },
+        fieldGroundCover3d: 'grass',
         targets: [
           {
             id: 'a',

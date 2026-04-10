@@ -20,7 +20,8 @@ import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
 import type { Prop, PropType, StageCategory, Target, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
 import { FIELD_GROUND_COVER_3D_VALUES, type FieldGroundCover3d } from './domain/fieldGround3d'
-import { FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
+import { clampFieldDimensions, FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
+import { fieldResizeChangesEntities } from './domain/fieldResizeImpact'
 import {
   buildStageProjectFile,
   parseStageProjectJson,
@@ -182,6 +183,23 @@ export default function App() {
   )
 
   const categoryLabel = (c: StageCategory) => t(`briefing.category.${c}`)
+
+  const trySetFieldSizeM = useCallback(
+    (raw: { x: number; y: number }) => {
+      const next = clampFieldDimensions(raw.x, raw.y)
+      if (next.x === fieldSizeM.x && next.y === fieldSizeM.y) return
+      const hasEntities = targets.length > 0 || props.length > 0
+      if (
+        hasEntities &&
+        fieldResizeChangesEntities(targets, props, next.x, next.y) &&
+        !window.confirm(tree.toolbar.fieldResizeConfirm)
+      ) {
+        return
+      }
+      setFieldSizeM(next)
+    },
+    [fieldSizeM.x, fieldSizeM.y, targets, props, setFieldSizeM, tree.toolbar.fieldResizeConfirm],
+  )
 
   const saveStageProject = useCallback(() => {
     const file = buildStageProjectFile({
@@ -541,7 +559,7 @@ export default function App() {
                 fieldWidthInputFocusedRef.current = false
                 const v = parseFieldSizeInputMeters(fieldWidthDraft ?? '')
                 setFieldWidthDraft(null)
-                if (v !== null) setFieldSizeM({ x: v, y: fieldSizeM.y })
+                if (v !== null) trySetFieldSizeM({ x: v, y: fieldSizeM.y })
               }}
             />
             <span className="app__field-size-times" aria-hidden="true">
@@ -565,7 +583,7 @@ export default function App() {
                 fieldHeightInputFocusedRef.current = false
                 const v = parseFieldSizeInputMeters(fieldHeightDraft ?? '')
                 setFieldHeightDraft(null)
-                if (v !== null) setFieldSizeM({ x: fieldSizeM.x, y: v })
+                if (v !== null) trySetFieldSizeM({ x: fieldSizeM.x, y: v })
               }}
             />
             <span className="app__field-size-unit" aria-hidden="true">
@@ -580,7 +598,7 @@ export default function App() {
               const val = e.target.value
               if (!val) return
               const [w, h] = val.split('x').map(Number)
-              setFieldSizeM({ x: w, y: h })
+              trySetFieldSizeM({ x: w, y: h })
               e.currentTarget.selectedIndex = 0
             }}
           >
