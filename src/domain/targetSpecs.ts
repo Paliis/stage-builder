@@ -405,28 +405,37 @@ export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
 }
 
 /**
- * На 2D-плані: від центру кожної підошви до центру мішені — довжина лінії залежить від висоти стійки в 3D.
+ * Одиничний вектор «вниз» по лицю мішені (локальні −Y) у координатах площадки — як проєкція стійки на план.
+ */
+function paperFaceDownDirWorld(rot: number): Vec2 {
+  const lx = 0
+  const ly = -1
+  const c = Math.cos(rot)
+  const s = Math.sin(rot)
+  return {
+    x: lx * c - ly * s,
+    y: lx * s + ly * c,
+  }
+}
+
+/**
+ * На 2D-плані: від підошви вниз уздовж лиця (локальний −Y) — довжина залежить від висоти стійки в 3D.
  */
 export function targetPaperTwoPostStickIndicatorsWorld(t: Target): { from: Vec2; to: Vec2 }[] | null {
   if (!isPaperIpscTwoPostTargetType(t.type)) return null
   const bases = paperIpscTwoPostBasesLocalM()
   const h = paperIpscTwoPostFaceBottomHeightM(t.type)
-  /** Довжина штриха на плані (м): від підошви назовні від центру мішені — не ховається під білим контуром. */
   const planLenM = 0.08 + 0.58 * h
   const { x: cx, y: cy } = t.position
   const rot = t.rotationRad
+  const { x: dwx, y: dwy } = paperFaceDownDirWorld(rot)
   const out: { from: Vec2; to: Vec2 }[] = []
   for (const poly of bases) {
     const c = quadCentroidLocal(poly)
     const fromW = localToWorldPoint(c.x, c.y, cx, cy, rot)
-    const dx = fromW.x - cx
-    const dy = fromW.y - cy
-    const dist = Math.hypot(dx, dy) || 1
-    const ux = dx / dist
-    const uy = dy / dist
     out.push({
       from: fromW,
-      to: { x: fromW.x + ux * planLenM, y: fromW.y + uy * planLenM },
+      to: { x: fromW.x + dwx * planLenM, y: fromW.y + dwy * planLenM },
     })
   }
   return out
