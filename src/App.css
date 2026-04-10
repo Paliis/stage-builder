@@ -957,26 +957,25 @@
 }
 
 /**
- * 2D і 3D: одна картка; висота не більше --_plan-vmax, але якщо колонка вужча за «letterbox» від ліміту висоти —
- * звужуємо бюджет висоти до висоти при повній ширині 100cqw, щоб заповнити горизонт без смуг.
+ * 2D і 3D: одна картка на всю ширину колонки (.app__plan-main).
+ * Висота = min(ліміт вікна, «природна» при ширині колонки), без aspect-ratio на блоці — інакше max-height
+ * разом із пропорцією знову стискають ширину до вузької смуги на вузьких полях у метрах.
  * --stage-card-h трохи менше за довжину площадки в м; PDF лишається зі своєю логікою.
  */
 .app__main.app__main--stage-card {
   position: relative;
   flex: 0 0 auto;
-  align-self: center;
+  align-self: stretch;
   min-height: unset;
   /* --_dvh-cap: ліміт по вікну; на широкому макеті додаємо 100cqh, щоб сцена займала висоту робочої колонки. */
   --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
   --_h-if-full-w: calc(100cqw * var(--stage-card-h, 35.7) / var(--stage-card-w, 30));
   --_plan-cap: min(var(--_dvh-cap), var(--_h-if-full-w));
-  /* Узгоджено з minmax(20rem, …) у .app__plan-workspace-cluster: не вужче за колонку контенту. */
-  --_w-letterbox: min(100%, calc(var(--_plan-cap) * var(--stage-card-w, 30) / var(--stage-card-h, 35.7)));
-  width: min(100%, max(20rem, var(--_w-letterbox)));
+  width: 100%;
   max-width: 100%;
-  aspect-ratio: var(--stage-card-w, 30) / var(--stage-card-h, 35.7);
-  height: auto;
-  max-height: var(--_plan-cap);
+  box-sizing: border-box;
+  aspect-ratio: unset;
+  height: min(var(--_plan-cap), calc(100cqw * var(--stage-card-h, 35.7) / var(--stage-card-w, 30)));
 }
 
 /* Вузькі екрани: більше місця під картку, на всю ширину без «вух». */
@@ -1103,33 +1102,33 @@
 }
 
 
-/* Робоча зона: тягнеться по висоті колонки .app; ширина = кластер (fit-content). */
+/* Робоча зона: на всю ширину контенту (.app), щоб колонка сцени могла розширюватись. */
 .app__plan-workspace {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
-  width: fit-content;
+  align-self: stretch;
+  width: 100%;
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
 }
 
 /**
- * Кластер: ширина другої колонки = ширина картки при максимальній висоті.
- * fit-content + margin:auto → кластер по центру, без порожніх 1fr «крил».
+ * Кластер: друга колонка 1fr — займає вільну ширину; раніше max дорівнював «letterbox» від поля в метрах,
+ * через що при вузькій площадці (мала ширина / велика довжина) сцена лишалась вузькою смужкою.
  */
 .app__plan-workspace-cluster {
   --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
-  --_card-col-w: calc(var(--_dvh-cap) * var(--stage-card-w, 30) / var(--stage-card-h, 35.7));
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(13.25rem, 18.75rem) minmax(20rem, var(--_card-col-w));
+  grid-template-columns: minmax(13.25rem, 18.75rem) minmax(20rem, 1fr);
   grid-template-rows: minmax(0, 1fr);
   gap: 0.65rem 0.85rem;
   align-items: stretch;
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
   margin-inline: auto;
   min-width: 0;
@@ -1214,7 +1213,7 @@
 .app__plan-stage-stack {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 0.5rem;
   width: 100%;
   min-width: 0;
@@ -1365,7 +1364,7 @@
 
 /**
  * Великі десктопи: більший бюджет висоти для картки 2D/3D (фаза R плану).
- * Картка обмежена max-height через --_plan-cap; трохи вищий cap → ширший кадр при тій самій пропорції поля.
+ * Картка обмежена по висоті через --_plan-cap; трохи вищий cap → більший кадр при тій самій пропорції поля.
  */
 @media (min-width: 80rem) and (min-height: 32rem) {
   .app {
