@@ -19,7 +19,7 @@ import type { PlacementMode } from './domain/placementMode'
 import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
 import type { Prop, PropType, StageCategory, Target, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
-import { FIELD_SIZE_LIMITS, FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
+import { FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
 import {
   buildStageProjectFile,
   parseStageProjectJson,
@@ -44,6 +44,13 @@ const StageView3DLazy = lazy(() =>
 )
 
 const ONBOARDING_LS_KEY = 'stage-builder-onboarding-collapsed'
+
+function parseFieldSizeInputMeters(raw: string): number | null {
+  const t = raw.trim().replace(',', '.')
+  if (t === '') return null
+  const v = parseFloat(t)
+  return Number.isFinite(v) ? v : null
+}
 
 export default function App() {
   const { locale, setLocale, t, tree } = useI18n()
@@ -119,6 +126,22 @@ export default function App() {
   const [hasPlanClipboard, setHasPlanClipboard] = useState(false)
   const internalClipboardRef = useRef<{ targets: Target[]; props: Prop[] } | null>(null)
   const [selectionSheetOpen, setSelectionSheetOpen] = useState(false)
+
+  /** Чернетка тексту в полях розміру поля (щоб можна було вводити з клавіатури без миттєвого clamp). */
+  const [fieldWidthDraft, setFieldWidthDraft] = useState<string | null>(null)
+  const [fieldHeightDraft, setFieldHeightDraft] = useState<string | null>(null)
+  const fieldWidthInputFocusedRef = useRef(false)
+  const fieldHeightInputFocusedRef = useRef(false)
+
+  useEffect(() => {
+    if (!fieldWidthInputFocusedRef.current) setFieldWidthDraft(null)
+    else setFieldWidthDraft(String(fieldSizeM.x))
+  }, [fieldSizeM.x])
+
+  useEffect(() => {
+    if (!fieldHeightInputFocusedRef.current) setFieldHeightDraft(null)
+    else setFieldHeightDraft(String(fieldSizeM.y))
+  }, [fieldSizeM.y])
 
   useEffect(() => {
     if (!measureToolActive) planCanvasRef.current?.clearMeasure()
@@ -498,36 +521,48 @@ export default function App() {
         <div className="app__field-size-controls">
           <div className="app__field-size-inputs">
             <input
-              type="number"
+              type="text"
               className="app__field-size-input"
               inputMode="decimal"
-              min={FIELD_SIZE_LIMITS.minM}
-              max={FIELD_SIZE_LIMITS.maxWidthM}
-              step={0.5}
+              autoComplete="off"
               aria-label={tree.toolbar.fieldSizeWidthAria}
-              value={fieldSizeM.x}
+              value={fieldWidthDraft ?? String(fieldSizeM.x)}
+              onFocus={() => {
+                fieldWidthInputFocusedRef.current = true
+                setFieldWidthDraft(String(fieldSizeM.x))
+              }}
               onChange={(e) => {
-                const v = parseFloat(e.target.value)
-                if (Number.isNaN(v)) return
-                setFieldSizeM({ x: v, y: fieldSizeM.y })
+                setFieldWidthDraft(e.target.value)
+              }}
+              onBlur={() => {
+                fieldWidthInputFocusedRef.current = false
+                const v = parseFieldSizeInputMeters(fieldWidthDraft ?? '')
+                setFieldWidthDraft(null)
+                if (v !== null) setFieldSizeM({ x: v, y: fieldSizeM.y })
               }}
             />
             <span className="app__field-size-times" aria-hidden="true">
               ×
             </span>
             <input
-              type="number"
+              type="text"
               className="app__field-size-input"
               inputMode="decimal"
-              min={FIELD_SIZE_LIMITS.minM}
-              max={FIELD_SIZE_LIMITS.maxHeightM}
-              step={0.5}
+              autoComplete="off"
               aria-label={tree.toolbar.fieldSizeLengthAria}
-              value={fieldSizeM.y}
+              value={fieldHeightDraft ?? String(fieldSizeM.y)}
+              onFocus={() => {
+                fieldHeightInputFocusedRef.current = true
+                setFieldHeightDraft(String(fieldSizeM.y))
+              }}
               onChange={(e) => {
-                const v = parseFloat(e.target.value)
-                if (Number.isNaN(v)) return
-                setFieldSizeM({ x: fieldSizeM.x, y: v })
+                setFieldHeightDraft(e.target.value)
+              }}
+              onBlur={() => {
+                fieldHeightInputFocusedRef.current = false
+                const v = parseFieldSizeInputMeters(fieldHeightDraft ?? '')
+                setFieldHeightDraft(null)
+                if (v !== null) setFieldSizeM({ x: fieldSizeM.x, y: v })
               }}
             />
             <span className="app__field-size-unit" aria-hidden="true">

@@ -970,7 +970,9 @@
   --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
   --_h-if-full-w: calc(100cqw * var(--stage-card-h, 35.7) / var(--stage-card-w, 30));
   --_plan-cap: min(var(--_dvh-cap), var(--_h-if-full-w));
-  width: min(100%, calc(var(--_plan-cap) * var(--stage-card-w, 30) / var(--stage-card-h, 35.7)));
+  /* Узгоджено з minmax(20rem, …) у .app__plan-workspace-cluster: не вужче за колонку контенту. */
+  --_w-letterbox: min(100%, calc(var(--_plan-cap) * var(--stage-card-w, 30) / var(--stage-card-h, 35.7)));
+  width: min(100%, max(20rem, var(--_w-letterbox)));
   max-width: 100%;
   aspect-ratio: var(--stage-card-w, 30) / var(--stage-card-h, 35.7);
   height: auto;
