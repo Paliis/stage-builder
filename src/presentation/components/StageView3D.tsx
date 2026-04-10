@@ -7,11 +7,12 @@ import {
   useLayoutEffect,
   useMemo,
   useRef,
+  type ReactNode,
 } from 'react'
 import * as THREE from 'three'
 import { PerspectiveCamera, type Scene, type WebGLRenderer } from 'three'
 import { useStageStore } from '../../application/stageStore'
-import { pdfSnapshotPixelSize } from '../../domain/a4PrintLayout'
+import { pdfSnapshotPixelSize, stageViewportAspectRatio } from '../../domain/a4PrintLayout'
 import type { OrbitControls as OrbitControlsType } from 'three-stdlib'
 import type { Prop, Target, TargetType } from '../../domain/models'
 import { CERAMIC_FACE_HEX, CERAMIC_RADIUS_M } from '../../domain/ceramicPlateSpec'
@@ -90,7 +91,7 @@ function StageSunLight() {
   )
 }
 
-export type CameraMode3D = 'overview' | 'shooter'
+export type CameraMode3D = 'overview' | 'shooter' | 'pdf'
 
 export type StageView3DHandle = {
   capturePngDataUrl: () => string | null
@@ -109,7 +110,7 @@ function StageNavigator({ mode }: { mode: CameraMode3D }) {
 
   useEffect(() => {
     const oc = ctrlRef.current
-    const overview = mode === 'overview'
+    const overview = mode === 'overview' || mode === 'pdf'
     if (overview) {
       camera.position.set(11, 14.5, 18)
       oc?.target.set(0, 0, -3)
@@ -1530,6 +1531,26 @@ function Prop3D({ p }: { p: Prop }) {
   return null
 }
 
+function StageView3DCanvasShell({
+  cameraMode,
+  pdfAspect,
+  children,
+}: {
+  cameraMode: CameraMode3D
+  pdfAspect: number
+  children: ReactNode
+}) {
+  const isPdf = cameraMode === 'pdf'
+  return (
+    <div
+      className={isPdf ? 'app__r3f-canvas-outer app__r3f-canvas-outer--pdf' : 'app__r3f-canvas-outer'}
+      style={isPdf ? { aspectRatio: pdfAspect } : undefined}
+    >
+      {children}
+    </div>
+  )
+}
+
 export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(function StageView3D(
   { targets, props, cameraMode },
   ref,
@@ -1537,6 +1558,8 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
   const glRef = useRef<WebGLRenderer | null>(null)
   const sceneRef = useRef<Scene | null>(null)
   const cameraRef = useRef<PerspectiveCamera | null>(null)
+  const { widthM, heightM } = useStageFieldM()
+  const pdfAspect = stageViewportAspectRatio(widthM, heightM)
 
   useImperativeHandle(ref, () => ({
     capturePngDataUrl: () => {
@@ -1573,32 +1596,34 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
   }))
 
   return (
-    <Canvas
-      className="stage-canvas-3d app__r3f-canvas-wrap"
-      style={{ display: 'block' }}
-      shadows
-      camera={{ position: [11, 14.5, 18], fov: 48, near: 0.15, far: 240 }}
-      gl={{ preserveDrawingBuffer: true, antialias: true, alpha: false }}
-      dpr={[1, 1.75]}
-      onCreated={({ gl, scene, camera }) => {
-        glRef.current = gl
-        sceneRef.current = scene
-        cameraRef.current = camera instanceof PerspectiveCamera ? camera : null
-        gl.setClearColor('#9fd3e8', 1)
-        gl.shadowMap.type = THREE.PCFSoftShadowMap
-      }}
-    >
-      <StageNavigator mode={cameraMode} />
-      <ambientLight intensity={0.52} />
-      <StageSunLight />
-      <Ground />
-      <PerimeterWoodWall />
-      {props.map((p) => (
-        <Prop3D key={p.id} p={p} />
-      ))}
-      {targetsDrawOrder(targets).map((t) => (
-        <Target3D key={t.id} t={t} />
-      ))}
-    </Canvas>
+    <StageView3DCanvasShell cameraMode={cameraMode} pdfAspect={pdfAspect}>
+      <Canvas
+        className="stage-canvas-3d app__r3f-canvas-wrap"
+        style={{ display: 'block' }}
+        shadows
+        camera={{ position: [11, 14.5, 18], fov: 48, near: 0.15, far: 240 }}
+        gl={{ preserveDrawingBuffer: true, antialias: true, alpha: false }}
+        dpr={[1, 1.75]}
+        onCreated={({ gl, scene, camera }) => {
+          glRef.current = gl
+          sceneRef.current = scene
+          cameraRef.current = camera instanceof PerspectiveCamera ? camera : null
+          gl.setClearColor('#9fd3e8', 1)
+          gl.shadowMap.type = THREE.PCFSoftShadowMap
+        }}
+      >
+        <StageNavigator mode={cameraMode} />
+        <ambientLight intensity={0.52} />
+        <StageSunLight />
+        <Ground />
+        <PerimeterWoodWall />
+        {props.map((p) => (
+          <Prop3D key={p.id} p={p} />
+        ))}
+        {targetsDrawOrder(targets).map((t) => (
+          <Target3D key={t.id} t={t} />
+        ))}
+      </Canvas>
+    </StageView3DCanvasShell>
   )
 })

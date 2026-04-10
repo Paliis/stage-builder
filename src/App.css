@@ -1067,6 +1067,37 @@
   aspect-ratio: var(--stage-aspect-w, 30) / var(--stage-aspect-h, 80);
 }
 
+/* Обгортка 3D: завжди є, щоб не перемонтовувати Canvas при перемиканні режимів. */
+.app__main--stage-card .app__r3f-canvas-outer {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Режим «як у PDF»: той самий aspect, що й png для брифінгу (`stageViewportAspectRatio`). */
+.app__main--stage-card .app__r3f-canvas-outer--pdf {
+  flex: 0 1 auto;
+  align-self: center;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
+  outline: 2px dashed rgba(79, 70, 229, 0.32);
+  outline-offset: -1px;
+  border-radius: 10px;
+}
+
+.app__main--stage-card .app__r3f-canvas-outer--pdf .app__r3f-canvas-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+}
+
 .app__main--stage-card .app__r3f-canvas-wrap {
   flex: 1 1 0;
   min-height: 0;

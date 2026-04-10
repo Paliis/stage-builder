@@ -606,6 +606,14 @@ export default function App() {
           >
             {tree.view.camShooter}
           </button>
+          <button
+            type="button"
+            className={camera3d === 'pdf' ? 'is-active' : ''}
+            title={tree.view.camPdfTitle}
+            onClick={() => setCamera3d('pdf')}
+          >
+            {tree.view.camPdf}
+          </button>
         </div>
       )}
     </div>
