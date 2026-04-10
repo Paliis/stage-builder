@@ -346,14 +346,24 @@ export function targetMetalPedestalLocal(t: Target): Vec2[] | null {
 }
 
 /**
- * Два нижні «кути» плоского низу B2 (кінці нижнього ребра) — сюди в 3D прикріплюються стійки.
- * Локальні координати лиця (+Y вгору).
+ * Точки кріплення стійок на B2: зовнішні нижні «діагональні» кути (на кресленні — вершини (0,38) і (45,38),
+ * де сходяться діагоналі з боковими сторонами), а не вузький плоский низ між (15,57)–(30,57).
+ * Локальні координати лиця (+Y вгору на мішені).
  */
-export function paperIpscTwoPostBottomCornerAnchorsLocalM(): Vec2[] {
+export function paperIpscTwoPostStandAnchorsLocalM(): Vec2[] {
   const outline = ipscClassicOutlineLocalM()
+  /** Горизонталь на кресленні y=38 см (нижні широкі кути силуету). */
+  const diagramYd = 38
+  const cyCm = 28.5
+  const targetLocalY = (cyCm - diagramYd) * CM
+  const eps = 1e-4
+  const onRow = outline.filter((p) => Math.abs(p.y - targetLocalY) < eps)
+  onRow.sort((a, b) => a.x - b.x)
+  if (onRow.length >= 2) {
+    return [onRow[0]!, onRow[onRow.length - 1]!]
+  }
   let minY = Infinity
   for (const p of outline) minY = Math.min(minY, p.y)
-  const eps = 1e-5
   const atBottom = outline.filter((p) => Math.abs(p.y - minY) < eps)
   atBottom.sort((a, b) => a.x - b.x)
   if (atBottom.length >= 2) {
@@ -376,11 +386,11 @@ function quadCentroidLocal(pts: Vec2[]): Vec2 {
   return { x: sx / n, y: sy / n }
 }
 
-/** Дві підошви стійок (локально); центри під кутами нижнього ребра. */
+/** Дві підошви стійок (локально); під зовнішніми кутами кріплення. */
 export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
-  const anchors = paperIpscTwoPostBottomCornerAnchorsLocalM()
+  const anchors = paperIpscTwoPostStandAnchorsLocalM()
   const ph = 0.028
-  const footW = 0.044
+  const footW = 0.055
   const hwp = footW * 0.5
   const hhp = ph * 0.5
   return anchors.map((a) => {
@@ -401,15 +411,16 @@ export function targetPaperTwoPostStickIndicatorsWorld(t: Target): { from: Vec2;
   if (!isPaperIpscTwoPostTargetType(t.type)) return null
   const bases = paperIpscTwoPostBasesLocalM()
   const h = paperIpscTwoPostFaceBottomHeightM(t.type)
-  const planLenM = 0.06 + 0.52 * h
+  /** Довжина штриха на плані (м): від підошви назовні від центру мішені — не ховається під білим контуром. */
+  const planLenM = 0.08 + 0.58 * h
   const { x: cx, y: cy } = t.position
   const rot = t.rotationRad
   const out: { from: Vec2; to: Vec2 }[] = []
   for (const poly of bases) {
     const c = quadCentroidLocal(poly)
     const fromW = localToWorldPoint(c.x, c.y, cx, cy, rot)
-    const dx = cx - fromW.x
-    const dy = cy - fromW.y
+    const dx = fromW.x - cx
+    const dy = fromW.y - cy
     const dist = Math.hypot(dx, dy) || 1
     const ux = dx / dist
     const uy = dy / dist

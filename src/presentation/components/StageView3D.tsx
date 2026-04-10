@@ -38,7 +38,7 @@ import {
 import {
   isPaperIpscTwoPostTargetType,
   isPaperTargetType,
-  paperIpscTwoPostBottomCornerAnchorsLocalM,
+  paperIpscTwoPostStandAnchorsLocalM,
   paperIpscTwoPostFaceBottomHeightM,
   isSquareSteelPlateTargetType,
   popperBaseOnlyLocal,
@@ -292,16 +292,22 @@ function TargetStandPost({ standH }: { standH: number }) {
   )
 }
 
-/** Паперова IPSC на двох стійках: стійки під нижніми кутами плоского низу B2 (`paperIpscTwoPostBottomCornerAnchorsLocalM`). */
-function PaperTwoPostStands3D({ standH }: { standH: number }) {
-  const anchors = useMemo(() => paperIpscTwoPostBottomCornerAnchorsLocalM(), [])
+/**
+ * Дві стійки під зовнішніми нижніми кутами B2 (`paperIpscTwoPostStandAnchorsLocalM`).
+ * Висота циліндра = до точки кріплення на лице: `standH + anchor.y - paperMinY` (нижній край лиця на `standH`).
+ */
+function PaperTwoPostStands3D({ standH, paperMinY }: { standH: number; paperMinY: number }) {
+  const anchors = useMemo(() => paperIpscTwoPostStandAnchorsLocalM(), [])
   return (
     <>
-      {anchors.map((a, i) => (
-        <group key={i} position={[a.x, 0, 0]}>
-          <TargetStandPost standH={standH} />
-        </group>
-      ))}
+      {anchors.map((a, i) => {
+        const postH = standH + a.y - paperMinY
+        return (
+          <group key={i} position={[a.x, 0, 0]}>
+            <TargetStandPost standH={postH} />
+          </group>
+        )
+      })}
     </>
   )
 }
@@ -611,7 +617,7 @@ function Target3D({ t }: { t: Target }) {
     return (
       <group position={[x, 0, z]} rotation={[0, t.rotationRad, 0]}>
         {isPaperIpscTwoPostTargetType(t.type) ? (
-          <PaperTwoPostStands3D standH={standH} />
+          <PaperTwoPostStands3D standH={standH} paperMinY={paperMinY} />
         ) : (
           <TargetStandPost standH={standH} />
         )}

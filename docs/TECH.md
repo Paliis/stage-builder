@@ -71,7 +71,7 @@
 
 Допоміжна логіка:
 
-- **`targetSpecs.ts`** — `isPaperTargetType`, `isPaperIpscTwoPostTargetType`, `isCeramicTargetType`, `isSquareSteelPlateTargetType`, тощо. Для IPSC на двох стійках: кути нижнього ребра — `paperIpscTwoPostBottomCornerAnchorsLocalM`; на 2D-плані довжина стійок показується лініями `targetPaperTwoPostStickIndicatorsWorld`.
+- **`targetSpecs.ts`** — `isPaperTargetType`, `isPaperIpscTwoPostTargetType`, `isCeramicTargetType`, `isSquareSteelPlateTargetType`, тощо. Для IPSC на двох стійках: кріплення на зовнішніх нижніх кутах B2 (рядок креслення 38 см) — `paperIpscTwoPostStandAnchorsLocalM`; на 2D-плані штрихи **назовні** від центру — `targetPaperTwoPostStickIndicatorsWorld` (малюються поверх контуру мішені).
 - **`computeMinRounds.ts`** — евристика мінімуму пострілів (папір ×2, сталь/кераміка ×1; подвійний ківак = дві одиниці).
 - **`targetSummary.ts`** — текст для брифінгу/PDF (метал, кераміка, папір, NS).
 - **`countStageTargetUnits`** — одиниці на плані для підказок UI.
