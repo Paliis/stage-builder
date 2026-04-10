@@ -206,7 +206,7 @@
 | Документ | Зміст |
 |-----------|--------|
 | [TECH.md](./TECH.md) | Архітектура, файли, PWA, CI, SEO, аналітика |
-| [VERSIONING.md](./VERSIONING.md) | Продуктові етапи V0 / V1 |
+| [VERSIONING.md](./VERSIONING.md) | Продуктові етапи V0 / V1 / V2 та перелік змін між ними |
 | [USER_FEEDBACK.md](./USER_FEEDBACK.md) | Ідеї та зворотний зв’язок |
 | [PLAN_FIELD_PDF_GRID.md](./PLAN_FIELD_PDF_GRID.md) | План: довільне поле (ліміти), сітка 1 м, 3D під PDF, підказка в брифі |
 | [README.md](../README.md) | Швидкий старт, посилання на прод, стек |

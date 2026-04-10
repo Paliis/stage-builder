@@ -86,7 +86,7 @@ src/
 
 ## Версійність продукту
 
-Межа **V0** (до налаштовуваного розміру площадки) та накопичувальний опис **V1** (від зміни розміру поля включно) — у **[docs/VERSIONING.md](docs/VERSIONING.md)**.
+Продуктові етапи **V0** (до налаштовуваного поля), **V1** (розмір поля та розширення до уніфікації паперу), **V2** (поточна лінія: уніфікований папір на двох стійках тощо) — у **[docs/VERSIONING.md](docs/VERSIONING.md)**.
 
 ## Зворотний зв'язок
 
@@ -97,8 +97,8 @@ src/
 
 ## Ліцензія
 
-У `package.json` вказано semver **1.0.0** (npm); продуктові етапи **V0 / V1** див. [docs/VERSIONING.md](docs/VERSIONING.md). Проєкт `private` (не публікується на npm).
+У `package.json` вказано semver **1.0.0** (npm); продуктові етапи **V0 / V1 / V2** див. [docs/VERSIONING.md](docs/VERSIONING.md). Проєкт `private` (не публікується на npm).
 
 ---
 
-*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan, 3D preview, pick a target or prop type then click the plan to place objects, bilingual UI (UK/EN), JSON project files, PDF briefing export with QR code, and a browser draft saved between visits. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*
+*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan, 3D preview, pick a target or prop type then click the plan to place objects, bilingual UI (UK/EN), JSON project files, PDF briefing export with QR code, and a browser draft saved between visits. Product milestones V0/V1/V2 are documented in `docs/VERSIONING.md`. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*

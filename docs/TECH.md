@@ -3,7 +3,7 @@
 Документ для розробників: архітектура, домен, формати даних, збірка та відомі обмеження.
 
 **Пов’язані документи:** повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**.  
-**Важливо:** позначки V0 / V1 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **1**).
+**Важливо:** позначки V0 / V1 / V2 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **1**).
 
 ## Архітектура
 
@@ -225,7 +225,7 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 
 | Тема | Файл |
 |------|------|
-| Продуктові версії V0 / V1 | `docs/VERSIONING.md` |
+| Продуктові версії V0 / V1 / V2 | `docs/VERSIONING.md` |
 | Зворотний зв’язок (ідеї) | `docs/USER_FEEDBACK.md` |
 | Моделі мішеней і реквізиту | `src/domain/models.ts` |
 | Габарити мішеней, контур 2D/3D, паперові стійки | `src/domain/targetSpecs.ts` |

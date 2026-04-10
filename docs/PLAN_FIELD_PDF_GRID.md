@@ -143,4 +143,4 @@
 | Знімок PDF | `src/domain/a4PrintLayout.ts`, `StageView3D.tsx` (`capturePngDataUrl`), `exportBriefingPdf.ts` |
 | Брифінг | `briefingStore`, `stageBriefing`, компоненти брифінгу в `App.tsx` / i18n `messages.ts` |
 
-Після затвердження плану оновити [VERSIONING.md](./VERSIONING.md) або реліз-ноти під фактичну гілку (V1/V2).
+Після затвердження плану оновити [VERSIONING.md](./VERSIONING.md) або реліз-ноти під фактичну гілку (V2+).
