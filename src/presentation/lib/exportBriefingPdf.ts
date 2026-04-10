@@ -51,10 +51,11 @@ function buildTableOpts(
   startY: number,
   margin: number,
   contentW: number,
+  tableMarginBottomMm: number,
 ): Parameters<typeof autoTable>[1] {
   return {
     startY,
-    margin: { left: margin, right: margin },
+    margin: { left: margin, right: margin, bottom: tableMarginBottomMm },
     head: [],
     body: tableBody,
     theme: 'grid',
@@ -85,9 +86,10 @@ function measureTableHeight(
   tableBody: string[][],
   margin: number,
   contentW: number,
+  tableMarginBottomMm: number,
 ): number {
   const tmp = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
-  autoTable(tmp, buildTableOpts(tableBody, 0, margin, contentW))
+  autoTable(tmp, buildTableOpts(tableBody, 0, margin, contentW, tableMarginBottomMm))
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (tmp as any).lastAutoTable.finalY as number
 }
@@ -120,10 +122,13 @@ export async function exportBriefingPdf(opts: {
   /* ── Table data & measurement ── */
   const rows = briefingTableRows(briefing, pdf.labels, pdf.categoryLabel, pdf.emptyCell)
   const tableBody = rows.map((r) => [r.label, r.value])
-  const tableH = measureTableHeight(tableBody, margin, contentW)
 
-  /* ── Footer zone (fixed at bottom) ── */
+  /* ── Footer zone (fixed at bottom) — потрібно до виміру таблиці й autoTable margin ── */
   const footerY = pageH - margin - FOOTER_H
+  /** Відступ autoTable від низу сторінки = зона під лінію футера та QR (інакше рядки обрізаються). */
+  const tableMarginBottomMm = pageH - footerY
+
+  const tableH = measureTableHeight(tableBody, margin, contentW, tableMarginBottomMm)
 
   /* ── Available height for the image ── */
   const maxImgH =
@@ -171,7 +176,7 @@ export async function exportBriefingPdf(opts: {
   }
 
   /* ── Table ── */
-  autoTable(doc, buildTableOpts(tableBody, cursorY, margin, contentW))
+  autoTable(doc, buildTableOpts(tableBody, cursorY, margin, contentW, tableMarginBottomMm))
 
   /* ── Footer ── */
   doc.setDrawColor(209, 213, 219)
