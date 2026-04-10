@@ -64,14 +64,14 @@
 
 Повний перелік — **`TargetType`** у `models.ts`. Коротко:
 
-- **Папір:** `paperIpsc` (B2), `paperIpscTwoPostGround` / `paperIpscTwoPostStand50` / `paperIpscTwoPostStand100` (той самий B2, дві стійки; низ лиця ≈0,1 м / 0,5 м / 1 м у 3D), `paperA4`, `paperMiniIpsc` (номінал B3). У старих `.stage.json` може траплятися застарілий тип `paperIpscTwoPost` — при завантаженні мапиться на `paperIpscTwoPostStand100`.
+- **Папір:** `paperIpsc`; двостійкові B2 — `paperIpscTwoPostGround` / `Stand50` / `Stand100`; `paperA4` та `paperA4TwoPostGround` / `Stand50` / `Stand100`; `paperMiniIpsc` та `paperMiniIpscTwoPostGround` / `Stand50` / `Stand100` (низ лиця для двостійкових ≈0,1 м / 0,5 м / 1 м у 3D). У старих `.stage.json` може траплятися застарілий тип `paperIpscTwoPost` — при завантаженні мапиться на `paperIpscTwoPostStand100`.
 - **Метал:** `metalPlate` (квадрат Appendix C3: 15 / 20 / 30 см, поле `metalRectSideCm`), `metalPlateStand50`, `metalPlateStand100`, `popper`, `miniPopper`.
 - **Кераміка:** `ceramicPlate` (радіус і колір — `ceramicPlateSpec.ts`).
 - **Ківаки:** `swingerSinglePaper` / `Double`, `swingerSingleCeramic` / `Double` (геометрія — `swingerGeometry.ts`).
 
 Допоміжна логіка:
 
-- **`targetSpecs.ts`** — `isPaperTargetType`, `isPaperIpscTwoPostTargetType`, `isCeramicTargetType`, `isSquareSteelPlateTargetType`, тощо. Для IPSC на двох стійках: кріплення на зовнішніх нижніх кутах B2 (рядок креслення 38 см) — `paperIpscTwoPostStandAnchorsLocalM`; на 2D-плані штрихи **назовні** від центру — `targetPaperTwoPostStickIndicatorsWorld` (малюються поверх контуру мішені).
+- **`targetSpecs.ts`** — `isPaperTargetType`, `isPaperTwoPostTargetType` (усі двостійкові паперові типи), `isCeramicTargetType`, `isSquareSteelPlateTargetType`, тощо. Кріплення: `paperIpscTwoPostStandAnchorsLocalM`, `paperA4TwoPostStandAnchorsLocalM`, `paperMiniIpscTwoPostStandAnchorsLocalM` або узагальнено `paperTwoPostStandAnchorsLocalM(type)`; на 2D — `targetPaperTwoPostStickIndicatorsWorld` (уздовж локального «низу» лиця).
 - **`computeMinRounds.ts`** — евристика мінімуму пострілів (папір ×2, сталь/кераміка ×1; подвійний ківак = дві одиниці).
 - **`targetSummary.ts`** — текст для брифінгу/PDF (метал, кераміка, папір, NS).
 - **`countStageTargetUnits`** — одиниці на плані для підказок UI.

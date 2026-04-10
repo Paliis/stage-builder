@@ -1,7 +1,7 @@
 /**
  * Габарити мішеней у метрах (IPSC / узгоджені додатки).
  *
- * Папір IPSC — зовнішній контур B2 (45×57 см). `paperIpscTwoPostGround` / `Stand50` / `Stand100` — той самий контур, дві стійки; висота нижнього краю лиця як у металу (≈0,1 м / 0,5 м / 1 м). Mini IPSC — B3 номінал 30×37,5 см. A4 — масштаб 1,5× від 210×297 мм.
+ * Папір IPSC — зовнішній контур B2 (45×57 см). Двостійкові варіанти (`*TwoPostGround` / `Stand50` / `Stand100`) — той самий контур відповідного типу; висота нижнього краю лиця як у металу (≈0,1 м / 0,5 м / 1 м). Mini IPSC — B3 номінал 30×37,5 см. A4 — масштаб 1,5× від 210×297 мм.
  * Метал Appendix C3 — квадрат 15/20/30 см; варіанти зі стійкою 50 см / 1 м (низ лиця у 3D). Нова мішень за замовч. 15 см; без поля — 30 см.
  * Керамічна тарілка Ø 110 мм (див. ceramicPlateSpec). Поппери C2.
  */
@@ -23,7 +23,7 @@ export function isSquareSteelPlateTargetType(type: TargetType): boolean {
   return type === 'metalPlate' || type === 'metalPlateStand50' || type === 'metalPlateStand100'
 }
 
-/** Паперова IPSC на двох стійках (будь-яка з трьох висот нижнього краю лиця). */
+/** Паперова IPSC B2 на двох стійках (будь-яка з трьох висот нижнього краю лиця). */
 export function isPaperIpscTwoPostTargetType(type: TargetType): boolean {
   return (
     type === 'paperIpscTwoPostGround' ||
@@ -32,14 +32,60 @@ export function isPaperIpscTwoPostTargetType(type: TargetType): boolean {
   )
 }
 
+/** A4 або Mini IPSC на двох стійках. */
+export function isPaperA4TwoPostTargetType(type: TargetType): boolean {
+  return (
+    type === 'paperA4TwoPostGround' ||
+    type === 'paperA4TwoPostStand50' ||
+    type === 'paperA4TwoPostStand100'
+  )
+}
+
+export function isPaperMiniIpscTwoPostTargetType(type: TargetType): boolean {
+  return (
+    type === 'paperMiniIpscTwoPostGround' ||
+    type === 'paperMiniIpscTwoPostStand50' ||
+    type === 'paperMiniIpscTwoPostStand100'
+  )
+}
+
+/** Будь-яка паперова мішень на двох стійках (IPSC B2, A4 або Mini IPSC). */
+export function isPaperTwoPostTargetType(type: TargetType): boolean {
+  return (
+    isPaperIpscTwoPostTargetType(type) ||
+    isPaperA4TwoPostTargetType(type) ||
+    isPaperMiniIpscTwoPostTargetType(type)
+  )
+}
+
 /**
  * Висота нижнього краю лиця над «землею» у 3D (м), узгоджено з `steelPlateStandHeightM` для металу.
  */
-export function paperIpscTwoPostFaceBottomHeightM(type: TargetType): number {
-  if (type === 'paperIpscTwoPostGround') return 0.1
-  if (type === 'paperIpscTwoPostStand50') return 0.5
-  if (type === 'paperIpscTwoPostStand100') return 1.0
+export function paperTwoPostFaceBottomHeightM(type: TargetType): number {
+  if (
+    type === 'paperIpscTwoPostGround' ||
+    type === 'paperA4TwoPostGround' ||
+    type === 'paperMiniIpscTwoPostGround'
+  )
+    return 0.1
+  if (
+    type === 'paperIpscTwoPostStand50' ||
+    type === 'paperA4TwoPostStand50' ||
+    type === 'paperMiniIpscTwoPostStand50'
+  )
+    return 0.5
+  if (
+    type === 'paperIpscTwoPostStand100' ||
+    type === 'paperA4TwoPostStand100' ||
+    type === 'paperMiniIpscTwoPostStand100'
+  )
+    return 1.0
   return 1.0
+}
+
+/** @deprecated Використовуйте `paperTwoPostFaceBottomHeightM` — та сама семантика для всіх двостійкових паперових типів. */
+export function paperIpscTwoPostFaceBottomHeightM(type: TargetType): number {
+  return paperTwoPostFaceBottomHeightM(type)
 }
 
 function metalPlateSquareSideM(t: Target): number {
@@ -148,8 +194,14 @@ export function targetFootprintLocalM(t: Target): Vec2[] {
     case 'paperIpscTwoPostStand100':
       return ipscClassicOutlineLocalM()
     case 'paperMiniIpsc':
+    case 'paperMiniIpscTwoPostGround':
+    case 'paperMiniIpscTwoPostStand50':
+    case 'paperMiniIpscTwoPostStand100':
       return ipscMiniOutlineLocalM()
-    case 'paperA4': {
+    case 'paperA4':
+    case 'paperA4TwoPostGround':
+    case 'paperA4TwoPostStand50':
+    case 'paperA4TwoPostStand100': {
       const { hw, hh } = paperA4HalfExtentsM()
       return rectLocal(hw, hh)
     }
@@ -305,9 +357,17 @@ export function targetFaceOutlineLocalMForType(type: TargetType): Vec2[] | null 
     isSquareSteelPlateTargetType(type)
   )
     return null
-  if (type === 'paperMiniIpsc') return ipscMiniOutlineLocalM()
-  if (type === 'paperIpscTwoPostGround' || type === 'paperIpscTwoPostStand50' || type === 'paperIpscTwoPostStand100') {
+  if (type === 'paperMiniIpsc' || isPaperMiniIpscTwoPostTargetType(type)) return ipscMiniOutlineLocalM()
+  if (
+    type === 'paperIpscTwoPostGround' ||
+    type === 'paperIpscTwoPostStand50' ||
+    type === 'paperIpscTwoPostStand100'
+  ) {
     return ipscClassicOutlineLocalM()
+  }
+  if (type === 'paperA4' || isPaperA4TwoPostTargetType(type)) {
+    const { hw, hh } = paperA4HalfExtentsM()
+    return rectLocal(hw, hh)
   }
   return targetFaceOutlineLocalM({ type } as Target)
 }
@@ -345,19 +405,15 @@ export function targetMetalPedestalLocal(t: Target): Vec2[] | null {
   return null
 }
 
+/** Рядок креслення B2 y=38 см → локальна Y «широких» нижніх кутів вісімкутника. */
+const B2_WIDE_ROW_LOCAL_Y = (28.5 - 38) * CM
+
 /**
- * Точки кріплення стійок на B2: зовнішні нижні «діагональні» кути (на кресленні — вершини (0,38) і (45,38),
- * де сходяться діагоналі з боковими сторонами), а не вузький плоский низ між (15,57)–(30,57).
- * Локальні координати лиця (+Y вгору на мішені).
+ * Зовнішні точки на горизонталі вісімкутника (B2 або масштабований Mini) — як `paperIpscTwoPostStandAnchorsLocalM`.
  */
-export function paperIpscTwoPostStandAnchorsLocalM(): Vec2[] {
-  const outline = ipscClassicOutlineLocalM()
-  /** Горизонталь на кресленні y=38 см (нижні широкі кути силуету). */
-  const diagramYd = 38
-  const cyCm = 28.5
-  const targetLocalY = (cyCm - diagramYd) * CM
+function paperOctagonWideRowStandAnchorsLocalM(outline: Vec2[], wideRowLocalY: number): Vec2[] {
   const eps = 1e-4
-  const onRow = outline.filter((p) => Math.abs(p.y - targetLocalY) < eps)
+  const onRow = outline.filter((p) => Math.abs(p.y - wideRowLocalY) < eps)
   onRow.sort((a, b) => a.x - b.x)
   if (onRow.length >= 2) {
     return [onRow[0]!, onRow[onRow.length - 1]!]
@@ -375,6 +431,38 @@ export function paperIpscTwoPostStandAnchorsLocalM(): Vec2[] {
   ]
 }
 
+/**
+ * Точки кріплення стійок на B2: зовнішні нижні «діагональні» кути (на кресленні — вершини (0,38) і (45,38),
+ * де сходяться діагоналі з боковими сторонами), а не вузький плоский низ між (15,57)–(30,57).
+ * Локальні координати лиця (+Y вгору на мішені).
+ */
+export function paperIpscTwoPostStandAnchorsLocalM(): Vec2[] {
+  return paperOctagonWideRowStandAnchorsLocalM(ipscClassicOutlineLocalM(), B2_WIDE_ROW_LOCAL_Y)
+}
+
+/** Mini IPSC (B3): той самий принцип, що B2 — рядок «широкого низу» масштабується разом із силуетом. */
+export function paperMiniIpscTwoPostStandAnchorsLocalM(): Vec2[] {
+  const sy = 37.5 / 57
+  return paperOctagonWideRowStandAnchorsLocalM(ipscMiniOutlineLocalM(), B2_WIDE_ROW_LOCAL_Y * sy)
+}
+
+/** A4: дві стійки під нижніми кутами прямокутника аркуша (масштабованого на плані). */
+export function paperA4TwoPostStandAnchorsLocalM(): Vec2[] {
+  const { hw, hh } = paperA4HalfExtentsM()
+  return [
+    { x: -hw, y: -hh },
+    { x: hw, y: -hh },
+  ]
+}
+
+/** Кріплення стійок для будь-якого двостійкового паперового типу. */
+export function paperTwoPostStandAnchorsLocalM(type: TargetType): Vec2[] {
+  if (isPaperIpscTwoPostTargetType(type)) return paperIpscTwoPostStandAnchorsLocalM()
+  if (isPaperA4TwoPostTargetType(type)) return paperA4TwoPostStandAnchorsLocalM()
+  if (isPaperMiniIpscTwoPostTargetType(type)) return paperMiniIpscTwoPostStandAnchorsLocalM()
+  return paperIpscTwoPostStandAnchorsLocalM()
+}
+
 function quadCentroidLocal(pts: Vec2[]): Vec2 {
   let sx = 0
   let sy = 0
@@ -387,8 +475,7 @@ function quadCentroidLocal(pts: Vec2[]): Vec2 {
 }
 
 /** Дві підошви стійок (локально); під зовнішніми кутами кріплення. */
-export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
-  const anchors = paperIpscTwoPostStandAnchorsLocalM()
+function paperTwoPostBasesFromAnchorsLocalM(anchors: Vec2[]): Vec2[][] {
   const ph = 0.028
   const footW = 0.055
   const hwp = footW * 0.5
@@ -402,6 +489,14 @@ export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
       { x: a.x - hwp, y: yMid + hhp },
     ]
   })
+}
+
+export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
+  return paperTwoPostBasesFromAnchorsLocalM(paperIpscTwoPostStandAnchorsLocalM())
+}
+
+export function paperTwoPostBasesLocalM(type: TargetType): Vec2[][] {
+  return paperTwoPostBasesFromAnchorsLocalM(paperTwoPostStandAnchorsLocalM(type))
 }
 
 /**
@@ -422,9 +517,9 @@ function paperFaceDownDirWorld(rot: number): Vec2 {
  * На 2D-плані: від підошви вниз уздовж лиця (локальний −Y) — довжина залежить від висоти стійки в 3D.
  */
 export function targetPaperTwoPostStickIndicatorsWorld(t: Target): { from: Vec2; to: Vec2 }[] | null {
-  if (!isPaperIpscTwoPostTargetType(t.type)) return null
-  const bases = paperIpscTwoPostBasesLocalM()
-  const h = paperIpscTwoPostFaceBottomHeightM(t.type)
+  if (!isPaperTwoPostTargetType(t.type)) return null
+  const bases = paperTwoPostBasesLocalM(t.type)
+  const h = paperTwoPostFaceBottomHeightM(t.type)
   const planLenM = 0.08 + 0.58 * h
   const { x: cx, y: cy } = t.position
   const rot = t.rotationRad
@@ -442,8 +537,8 @@ export function targetPaperTwoPostStickIndicatorsWorld(t: Target): { from: Vec2;
 }
 
 export function targetPaperTwoPostBasesWorld(t: Target): Vec2[][] | null {
-  if (!isPaperIpscTwoPostTargetType(t.type)) return null
-  const bases = paperIpscTwoPostBasesLocalM()
+  if (!isPaperTwoPostTargetType(t.type)) return null
+  const bases = paperTwoPostBasesLocalM(t.type)
   const { x: cx, y: cy } = t.position
   const rot = t.rotationRad
   return bases.map((poly) => toWorld(poly, cx, cy, rot))
@@ -499,8 +594,14 @@ export function targetFaceSizeM(t: Target): { w: number; h: number } {
     case 'paperIpscTwoPostStand100':
       return { w: 450 * MM, h: 570 * MM }
     case 'paperMiniIpsc':
+    case 'paperMiniIpscTwoPostGround':
+    case 'paperMiniIpscTwoPostStand50':
+    case 'paperMiniIpscTwoPostStand100':
       return { w: 300 * MM, h: 375 * MM }
     case 'paperA4':
+    case 'paperA4TwoPostGround':
+    case 'paperA4TwoPostStand50':
+    case 'paperA4TwoPostStand100':
       return { w: 210 * MM * PAPER_A4_VISUAL_SCALE, h: 297 * MM * PAPER_A4_VISUAL_SCALE }
     case 'popper':
       return { w: 300 * MM, h: 850 * MM }

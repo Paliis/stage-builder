@@ -96,7 +96,13 @@ export type MessageTree = {
     paperIpscTwoPostStand50: string
     paperIpscTwoPostStand100: string
     paperA4: string
+    paperA4TwoPostGround: string
+    paperA4TwoPostStand50: string
+    paperA4TwoPostStand100: string
     paperMiniIpsc: string
+    paperMiniIpscTwoPostGround: string
+    paperMiniIpscTwoPostStand50: string
+    paperMiniIpscTwoPostStand100: string
     metalPlate: string
     metalPlateStand50: string
     metalPlateStand100: string
@@ -112,7 +118,13 @@ export type MessageTree = {
     noShootPaperTwoPostStand50: string
     noShootPaperTwoPostStand100: string
     noShootPaperA4: string
+    noShootPaperA4TwoPostGround: string
+    noShootPaperA4TwoPostStand50: string
+    noShootPaperA4TwoPostStand100: string
     noShootPaperMini: string
+    noShootPaperMiniTwoPostGround: string
+    noShootPaperMiniTwoPostStand50: string
+    noShootPaperMiniTwoPostStand100: string
     noShootMetal: string
     noShootMetalStand50: string
     noShootMetalStand100: string
@@ -352,7 +364,17 @@ export const ukMessages: MessageTree = {
     paperIpscTwoPostStand100:
       '+ \u041f\u0430\u043f\u0456\u0440 IPSC, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437 1 \u043c',
     paperA4: '+ A4 \u043f\u0430\u043f\u0456\u0440',
+    paperA4TwoPostGround:
+      '+ A4, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437\u044c\u043a\u043e',
+    paperA4TwoPostStand50:
+      '+ A4, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437 50 \u0441\u043c',
+    paperA4TwoPostStand100: '+ A4, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437 1 \u043c',
     paperMiniIpsc: '+ Mini IPSC (\u043f\u0430\u043f\u0456\u0440)',
+    paperMiniIpscTwoPostGround:
+      '+ Mini IPSC, 2 \u0441\u0442., \u043d\u0438\u0437\u044c\u043a\u043e',
+    paperMiniIpscTwoPostStand50:
+      '+ Mini IPSC, 2 \u0441\u0442., \u043d\u0438\u0437 50 \u0441\u043c',
+    paperMiniIpscTwoPostStand100: '+ Mini IPSC, 2 \u0441\u0442., \u043d\u0438\u0437 1 \u043c',
     metalPlate: '+ \u041c\u0435\u0442\u0430\u043b (\u043a\u0432\u0430\u0434\u0440.)',
     metalPlateStand50: '+ \u041c\u0435\u0442\u0430\u043b, \u0441\u0442\u0456\u0439\u043a\u0430 50 \u0441\u043c',
     metalPlateStand100: '+ \u041c\u0435\u0442\u0430\u043b, \u0441\u0442\u0456\u0439\u043a\u0430 1 \u043c',
@@ -368,7 +390,13 @@ export const ukMessages: MessageTree = {
     noShootPaperTwoPostStand50: '+ NS IPSC 2 \u0441\u0442., \u043d\u0438\u0437 50 \u0441\u043c',
     noShootPaperTwoPostStand100: '+ NS IPSC 2 \u0441\u0442., \u043d\u0438\u0437 1 \u043c',
     noShootPaperA4: '+ NS A4',
+    noShootPaperA4TwoPostGround: '+ NS A4 2 \u0441\u0442., \u043d\u0438\u0437\u044c\u043a\u043e',
+    noShootPaperA4TwoPostStand50: '+ NS A4 2 \u0441\u0442., \u043d\u0438\u0437 50 \u0441\u043c',
+    noShootPaperA4TwoPostStand100: '+ NS A4 2 \u0441\u0442., \u043d\u0438\u0437 1 \u043c',
     noShootPaperMini: '+ NS Mini IPSC',
+    noShootPaperMiniTwoPostGround: '+ NS Mini 2 \u0441\u0442., \u043d\u0438\u0437\u044c\u043a\u043e',
+    noShootPaperMiniTwoPostStand50: '+ NS Mini 2 \u0441\u0442., \u043d\u0438\u0437 50 \u0441\u043c',
+    noShootPaperMiniTwoPostStand100: '+ NS Mini 2 \u0441\u0442., \u043d\u0438\u0437 1 \u043c',
     noShootMetal: '+ NS \u043c\u0435\u0442\u0430\u043b',
     noShootMetalStand50: '+ NS \u043c\u0435\u0442\u0430\u043b 50 \u0441\u043c',
     noShootMetalStand100: '+ NS \u043c\u0435\u0442\u0430\u043b 1 \u043c',
@@ -636,7 +664,13 @@ export const enMessages: MessageTree = {
     paperIpscTwoPostStand50: '+ IPSC paper, two posts, bottom 50 cm',
     paperIpscTwoPostStand100: '+ IPSC paper, two posts, bottom 1 m',
     paperA4: '+ A4 paper',
+    paperA4TwoPostGround: '+ A4 paper, two posts, low',
+    paperA4TwoPostStand50: '+ A4 paper, two posts, bottom 50 cm',
+    paperA4TwoPostStand100: '+ A4 paper, two posts, bottom 1 m',
     paperMiniIpsc: '+ Mini IPSC paper',
+    paperMiniIpscTwoPostGround: '+ Mini IPSC paper, two posts, low',
+    paperMiniIpscTwoPostStand50: '+ Mini IPSC paper, two posts, bottom 50 cm',
+    paperMiniIpscTwoPostStand100: '+ Mini IPSC paper, two posts, bottom 1 m',
     metalPlate: '+ Steel plate',
     metalPlateStand50: '+ Steel plate, 50 cm stand',
     metalPlateStand100: '+ Steel plate, 1 m stand',
@@ -652,7 +686,13 @@ export const enMessages: MessageTree = {
     noShootPaperTwoPostStand50: '+ NS IPSC two posts, bottom 50 cm',
     noShootPaperTwoPostStand100: '+ NS IPSC two posts, bottom 1 m',
     noShootPaperA4: '+ NS A4',
+    noShootPaperA4TwoPostGround: '+ NS A4 two posts, low',
+    noShootPaperA4TwoPostStand50: '+ NS A4 two posts, bottom 50 cm',
+    noShootPaperA4TwoPostStand100: '+ NS A4 two posts, bottom 1 m',
     noShootPaperMini: '+ NS Mini IPSC',
+    noShootPaperMiniTwoPostGround: '+ NS Mini IPSC two posts, low',
+    noShootPaperMiniTwoPostStand50: '+ NS Mini IPSC two posts, bottom 50 cm',
+    noShootPaperMiniTwoPostStand100: '+ NS Mini IPSC two posts, bottom 1 m',
     noShootMetal: '+ NS steel',
     noShootMetalStand50: '+ NS steel 50 cm',
     noShootMetalStand100: '+ NS steel 1 m',

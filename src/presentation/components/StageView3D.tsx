@@ -36,10 +36,10 @@ import {
   WOOD_TABLE_HEIGHT_M,
 } from '../../domain/propGeometry'
 import {
-  isPaperIpscTwoPostTargetType,
   isPaperTargetType,
-  paperIpscTwoPostStandAnchorsLocalM,
-  paperIpscTwoPostFaceBottomHeightM,
+  isPaperTwoPostTargetType,
+  paperTwoPostFaceBottomHeightM,
+  paperTwoPostStandAnchorsLocalM,
   isSquareSteelPlateTargetType,
   popperBaseOnlyLocal,
   popperHeadCenterLocal,
@@ -293,11 +293,18 @@ function TargetStandPost({ standH }: { standH: number }) {
 }
 
 /**
- * Дві стійки під зовнішніми нижніми кутами B2 (`paperIpscTwoPostStandAnchorsLocalM`).
+ * Дві стійки під точками кріплення (`paperTwoPostStandAnchorsLocalM` за типом).
  * Висота циліндра = до точки кріплення на лице: `standH + anchor.y - paperMinY` (нижній край лиця на `standH`).
  */
-function PaperTwoPostStands3D({ standH, paperMinY }: { standH: number; paperMinY: number }) {
-  const anchors = useMemo(() => paperIpscTwoPostStandAnchorsLocalM(), [])
+function PaperTwoPostStands3D({
+  standH,
+  paperMinY,
+  anchors,
+}: {
+  standH: number
+  paperMinY: number
+  anchors: readonly { x: number; y: number }[]
+}) {
   return (
     <>
       {anchors.map((a, i) => {
@@ -516,8 +523,8 @@ function Target3D({ t }: { t: Target }) {
   const [x, , z] = stageToThreeXZ(t.position, field)
   const c = targetColor(t)
   const { w, h } = targetFaceSizeM(t)
-  const standH = isPaperIpscTwoPostTargetType(t.type)
-    ? paperIpscTwoPostFaceBottomHeightM(t.type)
+  const standH = isPaperTwoPostTargetType(t.type)
+    ? paperTwoPostFaceBottomHeightM(t.type)
     : t.type === 'paperIpsc' || t.type === 'paperA4' || t.type === 'paperMiniIpsc'
       ? PAPER_TARGET_STAND_HEIGHT_M
       : isSquareSteelPlateTargetType(t.type)
@@ -549,6 +556,11 @@ function Target3D({ t }: { t: Target }) {
   }, [paperOutline, faceDepth])
 
   const paperMinY = paperOutline ? outlineMinY(paperOutline) : 0
+
+  const paperTwoPostAnchors = useMemo(
+    () => (isPaperTwoPostTargetType(t.type) ? paperTwoPostStandAnchorsLocalM(t.type) : []),
+    [t.type],
+  )
 
   if (isSwingerTargetType(t.type)) {
     return <Swinger3D t={t} />
@@ -616,8 +628,8 @@ function Target3D({ t }: { t: Target }) {
   if (paperFaceGeo) {
     return (
       <group position={[x, 0, z]} rotation={[0, t.rotationRad, 0]}>
-        {isPaperIpscTwoPostTargetType(t.type) ? (
-          <PaperTwoPostStands3D standH={standH} paperMinY={paperMinY} />
+        {isPaperTwoPostTargetType(t.type) ? (
+          <PaperTwoPostStands3D standH={standH} paperMinY={paperMinY} anchors={paperTwoPostAnchors} />
         ) : (
           <TargetStandPost standH={standH} />
         )}
