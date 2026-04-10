@@ -91,15 +91,12 @@ export type MessageTree = {
     mismatchHint: string
   }
   targets: {
-    paperIpsc: string
     paperIpscTwoPostGround: string
     paperIpscTwoPostStand50: string
     paperIpscTwoPostStand100: string
-    paperA4: string
     paperA4TwoPostGround: string
     paperA4TwoPostStand50: string
     paperA4TwoPostStand100: string
-    paperMiniIpsc: string
     paperMiniIpscTwoPostGround: string
     paperMiniIpscTwoPostStand50: string
     paperMiniIpscTwoPostStand100: string
@@ -113,15 +110,12 @@ export type MessageTree = {
     swingerDoublePaper: string
     swingerSingleCeramic: string
     swingerDoubleCeramic: string
-    noShootPaper: string
     noShootPaperTwoPostGround: string
     noShootPaperTwoPostStand50: string
     noShootPaperTwoPostStand100: string
-    noShootPaperA4: string
     noShootPaperA4TwoPostGround: string
     noShootPaperA4TwoPostStand50: string
     noShootPaperA4TwoPostStand100: string
-    noShootPaperMini: string
     noShootPaperMiniTwoPostGround: string
     noShootPaperMiniTwoPostStand50: string
     noShootPaperMiniTwoPostStand100: string
@@ -356,25 +350,15 @@ export const ukMessages: MessageTree = {
       '\u041f\u0435\u0440\u0435\u0432\u0456\u0440\u044f\u0439\u0442\u0435 \u043c\u0456\u0448\u0435\u043d\u0456 \u0442\u0430 \u0442\u0435\u043a\u0441\u0442 \u0431\u0440\u0438\u0444\u0456\u043d\u0433\u0443 \u0437\u0433\u0456\u0434\u043d\u043e \u0437 \u0440\u0435\u0433\u043b\u0430\u043c\u0435\u043d\u0442\u043e\u043c \u0437\u043c\u0430\u0433\u0430\u043d\u043d\u044f.',
   },
   targets: {
-    paperIpsc: '+ \u041f\u0430\u043f\u0456\u0440 IPSC',
-    paperIpscTwoPostGround:
-      '+ \u041f\u0430\u043f\u0456\u0440 IPSC, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437\u044c\u043a\u043e',
-    paperIpscTwoPostStand50:
-      '+ \u041f\u0430\u043f\u0456\u0440 IPSC, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437 50 \u0441\u043c',
-    paperIpscTwoPostStand100:
-      '+ \u041f\u0430\u043f\u0456\u0440 IPSC, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437 1 \u043c',
-    paperA4: '+ A4 \u043f\u0430\u043f\u0456\u0440',
-    paperA4TwoPostGround:
-      '+ A4, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437\u044c\u043a\u043e',
-    paperA4TwoPostStand50:
-      '+ A4, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437 50 \u0441\u043c',
-    paperA4TwoPostStand100: '+ A4, 2 \u0441\u0442\u0456\u0439\u043a\u0438, \u043d\u0438\u0437 1 \u043c',
-    paperMiniIpsc: '+ Mini IPSC (\u043f\u0430\u043f\u0456\u0440)',
-    paperMiniIpscTwoPostGround:
-      '+ Mini IPSC, 2 \u0441\u0442., \u043d\u0438\u0437\u044c\u043a\u043e',
-    paperMiniIpscTwoPostStand50:
-      '+ Mini IPSC, 2 \u0441\u0442., \u043d\u0438\u0437 50 \u0441\u043c',
-    paperMiniIpscTwoPostStand100: '+ Mini IPSC, 2 \u0441\u0442., \u043d\u0438\u0437 1 \u043c',
+    paperIpscTwoPostGround: '+ \u041f\u0430\u043f\u0456\u0440 IPSC, \u043d\u0438\u0437\u044c\u043a\u043e',
+    paperIpscTwoPostStand50: '+ \u041f\u0430\u043f\u0456\u0440 IPSC, \u043d\u0438\u0437 50 \u0441\u043c',
+    paperIpscTwoPostStand100: '+ \u041f\u0430\u043f\u0456\u0440 IPSC, \u043d\u0438\u0437 1 \u043c',
+    paperA4TwoPostGround: '+ A4, \u043d\u0438\u0437\u044c\u043a\u043e',
+    paperA4TwoPostStand50: '+ A4, \u043d\u0438\u0437 50 \u0441\u043c',
+    paperA4TwoPostStand100: '+ A4, \u043d\u0438\u0437 1 \u043c',
+    paperMiniIpscTwoPostGround: '+ Mini IPSC, \u043d\u0438\u0437\u044c\u043a\u043e',
+    paperMiniIpscTwoPostStand50: '+ Mini IPSC, \u043d\u0438\u0437 50 \u0441\u043c',
+    paperMiniIpscTwoPostStand100: '+ Mini IPSC, \u043d\u0438\u0437 1 \u043c',
     metalPlate: '+ \u041c\u0435\u0442\u0430\u043b (\u043a\u0432\u0430\u0434\u0440.)',
     metalPlateStand50: '+ \u041c\u0435\u0442\u0430\u043b, \u0441\u0442\u0456\u0439\u043a\u0430 50 \u0441\u043c',
     metalPlateStand100: '+ \u041c\u0435\u0442\u0430\u043b, \u0441\u0442\u0456\u0439\u043a\u0430 1 \u043c',
@@ -385,18 +369,15 @@ export const ukMessages: MessageTree = {
     swingerDoublePaper: '+ \u041a\u0456\u0432\u0430\u043a 2\u00d7 \u043f\u0430\u043f\u0456\u0440',
     swingerSingleCeramic: '+ \u041a\u0456\u0432\u0430\u043a 1\u00d7 \u043a\u0435\u0440.',
     swingerDoubleCeramic: '+ \u041a\u0456\u0432\u0430\u043a 2\u00d7 \u043a\u0435\u0440.',
-    noShootPaper: '+ NS \u043f\u0430\u043f\u0456\u0440 IPSC',
-    noShootPaperTwoPostGround: '+ NS IPSC 2 \u0441\u0442., \u043d\u0438\u0437\u044c\u043a\u043e',
-    noShootPaperTwoPostStand50: '+ NS IPSC 2 \u0441\u0442., \u043d\u0438\u0437 50 \u0441\u043c',
-    noShootPaperTwoPostStand100: '+ NS IPSC 2 \u0441\u0442., \u043d\u0438\u0437 1 \u043c',
-    noShootPaperA4: '+ NS A4',
-    noShootPaperA4TwoPostGround: '+ NS A4 2 \u0441\u0442., \u043d\u0438\u0437\u044c\u043a\u043e',
-    noShootPaperA4TwoPostStand50: '+ NS A4 2 \u0441\u0442., \u043d\u0438\u0437 50 \u0441\u043c',
-    noShootPaperA4TwoPostStand100: '+ NS A4 2 \u0441\u0442., \u043d\u0438\u0437 1 \u043c',
-    noShootPaperMini: '+ NS Mini IPSC',
-    noShootPaperMiniTwoPostGround: '+ NS Mini 2 \u0441\u0442., \u043d\u0438\u0437\u044c\u043a\u043e',
-    noShootPaperMiniTwoPostStand50: '+ NS Mini 2 \u0441\u0442., \u043d\u0438\u0437 50 \u0441\u043c',
-    noShootPaperMiniTwoPostStand100: '+ NS Mini 2 \u0441\u0442., \u043d\u0438\u0437 1 \u043c',
+    noShootPaperTwoPostGround: '+ NS IPSC, \u043d\u0438\u0437\u044c\u043a\u043e',
+    noShootPaperTwoPostStand50: '+ NS IPSC, \u043d\u0438\u0437 50 \u0441\u043c',
+    noShootPaperTwoPostStand100: '+ NS IPSC, \u043d\u0438\u0437 1 \u043c',
+    noShootPaperA4TwoPostGround: '+ NS A4, \u043d\u0438\u0437\u044c\u043a\u043e',
+    noShootPaperA4TwoPostStand50: '+ NS A4, \u043d\u0438\u0437 50 \u0441\u043c',
+    noShootPaperA4TwoPostStand100: '+ NS A4, \u043d\u0438\u0437 1 \u043c',
+    noShootPaperMiniTwoPostGround: '+ NS Mini IPSC, \u043d\u0438\u0437\u044c\u043a\u043e',
+    noShootPaperMiniTwoPostStand50: '+ NS Mini IPSC, \u043d\u0438\u0437 50 \u0441\u043c',
+    noShootPaperMiniTwoPostStand100: '+ NS Mini IPSC, \u043d\u0438\u0437 1 \u043c',
     noShootMetal: '+ NS \u043c\u0435\u0442\u0430\u043b',
     noShootMetalStand50: '+ NS \u043c\u0435\u0442\u0430\u043b 50 \u0441\u043c',
     noShootMetalStand100: '+ NS \u043c\u0435\u0442\u0430\u043b 1 \u043c',
@@ -659,18 +640,15 @@ export const enMessages: MessageTree = {
     mismatchHint: 'Align targets and briefing wording with your match rules.',
   },
   targets: {
-    paperIpsc: '+ IPSC paper',
-    paperIpscTwoPostGround: '+ IPSC paper, two posts, low',
-    paperIpscTwoPostStand50: '+ IPSC paper, two posts, bottom 50 cm',
-    paperIpscTwoPostStand100: '+ IPSC paper, two posts, bottom 1 m',
-    paperA4: '+ A4 paper',
-    paperA4TwoPostGround: '+ A4 paper, two posts, low',
-    paperA4TwoPostStand50: '+ A4 paper, two posts, bottom 50 cm',
-    paperA4TwoPostStand100: '+ A4 paper, two posts, bottom 1 m',
-    paperMiniIpsc: '+ Mini IPSC paper',
-    paperMiniIpscTwoPostGround: '+ Mini IPSC paper, two posts, low',
-    paperMiniIpscTwoPostStand50: '+ Mini IPSC paper, two posts, bottom 50 cm',
-    paperMiniIpscTwoPostStand100: '+ Mini IPSC paper, two posts, bottom 1 m',
+    paperIpscTwoPostGround: '+ IPSC paper, low',
+    paperIpscTwoPostStand50: '+ IPSC paper, bottom 50 cm',
+    paperIpscTwoPostStand100: '+ IPSC paper, bottom 1 m',
+    paperA4TwoPostGround: '+ A4 paper, low',
+    paperA4TwoPostStand50: '+ A4 paper, bottom 50 cm',
+    paperA4TwoPostStand100: '+ A4 paper, bottom 1 m',
+    paperMiniIpscTwoPostGround: '+ Mini IPSC paper, low',
+    paperMiniIpscTwoPostStand50: '+ Mini IPSC paper, bottom 50 cm',
+    paperMiniIpscTwoPostStand100: '+ Mini IPSC paper, bottom 1 m',
     metalPlate: '+ Steel plate',
     metalPlateStand50: '+ Steel plate, 50 cm stand',
     metalPlateStand100: '+ Steel plate, 1 m stand',
@@ -681,18 +659,15 @@ export const enMessages: MessageTree = {
     swingerDoublePaper: '+ Swinger 2\u00d7 paper',
     swingerSingleCeramic: '+ Swinger 1\u00d7 ceramic',
     swingerDoubleCeramic: '+ Swinger 2\u00d7 ceramic',
-    noShootPaper: '+ NS IPSC paper',
-    noShootPaperTwoPostGround: '+ NS IPSC two posts, low',
-    noShootPaperTwoPostStand50: '+ NS IPSC two posts, bottom 50 cm',
-    noShootPaperTwoPostStand100: '+ NS IPSC two posts, bottom 1 m',
-    noShootPaperA4: '+ NS A4',
-    noShootPaperA4TwoPostGround: '+ NS A4 two posts, low',
-    noShootPaperA4TwoPostStand50: '+ NS A4 two posts, bottom 50 cm',
-    noShootPaperA4TwoPostStand100: '+ NS A4 two posts, bottom 1 m',
-    noShootPaperMini: '+ NS Mini IPSC',
-    noShootPaperMiniTwoPostGround: '+ NS Mini IPSC two posts, low',
-    noShootPaperMiniTwoPostStand50: '+ NS Mini IPSC two posts, bottom 50 cm',
-    noShootPaperMiniTwoPostStand100: '+ NS Mini IPSC two posts, bottom 1 m',
+    noShootPaperTwoPostGround: '+ NS IPSC paper, low',
+    noShootPaperTwoPostStand50: '+ NS IPSC paper, bottom 50 cm',
+    noShootPaperTwoPostStand100: '+ NS IPSC paper, bottom 1 m',
+    noShootPaperA4TwoPostGround: '+ NS A4 paper, low',
+    noShootPaperA4TwoPostStand50: '+ NS A4 paper, bottom 50 cm',
+    noShootPaperA4TwoPostStand100: '+ NS A4 paper, bottom 1 m',
+    noShootPaperMiniTwoPostGround: '+ NS Mini IPSC paper, low',
+    noShootPaperMiniTwoPostStand50: '+ NS Mini IPSC paper, bottom 50 cm',
+    noShootPaperMiniTwoPostStand100: '+ NS Mini IPSC paper, bottom 1 m',
     noShootMetal: '+ NS steel',
     noShootMetalStand50: '+ NS steel 50 cm',
     noShootMetalStand100: '+ NS steel 1 m',

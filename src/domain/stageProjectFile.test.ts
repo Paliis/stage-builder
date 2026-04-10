@@ -39,6 +39,7 @@ describe('stageProjectFile', () => {
     expect(parsed.data.stage.name).toBe('Test')
     expect(parsed.data.stage.targets).toHaveLength(1)
     expect(parsed.data.stage.targets[0]!.id).toBe('a')
+    expect(parsed.data.stage.targets[0]!.type).toBe('paperIpscTwoPostStand100')
     expect(parsed.data.briefing.documentTitle).toBe(briefing.documentTitle)
   })
 
@@ -72,5 +73,30 @@ describe('stageProjectFile', () => {
     expect(parsed.ok).toBe(true)
     if (!parsed.ok) return
     expect(parsed.data.stage.targets[0]!.type).toBe('paperIpscTwoPostStand100')
+  })
+
+  it('migrates legacy single-post paper types to Stand100', () => {
+    const briefing = defaultStageBriefing()
+    const raw = {
+      format: STAGE_PROJECT_FORMAT,
+      version: STAGE_PROJECT_VERSION,
+      stage: {
+        name: 'T',
+        weaponClass: 'handgun',
+        fieldSizeM: { x: 30, y: 40 },
+        fieldGroundCover3d: 'grass',
+        targets: [
+          { id: 'a', type: 'paperA4', isNoShoot: false, position: { x: 0, y: 0 }, rotationRad: 0 },
+          { id: 'b', type: 'paperMiniIpsc', isNoShoot: false, position: { x: 1, y: 0 }, rotationRad: 0 },
+        ],
+        props: [],
+      },
+      briefing,
+    }
+    const parsed = parseStageProjectJson(JSON.stringify(raw))
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    expect(parsed.data.stage.targets[0]!.type).toBe('paperA4TwoPostStand100')
+    expect(parsed.data.stage.targets[1]!.type).toBe('paperMiniIpscTwoPostStand100')
   })
 })

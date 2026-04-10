@@ -19,7 +19,7 @@ describe('summarizeTargets', () => {
         baseTarget({ id: 'a', type: 'metalPlate' }),
         baseTarget({ id: 'b', type: 'ceramicPlate' }),
         baseTarget({ id: 'c', type: 'ceramicPlate' }),
-        baseTarget({ id: 'd', type: 'paperIpsc' }),
+        baseTarget({ id: 'd', type: 'paperIpscTwoPostStand100' }),
       ],
       'uk',
     )

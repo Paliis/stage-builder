@@ -8,23 +8,17 @@ export type MetalPlateRectSideCm = 15 | 20 | 30
 
 /** Основні типи мішеней редактора (спрощений набір). */
 export type TargetType =
-  /** Паперова IPSC (контур B2), біла; NS — червона. */
-  | 'paperIpsc'
-  /** IPSC B2 на двох стійках: низ лиця біля землі (~0,1 м), як метал «на підлозі». */
+  /** IPSC B2 (контур), біла; низ лиця біля землі (~0,1 м) у 3D. */
   | 'paperIpscTwoPostGround'
   /** Той самий силует; низ лиця ~50 см від підлоги у 3D. */
   | 'paperIpscTwoPostStand50'
   /** Той самий силует; низ лиця ~1 м від підлоги у 3D. */
   | 'paperIpscTwoPostStand100'
-  /** Біла мішень на аркуші A4 (210×297 мм). */
-  | 'paperA4'
-  /** A4 на двох стійках: низ лиця біля землі (~0,1 м), як IPSC two-post. */
+  /** A4 (210×297 мм, масштаб на плані); низ лиця біля землі (~0,1 м) у 3D. */
   | 'paperA4TwoPostGround'
   | 'paperA4TwoPostStand50'
   | 'paperA4TwoPostStand100'
-  /** Паперова Mini IPSC (номінал B3: 30×37,5 см; контур як масштабований B2). */
-  | 'paperMiniIpsc'
-  /** Mini IPSC на двох стійках; ті самі три висоти нижнього краю лиця. */
+  /** Mini IPSC (номінал B3); ті самі три висоти нижнього краю лиця. */
   | 'paperMiniIpscTwoPostGround'
   | 'paperMiniIpscTwoPostStand50'
   | 'paperMiniIpscTwoPostStand100'

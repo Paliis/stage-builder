@@ -107,14 +107,26 @@ function parseMetalRectSideCm(raw: unknown): MetalPlateRectSideCm | undefined {
 /** Старий ідентифікатор до розділення на три висоти; файли з ним відкриваються як «низ 1 м». */
 const LEGACY_PAPER_IPSC_TWO_POST = 'paperIpscTwoPost'
 
+/** Колись існували одностійкові паперові типи — мапимо на відповідний варіант з низом лиця ~1 м. */
+function migrateLegacySinglePostPaperType(type: string): TargetType | undefined {
+  if (type === 'paperIpsc') return 'paperIpscTwoPostStand100'
+  if (type === 'paperA4') return 'paperA4TwoPostStand100'
+  if (type === 'paperMiniIpsc') return 'paperMiniIpscTwoPostStand100'
+  return undefined
+}
+
 function parseTarget(raw: unknown, idx: number): Target | null {
   if (typeof raw !== 'object' || raw === null) return null
   const o = raw as Record<string, unknown>
   const id = typeof o.id === 'string' ? o.id : ''
   const type = o.type
   if (typeof type !== 'string') return null
-  const normalizedType =
-    type === LEGACY_PAPER_IPSC_TWO_POST ? ('paperIpscTwoPostStand100' as const) : (type as TargetType)
+  const migrated = migrateLegacySinglePostPaperType(type)
+  const normalizedType = (
+    type === LEGACY_PAPER_IPSC_TWO_POST
+      ? ('paperIpscTwoPostStand100' as const)
+      : migrated ?? (type as TargetType)
+  ) as TargetType
   if (!TARGET_TYPE_SET.has(normalizedType)) return null
   const isNoShoot = Boolean(o.isNoShoot)
   if (!isVec2(o.position)) return null

@@ -1,7 +1,7 @@
 /**
  * Габарити мішеней у метрах (IPSC / узгоджені додатки).
  *
- * Папір IPSC — зовнішній контур B2 (45×57 см). Двостійкові варіанти (`*TwoPostGround` / `Stand50` / `Stand100`) — той самий контур відповідного типу; висота нижнього краю лиця як у металу (≈0,1 м / 0,5 м / 1 м). Mini IPSC — B3 номінал 30×37,5 см. A4 — масштаб 1,5× від 210×297 мм.
+ * Папір: лише варіанти з трьома висотами нижнього краю лиця (`*TwoPostGround` / `Stand50` / `Stand100`) — IPSC B2 (45×57 см), A4 (масштаб 1,5× від 210×297 мм), Mini IPSC B3 (30×37,5 см); у 3D дві стійки під відповідними кутами силуету.
  * Метал Appendix C3 — квадрат 15/20/30 см; варіанти зі стійкою 50 см / 1 м (низ лиця у 3D). Нова мішень за замовч. 15 см; без поля — 30 см.
  * Керамічна тарілка Ø 110 мм (див. ceramicPlateSpec). Поппери C2.
  */
@@ -49,7 +49,7 @@ export function isPaperMiniIpscTwoPostTargetType(type: TargetType): boolean {
   )
 }
 
-/** Будь-яка паперова мішень на двох стійках (IPSC B2, A4 або Mini IPSC). */
+/** Усі паперові мішені в редакторі (IPSC B2, A4, Mini IPSC) — лише з двома стійками та трьома висотами низу лиця. */
 export function isPaperTwoPostTargetType(type: TargetType): boolean {
   return (
     isPaperIpscTwoPostTargetType(type) ||
@@ -188,17 +188,14 @@ function polygonMaxRadiusM(pts: Vec2[]): number {
 /** Локальний контур у метрах (+Y вгору лиця), до обертання на плані / екструзії в 3D. */
 export function targetFootprintLocalM(t: Target): Vec2[] {
   switch (t.type) {
-    case 'paperIpsc':
     case 'paperIpscTwoPostGround':
     case 'paperIpscTwoPostStand50':
     case 'paperIpscTwoPostStand100':
       return ipscClassicOutlineLocalM()
-    case 'paperMiniIpsc':
     case 'paperMiniIpscTwoPostGround':
     case 'paperMiniIpscTwoPostStand50':
     case 'paperMiniIpscTwoPostStand100':
       return ipscMiniOutlineLocalM()
-    case 'paperA4':
     case 'paperA4TwoPostGround':
     case 'paperA4TwoPostStand50':
     case 'paperA4TwoPostStand100': {
@@ -357,15 +354,11 @@ export function targetFaceOutlineLocalMForType(type: TargetType): Vec2[] | null 
     isSquareSteelPlateTargetType(type)
   )
     return null
-  if (type === 'paperMiniIpsc' || isPaperMiniIpscTwoPostTargetType(type)) return ipscMiniOutlineLocalM()
-  if (
-    type === 'paperIpscTwoPostGround' ||
-    type === 'paperIpscTwoPostStand50' ||
-    type === 'paperIpscTwoPostStand100'
-  ) {
+  if (isPaperMiniIpscTwoPostTargetType(type)) return ipscMiniOutlineLocalM()
+  if (isPaperIpscTwoPostTargetType(type)) {
     return ipscClassicOutlineLocalM()
   }
-  if (type === 'paperA4' || isPaperA4TwoPostTargetType(type)) {
+  if (isPaperA4TwoPostTargetType(type)) {
     const { hw, hh } = paperA4HalfExtentsM()
     return rectLocal(hw, hh)
   }
@@ -588,17 +581,14 @@ export function targetHandleDistanceM(t: Target): number {
 /** Розмір «лиця» мішені для 3D (м): ширина × висота по локальних осях до обертання. */
 export function targetFaceSizeM(t: Target): { w: number; h: number } {
   switch (t.type) {
-    case 'paperIpsc':
     case 'paperIpscTwoPostGround':
     case 'paperIpscTwoPostStand50':
     case 'paperIpscTwoPostStand100':
       return { w: 450 * MM, h: 570 * MM }
-    case 'paperMiniIpsc':
     case 'paperMiniIpscTwoPostGround':
     case 'paperMiniIpscTwoPostStand50':
     case 'paperMiniIpscTwoPostStand100':
       return { w: 300 * MM, h: 375 * MM }
-    case 'paperA4':
     case 'paperA4TwoPostGround':
     case 'paperA4TwoPostStand50':
     case 'paperA4TwoPostStand100':

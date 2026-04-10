@@ -10,15 +10,12 @@ import type { MessageTree } from '../../i18n/messages'
 
 function targetAddButtonClass(type: TargetType): string {
   switch (type) {
-    case 'paperIpsc':
     case 'paperIpscTwoPostGround':
     case 'paperIpscTwoPostStand50':
     case 'paperIpscTwoPostStand100':
-    case 'paperA4':
     case 'paperA4TwoPostGround':
     case 'paperA4TwoPostStand50':
     case 'paperA4TwoPostStand100':
-    case 'paperMiniIpsc':
     case 'paperMiniIpscTwoPostGround':
     case 'paperMiniIpscTwoPostStand50':
     case 'paperMiniIpscTwoPostStand100':
@@ -188,15 +185,12 @@ export function StageBuilderToolbar({
         <div className="app__buttons app__buttons--targets-ns" role="group" aria-label={tree.toolbar.targetsNsAria}>
           {(
             [
-              ['paperIpsc', tree.targets.noShootPaper] as const,
               ['paperIpscTwoPostGround', tree.targets.noShootPaperTwoPostGround] as const,
               ['paperIpscTwoPostStand50', tree.targets.noShootPaperTwoPostStand50] as const,
               ['paperIpscTwoPostStand100', tree.targets.noShootPaperTwoPostStand100] as const,
-              ['paperA4', tree.targets.noShootPaperA4] as const,
               ['paperA4TwoPostGround', tree.targets.noShootPaperA4TwoPostGround] as const,
               ['paperA4TwoPostStand50', tree.targets.noShootPaperA4TwoPostStand50] as const,
               ['paperA4TwoPostStand100', tree.targets.noShootPaperA4TwoPostStand100] as const,
-              ['paperMiniIpsc', tree.targets.noShootPaperMini] as const,
               ['paperMiniIpscTwoPostGround', tree.targets.noShootPaperMiniTwoPostGround] as const,
               ['paperMiniIpscTwoPostStand50', tree.targets.noShootPaperMiniTwoPostStand50] as const,
               ['paperMiniIpscTwoPostStand100', tree.targets.noShootPaperMiniTwoPostStand100] as const,

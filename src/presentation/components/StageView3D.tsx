@@ -336,7 +336,7 @@ function SwingerFacePaper3D({
     () =>
       ({
         ...t,
-        type: 'paperIpsc' as const,
+        type: 'paperIpscTwoPostStand100' as const,
         position: { x: 0, y: 0 },
         rotationRad: 0,
       }) as Target,
@@ -515,9 +515,6 @@ function Swinger3D({ t }: { t: Target }) {
   )
 }
 
-/** Нижній край паперового лиця в 3D — на цій висоті (метал/кераміка лишаються низько). */
-const PAPER_TARGET_STAND_HEIGHT_M = 1
-
 function Target3D({ t }: { t: Target }) {
   const field = useStageFieldM()
   const [x, , z] = stageToThreeXZ(t.position, field)
@@ -525,11 +522,9 @@ function Target3D({ t }: { t: Target }) {
   const { w, h } = targetFaceSizeM(t)
   const standH = isPaperTwoPostTargetType(t.type)
     ? paperTwoPostFaceBottomHeightM(t.type)
-    : t.type === 'paperIpsc' || t.type === 'paperA4' || t.type === 'paperMiniIpsc'
-      ? PAPER_TARGET_STAND_HEIGHT_M
-      : isSquareSteelPlateTargetType(t.type)
-        ? steelPlateStandHeightM(t.type)
-        : 0.1
+    : isSquareSteelPlateTargetType(t.type)
+      ? steelPlateStandHeightM(t.type)
+      : 0.1
   const faceDepth = 0.052
   const isMiniPop = t.type === 'miniPopper'
 
@@ -628,11 +623,7 @@ function Target3D({ t }: { t: Target }) {
   if (paperFaceGeo) {
     return (
       <group position={[x, 0, z]} rotation={[0, t.rotationRad, 0]}>
-        {isPaperTwoPostTargetType(t.type) ? (
-          <PaperTwoPostStands3D standH={standH} paperMinY={paperMinY} anchors={paperTwoPostAnchors} />
-        ) : (
-          <TargetStandPost standH={standH} />
-        )}
+        <PaperTwoPostStands3D standH={standH} paperMinY={paperMinY} anchors={paperTwoPostAnchors} />
         <group position={[0, standH - paperMinY, 0]}>
           <mesh geometry={paperFaceGeo} castShadow receiveShadow>
             <meshStandardMaterial

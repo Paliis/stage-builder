@@ -16,8 +16,8 @@ describe('computeMinRounds', () => {
   it('counts cardboard as 2 and steel as 1', () => {
     expect(
       computeMinRounds([
-        t({ type: 'paperIpsc' }),
-        t({ type: 'paperA4' }),
+        t({ type: 'paperIpscTwoPostStand100' }),
+        t({ type: 'paperA4TwoPostStand100' }),
         t({ type: 'popper' }),
         t({ type: 'metalPlate' }),
       ]),
@@ -27,7 +27,7 @@ describe('computeMinRounds', () => {
   it('ignores no-shoot for minimum', () => {
     expect(
       computeMinRounds([
-        t({ type: 'paperIpsc', isNoShoot: true }),
+        t({ type: 'paperIpscTwoPostStand100', isNoShoot: true }),
         t({ type: 'popper' }),
       ]),
     ).toBe(1)

@@ -4,7 +4,7 @@ import type { Prop, Target } from './models'
 
 function mkTarget(partial: Partial<Target> & Pick<Target, 'id'>): Target {
   return {
-    type: 'paperIpsc',
+    type: 'paperIpscTwoPostStand100',
     isNoShoot: false,
     position: { x: 0, y: 0 },
     rotationRad: 0,
