@@ -967,6 +967,9 @@
   flex: 0 0 auto;
   align-self: stretch;
   min-height: unset;
+  /* Для cqw/cqh навколо 3D PDF-кропу (вписаний прямокутник у картку). */
+  container-type: size;
+  container-name: stage-card;
   /* --_dvh-cap: ліміт по вікну; на широкому макеті додаємо 100cqh, щоб сцена займала висоту робочої колонки. */
   --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
   --_h-if-full-w: calc(100cqw * var(--stage-card-h, 35.7) / var(--stage-card-w, 30));
@@ -1048,8 +1051,10 @@
   border-radius: 6px;
 }
 
+/* Центруємо 3D (особливо режим PDF): рамка «як у PDF» — це вписаний прямокутник, а не на всю ширину сітки. */
 .app__main--stage-card .app__stage-print-frame {
-  justify-content: stretch;
+  justify-content: center;
+  align-items: center;
 }
 
 /**
@@ -1077,17 +1082,28 @@
   width: 100%;
 }
 
-/* Режим «як у PDF»: той самий aspect, що й png для брифінгу (`stageViewportAspectRatio`). */
+/* Режим «як у PDF»: той самий aspect, що й png; рамка — навколо вписаного кадру, не на всю ширину сітки. */
 .app__main--stage-card .app__r3f-canvas-outer--pdf {
   flex: 0 1 auto;
   align-self: center;
-  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  aspect-ratio: var(--pdf-aspect);
+  /* Fallback без container queries */
+  width: auto;
   max-width: 100%;
   max-height: 100%;
-  box-sizing: border-box;
-  outline: 2px dashed rgba(79, 70, 229, 0.32);
+  outline: 2px dashed rgba(79, 70, 229, 0.42);
   outline-offset: -1px;
   border-radius: 10px;
+}
+
+@supports (width: min(1cqw, 1px)) {
+  .app__main--stage-card .app__r3f-canvas-outer--pdf {
+    width: min(100cqw, calc(100cqh * var(--pdf-aspect)));
+    height: auto;
+  }
 }
 
 .app__main--stage-card .app__r3f-canvas-outer--pdf .app__r3f-canvas-wrap {

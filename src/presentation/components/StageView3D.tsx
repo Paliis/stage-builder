@@ -7,6 +7,7 @@ import {
   useLayoutEffect,
   useMemo,
   useRef,
+  type CSSProperties,
   type ReactNode,
 } from 'react'
 import * as THREE from 'three'
@@ -1544,7 +1545,7 @@ function StageView3DCanvasShell({
   return (
     <div
       className={isPdf ? 'app__r3f-canvas-outer app__r3f-canvas-outer--pdf' : 'app__r3f-canvas-outer'}
-      style={isPdf ? { aspectRatio: pdfAspect } : undefined}
+      style={isPdf ? ({ ['--pdf-aspect']: String(pdfAspect) } as CSSProperties) : undefined}
     >
       {children}
     </div>
@@ -1573,10 +1574,8 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
       const prevH = gl.domElement.height
       const prevPR = gl.getPixelRatio()
       const prevAspect = camera.aspect
-      const prevFov = camera.fov
       try {
-        /** Вужчий вертикальний охоплення під PDF — менше «неба», краще видно площадку при тому ж ракурсі. */
-        camera.fov = 42
+        /** Лише розмір буфера й aspect під PNG; FOV не змінюємо — інакше кадр у PDF не збігається з тим, що на екрані. */
         camera.aspect = w / h
         camera.updateProjectionMatrix()
         gl.setPixelRatio(1)
@@ -1586,7 +1585,6 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
       } catch {
         return null
       } finally {
-        camera.fov = prevFov
         camera.aspect = prevAspect
         camera.updateProjectionMatrix()
         gl.setPixelRatio(prevPR)
