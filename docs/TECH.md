@@ -64,7 +64,7 @@
 
 Повний перелік — **`TargetType`** у `models.ts`. Коротко:
 
-- **Папір:** `paperIpsc` (B2), `paperA4`, `paperMiniIpsc` (номінал B3).
+- **Папір:** `paperIpsc` (B2), `paperIpscTwoPost` (той самий B2, дві стійки в 3D / дві підошви на плані), `paperA4`, `paperMiniIpsc` (номінал B3).
 - **Метал:** `metalPlate` (квадрат Appendix C3: 15 / 20 / 30 см, поле `metalRectSideCm`), `metalPlateStand50`, `metalPlateStand100`, `popper`, `miniPopper`.
 - **Кераміка:** `ceramicPlate` (радіус і колір — `ceramicPlateSpec.ts`).
 - **Ківаки:** `swingerSinglePaper` / `Double`, `swingerSingleCeramic` / `Double` (геометрія — `swingerGeometry.ts`).

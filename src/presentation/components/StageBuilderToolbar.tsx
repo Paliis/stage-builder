@@ -11,6 +11,7 @@ import type { MessageTree } from '../../i18n/messages'
 function targetAddButtonClass(type: TargetType): string {
   switch (type) {
     case 'paperIpsc':
+    case 'paperIpscTwoPost':
     case 'paperA4':
     case 'paperMiniIpsc':
     case 'swingerSinglePaper':
@@ -180,6 +181,7 @@ export function StageBuilderToolbar({
           {(
             [
               ['paperIpsc', tree.targets.noShootPaper] as const,
+              ['paperIpscTwoPost', tree.targets.noShootPaperTwoPost] as const,
               ['paperA4', tree.targets.noShootPaperA4] as const,
               ['paperMiniIpsc', tree.targets.noShootPaperMini] as const,
               ['metalPlate', tree.targets.noShootMetal] as const,

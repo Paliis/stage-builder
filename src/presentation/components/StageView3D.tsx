@@ -289,6 +289,21 @@ function TargetStandPost({ standH }: { standH: number }) {
   )
 }
 
+/** Паперова IPSC на двох стійках: відстань між осями узгоджена з `paperIpscTwoPostBasesLocalM`. */
+function PaperTwoPostStands3D({ standH }: { standH: number }) {
+  const half = 0.17
+  return (
+    <>
+      <group position={[-half, 0, 0]}>
+        <TargetStandPost standH={standH} />
+      </group>
+      <group position={[half, 0, 0]}>
+        <TargetStandPost standH={standH} />
+      </group>
+    </>
+  )
+}
+
 function SwingerFacePaper3D({
   t,
   faceDepth,
@@ -494,7 +509,10 @@ function Target3D({ t }: { t: Target }) {
   const c = targetColor(t)
   const { w, h } = targetFaceSizeM(t)
   const standH =
-    t.type === 'paperIpsc' || t.type === 'paperA4' || t.type === 'paperMiniIpsc'
+    t.type === 'paperIpsc' ||
+    t.type === 'paperIpscTwoPost' ||
+    t.type === 'paperA4' ||
+    t.type === 'paperMiniIpsc'
       ? PAPER_TARGET_STAND_HEIGHT_M
       : isSquareSteelPlateTargetType(t.type)
         ? steelPlateStandHeightM(t.type)
@@ -592,7 +610,11 @@ function Target3D({ t }: { t: Target }) {
   if (paperFaceGeo) {
     return (
       <group position={[x, 0, z]} rotation={[0, t.rotationRad, 0]}>
-        <TargetStandPost standH={standH} />
+        {t.type === 'paperIpscTwoPost' ? (
+          <PaperTwoPostStands3D standH={standH} />
+        ) : (
+          <TargetStandPost standH={standH} />
+        )}
         <group position={[0, standH - paperMinY, 0]}>
           <mesh geometry={paperFaceGeo} castShadow receiveShadow>
             <meshStandardMaterial

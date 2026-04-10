@@ -30,6 +30,7 @@ import {
   popper2DDrawSpec,
   targetFootprintWorld,
   targetMetalPedestalWorld,
+  targetPaperTwoPostBasesWorld,
   targetRenderPolygonWorld,
   targetsDrawOrder,
 } from '../../domain/targetSpecs'
@@ -1531,8 +1532,21 @@ function redraw(
     ctx.fill()
 
     const swSpec = swinger2DDrawSpecWorld(g)
-    const ped = swSpec ? null : targetMetalPedestalWorld(g)
-    if (ped && ped.length >= 3) {
+    const twoPostBases = swSpec ? null : targetPaperTwoPostBasesWorld(g)
+    const ped = swSpec ? null : twoPostBases ? null : targetMetalPedestalWorld(g)
+    if (twoPostBases) {
+      for (const poly of twoPostBases) {
+        if (poly.length < 3) continue
+        const ps = poly.map((p) => worldToScreen(p.x, p.y, tf))
+        ctx.beginPath()
+        tracePolygonScreen(ctx, ps)
+        ctx.fillStyle = 'rgba(55, 42, 32, 0.88)'
+        ctx.fill()
+        ctx.strokeStyle = 'rgba(28, 22, 18, 0.55)'
+        ctx.lineWidth = 1
+        ctx.stroke()
+      }
+    } else if (ped && ped.length >= 3) {
       const ps = ped.map((p) => worldToScreen(p.x, p.y, tf))
       ctx.beginPath()
       tracePolygonScreen(ctx, ps)

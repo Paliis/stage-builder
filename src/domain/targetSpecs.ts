@@ -1,7 +1,7 @@
 /**
  * Габарити мішеней у метрах (IPSC / узгоджені додатки).
  *
- * Папір IPSC — зовнішній контур B2 (45×57 см). Mini IPSC — B3 номінал 30×37,5 см (пропорційно стиснутий B2). A4 — масштаб 1,5× від 210×297 мм (візуально крупніше на плані).
+ * Папір IPSC — зовнішній контур B2 (45×57 см). `paperIpscTwoPost` — той самий контур, дві стійки в 3D і дві підошви на плані. Mini IPSC — B3 номінал 30×37,5 см (пропорційно стиснутий B2). A4 — масштаб 1,5× від 210×297 мм (візуально крупніше на плані).
  * Метал Appendix C3 — квадрат 15/20/30 см; варіанти зі стійкою 50 см / 1 м (низ лиця у 3D). Нова мішень за замовч. 15 см; без поля — 30 см.
  * Керамічна тарілка Ø 110 мм (див. ceramicPlateSpec). Поппери C2.
  */
@@ -124,6 +124,7 @@ function polygonMaxRadiusM(pts: Vec2[]): number {
 export function targetFootprintLocalM(t: Target): Vec2[] {
   switch (t.type) {
     case 'paperIpsc':
+    case 'paperIpscTwoPost':
       return ipscClassicOutlineLocalM()
     case 'paperMiniIpsc':
       return ipscMiniOutlineLocalM()
@@ -284,6 +285,7 @@ export function targetFaceOutlineLocalMForType(type: TargetType): Vec2[] | null 
   )
     return null
   if (type === 'paperMiniIpsc') return ipscMiniOutlineLocalM()
+  if (type === 'paperIpscTwoPost') return ipscClassicOutlineLocalM()
   return targetFaceOutlineLocalM({ type } as Target)
 }
 
@@ -318,6 +320,35 @@ export function targetMetalPedestalLocal(t: Target): Vec2[] | null {
     ]
   }
   return null
+}
+
+/** Дві підошви стійок під паперовою IPSC на двох стійках (локальні координати лиця). */
+export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
+  const ph = 0.028
+  const footW = 0.044
+  /** Відстань між осями стійок (м). */
+  const span = 0.34
+  const outline = ipscClassicOutlineLocalM()
+  let minY = Infinity
+  for (const p of outline) minY = Math.min(minY, p.y)
+  const yMid = minY - ph * 0.5
+  const hwp = footW * 0.5
+  const hhp = ph * 0.5
+  const mk = (cx: number): Vec2[] => [
+    { x: cx - hwp, y: yMid - hhp },
+    { x: cx + hwp, y: yMid - hhp },
+    { x: cx + hwp, y: yMid + hhp },
+    { x: cx - hwp, y: yMid + hhp },
+  ]
+  return [mk(-span * 0.5), mk(span * 0.5)]
+}
+
+export function targetPaperTwoPostBasesWorld(t: Target): Vec2[][] | null {
+  if (t.type !== 'paperIpscTwoPost') return null
+  const bases = paperIpscTwoPostBasesLocalM()
+  const { x: cx, y: cy } = t.position
+  const rot = t.rotationRad
+  return bases.map((poly) => toWorld(poly, cx, cy, rot))
 }
 
 /** Контур для відмалювання на 2D (те саме лице, що й у 3D-екструзії). */
@@ -365,6 +396,7 @@ export function targetHandleDistanceM(t: Target): number {
 export function targetFaceSizeM(t: Target): { w: number; h: number } {
   switch (t.type) {
     case 'paperIpsc':
+    case 'paperIpscTwoPost':
       return { w: 450 * MM, h: 570 * MM }
     case 'paperMiniIpsc':
       return { w: 300 * MM, h: 375 * MM }
