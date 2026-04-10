@@ -149,12 +149,15 @@ function StageNavigator({ mode }: { mode: CameraMode3D }) {
   )
 }
 
+/** Площадка в 3D — зелений газон (крокове покращення візуалу). */
+const GROUND_GRASS_HEX = '#3d7a38'
+
 function Ground() {
   const { widthM, heightM } = useStageFieldM()
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
       <planeGeometry args={[widthM, heightM]} />
-      <meshStandardMaterial color="#d6c4a8" roughness={0.9} metalness={0.02} />
+      <meshStandardMaterial color={GROUND_GRASS_HEX} roughness={0.9} metalness={0.02} />
     </mesh>
   )
 }
