@@ -135,11 +135,20 @@ export async function exportBriefingPdf(opts: {
     try {
       const img = await loadImage(snapshotDataUrl)
       const aspect = img.naturalWidth / Math.max(1, img.naturalHeight)
-      const byWidth = contentW
-      const byHeight = byWidth / aspect
-      const rawH = Math.min(byHeight, Math.max(maxImgH, 40))
-      const finalH = rawH * IMAGE_SHRINK
-      const finalW = Math.min(finalH * aspect, contentW * IMAGE_SHRINK)
+      /** Висота PNG при масштабуванні на повну ширину контенту (мм). */
+      const byHeight = contentW / aspect
+      /**
+       * Вміщуємо знімок у прямокутник без спотворення (contain): інакше finalW/finalH
+       * могли не збігатися з aspect — jsPDF розтягував PNG і низ сцени виглядав «обрізаним».
+       */
+      const boxW = contentW * IMAGE_SHRINK
+      const boxH = Math.max(1, Math.min(byHeight, maxImgH)) * IMAGE_SHRINK
+      let finalW = boxW
+      let finalH = finalW / aspect
+      if (finalH > boxH) {
+        finalH = boxH
+        finalW = finalH * aspect
+      }
       const imgX = margin + (contentW - finalW) / 2
 
       doc.addImage(snapshotDataUrl, 'PNG', imgX, cursorY, finalW, finalH)
