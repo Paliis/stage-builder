@@ -41,10 +41,12 @@ const TABLE_FONT_SIZE = 9
 const TABLE_CELL_PADDING = { top: 2.2, right: 3, bottom: 2.2, left: 3 }
 const GAP_TITLE_IMAGE = 4
 const GAP_IMAGE_TABLE = 5
-const GAP_TABLE_FOOTER = 4
+const GAP_TABLE_FOOTER = 3
+/** Відступ знімка від країв колонки PDF (1 = майже на всю ширину). */
+const IMAGE_SHRINK = 1
 const QR_SIZE = 14
-const FOOTER_H = QR_SIZE + 4
-const IMAGE_SHRINK = 0.9
+/** Горизонтальний зазор між заголовком і QR у верхньому рядку. */
+const QR_GAP_MM = 5
 
 function buildTableOpts(
   tableBody: string[][],
@@ -110,32 +112,64 @@ export async function exportBriefingPdf(opts: {
   const pageH = doc.internal.pageSize.getHeight()
   const contentW = pageW - margin * 2
 
-  /* ── Title ── */
-  let cursorY = margin
+  let qrDataUrl: string | null = null
+  try {
+    qrDataUrl = await generateQrDataUrl(APP_URL)
+  } catch {
+    qrDataUrl = null
+  }
+
+  /* ── Title (ліворуч) + QR та брендинг (правий верхній кут) — звільняє низ сторінки для знімка ── */
+  const titleMaxW = contentW - (qrDataUrl ? QR_SIZE + QR_GAP_MM : 0)
   doc.setFont(PDF_FONT_FAMILY, 'bold')
   doc.setFontSize(14)
-  const titleLines = doc.splitTextToSize(briefing.documentTitle, contentW) as string[]
-  doc.text(titleLines, pageW / 2, cursorY + 5, { align: 'center' })
+  const titleLines = doc.splitTextToSize(briefing.documentTitle, titleMaxW) as string[]
+  doc.text(titleLines, margin, margin + 5)
   const titleH = titleLines.length * 6 + 4
-  cursorY += titleH
+  const urlLinesForLayout = qrDataUrl ? (doc.splitTextToSize(APP_URL, 42) as string[]) : []
+
+  if (qrDataUrl) {
+    doc.addImage(qrDataUrl, 'PNG', pageW - margin - QR_SIZE, margin, QR_SIZE, QR_SIZE)
+    const brandRight = pageW - margin
+    doc.setFont(PDF_FONT_FAMILY, 'normal')
+    doc.setFontSize(6.5)
+    doc.setTextColor(107, 114, 128)
+    doc.text(pdf.generatedBy, brandRight, margin + QR_SIZE + 2, { align: 'right' })
+    doc.setFontSize(6)
+    doc.setTextColor(148, 163, 184)
+    let urlY = margin + QR_SIZE + 5
+    for (const line of urlLinesForLayout) {
+      doc.text(line, brandRight, urlY, { align: 'right' })
+      urlY += 3
+    }
+    doc.setTextColor(0, 0, 0)
+  }
+
+  const qrColumnBottom = qrDataUrl
+    ? margin + QR_SIZE + 5 + urlLinesForLayout.length * 3 + 2
+    : margin + titleH
+  const yAfterTopBand = Math.max(margin + titleH, qrColumnBottom)
 
   /* ── Table data & measurement ── */
   const rows = briefingTableRows(briefing, pdf.labels, pdf.categoryLabel, pdf.emptyCell)
   const tableBody = rows.map((r) => [r.label, r.value])
 
-  /* ── Footer zone (fixed at bottom) — потрібно до виміру таблиці й autoTable margin ── */
-  const footerY = pageH - margin - FOOTER_H
-  /** Відступ autoTable від низу сторінки = зона під лінію футера та QR (інакше рядки обрізаються). */
-  const tableMarginBottomMm = pageH - footerY
+  /** Після перенесення QR у верх — низ сторінки лише поле A4 (без окремого футера). */
+  const tableMarginBottomMm = margin
 
   const tableH = measureTableHeight(tableBody, margin, contentW, tableMarginBottomMm)
 
-  /* ── Available height for the image ── */
   const maxImgH =
-    footerY - cursorY - GAP_TITLE_IMAGE - GAP_IMAGE_TABLE - tableH - GAP_TABLE_FOOTER
+    pageH -
+    margin -
+    yAfterTopBand -
+    GAP_TITLE_IMAGE -
+    GAP_IMAGE_TABLE -
+    tableH -
+    GAP_TABLE_FOOTER
 
   /* ── Image ── */
-  cursorY += GAP_TITLE_IMAGE
+  let cursorY = yAfterTopBand + GAP_TITLE_IMAGE
   if (snapshotDataUrl) {
     try {
       const img = await loadImage(snapshotDataUrl)
@@ -177,28 +211,6 @@ export async function exportBriefingPdf(opts: {
 
   /* ── Table ── */
   autoTable(doc, buildTableOpts(tableBody, cursorY, margin, contentW, tableMarginBottomMm))
-
-  /* ── Footer ── */
-  doc.setDrawColor(209, 213, 219)
-  doc.setLineWidth(0.3)
-  doc.line(margin, footerY, pageW - margin, footerY)
-
-  try {
-    const qrDataUrl = await generateQrDataUrl(APP_URL)
-    doc.addImage(qrDataUrl, 'PNG', margin, footerY + 2, QR_SIZE, QR_SIZE)
-  } catch {
-    /* QR generation failed — skip silently */
-  }
-
-  const textX = margin + QR_SIZE + 3
-  doc.setFont(PDF_FONT_FAMILY, 'normal')
-  doc.setFontSize(7.5)
-  doc.setTextColor(107, 114, 128)
-  doc.text(pdf.generatedBy, textX, footerY + 6)
-
-  doc.setFontSize(6.5)
-  doc.setTextColor(148, 163, 184)
-  doc.text(APP_URL, textX, footerY + 10.5)
 
   doc.save(fileName)
 }
