@@ -16,7 +16,8 @@ export function normalizeFieldGroundCover3d(raw: unknown): FieldGroundCover3d {
 export function groundCoverColorHex(cover: FieldGroundCover3d): string {
   switch (cover) {
     case 'earth':
-      return '#5c4a3a'
+      /** Світліший суглинок — темніший виглядав майже чорним під тінями PBR. */
+      return '#a08068'
     case 'grass':
       return '#3d7a38'
     case 'sand':
