@@ -149,6 +149,12 @@ export type MessageTree = {
     copySelectionTitle: string
     pasteSelection: string
     pasteSelectionTitle: string
+    /** Група кнопок «Назад / Повторити» біля вкладок 2D/3D */
+    undoRedoGroupAria: string
+    undoPlan: string
+    undoPlanTitle: string
+    redoPlan: string
+    redoPlanTitle: string
     planMapActionsAria: string
     /** Видалити лише виділені об’єкти (не всю вправу) */
     deleteSelection: string
@@ -415,6 +421,13 @@ export const ukMessages: MessageTree = {
     pasteSelection: '\u0412\u0441\u0442\u0430\u0432\u0438\u0442\u0438',
     pasteSelectionTitle:
       '\u0412\u0441\u0442\u0430\u0432\u0438\u0442\u0438 \u043a\u043e\u043f\u0456\u044e \u0432 \u0446\u0435\u043d\u0442\u0440 \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u0433\u043e \u0432\u0438\u0434\u0443 (Ctrl+V).',
+    undoRedoGroupAria: '\u0406\u0441\u0442\u043e\u0440\u0456\u044f \u0437\u043c\u0456\u043d \u043f\u043b\u0430\u043d\u0443',
+    undoPlan: '\u0412\u0456\u0434\u043c\u0456\u043d\u0438\u0442\u0438',
+    undoPlanTitle:
+      '\u0412\u0456\u0434\u043c\u0456\u043d\u0438\u0442\u0438 \u043e\u0441\u0442\u0430\u043d\u043d\u044e \u0437\u043c\u0456\u043d\u0443 \u043d\u0430 \u043f\u043b\u0430\u043d\u0456 (Ctrl+Z \u0430\u0431\u043e \u2318+Z).',
+    redoPlan: '\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0438',
+    redoPlanTitle:
+      '\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0438 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0443 \u0434\u0456\u044e (Ctrl+Shift+Z, Ctrl+Y \u0430\u0431\u043e \u2318+Shift+Z).',
     planMapActionsAria:
       'Дії на 2D-плані: рамка, копія, вставка, вимір, видалити виділене, очистити всю вправу',
     deleteSelection: 'Видалити виділене',
@@ -685,6 +698,11 @@ export const enMessages: MessageTree = {
       'Copy selection (Ctrl+C). Also saved to the internal buffer; tries system clipboard when allowed.',
     pasteSelection: 'Paste',
     pasteSelectionTitle: 'Paste copy centered in the current view (Ctrl+V).',
+    undoRedoGroupAria: 'Plan edit history',
+    undoPlan: 'Undo',
+    undoPlanTitle: 'Undo last plan change (Ctrl+Z or ⌘+Z).',
+    redoPlan: 'Redo',
+    redoPlanTitle: 'Redo undone change (Ctrl+Shift+Z, Ctrl+Y, or ⌘+Shift+Z).',
     planMapActionsAria:
       '2D plan actions: marquee, copy, paste, measure, delete selection, clear entire exercise',
     deleteSelection: 'Delete selection',

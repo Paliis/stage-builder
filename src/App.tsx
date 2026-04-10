@@ -9,6 +9,7 @@ import {
   type ChangeEvent,
   type CSSProperties,
 } from 'react'
+import { useStore } from 'zustand/react'
 import { useShallow } from 'zustand/react/shallow'
 import { SessionDraftPersist } from './application/SessionDraftPersist'
 import { clearSessionDraftStorage } from './application/sessionDraft'
@@ -79,6 +80,15 @@ export default function App() {
   const replaceStageState = useStageStore((s) => s.replaceStageState)
   const resetSceneToDefaults = useStageStore((s) => s.resetSceneToDefaults)
   const pasteCloneEntities = useStageStore((s) => s.pasteCloneEntities)
+
+  const canUndo = useStore(useStageStore.temporal, (s) => s.pastStates.length > 0)
+  const canRedo = useStore(useStageStore.temporal, (s) => s.futureStates.length > 0)
+  const runUndo = useCallback(() => {
+    useStageStore.temporal.getState().undo()
+  }, [])
+  const runRedo = useCallback(() => {
+    useStageStore.temporal.getState().redo()
+  }, [])
 
   const briefing = useBriefingStore(
     useShallow((s) => ({
@@ -497,15 +507,17 @@ export default function App() {
   }, [mobileMenuOpen])
 
   useEffect(() => {
+    const inFormField = (t: EventTarget | null) =>
+      t instanceof HTMLElement && t.closest('input, textarea, select, [contenteditable="true"]') !== null
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      const isInput = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement
-      if (isInput) return
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+      if (inFormField(e.target)) return
+      if ((e.ctrlKey || e.metaKey) && e.code === 'KeyZ' && !e.shiftKey) {
         e.preventDefault()
         useStageStore.temporal.getState().undo()
       } else if (
-        ((e.ctrlKey || e.metaKey) && e.key === 'y') ||
-        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'z')
+        ((e.ctrlKey || e.metaKey) && e.code === 'KeyY') ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === 'KeyZ')
       ) {
         e.preventDefault()
         useStageStore.temporal.getState().redo()
@@ -535,6 +547,34 @@ export default function App() {
           onClick={() => setViewMode('3d')}
         >
           {tree.view.visual3d}
+        </button>
+      </div>
+      <div className="app__undo-redo" role="group" aria-label={tree.view.undoRedoGroupAria}>
+        <button
+          type="button"
+          className="app__undo-redo-btn"
+          aria-label={tree.view.undoPlan}
+          title={tree.view.undoPlanTitle}
+          disabled={!canUndo}
+          onClick={runUndo}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M3 7v6h6" />
+            <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          className="app__undo-redo-btn"
+          aria-label={tree.view.redoPlan}
+          title={tree.view.redoPlanTitle}
+          disabled={!canRedo}
+          onClick={runRedo}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M21 7v6h-6" />
+            <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7" />
+          </svg>
         </button>
       </div>
       <label className="app__field-size" title={tree.toolbar.fieldSizeHint}>
