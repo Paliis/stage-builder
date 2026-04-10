@@ -39,15 +39,17 @@ async function generateQrDataUrl(url: string): Promise<string> {
 
 const TABLE_FONT_SIZE = 9
 const TABLE_CELL_PADDING = { top: 2.2, right: 3, bottom: 2.2, left: 3 }
-/** Мінімальний зазор під заголовком перед знімком (QR накладається зверху, не зсуває знімок). */
+/** Мінімальний зазор під заголовком перед знімком. */
 const GAP_TITLE_IMAGE = 2
-const GAP_IMAGE_TABLE = 5
+/** Після знімка: бренд-текст (під картинкою), потім зазор перед таблицею. */
+const GAP_IMAGE_BRAND = 2
+const GAP_BRAND_TABLE = 5
 const GAP_TABLE_FOOTER = 3
 /** Відступ знімка від країв колонки PDF (1 = майже на всю ширину). */
 const IMAGE_SHRINK = 1
 const QR_SIZE = 14
-/** Горизонтальний зазор між заголовком і QR у верхньому рядку. */
-const QR_GAP_MM = 5
+/** Відступ QR від краю знімка (мм), коли QR у правому верхньому куті PNG. */
+const QR_INSET_MM = 1.2
 /** Рамка навколо знімка сцени (мм), щоб у PDF було видно межі кадру як у прев’ю. */
 const SNAPSHOT_FRAME_LINE_MM = 0.35
 const SNAPSHOT_FRAME_RADIUS_MM = 0.9
@@ -88,7 +90,56 @@ function buildTableOpts(
   }
 }
 
-function drawPdfQrOverlay(
+/**
+ * QR у правому верхньому куті знімка (білий фон), без тексту — текст під картинкою, щоб не наїзджав на PNG.
+ */
+function drawPdfQrOnSnapshot(
+  doc: InstanceType<typeof jsPDF>,
+  qrDataUrl: string,
+  imgX: number,
+  imgY: number,
+  imgW: number,
+): void {
+  const qrX = imgX + imgW - QR_SIZE - QR_INSET_MM
+  const qrY = imgY + QR_INSET_MM
+  doc.setFillColor(255, 255, 255)
+  doc.roundedRect(qrX - 0.6, qrY - 0.4, QR_SIZE + 1.2, QR_SIZE + 1, 0.8, 0.8, 'F')
+  doc.addImage(qrDataUrl, 'PNG', qrX, qrY, QR_SIZE, QR_SIZE)
+}
+
+/** Висота блоку «згенеровано + URL» під знімком (мм), узгоджено з `drawPdfBrandBelowSnapshot`. */
+function measureBrandBlockHeightMm(doc: InstanceType<typeof jsPDF>): number {
+  const urlLines = doc.splitTextToSize(APP_URL, 42) as string[]
+  return 4 + urlLines.length * 3 + 2
+}
+
+/** Текст під знімком, вирівняний вправо по полю контенту. */
+function drawPdfBrandBelowSnapshot(
+  doc: InstanceType<typeof jsPDF>,
+  pdf: BriefingPdfExportStrings,
+  pageW: number,
+  margin: number,
+  yTop: number,
+): void {
+  const brandRight = pageW - margin
+  const urlLines = doc.splitTextToSize(APP_URL, 42) as string[]
+  doc.setFont(PDF_FONT_FAMILY, 'normal')
+  doc.setFontSize(6.5)
+  doc.setTextColor(107, 114, 128)
+  let y = yTop
+  doc.text(pdf.generatedBy, brandRight, y, { align: 'right' })
+  y += 4
+  doc.setFontSize(6)
+  doc.setTextColor(148, 163, 184)
+  for (const line of urlLines) {
+    doc.text(line, brandRight, y, { align: 'right' })
+    y += 3
+  }
+  doc.setTextColor(0, 0, 0)
+}
+
+/** Якщо знімка немає — QR і бренд лишаються у «шапці» сторінки (немає PNG під текстом). */
+function drawPdfQrHeaderWhenNoSnapshot(
   doc: InstanceType<typeof jsPDF>,
   qrDataUrl: string,
   pdf: BriefingPdfExportStrings,
@@ -149,8 +200,8 @@ export async function exportBriefingPdf(opts: {
     qrDataUrl = null
   }
 
-  /* ── Заголовок (текст ліворуч, справа резерв під QR — без накладання на назву) ── */
-  const titleMaxW = contentW - (qrDataUrl ? QR_SIZE + QR_GAP_MM : 0)
+  /* ── Заголовок на всю ширину контенту; QR на знімку або в шапці, якщо знімка немає. ── */
+  const titleMaxW = contentW
   doc.setFont(PDF_FONT_FAMILY, 'bold')
   doc.setFontSize(14)
   const titleLines = doc.splitTextToSize(briefing.documentTitle, titleMaxW) as string[]
@@ -168,12 +219,15 @@ export async function exportBriefingPdf(opts: {
 
   const tableH = measureTableHeight(tableBody, margin, contentW, tableMarginBottomMm)
 
+  const brandBelowImageH =
+    snapshotDataUrl && qrDataUrl ? GAP_IMAGE_BRAND + measureBrandBlockHeightMm(doc) + GAP_BRAND_TABLE : GAP_BRAND_TABLE
+
   const maxImgH =
     pageH -
     margin -
     yAfterTitle -
     GAP_TITLE_IMAGE -
-    GAP_IMAGE_TABLE -
+    brandBelowImageH -
     tableH -
     GAP_TABLE_FOOTER
 
@@ -213,9 +267,14 @@ export async function exportBriefingPdf(opts: {
       )
       doc.setDrawColor(0, 0, 0)
       doc.setLineWidth(0.2)
-      cursorY += finalH + GAP_IMAGE_TABLE
-
-      if (qrDataUrl) drawPdfQrOverlay(doc, qrDataUrl, pdf, pageW, margin)
+      cursorY += finalH
+      if (qrDataUrl) {
+        drawPdfQrOnSnapshot(doc, qrDataUrl, imgX, cursorY - finalH, finalW)
+        const brandTop = cursorY + GAP_IMAGE_BRAND
+        drawPdfBrandBelowSnapshot(doc, pdf, pageW, margin, brandTop)
+        cursorY = brandTop + measureBrandBlockHeightMm(doc)
+      }
+      cursorY += GAP_BRAND_TABLE
     } catch {
       doc.setFont(PDF_FONT_FAMILY, 'normal')
       doc.setFontSize(9)
@@ -223,7 +282,7 @@ export async function exportBriefingPdf(opts: {
       doc.text(pdf.noSnapshot, pageW / 2, cursorY + 4, { align: 'center' })
       doc.setTextColor(0, 0, 0)
       cursorY += 8
-      if (qrDataUrl) drawPdfQrOverlay(doc, qrDataUrl, pdf, pageW, margin)
+      if (qrDataUrl) drawPdfQrHeaderWhenNoSnapshot(doc, qrDataUrl, pdf, pageW, margin)
     }
   } else {
     doc.setFont(PDF_FONT_FAMILY, 'normal')
@@ -232,7 +291,7 @@ export async function exportBriefingPdf(opts: {
     doc.text(pdf.noSnapshot, pageW / 2, cursorY + 4, { align: 'center' })
     doc.setTextColor(0, 0, 0)
     cursorY += 8
-    if (qrDataUrl) drawPdfQrOverlay(doc, qrDataUrl, pdf, pageW, margin)
+    if (qrDataUrl) drawPdfQrHeaderWhenNoSnapshot(doc, qrDataUrl, pdf, pageW, margin)
   }
 
   /* ── Table ── */
