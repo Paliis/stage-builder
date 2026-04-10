@@ -104,17 +104,23 @@ function parseMetalRectSideCm(raw: unknown): MetalPlateRectSideCm | undefined {
   return undefined
 }
 
+/** Старий ідентифікатор до розділення на три висоти; файли з ним відкриваються як «низ 1 м». */
+const LEGACY_PAPER_IPSC_TWO_POST = 'paperIpscTwoPost'
+
 function parseTarget(raw: unknown, idx: number): Target | null {
   if (typeof raw !== 'object' || raw === null) return null
   const o = raw as Record<string, unknown>
   const id = typeof o.id === 'string' ? o.id : ''
   const type = o.type
-  if (typeof type !== 'string' || !TARGET_TYPE_SET.has(type as TargetType)) return null
+  if (typeof type !== 'string') return null
+  const normalizedType =
+    type === LEGACY_PAPER_IPSC_TWO_POST ? ('paperIpscTwoPostStand100' as const) : (type as TargetType)
+  if (!TARGET_TYPE_SET.has(normalizedType)) return null
   const isNoShoot = Boolean(o.isNoShoot)
   if (!isVec2(o.position)) return null
   const rotationRad = o.rotationRad
   if (typeof rotationRad !== 'number' || !Number.isFinite(rotationRad)) return null
-  const tt = type as TargetType
+  const tt = normalizedType
   const metalRectSideCm = isSquareSteelPlateTargetType(tt)
     ? parseMetalRectSideCm(o.metalRectSideCm)
     : undefined

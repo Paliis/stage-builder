@@ -9,7 +9,9 @@ export type WeaponClass = 'handgun' | 'rifle' | 'shotgun'
 /** Один набір для всіх класів зброї. */
 export const ALL_TARGET_TYPES: readonly TargetType[] = [
   'paperIpsc',
-  'paperIpscTwoPost',
+  'paperIpscTwoPostGround',
+  'paperIpscTwoPostStand50',
+  'paperIpscTwoPostStand100',
   'paperA4',
   'paperMiniIpsc',
   'metalPlate',

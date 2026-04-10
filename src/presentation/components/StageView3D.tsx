@@ -36,7 +36,9 @@ import {
   WOOD_TABLE_HEIGHT_M,
 } from '../../domain/propGeometry'
 import {
+  isPaperIpscTwoPostTargetType,
   isPaperTargetType,
+  paperIpscTwoPostFaceBottomHeightM,
   isSquareSteelPlateTargetType,
   popperBaseOnlyLocal,
   popperHeadCenterLocal,
@@ -508,11 +510,9 @@ function Target3D({ t }: { t: Target }) {
   const [x, , z] = stageToThreeXZ(t.position, field)
   const c = targetColor(t)
   const { w, h } = targetFaceSizeM(t)
-  const standH =
-    t.type === 'paperIpsc' ||
-    t.type === 'paperIpscTwoPost' ||
-    t.type === 'paperA4' ||
-    t.type === 'paperMiniIpsc'
+  const standH = isPaperIpscTwoPostTargetType(t.type)
+    ? paperIpscTwoPostFaceBottomHeightM(t.type)
+    : t.type === 'paperIpsc' || t.type === 'paperA4' || t.type === 'paperMiniIpsc'
       ? PAPER_TARGET_STAND_HEIGHT_M
       : isSquareSteelPlateTargetType(t.type)
         ? steelPlateStandHeightM(t.type)
@@ -610,7 +610,7 @@ function Target3D({ t }: { t: Target }) {
   if (paperFaceGeo) {
     return (
       <group position={[x, 0, z]} rotation={[0, t.rotationRad, 0]}>
-        {t.type === 'paperIpscTwoPost' ? (
+        {isPaperIpscTwoPostTargetType(t.type) ? (
           <PaperTwoPostStands3D standH={standH} />
         ) : (
           <TargetStandPost standH={standH} />

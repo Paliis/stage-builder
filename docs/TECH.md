@@ -64,14 +64,14 @@
 
 Повний перелік — **`TargetType`** у `models.ts`. Коротко:
 
-- **Папір:** `paperIpsc` (B2), `paperIpscTwoPost` (той самий B2, дві стійки в 3D / дві підошви на плані), `paperA4`, `paperMiniIpsc` (номінал B3).
+- **Папір:** `paperIpsc` (B2), `paperIpscTwoPostGround` / `paperIpscTwoPostStand50` / `paperIpscTwoPostStand100` (той самий B2, дві стійки; низ лиця ≈0,1 м / 0,5 м / 1 м у 3D), `paperA4`, `paperMiniIpsc` (номінал B3). У старих `.stage.json` може траплятися застарілий тип `paperIpscTwoPost` — при завантаженні мапиться на `paperIpscTwoPostStand100`.
 - **Метал:** `metalPlate` (квадрат Appendix C3: 15 / 20 / 30 см, поле `metalRectSideCm`), `metalPlateStand50`, `metalPlateStand100`, `popper`, `miniPopper`.
 - **Кераміка:** `ceramicPlate` (радіус і колір — `ceramicPlateSpec.ts`).
 - **Ківаки:** `swingerSinglePaper` / `Double`, `swingerSingleCeramic` / `Double` (геометрія — `swingerGeometry.ts`).
 
 Допоміжна логіка:
 
-- **`targetSpecs.ts`** — `isPaperTargetType`, `isCeramicTargetType`, `isSquareSteelPlateTargetType`, тощо.
+- **`targetSpecs.ts`** — `isPaperTargetType`, `isPaperIpscTwoPostTargetType`, `isCeramicTargetType`, `isSquareSteelPlateTargetType`, тощо.
 - **`computeMinRounds.ts`** — евристика мінімуму пострілів (папір ×2, сталь/кераміка ×1; подвійний ківак = дві одиниці).
 - **`targetSummary.ts`** — текст для брифінгу/PDF (метал, кераміка, папір, NS).
 - **`countStageTargetUnits`** — одиниці на плані для підказок UI.

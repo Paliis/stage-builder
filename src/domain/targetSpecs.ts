@@ -1,7 +1,7 @@
 /**
  * Габарити мішеней у метрах (IPSC / узгоджені додатки).
  *
- * Папір IPSC — зовнішній контур B2 (45×57 см). `paperIpscTwoPost` — той самий контур, дві стійки в 3D і дві підошви на плані. Mini IPSC — B3 номінал 30×37,5 см (пропорційно стиснутий B2). A4 — масштаб 1,5× від 210×297 мм (візуально крупніше на плані).
+ * Папір IPSC — зовнішній контур B2 (45×57 см). `paperIpscTwoPostGround` / `Stand50` / `Stand100` — той самий контур, дві стійки; висота нижнього краю лиця як у металу (≈0,1 м / 0,5 м / 1 м). Mini IPSC — B3 номінал 30×37,5 см. A4 — масштаб 1,5× від 210×297 мм.
  * Метал Appendix C3 — квадрат 15/20/30 см; варіанти зі стійкою 50 см / 1 м (низ лиця у 3D). Нова мішень за замовч. 15 см; без поля — 30 см.
  * Керамічна тарілка Ø 110 мм (див. ceramicPlateSpec). Поппери C2.
  */
@@ -21,6 +21,25 @@ const CM = 0.01
 /** Квадратна сталева пластина (на підлозі або на стійці 50 см / 1 м у 3D). */
 export function isSquareSteelPlateTargetType(type: TargetType): boolean {
   return type === 'metalPlate' || type === 'metalPlateStand50' || type === 'metalPlateStand100'
+}
+
+/** Паперова IPSC на двох стійках (будь-яка з трьох висот нижнього краю лиця). */
+export function isPaperIpscTwoPostTargetType(type: TargetType): boolean {
+  return (
+    type === 'paperIpscTwoPostGround' ||
+    type === 'paperIpscTwoPostStand50' ||
+    type === 'paperIpscTwoPostStand100'
+  )
+}
+
+/**
+ * Висота нижнього краю лиця над «землею» у 3D (м), узгоджено з `steelPlateStandHeightM` для металу.
+ */
+export function paperIpscTwoPostFaceBottomHeightM(type: TargetType): number {
+  if (type === 'paperIpscTwoPostGround') return 0.1
+  if (type === 'paperIpscTwoPostStand50') return 0.5
+  if (type === 'paperIpscTwoPostStand100') return 1.0
+  return 1.0
 }
 
 function metalPlateSquareSideM(t: Target): number {
@@ -124,7 +143,9 @@ function polygonMaxRadiusM(pts: Vec2[]): number {
 export function targetFootprintLocalM(t: Target): Vec2[] {
   switch (t.type) {
     case 'paperIpsc':
-    case 'paperIpscTwoPost':
+    case 'paperIpscTwoPostGround':
+    case 'paperIpscTwoPostStand50':
+    case 'paperIpscTwoPostStand100':
       return ipscClassicOutlineLocalM()
     case 'paperMiniIpsc':
       return ipscMiniOutlineLocalM()
@@ -285,7 +306,9 @@ export function targetFaceOutlineLocalMForType(type: TargetType): Vec2[] | null 
   )
     return null
   if (type === 'paperMiniIpsc') return ipscMiniOutlineLocalM()
-  if (type === 'paperIpscTwoPost') return ipscClassicOutlineLocalM()
+  if (type === 'paperIpscTwoPostGround' || type === 'paperIpscTwoPostStand50' || type === 'paperIpscTwoPostStand100') {
+    return ipscClassicOutlineLocalM()
+  }
   return targetFaceOutlineLocalM({ type } as Target)
 }
 
@@ -344,7 +367,7 @@ export function paperIpscTwoPostBasesLocalM(): Vec2[][] {
 }
 
 export function targetPaperTwoPostBasesWorld(t: Target): Vec2[][] | null {
-  if (t.type !== 'paperIpscTwoPost') return null
+  if (!isPaperIpscTwoPostTargetType(t.type)) return null
   const bases = paperIpscTwoPostBasesLocalM()
   const { x: cx, y: cy } = t.position
   const rot = t.rotationRad
@@ -396,7 +419,9 @@ export function targetHandleDistanceM(t: Target): number {
 export function targetFaceSizeM(t: Target): { w: number; h: number } {
   switch (t.type) {
     case 'paperIpsc':
-    case 'paperIpscTwoPost':
+    case 'paperIpscTwoPostGround':
+    case 'paperIpscTwoPostStand50':
+    case 'paperIpscTwoPostStand100':
       return { w: 450 * MM, h: 570 * MM }
     case 'paperMiniIpsc':
       return { w: 300 * MM, h: 375 * MM }

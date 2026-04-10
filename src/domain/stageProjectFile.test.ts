@@ -45,4 +45,32 @@ describe('stageProjectFile', () => {
   it('rejects invalid JSON', () => {
     expect(parseStageProjectJson('not json').ok).toBe(false)
   })
+
+  it('migrates legacy paperIpscTwoPost to paperIpscTwoPostStand100', () => {
+    const raw = {
+      format: STAGE_PROJECT_FORMAT,
+      version: STAGE_PROJECT_VERSION,
+      stage: {
+        name: 'T',
+        weaponClass: 'handgun',
+        fieldSizeM: { x: 30, y: 40 },
+        fieldGroundCover3d: 'grass',
+        targets: [
+          {
+            id: 'x',
+            type: 'paperIpscTwoPost',
+            isNoShoot: false,
+            position: { x: 1, y: 2 },
+            rotationRad: 0,
+          },
+        ],
+        props: [],
+      },
+      briefing: defaultStageBriefing(),
+    }
+    const parsed = parseStageProjectJson(JSON.stringify(raw))
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    expect(parsed.data.stage.targets[0]!.type).toBe('paperIpscTwoPostStand100')
+  })
 })
