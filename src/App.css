@@ -966,7 +966,6 @@
   position: relative;
   flex: 0 0 auto;
   align-self: stretch;
-  min-height: unset;
   /* Для cqw/cqh навколо 3D PDF-кропу (вписаний прямокутник у картку). */
   container-type: size;
   container-name: stage-card;
@@ -978,6 +977,10 @@
   max-width: 100%;
   box-sizing: border-box;
   aspect-ratio: unset;
+  /**
+   * Якщо 100cqw === 0 до розкладки, height стає 0 → WebGL 0×0. min-height рятує картку.
+   */
+  min-height: min(48dvh, 32rem);
   height: min(var(--_plan-cap), calc(100cqw * var(--stage-card-h, 35.7) / var(--stage-card-w, 30)));
 }
 
@@ -1051,10 +1054,12 @@
   border-radius: 6px;
 }
 
-/* Центруємо 3D (особливо режим PDF): рамка «як у PDF» — це вписаний прямокутник, а не на всю ширину сітки. */
+/* 3D: stretch + relative; PDF центрується через .app__r3f-canvas-outer--pdf { align-self: center } */
 .app__main--stage-card .app__stage-print-frame {
+  position: relative;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  min-height: min(40dvh, 26rem);
 }
 
 /**
@@ -1072,19 +1077,33 @@
   aspect-ratio: var(--stage-aspect-w, 30) / var(--stage-aspect-h, 80);
 }
 
-/* Обгортка 3D: завжди є, щоб не перемонтовувати Canvas при перемиканні режимів. */
-.app__main--stage-card .app__r3f-canvas-outer {
-  flex: 1 1 0;
+/* Огляд/стрілок: заповнює картку (не PDF). */
+.app__main--stage-card .app__r3f-canvas-outer:not(.app__r3f-canvas-outer--pdf) {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  min-width: 0;
+  flex: none;
   width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.app__main--stage-card .app__r3f-canvas-measure {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  min-width: 0;
+  position: relative;
 }
 
 /* Режим «як у PDF»: той самий aspect, що й png; рамка — навколо вписаного кадру, не на всю ширину сітки.
    Inset box-shadow (не outline) — інакше межа може обрізатись через overflow:hidden у .app__main. */
 .app__main--stage-card .app__r3f-canvas-outer--pdf {
+  display: flex;
+  flex-direction: column;
   flex: 0 1 auto;
   align-self: center;
   min-width: 0;

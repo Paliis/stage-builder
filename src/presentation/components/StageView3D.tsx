@@ -1,12 +1,15 @@
 import { OrbitControls } from '@react-three/drei'
-import { Canvas, useThree } from '@react-three/fiber'
+import { Canvas, useThree, type RootState } from '@react-three/fiber'
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
+  type ComponentProps,
   type CSSProperties,
   type ReactNode,
 } from 'react'
@@ -1552,6 +1555,56 @@ function StageView3DCanvasShell({
   )
 }
 
+type R3fCanvasProps = ComponentProps<typeof Canvas>
+
+/**
+ * Явні піксельні розміри після ResizeObserver — інакше R3F у частини flex/container-ланцюгів бачить 0×0.
+ */
+function StageView3DCanvasSized({
+  canvasProps,
+  children,
+}: {
+  canvasProps: Omit<R3fCanvasProps, 'children'>
+  children: ReactNode
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [dims, setDims] = useState<{ w: number; h: number }>(() => ({
+    w: typeof window !== 'undefined' ? Math.max(320, Math.floor(window.innerWidth * 0.45)) : 800,
+    h: typeof window !== 'undefined' ? Math.max(240, Math.floor(window.innerHeight * 0.42)) : 500,
+  }))
+
+  useLayoutEffect(() => {
+    const el = wrapRef.current
+    if (!el) return
+    const read = () => {
+      const r = el.getBoundingClientRect()
+      const w = Math.max(2, Math.round(r.width))
+      const h = Math.max(2, Math.round(r.height))
+      setDims((d) => (d.w === w && d.h === h ? d : { w, h }))
+    }
+    read()
+    const ro = new ResizeObserver(read)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  return (
+    <div ref={wrapRef} className="app__r3f-canvas-measure">
+      <Canvas
+        {...canvasProps}
+        style={{
+          ...canvasProps.style,
+          display: 'block',
+          width: dims.w,
+          height: dims.h,
+        }}
+      >
+        {children}
+      </Canvas>
+    </div>
+  )
+}
+
 export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(function StageView3D(
   { targets, props, cameraMode },
   ref,
@@ -1561,6 +1614,27 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
   const cameraRef = useRef<PerspectiveCamera | null>(null)
   const { widthM, heightM } = useStageFieldM()
   const pdfAspect = stageViewportAspectRatio(widthM, heightM)
+
+  const onGlCreated = useCallback((state: RootState) => {
+    const { gl, scene, camera } = state
+    glRef.current = gl
+    sceneRef.current = scene
+    cameraRef.current = camera instanceof PerspectiveCamera ? camera : null
+    gl.setClearColor('#9fd3e8', 1)
+    gl.shadowMap.type = THREE.PCFSoftShadowMap
+  }, [])
+
+  const canvasProps: Omit<R3fCanvasProps, 'children'> = useMemo(
+    () => ({
+      className: 'stage-canvas-3d app__r3f-canvas-wrap',
+      shadows: true,
+      camera: { position: [11, 14.5, 18], fov: 48, near: 0.15, far: 240 },
+      gl: { preserveDrawingBuffer: true, antialias: true, alpha: false },
+      dpr: [1, 1.75] as [number, number],
+      onCreated: onGlCreated,
+    }),
+    [onGlCreated],
+  )
 
   useImperativeHandle(ref, () => ({
     capturePngDataUrl: () => {
@@ -1595,21 +1669,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
 
   return (
     <StageView3DCanvasShell cameraMode={cameraMode} pdfAspect={pdfAspect}>
-      <Canvas
-        className="stage-canvas-3d app__r3f-canvas-wrap"
-        style={{ display: 'block' }}
-        shadows
-        camera={{ position: [11, 14.5, 18], fov: 48, near: 0.15, far: 240 }}
-        gl={{ preserveDrawingBuffer: true, antialias: true, alpha: false }}
-        dpr={[1, 1.75]}
-        onCreated={({ gl, scene, camera }) => {
-          glRef.current = gl
-          sceneRef.current = scene
-          cameraRef.current = camera instanceof PerspectiveCamera ? camera : null
-          gl.setClearColor('#9fd3e8', 1)
-          gl.shadowMap.type = THREE.PCFSoftShadowMap
-        }}
-      >
+      <StageView3DCanvasSized canvasProps={canvasProps}>
         <StageNavigator mode={cameraMode} />
         <ambientLight intensity={0.52} />
         <StageSunLight />
@@ -1621,7 +1681,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
         {targetsDrawOrder(targets).map((t) => (
           <Target3D key={t.id} t={t} />
         ))}
-      </Canvas>
+      </StageView3DCanvasSized>
     </StageView3DCanvasShell>
   )
 })
