@@ -7,6 +7,7 @@ import {
   newRingId,
   reclampPenaltyZoneSet,
   resolveClosedPenaltyRing,
+  type PenaltyRingData,
   type PenaltyZoneSet,
 } from '../domain/penaltyZones'
 import { isSquareSteelPlateTargetType } from '../domain/targetSpecs'
@@ -16,6 +17,7 @@ import {
   clampVec2ToField,
   DEFAULT_FIELD_HEIGHT_M,
   DEFAULT_FIELD_WIDTH_M,
+  GRID_SNAP_M,
   PROP_PLACEMENT_SNAP_M,
   snapVec2,
   TARGET_PLACEMENT_SNAP_M,
@@ -114,6 +116,9 @@ export type StageState = {
   setPenaltyZoneSet: (pz: PenaltyZoneSet) => void
   /** Замкнений контур: автоматично — новий полігон або дірка в існуючому (за геометрією, не «останній»). */
   addPenaltyClosedRing: (vertices: Vec2[]) => void
+  movePenaltyVertex: (polygonId: string, ringId: string, vertexIndex: number, position: Vec2) => void
+  /** Якщо після видалення вершин < 3 — зовнішній контур скидає весь полігон, дірку прибираємо. */
+  removePenaltyVertex: (polygonId: string, ringId: string, vertexIndex: number) => void
 }
 
 export const useStageStore = create<StageState>()(temporal((set) => ({
@@ -209,6 +214,74 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
           ),
         },
       }
+    }),
+
+  movePenaltyVertex: (polygonId, ringId, vertexIndex, position) =>
+    set((s) => {
+      const fw = s.fieldSizeM.x
+      const fh = s.fieldSizeM.y
+      const pos = snapVec2(clampVec2ToField(position, 0, fw, fh), GRID_SNAP_M)
+      const pi = s.penaltyZoneSet.polygons.findIndex((p) => p.id === polygonId)
+      if (pi < 0) return s
+      const poly = s.penaltyZoneSet.polygons[pi]!
+      const patchRing = (ring: PenaltyRingData): PenaltyRingData | null => {
+        if (ring.id !== ringId) return null
+        if (vertexIndex < 0 || vertexIndex >= ring.vertices.length) return null
+        const vertices = ring.vertices.map((v, i) => (i === vertexIndex ? { ...pos } : { ...v }))
+        return { ...ring, vertices }
+      }
+      const outerP = patchRing(poly.outer)
+      if (outerP) {
+        const next = [...s.penaltyZoneSet.polygons]
+        next[pi] = { ...poly, outer: outerP }
+        return { penaltyZoneSet: { polygons: next } }
+      }
+      const hi = poly.holes.findIndex((h) => h.id === ringId)
+      if (hi < 0) return s
+      const holeP = patchRing(poly.holes[hi]!)
+      if (!holeP) return s
+      const holes = poly.holes.map((h, i) => (i === hi ? holeP : h))
+      const next = [...s.penaltyZoneSet.polygons]
+      next[pi] = { ...poly, holes }
+      return { penaltyZoneSet: { polygons: next } }
+    }),
+
+  removePenaltyVertex: (polygonId, ringId, vertexIndex) =>
+    set((s) => {
+      const pi = s.penaltyZoneSet.polygons.findIndex((p) => p.id === polygonId)
+      if (pi < 0) return s
+      const poly = s.penaltyZoneSet.polygons[pi]!
+      const spliceRing = (ring: PenaltyRingData): PenaltyRingData | 'drop' | null => {
+        if (ring.id !== ringId) return null
+        if (vertexIndex < 0 || vertexIndex >= ring.vertices.length) return null
+        const vertices = ring.vertices.filter((_, i) => i !== vertexIndex)
+        if (vertices.length < 3) return 'drop'
+        return { ...ring, vertices }
+      }
+      const o = spliceRing(poly.outer)
+      if (o === 'drop') {
+        const next = s.penaltyZoneSet.polygons.filter((p) => p.id !== polygonId)
+        return { penaltyZoneSet: { polygons: next } }
+      }
+      if (o) {
+        const next = [...s.penaltyZoneSet.polygons]
+        next[pi] = { ...poly, outer: o }
+        return { penaltyZoneSet: { polygons: next } }
+      }
+      const hi = poly.holes.findIndex((h) => h.id === ringId)
+      if (hi < 0) return s
+      const h = spliceRing(poly.holes[hi]!)
+      if (h === null) return s
+      if (h === 'drop') {
+        const holes = poly.holes.filter((_, i) => i !== hi)
+        const next = [...s.penaltyZoneSet.polygons]
+        next[pi] = { ...poly, holes }
+        return { penaltyZoneSet: { polygons: next } }
+      }
+      const holes = poly.holes.map((x, i) => (i === hi ? h : x))
+      const next = [...s.penaltyZoneSet.polygons]
+      next[pi] = { ...poly, holes }
+      return { penaltyZoneSet: { polygons: next } }
     }),
 
   // Залишено для JSON вправи; UI перемикання тимчасово прибрано.

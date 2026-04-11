@@ -75,18 +75,19 @@ const ROTATION_SNAP_RAD = Math.PI / 36
 
 type Vec2 = { x: number; y: number }
 
-/** Виділення на плані: одне або кілька (рамка за центром об’єкта). */
+/** Виділення на плані: одне або кілька (рамка за центром об’єкта); вершина контуру штрафної зони. */
 export type PlanSelectState =
   | { mode: 'none' }
   | { mode: 'single'; kind: 'target' | 'prop'; id: string }
   | { mode: 'multi'; targetIds: string[]; propIds: string[] }
+  | { mode: 'penaltyVertex'; polygonId: string; ringId: string; vertexIndex: number }
 
 function snapshotEntitiesForCopy(
   planSelect: PlanSelectState,
   targets: readonly Target[],
   props: readonly Prop[],
 ): { targets: Target[]; props: Prop[] } | null {
-  if (planSelect.mode === 'none') return null
+  if (planSelect.mode === 'none' || planSelect.mode === 'penaltyVertex') return null
   if (planSelect.mode === 'single') {
     if (planSelect.kind === 'target') {
       const t = targets.find((x) => x.id === planSelect.id)
@@ -115,6 +116,13 @@ type MarqueeDragState = {
 
 type DragMode =
   | { mode: 'move'; kind: 'target' | 'prop'; id: string; grabOffset: { x: number; y: number } }
+  | {
+      mode: 'movePenaltyVertex'
+      polygonId: string
+      ringId: string
+      vertexIndex: number
+      grabOffset: { x: number; y: number }
+    }
   | { mode: 'rotate'; kind: 'target' | 'prop'; id: string }
   | { mode: 'stretchFaultLine'; id: string; anchor: 'neg' | 'pos' }
 
@@ -345,6 +353,43 @@ function pickHandle(wx: number, wy: number, h: Vec2, pxPerMeter: number): boolea
   const dx = wx - h.x
   const dy = wy - h.y
   return dx * dx + dy * dy <= r * r
+}
+
+/** Найближча вершина контуру штрафної зони (світові м); той самий радіус, що й pickHandle. */
+function pickPenaltyVertexAt(
+  wx: number,
+  wy: number,
+  pxPerMeter: number,
+  pz: PenaltyZoneSet,
+): { polygonId: string; ringId: string; vertexIndex: number } | null {
+  const touch = TOUCH_PICK_MIN_PX / Math.max(pxPerMeter, 1e-6)
+  const r = Math.max(0.14, touch)
+  const r2 = r * r
+  let best: { polygonId: string; ringId: string; vertexIndex: number; d2: number } | null = null
+  for (const poly of pz.polygons) {
+    for (let i = 0; i < poly.outer.vertices.length; i++) {
+      const v = poly.outer.vertices[i]!
+      const dx = wx - v.x
+      const dy = wy - v.y
+      const d2 = dx * dx + dy * dy
+      if (d2 <= r2 && (!best || d2 < best.d2)) {
+        best = { polygonId: poly.id, ringId: poly.outer.id, vertexIndex: i, d2 }
+      }
+    }
+    for (const h of poly.holes) {
+      for (let i = 0; i < h.vertices.length; i++) {
+        const v = h.vertices[i]!
+        const dx = wx - v.x
+        const dy = wy - v.y
+        const d2 = dx * dx + dy * dy
+        if (d2 <= r2 && (!best || d2 < best.d2)) {
+          best = { polygonId: poly.id, ringId: h.id, vertexIndex: i, d2 }
+        }
+      }
+    }
+  }
+  if (!best) return null
+  return { polygonId: best.polygonId, ringId: best.ringId, vertexIndex: best.vertexIndex }
 }
 
 function targetFill(type: Target['type'], isNoShoot: boolean): string {
@@ -1428,6 +1473,47 @@ function drawPenaltyDraftPolyline(
   ctx.restore()
 }
 
+function drawPenaltyVertexHandles(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  pz: PenaltyZoneSet,
+  planSelect: PlanSelectState,
+) {
+  const sel =
+    planSelect.mode === 'penaltyVertex'
+      ? {
+          polygonId: planSelect.polygonId,
+          ringId: planSelect.ringId,
+          vertexIndex: planSelect.vertexIndex,
+        }
+      : null
+  ctx.save()
+  for (const poly of pz.polygons) {
+    const drawRing = (ringId: string, verts: readonly Vec2[]) => {
+      for (let i = 0; i < verts.length; i++) {
+        const v = verts[i]!
+        const p = worldToScreen(v.x, v.y, tf)
+        const isSel =
+          sel &&
+          sel.polygonId === poly.id &&
+          sel.ringId === ringId &&
+          sel.vertexIndex === i
+        const r = isSel ? Math.max(9, 0.2 * tf.pxPerMeter) : Math.max(5, 0.11 * tf.pxPerMeter)
+        ctx.fillStyle = isSel ? 'rgba(79, 70, 229, 0.95)' : 'rgba(255, 255, 255, 0.96)'
+        ctx.strokeStyle = isSel ? '#ffffff' : 'rgba(185, 28, 28, 0.85)'
+        ctx.lineWidth = isSel ? 2.25 : 1.35
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2)
+        ctx.fill()
+        ctx.stroke()
+      }
+    }
+    drawRing(poly.outer.id, poly.outer.vertices)
+    for (const h of poly.holes) drawRing(h.id, h.vertices)
+  }
+  ctx.restore()
+}
+
 function drawSafetyZone(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
@@ -1737,6 +1823,7 @@ function redraw(
   }
 
   drawPlanSelectOutlines(ctx, tf, targets, props, planSelect)
+  drawPenaltyVertexHandles(ctx, tf, penaltyZoneSet, planSelect)
 
   if (marqueeScreen) {
     const { x1, y1, x2, y2 } = marqueeScreen
@@ -1847,6 +1934,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 ) {
   const fieldSizeM = useStageStore((s) => s.fieldSizeM)
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
+  const movePenaltyVertex = useStageStore((s) => s.movePenaltyVertex)
+  const removePenaltyVertex = useStageStore((s) => s.removePenaltyVertex)
   const fw = fieldSizeM.x
   const fh = fieldSizeM.y
   const faultLineMaxLenM = () => Math.max(fw, fh) * 4
@@ -1895,15 +1984,20 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const c =
       planSelect.mode === 'none'
         ? 0
-        : planSelect.mode === 'single'
-          ? 1
-          : planSelect.targetIds.length + planSelect.propIds.length
+        : planSelect.mode === 'multi'
+          ? planSelect.targetIds.length + planSelect.propIds.length
+          : 1
     onPlanSelectionChange?.({ empty: c === 0, count: c })
   }, [planSelect, onPlanSelectionChange])
 
   const performDeleteSelection = useCallback(() => {
     const ps = planSelectRef.current
     if (ps.mode === 'none') return
+    if (ps.mode === 'penaltyVertex') {
+      removePenaltyVertex(ps.polygonId, ps.ringId, ps.vertexIndex)
+      setPlanSelect({ mode: 'none' })
+      return
+    }
     if (ps.mode === 'multi') {
       for (const id of ps.targetIds) onDeleteTarget(id)
       for (const id of ps.propIds) onDeleteProp(id)
@@ -1912,7 +2006,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       else onDeleteProp(ps.id)
     }
     setPlanSelect({ mode: 'none' })
-  }, [onDeleteTarget, onDeleteProp])
+  }, [onDeleteTarget, onDeleteProp, removePenaltyVertex])
 
   const clearLongPressTimer = useCallback(() => {
     if (longPressTimerRef.current != null) {
@@ -2270,6 +2364,40 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         return { a: p, b: null }
       })
       return
+    }
+
+    if (!measureToolActive && !marqueeModeActive && ev.button === 0) {
+      const pv = pickPenaltyVertexAt(w.x, w.y, transformRef.current.pxPerMeter, penaltyZoneSet)
+      if (pv) {
+        ev.preventDefault()
+        clearLongPressTimer()
+        pendingEmptyPanRef.current = null
+        gridHoverRef.current = null
+        const poly = penaltyZoneSet.polygons.find((p) => p.id === pv.polygonId)
+        const ring =
+          poly?.outer.id === pv.ringId ? poly.outer : poly?.holes.find((h) => h.id === pv.ringId)
+        const vtx = ring?.vertices[pv.vertexIndex]
+        if (!poly || !ring || !vtx) return
+        setPlanSelect({
+          mode: 'penaltyVertex',
+          polygonId: pv.polygonId,
+          ringId: pv.ringId,
+          vertexIndex: pv.vertexIndex,
+        })
+        dragRef.current = {
+          mode: 'movePenaltyVertex',
+          polygonId: pv.polygonId,
+          ringId: pv.ringId,
+          vertexIndex: pv.vertexIndex,
+          grabOffset: { x: w.x - vtx.x, y: w.y - vtx.y },
+        }
+        try {
+          canvas.setPointerCapture(ev.pointerId)
+        } catch {
+          /* ignore */
+        }
+        return
+      }
     }
 
     if (placementArmed && ev.button === 0) {
@@ -2668,6 +2796,20 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
+    if (drag.mode === 'movePenaltyVertex') {
+      const raw = { x: w.x - drag.grabOffset.x, y: w.y - drag.grabOffset.y }
+      const clamped = clampVec2ToField(raw, 0, fw, fh)
+      movePenaltyVertex(
+        drag.polygonId,
+        drag.ringId,
+        drag.vertexIndex,
+        snapVec2(clamped, GRID_SNAP_M),
+      )
+      return
+    }
+
+    if (drag.mode !== 'move') return
+
     const next = { x: w.x - drag.grabOffset.x, y: w.y - drag.grabOffset.y }
     const pr = props.find((p) => p.id === drag.id)
     const tgt = targets.find((t) => t.id === drag.id)
@@ -2810,7 +2952,20 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         const c = snapVec2(clampVec2ToField(geo.position, margin, fw, fh))
         onSetPropGeometry(drag.id, c, geo.sizeM)
       }
-    } else {
+    } else if (drag.mode === 'movePenaltyVertex') {
+      const rect = canvas.getBoundingClientRect()
+      const sx = ev.clientX - rect.left
+      const sy = ev.clientY - rect.top
+      const ww = screenToWorld(sx, sy, transformRef.current)
+      const raw = { x: ww.x - drag.grabOffset.x, y: ww.y - drag.grabOffset.y }
+      const clamped = clampVec2ToField(raw, 0, fw, fh)
+      movePenaltyVertex(
+        drag.polygonId,
+        drag.ringId,
+        drag.vertexIndex,
+        snapVec2(clamped, GRID_SNAP_M),
+      )
+    } else if (drag.mode === 'move') {
       const rect = canvas.getBoundingClientRect()
       const sx = ev.clientX - rect.left
       const sy = ev.clientY - rect.top
