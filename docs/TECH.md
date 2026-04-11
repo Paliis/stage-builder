@@ -139,8 +139,14 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 ### TypeScript і тести
 
 - `tsconfig.app.json` **виключає** `src/**/*.test.ts` з `tsc -b`; фікстури в тестах мають відповідати доменним типам.
-- Unit-тести в `src/domain/`: `computeMinRounds.test.ts`, `targetSummary.test.ts`, `stageProjectFile.test.ts` (у т. ч. міграції застарілих типів мішеней у JSON), `fieldResizeImpact.test.ts`.
+- Unit-тести в `src/domain/`: `computeMinRounds.test.ts`, `targetSummary.test.ts`, `stageProjectFile.test.ts` (у т. ч. міграції застарілих типів мішеней у JSON), `fieldResizeImpact.test.ts`, `penaltyZones.test.ts` (полігони штрафних зон), `overviewAnchor.test.ts` (опорна точка огляду 3D: старт / штрафні лінії, сигнатура для React).
 - **Перевірка як у CI:** `npm run check` → ESLint, Vitest, `tsc -b`, production `vite build` (успішний вихід = готово до push у `main` / `staging`).
+
+### Примітки з код-рев’ю (огляд 3D і домен)
+
+- **`overviewAnchor.ts`:** критерій «нижня / права» точка — **мінімальний Y**, при рівності — **максимальний X** у світових координатах плану (узгоджено з напрямком downrange **+Y** у `safetyAngles.ts`). Підпис `overviewAnchorRelevantSignature` має включати **`sizeM.x`** для `faultLine`, щоб зміна довжини лінії перераховувала камеру.
+- **`StageView3D` / `StageNavigator`:** зсув камери до target зафіксований константами `OVERVIEW_CAM_DELTA` та `OVERVIEW_CAMERA_Z_FROM_TZ` (еквівалент колишніх `(11,14.5,18)` відносно `(0,0,-3)` для центру поля). Ефект оновлення орбіти залежить від `anchorSig` і розміру поля, щоб не скидати огляд при русі іншого реквізиту.
+- **Sticky-панелі плану** (`App.css` / `index.css`): `--app-sticky-controls-height` має відповідати фактичній висоті смуги 2D/3D; на вузьких екранах ліва панель у drawer — окрема гілка CSS, без `sticky` для колонки.
 
 ### Конфігурація Vite / прев’ю ассетів
 

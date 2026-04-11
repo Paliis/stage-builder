@@ -119,7 +119,10 @@ type StageView3DProps = {
 
 /** Зміщення камери відносно точки огляду (узгоджено з попередніми фіксованими координатами для центру поля). */
 const OVERVIEW_CAM_DELTA = { x: 11, y: 14.5, z: 21 } as const
+/** Зсув target по Z від опорної точки на землі (той самий зсув, що був для target (0,0,-3)). */
 const OVERVIEW_TARGET_Z_OFFSET = -3
+/** Компонента Z позиції камери: `tz` (Three.js) + це значення = те саме, що `+18` при старій схемі. */
+const OVERVIEW_CAMERA_Z_FROM_TZ = OVERVIEW_CAM_DELTA.z + OVERVIEW_TARGET_Z_OFFSET
 
 /** Обертання, зум (scroll / pinch), панорама; огляд центрується по старті / штрафній лінії або центру поля. */
 function StageNavigator({ mode }: { mode: CameraMode3D }) {
@@ -136,7 +139,7 @@ function StageNavigator({ mode }: { mode: CameraMode3D }) {
       const overviewAnchor2d = computeOverviewAnchorWorld2d(useStageStore.getState().props)
       const anchor2d = overviewAnchor2d ?? { x: widthM / 2, y: heightM / 2 }
       const [tx, , tz] = stageToThreeXZ(anchor2d, field)
-      camera.position.set(tx + OVERVIEW_CAM_DELTA.x, OVERVIEW_CAM_DELTA.y, tz + OVERVIEW_CAM_DELTA.z + OVERVIEW_TARGET_Z_OFFSET)
+      camera.position.set(tx + OVERVIEW_CAM_DELTA.x, OVERVIEW_CAM_DELTA.y, tz + OVERVIEW_CAMERA_Z_FROM_TZ)
       oc?.target.set(tx, 0, tz + OVERVIEW_TARGET_Z_OFFSET)
       if (oc) {
         oc.minDistance = 9

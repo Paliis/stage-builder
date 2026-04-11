@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { Prop } from './models'
 import { FAULT_LINE_SECTION_M, START_POSITION_DEFAULT_SIZE_M } from './propGeometry'
-import { computeOverviewAnchorWorld2d } from './overviewAnchor'
+import { computeOverviewAnchorWorld2d, overviewAnchorRelevantSignature } from './overviewAnchor'
 
 function sp(id: string, x: number, y: number): Prop {
   return {
@@ -45,5 +45,26 @@ describe('computeOverviewAnchorWorld2d', () => {
 
   it('returns null when no start and no fault line', () => {
     expect(computeOverviewAnchorWorld2d([])).toBeNull()
+  })
+
+  it('picks globally lowest-y endpoint across several fault lines', () => {
+    const props = [fl('low', 10, 3, 4, 0), fl('high', 5, 12, 6, 0)] as Prop[]
+    const a = computeOverviewAnchorWorld2d(props)
+    /* low line endpoints (8,3)/(12,3); high (2,12)/(8,12) → min y=3, then max x → (12,3). */
+    expect(a).toEqual({ x: 12, y: 3 })
+  })
+})
+
+describe('overviewAnchorRelevantSignature', () => {
+  it('changes when fault line length (sizeM.x) changes', () => {
+    const a = [fl('f', 5, 6, 6, 0)] as Prop[]
+    const b = [fl('f', 5, 6, 10, 0)] as Prop[]
+    expect(overviewAnchorRelevantSignature(a)).not.toBe(overviewAnchorRelevantSignature(b))
+  })
+
+  it('is order-independent for multiple props (sorted by prefix)', () => {
+    const p1 = [sp('s1', 1, 1), fl('f1', 2, 2, 3, 0)] as Prop[]
+    const p2 = [fl('f1', 2, 2, 3, 0), sp('s1', 1, 1)] as Prop[]
+    expect(overviewAnchorRelevantSignature(p1)).toBe(overviewAnchorRelevantSignature(p2))
   })
 })
