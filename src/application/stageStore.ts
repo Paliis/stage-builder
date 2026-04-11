@@ -6,6 +6,7 @@ import {
   newPolygonId,
   newRingId,
   reclampPenaltyZoneSet,
+  resolveClosedPenaltyRing,
   type PenaltyZoneSet,
 } from '../domain/penaltyZones'
 import { isSquareSteelPlateTargetType } from '../domain/targetSpecs'
@@ -111,10 +112,8 @@ export type StageState = {
   /** Порожня сцена, дефолтний розмір поля та ім’я (кнопка «нова вправа»). */
   resetSceneToDefaults: () => void
   setPenaltyZoneSet: (pz: PenaltyZoneSet) => void
-  /** Додає новий полігон штрафної зони з одним замкненим зовнішнім контуром (вершини ≥ 3). */
-  addPenaltyPolygonOuter: (vertices: Vec2[]) => void
-  /** Додає замкнену дірку до полігона за id. */
-  addPenaltyHoleToPolygon: (polygonId: string, vertices: Vec2[]) => void
+  /** Замкнений контур: автоматично — новий полігон або дірка в існуючому (за геометрією, не «останній»). */
+  addPenaltyClosedRing: (vertices: Vec2[]) => void
 }
 
 export const useStageStore = create<StageState>()(temporal((set) => ({
@@ -170,28 +169,28 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
 
   setPenaltyZoneSet: (pz) => set({ penaltyZoneSet: pz }),
 
-  addPenaltyPolygonOuter: (vertices) =>
+  addPenaltyClosedRing: (vertices) =>
     set((s) => {
       if (vertices.length < 3) return s
-      const polyId = newPolygonId()
-      const ringId = newRingId()
-      return {
-        penaltyZoneSet: {
-          polygons: [
-            ...s.penaltyZoneSet.polygons,
-            {
-              id: polyId,
-              outer: { id: ringId, vertices: vertices.map((v) => ({ ...v })), closed: true },
-              holes: [],
-            },
-          ],
-        },
+      const resolved = resolveClosedPenaltyRing(vertices, s.penaltyZoneSet)
+      const ringCopy = vertices.map((v) => ({ ...v }))
+      if (resolved.kind === 'newPolygon') {
+        const polyId = newPolygonId()
+        const ringId = newRingId()
+        return {
+          penaltyZoneSet: {
+            polygons: [
+              ...s.penaltyZoneSet.polygons,
+              {
+                id: polyId,
+                outer: { id: ringId, vertices: ringCopy, closed: true },
+                holes: [],
+              },
+            ],
+          },
+        }
       }
-    }),
-
-  addPenaltyHoleToPolygon: (polygonId, vertices) =>
-    set((s) => {
-      if (vertices.length < 3) return s
+      const polygonId = resolved.polygonId
       const poly = s.penaltyZoneSet.polygons.find((p) => p.id === polygonId)
       if (!poly) return s
       const holeId = newRingId()
@@ -203,7 +202,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
                   ...p,
                   holes: [
                     ...p.holes,
-                    { id: holeId, vertices: vertices.map((v) => ({ ...v })), closed: true },
+                    { id: holeId, vertices: ringCopy, closed: true },
                   ],
                 }
               : p,

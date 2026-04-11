@@ -86,7 +86,7 @@
 - Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `fieldGroundCover3d`, `targets`, `props`, **`penaltyZoneSet`** з `version >= 2`) + об’єкт брифінгу.
 - Для квадратних сталевих мішеней у JSON зберігається опційне **`metalRectSideCm`** (15 | 20 | 30).
 - При завантаженні: `migrateProp` у `stageStore` (узгоджено з парсером).
-- **BL-019** (замкнені контури штрафних зон): у проді — `penaltyZoneSet` у JSON, **`PENALTY_ZONE_CLOSE_EPSILON_M`** = 0,05 у `penaltyZones.ts`; 2D — `StageCanvas.tsx`; 3D — сегменти контуру як «стінки» з тими ж габаритами/кольором, що **`faultLine`** (`PenaltyZonesFaultLines3D` у `StageView3D.tsx`); орієнтація ребра: кут навколо **Y** = `atan2(-dz, dx)` у просторі Three (після `Ry` локальна **+X** дає `(cos θ, 0, −sin θ)`). Деталі — [VISIBILITY_AND_SAFETY_RULES.md §4](./VISIBILITY_AND_SAFETY_RULES.md).
+- **BL-019** (замкнені контури штрафних зон): у проді — `penaltyZoneSet` у JSON, **`PENALTY_ZONE_CLOSE_EPSILON_M`** = 0,05 у `penaltyZones.ts`; після замикання контуру **`resolveClosedPenaltyRing`** вирішує, чи це новий полігон, чи дірка в існуючому (найменший зовнішній контур, що містить ситуацію), без окремого режиму «дірка в останньому»; 2D — `StageCanvas.tsx`; 3D — сегменти контуру як «стінки» з тими ж габаритами/кольором, що **`faultLine`** (`PenaltyZonesFaultLines3D` у `StageView3D.tsx`); орієнтація ребра: кут навколо **Y** = `atan2(-dz, dx)` у просторі Three (після `Ry` локальна **+X** дає `(cos θ, 0, −sin θ)`). Деталі — [VISIBILITY_AND_SAFETY_RULES.md §4](./VISIBILITY_AND_SAFETY_RULES.md).
 
 ## Стан і undo
 

@@ -89,8 +89,7 @@ export default function App() {
   const resetSceneToDefaults = useStageStore((s) => s.resetSceneToDefaults)
   const pasteCloneEntities = useStageStore((s) => s.pasteCloneEntities)
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
-  const addPenaltyPolygonOuter = useStageStore((s) => s.addPenaltyPolygonOuter)
-  const addPenaltyHoleToPolygon = useStageStore((s) => s.addPenaltyHoleToPolygon)
+  const addPenaltyClosedRing = useStageStore((s) => s.addPenaltyClosedRing)
 
   const canUndo = useStore(useStageStore.temporal, (s) => s.pastStates.length > 0)
   const canRedo = useStore(useStageStore.temporal, (s) => s.futureStates.length > 0)
@@ -385,40 +384,24 @@ export default function App() {
     )
   }, [])
 
-  const lastPenaltyPolygonId = penaltyZoneSet.polygons.at(-1)?.id ?? null
-
-  const armPenaltyOuter = useCallback(() => {
-    setMeasureToolActive(false)
-    setPenaltyDraftVertices([])
-    setPlacementMode((prev) => (prev?.kind === 'penaltyZoneOuter' ? null : { kind: 'penaltyZoneOuter' }))
-  }, [])
-
-  const armPenaltyHole = useCallback(() => {
-    const pid = useStageStore.getState().penaltyZoneSet.polygons.at(-1)?.id
-    if (!pid) return
+  const armPenaltyContour = useCallback(() => {
     setMeasureToolActive(false)
     setPenaltyDraftVertices([])
     setPlacementMode((prev) =>
-      prev?.kind === 'penaltyZoneHole' && prev.polygonId === pid
-        ? null
-        : { kind: 'penaltyZoneHole', polygonId: pid },
+      prev?.kind === 'penaltyZoneContour' ? null : { kind: 'penaltyZoneContour' },
     )
   }, [])
 
   const handlePlacementWorldClick = useCallback(
     (p: { x: number; y: number }) => {
       if (!placementMode) return
-      if (placementMode.kind === 'penaltyZoneOuter' || placementMode.kind === 'penaltyZoneHole') {
+      if (placementMode.kind === 'penaltyZoneContour') {
         const clamped = clampVec2ToField({ ...p }, 1, fieldSizeM.x, fieldSizeM.y)
         const snapped = snapVec2(clamped, GRID_SNAP_M)
         if (penaltyDraftVertices.length >= 2 && canClosePolyline(penaltyDraftVertices, snapped)) {
           const ring = [...penaltyDraftVertices]
           if (ring.length >= 3) {
-            if (placementMode.kind === 'penaltyZoneOuter') {
-              addPenaltyPolygonOuter(ring)
-            } else {
-              addPenaltyHoleToPolygon(placementMode.polygonId, ring)
-            }
+            addPenaltyClosedRing(ring)
             setPenaltyDraftVertices([])
             if (layoutNarrow) setPlacementMode(null)
             return
@@ -441,8 +424,7 @@ export default function App() {
       fieldSizeM.y,
       addTarget,
       addProp,
-      addPenaltyPolygonOuter,
-      addPenaltyHoleToPolygon,
+      addPenaltyClosedRing,
       layoutNarrow,
     ],
   )
@@ -783,9 +765,7 @@ export default function App() {
     layoutNarrow,
     onArmTarget: armTargetPlacement,
     onArmProp: armPropPlacement,
-    lastPenaltyPolygonId,
-    onArmPenaltyOuter: armPenaltyOuter,
-    onArmPenaltyHole: armPenaltyHole,
+    onArmPenaltyContour: armPenaltyContour,
   }
 
   const mainStageStyle = {
@@ -959,8 +939,7 @@ export default function App() {
                 </div>
                 {viewMode === '2d' ? (
                   <div className="app__plan-map-shell">
-                    {(placementMode?.kind === 'penaltyZoneOuter' ||
-                      placementMode?.kind === 'penaltyZoneHole') &&
+                    {placementMode?.kind === 'penaltyZoneContour' &&
                     penaltyDraftVertices.length > 0 ? (
                       <div className="app__penalty-draft-banner" role="status" aria-live="polite">
                         {tree.toolbar.penaltyContourUnclosed}
@@ -987,10 +966,7 @@ export default function App() {
                       onPlanSelectionChange={setPlanSelectionSummary}
                       onSelectionLongPress={() => setSelectionSheetOpen(true)}
                       penaltyDraftVertices={
-                        placementMode?.kind === 'penaltyZoneOuter' ||
-                        placementMode?.kind === 'penaltyZoneHole'
-                          ? penaltyDraftVertices
-                          : null
+                        placementMode?.kind === 'penaltyZoneContour' ? penaltyDraftVertices : null
                       }
                     />
                     <div className="app__plan-map-actions" role="toolbar" aria-label={tree.view.planMapActionsAria}>

@@ -6,9 +6,33 @@ import {
   pointInPolygonWithHoles,
   pointInSimplePolygon,
   reclampPenaltyZoneSet,
+  resolveClosedPenaltyRing,
   vecDist,
 } from './penaltyZones'
 import type { PenaltyPolygonData } from './penaltyZones'
+
+function rectPoly(
+  id: string,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+): PenaltyPolygonData {
+  return {
+    id,
+    outer: {
+      id: `${id}-outer`,
+      vertices: [
+        { x: x0, y: y0 },
+        { x: x1, y: y0 },
+        { x: x1, y: y1 },
+        { x: x0, y: y1 },
+      ],
+      closed: true,
+    },
+    holes: [],
+  }
+}
 
 describe('penaltyZones', () => {
   it('canClosePolyline respects epsilon', () => {
@@ -83,5 +107,29 @@ describe('penaltyZones', () => {
 
   it('vecDist', () => {
     expect(vecDist({ x: 0, y: 0 }, { x: 3, y: 4 })).toBe(5)
+  })
+
+  it('resolveClosedPenaltyRing adds hole to containing polygon, not last in list', () => {
+    const pz = {
+      polygons: [rectPoly('first', 0, 0, 10, 10), rectPoly('second', 20, 0, 30, 10)],
+    }
+    const holeRing = [
+      { x: 2, y: 2 },
+      { x: 4, y: 2 },
+      { x: 4, y: 4 },
+      { x: 2, y: 4 },
+    ]
+    expect(resolveClosedPenaltyRing(holeRing, pz)).toEqual({ kind: 'addHole', polygonId: 'first' })
+  })
+
+  it('resolveClosedPenaltyRing creates new polygon when outside existing zones', () => {
+    const pz = { polygons: [rectPoly('a', 0, 0, 10, 10)] }
+    const outer = [
+      { x: 20, y: 0 },
+      { x: 30, y: 0 },
+      { x: 30, y: 10 },
+      { x: 20, y: 10 },
+    ]
+    expect(resolveClosedPenaltyRing(outer, pz)).toEqual({ kind: 'newPolygon' })
   })
 })

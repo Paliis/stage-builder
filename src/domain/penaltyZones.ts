@@ -103,6 +103,78 @@ export function pointInPolygonWithHoles(pt: Vec2, poly: PenaltyPolygonData): boo
   return true
 }
 
+export function ringCentroid(vertices: readonly Vec2[]): Vec2 {
+  const n = vertices.length
+  if (n === 0) return { x: 0, y: 0 }
+  let sx = 0
+  let sy = 0
+  for (const v of vertices) {
+    sx += v.x
+    sy += v.y
+  }
+  return { x: sx / n, y: sy / n }
+}
+
+/** Площа простого полігона (м²), |шнурок|. */
+export function polygonAbsArea(vertices: readonly Vec2[]): number {
+  if (vertices.length < 3) return 0
+  let s = 0
+  const n = vertices.length
+  for (let i = 0; i < n; i++) {
+    const j = (i + 1) % n
+    s += vertices[i]!.x * vertices[j]!.y - vertices[j]!.x * vertices[i]!.y
+  }
+  return Math.abs(s * 0.5)
+}
+
+export type ResolvedPenaltyClosedRing =
+  | { kind: 'newPolygon' }
+  | { kind: 'addHole'; polygonId: string }
+
+/**
+ * Після замикання контуру визначає: новий верхньорівневий полігон чи дірка в існуючому.
+ * Дірка прив’язується до полігона з **найменшою** зовнішньою межею, що містить ситуацію
+ * (щоб вкладені окремі полігони розрізнялись коректно), а не до «останнього» у списку.
+ */
+export function resolveClosedPenaltyRing(vertices: Vec2[], pz: PenaltyZoneSet): ResolvedPenaltyClosedRing {
+  if (vertices.length < 3) return { kind: 'newPolygon' }
+
+  const c = ringCentroid(vertices)
+
+  type Scored = { poly: PenaltyPolygonData; outerArea: number }
+  const primary: Scored[] = []
+  for (const poly of pz.polygons) {
+    const outerPts = ringToClosedPoints(poly.outer)
+    if (!outerPts || outerPts.length < 4) continue
+    const outerFlat = outerPts.slice(0, -1)
+    if (!pointInSimplePolygon(c, outerFlat)) continue
+    if (!pointInPolygonWithHoles(c, poly)) continue
+    primary.push({ poly, outerArea: polygonAbsArea(outerFlat) })
+  }
+  if (primary.length > 0) {
+    primary.sort((a, b) => a.outerArea - b.outerArea)
+    return { kind: 'addHole', polygonId: primary[0]!.poly.id }
+  }
+
+  const fallback: Scored[] = []
+  for (const poly of pz.polygons) {
+    const outerPts = ringToClosedPoints(poly.outer)
+    if (!outerPts || outerPts.length < 4) continue
+    const outerFlat = outerPts.slice(0, -1)
+    if (!vertices.every((v) => pointInSimplePolygon(v, outerFlat))) continue
+    const oa = polygonAbsArea(outerFlat)
+    const ra = polygonAbsArea(vertices)
+    if (ra >= oa * 0.999) continue
+    fallback.push({ poly, outerArea: oa })
+  }
+  if (fallback.length > 0) {
+    fallback.sort((a, b) => a.outerArea - b.outerArea)
+    return { kind: 'addHole', polygonId: fallback[0]!.poly.id }
+  }
+
+  return { kind: 'newPolygon' }
+}
+
 export function reclampPenaltyZoneSet(pz: PenaltyZoneSet, fw: number, fh: number): PenaltyZoneSet {
   const clamp = (v: Vec2): Vec2 => ({
     x: Math.min(fw, Math.max(0, v.x)),
