@@ -86,6 +86,7 @@
 - Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `fieldGroundCover3d`, `targets`, `props`) + об’єкт брифінгу.
 - Для квадратних сталевих мішеней у JSON зберігається опційне **`metalRectSideCm`** (15 | 20 | 30).
 - При завантаженні: `migrateProp` у `stageStore` (узгоджено з парсером).
+- **BL-019** (майбутні замкнені контури штрафних зон замість лише окремих `faultLine`): продуктові правила, **epsilon замикання 0,05 м (5 см)** і візуалізація — [VISIBILITY_AND_SAFETY_RULES.md §4](./VISIBILITY_AND_SAFETY_RULES.md); структура в `*.stage.json` та зміна версії файлу — при впровадженні, див. **§4.8** того ж документа.
 
 ## Стан і undo
 
