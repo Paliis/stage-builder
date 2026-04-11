@@ -162,7 +162,14 @@ function Ground() {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
       <planeGeometry args={[widthM, heightM]} />
-      <meshStandardMaterial color={color} roughness={0.9} metalness={0.02} />
+      <meshStandardMaterial
+        color={color}
+        roughness={0.92}
+        metalness={0.02}
+        /* Під тінями PBR базовий зелений/пісок легко «сіє»; легкий emissive зберігає читабельний колір покриття. */
+        emissive={color}
+        emissiveIntensity={0.1}
+      />
     </mesh>
   )
 }

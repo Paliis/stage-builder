@@ -38,7 +38,11 @@ import {
 import { swinger2DDrawSpecWorld, type Swinger2DDrawSpec } from '../../domain/swingerGeometry'
 import { parseSafetyAngles, isTargetInSafetyZone, type SafetyAngles } from '../../domain/safetyAngles'
 import { useBriefingStore } from '../../application/briefingStore'
-import { plan2DGroundTintRgba, type FieldGroundCover3d } from '../../domain/fieldGround3d'
+import {
+  plan2DFieldBaseRgba,
+  plan2DGroundTintRgba,
+  type FieldGroundCover3d,
+} from '../../domain/fieldGround3d'
 import {
   clampVec2ToField,
   DEFAULT_FIELD_HEIGHT_M,
@@ -1511,7 +1515,7 @@ function redraw(
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
 
-  ctx.fillStyle = 'rgba(15, 23, 42, 0.06)'
+  ctx.fillStyle = plan2DFieldBaseRgba(fieldGroundCover3d)
   const fieldPoly = [
     worldToScreen(0, 0, tf),
     worldToScreen(tf.fieldWidthM, 0, tf),
