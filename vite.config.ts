@@ -60,11 +60,14 @@ export default defineConfig({
         /**
          * Default NavigationRoute serves index.html for all navigations; without a denylist,
          * /sitemap_index.xml and /robots.txt show the SPA in the browser (curl still gets XML).
-         * Exclude static file-like paths so Google Search Console / users see real XML.
+         * Use explicit paths — /^\/[^?]*\.[^/]+$/ is wrong: [^?]* is greedy and swallows the ".xml"
+         * segment so /sitemap_index.xml never matched the denylist.
          */
         navigateFallbackDenylist: [
-          /^\/[^?]*\.[^/]+$/,
-          /^\/robots\.txt$/,
+          /^\/sitemap.*\.xml$/i,
+          /^\/robots\.txt$/i,
+          /^\/google[0-9a-z]+\.html$/i,
+          /^\/manifest\.webmanifest$/i,
         ],
       },
       manifest: {
