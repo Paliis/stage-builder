@@ -1254,12 +1254,17 @@
 
 /** Вкладки 2D/3D, розмір поля, статистика — центрований рядок. */
 .app__view-controls-strip {
+  position: sticky;
+  top: env(safe-area-inset-top, 0);
+  z-index: 50;
   padding: 0.35rem 0 0.55rem;
   margin: 0;
   border-bottom: 1px solid var(--border);
   width: 100%;
   align-self: stretch;
   box-sizing: border-box;
+  background: var(--bg);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
 }
 
 .app__view-controls-row {
@@ -1312,7 +1317,7 @@
   box-sizing: border-box;
 }
 
-/* Бічна панель лишається по висоті контенту; ряд сітки тягнеться через .app__plan-main. */
+/* Бічна панель: на широкому екрані — sticky під смугою керування (див. медіа нижче). */
 .app__toolbar.app__plan-rail {
   position: relative;
   box-sizing: border-box;
@@ -1324,6 +1329,17 @@
   padding: 0.4rem 0.45rem;
   gap: 0.3rem;
   border-radius: 8px;
+}
+
+@media (min-width: 52.0625rem) {
+  .app__toolbar.app__plan-rail {
+    position: sticky;
+    top: calc(env(safe-area-inset-top, 0px) + var(--app-sticky-controls-height, 4.5rem));
+    z-index: 40;
+    max-height: calc(
+      100dvh - env(safe-area-inset-top, 0px) - var(--app-sticky-controls-height, 4.5rem) - 0.75rem
+    );
+  }
 }
 
 .app__toolbar.app__plan-rail .app__section-hint,

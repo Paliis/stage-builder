@@ -1,5 +1,7 @@
 :root {
   color-scheme: light;
+  /* Під `position: sticky` бічної панелі: відступ від верху вьюпорту ≈ висота смуги 2D/3D + пресетів (узгоджено з `.app__view-controls-strip`). */
+  --app-sticky-controls-height: 4.5rem;
   --text: #475569;
   --text-h: #0f172a;
   --bg: #f8fafc;
