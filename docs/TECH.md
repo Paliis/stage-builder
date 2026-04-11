@@ -2,7 +2,7 @@
 
 Документ для розробників: архітектура, домен, формати даних, збірка та відомі обмеження.
 
-**Пов’язані документи:** бізнес- і технічний огляд **[PRODUCT.md](./PRODUCT.md)**; **беклог ідей** **[BACKLOG.md](./BACKLOG.md)**; чернетка **видимість / промені 2D** (BL-010 / BL-013) — **[VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md)**; повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**; **оптимізація бандла** — **[OPTIMIZATION.md](./OPTIMIZATION.md)**; **план посилання на вправу (BL-001)** — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**.  
+**Пов’язані документи:** бізнес- і технічний огляд **[PRODUCT.md](./PRODUCT.md)**; **беклог ідей** **[BACKLOG.md](./BACKLOG.md)**; чернетка **видимість / промені 2D** (BL-010 / BL-013) — **[VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md)**; повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**; **оптимізація бандла** — **[OPTIMIZATION.md](./OPTIMIZATION.md)**; **план посилання на вправу (BL-001)** — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**; **політика публікації (чернетка BL-001)** — **[PUBLISH_POLICY.md](./PUBLISH_POLICY.md)**.  
 **Важливо:** позначки V0 / V1 / V2 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **1**).
 
 ## Архітектура
