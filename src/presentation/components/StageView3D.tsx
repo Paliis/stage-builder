@@ -60,6 +60,10 @@ import {
 import { groundCoverColorHex } from '../../domain/fieldGround3d'
 import { ringToClosedPoints } from '../../domain/penaltyZones'
 import { FAULT_LINE_SECTION_M } from '../../domain/propGeometry'
+import {
+  computeOverviewAnchorWorld2d,
+  overviewAnchorRelevantSignature,
+} from '../../domain/overviewAnchor'
 import { stageToThreeXZ, type StageFieldM } from '../lib/stageCoordinates3d'
 
 function useStageFieldM(): StageFieldM {
@@ -113,17 +117,27 @@ type StageView3DProps = {
   cameraMode: CameraMode3D
 }
 
-/** Обертання, зум (scroll / pinch), панорама; стартова позиція залежить від режиму. */
+/** Зміщення камери відносно точки огляду (узгоджено з попередніми фіксованими координатами для центру поля). */
+const OVERVIEW_CAM_DELTA = { x: 11, y: 14.5, z: 21 } as const
+const OVERVIEW_TARGET_Z_OFFSET = -3
+
+/** Обертання, зум (scroll / pinch), панорама; огляд центрується по старті / штрафній лінії або центру поля. */
 function StageNavigator({ mode }: { mode: CameraMode3D }) {
   const ctrlRef = useRef<OrbitControlsType>(null)
   const { camera } = useThree()
+  const { widthM, heightM } = useStageFieldM()
+  const anchorSig = useStageStore((s) => overviewAnchorRelevantSignature(s.props))
 
   useEffect(() => {
     const oc = ctrlRef.current
     const overview = mode === 'overview' || mode === 'pdf'
     if (overview) {
-      camera.position.set(11, 14.5, 18)
-      oc?.target.set(0, 0, -3)
+      const field: StageFieldM = { widthM, heightM }
+      const overviewAnchor2d = computeOverviewAnchorWorld2d(useStageStore.getState().props)
+      const anchor2d = overviewAnchor2d ?? { x: widthM / 2, y: heightM / 2 }
+      const [tx, , tz] = stageToThreeXZ(anchor2d, field)
+      camera.position.set(tx + OVERVIEW_CAM_DELTA.x, OVERVIEW_CAM_DELTA.y, tz + OVERVIEW_CAM_DELTA.z + OVERVIEW_TARGET_Z_OFFSET)
+      oc?.target.set(tx, 0, tz + OVERVIEW_TARGET_Z_OFFSET)
       if (oc) {
         oc.minDistance = 9
         oc.maxDistance = 85
@@ -138,7 +152,7 @@ function StageNavigator({ mode }: { mode: CameraMode3D }) {
     }
     oc?.update()
     camera.updateProjectionMatrix()
-  }, [camera, mode])
+  }, [camera, mode, widthM, heightM, anchorSig])
 
   return (
     <OrbitControls

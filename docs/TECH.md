@@ -11,7 +11,7 @@
 
 | Шар | Каталог | Відповідальність |
 |-----|---------|------------------|
-| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), покриття площадки в 3D (`fieldGround3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
+| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), опорна точка огляду 3D (`overviewAnchor.ts`), покриття площадки в 3D (`fieldGround3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
 | **Application** | `src/application/` | Zustand: сцена (`stageStore`, undo/redo через `zundo`), брифінг (`briefingStore`), чернетка `localStorage` (`sessionDraft.ts`), компонент **`SessionDraftPersist.tsx`** (підписка + debounce) |
 | **Presentation** | `src/presentation/` | React-компоненти: `StageCanvas`, `StageView3D`, `StageBuilderToolbar`, `StageMinimap`, `GoogleAnalytics`; хуки (`usePwaInstall`); бібліотеки: `exportBriefingPdf`, `pdfFonts`, `viewTransform` |
 | **Корінь UI** | `src/App.tsx` | Композиція layout, брифінг-форма, гарячі клавіші, lazy-3D, стрічка staging, посилання на канвас через `ref` (`StageCanvasHandle`) |
@@ -105,6 +105,7 @@
 ## 3D
 
 - **`StageView3D.tsx`** — R3F + Drei; імпорт маппінгу площадки X/Y → Three.js через `stageCoordinates3d.ts`.
+- **Огляд і режим PDF:** початкова точка огляду (`StageNavigator`) береться з `computeOverviewAnchorWorld2d` (`overviewAnchor.ts`): якщо на сцені є стартові позиції — центр обраної з мінімальним **Y** на плані, при рівності — з максимальним **X**; інакше серед усіх кінців усіх штрафних ліній (`faultLine`) та сама логіка; якщо немає ні старту, ні ліній — центр поля. Відносний зсув камери до точки погляду зберігається як у попередній фіксованій схемі для центру поля.
 - **Розмір WebGL:** обгортка з `ResizeObserver` задає піксельні `width`/`height` для `Canvas`; у `App.css` — **absolute inset 0** на `.app__r3f-canvas-outer` (не PDF), **stretch** на `.app__stage-print-frame`, **`min-height`** на картці (коли `100cqw === 0`, `height` міг бути 0px).
 - **Земля:** площина поля — `Ground`, `meshStandardMaterial`, `receiveShadow`; колір з **`fieldGroundCover3d`** (`earth` / `grass` / `sand` у `fieldGround3d.ts`), зберігається в **`.stage.json`** і чернетці сесії.
 - Знімок сцени для PDF знімається через ref/handle компонента 3D (узгоджено з `App.tsx` / експортом).
