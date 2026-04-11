@@ -1513,7 +1513,8 @@ function PenaltyZonesFaultLines3D() {
         if (len < 1e-5) continue
         const midX = (p0[0] + p1[0]) * 0.5
         const midZ = (p0[2] + p1[2]) * 0.5
-        const angleY = Math.atan2(dx, dz)
+        /* Three.js: після Ry(θ) локальна +X у світі (cos θ, 0, −sin θ). Хочемо збіг з (dx,0,dz)/len → θ = atan2(−dz, dx). Не atan2(dx,dz) — інакше ребра «ламаються». */
+        const angleY = Math.atan2(-dz, dx)
         out.push({ key: `${ringId}-e${i}`, midX, midZ, angleY, len })
       }
     }
