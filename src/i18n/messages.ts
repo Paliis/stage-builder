@@ -61,6 +61,17 @@ export type MessageTree = {
     placementHintNarrow: string
     /** Короткий текст для title кнопок у режимі розстановки на вузькому екрані. */
     placementArmedTitleNarrow: string
+    /** Розділ інструментів штрафної зони (BL-019). */
+    penaltyZonesHeading: string
+    penaltyZonesAria: string
+    penaltyZoneOuter: string
+    penaltyZoneHole: string
+    /** Кнопка дірки вимкнена, доки немає жодного замкненого зовнішнього контуру. */
+    penaltyZoneHoleNeedsOuterHint: string
+    /** Підказка: клік біля першої точки замикає контур. */
+    penaltyZoneCloseHint: string
+    /** Повідомлення з VISIBILITY §4.3 — чернетка контуру ще не замкнена. */
+    penaltyContourUnclosed: string
   }
   props: {
     shield: string
@@ -339,6 +350,17 @@ export const ukMessages: MessageTree = {
       '\u041d\u0430 \u0432\u0443\u0437\u044c\u043a\u043e\u043c\u0443 \u0435\u043a\u0440\u0430\u043d\u0456 \u043e\u0434\u043d\u0435 \u0442\u043e\u0440\u043a\u0430\u043d\u043d\u044f \u043f\u043e \u043f\u043b\u0430\u043d\u0443 \u0441\u0442\u0430\u0432\u0438\u0442\u044c \u043e\u0434\u0438\u043d \u043e\u0431\u2019\u0454\u043a\u0442 \u0456 \u0432\u0438\u043c\u0438\u043a\u0430\u0454 \u0440\u0435\u0436\u0438\u043c. Esc \u2014 \u0441\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438 (\u0437 \u043a\u043b\u0430\u0432\u0456\u0430\u0442\u0443\u0440\u0438).',
     placementArmedTitleNarrow:
       '\u0422\u043e\u0440\u043a\u043d\u0456\u0442\u044c \u043f\u043b\u0430\u043d \u2014 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u0438 \u0456 \u0432\u0438\u0439\u0442\u0438 \u0437 \u0440\u0435\u0436\u0438\u043c\u0443. Esc \u2014 \u0441\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438 (\u043a\u043b\u0430\u0432\u0456\u0430\u0442\u0443\u0440\u0430).',
+    penaltyZonesHeading: '\u0428\u0442\u0440\u0430\u0444\u043d\u0456 \u0437\u043e\u043d\u0438',
+    penaltyZonesAria:
+      '\u041d\u0430\u043c\u0430\u043b\u044c\u043e\u0432\u0443\u0432\u0430\u0442\u0438 \u0437\u0430\u043c\u043a\u043d\u0435\u043d\u0456 \u043a\u043e\u043d\u0442\u0443\u0440\u0438 \u0448\u0442\u0440\u0430\u0444\u043d\u0438\u0445 \u0437\u043e\u043d (\u0437\u043e\u0432\u043d\u0456\u0448\u043d\u0456\u0439 \u043a\u043e\u043d\u0442\u0443\u0440 \u0442\u0430 \u0434\u0456\u0440\u043a\u0438)',
+    penaltyZoneOuter: '\u0417\u043e\u0432\u043d\u0456\u0448\u043d\u0456\u0439 \u043a\u043e\u043d\u0442\u0443\u0440',
+    penaltyZoneHole:
+      '\u0414\u0456\u0440\u043a\u0430 (\u043e\u0441\u0442\u0440\u0456\u0432) \u0432 \u043e\u0441\u0442\u0430\u043d\u043d\u044c\u043e\u043c\u0443 \u043f\u043e\u043b\u0456\u0433\u043e\u043d\u0456',
+    penaltyZoneHoleNeedsOuterHint:
+      '\u0421\u043f\u043e\u0447\u0430\u0442\u043a\u0443 \u043d\u0430\u043c\u0430\u043b\u044c\u0439\u0442\u0435 \u0437\u043e\u0432\u043d\u0456\u0448\u043d\u0456\u0439 \u043a\u043e\u043d\u0442\u0443\u0440 \u0448\u0442\u0440\u0430\u0444\u043d\u043e\u0457 \u0437\u043e\u043d\u0438.',
+    penaltyZoneCloseHint:
+      '\u041a\u043b\u0430\u0446\u043d\u0456\u0442\u044c \u0431\u043b\u0438\u0437\u044c\u043a\u043e \u0434\u043e \u043f\u0435\u0440\u0448\u043e\u0457 \u0442\u043e\u0447\u043a\u0438 (\u0434\u043e\u043f\u0443\u0441\u043a 5 \u0441\u043c), \u0449\u043e\u0431 \u0437\u0430\u043c\u043a\u043d\u0443\u0442\u0438 \u043a\u043e\u043d\u0442\u0443\u0440.',
+    penaltyContourUnclosed: '\u041a\u043e\u043d\u0442\u0443\u0440 \u0448\u0442\u0440\u0430\u0444\u043d\u043e\u0457 \u0437\u043e\u043d\u0438 \u043d\u0435 \u0437\u0430\u043c\u043a\u043d\u0435\u043d\u0438\u0439',
   },
   weapon: {
     sectionTitle: '\u041a\u043b\u0430\u0441 \u0437\u0431\u0440\u043e\u0457',
@@ -630,6 +652,13 @@ export const enMessages: MessageTree = {
       'On a narrow screen, one tap on the plan places one item and exits placement mode. Esc still cancels (with a keyboard).',
     placementArmedTitleNarrow:
       'Tap the plan to place and exit mode. Esc — cancel (keyboard).',
+    penaltyZonesHeading: 'Penalty zones',
+    penaltyZonesAria: 'Draw closed penalty zone outlines (outer boundary and holes)',
+    penaltyZoneOuter: 'Outer boundary',
+    penaltyZoneHole: 'Hole (island) in last polygon',
+    penaltyZoneHoleNeedsOuterHint: 'Draw an outer penalty zone boundary first.',
+    penaltyZoneCloseHint: 'Click near the first point (within 5 cm) to close the outline.',
+    penaltyContourUnclosed: 'Penalty zone outline is not closed',
   },
   weapon: {
     sectionTitle: 'Weapon class',

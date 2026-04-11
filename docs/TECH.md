@@ -83,20 +83,20 @@
 ## Файл вправи (`*.stage.json`)
 
 - Контракт: `stageProjectFile.ts` — `STAGE_PROJECT_FORMAT`, `STAGE_PROJECT_VERSION`, розширення `.stage.json`.
-- Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `fieldGroundCover3d`, `targets`, `props`) + об’єкт брифінгу.
+- Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `fieldGroundCover3d`, `targets`, `props`, **`penaltyZoneSet`** з `version >= 2`) + об’єкт брифінгу.
 - Для квадратних сталевих мішеней у JSON зберігається опційне **`metalRectSideCm`** (15 | 20 | 30).
 - При завантаженні: `migrateProp` у `stageStore` (узгоджено з парсером).
-- **BL-019** (замкнені контури штрафних зон замість лише окремих `faultLine`): **повний** скоп з §4 **одним** етапом (без MVP-фаз); **epsilon 0,05 м**, візуалізація — [VISIBILITY_AND_SAFETY_RULES.md §4](./VISIBILITY_AND_SAFETY_RULES.md); структура в `*.stage.json` та зміна версії файлу — при впровадженні, див. **§4.8**.
+- **BL-019** (замкнені контури штрафних зон): у проді — `penaltyZoneSet` у JSON, **`PENALTY_ZONE_CLOSE_EPSILON_M`** = 0,05 у `penaltyZones.ts`; 2D-малювання та інструменти в тулбарі/`App.tsx`/`StageCanvas.tsx`; деталі — [VISIBILITY_AND_SAFETY_RULES.md §4](./VISIBILITY_AND_SAFETY_RULES.md), **§4.8** у тому ж файлі про серіалізацію.
 
 ## Стан і undo
 
-- **Сцена** — `useStageStore` + `temporal` (zundo): undo/redo для мішеней, реквізиту, розміру поля, покриття 3D, імені, класу зброї; гарячі клавіші та кнопки в `App.tsx` (`Ctrl+Z` / `Ctrl+Shift+Z` / `Ctrl+Y`, у полях вводу не перехоплюються).
+- **Сцена** — `useStageStore` + `temporal` (zundo): undo/redo для мішеней, реквізиту, **штрафних зон** (`penaltyZoneSet`), розміру поля, покриття 3D, імені, класу зброї; гарячі клавіші та кнопки в `App.tsx` (`Ctrl+Z` / `Ctrl+Shift+Z` / `Ctrl+Y`, у полях вводу не перехоплюються).
 - **Брифінг** — `useBriefingStore` **без** undo (зміни брифінгу не відкочуються разом із сценою).
 
 ## Чернетка сесії (localStorage)
 
 - Ключ **`stage-builder-session-draft-v1`** (`SESSION_DRAFT_STORAGE_KEY` у `sessionDraft.ts`).
-- Обгортка зберігання містить **`draftMetaVersion`** (`SESSION_DRAFT_META_VERSION`), час `savedAt`, знімок `stage` + `briefing`.
+- Обгортка зберігання містить **`draftMetaVersion`** (`SESSION_DRAFT_META_VERSION`), час `savedAt`, знімок `stage` (у т.ч. **`penaltyZoneSet`**) + `briefing`.
 - Старт: `hydrateSessionDraft()` у `main.tsx` **до** першого рендеру; парсинг через `parseStageProjectJson`. Після відновлення — `temporal.clear()`. Пошкоджений JSON видаляється зі сховища.
 - `SessionDraftPersist` — debounce **450 ms** (`DEBOUNCE_MS`).
 - Очистити вправу: кнопка кошика на 2D-карті; `resetSceneToDefaults`, `defaultStageBriefing()`, `temporal.clear`, `clearSessionDraftStorage`.

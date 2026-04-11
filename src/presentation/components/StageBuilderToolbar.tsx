@@ -101,6 +101,10 @@ export type StageBuilderToolbarProps = {
   layoutNarrow: boolean
   onArmTarget: (type: TargetType, isNoShoot?: boolean) => void
   onArmProp: (type: PropType) => void
+  /** Останній полігон штрафної зони — для режиму «дірка». */
+  lastPenaltyPolygonId: string | null
+  onArmPenaltyOuter: () => void
+  onArmPenaltyHole: () => void
 }
 
 export function StageBuilderToolbar({
@@ -112,6 +116,9 @@ export function StageBuilderToolbar({
   layoutNarrow,
   onArmTarget,
   onArmProp,
+  lastPenaltyPolygonId,
+  onArmPenaltyOuter,
+  onArmPenaltyHole,
 }: StageBuilderToolbarProps) {
   const furnitureGroupId = useId()
   const infraPropButtons = (types: readonly PropType[]) =>
@@ -242,6 +249,57 @@ export function StageBuilderToolbar({
           {infraPropButtons(INFRASTRUCTURE_PROPS_FURNITURE_RACK)}
         </div>
         <div className="app__buttons">{infraPropButtons(INFRASTRUCTURE_PROPS_TAIL)}</div>
+      </div>
+      <div
+        className="app__toolbar-section app__toolbar-section--penalty-zones"
+        role="region"
+        aria-label={tree.toolbar.penaltyZonesAria}
+      >
+        <h2 className="app__section-title">{tree.toolbar.penaltyZonesHeading}</h2>
+        <p className="app__section-hint">{tree.toolbar.penaltyZoneCloseHint}</p>
+        <div className="app__buttons app__buttons--penalty-zones" role="group">
+          <button
+            type="button"
+            className={`app__btn-secondary app__tb-penalty-outer${
+              placementMode?.kind === 'penaltyZoneOuter' ? ' is-placement-armed' : ''
+            }`}
+            aria-pressed={placementMode?.kind === 'penaltyZoneOuter'}
+            title={placementTitle(
+              tree.toolbar.penaltyZoneOuter,
+              placementMode?.kind === 'penaltyZoneOuter',
+              tree.toolbar.placementClickPlan,
+              tree.toolbar.placementCancelEsc,
+              layoutNarrow,
+              tree.toolbar.placementArmedTitleNarrow,
+            )}
+            onClick={() => onArmPenaltyOuter()}
+          >
+            {tree.toolbar.penaltyZoneOuter}
+          </button>
+          <button
+            type="button"
+            className={`app__btn-secondary app__tb-penalty-hole${
+              placementMode?.kind === 'penaltyZoneHole' ? ' is-placement-armed' : ''
+            }`}
+            disabled={!lastPenaltyPolygonId}
+            aria-pressed={placementMode?.kind === 'penaltyZoneHole'}
+            title={
+              !lastPenaltyPolygonId
+                ? tree.toolbar.penaltyZoneHoleNeedsOuterHint
+                : placementTitle(
+                    tree.toolbar.penaltyZoneHole,
+                    placementMode?.kind === 'penaltyZoneHole',
+                    tree.toolbar.placementClickPlan,
+                    tree.toolbar.placementCancelEsc,
+                    layoutNarrow,
+                    tree.toolbar.placementArmedTitleNarrow,
+                  )
+            }
+            onClick={() => onArmPenaltyHole()}
+          >
+            {tree.toolbar.penaltyZoneHole}
+          </button>
+        </div>
       </div>
     </section>
   )

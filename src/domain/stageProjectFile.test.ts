@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { emptyPenaltyZoneSet } from './penaltyZones'
 import {
   buildStageProjectFile,
   parseStageProjectJson,
@@ -27,6 +28,7 @@ describe('stageProjectFile', () => {
           },
         ],
         props: [],
+        penaltyZoneSet: emptyPenaltyZoneSet(),
       },
       briefing,
     })
@@ -98,5 +100,25 @@ describe('stageProjectFile', () => {
     if (!parsed.ok) return
     expect(parsed.data.stage.targets[0]!.type).toBe('paperA4TwoPostStand100')
     expect(parsed.data.stage.targets[1]!.type).toBe('paperMiniIpscTwoPostStand100')
+  })
+
+  it('version 1 files parse with empty penaltyZoneSet', () => {
+    const raw = {
+      format: STAGE_PROJECT_FORMAT,
+      version: 1,
+      stage: {
+        name: 'Legacy',
+        weaponClass: 'handgun',
+        fieldSizeM: { x: 20, y: 30 },
+        fieldGroundCover3d: 'grass',
+        targets: [],
+        props: [],
+      },
+      briefing: defaultStageBriefing(),
+    }
+    const parsed = parseStageProjectJson(JSON.stringify(raw))
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    expect(parsed.data.stage.penaltyZoneSet.polygons).toHaveLength(0)
   })
 })

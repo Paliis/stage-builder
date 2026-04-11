@@ -21,7 +21,15 @@ import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
 import type { Prop, PropType, StageCategory, Target, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
 import { FIELD_GROUND_COVER_3D_VALUES, type FieldGroundCover3d } from './domain/fieldGround3d'
-import { clampFieldDimensions, FIELD_SIZE_PRESETS, STAGE_CARD_UI_DEPTH_FACTOR } from './domain/field'
+import {
+  clampFieldDimensions,
+  clampVec2ToField,
+  FIELD_SIZE_PRESETS,
+  GRID_SNAP_M,
+  snapVec2,
+  STAGE_CARD_UI_DEPTH_FACTOR,
+} from './domain/field'
+import { canClosePolyline } from './domain/penaltyZones'
 import { fieldResizeChangesEntities } from './domain/fieldResizeImpact'
 import {
   buildStageProjectFile,
@@ -80,6 +88,9 @@ export default function App() {
   const replaceStageState = useStageStore((s) => s.replaceStageState)
   const resetSceneToDefaults = useStageStore((s) => s.resetSceneToDefaults)
   const pasteCloneEntities = useStageStore((s) => s.pasteCloneEntities)
+  const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
+  const addPenaltyPolygonOuter = useStageStore((s) => s.addPenaltyPolygonOuter)
+  const addPenaltyHoleToPolygon = useStageStore((s) => s.addPenaltyHoleToPolygon)
 
   const canUndo = useStore(useStageStore.temporal, (s) => s.pastStates.length > 0)
   const canRedo = useStore(useStageStore.temporal, (s) => s.futureStates.length > 0)
@@ -132,6 +143,8 @@ export default function App() {
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const [measureToolActive, setMeasureToolActive] = useState(false)
   const [placementMode, setPlacementMode] = useState<PlacementMode>(null)
+  /** Вершини полілінії під час режиму штрафної зони (до замикання). */
+  const [penaltyDraftVertices, setPenaltyDraftVertices] = useState<{ x: number; y: number }[]>([])
   const [layoutNarrow, setLayoutNarrow] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(max-width: 52rem)').matches : false,
   )
@@ -198,7 +211,8 @@ export default function App() {
     (raw: { x: number; y: number }) => {
       const next = clampFieldDimensions(raw.x, raw.y)
       if (next.x === fieldSizeM.x && next.y === fieldSizeM.y) return
-      const hasEntities = targets.length > 0 || props.length > 0
+      const hasEntities =
+        targets.length > 0 || props.length > 0 || penaltyZoneSet.polygons.length > 0
       if (
         hasEntities &&
         fieldResizeChangesEntities(targets, props, next.x, next.y) &&
@@ -208,12 +222,20 @@ export default function App() {
       }
       setFieldSizeM(next)
     },
-    [fieldSizeM.x, fieldSizeM.y, targets, props, setFieldSizeM, tree.toolbar.fieldResizeConfirm],
+    [
+      fieldSizeM.x,
+      fieldSizeM.y,
+      targets,
+      props,
+      penaltyZoneSet.polygons.length,
+      setFieldSizeM,
+      tree.toolbar.fieldResizeConfirm,
+    ],
   )
 
   const saveStageProject = useCallback(() => {
     const file = buildStageProjectFile({
-      stage: { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props },
+      stage: { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet },
       briefing: { ...briefing },
     })
     const json = serializeStageProject(file)
@@ -225,7 +247,7 @@ export default function App() {
     a.download = fname
     a.click()
     URL.revokeObjectURL(url)
-  }, [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, briefing])
+  }, [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, briefing])
 
   const onProjectFileSelected = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -265,6 +287,7 @@ export default function App() {
     clearSessionDraftStorage()
     setMobileMenuOpen(false)
     setPlacementMode(null)
+    setPenaltyDraftVertices([])
     setMarqueeModeActive(false)
     setHasPlanClipboard(false)
     internalClipboardRef.current = null
@@ -332,6 +355,7 @@ export default function App() {
       }
       if (!placementMode) return
       e.preventDefault()
+      setPenaltyDraftVertices([])
       setPlacementMode(null)
     }
     window.addEventListener('keydown', onKey, { passive: false })
@@ -345,6 +369,7 @@ export default function App() {
 
   const armTargetPlacement = useCallback((type: TargetType, isNoShoot = false) => {
     setMeasureToolActive(false)
+    setPenaltyDraftVertices([])
     setPlacementMode((prev) =>
       prev?.kind === 'target' && prev.type === type && prev.isNoShoot === isNoShoot
         ? null
@@ -354,14 +379,54 @@ export default function App() {
 
   const armPropPlacement = useCallback((type: PropType) => {
     setMeasureToolActive(false)
+    setPenaltyDraftVertices([])
     setPlacementMode((prev) =>
       prev?.kind === 'prop' && prev.type === type ? null : { kind: 'prop', type },
+    )
+  }, [])
+
+  const lastPenaltyPolygonId = penaltyZoneSet.polygons.at(-1)?.id ?? null
+
+  const armPenaltyOuter = useCallback(() => {
+    setMeasureToolActive(false)
+    setPenaltyDraftVertices([])
+    setPlacementMode((prev) => (prev?.kind === 'penaltyZoneOuter' ? null : { kind: 'penaltyZoneOuter' }))
+  }, [])
+
+  const armPenaltyHole = useCallback(() => {
+    const pid = useStageStore.getState().penaltyZoneSet.polygons.at(-1)?.id
+    if (!pid) return
+    setMeasureToolActive(false)
+    setPenaltyDraftVertices([])
+    setPlacementMode((prev) =>
+      prev?.kind === 'penaltyZoneHole' && prev.polygonId === pid
+        ? null
+        : { kind: 'penaltyZoneHole', polygonId: pid },
     )
   }, [])
 
   const handlePlacementWorldClick = useCallback(
     (p: { x: number; y: number }) => {
       if (!placementMode) return
+      if (placementMode.kind === 'penaltyZoneOuter' || placementMode.kind === 'penaltyZoneHole') {
+        const clamped = clampVec2ToField({ ...p }, 1, fieldSizeM.x, fieldSizeM.y)
+        const snapped = snapVec2(clamped, GRID_SNAP_M)
+        if (penaltyDraftVertices.length >= 2 && canClosePolyline(penaltyDraftVertices, snapped)) {
+          const ring = [...penaltyDraftVertices]
+          if (ring.length >= 3) {
+            if (placementMode.kind === 'penaltyZoneOuter') {
+              addPenaltyPolygonOuter(ring)
+            } else {
+              addPenaltyHoleToPolygon(placementMode.polygonId, ring)
+            }
+            setPenaltyDraftVertices([])
+            if (layoutNarrow) setPlacementMode(null)
+            return
+          }
+        }
+        setPenaltyDraftVertices((prev) => [...prev, snapped])
+        return
+      }
       if (placementMode.kind === 'target') {
         addTarget(placementMode.type, placementMode.isNoShoot, p)
       } else {
@@ -369,7 +434,17 @@ export default function App() {
       }
       if (layoutNarrow) setPlacementMode(null)
     },
-    [placementMode, addTarget, addProp, layoutNarrow],
+    [
+      placementMode,
+      penaltyDraftVertices,
+      fieldSizeM.x,
+      fieldSizeM.y,
+      addTarget,
+      addProp,
+      addPenaltyPolygonOuter,
+      addPenaltyHoleToPolygon,
+      layoutNarrow,
+    ],
   )
 
   const runCopySelection = useCallback(() => {
@@ -708,6 +783,9 @@ export default function App() {
     layoutNarrow,
     onArmTarget: armTargetPlacement,
     onArmProp: armPropPlacement,
+    lastPenaltyPolygonId,
+    onArmPenaltyOuter: armPenaltyOuter,
+    onArmPenaltyHole: armPenaltyHole,
   }
 
   const mainStageStyle = {
@@ -881,6 +959,13 @@ export default function App() {
                 </div>
                 {viewMode === '2d' ? (
                   <div className="app__plan-map-shell">
+                    {(placementMode?.kind === 'penaltyZoneOuter' ||
+                      placementMode?.kind === 'penaltyZoneHole') &&
+                    penaltyDraftVertices.length > 0 ? (
+                      <div className="app__penalty-draft-banner" role="status" aria-live="polite">
+                        {tree.toolbar.penaltyContourUnclosed}
+                      </div>
+                    ) : null}
                     <StageCanvas
                       ref={planCanvasRef}
                       targets={targets}
@@ -901,6 +986,12 @@ export default function App() {
                       marqueeModeActive={marqueeModeActive}
                       onPlanSelectionChange={setPlanSelectionSummary}
                       onSelectionLongPress={() => setSelectionSheetOpen(true)}
+                      penaltyDraftVertices={
+                        placementMode?.kind === 'penaltyZoneOuter' ||
+                        placementMode?.kind === 'penaltyZoneHole'
+                          ? penaltyDraftVertices
+                          : null
+                      }
                     />
                     <div className="app__plan-map-actions" role="toolbar" aria-label={tree.view.planMapActionsAria}>
                       <button

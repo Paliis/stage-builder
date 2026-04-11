@@ -40,11 +40,27 @@ function briefingSnapshot(): StageBriefing {
 }
 
 function persistDraftNow(): void {
-  const { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props } = useStageStore.getState()
+  const {
+    name,
+    weaponClass,
+    fieldSizeM,
+    fieldGroundCover3d,
+    targets,
+    props,
+    penaltyZoneSet,
+  } = useStageStore.getState()
   const envelope: SessionDraftEnvelope = {
     draftMetaVersion: SESSION_DRAFT_META_VERSION,
     savedAt: Date.now(),
-    stage: { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props },
+    stage: {
+      name,
+      weaponClass,
+      fieldSizeM,
+      fieldGroundCover3d,
+      targets,
+      props,
+      penaltyZoneSet,
+    },
     briefing: briefingSnapshot(),
   }
   try {

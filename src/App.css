@@ -1021,6 +1021,23 @@
   width: 100%;
 }
 
+.app__penalty-draft-banner {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  background: rgba(254, 242, 242, 0.96);
+  color: rgb(127, 29, 29);
+  font-size: 0.8125rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+  pointer-events: none;
+  max-width: calc(100% - 2rem);
+  text-align: center;
+}
+
 .app__plan-map-shell .stage-canvas {
   flex: 1 1 auto;
   min-height: 0;

@@ -1,6 +1,13 @@
 import { create } from 'zustand'
 import { temporal } from 'zundo'
 import type { MetalPlateRectSideCm, Prop, PropType, Target, TargetType, Vec2 } from '../domain/models'
+import {
+  emptyPenaltyZoneSet,
+  newPolygonId,
+  newRingId,
+  reclampPenaltyZoneSet,
+  type PenaltyZoneSet,
+} from '../domain/penaltyZones'
 import { isSquareSteelPlateTargetType } from '../domain/targetSpecs'
 import { DEFAULT_FIELD_GROUND_COVER_3D, type FieldGroundCover3d } from '../domain/fieldGround3d'
 import {
@@ -73,6 +80,8 @@ export type StageState = {
   fieldGroundCover3d: FieldGroundCover3d
   targets: Target[]
   props: Prop[]
+  /** Замкнені контури штрафних зон (BL-019). */
+  penaltyZoneSet: PenaltyZoneSet
   setStageName: (name: string) => void
   setFieldGroundCover3d: (cover: FieldGroundCover3d) => void
   /** Повна заміна сцени (напр. з файлу вправи). */
@@ -83,6 +92,7 @@ export type StageState = {
     targets: Target[]
     props: Prop[]
     fieldGroundCover3d?: FieldGroundCover3d
+    penaltyZoneSet?: PenaltyZoneSet
   }) => void
   setWeaponClass: (wc: WeaponClass) => void
   setFieldSizeM: (size: Vec2) => void
@@ -100,6 +110,11 @@ export type StageState = {
   pasteCloneEntities: (targets: Target[], props: Prop[]) => void
   /** Порожня сцена, дефолтний розмір поля та ім’я (кнопка «нова вправа»). */
   resetSceneToDefaults: () => void
+  setPenaltyZoneSet: (pz: PenaltyZoneSet) => void
+  /** Додає новий полігон штрафної зони з одним замкненим зовнішнім контуром (вершини ≥ 3). */
+  addPenaltyPolygonOuter: (vertices: Vec2[]) => void
+  /** Додає замкнену дірку до полігона за id. */
+  addPenaltyHoleToPolygon: (polygonId: string, vertices: Vec2[]) => void
 }
 
 export const useStageStore = create<StageState>()(temporal((set) => ({
@@ -109,6 +124,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   fieldGroundCover3d: DEFAULT_FIELD_GROUND_COVER_3D,
   targets: [],
   props: [],
+  penaltyZoneSet: emptyPenaltyZoneSet(),
 
   setStageName: (name) =>
     set({
@@ -122,6 +138,11 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       const next = clampFieldDimensions(snapshot.fieldSizeM.x, snapshot.fieldSizeM.y)
       const { targets, props } = reclampTargetsProps(snapshot.targets, snapshot.props, next.x, next.y)
       const fieldGroundCover3d = snapshot.fieldGroundCover3d ?? DEFAULT_FIELD_GROUND_COVER_3D
+      const penaltyZoneSet = reclampPenaltyZoneSet(
+        snapshot.penaltyZoneSet ?? emptyPenaltyZoneSet(),
+        next.x,
+        next.y,
+      )
       return {
         name: snapshot.name.trim().slice(0, 200) || s.name,
         weaponClass: snapshot.weaponClass,
@@ -129,6 +150,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         fieldGroundCover3d,
         targets,
         props,
+        penaltyZoneSet,
       }
     }),
 
@@ -142,6 +164,51 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         fieldGroundCover3d: DEFAULT_FIELD_GROUND_COVER_3D,
         targets: [],
         props: [],
+        penaltyZoneSet: emptyPenaltyZoneSet(),
+      }
+    }),
+
+  setPenaltyZoneSet: (pz) => set({ penaltyZoneSet: pz }),
+
+  addPenaltyPolygonOuter: (vertices) =>
+    set((s) => {
+      if (vertices.length < 3) return s
+      const polyId = newPolygonId()
+      const ringId = newRingId()
+      return {
+        penaltyZoneSet: {
+          polygons: [
+            ...s.penaltyZoneSet.polygons,
+            {
+              id: polyId,
+              outer: { id: ringId, vertices: vertices.map((v) => ({ ...v })), closed: true },
+              holes: [],
+            },
+          ],
+        },
+      }
+    }),
+
+  addPenaltyHoleToPolygon: (polygonId, vertices) =>
+    set((s) => {
+      if (vertices.length < 3) return s
+      const poly = s.penaltyZoneSet.polygons.find((p) => p.id === polygonId)
+      if (!poly) return s
+      const holeId = newRingId()
+      return {
+        penaltyZoneSet: {
+          polygons: s.penaltyZoneSet.polygons.map((p) =>
+            p.id === polygonId
+              ? {
+                  ...p,
+                  holes: [
+                    ...p.holes,
+                    { id: holeId, vertices: vertices.map((v) => ({ ...v })), closed: true },
+                  ],
+                }
+              : p,
+          ),
+        },
       }
     }),
 
@@ -153,7 +220,8 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       const next = clampFieldDimensions(size.x, size.y)
       if (next.x === s.fieldSizeM.x && next.y === s.fieldSizeM.y) return s
       const { targets, props } = reclampTargetsProps(s.targets, s.props, next.x, next.y)
-      return { fieldSizeM: next, targets, props }
+      const penaltyZoneSet = reclampPenaltyZoneSet(s.penaltyZoneSet, next.x, next.y)
+      return { fieldSizeM: next, targets, props, penaltyZoneSet }
     }),
 
   addTarget: (type, isNoShoot = false, positionHint) =>
@@ -250,7 +318,8 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
 }), {
   limit: 50,
   partialize: (state) => {
-    const { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props } = state
-    return { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props }
+    const { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet } =
+      state
+    return { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet }
   },
 }))

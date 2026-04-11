@@ -14,9 +14,18 @@ import { defaultStageBriefing } from './stageBriefing'
 import type { WeaponClass } from './weaponClass'
 import { isSquareSteelPlateTargetType } from './targetSpecs'
 import { ALL_TARGET_TYPES } from './weaponClass'
+import {
+  emptyPenaltyZoneSet,
+  type PenaltyPolygonData,
+  type PenaltyRingData,
+  type PenaltyZoneSet,
+} from './penaltyZones'
 
 export const STAGE_PROJECT_FORMAT = 'stage-builder' as const
-export const STAGE_PROJECT_VERSION = 1
+/** 1 — початковий формат; 2 — `penaltyZoneSet` (замкнені контури штрафних зон). */
+export const STAGE_PROJECT_VERSION = 2
+/** Старі файли залишаються валідними при парсингу. */
+export const STAGE_PROJECT_VERSION_MIN = 1
 export const STAGE_PROJECT_FILE_EXTENSION = '.stage.json'
 
 const WEAPON_CLASSES = new Set<WeaponClass>(['handgun', 'rifle', 'shotgun'])
@@ -90,6 +99,10 @@ export type StageProjectSnapshot = {
   props: Prop[]
   /** Покриття площадки в 3D; для старих файлів — дефолт при парсингу. */
   fieldGroundCover3d: FieldGroundCover3d
+  /**
+   * Замкнені контури штрафних зон (BL-019). Для `version === 1` у файлі відсутнє — при парсингу `emptyPenaltyZoneSet()`.
+   */
+  penaltyZoneSet: PenaltyZoneSet
 }
 
 export type StageProjectFileV1 = {
@@ -146,6 +159,58 @@ function parseTarget(raw: unknown, idx: number): Target | null {
   }
 }
 
+function parsePenaltyRing(raw: unknown, idx: string): PenaltyRingData | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const o = raw as Record<string, unknown>
+  const id = typeof o.id === 'string' && o.id ? o.id : `ring-${idx}`
+  const closed = Boolean(o.closed)
+  if (!closed) return null
+  const verts = o.vertices
+  if (!Array.isArray(verts)) return null
+  const vertices: Vec2[] = []
+  for (let i = 0; i < verts.length; i++) {
+    if (!isVec2(verts[i])) return null
+    vertices.push(verts[i] as Vec2)
+  }
+  if (vertices.length < 3) return null
+  return { id, vertices, closed: true }
+}
+
+function parsePenaltyPolygon(raw: unknown, idx: number): PenaltyPolygonData | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const o = raw as Record<string, unknown>
+  const id = typeof o.id === 'string' && o.id ? o.id : `pz-${idx}`
+  const outerRaw = o.outer
+  const outer = parsePenaltyRing(outerRaw, `o-${idx}`)
+  if (!outer || !outer.closed) return null
+  const holesRaw = o.holes
+  const holes: PenaltyRingData[] = []
+  if (holesRaw !== undefined) {
+    if (!Array.isArray(holesRaw)) return null
+    for (let h = 0; h < holesRaw.length; h++) {
+      const ring = parsePenaltyRing(holesRaw[h], `h-${idx}-${h}`)
+      if (!ring || !ring.closed) return null
+      holes.push(ring)
+    }
+  }
+  return { id, outer, holes }
+}
+
+function parsePenaltyZoneSet(raw: unknown): PenaltyZoneSet | null {
+  if (raw === undefined || raw === null) return emptyPenaltyZoneSet()
+  if (typeof raw !== 'object') return null
+  const o = raw as Record<string, unknown>
+  const polys = o.polygons
+  if (!Array.isArray(polys)) return null
+  const polygons: PenaltyPolygonData[] = []
+  for (let i = 0; i < polys.length; i++) {
+    const p = parsePenaltyPolygon(polys[i], i)
+    if (!p) return null
+    polygons.push(p)
+  }
+  return { polygons }
+}
+
 function parseProp(raw: unknown, idx: number): Prop | null {
   if (typeof raw !== 'object' || raw === null) return null
   const o = raw as Record<string, unknown>
@@ -190,6 +255,24 @@ function parseBriefing(raw: unknown): StageBriefing {
   }
 }
 
+function clonePenaltyZoneSet(pz: PenaltyZoneSet): PenaltyZoneSet {
+  return {
+    polygons: pz.polygons.map((poly) => ({
+      id: poly.id,
+      outer: {
+        id: poly.outer.id,
+        closed: poly.outer.closed,
+        vertices: poly.outer.vertices.map((v) => ({ ...v })),
+      },
+      holes: poly.holes.map((h) => ({
+        id: h.id,
+        closed: h.closed,
+        vertices: h.vertices.map((v) => ({ ...v })),
+      })),
+    })),
+  }
+}
+
 export function buildStageProjectFile(snapshot: {
   stage: StageProjectSnapshot
   briefing: StageBriefing
@@ -204,6 +287,7 @@ export function buildStageProjectFile(snapshot: {
       targets: snapshot.stage.targets.map((t) => ({ ...t })),
       props: snapshot.stage.props.map((p) => ({ ...p })),
       fieldGroundCover3d: snapshot.stage.fieldGroundCover3d,
+      penaltyZoneSet: clonePenaltyZoneSet(snapshot.stage.penaltyZoneSet),
     },
     briefing: { ...snapshot.briefing },
   }
@@ -224,7 +308,13 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
   const root = parsed as Record<string, unknown>
   if (root.format !== STAGE_PROJECT_FORMAT) return { ok: false, errorKey: 'invalidShape' }
   const version = root.version
-  if (version !== STAGE_PROJECT_VERSION) return { ok: false, errorKey: 'invalidVersion' }
+  if (
+    typeof version !== 'number' ||
+    version < STAGE_PROJECT_VERSION_MIN ||
+    version > STAGE_PROJECT_VERSION
+  ) {
+    return { ok: false, errorKey: 'invalidVersion' }
+  }
 
   const st = root.stage
   if (typeof st !== 'object' || st === null) return { ok: false, errorKey: 'invalidShape' }
@@ -266,6 +356,13 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
 
   const fieldGroundCover3d = normalizeFieldGroundCover3d(stageObj.fieldGroundCover3d)
 
+  let penaltyZoneSet: PenaltyZoneSet = emptyPenaltyZoneSet()
+  if (version >= 2) {
+    const pz = parsePenaltyZoneSet(stageObj.penaltyZoneSet)
+    if (pz === null) return { ok: false, errorKey: 'invalidShape' }
+    penaltyZoneSet = pz
+  }
+
   const data: StageProjectFileV1 = {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
@@ -276,6 +373,7 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
       targets: ensureUniqueTargetIds(targets),
       props: ensureUniquePropIds(props),
       fieldGroundCover3d,
+      penaltyZoneSet,
     },
     briefing: parseBriefing(root.briefing),
   }

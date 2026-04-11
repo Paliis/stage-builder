@@ -38,6 +38,7 @@ import {
 import { swinger2DDrawSpecWorld, type Swinger2DDrawSpec } from '../../domain/swingerGeometry'
 import { parseSafetyAngles, isTargetInSafetyZone, type SafetyAngles } from '../../domain/safetyAngles'
 import { useBriefingStore } from '../../application/briefingStore'
+import { plan2DGroundTintRgba, type FieldGroundCover3d } from '../../domain/fieldGround3d'
 import {
   clampVec2ToField,
   DEFAULT_FIELD_HEIGHT_M,
@@ -49,6 +50,7 @@ import {
   PROP_PLACEMENT_SNAP_M,
   TARGET_PLACEMENT_SNAP_M,
 } from '../../domain/field'
+import { ringToClosedPoints, type PenaltyZoneSet } from '../../domain/penaltyZones'
 import {
   applyZoomAtWorldPoint,
   buildStageViewTransform,
@@ -1333,6 +1335,114 @@ function drawWeaponRackPyramidPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf:
   ctx.stroke()
 }
 
+const PENALTY_RED_FILL = 'rgba(220, 38, 38, 0.14)'
+const PENALTY_RED_STROKE = 'rgba(185, 28, 28, 0.72)'
+
+function traceClosedRingWorld(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  vertices: readonly Vec2[],
+) {
+  if (vertices.length < 2) return
+  const p0 = worldToScreen(vertices[0]!.x, vertices[0]!.y, tf)
+  ctx.moveTo(p0.x, p0.y)
+  for (let i = 1; i < vertices.length; i++) {
+    const p = worldToScreen(vertices[i]!.x, vertices[i]!.y, tf)
+    ctx.lineTo(p.x, p.y)
+  }
+  ctx.closePath()
+}
+
+function drawPenaltyZones(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  pz: PenaltyZoneSet,
+  groundCover: FieldGroundCover3d,
+) {
+  const groundTint = plan2DGroundTintRgba(groundCover)
+  for (const poly of pz.polygons) {
+    const outerClosed = ringToClosedPoints(poly.outer)
+    if (!outerClosed || outerClosed.length < 4) continue
+    const outerFlat = outerClosed.slice(0, -1)
+
+    if (poly.holes.length === 0) {
+      ctx.beginPath()
+      traceClosedRingWorld(ctx, tf, outerFlat)
+      ctx.fillStyle = groundTint
+      ctx.fill()
+      ctx.beginPath()
+      traceClosedRingWorld(ctx, tf, outerFlat)
+      ctx.strokeStyle = PENALTY_RED_STROKE
+      ctx.lineWidth = 1.35
+      ctx.stroke()
+      continue
+    }
+
+    ctx.beginPath()
+    traceClosedRingWorld(ctx, tf, outerFlat)
+    for (const h of poly.holes) {
+      const hp = ringToClosedPoints(h)
+      if (!hp || hp.length < 4) continue
+      traceClosedRingWorld(ctx, tf, hp.slice(0, -1))
+    }
+    ctx.fillStyle = PENALTY_RED_FILL
+    ctx.fill('evenodd')
+
+    for (const h of poly.holes) {
+      const hp = ringToClosedPoints(h)
+      if (!hp || hp.length < 4) continue
+      const hf = hp.slice(0, -1)
+      ctx.beginPath()
+      traceClosedRingWorld(ctx, tf, hf)
+      ctx.fillStyle = groundTint
+      ctx.fill()
+    }
+
+    ctx.beginPath()
+    traceClosedRingWorld(ctx, tf, outerFlat)
+    ctx.strokeStyle = PENALTY_RED_STROKE
+    ctx.lineWidth = 1.35
+    ctx.stroke()
+    for (const h of poly.holes) {
+      const hp = ringToClosedPoints(h)
+      if (!hp || hp.length < 4) continue
+      ctx.beginPath()
+      traceClosedRingWorld(ctx, tf, hp.slice(0, -1))
+      ctx.strokeStyle = PENALTY_RED_STROKE
+      ctx.lineWidth = 1.35
+      ctx.stroke()
+    }
+  }
+}
+
+function drawPenaltyDraftPolyline(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  vertices: readonly Vec2[],
+) {
+  if (vertices.length === 0) return
+  ctx.save()
+  ctx.strokeStyle = 'rgba(220, 38, 38, 0.9)'
+  ctx.lineWidth = 1.75
+  ctx.setLineDash([5, 4])
+  ctx.lineJoin = 'round'
+  ctx.lineCap = 'round'
+  ctx.beginPath()
+  const p0 = worldToScreen(vertices[0]!.x, vertices[0]!.y, tf)
+  ctx.moveTo(p0.x, p0.y)
+  for (let i = 1; i < vertices.length; i++) {
+    const p = worldToScreen(vertices[i]!.x, vertices[i]!.y, tf)
+    ctx.lineTo(p.x, p.y)
+  }
+  ctx.stroke()
+  ctx.setLineDash([])
+  ctx.fillStyle = 'rgba(220, 38, 38, 0.95)'
+  ctx.beginPath()
+  ctx.arc(p0.x, p0.y, 3.5, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.restore()
+}
+
 function drawSafetyZone(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
@@ -1391,6 +1501,9 @@ function redraw(
   measureA: Vec2 | null,
   measureB: Vec2 | null,
   formatMeasureDistance: (m: number) => string,
+  penaltyZoneSet: PenaltyZoneSet,
+  fieldGroundCover3d: FieldGroundCover3d,
+  penaltyDraftVertices: readonly Vec2[] | null,
 ) {
   const dpr = window.devicePixelRatio || 1
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -1414,6 +1527,11 @@ function redraw(
 
   drawGrid(ctx, tf)
   drawViewportFixedRulers(ctx, canvas, tf)
+
+  drawPenaltyZones(ctx, tf, penaltyZoneSet, fieldGroundCover3d)
+  if (penaltyDraftVertices && penaltyDraftVertices.length > 0) {
+    drawPenaltyDraftPolyline(ctx, tf, penaltyDraftVertices)
+  }
 
   const parsedAngles = parseSafetyAngles(safetyAnglesText)
   const startPosProp = props.find((p) => p.type === 'startPosition')
@@ -1687,6 +1805,8 @@ export type StageCanvasProps = {
   onPlanSelectionChange?: (summary: { empty: boolean; count: number }) => void
   /** Довгий тап по плану при непорожньому виділенні (мобільні дії). */
   onSelectionLongPress?: () => void
+  /** Чернетка полілінії штрафної зони (клацання вершин); null — не в режимі малювання контуру. */
+  penaltyDraftVertices: readonly Vec2[] | null
 }
 
 export type StageCanvasHandle = {
@@ -1737,10 +1857,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   marqueeModeActive,
   onPlanSelectionChange,
   onSelectionLongPress,
+  penaltyDraftVertices,
 }: StageCanvasProps,
   ref,
 ) {
   const fieldSizeM = useStageStore((s) => s.fieldSizeM)
+  const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
+  const fieldGroundCover3d = useStageStore((s) => s.fieldGroundCover3d)
   const fw = fieldSizeM.x
   const fh = fieldSizeM.y
   const faultLineMaxLenM = () => Math.max(fw, fh) * 4
@@ -1873,6 +1996,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         mA,
         mB,
         formatMeasureDistance,
+        penaltyZoneSet,
+        fieldGroundCover3d,
+        penaltyDraftVertices,
       )
 
     const t = transformRef.current
@@ -1893,6 +2019,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     measurePoints.b,
     measureToolActive,
     formatMeasureDistance,
+    penaltyZoneSet,
+    fieldGroundCover3d,
+    penaltyDraftVertices,
   ])
 
   useImperativeHandle(
