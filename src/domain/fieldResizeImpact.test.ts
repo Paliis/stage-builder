@@ -46,4 +46,15 @@ describe('fieldResizeChangesEntities', () => {
     ]
     expect(fieldResizeChangesEntities([], props, 20, 30)).toBe(true)
   })
+
+  it('returns true when legacy wall prop is dropped by migration', () => {
+    const legacyWall = {
+      id: 'w',
+      type: 'wall',
+      sizeM: { x: 2, y: 0.2 },
+      position: { x: 10, y: 10 },
+      rotationRad: 0,
+    } as Prop
+    expect(fieldResizeChangesEntities([], [legacyWall], 30, 40)).toBe(true)
+  })
 })

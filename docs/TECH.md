@@ -2,7 +2,7 @@
 
 Документ для розробників: архітектура, домен, формати даних, збірка та відомі обмеження.
 
-**Пов’язані документи:** бізнес- і технічний огляд **[PRODUCT.md](./PRODUCT.md)**; **беклог ідей** **[BACKLOG.md](./BACKLOG.md)**; чернетка **видимість / промені 2D** (BL-010 / BL-013) — **[VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md)**; повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**.  
+**Пов’язані документи:** бізнес- і технічний огляд **[PRODUCT.md](./PRODUCT.md)**; **беклог ідей** **[BACKLOG.md](./BACKLOG.md)**; чернетка **видимість / промені 2D** (BL-010 / BL-013) — **[VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md)**; повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**; **оптимізація бандла** — **[OPTIMIZATION.md](./OPTIMIZATION.md)**.  
 **Важливо:** позначки V0 / V1 / V2 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **1**).
 
 ## Архітектура
@@ -139,7 +139,8 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 ### TypeScript і тести
 
 - `tsconfig.app.json` **виключає** `src/**/*.test.ts` з `tsc -b`; фікстури в тестах мають відповідати доменним типам.
-- Unit-тести в `src/domain/`: `computeMinRounds.test.ts`, `targetSummary.test.ts`, `stageProjectFile.test.ts` (у т. ч. міграції застарілих типів мішеней у JSON), `fieldResizeImpact.test.ts`, `penaltyZones.test.ts` (полігони штрафних зон), `overviewAnchor.test.ts` (опорна точка огляду 3D: старт / штрафні лінії, сигнатура для React).
+- Unit-тести в `src/domain/`: `field.test.ts` (розмір поля, snap, clamp), `safetyAngles.test.ts` (парсинг кутів, клин безпеки), `fieldEntityReclamp.test.ts` (reclamp після зміни поля, міграція `wall`), `computeMinRounds.test.ts`, `targetSummary.test.ts`, `stageProjectFile.test.ts` (у т. ч. міграції застарілих типів мішеней у JSON), `fieldResizeImpact.test.ts`, `penaltyZones.test.ts`, `overviewAnchor.test.ts`, `planClipboard.test.ts` (центроїд, вставка), `a4PrintLayout.test.ts` (aspect PNG для PDF).
+- Unit-тести в `src/presentation/lib/`: `viewTransform.test.ts` (світ ↔ екран, pan до центру).
 - **Перевірка як у CI:** `npm run check` → ESLint, Vitest, `tsc -b`, production `vite build` (успішний вихід = готово до push у `main` / `staging`).
 
 ### Примітки з код-рев’ю (огляд 3D і домен)

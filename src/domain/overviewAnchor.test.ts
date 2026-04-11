@@ -43,6 +43,13 @@ describe('computeOverviewAnchorWorld2d', () => {
     expect(a).toEqual({ x: 8, y: 6 })
   })
 
+  it('picks lower y on vertical fault line (rotation π/2)', () => {
+    /* Center (10,12), length 4, rot 90°: along +Y from (10,10) to (10,14) — min y is 10. */
+    const props = [fl('v', 10, 12, 4, Math.PI / 2)] as Prop[]
+    const a = computeOverviewAnchorWorld2d(props)
+    expect(a).toEqual({ x: 10, y: 10 })
+  })
+
   it('returns null when no start and no fault line', () => {
     expect(computeOverviewAnchorWorld2d([])).toBeNull()
   })
