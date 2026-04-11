@@ -57,6 +57,15 @@ export default defineConfig({
       ],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,ico,png,ttf}'],
+        /**
+         * Default NavigationRoute serves index.html for all navigations; without a denylist,
+         * /sitemap_index.xml and /robots.txt show the SPA in the browser (curl still gets XML).
+         * Exclude static file-like paths so Google Search Console / users see real XML.
+         */
+        navigateFallbackDenylist: [
+          /^\/[^?]*\.[^/]+$/,
+          /^\/robots\.txt$/,
+        ],
       },
       manifest: {
         name: 'Stage Builder',
