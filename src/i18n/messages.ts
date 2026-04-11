@@ -44,7 +44,20 @@ export type MessageTree = {
     /** Підпис над блоком кнопок «стіл / стілець / стійка» у панелі інфраструктури */
     furnitureGroupLabel: string
     targetsNsAria: string
+    /** @deprecated Підпис NS замінено підгрупами «Штрафні мішені». */
     targetsNsCaption: string
+    /** Підгрупи мішеней (двохрівневий тулбар). */
+    groupPaper: string
+    groupMetal: string
+    groupCeramic: string
+    groupMoving: string
+    penaltyTargetsHeading: string
+    groupPenaltyPaper: string
+    groupPenaltyMetal: string
+    groupPenaltyCeramic: string
+    infraGroupShields: string
+    infraGroupFaultLines: string
+    infraGroupEquipment: string
     fieldSizeOption: string
     fieldSizeLabel: string
     fieldSizeHint: string
@@ -133,6 +146,11 @@ export type MessageTree = {
     noShootMetalStand100: string
     noShootPopper: string
     noShootMiniPopper: string
+    noShootCeramicPlate: string
+    noShootSwingerSinglePaper: string
+    noShootSwingerDoublePaper: string
+    noShootSwingerSingleCeramic: string
+    noShootSwingerDoubleCeramic: string
   }
   view: {
     tabsAria: string
@@ -331,6 +349,17 @@ export const ukMessages: MessageTree = {
     furnitureGroupLabel: '\u0421\u0442\u0456\u043b, \u0441\u0442\u0456\u043b\u0435\u0446\u044c, \u0441\u0442\u0456\u0439\u043a\u0430 \u0434\u043b\u044f \u0437\u0431\u0440\u043e\u0457',
     targetsNsAria: '\u0414\u043e\u0434\u0430\u0442\u0438 no-shoot (NS) \u043c\u0456\u0448\u0435\u043d\u0456 \u2014 \u0432\u043b\u0443\u0447\u0430\u043d\u043d\u044f \u043d\u0435 \u0437\u0430\u0440\u0430\u0445\u043e\u0432\u0443\u044e\u0442\u044c\u0441\u044f',
     targetsNsCaption: 'NS:',
+    groupPaper: '\u041f\u0430\u043f\u0456\u0440',
+    groupMetal: '\u041c\u0435\u0442\u0430\u043b',
+    groupCeramic: '\u041a\u0435\u0440\u0430\u043c\u0456\u043a\u0430',
+    groupMoving: '\u0420\u0443\u0445\u043e\u043c\u0456',
+    penaltyTargetsHeading: '\u0428\u0442\u0440\u0430\u0444\u043d\u0456 \u043c\u0456\u0448\u0435\u043d\u0456',
+    groupPenaltyPaper: '\u041f\u0430\u043f\u0456\u0440',
+    groupPenaltyMetal: '\u041c\u0435\u0442\u0430\u043b',
+    groupPenaltyCeramic: '\u041a\u0435\u0440\u0430\u043c\u0456\u043a\u0430',
+    infraGroupShields: '\u0429\u0438\u0442\u0438',
+    infraGroupFaultLines: '\u0428\u0442\u0440\u0430\u0444\u043d\u0456 \u043b\u0456\u043d\u0456\u0457 \u0442\u0430 \u0437\u043e\u043d\u0438',
+    infraGroupEquipment: '\u041e\u0431\u043b\u0430\u0434\u043d\u0430\u043d\u043d\u044f',
     fieldSizeOption: '{{w}} \u00d7 {{h}} \u043c',
     fieldSizeLabel: '\u041f\u043b\u043e\u0449\u0430\u0434\u043a\u0430 (\u0448\u0438\u0440 \u00d7 \u0434\u043e\u0432)',
     fieldSizeHint:
@@ -399,6 +428,11 @@ export const ukMessages: MessageTree = {
     noShootMetalStand100: '+ NS \u043c\u0435\u0442\u0430\u043b 1 \u043c',
     noShootPopper: '+ NS \u043f\u043e\u043f\u043f\u0435\u0440',
     noShootMiniPopper: '+ NS \u043c\u0456\u043d\u0456',
+    noShootCeramicPlate: '+ NS \u043a\u0435\u0440\u0430\u043c\u0456\u043a\u0430',
+    noShootSwingerSinglePaper: '+ NS \u043a\u0456\u0432\u0430\u043a 1\u00d7 \u043f\u0430\u043f\u0456\u0440',
+    noShootSwingerDoublePaper: '+ NS \u043a\u0456\u0432\u0430\u043a 2\u00d7 \u043f\u0430\u043f\u0456\u0440',
+    noShootSwingerSingleCeramic: '+ NS \u043a\u0456\u0432\u0430\u043a 1\u00d7 \u043a\u0435\u0440.',
+    noShootSwingerDoubleCeramic: '+ NS \u043a\u0456\u0432\u0430\u043a 2\u00d7 \u043a\u0435\u0440.',
   },
   props: {
     shield: '+ \u0429\u0438\u0442',
@@ -629,6 +663,17 @@ export const enMessages: MessageTree = {
     furnitureGroupLabel: 'Table, chair & rack',
     targetsNsAria: 'Add no-shoot (NS) targets \u2014 hits do not score',
     targetsNsCaption: 'NS:',
+    groupPaper: 'Paper',
+    groupMetal: 'Steel',
+    groupCeramic: 'Ceramic',
+    groupMoving: 'Moving',
+    penaltyTargetsHeading: 'Penalty targets',
+    groupPenaltyPaper: 'Paper',
+    groupPenaltyMetal: 'Steel',
+    groupPenaltyCeramic: 'Ceramic',
+    infraGroupShields: 'Shields',
+    infraGroupFaultLines: 'Penalty lines & zones',
+    infraGroupEquipment: 'Equipment',
     fieldSizeOption: '{{w}} \u00d7 {{h}} m',
     fieldSizeLabel: 'Range (w \u00d7 l)',
     fieldSizeHint:
@@ -696,6 +741,11 @@ export const enMessages: MessageTree = {
     noShootMetalStand100: '+ NS steel 1 m',
     noShootPopper: '+ NS popper',
     noShootMiniPopper: '+ NS mini',
+    noShootCeramicPlate: '+ NS ceramic',
+    noShootSwingerSinglePaper: '+ NS swinger 1\u00d7 paper',
+    noShootSwingerDoublePaper: '+ NS swinger 2\u00d7 paper',
+    noShootSwingerSingleCeramic: '+ NS swinger 1\u00d7 ceramic',
+    noShootSwingerDoubleCeramic: '+ NS swinger 2\u00d7 ceramic',
   },
   props: {
     shield: '+ Shield',

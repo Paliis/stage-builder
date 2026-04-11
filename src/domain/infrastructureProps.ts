@@ -1,7 +1,7 @@
 import type { PropType } from './models'
 
-/** Щити, двері, базовий реквізит — перший блок у панелі інфраструктури. */
-export const INFRASTRUCTURE_PROPS_PRIMARY: readonly PropType[] = [
+/** Щити — підгрупа «Інфраструктура» у тулбарі. */
+export const INFRASTRUCTURE_SHIELDS: readonly PropType[] = [
   'shield',
   'shieldDouble',
   'shieldWithPort',
@@ -9,19 +9,42 @@ export const INFRASTRUCTURE_PROPS_PRIMARY: readonly PropType[] = [
   'shieldPortHigh',
   'shieldPortSlanted',
   'shieldWithPortDoor',
+]
+
+/** Штрафна лінія — підгрупа разом із контуром штрафної зони (не PropType). */
+export const INFRASTRUCTURE_FAULT_LINE: readonly PropType[] = ['faultLine']
+
+/** Двері, базовий реквізит, меблі, активні елементи — підгрупа «Обладнання». */
+export const INFRASTRUCTURE_EQUIPMENT: readonly PropType[] = [
+  'door',
+  'barrel',
+  'tireStack',
+  'woodTable',
+  'woodChair',
+  'weaponRackPyramid',
+  'seesaw',
+  'movingPlatform',
+  'cooperTunnel',
+  'startPosition',
+]
+
+/** @deprecated Використовуйте INFRASTRUCTURE_SHIELDS / _FAULT_LINE / _EQUIPMENT у тулбарі. */
+export const INFRASTRUCTURE_PROPS_PRIMARY: readonly PropType[] = [
+  ...INFRASTRUCTURE_SHIELDS,
   'door',
   'faultLine',
   'barrel',
   'tireStack',
 ]
 
-/** Стіл, стілець, стійка — окремий підпис у тулбарі, щоб кнопки не губилися після довгого списку щитів. */
+/** @deprecated Див. INFRASTRUCTURE_EQUIPMENT. */
 export const INFRASTRUCTURE_PROPS_FURNITURE_RACK: readonly PropType[] = [
   'woodTable',
   'woodChair',
   'weaponRackPyramid',
 ]
 
+/** @deprecated Див. INFRASTRUCTURE_EQUIPMENT. */
 export const INFRASTRUCTURE_PROPS_TAIL: readonly PropType[] = [
   'seesaw',
   'movingPlatform',
@@ -29,9 +52,18 @@ export const INFRASTRUCTURE_PROPS_TAIL: readonly PropType[] = [
   'startPosition',
 ]
 
-/** Повний порядок (парсер / файл вправи) — збігається з об’єднанням трьох блоків. */
+/** Повний порядок типів реквізиту (як у попередньому тулбарі; парсер / файл вправи). */
 export const INFRASTRUCTURE_PROP_ORDER: readonly PropType[] = [
-  ...INFRASTRUCTURE_PROPS_PRIMARY,
-  ...INFRASTRUCTURE_PROPS_FURNITURE_RACK,
-  ...INFRASTRUCTURE_PROPS_TAIL,
+  ...INFRASTRUCTURE_SHIELDS,
+  'door',
+  'faultLine',
+  'barrel',
+  'tireStack',
+  'woodTable',
+  'woodChair',
+  'weaponRackPyramid',
+  'seesaw',
+  'movingPlatform',
+  'cooperTunnel',
+  'startPosition',
 ]

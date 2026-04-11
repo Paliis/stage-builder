@@ -33,7 +33,7 @@
 ## Розстановка з тулбару (placement)
 
 - Клік по типу мішені або реквізиту в **`StageBuilderToolbar`** увімкнює **`PlacementMode`** (`placementMode.ts`): далі кожен **ЛКМ по 2D-плану** викликає `addTarget` / `addProp` з координатами кліку (snap/clamp у `stageStore`). **Hit-test ігнорується** — можна ставити «поверх» існуючих об’єктів. Повторний клік по тій самій кнопці або **Esc** вимикає режим. **Вимір** і placement **взаємовиключні**. Реалізація кліку — `StageCanvas` (`placementArmed`, `onPlacementWorldClick`).
-- **Порядок кнопок реквізиту** — `INFRASTRUCTURE_PROP_ORDER` у `infrastructureProps.ts` (узгоджено з парсером `PROP_TYPES` у `stageProjectFile.ts`).
+- **Порядок кнопок реквізиту** — `INFRASTRUCTURE_PROP_ORDER` у `infrastructureProps.ts` (узгоджено з парсером `PROP_TYPES` у `stageProjectFile.ts`); у тулбарі реквізит згруповано (`INFRASTRUCTURE_SHIELDS`, `INFRASTRUCTURE_FAULT_LINE`, `INFRASTRUCTURE_EQUIPMENT`). Мішені — групи в `toolbarTargetGroups.ts`.
 - **Генерація `id`** — `newId()` у `stageStore` і `newEntityId()` у `stageProjectFile`: за можливості `crypto.randomUUID()`; на **HTTP (наприклад LAN без TLS)** `crypto.randomUUID` може бути недоступний — тоді fallback на префікс `sb-` + час/випадковість (див. коментар у `stageStore`).
 
 ## Клас зброї

@@ -1,9 +1,19 @@
+import { type ReactNode } from 'react'
 import {
-  INFRASTRUCTURE_PROPS_FURNITURE_RACK,
-  INFRASTRUCTURE_PROPS_PRIMARY,
-  INFRASTRUCTURE_PROPS_TAIL,
+  INFRASTRUCTURE_EQUIPMENT,
+  INFRASTRUCTURE_FAULT_LINE,
+  INFRASTRUCTURE_SHIELDS,
 } from '../../domain/infrastructureProps'
-import { useId } from 'react'
+import {
+  filterTargetTypesByGroup,
+  TOOLBAR_GROUP_CERAMIC,
+  TOOLBAR_GROUP_METAL,
+  TOOLBAR_GROUP_MOVING,
+  TOOLBAR_GROUP_PAPER,
+  TOOLBAR_GROUP_PENALTY_CERAMIC,
+  TOOLBAR_GROUP_PENALTY_METAL,
+  TOOLBAR_GROUP_PENALTY_PAPER,
+} from '../../domain/toolbarTargetGroups'
 import type { PlacementMode } from '../../domain/placementMode'
 import type { PropType, TargetType } from '../../domain/models'
 import type { MessageTree } from '../../i18n/messages'
@@ -91,6 +101,68 @@ function placementTitle(
   return `${baseLabel} — ${clickPlan} ${escHint}`
 }
 
+function noShootLabel(tr: MessageTree['targets'], ty: TargetType): string {
+  switch (ty) {
+    case 'paperIpscTwoPostGround':
+      return tr.noShootPaperTwoPostGround
+    case 'paperIpscTwoPostStand50':
+      return tr.noShootPaperTwoPostStand50
+    case 'paperIpscTwoPostStand100':
+      return tr.noShootPaperTwoPostStand100
+    case 'paperA4TwoPostGround':
+      return tr.noShootPaperA4TwoPostGround
+    case 'paperA4TwoPostStand50':
+      return tr.noShootPaperA4TwoPostStand50
+    case 'paperA4TwoPostStand100':
+      return tr.noShootPaperA4TwoPostStand100
+    case 'paperMiniIpscTwoPostGround':
+      return tr.noShootPaperMiniTwoPostGround
+    case 'paperMiniIpscTwoPostStand50':
+      return tr.noShootPaperMiniTwoPostStand50
+    case 'paperMiniIpscTwoPostStand100':
+      return tr.noShootPaperMiniTwoPostStand100
+    case 'metalPlate':
+      return tr.noShootMetal
+    case 'metalPlateStand50':
+      return tr.noShootMetalStand50
+    case 'metalPlateStand100':
+      return tr.noShootMetalStand100
+    case 'popper':
+      return tr.noShootPopper
+    case 'miniPopper':
+      return tr.noShootMiniPopper
+    case 'ceramicPlate':
+      return tr.noShootCeramicPlate
+    case 'swingerSinglePaper':
+      return tr.noShootSwingerSinglePaper
+    case 'swingerDoublePaper':
+      return tr.noShootSwingerDoublePaper
+    case 'swingerSingleCeramic':
+      return tr.noShootSwingerSingleCeramic
+    case 'swingerDoubleCeramic':
+      return tr.noShootSwingerDoubleCeramic
+    default: {
+      const _e: never = ty
+      return _e
+    }
+  }
+}
+
+function ToolbarSubgroup({
+  title,
+  children,
+}: {
+  title: string
+  children: ReactNode
+}) {
+  return (
+    <details className="app__toolbar-details" open>
+      <summary className="app__toolbar-details-summary">{title}</summary>
+      <div className="app__toolbar-details-body">{children}</div>
+    </details>
+  )
+}
+
 export type StageBuilderToolbarProps = {
   className?: string
   tree: MessageTree
@@ -115,7 +187,18 @@ export function StageBuilderToolbar({
   onArmProp,
   onArmPenaltyContour,
 }: StageBuilderToolbarProps) {
-  const furnitureGroupId = useId()
+  const tp = tree.toolbar
+  const tr = tree.targets
+
+  const paperTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_PAPER)
+  const metalTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_METAL)
+  const ceramicTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_CERAMIC)
+  const movingTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_MOVING)
+
+  const nsPaperTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_PENALTY_PAPER)
+  const nsMetalTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_PENALTY_METAL)
+  const nsCeramicTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_PENALTY_CERAMIC)
+
   const infraPropButtons = (types: readonly PropType[]) =>
     types.map((pt) => {
       const armed = placementMode?.kind === 'prop' && placementMode.type === pt
@@ -128,10 +211,10 @@ export function StageBuilderToolbar({
           title={placementTitle(
             tree.props[pt],
             armed,
-            tree.toolbar.placementClickPlan,
-            tree.toolbar.placementCancelEsc,
+            tp.placementClickPlan,
+            tp.placementCancelEsc,
             layoutNarrow,
-            tree.toolbar.placementArmedTitleNarrow,
+            tp.placementArmedTitleNarrow,
           )}
           onClick={() => onArmProp(pt)}
         >
@@ -140,11 +223,37 @@ export function StageBuilderToolbar({
       )
     })
 
+  const targetButtons = (types: readonly TargetType[], isNoShoot: boolean) =>
+    types.map((ty) => {
+      const armed =
+        placementMode?.kind === 'target' && placementMode.type === ty && placementMode.isNoShoot === isNoShoot
+      const label = isNoShoot ? noShootLabel(tr, ty) : tr[ty]
+      return (
+        <button
+          key={`${isNoShoot ? 'ns' : 't'}-${ty}`}
+          type="button"
+          className={`${isNoShoot ? `app__tb app__tb--ns${armed ? ' is-placement-armed' : ''}` : `${targetAddButtonClass(ty)}${armed ? ' is-placement-armed' : ''}`}`}
+          aria-pressed={armed}
+          title={placementTitle(
+            label,
+            armed,
+            tp.placementClickPlan,
+            tp.placementCancelEsc,
+            layoutNarrow,
+            tp.placementArmedTitleNarrow,
+          )}
+          onClick={() => onArmTarget(ty, isNoShoot)}
+        >
+          {label}
+        </button>
+      )
+    })
+
   return (
     <section className={className ?? 'app__toolbar'} aria-label={tree.toolbar.aria}>
       {placementMode ? (
         <p className="app__toolbar-placement-hint" role="status" aria-live="polite">
-          {layoutNarrow ? tree.toolbar.placementHintNarrow : `${tree.toolbar.placementClickPlan} ${tree.toolbar.placementCancelEsc}`}
+          {layoutNarrow ? tp.placementHintNarrow : `${tp.placementClickPlan} ${tp.placementCancelEsc}`}
         </p>
       ) : null}
       <div
@@ -156,79 +265,37 @@ export function StageBuilderToolbar({
           <h2 className="app__section-title">{tree.toolbar.targetsHeading}</h2>
           <span className="app__stage-name app__stage-name--inline">{name}</span>
         </div>
-        <div className="app__buttons">
-          {allowedTargetTypes.map((ty) => {
-            const armed =
-              placementMode?.kind === 'target' &&
-              placementMode.type === ty &&
-              placementMode.isNoShoot === false
-            return (
-              <button
-                key={ty}
-                type="button"
-                className={`${targetAddButtonClass(ty)}${armed ? ' is-placement-armed' : ''}`}
-                aria-pressed={armed}
-                title={placementTitle(
-                  tree.targets[ty],
-                  armed,
-                  tree.toolbar.placementClickPlan,
-                  tree.toolbar.placementCancelEsc,
-                  layoutNarrow,
-                  tree.toolbar.placementArmedTitleNarrow,
-                )}
-                onClick={() => onArmTarget(ty, false)}
-              >
-                {tree.targets[ty]}
-              </button>
-            )
-          })}
-        </div>
-        <p className="app__targets-ns-caption">{tree.toolbar.targetsNsCaption}</p>
-        <div className="app__buttons app__buttons--targets-ns" role="group" aria-label={tree.toolbar.targetsNsAria}>
-          {(
-            [
-              ['paperIpscTwoPostGround', tree.targets.noShootPaperTwoPostGround] as const,
-              ['paperIpscTwoPostStand50', tree.targets.noShootPaperTwoPostStand50] as const,
-              ['paperIpscTwoPostStand100', tree.targets.noShootPaperTwoPostStand100] as const,
-              ['paperA4TwoPostGround', tree.targets.noShootPaperA4TwoPostGround] as const,
-              ['paperA4TwoPostStand50', tree.targets.noShootPaperA4TwoPostStand50] as const,
-              ['paperA4TwoPostStand100', tree.targets.noShootPaperA4TwoPostStand100] as const,
-              ['paperMiniIpscTwoPostGround', tree.targets.noShootPaperMiniTwoPostGround] as const,
-              ['paperMiniIpscTwoPostStand50', tree.targets.noShootPaperMiniTwoPostStand50] as const,
-              ['paperMiniIpscTwoPostStand100', tree.targets.noShootPaperMiniTwoPostStand100] as const,
-              ['metalPlate', tree.targets.noShootMetal] as const,
-              ['metalPlateStand50', tree.targets.noShootMetalStand50] as const,
-              ['metalPlateStand100', tree.targets.noShootMetalStand100] as const,
-              ['popper', tree.targets.noShootPopper] as const,
-              ['miniPopper', tree.targets.noShootMiniPopper] as const,
-            ] as const
-          ).map(([ty, label]) => {
-            const armed =
-              placementMode?.kind === 'target' &&
-              placementMode.type === ty &&
-              placementMode.isNoShoot === true
-            return (
-              <button
-                key={ty}
-                type="button"
-                className={`app__tb app__tb--ns${armed ? ' is-placement-armed' : ''}`}
-                aria-pressed={armed}
-                title={placementTitle(
-                  label,
-                  armed,
-                  tree.toolbar.placementClickPlan,
-                  tree.toolbar.placementCancelEsc,
-                  layoutNarrow,
-                  tree.toolbar.placementArmedTitleNarrow,
-                )}
-                onClick={() => onArmTarget(ty, true)}
-              >
-                {label}
-              </button>
-            )
-          })}
-        </div>
+        <ToolbarSubgroup title={tp.groupPaper}>
+          <div className="app__buttons">{targetButtons(paperTypes, false)}</div>
+        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.groupMetal}>
+          <div className="app__buttons">{targetButtons(metalTypes, false)}</div>
+        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.groupCeramic}>
+          <div className="app__buttons">{targetButtons(ceramicTypes, false)}</div>
+        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.groupMoving}>
+          <div className="app__buttons">{targetButtons(movingTypes, false)}</div>
+        </ToolbarSubgroup>
       </div>
+
+      <div
+        className="app__toolbar-section app__toolbar-section--penalty-targets"
+        role="region"
+        aria-label={tree.toolbar.targetsNsAria}
+      >
+        <h2 className="app__section-title">{tp.penaltyTargetsHeading}</h2>
+        <ToolbarSubgroup title={tp.groupPenaltyPaper}>
+          <div className="app__buttons app__buttons--targets-ns">{targetButtons(nsPaperTypes, true)}</div>
+        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.groupPenaltyMetal}>
+          <div className="app__buttons app__buttons--targets-ns">{targetButtons(nsMetalTypes, true)}</div>
+        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.groupPenaltyCeramic}>
+          <div className="app__buttons app__buttons--targets-ns">{targetButtons(nsCeramicTypes, true)}</div>
+        </ToolbarSubgroup>
+      </div>
+
       <div
         className="app__toolbar-section app__toolbar-section--infra"
         role="region"
@@ -236,42 +303,36 @@ export function StageBuilderToolbar({
       >
         <h2 className="app__section-title">{tree.toolbar.infrastructureHeading}</h2>
         <p className="app__section-hint">{tree.toolbar.infrastructureHint}</p>
-        <div className="app__buttons">{infraPropButtons(INFRASTRUCTURE_PROPS_PRIMARY)}</div>
-        <p id={furnitureGroupId} className="app__toolbar-infra-sub">
-          {tree.toolbar.furnitureGroupLabel}
-        </p>
-        <div className="app__buttons" role="group" aria-labelledby={furnitureGroupId}>
-          {infraPropButtons(INFRASTRUCTURE_PROPS_FURNITURE_RACK)}
-        </div>
-        <div className="app__buttons">{infraPropButtons(INFRASTRUCTURE_PROPS_TAIL)}</div>
-      </div>
-      <div
-        className="app__toolbar-section app__toolbar-section--penalty-zones"
-        role="region"
-        aria-label={tree.toolbar.penaltyZonesAria}
-      >
-        <h2 className="app__section-title">{tree.toolbar.penaltyZonesHeading}</h2>
-        <p className="app__section-hint">{tree.toolbar.penaltyZoneCloseHint}</p>
-        <div className="app__buttons app__buttons--penalty-zones" role="group">
-          <button
-            type="button"
-            className={`app__btn-secondary app__tb-penalty-contour${
-              placementMode?.kind === 'penaltyZoneContour' ? ' is-placement-armed' : ''
-            }`}
-            aria-pressed={placementMode?.kind === 'penaltyZoneContour'}
-            title={placementTitle(
-              tree.toolbar.penaltyZoneContour,
-              placementMode?.kind === 'penaltyZoneContour',
-              tree.toolbar.placementClickPlan,
-              tree.toolbar.placementCancelEsc,
-              layoutNarrow,
-              tree.toolbar.placementArmedTitleNarrow,
-            )}
-            onClick={() => onArmPenaltyContour()}
-          >
-            {tree.toolbar.penaltyZoneContour}
-          </button>
-        </div>
+        <ToolbarSubgroup title={tp.infraGroupShields}>
+          <div className="app__buttons">{infraPropButtons(INFRASTRUCTURE_SHIELDS)}</div>
+        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.infraGroupFaultLines}>
+          <div className="app__buttons">
+            {infraPropButtons(INFRASTRUCTURE_FAULT_LINE)}
+            <button
+              type="button"
+              className={`app__btn-secondary app__tb-penalty-contour${
+                placementMode?.kind === 'penaltyZoneContour' ? ' is-placement-armed' : ''
+              }`}
+              aria-pressed={placementMode?.kind === 'penaltyZoneContour'}
+              title={placementTitle(
+                tp.penaltyZoneContour,
+                placementMode?.kind === 'penaltyZoneContour',
+                tp.placementClickPlan,
+                tp.placementCancelEsc,
+                layoutNarrow,
+                tp.placementArmedTitleNarrow,
+              )}
+              onClick={() => onArmPenaltyContour()}
+            >
+              {tp.penaltyZoneContour}
+            </button>
+          </div>
+          <p className="app__toolbar-fault-hint">{tp.penaltyZoneCloseHint}</p>
+        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.infraGroupEquipment}>
+          <div className="app__buttons">{infraPropButtons(INFRASTRUCTURE_EQUIPMENT)}</div>
+        </ToolbarSubgroup>
       </div>
     </section>
   )
