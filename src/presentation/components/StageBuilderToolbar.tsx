@@ -156,7 +156,7 @@ function ToolbarSubgroup({
   children: ReactNode
 }) {
   return (
-    <details className="app__toolbar-details" open>
+    <details className="app__toolbar-details">
       <summary className="app__toolbar-details-summary">{title}</summary>
       <div className="app__toolbar-details-body">{children}</div>
     </details>

@@ -583,6 +583,9 @@
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--toolbar-bg);
+  font-family: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.875rem;
+  -webkit-font-smoothing: antialiased;
 }
 
 .app__toolbar-placement-hint {
@@ -662,17 +665,46 @@
   margin: 0;
   padding: 0;
   border: none;
+  border-radius: 8px;
 }
 
 .app__toolbar-details-summary {
   list-style: none;
   cursor: pointer;
-  font-size: 0.78rem;
-  font-weight: 650;
-  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: var(--text-h);
-  padding: 0.2rem 0 0.15rem;
+  padding: 0.4rem 0.45rem;
+  margin: 0.06rem 0;
+  border-radius: 8px;
   user-select: none;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.app__toolbar-details-summary:hover {
+  background: color-mix(in srgb, var(--text-h) 6%, transparent);
+  color: var(--text-h);
+}
+
+.app__toolbar-details[open] > .app__toolbar-details-summary {
+  background: color-mix(in srgb, var(--accent, #6366f1) 8%, transparent);
+  color: color-mix(in srgb, var(--text-h) 92%, var(--accent, #6366f1) 8%);
+}
+
+.app__toolbar-details-summary:focus {
+  outline: none;
+}
+
+.app__toolbar-details-summary:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent, #6366f1) 55%, transparent);
+  outline-offset: 2px;
 }
 
 .app__toolbar-details-summary::-webkit-details-marker {
@@ -681,26 +713,28 @@
 
 .app__toolbar-details-summary::before {
   content: '';
-  display: inline-block;
-  width: 0.35rem;
-  height: 0.35rem;
-  margin-right: 0.35rem;
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  line-height: 1;
+  width: 0.35em;
+  height: 0.35em;
+  margin-right: 0.05rem;
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: rotate(-45deg);
-  vertical-align: 0.15rem;
-  opacity: 0.75;
+  opacity: 0.72;
+  transition: transform 0.18s ease, opacity 0.15s ease;
 }
 
 .app__toolbar-details[open] > .app__toolbar-details-summary::before {
   transform: rotate(45deg);
-  vertical-align: 0.05rem;
+  opacity: 0.9;
 }
 
 .app__toolbar-details-body {
-  padding: 0 0 0.35rem 0.55rem;
-  border-left: 2px solid rgba(148, 163, 184, 0.35);
-  margin: 0 0 0.15rem 0.2rem;
+  padding: 0.4rem 0 0.45rem 0.75rem;
+  margin: 0 0 0.2rem 0.35rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent, #6366f1) 22%, rgba(148, 163, 184, 0.45));
 }
 
 .app__toolbar-section--penalty-targets {
@@ -728,9 +762,10 @@
   margin: 0;
   font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-h);
+  font-variant-numeric: tabular-nums;
 }
 
 .app__stage-name {
@@ -1326,13 +1361,13 @@
 }
 
 .app__toolbar.app__plan-rail .app__toolbar-details-summary {
-  font-size: 0.68rem;
-  padding: 0.12rem 0 0.08rem;
+  font-size: 0.7rem;
+  padding: 0.32rem 0.35rem;
 }
 
 .app__toolbar.app__plan-rail .app__toolbar-details-body {
-  padding-bottom: 0.28rem;
-  margin-bottom: 0.08rem;
+  padding: 0.32rem 0 0.35rem 0.6rem;
+  margin-bottom: 0.06rem;
 }
 
 .app__toolbar.app__plan-rail .app__toolbar-fault-hint {
