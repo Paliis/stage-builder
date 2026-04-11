@@ -58,6 +58,8 @@ import {
   SWINGER_DIM,
 } from '../../domain/swingerGeometry'
 import { groundCoverColorHex } from '../../domain/fieldGround3d'
+import { ringToClosedPoints } from '../../domain/penaltyZones'
+import { FAULT_LINE_SECTION_M } from '../../domain/propGeometry'
 import { stageToThreeXZ, type StageFieldM } from '../lib/stageCoordinates3d'
 
 function useStageFieldM(): StageFieldM {
@@ -1468,6 +1470,80 @@ function StartPosition3D({ p, x, z }: { p: Prop; x: number; z: number }) {
   )
 }
 
+/** Ребра замкнених контурів штрафних зон — ті самі габарити/матеріал, що й `faultLine` у 3D. */
+function PenaltyZonesFaultLines3D() {
+  const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
+  const widthM = useStageStore((s) => s.fieldSizeM.x)
+  const heightM = useStageStore((s) => s.fieldSizeM.y)
+  const field = useMemo((): StageFieldM => ({ widthM, heightM }), [widthM, heightM])
+  const h = FAULT_LINE_SECTION_M
+  const thick = FAULT_LINE_SECTION_M
+  const mat = useMemo(
+    () => ({ color: '#f97316' as const, roughness: 0.55, metalness: 0.12 }),
+    [],
+  )
+
+  const meshes = useMemo(() => {
+    const out: {
+      key: string
+      midX: number
+      midZ: number
+      angleY: number
+      len: number
+    }[] = []
+
+    const pushRingEdges = (ringId: string, verts: readonly { x: number; y: number }[]) => {
+      const n = verts.length
+      if (n < 2) return
+      for (let i = 0; i < n; i++) {
+        const a = verts[i]!
+        const b = verts[(i + 1) % n]!
+        const p0 = stageToThreeXZ(a, field)
+        const p1 = stageToThreeXZ(b, field)
+        const dx = p1[0] - p0[0]
+        const dz = p1[2] - p0[2]
+        const len = Math.hypot(dx, dz)
+        if (len < 1e-5) continue
+        const midX = (p0[0] + p1[0]) * 0.5
+        const midZ = (p0[2] + p1[2]) * 0.5
+        const angleY = Math.atan2(dx, dz)
+        out.push({ key: `${ringId}-e${i}`, midX, midZ, angleY, len })
+      }
+    }
+
+    for (const poly of penaltyZoneSet.polygons) {
+      const oc = ringToClosedPoints(poly.outer)
+      if (oc && oc.length >= 4) {
+        pushRingEdges(`${poly.id}-outer`, oc.slice(0, -1))
+      }
+      for (const hole of poly.holes) {
+        const hc = ringToClosedPoints(hole)
+        if (hc && hc.length >= 4) {
+          pushRingEdges(`${poly.id}-h-${hole.id}`, hc.slice(0, -1))
+        }
+      }
+    }
+    return out
+  }, [penaltyZoneSet, field])
+
+  return (
+    <group>
+      {meshes.map((m) => (
+        <mesh
+          key={m.key}
+          position={[m.midX, h / 2, m.midZ]}
+          rotation={[0, m.angleY, 0]}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[m.len, h, thick]} />
+          <meshStandardMaterial {...mat} />
+        </mesh>
+      ))}
+    </group>
+  )
+}
+
 function Prop3D({ p }: { p: Prop }) {
   const field = useStageFieldM()
   const [x, , z] = stageToThreeXZ(p.position, field)
@@ -1709,6 +1785,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
         <StageSunLight />
         <Ground />
         <PerimeterWoodWall />
+        <PenaltyZonesFaultLines3D />
         {props.map((p) => (
           <Prop3D key={p.id} p={p} />
         ))}

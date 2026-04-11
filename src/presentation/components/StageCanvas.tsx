@@ -1366,9 +1366,11 @@ function drawPenaltyZones(
     const outerFlat = outerClosed.slice(0, -1)
 
     if (poly.holes.length === 0) {
+      /* Повна штрафна зона (без дірок): заливка тим самим червоним тоном, що й «кільце» матрьошки —
+       * зелений із fieldGroundCover3d лишаємо лише для інтер’єрів дірок (островів) нижче. */
       ctx.beginPath()
       traceClosedRingWorld(ctx, tf, outerFlat)
-      ctx.fillStyle = groundTint
+      ctx.fillStyle = 'rgba(220, 38, 38, 0.16)'
       ctx.fill()
       ctx.beginPath()
       traceClosedRingWorld(ctx, tf, outerFlat)

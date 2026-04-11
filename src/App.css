@@ -1283,7 +1283,8 @@
   container-type: inline-size;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* flex-start: інакше при високій колонці сцена «їде» вниз і лишається пустий простір зверху */
+  justify-content: flex-start;
   gap: 0;
   min-width: 0;
   min-height: min(58dvh, 34rem);
