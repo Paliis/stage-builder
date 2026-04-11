@@ -39,11 +39,6 @@ import { swinger2DDrawSpecWorld, type Swinger2DDrawSpec } from '../../domain/swi
 import { parseSafetyAngles, isTargetInSafetyZone, type SafetyAngles } from '../../domain/safetyAngles'
 import { useBriefingStore } from '../../application/briefingStore'
 import {
-  plan2DFieldBaseRgba,
-  plan2DGroundTintRgba,
-  type FieldGroundCover3d,
-} from '../../domain/fieldGround3d'
-import {
   clampVec2ToField,
   DEFAULT_FIELD_HEIGHT_M,
   DEFAULT_FIELD_WIDTH_M,
@@ -1357,21 +1352,13 @@ function traceClosedRingWorld(
   ctx.closePath()
 }
 
-function drawPenaltyZones(
-  ctx: CanvasRenderingContext2D,
-  tf: ViewTransform,
-  pz: PenaltyZoneSet,
-  groundCover: FieldGroundCover3d,
-) {
-  const groundTint = plan2DGroundTintRgba(groundCover)
+function drawPenaltyZones(ctx: CanvasRenderingContext2D, tf: ViewTransform, pz: PenaltyZoneSet) {
   for (const poly of pz.polygons) {
     const outerClosed = ringToClosedPoints(poly.outer)
     if (!outerClosed || outerClosed.length < 4) continue
     const outerFlat = outerClosed.slice(0, -1)
 
     if (poly.holes.length === 0) {
-      /* Повна штрафна зона (без дірок): заливка тим самим червоним тоном, що й «кільце» матрьошки —
-       * зелений із fieldGroundCover3d лишаємо лише для інтер’єрів дірок (островів) нижче. */
       ctx.beginPath()
       traceClosedRingWorld(ctx, tf, outerFlat)
       ctx.fillStyle = 'rgba(220, 38, 38, 0.16)'
@@ -1394,15 +1381,7 @@ function drawPenaltyZones(
     ctx.fillStyle = PENALTY_RED_FILL
     ctx.fill('evenodd')
 
-    for (const h of poly.holes) {
-      const hp = ringToClosedPoints(h)
-      if (!hp || hp.length < 4) continue
-      const hf = hp.slice(0, -1)
-      ctx.beginPath()
-      traceClosedRingWorld(ctx, tf, hf)
-      ctx.fillStyle = groundTint
-      ctx.fill()
-    }
+    /* Інтер’єри дірок не заливаємо — під червоним кільцем видно ту саму шахматку/сітку, що й на решті поля. */
 
     ctx.beginPath()
     traceClosedRingWorld(ctx, tf, outerFlat)
@@ -1508,14 +1487,13 @@ function redraw(
   measureB: Vec2 | null,
   formatMeasureDistance: (m: number) => string,
   penaltyZoneSet: PenaltyZoneSet,
-  fieldGroundCover3d: FieldGroundCover3d,
   penaltyDraftVertices: readonly Vec2[] | null,
 ) {
   const dpr = window.devicePixelRatio || 1
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
 
-  ctx.fillStyle = plan2DFieldBaseRgba(fieldGroundCover3d)
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.06)'
   const fieldPoly = [
     worldToScreen(0, 0, tf),
     worldToScreen(tf.fieldWidthM, 0, tf),
@@ -1534,7 +1512,7 @@ function redraw(
   drawGrid(ctx, tf)
   drawViewportFixedRulers(ctx, canvas, tf)
 
-  drawPenaltyZones(ctx, tf, penaltyZoneSet, fieldGroundCover3d)
+  drawPenaltyZones(ctx, tf, penaltyZoneSet)
   if (penaltyDraftVertices && penaltyDraftVertices.length > 0) {
     drawPenaltyDraftPolyline(ctx, tf, penaltyDraftVertices)
   }
@@ -1869,7 +1847,6 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 ) {
   const fieldSizeM = useStageStore((s) => s.fieldSizeM)
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
-  const fieldGroundCover3d = useStageStore((s) => s.fieldGroundCover3d)
   const fw = fieldSizeM.x
   const fh = fieldSizeM.y
   const faultLineMaxLenM = () => Math.max(fw, fh) * 4
@@ -2003,7 +1980,6 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         mB,
         formatMeasureDistance,
         penaltyZoneSet,
-        fieldGroundCover3d,
         penaltyDraftVertices,
       )
 
@@ -2026,7 +2002,6 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     measureToolActive,
     formatMeasureDistance,
     penaltyZoneSet,
-    fieldGroundCover3d,
     penaltyDraftVertices,
   ])
 
