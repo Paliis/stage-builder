@@ -91,15 +91,6 @@ export default function App() {
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
   const addPenaltyClosedRing = useStageStore((s) => s.addPenaltyClosedRing)
 
-  const canUndo = useStore(useStageStore.temporal, (s) => s.pastStates.length > 0)
-  const canRedo = useStore(useStageStore.temporal, (s) => s.futureStates.length > 0)
-  const runUndo = useCallback(() => {
-    useStageStore.temporal.getState().undo()
-  }, [])
-  const runRedo = useCallback(() => {
-    useStageStore.temporal.getState().redo()
-  }, [])
-
   const briefing = useBriefingStore(
     useShallow((s) => ({
       documentTitle: s.documentTitle,
@@ -144,6 +135,40 @@ export default function App() {
   const [placementMode, setPlacementMode] = useState<PlacementMode>(null)
   /** Вершини полілінії під час режиму штрафної зони (до замикання). */
   const [penaltyDraftVertices, setPenaltyDraftVertices] = useState<{ x: number; y: number }[]>([])
+  /** Вершини, зняті Ctrl+Z під час чернетки контуру — для повтору (Ctrl+Y) перед історією сцени. */
+  const [penaltyDraftRedoStack, setPenaltyDraftRedoStack] = useState<{ x: number; y: number }[]>([])
+  const clearPenaltyContourDraft = useCallback(() => {
+    setPenaltyDraftVertices([])
+    setPenaltyDraftRedoStack([])
+  }, [])
+
+  const canUndo = useStore(useStageStore.temporal, (s) => s.pastStates.length > 0)
+  const canRedo = useStore(useStageStore.temporal, (s) => s.futureStates.length > 0)
+  const canUndoPlan =
+    canUndo ||
+    (placementMode?.kind === 'penaltyZoneContour' && penaltyDraftVertices.length > 0)
+  const canRedoPlan =
+    canRedo ||
+    (placementMode?.kind === 'penaltyZoneContour' && penaltyDraftRedoStack.length > 0)
+  const runUndo = useCallback(() => {
+    if (placementMode?.kind === 'penaltyZoneContour' && penaltyDraftVertices.length > 0) {
+      const last = penaltyDraftVertices[penaltyDraftVertices.length - 1]!
+      setPenaltyDraftVertices((prev) => prev.slice(0, -1))
+      setPenaltyDraftRedoStack((r) => [...r, last])
+      return
+    }
+    useStageStore.temporal.getState().undo()
+  }, [placementMode, penaltyDraftVertices])
+  const runRedo = useCallback(() => {
+    if (placementMode?.kind === 'penaltyZoneContour' && penaltyDraftRedoStack.length > 0) {
+      const next = penaltyDraftRedoStack[penaltyDraftRedoStack.length - 1]!
+      setPenaltyDraftRedoStack((r) => r.slice(0, -1))
+      setPenaltyDraftVertices((prev) => [...prev, next])
+      return
+    }
+    useStageStore.temporal.getState().redo()
+  }, [placementMode, penaltyDraftRedoStack])
+
   const [layoutNarrow, setLayoutNarrow] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(max-width: 52rem)').matches : false,
   )
@@ -286,11 +311,11 @@ export default function App() {
     clearSessionDraftStorage()
     setMobileMenuOpen(false)
     setPlacementMode(null)
-    setPenaltyDraftVertices([])
+    clearPenaltyContourDraft()
     setMarqueeModeActive(false)
     setHasPlanClipboard(false)
     internalClipboardRef.current = null
-  }, [resetSceneToDefaults, setBriefing, t, setMobileMenuOpen])
+  }, [resetSceneToDefaults, setBriefing, t, setMobileMenuOpen, clearPenaltyContourDraft])
 
   const applySceneToBriefing = () => {
     setBriefing({
@@ -354,12 +379,12 @@ export default function App() {
       }
       if (!placementMode) return
       e.preventDefault()
-      setPenaltyDraftVertices([])
+      clearPenaltyContourDraft()
       setPlacementMode(null)
     }
     window.addEventListener('keydown', onKey, { passive: false })
     return () => window.removeEventListener('keydown', onKey)
-  }, [viewMode, placementMode, marqueeModeActive])
+  }, [viewMode, placementMode, marqueeModeActive, clearPenaltyContourDraft])
 
   const formatMeasureDistance = useCallback(
     (m: number) => formatTemplate(tree.view.measureDistanceMeters, { m: m.toFixed(2) }),
@@ -368,29 +393,29 @@ export default function App() {
 
   const armTargetPlacement = useCallback((type: TargetType, isNoShoot = false) => {
     setMeasureToolActive(false)
-    setPenaltyDraftVertices([])
+    clearPenaltyContourDraft()
     setPlacementMode((prev) =>
       prev?.kind === 'target' && prev.type === type && prev.isNoShoot === isNoShoot
         ? null
         : { kind: 'target', type, isNoShoot },
     )
-  }, [])
+  }, [clearPenaltyContourDraft])
 
   const armPropPlacement = useCallback((type: PropType) => {
     setMeasureToolActive(false)
-    setPenaltyDraftVertices([])
+    clearPenaltyContourDraft()
     setPlacementMode((prev) =>
       prev?.kind === 'prop' && prev.type === type ? null : { kind: 'prop', type },
     )
-  }, [])
+  }, [clearPenaltyContourDraft])
 
   const armPenaltyContour = useCallback(() => {
     setMeasureToolActive(false)
-    setPenaltyDraftVertices([])
+    clearPenaltyContourDraft()
     setPlacementMode((prev) =>
       prev?.kind === 'penaltyZoneContour' ? null : { kind: 'penaltyZoneContour' },
     )
-  }, [])
+  }, [clearPenaltyContourDraft])
 
   const handlePlacementWorldClick = useCallback(
     (p: { x: number; y: number }) => {
@@ -402,11 +427,12 @@ export default function App() {
           const ring = [...penaltyDraftVertices]
           if (ring.length >= 3) {
             addPenaltyClosedRing(ring)
-            setPenaltyDraftVertices([])
+            clearPenaltyContourDraft()
             if (layoutNarrow) setPlacementMode(null)
             return
           }
         }
+        setPenaltyDraftRedoStack([])
         setPenaltyDraftVertices((prev) => [...prev, snapped])
         return
       }
@@ -426,6 +452,7 @@ export default function App() {
       addProp,
       addPenaltyClosedRing,
       layoutNarrow,
+      clearPenaltyContourDraft,
     ],
   )
 
@@ -571,18 +598,18 @@ export default function App() {
       if (inFormField(e.target)) return
       if ((e.ctrlKey || e.metaKey) && e.code === 'KeyZ' && !e.shiftKey) {
         e.preventDefault()
-        useStageStore.temporal.getState().undo()
+        runUndo()
       } else if (
         ((e.ctrlKey || e.metaKey) && e.code === 'KeyY') ||
         ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === 'KeyZ')
       ) {
         e.preventDefault()
-        useStageStore.temporal.getState().redo()
+        runRedo()
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [runUndo, runRedo])
 
   const viewControlsRow = (
     <div className="app__view-row">
@@ -612,7 +639,7 @@ export default function App() {
           className="app__undo-redo-btn"
           aria-label={tree.view.undoPlan}
           title={tree.view.undoPlanTitle}
-          disabled={!canUndo}
+          disabled={!canUndoPlan}
           onClick={runUndo}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -625,7 +652,7 @@ export default function App() {
           className="app__undo-redo-btn"
           aria-label={tree.view.redoPlan}
           title={tree.view.redoPlanTitle}
-          disabled={!canRedo}
+          disabled={!canRedoPlan}
           onClick={runRedo}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
