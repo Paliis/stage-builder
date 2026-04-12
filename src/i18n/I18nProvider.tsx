@@ -6,6 +6,17 @@ import type { Locale, MessageTree } from './messages'
 import { messagesByLocale } from './messages'
 import { getInitialLocale, writeStoredLocale } from './storage'
 
+function applySeoMeta(seo: MessageTree['seo']) {
+  const set = (selector: string, attr: string, value: string) => {
+    const el = document.querySelector(selector)
+    if (el) el.setAttribute(attr, value)
+  }
+  set('meta[name="description"]', 'content', seo.metaDescription)
+  set('meta[property="og:description"]', 'content', seo.metaDescription)
+  set('meta[name="twitter:description"]', 'content', seo.metaDescription)
+  set('meta[property="og:image:alt"]', 'content', seo.ogImageAlt)
+}
+
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(() => getInitialLocale())
 
@@ -14,11 +25,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     writeStoredLocale(next)
   }, [])
 
+  const tree: MessageTree = messagesByLocale[locale]
+
   useEffect(() => {
     document.documentElement.lang = locale === 'en' ? 'en' : 'uk'
-  }, [locale])
-
-  const tree: MessageTree = messagesByLocale[locale]
+    applySeoMeta(tree.seo)
+  }, [locale, tree])
 
   const t = useCallback(
     (path: string, vars?: Record<string, string | number>) => {

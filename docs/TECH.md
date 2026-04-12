@@ -155,9 +155,9 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 
 ## SEO та індексація
 
-- **`index.html`** — `title`, `meta description` (UK), `canonical`, `hreflang` (uk/en/x-default на той самий URL — мова в UI), Open Graph + Twitter Card, `robots` / `googlebot` (index, follow, прев’ю зображень). Абсолютні `og:image` / `twitter:image` з query-параметром: плейсхолдер **`__ASSET_Q__`** замінюється на `ASSET_QUERY` з `vite.config.ts` — після зміни `public/og-image.png` збільште версію в query і задеплойте (Telegram та інші клієнти інакше можуть показувати старе прев’ю). Оновити кеш прев’ю в Telegram можна через бота **[@WebpageBot](https://t.me/WebpageBot)**.
+- **`index.html`** — `title`, `meta description` (за замовчуванням **EN** для кращої видачі в Google англомовним користувачам; узгоджено з OG/Twitter), `canonical`, `hreflang` (uk/en/x-default на той самий URL — мова в UI), Open Graph + Twitter Card, `robots` / `googlebot` (index, follow, прев’ю зображень). **`I18nProvider`** після завантаження оновлює `meta description`, `og:description`, `twitter:description`, `og:image:alt` з `messages.ts` (`seo.*`) відповідно до обраної мови (uk/en). Абсолютні `og:image` / `twitter:image` з query-параметром: плейсхолдер **`__ASSET_Q__`** замінюється на `ASSET_QUERY` з `vite.config.ts` — після зміни `public/og-image.png` збільште версію в query і задеплойте (Telegram та інші клієнти інакше можуть показувати старе прев’ю). Оновити кеш прев’ю в Telegram можна через бота **[@WebpageBot](https://t.me/WebpageBot)**.
 - **`public/robots.txt`** — `Allow: /` і рядок **`Sitemap:`** на абсолютний URL.
-- **`public/sitemap.xml`** — одна URL головної сторінки (SPA без маршрутів). При зміні домену оновити `sitemap.xml`, `robots.txt`, `index.html` (canonical, og:url, JSON-LD).
+- **`public/sitemap.xml`** / **`sitemap_index.xml`** — головна сторінка (SPA без публічних маршрутів). При зміні домену оновити ці файли, `robots.txt`, `index.html` (canonical, og:url, JSON-LD).
 - **JSON-LD** (`WebApplication`) у `index.html`.
 - **Vercel** — у `vercel.json` заголовок `Content-Type` для `/sitemap.xml`.
 - **Search Console** — після зміни домену додати властивість і надіслати sitemap. Google виконує JS; SSR/prerender — окреме покращення.
