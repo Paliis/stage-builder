@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import {
   clearSessionDraftStorage,
@@ -38,6 +38,22 @@ export function ShareStageRoute({ mode }: { mode: ShareMode }) {
     const lang = searchParams.get('lang')
     if (lang === 'uk' || lang === 'en') setLocale(lang)
   }, [searchParams, setLocale])
+
+  /** BL-001 F15: noindex for share routes (SPA — update existing meta from index.html). */
+  useLayoutEffect(() => {
+    const id = shareId?.trim()
+    if (!id) return
+    const robots = document.querySelector('meta[name="robots"]')
+    const prevR = robots?.getAttribute('content') ?? null
+    const googlebot = document.querySelector('meta[name="googlebot"]')
+    const prevG = googlebot?.getAttribute('content') ?? null
+    if (robots) robots.setAttribute('content', 'noindex, nofollow')
+    if (googlebot) googlebot.setAttribute('content', 'noindex, nofollow')
+    return () => {
+      if (robots && prevR !== null) robots.setAttribute('content', prevR)
+      if (googlebot && prevG !== null) googlebot.setAttribute('content', prevG)
+    }
+  }, [shareId])
 
   useEffect(() => {
     let cancelled = false
@@ -185,5 +201,11 @@ export function ShareStageRoute({ mode }: { mode: ShareMode }) {
     )
   }
 
-  return <App shareReadOnly={mode === 'view'} />
+  const sid = shareId?.trim()
+  return (
+    <App
+      shareReadOnly={mode === 'view'}
+      shareViewContext={sid ? { shareId: sid } : null}
+    />
+  )
 }

@@ -176,8 +176,10 @@ export async function exportBriefingPdf(opts: {
   briefing: StageBriefing
   pdf: BriefingPdfExportStrings
   fileName?: string
+  /** When set (e.g. opened from a share URL), QR encodes this URL — typically `/v/:id?lang=` for shooters. */
+  qrTargetUrl?: string
 }): Promise<void> {
-  const { snapshotDataUrl, briefing, pdf, fileName = 'briefing.pdf' } = opts
+  const { snapshotDataUrl, briefing, pdf, fileName = 'briefing.pdf', qrTargetUrl } = opts
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
 
   await registerPdfFonts(doc)
@@ -187,9 +189,10 @@ export async function exportBriefingPdf(opts: {
   const pageH = doc.internal.pageSize.getHeight()
   const contentW = pageW - margin * 2
 
+  const qrEncodeUrl = qrTargetUrl?.trim() || APP_URL
   let qrDataUrl: string | null = null
   try {
-    qrDataUrl = await generateQrDataUrl(APP_URL)
+    qrDataUrl = await generateQrDataUrl(qrEncodeUrl)
   } catch {
     qrDataUrl = null
   }

@@ -296,6 +296,8 @@ export type MessageTree = {
     publishTooLarge: string
     publishNotConfigured: string
     publishNetworkError: string
+    /** Link on `/v/` share page — open same snapshot in editor (new tab). */
+    openInEditor: string
   }
   footer: {
     feedbackHeading: string
@@ -657,6 +659,7 @@ export const ukMessages: MessageTree = {
       '\u041f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u044f \u043d\u0430 \u0446\u044c\u043e\u043c\u0443 \u0441\u0435\u0440\u0435\u0434\u043e\u0432\u0438\u0449\u0456 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 (\u043d\u0435\u043c\u0430\u0454 \u043d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u044c \u0441\u0435\u0440\u0432\u0435\u0440\u0430).',
     publishNetworkError:
       '\u041c\u0435\u0440\u0435\u0436\u0430 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 \u0430\u0431\u043e \u0441\u0435\u0440\u0432\u0435\u0440 \u043d\u0435 \u0432\u0456\u0434\u043f\u043e\u0432\u0456\u0432.',
+    openInEditor: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u0432 \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0456 (\u043d\u043e\u0432\u0430 \u0432\u043a\u043b\u0430\u0434\u043a\u0430)',
   },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
@@ -1007,6 +1010,7 @@ export const enMessages: MessageTree = {
     publishNotConfigured:
       'Publishing is not available in this environment (server not configured).',
     publishNetworkError: 'Network error or the server did not respond.',
+    openInEditor: 'Open in editor (new tab)',
   },
   footer: {
     feedbackHeading: 'Feedback',

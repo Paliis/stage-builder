@@ -67,9 +67,11 @@ function parseFieldSizeInputMeters(raw: string): number | null {
 export type AppProps = {
   /** Opened via `/v/:shareId` — scene and briefing are read-only. */
   shareReadOnly?: boolean
+  /** Opened via `/v/:shareId` or `/e/:shareId` — used for PDF QR (view URL) and «open in editor» on view links. */
+  shareViewContext?: { shareId: string } | null
 }
 
-export default function App({ shareReadOnly = false }: AppProps) {
+export default function App({ shareReadOnly = false, shareViewContext = null }: AppProps) {
   const readOnly = shareReadOnly
   const { locale, setLocale, t, tree } = useI18n()
   const { canInstall, promptInstall } = usePwaInstall()
@@ -300,6 +302,29 @@ export default function App({ shareReadOnly = false }: AppProps) {
       }),
     [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, briefing],
   )
+
+  /** Public origin for share links (matches server `VITE_SHARE_PUBLIC_ORIGIN` / request host). */
+  const sharePublicOrigin = useMemo(() => {
+    const env = import.meta.env.VITE_SHARE_PUBLIC_ORIGIN as string | undefined
+    const o = env?.trim().replace(/\/$/, '')
+    if (o) return o
+    if (typeof window !== 'undefined') return window.location.origin
+    return 'https://stage-builder.vercel.app'
+  }, [])
+
+  const sharePdfQrUrl = useMemo(() => {
+    if (!shareViewContext?.shareId) return undefined
+    const q = new URLSearchParams()
+    q.set('lang', locale)
+    return `${sharePublicOrigin}/v/${encodeURIComponent(shareViewContext.shareId)}?${q.toString()}`
+  }, [sharePublicOrigin, shareViewContext?.shareId, locale])
+
+  const openInEditorHref = useMemo(() => {
+    if (!shareViewContext?.shareId) return ''
+    const q = new URLSearchParams()
+    q.set('lang', locale)
+    return `${sharePublicOrigin}/e/${encodeURIComponent(shareViewContext.shareId)}?${q.toString()}`
+  }, [sharePublicOrigin, shareViewContext?.shareId, locale])
 
   const onProjectFileSelected = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -566,6 +591,7 @@ export default function App({ shareReadOnly = false }: AppProps) {
           generatedBy: tree.pdfBranding.generatedBy,
         },
         fileName: safeName,
+        qrTargetUrl: sharePdfQrUrl,
       })
     } catch (e) {
       console.error(e)
@@ -972,6 +998,19 @@ export default function App({ shareReadOnly = false }: AppProps) {
           </div>
         </div>
       </header>
+
+      {readOnly && shareViewContext ? (
+        <div className="app__share-view-banner">
+          <a
+            href={openInEditorHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="app__share-view-banner-link"
+          >
+            {tree.share.openInEditor}
+          </a>
+        </div>
+      ) : null}
 
       <dialog ref={onboardingDialogRef} className="app__onboarding-dialog">
         <button type="button" className="app__onboarding-close" onClick={dismissOnboarding} aria-label="Close">

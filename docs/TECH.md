@@ -7,11 +7,13 @@
 
 ## Посилання на вправу (BL-001)
 
-**Статус:** імплементація в роботі; детальний контекст, чеклист і продуктові рішення — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**.
+**Статус:** MVP (посилання, публікація, перегляд/редактор, PDF QR, noindex, OG для ботів) — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**.
 
 **База (Supabase):** міграція **`supabase/migrations/20260409120000_shared_stages.sql`** — таблиця **`shared_stages`**, RLS, RPC **`fetch_shared_stage`**. Застосування та перевірка — **[SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md)**; локальний smoke-тест мережі — **`node scripts/test-supabase-share.mjs`**. **Data API** у проєкті має бути увімкнено (Dashboard → Integrations → Data API).
 
-**Код:** `src/main.tsx` — **`BrowserRouter`** і маршрути **`/`** (`App`), **`/v/:shareId`**, **`/e/:shareId`** (`ShareStageRoute` → RPC **`fetch_shared_stage`**, гідратація стору; режим **`/v/`** передає в **`App`** проп **`shareReadOnly`**). Перед завантаженням share: якщо чернетка в **`localStorage`** «змістовна» (`isSessionDraftMeaningful` у **`sessionDraft.ts`**), показується діалог (файл / відкинути / скасувати). Клієнт Supabase — **`src/lib/supabaseClient.ts`**; змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
+**Код:** `src/main.tsx` — **`BrowserRouter`** і маршрути **`/`** (`App`), **`/v/:shareId`**, **`/e/:shareId`** (`ShareStageRoute` → RPC **`fetch_shared_stage`**, гідратація стору). Режим **`/v/`** — **`shareReadOnly`**; **`/e/`** — повний редактор. Обидва передають у **`App`** **`shareViewContext: { shareId }`** (для QR у PDF — завжди URL перегляду **`/v/:id?lang=`**; банер «Відкрити в редакторі» — лише в режимі перегляду, **`target="_blank"`** на **`/e/:id`**). Перед завантаженням share: якщо чернетка в **`localStorage`** «змістовна» (`isSessionDraftMeaningful` у **`sessionDraft.ts`**), показується діалог (файл / відкинути / скасувати). Клієнт Supabase — **`src/lib/supabaseClient.ts`**; змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
+
+**Індексація / прев’ю:** у **`ShareStageRoute`** для **`/v/`** та **`/e/`** оновлюються існуючі **`meta name="robots"`** та **`googlebot`** → **`noindex, nofollow`** (після відходу з маршруту — відновлення з `index.html`). **`middleware.ts`** (Vercel Edge, **`@vercel/edge`**): для типових User-Agent ботів на **`/v/*`** та **`/e/*`** повертається мінімальний HTML з **`og:title`** (з поля **`title`** через RPC **`fetch_shared_stage`**); інакше **`next()`** до SPA. Потрібні **`VITE_SUPABASE_URL`** і **`VITE_SUPABASE_ANON_KEY`** у середовищі Edge.
 
 **Публікація (POST):** **`api/publish-share.ts`** (Vercel Serverless) — **`SUPABASE_SERVICE_ROLE_KEY`**, **`SUPABASE_URL`** або **`VITE_SUPABASE_URL`**; опційно **`VITE_SHARE_PUBLIC_ORIGIN`** для абсолютних **`url`** у відповіді. Логіка валідації/нормалізації: **`src/server/sharePublish.ts`**. Локально повний стек: **`vercel dev`** (або лише деплой на Preview).
 
