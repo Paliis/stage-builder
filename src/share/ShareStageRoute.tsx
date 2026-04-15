@@ -1,5 +1,11 @@
-import { useEffect, useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import {
+  clearSessionDraftStorage,
+  downloadSessionDraftEnvelopeAsFile,
+  isSessionDraftMeaningful,
+  peekSessionDraftEnvelope,
+} from '../application/sessionDraft'
 import { useBriefingStore } from '../application/briefingStore'
 import { useStageStore } from '../application/stageStore'
 import { parseStageProjectJson } from '../domain/stageProjectFile'
@@ -15,9 +21,15 @@ type LoadStatus = 'loading' | 'ready' | 'error'
 export function ShareStageRoute({ mode }: { mode: ShareMode }) {
   const { shareId } = useParams<{ shareId: string }>()
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const { setLocale, t } = useI18n()
   const replaceStageState = useStageStore((s) => s.replaceStageState)
   const setBriefing = useBriefingStore((s) => s.setBriefing)
+
+  const [draftResolved, setDraftResolved] = useState(() => {
+    const env = peekSessionDraftEnvelope()
+    return !env || !isSessionDraftMeaningful(env)
+  })
 
   const [status, setStatus] = useState<LoadStatus>('loading')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -31,6 +43,8 @@ export function ShareStageRoute({ mode }: { mode: ShareMode }) {
     let cancelled = false
 
     async function run() {
+      if (!draftResolved) return
+
       if (!shareId?.trim()) {
         setStatus('error')
         setErrorMessage(t('share.invalidId'))
@@ -97,7 +111,56 @@ export function ShareStageRoute({ mode }: { mode: ShareMode }) {
     return () => {
       cancelled = true
     }
-  }, [shareId, mode, replaceStageState, setBriefing, t])
+  }, [draftResolved, shareId, mode, replaceStageState, setBriefing, t])
+
+  const proceedAfterDraftChoice = useCallback(() => {
+    clearSessionDraftStorage()
+    setDraftResolved(true)
+    setStatus('loading')
+  }, [])
+
+  const handleSaveDraftToFile = useCallback(() => {
+    const env = peekSessionDraftEnvelope()
+    if (env) downloadSessionDraftEnvelopeAsFile(env)
+    proceedAfterDraftChoice()
+  }, [proceedAfterDraftChoice])
+
+  const handleDiscardDraft = useCallback(() => {
+    proceedAfterDraftChoice()
+  }, [proceedAfterDraftChoice])
+
+  const handleCancelOpenShare = useCallback(() => {
+    navigate('/')
+  }, [navigate])
+
+  if (!draftResolved) {
+    return (
+      <div className="app share-route">
+        <div
+          className="share-route__dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="share-draft-title"
+        >
+          <h2 id="share-draft-title" className="share-route__dialog-title">
+            {t('share.draftConflictTitle')}
+          </h2>
+          <p className="share-route__dialog-body">{t('share.draftConflictBody')}</p>
+          <div className="share-route__dialog-actions">
+            <button type="button" className="app__btn-secondary" onClick={handleSaveDraftToFile}>
+              {t('share.draftSave')}
+            </button>
+            <button type="button" className="app__btn-secondary" onClick={handleDiscardDraft}>
+              {t('share.draftDiscard')}
+            </button>
+            <button type="button" className="app__btn-secondary" onClick={handleCancelOpenShare}>
+              {t('share.draftCancel')}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (status === 'loading') {
     return (

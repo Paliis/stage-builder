@@ -40,7 +40,7 @@
 
 7. [x] Маршрути **`/v/:shareId`** та **`/e/:shareId`** + **`?lang=`** (синхронізація з i18n).
 8. [x] Завантаження: RPC **`fetch_shared_stage`** → `payload` → **`parseStageProjectJson`** → гідратація `stageStore` / брифінгу (`ShareStageRoute`, `src/lib/supabaseClient.ts`).
-9. [ ] Діалог при **конфлікті з чернеткою** у `localStorage` (§0.5).
+9. [x] Діалог при **конфлікті з чернеткою** у `localStorage` (§0.5): зберегти файлом / відкинути / скасувати (`ShareStageRoute`, `sessionDraft.ts`).
 
 ### Етап D — Режими перегляд / редактор
 

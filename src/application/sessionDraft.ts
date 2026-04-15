@@ -1,8 +1,15 @@
 import type { StageBriefing } from '../domain/stageBriefing'
+import { DEFAULT_FIELD_HEIGHT_M, DEFAULT_FIELD_WIDTH_M } from '../domain/field'
+import { DEFAULT_FIELD_GROUND_COVER_3D } from '../domain/fieldGround3d'
+import { emptyPenaltyZoneSet } from '../domain/penaltyZones'
+import { defaultStageBriefing } from '../domain/stageBriefing'
 import {
+  buildStageProjectFile,
   parseStageProjectJson,
+  serializeStageProject,
   STAGE_PROJECT_FORMAT,
   STAGE_PROJECT_VERSION,
+  suggestedStageProjectFileName,
   type StageProjectSnapshot,
 } from '../domain/stageProjectFile'
 import { useBriefingStore } from './briefingStore'
@@ -15,11 +22,91 @@ const DEBOUNCE_MS = 450
 
 export const SESSION_DRAFT_META_VERSION = 1 as const
 
-type SessionDraftEnvelope = {
+/** Знімок чернетки в `localStorage` (без обгортки format/version файлу вправи). */
+export type SessionDraftEnvelope = {
   draftMetaVersion: typeof SESSION_DRAFT_META_VERSION
   savedAt: number
   stage: StageProjectSnapshot
   briefing: StageBriefing
+}
+
+const DEFAULT_STAGE_NAME_UA = 'Нова вправа'
+
+function briefingDiffersFromDefault(b: StageBriefing): boolean {
+  const d = defaultStageBriefing()
+  if (b.exerciseType !== d.exerciseType) return true
+  const keys: (keyof StageBriefing)[] = [
+    'documentTitle',
+    'targetsDescription',
+    'recommendedShots',
+    'allowedAmmo',
+    'maxPoints',
+    'startSignal',
+    'readyCondition',
+    'startPosition',
+    'procedure',
+    'safetyAngles',
+  ]
+  for (const k of keys) {
+    if ((b[k] ?? '').trim() !== (d[k] ?? '').trim()) return true
+  }
+  return false
+}
+
+/** Чи відрізняється збережена чернетка від «чистого» старту редактора (щоб не показувати діалог дарма). */
+export function isSessionDraftMeaningful(envelope: SessionDraftEnvelope): boolean {
+  const { stage, briefing } = envelope
+  const pz = stage.penaltyZoneSet ?? emptyPenaltyZoneSet()
+  if (stage.targets.length > 0 || stage.props.length > 0 || pz.polygons.length > 0) return true
+  if (stage.name.trim() !== DEFAULT_STAGE_NAME_UA) return true
+  if (stage.fieldSizeM.x !== DEFAULT_FIELD_WIDTH_M || stage.fieldSizeM.y !== DEFAULT_FIELD_HEIGHT_M) return true
+  if (stage.weaponClass !== 'handgun') return true
+  if (stage.fieldGroundCover3d !== DEFAULT_FIELD_GROUND_COVER_3D) return true
+  return briefingDiffersFromDefault(briefing)
+}
+
+/** Прочитати чернетку з `localStorage` без запису в стор (для BL-001 share flow). */
+export function peekSessionDraftEnvelope(): SessionDraftEnvelope | null {
+  let raw: string | null
+  try {
+    raw = localStorage.getItem(SESSION_DRAFT_STORAGE_KEY)
+  } catch {
+    return null
+  }
+  if (!raw) return null
+  let envelope: unknown
+  try {
+    envelope = JSON.parse(raw) as unknown
+  } catch {
+    return null
+  }
+  if (typeof envelope !== 'object' || envelope === null) return null
+  const o = envelope as Record<string, unknown>
+  if (o.draftMetaVersion !== SESSION_DRAFT_META_VERSION) return null
+  if (typeof o.stage !== 'object' || o.stage === null) return null
+  if (typeof o.briefing !== 'object' || o.briefing === null) return null
+  return envelope as SessionDraftEnvelope
+}
+
+/** Завантажити файл `*.stage.json` з вмісту чернетки (перед відкриттям посилання на вправу). */
+export function downloadSessionDraftEnvelopeAsFile(envelope: SessionDraftEnvelope): void {
+  const stage: StageProjectSnapshot = {
+    ...envelope.stage,
+    penaltyZoneSet: envelope.stage.penaltyZoneSet ?? emptyPenaltyZoneSet(),
+  }
+  const file = buildStageProjectFile({
+    stage,
+    briefing: { ...envelope.briefing },
+  })
+  const json = serializeStageProject(file)
+  const fname = suggestedStageProjectFileName(stage.name, envelope.briefing.documentTitle)
+  const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = fname
+  a.click()
+  URL.revokeObjectURL(url)
 }
 
 function briefingSnapshot(): StageBriefing {

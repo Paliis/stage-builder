@@ -11,7 +11,7 @@
 
 **База (Supabase):** міграція **`supabase/migrations/20260409120000_shared_stages.sql`** — таблиця **`shared_stages`**, RLS, RPC **`fetch_shared_stage`**. Застосування та перевірка — **[SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md)**; локальний smoke-тест мережі — **`node scripts/test-supabase-share.mjs`**. **Data API** у проєкті має бути увімкнено (Dashboard → Integrations → Data API).
 
-**Код:** `src/main.tsx` — **`BrowserRouter`** і маршрути **`/`** (`App`), **`/v/:shareId`**, **`/e/:shareId`** (`ShareStageRoute` → RPC **`fetch_shared_stage`**, гідратація стору; режим **`/v/`** передає в **`App`** проп **`shareReadOnly`**). Клієнт Supabase — **`src/lib/supabaseClient.ts`**; змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
+**Код:** `src/main.tsx` — **`BrowserRouter`** і маршрути **`/`** (`App`), **`/v/:shareId`**, **`/e/:shareId`** (`ShareStageRoute` → RPC **`fetch_shared_stage`**, гідратація стору; режим **`/v/`** передає в **`App`** проп **`shareReadOnly`**). Перед завантаженням share: якщо чернетка в **`localStorage`** «змістовна» (`isSessionDraftMeaningful` у **`sessionDraft.ts`**), показується діалог (файл / відкинути / скасувати). Клієнт Supabase — **`src/lib/supabaseClient.ts`**; змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
 
 ## Архітектура
 

@@ -270,6 +270,11 @@ export type MessageTree = {
     loadError: string
     envMissing: string
     backHome: string
+    draftConflictTitle: string
+    draftConflictBody: string
+    draftSave: string
+    draftDiscard: string
+    draftCancel: string
   }
   footer: {
     feedbackHeading: string
@@ -599,6 +604,13 @@ export const ukMessages: MessageTree = {
     envMissing:
       '\u041d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u043d\u044f Supabase \u043d\u0430 \u043a\u043b\u0456\u0454\u043d\u0442\u0456 \u0432\u0456\u0434\u0441\u0443\u0442\u043d\u0454. \u0414\u043b\u044f \u0440\u043e\u0437\u0440\u043e\u0431\u043d\u0438\u043a\u0430: \u0434\u043e\u0434\u0430\u0439\u0442\u0435 VITE_SUPABASE_URL \u0442\u0430 VITE_SUPABASE_ANON_KEY \u0443 .env.local.',
     backHome: '\u041d\u0430 \u0433\u043e\u043b\u043e\u0432\u043d\u0443',
+    draftConflictTitle: '\u0417\u0431\u0435\u0440\u0435\u0436\u0435\u043d\u0430 \u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0430 \u0432 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0456',
+    draftConflictBody:
+      'Щоб відкрити вправу за посиланням, оберіть: зберегти чернетку файлом, відкинути її або скасувати.',
+    draftSave:
+      '\u0417\u0431\u0435\u0440\u0435\u0433\u0442\u0438 \u0444\u0430\u0439\u043b\u043e\u043c\u2026',
+    draftDiscard: '\u0412\u0456\u0434\u043a\u0438\u043d\u0443\u0442\u0438 \u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0443',
+    draftCancel: '\u0421\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438',
   },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
@@ -921,6 +933,12 @@ export const enMessages: MessageTree = {
     envMissing:
       'Supabase is not configured on the client. For local dev, add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env.local.',
     backHome: 'Home',
+    draftConflictTitle: 'Saved browser draft',
+    draftConflictBody:
+      'To open this shared stage, choose what to do with your current draft in this browser.',
+    draftSave: 'Save as file\u2026',
+    draftDiscard: 'Discard draft',
+    draftCancel: 'Cancel',
   },
   footer: {
     feedbackHeading: 'Feedback',
