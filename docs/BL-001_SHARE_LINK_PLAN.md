@@ -26,9 +26,9 @@
 
 ### Етап A — База та доступ
 
-1. [ ] Міграція SQL: таблиця `shared_stages` (поля з §1), індекс за `id`, `expires_at`, обмеження розміру payload на рівні БД або API.
-2. [ ] **RLS:** політики для anon — `INSERT` (з обмеженнями або лише через серверну функцію), `SELECT` за публічним `id`.
-3. [ ] Змінні оточення: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` у Vercel (Preview + Production); локально шаблон у `.env.example` без секретів.
+1. [x] Міграція SQL: таблиця `shared_stages` — файл **`supabase/migrations/20260409120000_shared_stages.sql`**; застосувати вручну в Supabase SQL Editor (інструкція: **[SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md)**).
+2. [x] **RLS** увімкнено; читання для клієнта — RPC **`fetch_shared_stage(lookup_id)`** (не експонувати повний `SELECT` по таблиці для anon). **INSERT** — згодом лише через сервер із **service role**.
+3. [ ] Змінні оточення: скопіювати **Project URL** і **anon key** з Dashboard (**Settings → API**) у Vercel і локально `.env.local` як **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (шаблон у `.env.example`).
 
 ### Етап B — Публікація (сервер)
 

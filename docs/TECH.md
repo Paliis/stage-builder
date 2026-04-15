@@ -9,6 +9,8 @@
 
 **Статус:** імплементація в роботі; детальний контекст, чеклист і продуктові рішення — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**.
 
+**База (Supabase):** міграція **`supabase/migrations/20260409120000_shared_stages.sql`** — таблиця **`shared_stages`**, RLS, RPC **`fetch_shared_stage`**. Застосування та перевірка — **[SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md)**. **Data API** у проєкті має бути увімкнено (Dashboard → Integrations → Data API).
+
 **Код (на момент оновлення документа):** точка входу — `App.tsx` без **React Router**; для шляхів **`/v/:shareId`** / **`/e/:shareId`** потрібна маршрутизація або парсинг URL. Після додавання Supabase — змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
 
 ## Архітектура
