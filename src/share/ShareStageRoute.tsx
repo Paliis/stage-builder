@@ -5,14 +5,8 @@ import { useStageStore } from '../application/stageStore'
 import { parseStageProjectJson } from '../domain/stageProjectFile'
 import { useI18n } from '../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient'
+import { payloadToProjectText } from './payloadToProjectText'
 import App from '../App'
-
-function payloadToProjectText(payload: unknown): string | null {
-  if (payload == null) return null
-  if (typeof payload === 'string') return payload
-  if (typeof payload === 'object') return JSON.stringify(payload)
-  return null
-}
 
 type ShareMode = 'view' | 'edit'
 

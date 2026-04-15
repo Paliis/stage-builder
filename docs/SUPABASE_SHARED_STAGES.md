@@ -145,15 +145,30 @@ SELECT public.fetch_shared_stage('test_share_001');
 DELETE FROM public.shared_stages WHERE id = 'test_share_001';
 ```
 
-## Клієнт (наступний крок у коді)
+## Локальний smoke-скрипт (репозиторій)
 
-Виклик з `@supabase/supabase-js`:
+У корені репозиторію:
+
+```bash
+node scripts/test-supabase-share.mjs
+```
+
+Скрипт читає **`.env.local`** (якщо є) і використовує **`VITE_SUPABASE_URL`** та **`VITE_SUPABASE_ANON_KEY`**.
+
+- **Без додаткових ключів:** перевіряється, що **`fetch_shared_stage`** для випадкового неіснуючого `lookup_id` повертає **null** (з’єднання та RPC працюють).
+- **Повний цикл (insert → RPC → delete):** додайте в **`.env.local`** лише для локальної машини **`SUPABASE_SERVICE_ROLE_KEY`** (з **Settings → API → service_role**). **Не** комітьте цей ключ і **не** вбудовуйте його у фронтенд. З service role скрипт створює тимчасовий рядок, перевіряє читання через anon RPC, потім видаляє рядок.
+
+Юніт-тести парсингу `payload` (без мережі): `src/share/payloadToProjectText.test.ts`.
+
+## Клієнт
+
+Виклик з `@supabase/supabase-js` (у застосунку вже підключено, див. `src/share/ShareStageRoute.tsx`):
 
 ```ts
 const { data, error } = await supabase.rpc('fetch_shared_stage', {
   lookup_id: shareId,
 })
-// data — jsonb один об'єкт або null
+// data — jsonb один об'єкт рядка або null
 ```
 
 ## Ключі API
