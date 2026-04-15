@@ -1,12 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
-import { serializeStageProject } from '../src/domain/stageProjectFile.ts'
+import { serializeStageProject } from '../domain/stageProjectFile'
 import {
   checkPublishRateLimit,
   MAX_PUBLISH_BODY_BYTES,
   newShareId,
   normalizePublishBody,
-} from '../src/server/sharePublish.ts'
+} from './sharePublish'
 
 function resolvePublicOrigin(req: VercelRequest): string {
   const env = process.env.VITE_SHARE_PUBLIC_ORIGIN?.replace(/\/$/, '')
