@@ -1878,6 +1878,8 @@ export type StageCanvasProps = {
   onSelectionLongPress?: () => void
   /** Чернетка полілінії штрафної зони (клацання вершин); null — не в режимі малювання контуру. */
   penaltyDraftVertices: readonly Vec2[] | null
+  /** Режим перегляду за share-посиланням: лише пан/зум і вимірювання, без редагування сцени. */
+  readOnly?: boolean
 }
 
 export type StageCanvasHandle = {
@@ -1929,6 +1931,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   onPlanSelectionChange,
   onSelectionLongPress,
   penaltyDraftVertices,
+  readOnly = false,
 }: StageCanvasProps,
   ref,
 ) {
@@ -1991,6 +1994,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   }, [planSelect, onPlanSelectionChange])
 
   const performDeleteSelection = useCallback(() => {
+    if (readOnly) return
     const ps = planSelectRef.current
     if (ps.mode === 'none') return
     if (ps.mode === 'penaltyVertex') {
@@ -2006,7 +2010,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       else onDeleteProp(ps.id)
     }
     setPlanSelect({ mode: 'none' })
-  }, [onDeleteTarget, onDeleteProp, removePenaltyVertex])
+  }, [readOnly, onDeleteTarget, onDeleteProp, removePenaltyVertex])
 
   const clearLongPressTimer = useCallback(() => {
     if (longPressTimerRef.current != null) {
@@ -2226,6 +2230,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         }
       }
       if (e.code === 'Delete' || e.code === 'Backspace') {
+        if (readOnly) return
         if (e.repeat) return
         if (inFormField(e.target)) return
         if (planSelectRef.current.mode === 'none') return
@@ -2234,6 +2239,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         return
       }
       if (e.code === 'BracketLeft' || e.code === 'BracketRight') {
+        if (readOnly) return
         if (e.repeat) return
         if (inFormField(e.target)) return
         const ps = planSelectRef.current
@@ -2275,6 +2281,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     measurePoints.a,
     measurePoints.b,
     measureToolActive,
+    readOnly,
   ])
 
   useEffect(() => {
@@ -2366,7 +2373,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
-    if (!measureToolActive && !marqueeModeActive && ev.button === 0) {
+    if (!readOnly && !measureToolActive && !marqueeModeActive && ev.button === 0) {
       const pv = pickPenaltyVertexAt(w.x, w.y, transformRef.current.pxPerMeter, penaltyZoneSet)
       if (pv) {
         ev.preventDefault()
@@ -2400,7 +2407,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       }
     }
 
-    if (placementArmed && ev.button === 0) {
+    if (!readOnly && placementArmed && ev.button === 0) {
       ev.preventDefault()
       clearLongPressTimer()
       pendingEmptyPanRef.current = null
@@ -2411,7 +2418,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
-    if (marqueeModeActive && ev.button === 0) {
+    if (!readOnly && marqueeModeActive && ev.button === 0) {
       ev.preventDefault()
       clearLongPressTimer()
       pendingEmptyPanRef.current = null
@@ -2434,6 +2441,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
 
     if (
+      !readOnly &&
       ev.button === 0 &&
       ev.pointerType === 'touch' &&
       onSelectionLongPress &&
@@ -2482,7 +2490,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const ppm = transformRef.current.pxPerMeter
     const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
 
-    if (planSelect.mode === 'single' && planSelect.kind === 'prop') {
+    if (!readOnly && planSelect.mode === 'single' && planSelect.kind === 'prop') {
       const selP = props.find((x) => x.id === planSelect.id)
       if (selP?.type === 'faultLine') {
         const hwFl = handleWorldPosProp(selP)
@@ -2504,7 +2512,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       }
     }
 
-    if (planSelect.mode === 'single') {
+    if (!readOnly && planSelect.mode === 'single') {
       const selT = planSelect.kind === 'target' ? targets.find((x) => x.id === planSelect.id) : undefined
       const selP = planSelect.kind === 'prop' ? props.find((x) => x.id === planSelect.id) : undefined
       const hw =
@@ -2520,6 +2528,20 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         canvas.setPointerCapture(ev.pointerId)
         return
       }
+    }
+
+    if (readOnly) {
+      if (viewZoomRef.current > 1.001) {
+        pendingEmptyPanRef.current = {
+          pointerId: ev.pointerId,
+          clientX: ev.clientX,
+          clientY: ev.clientY,
+        }
+      } else {
+        clearLongPressTimer()
+        setPlanSelect({ mode: 'none' })
+      }
+      return
     }
 
     const hitT = pickTargetAt(targets, w.x, w.y, touchPad)

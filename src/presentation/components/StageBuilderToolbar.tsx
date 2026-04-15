@@ -171,6 +171,8 @@ export type StageBuilderToolbarProps = {
   placementMode: PlacementMode
   /** Matches plan toolbar breakpoint (~52rem): one tap places one item and exits placement. */
   layoutNarrow: boolean
+  /** Share view link: disable adding targets, props, and penalty contours. */
+  readOnly?: boolean
   onArmTarget: (type: TargetType, isNoShoot?: boolean) => void
   onArmProp: (type: PropType) => void
   onArmPenaltyContour: () => void
@@ -183,6 +185,7 @@ export function StageBuilderToolbar({
   allowedTargetTypes,
   placementMode,
   layoutNarrow,
+  readOnly = false,
   onArmTarget,
   onArmProp,
   onArmPenaltyContour,
@@ -206,6 +209,7 @@ export function StageBuilderToolbar({
         <button
           key={pt}
           type="button"
+          disabled={readOnly}
           className={`app__btn-secondary ${propAddButtonClass(pt)}${armed ? ' is-placement-armed' : ''}`}
           aria-pressed={armed}
           title={placementTitle(
@@ -232,6 +236,7 @@ export function StageBuilderToolbar({
         <button
           key={`${isNoShoot ? 'ns' : 't'}-${ty}`}
           type="button"
+          disabled={readOnly}
           className={`${isNoShoot ? `app__tb app__tb--ns${armed ? ' is-placement-armed' : ''}` : `${targetAddButtonClass(ty)}${armed ? ' is-placement-armed' : ''}`}`}
           aria-pressed={armed}
           title={placementTitle(
@@ -311,6 +316,7 @@ export function StageBuilderToolbar({
             {infraPropButtons(INFRASTRUCTURE_FAULT_LINE)}
             <button
               type="button"
+              disabled={readOnly}
               className={`app__btn-secondary app__tb-penalty-contour${
                 placementMode?.kind === 'penaltyZoneContour' ? ' is-placement-armed' : ''
               }`}

@@ -2282,3 +2282,34 @@ button.app__btn-pwa-install {
     gap: 0.35rem 0.45rem;
   }
 }
+
+/* BL-001: loading / error for /v/:id and /e/:id */
+.share-route {
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.share-route__panel {
+  max-width: 28rem;
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  line-height: 1.5;
+}
+
+.share-route__panel--error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #7f1d1d;
+}
+
+.share-route__panel a {
+  color: #0369a1;
+  font-weight: 600;
+}

@@ -3,6 +3,10 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/v/:path*", "destination": "/index.html" },
+    { "source": "/e/:path*", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/sitemap.xml",

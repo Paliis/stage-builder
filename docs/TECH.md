@@ -11,7 +11,7 @@
 
 **База (Supabase):** міграція **`supabase/migrations/20260409120000_shared_stages.sql`** — таблиця **`shared_stages`**, RLS, RPC **`fetch_shared_stage`**. Застосування та перевірка — **[SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md)**. **Data API** у проєкті має бути увімкнено (Dashboard → Integrations → Data API).
 
-**Код (на момент оновлення документа):** точка входу — `App.tsx` без **React Router**; для шляхів **`/v/:shareId`** / **`/e/:shareId`** потрібна маршрутизація або парсинг URL. Після додавання Supabase — змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
+**Код:** `src/main.tsx` — **`BrowserRouter`** і маршрути **`/`** (`App`), **`/v/:shareId`**, **`/e/:shareId`** (`ShareStageRoute` → RPC **`fetch_shared_stage`**, гідратація стору; режим **`/v/`** передає в **`App`** проп **`shareReadOnly`**). Клієнт Supabase — **`src/lib/supabaseClient.ts`**; змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
 
 ## Архітектура
 
@@ -25,7 +25,7 @@
 | **Корінь UI** | `src/App.tsx` | Композиція layout, брифінг-форма, гарячі клавіші, lazy-3D, стрічка staging, посилання на канвас через `ref` (`StageCanvasHandle`) |
 | **i18n** | `src/i18n/` | Дерева рядків UK/EN (`messages.ts`), `I18nProvider`, `getMessage` / `formatTemplate`, `localStorage` для мови (`storage.ts`) |
 
-Точка входу: `src/main.tsx` — `hydrateSessionDraft()`, реєстрація PWA (`virtual:pwa-register`), обгортка `I18nProvider`, далі `App`, **Vercel Analytics** і **Google Analytics**.
+Точка входу: `src/main.tsx` — `hydrateSessionDraft()`, реєстрація PWA (`virtual:pwa-register`), обгортка `I18nProvider`, **`BrowserRouter`** з маршрутами, **Vercel Analytics** і **Google Analytics**.
 
 **Code splitting:** `StageView3D` підвантажується через `React.lazy` у `App.tsx` лише в режимі «3D», всередині `<Suspense>`. Експорт PDF — динамічний `import()` модуля `exportBriefingPdf` у момент натискання кнопки.
 

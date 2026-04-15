@@ -263,6 +263,14 @@ export type MessageTree = {
     loadErrorVersion: string
     fileGroupAria: string
   }
+  share: {
+    loading: string
+    invalidId: string
+    notFoundOrExpired: string
+    loadError: string
+    envMissing: string
+    backHome: string
+  }
   footer: {
     feedbackHeading: string
     feedbackText: string
@@ -582,6 +590,16 @@ export const ukMessages: MessageTree = {
     loadErrorVersion: '\u041d\u0435\u043f\u0456\u0434\u0442\u0440\u0438\u043c\u0443\u0432\u0430\u043d\u0430 \u0432\u0435\u0440\u0441\u0456\u044f \u0444\u0430\u0439\u043b\u0443. \u041e\u043d\u043e\u0432\u0456\u0442\u044c Stage Builder.',
     fileGroupAria: '\u0417\u0431\u0435\u0440\u0435\u0436\u0435\u043d\u043d\u044f \u0442\u0430 \u0437\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f \u0444\u0430\u0439\u043b\u0443 \u0432\u043f\u0440\u0430\u0432\u0438',
   },
+  share: {
+    loading: '\u0417\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f \u0432\u043f\u0440\u0430\u0432\u0438\u2026',
+    invalidId: '\u041d\u0435\u0432\u0456\u0434\u043e\u043c\u0438\u0439 \u0456\u0434\u0435\u043d\u0442\u0438\u0444\u0456\u043a\u0430\u0442\u043e\u0440 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f.',
+    notFoundOrExpired:
+      '\u0412\u043f\u0440\u0430\u0432\u0443 \u043d\u0435 \u0437\u043d\u0430\u0439\u0434\u0435\u043d\u043e \u0430\u0431\u043e \u0442\u0435\u0440\u043c\u0456\u043d \u0434\u0456\u0457 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043c\u0438\u043d\u0443\u0432.',
+    loadError: '\u041d\u0435 \u0432\u0434\u0430\u043b\u043e\u0441\u044f \u0437\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0438\u0442\u0438 \u0432\u043f\u0440\u0430\u0432\u0443 \u0437 \u0441\u0435\u0440\u0432\u0435\u0440\u0430.',
+    envMissing:
+      '\u041d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u043d\u044f Supabase \u043d\u0430 \u043a\u043b\u0456\u0454\u043d\u0442\u0456 \u0432\u0456\u0434\u0441\u0443\u0442\u043d\u0454. \u0414\u043b\u044f \u0440\u043e\u0437\u0440\u043e\u0431\u043d\u0438\u043a\u0430: \u0434\u043e\u0434\u0430\u0439\u0442\u0435 VITE_SUPABASE_URL \u0442\u0430 VITE_SUPABASE_ANON_KEY \u0443 .env.local.',
+    backHome: '\u041d\u0430 \u0433\u043e\u043b\u043e\u0432\u043d\u0443',
+  },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
     feedbackText: '\u0417\u043d\u0430\u0439\u0448\u043b\u0438 \u043f\u043e\u043c\u0438\u043b\u043a\u0443, \u043c\u0430\u0454\u0442\u0435 \u043f\u0440\u043e\u043f\u043e\u0437\u0438\u0446\u0456\u044e \u0447\u0438 \u0432\u0456\u0434\u0433\u0443\u043a? \u041d\u0430\u043f\u0438\u0448\u0456\u0442\u044c:',
@@ -894,6 +912,15 @@ export const enMessages: MessageTree = {
     loadErrorShape: 'Unknown format or invalid stage data.',
     loadErrorVersion: 'Unsupported file version. Update Stage Builder.',
     fileGroupAria: 'Save and open stage file',
+  },
+  share: {
+    loading: 'Loading stage\u2026',
+    invalidId: 'Invalid share link identifier.',
+    notFoundOrExpired: 'Stage not found or the link has expired.',
+    loadError: 'Could not load the stage from the server.',
+    envMissing:
+      'Supabase is not configured on the client. For local dev, add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env.local.',
+    backHome: 'Home',
   },
   footer: {
     feedbackHeading: 'Feedback',

@@ -63,7 +63,13 @@ function parseFieldSizeInputMeters(raw: string): number | null {
   return Number.isFinite(v) ? v : null
 }
 
-export default function App() {
+export type AppProps = {
+  /** Opened via `/v/:shareId` — scene and briefing are read-only. */
+  shareReadOnly?: boolean
+}
+
+export default function App({ shareReadOnly = false }: AppProps) {
+  const readOnly = shareReadOnly
   const { locale, setLocale, t, tree } = useI18n()
   const { canInstall, promptInstall } = usePwaInstall()
 
@@ -193,6 +199,17 @@ export default function App() {
     if (!fieldHeightInputFocusedRef.current) setFieldHeightDraft(null)
     else setFieldHeightDraft(String(fieldSizeM.y))
   }, [fieldSizeM.y])
+
+  useEffect(() => {
+    if (!readOnly) return
+    setPlacementMode(null)
+    clearPenaltyContourDraft()
+    setMarqueeModeActive(false)
+    setMeasureToolActive(false)
+    setMobileMenuOpen(false)
+    setHasPlanClipboard(false)
+    internalClipboardRef.current = null
+  }, [readOnly, clearPenaltyContourDraft])
 
   useEffect(() => {
     if (!measureToolActive) planCanvasRef.current?.clearMeasure()
@@ -352,6 +369,7 @@ export default function App() {
   }, [placementMode])
 
   useEffect(() => {
+    if (readOnly) return
     if (viewMode !== '2d') return
     const onKey = (e: KeyboardEvent) => {
       if (e.code !== 'KeyM' || e.repeat) return
@@ -364,9 +382,10 @@ export default function App() {
     }
     window.addEventListener('keydown', onKey, { passive: false })
     return () => window.removeEventListener('keydown', onKey)
-  }, [viewMode])
+  }, [viewMode, readOnly])
 
   useEffect(() => {
+    if (readOnly) return
     if (viewMode !== '2d') return
     const onKey = (e: KeyboardEvent) => {
       if (e.code !== 'Escape' || e.repeat) return
@@ -384,7 +403,7 @@ export default function App() {
     }
     window.addEventListener('keydown', onKey, { passive: false })
     return () => window.removeEventListener('keydown', onKey)
-  }, [viewMode, placementMode, marqueeModeActive, clearPenaltyContourDraft])
+  }, [viewMode, placementMode, marqueeModeActive, clearPenaltyContourDraft, readOnly])
 
   const formatMeasureDistance = useCallback(
     (m: number) => formatTemplate(tree.view.measureDistanceMeters, { m: m.toFixed(2) }),
@@ -493,6 +512,7 @@ export default function App() {
   }, [fieldSizeM.x, fieldSizeM.y, pasteCloneEntities, viewMode])
 
   useEffect(() => {
+    if (readOnly) return
     if (viewMode !== '2d') return
     const onKey = (e: KeyboardEvent) => {
       if (!(e.ctrlKey || e.metaKey)) return
@@ -509,7 +529,7 @@ export default function App() {
     }
     window.addEventListener('keydown', onKey, { passive: false })
     return () => window.removeEventListener('keydown', onKey)
-  }, [viewMode, runCopySelection, runPasteSelection])
+  }, [viewMode, runCopySelection, runPasteSelection, readOnly])
 
   const handleExportPdf = async () => {
     setPdfBusy(true)
@@ -595,6 +615,7 @@ export default function App() {
       t instanceof HTMLElement && t.closest('input, textarea, select, [contenteditable="true"]') !== null
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (readOnly) return
       if (inFormField(e.target)) return
       if ((e.ctrlKey || e.metaKey) && e.code === 'KeyZ' && !e.shiftKey) {
         e.preventDefault()
@@ -609,7 +630,7 @@ export default function App() {
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [runUndo, runRedo])
+  }, [runUndo, runRedo, readOnly])
 
   const viewControlsRow = (
     <div className="app__view-row">
@@ -639,7 +660,7 @@ export default function App() {
           className="app__undo-redo-btn"
           aria-label={tree.view.undoPlan}
           title={tree.view.undoPlanTitle}
-          disabled={!canUndoPlan}
+          disabled={readOnly || !canUndoPlan}
           onClick={runUndo}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -652,7 +673,7 @@ export default function App() {
           className="app__undo-redo-btn"
           aria-label={tree.view.redoPlan}
           title={tree.view.redoPlanTitle}
-          disabled={!canRedoPlan}
+          disabled={readOnly || !canRedoPlan}
           onClick={runRedo}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -671,6 +692,7 @@ export default function App() {
               inputMode="decimal"
               autoComplete="off"
               aria-label={tree.toolbar.fieldSizeWidthAria}
+              readOnly={readOnly}
               value={fieldWidthDraft ?? String(fieldSizeM.x)}
               onFocus={() => {
                 fieldWidthInputFocusedRef.current = true
@@ -695,6 +717,7 @@ export default function App() {
               inputMode="decimal"
               autoComplete="off"
               aria-label={tree.toolbar.fieldSizeLengthAria}
+              readOnly={readOnly}
               value={fieldHeightDraft ?? String(fieldSizeM.y)}
               onFocus={() => {
                 fieldHeightInputFocusedRef.current = true
@@ -717,6 +740,7 @@ export default function App() {
           <select
             className="app__field-size-presets"
             aria-label={tree.toolbar.fieldSizePresetsAria}
+            disabled={readOnly}
             value=""
             onChange={(e) => {
               const val = e.target.value
@@ -765,6 +789,7 @@ export default function App() {
             <span className="app__ground-cover-label">{tree.view.groundCoverLabel}</span>
             <select
               aria-label={tree.view.groundCoverAria}
+              disabled={readOnly}
               value={fieldGroundCover3d}
               onChange={(e) => setFieldGroundCover3d(e.target.value as FieldGroundCover3d)}
             >
@@ -790,6 +815,7 @@ export default function App() {
     allowedTargetTypes,
     placementMode,
     layoutNarrow,
+    readOnly,
     onArmTarget: armTargetPlacement,
     onArmProp: armPropPlacement,
     onArmPenaltyContour: armPenaltyContour,
@@ -810,7 +836,7 @@ export default function App() {
         </div>
       ) : null}
       <PwaUpdateBanner />
-      <SessionDraftPersist />
+      {!readOnly ? <SessionDraftPersist /> : null}
       <header className="app__header">
         <div className="app__header-inner">
           <div className="app__header-top-row">
@@ -840,12 +866,18 @@ export default function App() {
                 aria-label={tree.project.fileGroupAria}
                 title={tree.project.hint}
               >
-                <button type="button" className="app__btn-secondary" onClick={saveStageProject}>
+                <button
+                  type="button"
+                  className="app__btn-secondary"
+                  disabled={readOnly}
+                  onClick={saveStageProject}
+                >
                   {tree.project.save}
                 </button>
                 <button
                   type="button"
                   className="app__btn-secondary"
+                  disabled={readOnly}
                   onClick={() => projectFileInputRef.current?.click()}
                 >
                   {tree.project.open}
@@ -860,6 +892,7 @@ export default function App() {
                   accept=".stage.json,.json,application/json"
                   aria-hidden
                   tabIndex={-1}
+                  disabled={readOnly}
                   onChange={onProjectFileSelected}
                 />
               </div>
@@ -879,10 +912,24 @@ export default function App() {
                 </button>
                 {mobileMenuOpen && (
                   <div className="app__mobile-menu-dropdown">
-                    <button type="button" onClick={() => { saveStageProject(); setMobileMenuOpen(false) }}>
+                    <button
+                      type="button"
+                      disabled={readOnly}
+                      onClick={() => {
+                        saveStageProject()
+                        setMobileMenuOpen(false)
+                      }}
+                    >
                       {tree.project.save}
                     </button>
-                    <button type="button" onClick={() => { projectFileInputRef.current?.click(); setMobileMenuOpen(false) }}>
+                    <button
+                      type="button"
+                      disabled={readOnly}
+                      onClick={() => {
+                        projectFileInputRef.current?.click()
+                        setMobileMenuOpen(false)
+                      }}
+                    >
                       {tree.project.open}
                     </button>
                     <button type="button" onClick={() => { openOnboarding(); setMobileMenuOpen(false) }}>
@@ -974,6 +1021,7 @@ export default function App() {
                     ) : null}
                     <StageCanvas
                       ref={planCanvasRef}
+                      readOnly={readOnly}
                       targets={targets}
                       props={props}
                       onMoveTarget={setTargetPosition}
@@ -987,7 +1035,7 @@ export default function App() {
                       onViewportWorldChange={setPlanViewportWorld}
                       measureToolActive={measureToolActive}
                       formatMeasureDistance={formatMeasureDistance}
-                      placementArmed={placementMode !== null}
+                      placementArmed={!readOnly && placementMode !== null}
                       onPlacementWorldClick={handlePlacementWorldClick}
                       marqueeModeActive={marqueeModeActive}
                       onPlanSelectionChange={setPlanSelectionSummary}
@@ -1003,6 +1051,7 @@ export default function App() {
                         aria-pressed={marqueeModeActive}
                         aria-label={tree.view.marqueeMode}
                         title={tree.view.marqueeModeTitle}
+                        disabled={readOnly}
                         onClick={() => {
                           setMarqueeModeActive((v) => !v)
                         }}
@@ -1027,7 +1076,7 @@ export default function App() {
                         className="app__plan-map-action-btn"
                         aria-label={tree.view.copySelection}
                         title={tree.view.copySelectionTitle}
-                        disabled={planSelectionSummary.empty}
+                        disabled={readOnly || planSelectionSummary.empty}
                         onClick={runCopySelection}
                       >
                         <svg
@@ -1050,7 +1099,7 @@ export default function App() {
                         className="app__plan-map-action-btn"
                         aria-label={tree.view.pasteSelection}
                         title={tree.view.pasteSelectionTitle}
-                        disabled={!hasPlanClipboard}
+                        disabled={readOnly || !hasPlanClipboard}
                         onClick={runPasteSelection}
                       >
                         <svg
@@ -1099,7 +1148,7 @@ export default function App() {
                         className="app__plan-map-action-btn app__plan-map-action-btn--remove"
                         aria-label={tree.view.deleteSelection}
                         title={tree.view.deleteSelectionTitle}
-                        disabled={planSelectionSummary.empty}
+                        disabled={readOnly || planSelectionSummary.empty}
                         onClick={() => planCanvasRef.current?.deleteSelection()}
                       >
                         <svg
@@ -1120,6 +1169,7 @@ export default function App() {
                       <button
                         type="button"
                         className="app__plan-map-action-btn app__plan-map-action-btn--danger"
+                        disabled={readOnly}
                         onClick={handleClearExercise}
                         aria-label={t('project.clearAria')}
                         title={tree.project.clearConfirm}
@@ -1216,7 +1266,12 @@ export default function App() {
         <summary>{tree.briefing.summary}</summary>
 
         <div className="app__briefing-autofill">
-          <button type="button" className="app__btn-secondary app__btn-autofill" onClick={applySceneToBriefing}>
+          <button
+            type="button"
+            className="app__btn-secondary app__btn-autofill"
+            disabled={readOnly}
+            onClick={applySceneToBriefing}
+          >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
             {tree.briefing.applyFromScene}
           </button>
@@ -1226,6 +1281,7 @@ export default function App() {
           <label className="app__field">
             {tree.briefing.documentTitle}
             <input
+              readOnly={readOnly}
               value={briefing.documentTitle}
               onChange={(e) => setBriefing({ documentTitle: e.target.value })}
             />
@@ -1233,6 +1289,7 @@ export default function App() {
           <label className="app__field">
             {tree.briefing.exerciseType}
             <select
+              disabled={readOnly}
               value={briefing.exerciseType}
               onChange={(e) => setBriefing({ exerciseType: e.target.value as StageCategory })}
             >
@@ -1244,6 +1301,7 @@ export default function App() {
           <label className="app__field app__field--wide">
             {tree.briefing.targetsText}
             <textarea
+              readOnly={readOnly}
               rows={1}
               value={briefing.targetsDescription}
               onChange={(e) => { autoGrow(e); setBriefing({ targetsDescription: e.target.value }) }}
@@ -1253,6 +1311,7 @@ export default function App() {
           <label className="app__field">
             {tree.briefing.recommendedShots}
             <input
+              readOnly={readOnly}
               value={briefing.recommendedShots}
               onChange={(e) => setBriefing({ recommendedShots: e.target.value })}
             />
@@ -1260,6 +1319,7 @@ export default function App() {
           <label className="app__field app__field--wide">
             {tree.briefing.allowedAmmo}
             <textarea
+              readOnly={readOnly}
               rows={1}
               value={briefing.allowedAmmo}
               onChange={(e) => { autoGrow(e); setBriefing({ allowedAmmo: e.target.value }) }}
@@ -1268,11 +1328,16 @@ export default function App() {
           </label>
           <label className="app__field">
             {tree.briefing.maxPoints}
-            <input value={briefing.maxPoints} onChange={(e) => setBriefing({ maxPoints: e.target.value })} />
+            <input
+              readOnly={readOnly}
+              value={briefing.maxPoints}
+              onChange={(e) => setBriefing({ maxPoints: e.target.value })}
+            />
           </label>
           <label className="app__field">
             {tree.briefing.startSignal}
             <input
+              readOnly={readOnly}
               value={briefing.startSignal}
               onChange={(e) => setBriefing({ startSignal: e.target.value })}
             />
@@ -1280,6 +1345,7 @@ export default function App() {
           <label className="app__field app__field--wide">
             {tree.briefing.readyCondition}
             <textarea
+              readOnly={readOnly}
               rows={1}
               value={briefing.readyCondition}
               onChange={(e) => { autoGrow(e); setBriefing({ readyCondition: e.target.value }) }}
@@ -1289,6 +1355,7 @@ export default function App() {
           <label className="app__field app__field--wide">
             {tree.briefing.startPosition}
             <textarea
+              readOnly={readOnly}
               rows={1}
               value={briefing.startPosition}
               onChange={(e) => { autoGrow(e); setBriefing({ startPosition: e.target.value }) }}
@@ -1298,6 +1365,7 @@ export default function App() {
           <label className="app__field app__field--wide">
             {tree.briefing.procedure}
             <textarea
+              readOnly={readOnly}
               rows={1}
               value={briefing.procedure}
               onChange={(e) => { autoGrow(e); setBriefing({ procedure: e.target.value }) }}
@@ -1307,6 +1375,7 @@ export default function App() {
           <label className="app__field">
             {tree.briefing.safetyAngles}
             <input
+              readOnly={readOnly}
               value={briefing.safetyAngles}
               onChange={(e) => setBriefing({ safetyAngles: e.target.value })}
             />

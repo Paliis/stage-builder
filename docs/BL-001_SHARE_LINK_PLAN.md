@@ -14,7 +14,7 @@
 |--------|------|
 | **Продукт** | Таблиця «Прийняті рішення» + §0–§7 — джерело істини для MVP. |
 | **Інфраструктура** | **Supabase** (Postgres + RLS), регіон **EU** — рекомендація §7.1; ключі в **Vercel** / локально `.env.local`, **не** в git. |
-| **Клієнт** | Vite + React; **`App.tsx`** без **React Router** — для deep links **`/v/:shareId`**, **`/e/:shareId`** потрібно додати маршрутизацію (або еквівалентний парсинг `location`). |
+| **Клієнт** | Vite + React; **`react-router-dom`**: **`/`** — редактор; **`/v/:shareId`**, **`/e/:shareId`** — завантаження знімка через **`fetch_shared_stage`**. |
 | **Деплой** | `vercel.json` збирає `dist`; для SPA переконатися, що **всі шляхи** потрапляють у `index.html` (rewrites), інакше прямі заходи на `/v/...` дадуть 404. |
 | **Дані** | Знімок сцени — той самий JSON, що `*.stage.json`; при публікації **нормалізувати** до актуальної **`STAGE_PROJECT_VERSION`** (§7.2). |
 
@@ -28,7 +28,7 @@
 
 1. [x] Міграція SQL: таблиця `shared_stages` — файл **`supabase/migrations/20260409120000_shared_stages.sql`**; застосувати вручну в Supabase SQL Editor (інструкція: **[SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md)**).
 2. [x] **RLS** увімкнено; читання для клієнта — RPC **`fetch_shared_stage(lookup_id)`** (не експонувати повний `SELECT` по таблиці для anon). **INSERT** — згодом лише через сервер із **service role**.
-3. [ ] Змінні оточення: скопіювати **Project URL** і **anon key** з Dashboard (**Settings → API**) у Vercel і локально `.env.local` як **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (шаблон у `.env.example`).
+3. [x] Змінні оточення: **Project URL** і **anon key** з Dashboard (**Settings → API**) у Vercel і локально `.env.local` як **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (шаблон у `.env.example`).
 
 ### Етап B — Публікація (сервер)
 
@@ -38,13 +38,13 @@
 
 ### Етап C — Клієнт: маршрути та відкриття
 
-7. [ ] Маршрути **`/v/:shareId`** та **`/e/:shareId`** + **`?lang=`** (синхронізація з i18n).
-8. [ ] Завантаження: запит до Supabase/API → parse → гідратація `stageStore` / брифінгу.
+7. [x] Маршрути **`/v/:shareId`** та **`/e/:shareId`** + **`?lang=`** (синхронізація з i18n).
+8. [x] Завантаження: RPC **`fetch_shared_stage`** → `payload` → **`parseStageProjectJson`** → гідратація `stageStore` / брифінгу (`ShareStageRoute`, `src/lib/supabaseClient.ts`).
 9. [ ] Діалог при **конфлікті з чернеткою** у `localStorage` (§0.5).
 
 ### Етап D — Режими перегляд / редактор
 
-10. [ ] **`/v/`** — read-only: блокування редагування сцени та брифінгу, дозволені лише перегляд 2D/3D.
+10. [x] **`/v/`** — read-only: блокування редагування сцени та брифінгу; перегляд 2D/3D (пан/зум, вимірювання), PDF.
 11. [ ] **`/e/`** — повний редактор; **edit token** (показ/зберігання) за погодженням з §Edit token.
 12. [ ] З перегляду: «Відкрити в редакторі» → **`target=_blank`** на `/e/...`.
 
