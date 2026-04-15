@@ -47,6 +47,7 @@ import { StageMinimap } from './presentation/components/StageMinimap'
 import type { CameraMode3D, StageView3DHandle } from './presentation/components/StageView3D'
 import type { WorldViewportRect } from './presentation/lib/viewTransform'
 import { PwaUpdateBanner } from './presentation/components/PwaUpdateBanner'
+import { SharePublishDialog } from './presentation/components/SharePublishDialog'
 import { usePwaInstall } from './presentation/hooks/usePwaInstall'
 import './App.css'
 
@@ -136,6 +137,7 @@ export default function App({ shareReadOnly = false }: AppProps) {
   const [onboardingShownOnce, setOnboardingShownOnce] = useState(false)
   const [toolbarDrawerOpen, setToolbarDrawerOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [sharePublishOpen, setSharePublishOpen] = useState(false)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const [measureToolActive, setMeasureToolActive] = useState(false)
   const [placementMode, setPlacementMode] = useState<PlacementMode>(null)
@@ -289,6 +291,15 @@ export default function App({ shareReadOnly = false }: AppProps) {
     a.click()
     URL.revokeObjectURL(url)
   }, [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, briefing])
+
+  const shareProjectRoot = useMemo(
+    () =>
+      buildStageProjectFile({
+        stage: { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet },
+        briefing: { ...briefing },
+      }),
+    [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, briefing],
+  )
 
   const onProjectFileSelected = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -882,6 +893,15 @@ export default function App({ shareReadOnly = false }: AppProps) {
                 >
                   {tree.project.open}
                 </button>
+                <button
+                  type="button"
+                  className="app__btn-secondary"
+                  disabled={readOnly}
+                  title={tree.share.publishButton}
+                  onClick={() => setSharePublishOpen(true)}
+                >
+                  {tree.share.publishButton}
+                </button>
                 <button type="button" className="app__btn-secondary app__btn-help" onClick={openOnboarding} title={tree.app.onboardingReopen}>
                   ?
                 </button>
@@ -932,6 +952,16 @@ export default function App({ shareReadOnly = false }: AppProps) {
                     >
                       {tree.project.open}
                     </button>
+                    <button
+                      type="button"
+                      disabled={readOnly}
+                      onClick={() => {
+                        setSharePublishOpen(true)
+                        setMobileMenuOpen(false)
+                      }}
+                    >
+                      {tree.share.publishButton}
+                    </button>
                     <button type="button" onClick={() => { openOnboarding(); setMobileMenuOpen(false) }}>
                       {tree.app.onboardingReopen}
                     </button>
@@ -979,6 +1009,14 @@ export default function App({ shareReadOnly = false }: AppProps) {
           </button>
         </div>
       </dialog>
+
+      <SharePublishDialog
+        open={sharePublishOpen}
+        onClose={() => setSharePublishOpen(false)}
+        tree={tree}
+        locale={locale}
+        projectRoot={shareProjectRoot}
+      />
 
       <div className="app__view-controls-strip">
         <div className="app__view-controls-row">

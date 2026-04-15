@@ -13,6 +13,8 @@
 
 **Код:** `src/main.tsx` — **`BrowserRouter`** і маршрути **`/`** (`App`), **`/v/:shareId`**, **`/e/:shareId`** (`ShareStageRoute` → RPC **`fetch_shared_stage`**, гідратація стору; режим **`/v/`** передає в **`App`** проп **`shareReadOnly`**). Перед завантаженням share: якщо чернетка в **`localStorage`** «змістовна» (`isSessionDraftMeaningful` у **`sessionDraft.ts`**), показується діалог (файл / відкинути / скасувати). Клієнт Supabase — **`src/lib/supabaseClient.ts`**; змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
 
+**Публікація (POST):** **`api/publish-share.ts`** (Vercel Serverless) — **`SUPABASE_SERVICE_ROLE_KEY`**, **`SUPABASE_URL`** або **`VITE_SUPABASE_URL`**; опційно **`VITE_SHARE_PUBLIC_ORIGIN`** для абсолютних **`url`** у відповіді. Логіка валідації/нормалізації: **`src/server/sharePublish.ts`**. Локально повний стек: **`vercel dev`** (або лише деплой на Preview).
+
 ## Архітектура
 
 Проєкт дотримується шаруватої структури:

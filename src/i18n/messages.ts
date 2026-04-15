@@ -275,6 +275,27 @@ export type MessageTree = {
     draftSave: string
     draftDiscard: string
     draftCancel: string
+    /** Header / menu — open publish dialog */
+    publishButton: string
+    publishTitle: string
+    publishIntro: string
+    publishConsentBefore: string
+    publishConsentLinkText: string
+    publishConsentAfter: string
+    publishGetView: string
+    publishGetEdit: string
+    publishBusy: string
+    publishViewLabel: string
+    publishEditLabel: string
+    publishCopy: string
+    publishCopyFallback: string
+    publishClose: string
+    publishNeedConsent: string
+    publishError: string
+    publishRateLimited: string
+    publishTooLarge: string
+    publishNotConfigured: string
+    publishNetworkError: string
   }
   footer: {
     feedbackHeading: string
@@ -611,6 +632,31 @@ export const ukMessages: MessageTree = {
       '\u0417\u0431\u0435\u0440\u0435\u0433\u0442\u0438 \u0444\u0430\u0439\u043b\u043e\u043c\u2026',
     draftDiscard: '\u0412\u0456\u0434\u043a\u0438\u043d\u0443\u0442\u0438 \u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0443',
     draftCancel: '\u0421\u043a\u0430\u0441\u0443\u0432\u0430\u0442\u0438',
+    publishButton: '\u041f\u043e\u0434\u0456\u043b\u0438\u0442\u0438\u0441\u044f\u2026',
+    publishTitle: '\u041f\u043e\u0434\u0456\u043b\u0438\u0442\u0438\u0441\u044f \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f\u043c',
+    publishIntro:
+      '\u041a\u043e\u0436\u043d\u0430 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u044f \u0441\u0442\u0432\u043e\u0440\u044e\u0454 \u043d\u043e\u0432\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0437\u043d\u0456\u043c\u043e\u043a \u0432\u043f\u0440\u0430\u0432\u0438 (\u0434\u0456\u044f 365 \u0434\u043d\u0456\u0432). \u0421\u0442\u0430\u0440\u0456 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0435 \u0437\u043c\u0456\u043d\u044e\u044e\u0442\u044c\u0441\u044f.',
+    publishConsentBefore: '\u041e\u0437\u043d\u0430\u0439\u043e\u043c\u043b\u0435\u043d\u0438\u0439(-\u0430) \u0437',
+    publishConsentLinkText: '\u043f\u043e\u043b\u0456\u0442\u0438\u043a\u043e\u044e \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0457',
+    publishConsentAfter: '.',
+    publishGetView: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0434\u043b\u044f \u043f\u0435\u0440\u0435\u0433\u043b\u044f\u0434\u0443',
+    publishGetEdit: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0434\u043b\u044f \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0430',
+    publishBusy: '\u0417\u0430\u0447\u0435\u043a\u0430\u0439\u0442\u0435\u2026',
+    publishViewLabel: '\u041f\u0435\u0440\u0435\u0433\u043b\u044f\u0434 (\u0441\u0442\u0440\u0456\u043b\u0446\u0456)',
+    publishEditLabel: '\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440',
+    publishCopy: '\u041a\u043e\u043f\u0456\u044e\u0432\u0430\u0442\u0438',
+    publishCopyFallback: '\u0421\u043a\u043e\u043f\u0456\u044e\u0439\u0442\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0432\u0440\u0443\u0447\u043d\u0443:',
+    publishClose: '\u0417\u0430\u043a\u0440\u0438\u0442\u0438',
+    publishNeedConsent:
+      '\u041f\u043e\u0441\u0442\u0430\u0432\u0442\u0435 \u0433\u0430\u043b\u043e\u0447\u043a\u0443 \u0437\u0433\u043e\u0434\u0438 \u0437 \u043f\u043e\u043b\u0456\u0442\u0438\u043a\u043e\u044e \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0457.',
+    publishError: '\u041d\u0435 \u0432\u0434\u0430\u043b\u043e\u0441\u044f \u043e\u043f\u0443\u0431\u043b\u0456\u043a\u0443\u0432\u0430\u0442\u0438',
+    publishRateLimited:
+      '\u0414\u043e\u0441\u044f\u0433\u043d\u0443\u0442\u043e \u043b\u0456\u043c\u0456\u0442\u0443 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0439 \u043d\u0430 \u0441\u044c\u043e\u0433\u043e\u0434\u043d\u0456. \u0421\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0437\u0430\u0432\u0442\u0440\u0430.',
+    publishTooLarge: '\u0412\u043f\u0440\u0430\u0432\u0430 \u0437\u0430\u0432\u0435\u043b\u0438\u043a\u0430 \u0434\u043b\u044f \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0457.',
+    publishNotConfigured:
+      '\u041f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u044f \u043d\u0430 \u0446\u044c\u043e\u043c\u0443 \u0441\u0435\u0440\u0435\u0434\u043e\u0432\u0438\u0449\u0456 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 (\u043d\u0435\u043c\u0430\u0454 \u043d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u044c \u0441\u0435\u0440\u0432\u0435\u0440\u0430).',
+    publishNetworkError:
+      '\u041c\u0435\u0440\u0435\u0436\u0430 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 \u0430\u0431\u043e \u0441\u0435\u0440\u0432\u0435\u0440 \u043d\u0435 \u0432\u0456\u0434\u043f\u043e\u0432\u0456\u0432.',
   },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
@@ -939,6 +985,28 @@ export const enMessages: MessageTree = {
     draftSave: 'Save as file\u2026',
     draftDiscard: 'Discard draft',
     draftCancel: 'Cancel',
+    publishButton: 'Share\u2026',
+    publishTitle: 'Share via link',
+    publishIntro:
+      'Each publish creates a new link to a snapshot of your stage (valid 365 days). Older links stay unchanged.',
+    publishConsentBefore: 'I have read and agree to the',
+    publishConsentLinkText: 'publishing policy',
+    publishConsentAfter: '.',
+    publishGetView: 'Link for view (shooters)',
+    publishGetEdit: 'Link for editor',
+    publishBusy: 'Please wait\u2026',
+    publishViewLabel: 'View (read-only)',
+    publishEditLabel: 'Editor',
+    publishCopy: 'Copy',
+    publishCopyFallback: 'Copy the link manually:',
+    publishClose: 'Close',
+    publishNeedConsent: 'Please accept the publishing policy.',
+    publishError: 'Could not publish',
+    publishRateLimited: 'Daily publish limit reached. Try again tomorrow.',
+    publishTooLarge: 'Stage is too large to publish.',
+    publishNotConfigured:
+      'Publishing is not available in this environment (server not configured).',
+    publishNetworkError: 'Network error or the server did not respond.',
   },
   footer: {
     feedbackHeading: 'Feedback',

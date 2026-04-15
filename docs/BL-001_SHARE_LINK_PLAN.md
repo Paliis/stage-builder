@@ -32,9 +32,9 @@
 
 ### Етап B — Публікація (сервер)
 
-4. [ ] Реалізувати **створення** запису через **Edge Function** або **Vercel Serverless** з **service role** (не покладатися на небезпечний anon-INSERT «як є» без квоти й перевірки розміру).
-5. [ ] Контракт: тіло = JSON сцени + `mode` (`view` | `edit`); відповідь `{ id, url(s), editToken? }`; підтримка **Idempotency-Key** / `X-Client-Request-Id` (§7.2).
-6. [ ] **Rate limit** + ліміт розміру тіла; заготовка під **50 створень / добу** на IP і **капчу** після порогу (капча — підзадача після базового ліміту).
+4. [x] Реалізувати **створення** запису через **Vercel Serverless** — **`api/publish-share.ts`** (service role з оточення сервера; **не** у клієнтському бандлі).
+5. [x] Контракт: **POST** тіло = поля файлу вправи (`format`, `version`, `stage`, `briefing`) + **`mode`**: `view` \| `edit`; опційно **`locale`**, **`idempotencyKey`** або заголовок **`Idempotency-Key`**; відповідь **`{ id, mode, path, url }`**. Нормалізація до **`STAGE_PROJECT_VERSION`** через `buildStageProjectFile` / `serializeStageProject`. **Edit token** — не в MVP (колонка nullable).
+6. [x] Ліміт розміру тіла (**413**); **rate limit** «на добу» на IP (**50** / добу, best-effort у межах інстансу serverless — див. `sharePublish.ts`). **Капча** після порогу — пізніше.
 
 ### Етап C — Клієнт: маршрути та відкриття
 
@@ -50,8 +50,8 @@
 
 ### Етап E — UI «Поділитися»
 
-13. [ ] Чекбокс згоди з [PUBLISH_POLICY.md](./PUBLISH_POLICY.md); кнопки для отримання URL **перегляду** та **редактора** (один або два запити).
-14. [ ] Формування URL з **`?lang=`** з поточної мови в `localStorage`; **`VITE_SHARE_PUBLIC_ORIGIN`** для продакшен-посилань (спочатку може бути основний домен).
+13. [x] Чекбокс згоди з [PUBLISH_POLICY.md](./PUBLISH_POLICY.md); кнопки для отримання URL **перегляду** та **редактора** (два окремі запити). Реалізація: **`SharePublishDialog`**, кнопка в шапці та в мобільному меню (**`App.tsx`**).
+14. [x] Формування URL з **`?lang=`** з поточної мови інтерфейсу; абсолютний **`url`** у відповіді API — через **`VITE_SHARE_PUBLIC_ORIGIN`** / **`VERCEL_URL`** на сервері (**`api/publish-share.ts`**).
 
 ### Етап F — Полірування та видимість
 
