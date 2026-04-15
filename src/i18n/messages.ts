@@ -627,7 +627,7 @@ export const ukMessages: MessageTree = {
       '\u0412\u043f\u0440\u0430\u0432\u0443 \u043d\u0435 \u0437\u043d\u0430\u0439\u0434\u0435\u043d\u043e \u0430\u0431\u043e \u0442\u0435\u0440\u043c\u0456\u043d \u0434\u0456\u0457 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043c\u0438\u043d\u0443\u0432.',
     loadError: '\u041d\u0435 \u0432\u0434\u0430\u043b\u043e\u0441\u044f \u0437\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0438\u0442\u0438 \u0432\u043f\u0440\u0430\u0432\u0443 \u0437 \u0441\u0435\u0440\u0432\u0435\u0440\u0430.',
     envMissing:
-      '\u041d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u043d\u044f Supabase \u043d\u0430 \u043a\u043b\u0456\u0454\u043d\u0442\u0456 \u0432\u0456\u0434\u0441\u0443\u0442\u043d\u0454. \u0414\u043b\u044f \u0440\u043e\u0437\u0440\u043e\u0431\u043d\u0438\u043a\u0430: \u0434\u043e\u0434\u0430\u0439\u0442\u0435 VITE_SUPABASE_URL \u0442\u0430 VITE_SUPABASE_ANON_KEY \u0443 .env.local.',
+      '\u041d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u043d\u044f Supabase \u043d\u0430 \u043a\u043b\u0456\u0454\u043d\u0442\u0456 \u0432\u0456\u0434\u0441\u0443\u0442\u043d\u0454. \u041b\u043e\u043a\u0430\u043b\u044c\u043d\u043e: VITE_SUPABASE_URL \u0442\u0430 VITE_SUPABASE_ANON_KEY \u0443 .env.local. \u041d\u0430 Vercel: \u0437\u043c\u0456\u043d\u043d\u0456 \u0442\u043e\u0433\u043e \u0436 \u0456\u043c\u0435\u043d\u0456 \u0434\u043b\u044f Production \u0456 Preview (\u0430\u0431\u043e \u00abAll Environments\u00bb), \u043f\u043e\u0442\u0456\u043c Redeploy \u2014 \u0431\u0435\u0437 \u0446\u044c\u043e\u0433\u043e \u043f\u0435\u0440\u0435\u0433\u043b\u044f\u0434\u0438 \u043d\u0430 preview-URL \u043d\u0435 \u043c\u0430\u044e\u0442\u044c \u043a\u043b\u044e\u0447\u0456\u0432 \u0443 \u0437\u0431\u0456\u0440\u0446\u0456.',
     backHome: '\u041d\u0430 \u0433\u043e\u043b\u043e\u0432\u043d\u0443',
     draftConflictTitle: '\u0417\u0431\u0435\u0440\u0435\u0436\u0435\u043d\u0430 \u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0430 \u0432 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0456',
     draftConflictBody:
@@ -984,7 +984,7 @@ export const enMessages: MessageTree = {
     notFoundOrExpired: 'Stage not found or the link has expired.',
     loadError: 'Could not load the stage from the server.',
     envMissing:
-      'Supabase is not configured on the client. For local dev, add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env.local.',
+      'Supabase is not configured on the client. Locally: add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env.local. On Vercel: set the same names for Production and Preview (or All Environments), then redeploy — preview deployments will not have keys in the build otherwise.',
     backHome: 'Home',
     draftConflictTitle: 'Saved browser draft',
     draftConflictBody:
