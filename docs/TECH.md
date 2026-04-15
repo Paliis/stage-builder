@@ -5,6 +5,12 @@
 **Пов’язані документи:** бізнес- і технічний огляд **[PRODUCT.md](./PRODUCT.md)**; **беклог ідей** **[BACKLOG.md](./BACKLOG.md)**; чернетка **видимість / промені 2D** (BL-010 / BL-013) — **[VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md)**; повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**; **оптимізація бандла** — **[OPTIMIZATION.md](./OPTIMIZATION.md)**; **план посилання на вправу (BL-001)** — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**; **політика публікації (чернетка BL-001)** — **[PUBLISH_POLICY.md](./PUBLISH_POLICY.md)**; **Bluetooth-таймер SG Timer, BLE (BL-014)** — **[BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md)**.  
 **Важливо:** позначки V0 / V1 / V2 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **1**).
 
+## Посилання на вправу (BL-001)
+
+**Статус:** імплементація в роботі; детальний контекст, чеклист і продуктові рішення — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**.
+
+**Код (на момент оновлення документа):** точка входу — `App.tsx` без **React Router**; для шляхів **`/v/:shareId`** / **`/e/:shareId`** потрібна маршрутизація або парсинг URL. Після додавання Supabase — змінні **`VITE_SUPABASE_URL`**, **`VITE_SUPABASE_ANON_KEY`** (див. `.env.example`); секрети service role — лише на сервері (Edge / Vercel Function).
+
 ## Архітектура
 
 Проєкт дотримується шаруватої структури:
