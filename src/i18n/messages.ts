@@ -296,6 +296,8 @@ export type MessageTree = {
     publishTooLarge: string
     publishNotConfigured: string
     publishNetworkError: string
+    /** Server returned HTML or non-JSON (wrong route, platform error, etc.). */
+    publishErrorHtmlResponse: string
     /** Link on `/v/` share page — open same snapshot in editor (new tab). */
     openInEditor: string
   }
@@ -660,6 +662,8 @@ export const ukMessages: MessageTree = {
     publishNetworkError:
       '\u041c\u0435\u0440\u0435\u0436\u0430 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 \u0430\u0431\u043e \u0441\u0435\u0440\u0432\u0435\u0440 \u043d\u0435 \u0432\u0456\u0434\u043f\u043e\u0432\u0456\u0432.',
     openInEditor: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u0432 \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0456 (\u043d\u043e\u0432\u0430 \u0432\u043a\u043b\u0430\u0434\u043a\u0430)',
+    publishErrorHtmlResponse:
+      '\u0421\u0435\u0440\u0432\u0435\u0440 \u043f\u043e\u0432\u0435\u0440\u043d\u0443\u0432 HTML \u0437\u0430\u043c\u0456\u0441\u0442\u044c JSON \u2014 \u043f\u0435\u0440\u0435\u0432\u0456\u0440\u0442\u0435 \u0434\u0435\u043f\u043b\u043e\u0439 /api/publish-share \u0442\u0430 \u0437\u043c\u0456\u043d\u043d\u0456 Vercel (SUPABASE_SERVICE_ROLE_KEY, URL).',
   },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
@@ -1011,6 +1015,8 @@ export const enMessages: MessageTree = {
       'Publishing is not available in this environment (server not configured).',
     publishNetworkError: 'Network error or the server did not respond.',
     openInEditor: 'Open in editor (new tab)',
+    publishErrorHtmlResponse:
+      'Server returned HTML instead of JSON — check deployment of /api/publish-share and Vercel env (SUPABASE_SERVICE_ROLE_KEY, Supabase URL).',
   },
   footer: {
     feedbackHeading: 'Feedback',

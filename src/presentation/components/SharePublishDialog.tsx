@@ -3,6 +3,20 @@ import type { StageProjectFileV1 } from '../../domain/stageProjectFile'
 import type { Locale } from '../../i18n/messages'
 import type { MessageTree } from '../../i18n/messages'
 
+function looksLikeHtmlResponse(text: string): boolean {
+  const t = text.trim()
+  return /^<!DOCTYPE/i.test(t) || /<html[\s>]/i.test(t)
+}
+
+function parsePublishJson(text: string): { data: { error?: string; url?: string }; ok: boolean } {
+  if (!text.trim()) return { data: {}, ok: true }
+  try {
+    return { data: JSON.parse(text) as { error?: string; url?: string }, ok: true }
+  } catch {
+    return { data: {}, ok: false }
+  }
+}
+
 /** In-repo policy (GitHub); opens in a new tab. */
 export const PUBLISH_POLICY_HREF =
   'https://github.com/Paliis/stage-builder/blob/main/docs/PUBLISH_POLICY.md'
@@ -82,19 +96,39 @@ export function SharePublishDialog({
           },
           body: JSON.stringify(body),
         })
-        const data = (await res.json().catch(() => ({}))) as { error?: string; url?: string }
+        const text = await res.text()
+        const { data, ok: jsonOk } = parsePublishJson(text)
+
+        const serverMessage = typeof data.error === 'string' && data.error.trim() ? data.error.trim() : null
+
         if (!res.ok) {
           let k: PublishErr = 'generic'
           if (res.status === 429) k = 'rateLimited'
           else if (res.status === 413) k = 'tooLarge'
           else if (res.status === 503) k = 'notConfigured'
+
+          let detail: string | null = serverMessage
+          if (!detail) {
+            if (!jsonOk || looksLikeHtmlResponse(text)) {
+              detail = sp.publishErrorHtmlResponse
+            } else if (text.trim()) {
+              detail = `HTTP ${res.status}: ${text.trim().slice(0, 200)}`
+            } else {
+              detail = `HTTP ${res.status}`
+            }
+          }
+
           setErrorKey(k)
-          setErrorDetail(typeof data.error === 'string' ? data.error : null)
+          setErrorDetail(detail)
           return
         }
         if (typeof data.url !== 'string' || !data.url) {
           setErrorKey('generic')
-          setErrorDetail(null)
+          setErrorDetail(
+            !jsonOk || looksLikeHtmlResponse(text)
+              ? sp.publishErrorHtmlResponse
+              : serverMessage ?? `HTTP ${res.status} (missing url in response)`,
+          )
           return
         }
         if (mode === 'view') setViewUrl(data.url)
@@ -106,7 +140,7 @@ export function SharePublishDialog({
         setBusyMode(null)
       }
     },
-    [consent, locale, projectRoot],
+    [consent, locale, projectRoot, sp.publishErrorHtmlResponse],
   )
 
   const copyToClipboard = useCallback(async (url: string, ev: MouseEvent<HTMLButtonElement>) => {
