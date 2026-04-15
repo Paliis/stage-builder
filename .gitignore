@@ -10,7 +10,6 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-api/publish-share.js
 .env
 !.env.example
 *.local

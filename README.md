@@ -64,7 +64,7 @@ npm run check        # lint + тести + build (як у CI)
 
 Конфігурація: `vercel.json` (Vite framework, `dist/` output).
 
-**Публікація посилань (share):** у змінних Vercel задайте **`SUPABASE_SERVICE_ROLE_KEY`**, **`SUPABASE_URL`** або **`VITE_SUPABASE_URL`**; опційно **`VITE_SHARE_PUBLIC_ORIGIN`** для абсолютних URL у відповіді API. Для **OG-прев’ю** посилань у чатах Edge-**`middleware.ts`** використовує **`VITE_SUPABASE_URL`** та **`VITE_SUPABASE_ANON_KEY`**. Звичайний **`npm run dev`** не виконує serverless і middleware — для перевірки **`POST /api/publish-share`** і прев’ю: **`npm run build`** (генерує **`api/publish-share.js`**), потім **`vercel dev`**, або preview/production deploy.
+**Публікація посилань (share):** у змінних Vercel задайте **`SUPABASE_SERVICE_ROLE_KEY`**, **`SUPABASE_URL`** або **`VITE_SUPABASE_URL`**; опційно **`VITE_SHARE_PUBLIC_ORIGIN`** для абсолютних URL у відповіді API. Для **OG-прев’ю** посилань у чатах Edge-**`middleware.ts`** використовує **`VITE_SUPABASE_URL`** та **`VITE_SUPABASE_ANON_KEY`**. Звичайний **`npm run dev`** не виконує serverless і middleware — для перевірки **`POST /api/publish-share`** і прев’ю: **`vercel dev`** (потрібен **`api/publish-share.js`** у репо після **`npm run build`**) або preview/production deploy. Файл **`api/publish-share.js`** зберігається в Git — його оновлюють після змін у **`publishShareApiHandler`**.
 
 **SEO:** `robots.txt`, `sitemap.xml` у `public/` (після деплою — `https://stage-builder.vercel.app/sitemap.xml`). Мета-теги та JSON-LD — у `index.html`. Для індексації в Google варто додати сайт у Search Console і вказати sitemap.
 
