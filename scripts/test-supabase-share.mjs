@@ -32,7 +32,8 @@ function loadEnvLocal() {
     if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
       v = v.slice(1, -1)
     }
-    if (process.env[k] === undefined) process.env[k] = v
+    // Same as dotenv: later lines win; overwrite empty strings from parent shell.
+    process.env[k] = v
   }
 }
 
@@ -66,7 +67,8 @@ async function main() {
 
   if (!service) {
     console.log('SKIP: SUPABASE_SERVICE_ROLE_KEY not set — insert/verify/delete not run')
-    console.log('      Add service role key to .env.local locally to run full smoke test.')
+    console.log('      Add it to .env.local and save the file (Ctrl+S), then run again.')
+    console.log('      (If the key is only in the editor buffer, Node reads the file on disk.)')
     return
   }
 
