@@ -64,10 +64,28 @@ export default defineConfig({
          * segment so /sitemap_index.xml never matched the denylist.
          */
         navigateFallbackDenylist: [
+          /^\/api\//,
           /^\/sitemap.*\.xml$/i,
           /^\/robots\.txt$/i,
           /^\/google[0-9a-z]+\.html$/i,
           /^\/manifest\.webmanifest$/i,
+        ],
+        /**
+         * POST /api/* must hit the network (Vercel serverless), never cached index.html.
+         * Without this, fetch('/api/publish-share') can be mishandled after SW install.
+         */
+        runtimeCaching: [
+          {
+            /** POST must be explicit — default Workbox route is GET-only; otherwise POST /api/* falls through to SPA. */
+            urlPattern: ({ url }: { url: URL }) => url.pathname.startsWith('/api/'),
+            handler: 'NetworkOnly',
+            method: 'POST',
+          },
+          {
+            urlPattern: ({ url }: { url: URL }) => url.pathname.startsWith('/api/'),
+            handler: 'NetworkOnly',
+            method: 'GET',
+          },
         ],
       },
       manifest: {
