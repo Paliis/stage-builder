@@ -2,6 +2,7 @@ import { useCallback, useEffect, useId, useRef, useState, type MouseEvent } from
 import type { StageProjectFileV1 } from '../../domain/stageProjectFile'
 import type { Locale } from '../../i18n/messages'
 import type { MessageTree } from '../../i18n/messages'
+import { PublishPolicyPanel } from './PublishPolicyPanel'
 
 function looksLikeHtmlResponse(text: string): boolean {
   const t = text.trim()
@@ -16,10 +17,6 @@ function parsePublishJson(text: string): { data: { error?: string; url?: string 
     return { data: {}, ok: false }
   }
 }
-
-/** In-repo policy (GitHub); opens in a new tab. */
-export const PUBLISH_POLICY_HREF =
-  'https://github.com/Paliis/stage-builder/blob/main/docs/PUBLISH_POLICY.md'
 
 export type SharePublishDialogProps = {
   open: boolean
@@ -45,6 +42,7 @@ export function SharePublishDialog({
   projectRoot,
 }: SharePublishDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const policyDialogRef = useRef<HTMLDialogElement>(null)
   const consentId = useId()
   const sp = tree.share
   const [consent, setConsent] = useState(false)
@@ -53,6 +51,7 @@ export function SharePublishDialog({
   const [busyMode, setBusyMode] = useState<'view' | 'edit' | null>(null)
   const [errorKey, setErrorKey] = useState<PublishErr | null>(null)
   const [errorDetail, setErrorDetail] = useState<string | null>(null)
+  const [policyOpen, setPolicyOpen] = useState(false)
 
   useEffect(() => {
     const d = dialogRef.current
@@ -64,11 +63,22 @@ export function SharePublishDialog({
       setErrorKey(null)
       setErrorDetail(null)
       setBusyMode(null)
+      setPolicyOpen(false)
       d.showModal()
     } else {
       d.close()
     }
   }, [open])
+
+  useEffect(() => {
+    const d = policyDialogRef.current
+    if (!d) return
+    if (policyOpen) {
+      d.showModal()
+    } else {
+      d.close()
+    }
+  }, [policyOpen])
 
   const publish = useCallback(
     async (mode: 'view' | 'edit') => {
@@ -170,6 +180,7 @@ export function SharePublishDialog({
                   : sp.publishError
 
   return (
+    <>
     <dialog
       ref={dialogRef}
       className="app__onboarding-dialog app__share-publish-dialog"
@@ -195,9 +206,15 @@ export function SharePublishDialog({
         />
         <span>
           {sp.publishConsentBefore}{' '}
-          <a href={PUBLISH_POLICY_HREF} target="_blank" rel="noopener noreferrer">
+          <button
+            type="button"
+            className="app__share-publish-policy-link"
+            onClick={() => setPolicyOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={policyOpen}
+          >
             {sp.publishConsentLinkText}
-          </a>
+          </button>
           {sp.publishConsentAfter}
         </span>
       </label>
@@ -257,5 +274,32 @@ export function SharePublishDialog({
         </button>
       </div>
     </dialog>
+
+    <dialog
+      ref={policyDialogRef}
+      className="app__onboarding-dialog app__publish-policy-dialog"
+      onCancel={(e) => {
+        e.preventDefault()
+        setPolicyOpen(false)
+      }}
+    >
+      <button
+        type="button"
+        className="app__onboarding-close"
+        onClick={() => setPolicyOpen(false)}
+        aria-label={sp.publishClose}
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+          <path d="M4 4l10 10M14 4L4 14" />
+        </svg>
+      </button>
+      <PublishPolicyPanel tree={tree} />
+      <div className="app__share-publish-footer">
+        <button type="button" className="app__onboarding-cta" onClick={() => setPolicyOpen(false)}>
+          {sp.publishClose}
+        </button>
+      </div>
+    </dialog>
+    </>
   )
 }

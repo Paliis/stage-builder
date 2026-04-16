@@ -7,6 +7,7 @@ import { hydrateSessionDraft } from './application/sessionDraft'
 import { notifyPwaUpdateAvailable, setPwaApplyUpdate } from './application/pwaUpdateGate'
 import { I18nProvider } from './i18n/I18nProvider'
 import { GoogleAnalytics } from './presentation/components/GoogleAnalytics'
+import { PublishPolicyRoute } from './presentation/components/PublishPolicyRoute'
 import { ShareStageRoute } from './share/ShareStageRoute'
 import './index.css'
 import App from './App.tsx'
@@ -27,6 +28,7 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/publish-policy" element={<PublishPolicyRoute />} />
           <Route path="/v/:shareId" element={<ShareStageRoute mode="view" />} />
           <Route path="/e/:shareId" element={<ShareStageRoute mode="edit" />} />
           <Route path="*" element={<Navigate to="/" replace />} />
