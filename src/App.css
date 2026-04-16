@@ -737,6 +737,13 @@
   border-bottom: 1px solid var(--border);
 }
 
+.app__share-view-banner-text {
+  margin: 0 auto 0.4rem;
+  max-width: 36rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
 .app__share-view-banner-link {
   color: var(--accent);
   font-weight: 600;
@@ -1522,6 +1529,11 @@
   margin-inline: auto;
   min-width: 0;
   box-sizing: border-box;
+}
+
+/* Share `/v/` view-only: no target rail — single column for the stage. */
+.app__plan-workspace-cluster--view-only {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 /* Бічна панель: на широкому екрані — sticky під смугою керування (див. медіа нижче). */

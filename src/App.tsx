@@ -125,7 +125,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const planCanvasRef = useRef<StageCanvasHandle>(null)
   const projectFileInputRef = useRef<HTMLInputElement>(null)
   const onboardingDialogRef = useRef<HTMLDialogElement>(null)
-  const [viewMode, setViewMode] = useState<'2d' | '3d'>('2d')
+  const [viewMode, setViewMode] = useState<'2d' | '3d'>(() => (shareReadOnly ? '3d' : '2d'))
   const [planViewportWorld, setPlanViewportWorld] = useState<WorldViewportRect | null>(null)
   const [camera3d, setCamera3d] = useState<CameraMode3D>('overview')
   const [pdfBusy, setPdfBusy] = useState(false)
@@ -701,111 +701,112 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
           {tree.view.visual3d}
         </button>
       </div>
-      <div className="app__undo-redo" role="group" aria-label={tree.view.undoRedoGroupAria}>
-        <button
-          type="button"
-          className="app__undo-redo-btn"
-          aria-label={tree.view.undoPlan}
-          title={tree.view.undoPlanTitle}
-          disabled={readOnly || !canUndoPlan}
-          onClick={runUndo}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M3 7v6h6" />
-            <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
-          </svg>
-        </button>
-        <button
-          type="button"
-          className="app__undo-redo-btn"
-          aria-label={tree.view.redoPlan}
-          title={tree.view.redoPlanTitle}
-          disabled={readOnly || !canRedoPlan}
-          onClick={runRedo}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M21 7v6h-6" />
-            <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7" />
-          </svg>
-        </button>
-      </div>
-      <label className="app__field-size" title={tree.toolbar.fieldSizeHint}>
-        <span className="app__field-size-label">{tree.toolbar.fieldSizeLabel}</span>
-        <div className="app__field-size-controls">
-          <div className="app__field-size-inputs">
-            <input
-              type="text"
-              className="app__field-size-input"
-              inputMode="decimal"
-              autoComplete="off"
-              aria-label={tree.toolbar.fieldSizeWidthAria}
-              readOnly={readOnly}
-              value={fieldWidthDraft ?? String(fieldSizeM.x)}
-              onFocus={() => {
-                fieldWidthInputFocusedRef.current = true
-                setFieldWidthDraft(String(fieldSizeM.x))
-              }}
-              onChange={(e) => {
-                setFieldWidthDraft(e.target.value)
-              }}
-              onBlur={() => {
-                fieldWidthInputFocusedRef.current = false
-                const v = parseFieldSizeInputMeters(fieldWidthDraft ?? '')
-                setFieldWidthDraft(null)
-                if (v !== null) trySetFieldSizeM({ x: v, y: fieldSizeM.y })
-              }}
-            />
-            <span className="app__field-size-times" aria-hidden="true">
-              ×
-            </span>
-            <input
-              type="text"
-              className="app__field-size-input"
-              inputMode="decimal"
-              autoComplete="off"
-              aria-label={tree.toolbar.fieldSizeLengthAria}
-              readOnly={readOnly}
-              value={fieldHeightDraft ?? String(fieldSizeM.y)}
-              onFocus={() => {
-                fieldHeightInputFocusedRef.current = true
-                setFieldHeightDraft(String(fieldSizeM.y))
-              }}
-              onChange={(e) => {
-                setFieldHeightDraft(e.target.value)
-              }}
-              onBlur={() => {
-                fieldHeightInputFocusedRef.current = false
-                const v = parseFieldSizeInputMeters(fieldHeightDraft ?? '')
-                setFieldHeightDraft(null)
-                if (v !== null) trySetFieldSizeM({ x: fieldSizeM.x, y: v })
-              }}
-            />
-            <span className="app__field-size-unit" aria-hidden="true">
-              m
-            </span>
+      {!readOnly ? (
+        <>
+          <div className="app__undo-redo" role="group" aria-label={tree.view.undoRedoGroupAria}>
+            <button
+              type="button"
+              className="app__undo-redo-btn"
+              aria-label={tree.view.undoPlan}
+              title={tree.view.undoPlanTitle}
+              disabled={!canUndoPlan}
+              onClick={runUndo}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 7v6h6" />
+                <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="app__undo-redo-btn"
+              aria-label={tree.view.redoPlan}
+              title={tree.view.redoPlanTitle}
+              disabled={!canRedoPlan}
+              onClick={runRedo}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 7v6h-6" />
+                <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7" />
+              </svg>
+            </button>
           </div>
-          <select
-            className="app__field-size-presets"
-            aria-label={tree.toolbar.fieldSizePresetsAria}
-            disabled={readOnly}
-            value=""
-            onChange={(e) => {
-              const val = e.target.value
-              if (!val) return
-              const [w, h] = val.split('x').map(Number)
-              trySetFieldSizeM({ x: w, y: h })
-              e.currentTarget.selectedIndex = 0
-            }}
-          >
-            <option value="">{tree.toolbar.fieldSizePresetsPlaceholder}</option>
-            {FIELD_SIZE_PRESETS.map((p) => (
-              <option key={p.id} value={`${p.widthM}x${p.heightM}`}>
-                {formatTemplate(tree.toolbar.fieldSizeOption, { w: p.widthM, h: p.heightM })}
-              </option>
-            ))}
-          </select>
-        </div>
-      </label>
+          <label className="app__field-size" title={tree.toolbar.fieldSizeHint}>
+            <span className="app__field-size-label">{tree.toolbar.fieldSizeLabel}</span>
+            <div className="app__field-size-controls">
+              <div className="app__field-size-inputs">
+                <input
+                  type="text"
+                  className="app__field-size-input"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  aria-label={tree.toolbar.fieldSizeWidthAria}
+                  value={fieldWidthDraft ?? String(fieldSizeM.x)}
+                  onFocus={() => {
+                    fieldWidthInputFocusedRef.current = true
+                    setFieldWidthDraft(String(fieldSizeM.x))
+                  }}
+                  onChange={(e) => {
+                    setFieldWidthDraft(e.target.value)
+                  }}
+                  onBlur={() => {
+                    fieldWidthInputFocusedRef.current = false
+                    const v = parseFieldSizeInputMeters(fieldWidthDraft ?? '')
+                    setFieldWidthDraft(null)
+                    if (v !== null) trySetFieldSizeM({ x: v, y: fieldSizeM.y })
+                  }}
+                />
+                <span className="app__field-size-times" aria-hidden="true">
+                  ×
+                </span>
+                <input
+                  type="text"
+                  className="app__field-size-input"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  aria-label={tree.toolbar.fieldSizeLengthAria}
+                  value={fieldHeightDraft ?? String(fieldSizeM.y)}
+                  onFocus={() => {
+                    fieldHeightInputFocusedRef.current = true
+                    setFieldHeightDraft(String(fieldSizeM.y))
+                  }}
+                  onChange={(e) => {
+                    setFieldHeightDraft(e.target.value)
+                  }}
+                  onBlur={() => {
+                    fieldHeightInputFocusedRef.current = false
+                    const v = parseFieldSizeInputMeters(fieldHeightDraft ?? '')
+                    setFieldHeightDraft(null)
+                    if (v !== null) trySetFieldSizeM({ x: fieldSizeM.x, y: v })
+                  }}
+                />
+                <span className="app__field-size-unit" aria-hidden="true">
+                  m
+                </span>
+              </div>
+              <select
+                className="app__field-size-presets"
+                aria-label={tree.toolbar.fieldSizePresetsAria}
+                value=""
+                onChange={(e) => {
+                  const val = e.target.value
+                  if (!val) return
+                  const [w, h] = val.split('x').map(Number)
+                  trySetFieldSizeM({ x: w, y: h })
+                  e.currentTarget.selectedIndex = 0
+                }}
+              >
+                <option value="">{tree.toolbar.fieldSizePresetsPlaceholder}</option>
+                {FIELD_SIZE_PRESETS.map((p) => (
+                  <option key={p.id} value={`${p.widthM}x${p.heightM}`}>
+                    {formatTemplate(tree.toolbar.fieldSizeOption, { w: p.widthM, h: p.heightM })}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </label>
+        </>
+      ) : null}
       {viewMode === '3d' && (
         <>
           <div className="app__camtabs" role="group" aria-label={tree.view.camAria}>
@@ -832,25 +833,26 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               {tree.view.camPdf}
             </button>
           </div>
-          <label className="app__ground-cover">
-            <span className="app__ground-cover-label">{tree.view.groundCoverLabel}</span>
-            <select
-              aria-label={tree.view.groundCoverAria}
-              disabled={readOnly}
-              value={fieldGroundCover3d}
-              onChange={(e) => setFieldGroundCover3d(e.target.value as FieldGroundCover3d)}
-            >
-              {FIELD_GROUND_COVER_3D_VALUES.map((id) => (
-                <option key={id} value={id}>
-                  {id === 'earth'
-                    ? tree.view.groundEarth
-                    : id === 'grass'
-                      ? tree.view.groundGrass
-                      : tree.view.groundSand}
-                </option>
-              ))}
-            </select>
-          </label>
+          {!readOnly ? (
+            <label className="app__ground-cover">
+              <span className="app__ground-cover-label">{tree.view.groundCoverLabel}</span>
+              <select
+                aria-label={tree.view.groundCoverAria}
+                value={fieldGroundCover3d}
+                onChange={(e) => setFieldGroundCover3d(e.target.value as FieldGroundCover3d)}
+              >
+                {FIELD_GROUND_COVER_3D_VALUES.map((id) => (
+                  <option key={id} value={id}>
+                    {id === 'earth'
+                      ? tree.view.groundEarth
+                      : id === 'grass'
+                        ? tree.view.groundGrass
+                        : tree.view.groundSand}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
         </>
       )}
     </div>
@@ -911,46 +913,38 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                 className="app__buttons app__header-file-buttons"
                 role="group"
                 aria-label={tree.project.fileGroupAria}
-                title={tree.project.hint}
+                title={readOnly ? undefined : tree.project.hint}
               >
-                <button
-                  type="button"
-                  className="app__btn-secondary"
-                  disabled={readOnly}
-                  onClick={saveStageProject}
-                >
-                  {tree.project.save}
-                </button>
-                <button
-                  type="button"
-                  className="app__btn-secondary"
-                  disabled={readOnly}
-                  onClick={() => projectFileInputRef.current?.click()}
-                >
-                  {tree.project.open}
-                </button>
-                <button
-                  type="button"
-                  className="app__btn-secondary"
-                  disabled={readOnly}
-                  title={tree.share.publishButton}
-                  onClick={() => setSharePublishOpen(true)}
-                >
-                  {tree.share.publishButton}
-                </button>
+                {!readOnly ? (
+                  <>
+                    <button type="button" className="app__btn-secondary" onClick={saveStageProject}>
+                      {tree.project.save}
+                    </button>
+                    <button type="button" className="app__btn-secondary" onClick={() => projectFileInputRef.current?.click()}>
+                      {tree.project.open}
+                    </button>
+                    <button
+                      type="button"
+                      className="app__btn-secondary"
+                      title={tree.share.publishButton}
+                      onClick={() => setSharePublishOpen(true)}
+                    >
+                      {tree.share.publishButton}
+                    </button>
+                    <input
+                      ref={projectFileInputRef}
+                      type="file"
+                      className="app__sr-only"
+                      accept=".stage.json,.json,application/json"
+                      aria-hidden
+                      tabIndex={-1}
+                      onChange={onProjectFileSelected}
+                    />
+                  </>
+                ) : null}
                 <button type="button" className="app__btn-secondary app__btn-help" onClick={openOnboarding} title={tree.app.onboardingReopen}>
                   ?
                 </button>
-                <input
-                  ref={projectFileInputRef}
-                  type="file"
-                  className="app__sr-only"
-                  accept=".stage.json,.json,application/json"
-                  aria-hidden
-                  tabIndex={-1}
-                  disabled={readOnly}
-                  onChange={onProjectFileSelected}
-                />
               </div>
               {/* Mobile overflow menu */}
               <div className="app__mobile-menu" ref={mobileMenuRef}>
@@ -968,36 +962,37 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                 </button>
                 {mobileMenuOpen && (
                   <div className="app__mobile-menu-dropdown">
-                    <button
-                      type="button"
-                      disabled={readOnly}
-                      onClick={() => {
-                        saveStageProject()
-                        setMobileMenuOpen(false)
-                      }}
-                    >
-                      {tree.project.save}
-                    </button>
-                    <button
-                      type="button"
-                      disabled={readOnly}
-                      onClick={() => {
-                        projectFileInputRef.current?.click()
-                        setMobileMenuOpen(false)
-                      }}
-                    >
-                      {tree.project.open}
-                    </button>
-                    <button
-                      type="button"
-                      disabled={readOnly}
-                      onClick={() => {
-                        setSharePublishOpen(true)
-                        setMobileMenuOpen(false)
-                      }}
-                    >
-                      {tree.share.publishButton}
-                    </button>
+                    {!readOnly ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            saveStageProject()
+                            setMobileMenuOpen(false)
+                          }}
+                        >
+                          {tree.project.save}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            projectFileInputRef.current?.click()
+                            setMobileMenuOpen(false)
+                          }}
+                        >
+                          {tree.project.open}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSharePublishOpen(true)
+                            setMobileMenuOpen(false)
+                          }}
+                        >
+                          {tree.share.publishButton}
+                        </button>
+                      </>
+                    ) : null}
                     <button type="button" onClick={() => { openOnboarding(); setMobileMenuOpen(false) }}>
                       {tree.app.onboardingReopen}
                     </button>
@@ -1011,6 +1006,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
 
       {readOnly && shareViewContext ? (
         <div className="app__share-view-banner">
+          <p className="app__share-view-banner-text">{tree.share.viewModeHint}</p>
           <a
             href={openInEditorHref}
             target="_blank"
@@ -1084,13 +1080,18 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       </div>
 
       <div className="app__plan-workspace">
-        <div className="app__plan-workspace-cluster" style={mainStageStyle}>
-          <div
-            className={`app__toolbar-drawer${toolbarDrawerOpen ? ' is-open' : ''}`}
-            onClick={(e) => { if (e.target === e.currentTarget) setToolbarDrawerOpen(false) }}
-          >
-            <StageBuilderToolbar {...toolbarProps} className="app__toolbar app__plan-rail" />
-          </div>
+        <div
+          className={`app__plan-workspace-cluster${readOnly ? ' app__plan-workspace-cluster--view-only' : ''}`}
+          style={mainStageStyle}
+        >
+          {!readOnly ? (
+            <div
+              className={`app__toolbar-drawer${toolbarDrawerOpen ? ' is-open' : ''}`}
+              onClick={(e) => { if (e.target === e.currentTarget) setToolbarDrawerOpen(false) }}
+            >
+              <StageBuilderToolbar {...toolbarProps} className="app__toolbar app__plan-rail" />
+            </div>
+          ) : null}
           <div className="app__plan-main">
             <div className="app__plan-stage-stack">
               <main className="app__main app__main--stage-card">
@@ -1126,11 +1127,12 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       onPlacementWorldClick={handlePlacementWorldClick}
                       marqueeModeActive={marqueeModeActive}
                       onPlanSelectionChange={setPlanSelectionSummary}
-                      onSelectionLongPress={() => setSelectionSheetOpen(true)}
+                      onSelectionLongPress={readOnly ? undefined : () => setSelectionSheetOpen(true)}
                       penaltyDraftVertices={
                         placementMode?.kind === 'penaltyZoneContour' ? penaltyDraftVertices : null
                       }
                     />
+                    {!readOnly ? (
                     <div className="app__plan-map-actions" role="toolbar" aria-label={tree.view.planMapActionsAria}>
                       <button
                         type="button"
@@ -1138,7 +1140,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         aria-pressed={marqueeModeActive}
                         aria-label={tree.view.marqueeMode}
                         title={tree.view.marqueeModeTitle}
-                        disabled={readOnly}
                         onClick={() => {
                           setMarqueeModeActive((v) => !v)
                         }}
@@ -1163,7 +1164,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         className="app__plan-map-action-btn"
                         aria-label={tree.view.copySelection}
                         title={tree.view.copySelectionTitle}
-                        disabled={readOnly || planSelectionSummary.empty}
+                        disabled={planSelectionSummary.empty}
                         onClick={runCopySelection}
                       >
                         <svg
@@ -1186,7 +1187,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         className="app__plan-map-action-btn"
                         aria-label={tree.view.pasteSelection}
                         title={tree.view.pasteSelectionTitle}
-                        disabled={readOnly || !hasPlanClipboard}
+                        disabled={!hasPlanClipboard}
                         onClick={runPasteSelection}
                       >
                         <svg
@@ -1235,7 +1236,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         className="app__plan-map-action-btn app__plan-map-action-btn--remove"
                         aria-label={tree.view.deleteSelection}
                         title={tree.view.deleteSelectionTitle}
-                        disabled={readOnly || planSelectionSummary.empty}
+                        disabled={planSelectionSummary.empty}
                         onClick={() => planCanvasRef.current?.deleteSelection()}
                       >
                         <svg
@@ -1256,7 +1257,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       <button
                         type="button"
                         className="app__plan-map-action-btn app__plan-map-action-btn--danger"
-                        disabled={readOnly}
                         onClick={handleClearExercise}
                         aria-label={t('project.clearAria')}
                         title={tree.project.clearConfirm}
@@ -1270,6 +1270,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         </svg>
                       </button>
                     </div>
+                    ) : null}
                     <StageMinimap
                       fieldWidthM={fieldSizeM.x}
                       fieldHeightM={fieldSizeM.y}
@@ -1520,21 +1521,23 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         )}
       </footer>
 
-      <button
-        type="button"
-        className="app__toolbar-drawer-toggle"
-        onClick={() => setToolbarDrawerOpen((v) => !v)}
-        aria-expanded={toolbarDrawerOpen}
-        aria-label={toolbarDrawerOpen ? tree.app.toolbarDrawerClose : tree.app.toolbarDrawerOpen}
-      >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <rect x="2" y="3" width="7" height="14" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="11" y="3" width="7" height="14" rx="1.5" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" />
-        </svg>
-        <span className="app__toolbar-drawer-toggle-label">
-          {toolbarDrawerOpen ? tree.app.toolbarDrawerClose : tree.app.toolbarDrawerOpen}
-        </span>
-      </button>
+      {!readOnly ? (
+        <button
+          type="button"
+          className="app__toolbar-drawer-toggle"
+          onClick={() => setToolbarDrawerOpen((v) => !v)}
+          aria-expanded={toolbarDrawerOpen}
+          aria-label={toolbarDrawerOpen ? tree.app.toolbarDrawerClose : tree.app.toolbarDrawerOpen}
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <rect x="2" y="3" width="7" height="14" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+            <rect x="11" y="3" width="7" height="14" rx="1.5" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" />
+          </svg>
+          <span className="app__toolbar-drawer-toggle-label">
+            {toolbarDrawerOpen ? tree.app.toolbarDrawerClose : tree.app.toolbarDrawerOpen}
+          </span>
+        </button>
+      ) : null}
     </div>
   )
 }

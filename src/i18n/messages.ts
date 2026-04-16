@@ -303,6 +303,8 @@ export type MessageTree = {
     publishPolicyParagraphs: string[]
     /** Link on `/v/` share page — open same snapshot in editor (new tab). */
     openInEditor: string
+    /** `/v/` view-only: short notice above the editor link. */
+    viewModeHint: string
   }
   footer: {
     feedbackHeading: string
@@ -673,6 +675,8 @@ export const ukMessages: MessageTree = {
       'Термін дії посилання та обмеження на кількість публікацій залежать від налаштувань сервісу. Самостійно прибрати публікацію з хмари в першій версії може бути недоступно; за вмотивованим зверненням через зворотний зв’язок оператор може видалити або обмежити доступ до матеріалу після перевірки.',
     ],
     openInEditor: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u0432 \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0456 (\u043d\u043e\u0432\u0430 \u0432\u043a\u043b\u0430\u0434\u043a\u0430)',
+    viewModeHint:
+      'Зараз увімкнено лише перегляд. Щоб змінювати вправу, відкрийте її в редакторі.',
     publishErrorHtmlResponse:
       '\u0421\u0435\u0440\u0432\u0435\u0440 \u043f\u043e\u0432\u0435\u0440\u043d\u0443\u0432 HTML \u0437\u0430\u043c\u0456\u0441\u0442\u044c JSON \u2014 \u043f\u0435\u0440\u0435\u0432\u0456\u0440\u0442\u0435 \u0434\u0435\u043f\u043b\u043e\u0439 /api/publish-share \u0442\u0430 \u0437\u043c\u0456\u043d\u043d\u0456 Vercel (SUPABASE_SERVICE_ROLE_KEY, URL).',
   },
@@ -1034,6 +1038,7 @@ export const enMessages: MessageTree = {
       'Link lifetime and publish limits depend on service settings. Self-service removal from the cloud may be unavailable in the first version; after a substantiated request via feedback, an operator may remove or restrict access after review.',
     ],
     openInEditor: 'Open in editor (new tab)',
+    viewModeHint: 'View-only mode. To edit the stage, open it in the editor.',
     publishErrorHtmlResponse:
       'Server returned HTML instead of JSON — check deployment of /api/publish-share and Vercel env (SUPABASE_SERVICE_ROLE_KEY, Supabase URL).',
   },
