@@ -1,6 +1,8 @@
 import { next } from '@vercel/edge'
+import { resolvePublicOriginFromEnv } from './src/lib/resolvePublicOriginFromEnv'
+import { OG_IMAGE_ASSET_QUERY } from './src/seo/ogConstants'
 
-/** BL-001 F16: minimal HTML with og:title for link previews when crawlers request /v/ or /e/ (Edge). */
+/** BL-001 F16: HTML with OG/Twitter meta for link previews when crawlers request /v/ or /e/ (Edge). */
 const BOT_UA =
   /facebookexternalhit|Facebot|Twitterbot|Slackbot|LinkedInBot|TelegramBot|WhatsApp|Discordbot|SkypeUriPreview|Googlebot|bingbot/i
 
@@ -60,6 +62,11 @@ export default async function middleware(request: Request): Promise<Response> {
       typeof titleRaw === 'string' && titleRaw.trim() ? titleRaw.trim().slice(0, 200) : 'Stage Builder'
     const safeTitle = escapeHtml(title)
     const pageUrl = escapeHtml(url.href.split('#')[0])
+    const assetOrigin = resolvePublicOriginFromEnv(url.origin)
+    const ogImage = escapeHtml(`${assetOrigin}/og-image.png${OG_IMAGE_ASSET_QUERY}`)
+    const ogImageAlt = escapeHtml('Stage Builder — stage plan, targets, PDF briefing export')
+    const ogDesc = escapeHtml(`${title} — Stage Builder`)
+    const siteName = escapeHtml('Stage Builder')
 
     const html = `<!DOCTYPE html>
 <html lang="uk">
@@ -68,10 +75,16 @@ export default async function middleware(request: Request): Promise<Response> {
 <meta name="robots" content="noindex, nofollow"/>
 <title>${safeTitle}</title>
 <meta property="og:type" content="website"/>
+<meta property="og:site_name" content="${siteName}"/>
 <meta property="og:title" content="${safeTitle}"/>
+<meta property="og:description" content="${ogDesc}"/>
 <meta property="og:url" content="${pageUrl}"/>
-<meta name="twitter:card" content="summary"/>
+<meta property="og:image" content="${ogImage}"/>
+<meta property="og:image:alt" content="${ogImageAlt}"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="${safeTitle}"/>
+<meta name="twitter:description" content="${ogDesc}"/>
+<meta name="twitter:image" content="${ogImage}"/>
 </head>
 <body></body>
 </html>`

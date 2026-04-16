@@ -303,11 +303,21 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, briefing],
   )
 
-  /** Public origin for share links (matches server `VITE_SHARE_PUBLIC_ORIGIN` / request host). */
+  /** Public origin for share links (matches server `resolvePublicOrigin` / `VITE_SHARE_PUBLIC_ORIGIN`). */
   const sharePublicOrigin = useMemo(() => {
     const env = import.meta.env.VITE_SHARE_PUBLIC_ORIGIN as string | undefined
     const o = env?.trim().replace(/\/$/, '')
     if (o) return o
+    const fromBuild = import.meta.env.VITE_BUILD_PRODUCTION_ORIGIN as string | undefined
+    const prod = fromBuild?.trim().replace(/\/$/, '')
+    if (
+      prod &&
+      typeof window !== 'undefined' &&
+      window.location.hostname.endsWith('.vercel.app') &&
+      window.location.origin !== prod
+    ) {
+      return prod
+    }
     if (typeof window !== 'undefined') return window.location.origin
     return 'https://stage-builder.vercel.app'
   }, [])

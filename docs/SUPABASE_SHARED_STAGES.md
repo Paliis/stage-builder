@@ -162,7 +162,7 @@ node scripts/test-supabase-share.mjs
 
 ## Публікація через API (service role)
 
-Створення рядків у **`shared_stages`** з браузера через anon **не** передбачено. Публікація — **POST** **`/api/publish-share`** (Vercel Serverless, **`api/publish-share.js`** з **`src/server/publishShareApiHandler.ts`** після **`npm run build`**): валідація тіла, rate limit (50/день/IP), ідемпотентність за **`Idempotency-Key`**, вставка через **service role**. Змінні середовища на Vercel: **`SUPABASE_SERVICE_ROLE_KEY`**, **`SUPABASE_URL`** або **`VITE_SUPABASE_URL`**; опційно **`VITE_SHARE_PUBLIC_ORIGIN`** для поля **`url`** у JSON-відповіді. Локально: **`vercel dev`**.
+Створення рядків у **`shared_stages`** з браузера через anon **не** передбачено. Публікація — **POST** **`/api/publish-share`** (Vercel Serverless, **`api/publish-share.js`** з **`src/server/publishShareApiHandler.ts`** після **`npm run build`**): валідація тіла, rate limit (50/день/IP), ідемпотентність за **`Idempotency-Key`**, вставка через **service role**. Змінні середовища на Vercel: **`SUPABASE_SERVICE_ROLE_KEY`**, **`SUPABASE_URL`** або **`VITE_SUPABASE_URL`**; опційно **`VITE_SHARE_PUBLIC_ORIGIN`** для поля **`url`** у JSON-відповіді (якщо не задано — **`VERCEL_PROJECT_PRODUCTION_URL`**, щоб у посиланнях не з’являвся preview-хост з іменем команди). Локально: **`vercel dev`**.
 
 ## Клієнт
 

@@ -21386,6 +21386,20 @@ function serializeStageProject(file) {
 `;
 }
 
+// src/lib/resolvePublicOriginFromEnv.ts
+function resolvePublicOriginFromEnv(requestFallback) {
+  const env = process.env.VITE_SHARE_PUBLIC_ORIGIN?.replace(/\/$/, "");
+  if (env) return env;
+  const prod = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (prod) {
+    const host = prod.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    return `https://${host}`;
+  }
+  const vu = process.env.VERCEL_URL;
+  if (vu) return `https://${vu.replace(/^https?:\/\//, "")}`;
+  return requestFallback.replace(/\/$/, "");
+}
+
 // src/server/sharePublish.ts
 var import_node_crypto = require("node:crypto");
 var MAX_PUBLISH_BODY_BYTES = 6e5;
@@ -21457,14 +21471,10 @@ function normalizePublishBody(body) {
 
 // src/server/publishShareApiHandler.ts
 function resolvePublicOrigin(req) {
-  const env = process.env.VITE_SHARE_PUBLIC_ORIGIN?.replace(/\/$/, "");
-  if (env) return env;
-  const vu = process.env.VERCEL_URL;
-  if (vu) return `https://${vu.replace(/^https?:\/\//, "")}`;
   const host = req.headers["x-forwarded-host"] ?? req.headers.host;
   const proto = req.headers["x-forwarded-proto"] || "https";
-  if (typeof host === "string") return `${proto}://${host}`;
-  return "";
+  const fallback = typeof host === "string" ? `${proto}://${host}` : "";
+  return resolvePublicOriginFromEnv(fallback);
 }
 function respondWithUrls(req, res, id, mode, locale) {
   const origin = resolvePublicOrigin(req);

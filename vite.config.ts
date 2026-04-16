@@ -2,12 +2,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { OG_IMAGE_ASSET_QUERY } from './src/seo/ogConstants'
 
-/**
- * Bump when favicons, PWA icons, or og-image change. Same path is cached for days
- * (Telegram, Chrome, CDN); query forces a fresh fetch.
- */
-const ASSET_QUERY = '?v=20260409-tg-og'
+const ASSET_QUERY = OG_IMAGE_ASSET_QUERY
+
+const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim()
+const buildProductionOrigin = vercelProd
+  ? `https://${vercelProd.replace(/^https?:\/\//, '').replace(/\/$/, '')}`
+  : ''
 
 /** Set `VITE_SITE_ENV=staging` on the staging Vercel project so builds get noindex + UI ribbon. */
 const SITE_ENV = process.env.VITE_SITE_ENV ?? ''
@@ -38,6 +40,10 @@ function htmlTransformPlugin() {
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    /** Set at build time on Vercel so preview deployments use production host in share/QR links. */
+    'import.meta.env.VITE_BUILD_PRODUCTION_ORIGIN': JSON.stringify(buildProductionOrigin),
+  },
   plugins: [
     react(),
     htmlTransformPlugin(),

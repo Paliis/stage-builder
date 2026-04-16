@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
 import { serializeStageProject } from '../domain/stageProjectFile'
+import { resolvePublicOriginFromEnv } from '../lib/resolvePublicOriginFromEnv'
 import {
   checkPublishRateLimit,
   MAX_PUBLISH_BODY_BYTES,
@@ -9,14 +10,10 @@ import {
 } from './sharePublish'
 
 function resolvePublicOrigin(req: VercelRequest): string {
-  const env = process.env.VITE_SHARE_PUBLIC_ORIGIN?.replace(/\/$/, '')
-  if (env) return env
-  const vu = process.env.VERCEL_URL
-  if (vu) return `https://${vu.replace(/^https?:\/\//, '')}`
   const host = req.headers['x-forwarded-host'] ?? req.headers.host
   const proto = (req.headers['x-forwarded-proto'] as string) || 'https'
-  if (typeof host === 'string') return `${proto}://${host}`
-  return ''
+  const fallback = typeof host === 'string' ? `${proto}://${host}` : ''
+  return resolvePublicOriginFromEnv(fallback)
 }
 
 function respondWithUrls(
