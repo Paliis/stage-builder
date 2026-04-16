@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, useState, type MouseEvent } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type MouseEvent } from 'react'
 import type { StageProjectFileV1 } from '../../domain/stageProjectFile'
 import type { Locale } from '../../i18n/messages'
 import type { MessageTree } from '../../i18n/messages'
@@ -66,17 +66,17 @@ export function SharePublishDialog({
       setPolicyOpen(false)
       d.showModal()
     } else {
+      setPolicyOpen(false)
       d.close()
     }
   }, [open])
 
-  useEffect(() => {
-    const d = policyDialogRef.current
-    if (!d) return
-    if (policyOpen) {
-      d.showModal()
-    } else {
-      d.close()
+  useLayoutEffect(() => {
+    if (!policyOpen) return
+    const el = policyDialogRef.current
+    if (el) el.showModal()
+    return () => {
+      el?.close()
     }
   }, [policyOpen])
 
@@ -209,7 +209,11 @@ export function SharePublishDialog({
           <button
             type="button"
             className="app__share-publish-policy-link"
-            onClick={() => setPolicyOpen(true)}
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setPolicyOpen(true)
+            }}
             aria-haspopup="dialog"
             aria-expanded={policyOpen}
           >
@@ -275,31 +279,33 @@ export function SharePublishDialog({
       </div>
     </dialog>
 
-    <dialog
-      ref={policyDialogRef}
-      className="app__onboarding-dialog app__publish-policy-dialog"
-      onCancel={(e) => {
-        e.preventDefault()
-        setPolicyOpen(false)
-      }}
-    >
-      <button
-        type="button"
-        className="app__onboarding-close"
-        onClick={() => setPolicyOpen(false)}
-        aria-label={sp.publishClose}
+    {policyOpen ? (
+      <dialog
+        ref={policyDialogRef}
+        className="app__onboarding-dialog app__publish-policy-dialog"
+        onCancel={(e) => {
+          e.preventDefault()
+          setPolicyOpen(false)
+        }}
       >
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-          <path d="M4 4l10 10M14 4L4 14" />
-        </svg>
-      </button>
-      <PublishPolicyPanel tree={tree} />
-      <div className="app__share-publish-footer">
-        <button type="button" className="app__onboarding-cta" onClick={() => setPolicyOpen(false)}>
-          {sp.publishClose}
+        <button
+          type="button"
+          className="app__onboarding-close"
+          onClick={() => setPolicyOpen(false)}
+          aria-label={sp.publishClose}
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <path d="M4 4l10 10M14 4L4 14" />
+          </svg>
         </button>
-      </div>
-    </dialog>
+        <PublishPolicyPanel tree={tree} />
+        <div className="app__share-publish-footer">
+          <button type="button" className="app__onboarding-cta" onClick={() => setPolicyOpen(false)}>
+            {sp.publishClose}
+          </button>
+        </div>
+      </dialog>
+    ) : null}
     </>
   )
 }

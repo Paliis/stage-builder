@@ -595,9 +595,13 @@
   border-radius: 2px;
 }
 
+/* Do not set `display` on closed <dialog> — it overrides UA `display:none` and the panel stays visible. */
 .app__publish-policy-dialog {
   max-width: min(26rem, 92vw);
   max-height: min(85vh, 32rem);
+}
+
+.app__publish-policy-dialog[open] {
   display: flex;
   flex-direction: column;
 }
