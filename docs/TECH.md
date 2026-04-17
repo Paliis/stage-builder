@@ -3,7 +3,7 @@
 Документ для розробників: архітектура, домен, формати даних, збірка та відомі обмеження.
 
 **Пов’язані документи:** бізнес- і технічний огляд **[PRODUCT.md](./PRODUCT.md)**; **беклог ідей** **[BACKLOG.md](./BACKLOG.md)**; чернетка **видимість / промені 2D** (BL-010 / BL-013) — **[VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md)**; повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**; **оптимізація бандла** — **[OPTIMIZATION.md](./OPTIMIZATION.md)**; **план посилання на вправу (BL-001)** — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**; **політика публікації (чернетка BL-001)** — **[PUBLISH_POLICY.md](./PUBLISH_POLICY.md)**; **Bluetooth-таймер SG Timer, BLE (BL-014)** — **[BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md)**; **активації на плані (BL-004, специфіка рішень)** — **[BL-004_ACTIVATIONS.md](./BL-004_ACTIVATIONS.md)**.  
-**Важливо:** позначки V0 / V1 / V2 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **1**).
+**Важливо:** позначки V0 / V1 / V2 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **3**: штрафні зони, активації).
 
 ## Посилання на вправу (BL-001)
 
@@ -24,7 +24,7 @@
 | Шар | Каталог | Відповідальність |
 |-----|---------|------------------|
 | **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), **чернетка тексту активацій для брифінгу** (`activationBriefing.ts`, BL-004), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), опорна точка огляду 3D (`overviewAnchor.ts`), покриття площадки в 3D (`fieldGround3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
-| **Application** | `src/application/` | Zustand: сцена (`stageStore`, undo/redo через `zundo`), брифінг (`briefingStore`), чернетка `localStorage` (`sessionDraft.ts`), компонент **`SessionDraftPersist.tsx`** (підписка + debounce) |
+| **Application** | `src/application/` | Zustand: сцена (`stageStore`, у т. ч. **`activations`** BL-004, undo/redo через `zundo`), брифінг (`briefingStore`), чернетка `localStorage` (`sessionDraft.ts`), компонент **`SessionDraftPersist.tsx`** (підписка + debounce) |
 | **Presentation** | `src/presentation/` | React-компоненти: `StageCanvas`, `StageView3D`, `StageBuilderToolbar`, `StageMinimap`, `GoogleAnalytics`; хуки (`usePwaInstall`); бібліотеки: `exportBriefingPdf`, `pdfFonts`, `viewTransform` |
 | **Корінь UI** | `src/App.tsx` | Композиція layout, брифінг-форма, гарячі клавіші, lazy-3D, стрічка staging, посилання на канвас через `ref` (`StageCanvasHandle`) |
 | **i18n** | `src/i18n/` | Дерева рядків UK/EN (`messages.ts`), `I18nProvider`, `getMessage` / `formatTemplate`, `localStorage` для мови (`storage.ts`) |

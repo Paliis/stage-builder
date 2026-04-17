@@ -3,13 +3,22 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
 } from 'react'
 import { useStageStore } from '../../application/stageStore'
 import { CERAMIC_FACE_RGBA } from '../../domain/ceramicPlateSpec'
-import type { MetalPlateRectSideCm, Prop, Target } from '../../domain/models'
+import type { ActivationEdge, MetalPlateRectSideCm, Prop, StageEntityRef, Target } from '../../domain/models'
+import {
+  collectParticipantRefs,
+  dedupeActivationEdges,
+  filterActivationsValid,
+  globalActivationNumberMap,
+  planAnchorWorld,
+  refKey,
+} from '../../domain/activations'
 import {
   cooperTunnelPenaltyPlankOffsetsXM,
   faultLineEndPointsWorld,
@@ -1558,6 +1567,90 @@ function drawSafetyZone(
   ctx.restore()
 }
 
+function drawActivationsPlan2D(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  edges: readonly ActivationEdge[],
+  targets: readonly Target[],
+  props: readonly Prop[],
+  numMap: Map<string, number>,
+  pendingFrom: StageEntityRef | null,
+) {
+  const valid = dedupeActivationEdges(filterActivationsValid(edges, targets, props))
+  const trim = 0.2
+  for (const e of valid) {
+    const a = planAnchorWorld(e.from, targets, props)
+    const b = planAnchorWorld(e.to, targets, props)
+    if (!a || !b) continue
+    const dx = b.x - a.x
+    const dy = b.y - a.y
+    const len = Math.hypot(dx, dy) || 1
+    const ux = dx / len
+    const uy = dy / len
+    const shortenedA = { x: a.x + ux * trim, y: a.y + uy * trim }
+    const shortenedB = { x: b.x - ux * trim, y: b.y - uy * trim }
+    const as = worldToScreen(shortenedA.x, shortenedA.y, tf)
+    const bs = worldToScreen(shortenedB.x, shortenedB.y, tf)
+    ctx.save()
+    ctx.beginPath()
+    ctx.moveTo(as.x, as.y)
+    ctx.lineTo(bs.x, bs.y)
+    ctx.strokeStyle = 'rgba(109, 40, 217, 0.9)'
+    ctx.lineWidth = Math.max(1.5, Math.min(4, tf.pxPerMeter * 0.06))
+    ctx.lineJoin = 'round'
+    ctx.stroke()
+    const ah = Math.max(8, Math.min(14, tf.pxPerMeter * 0.1))
+    const ang = Math.atan2(bs.y - as.y, bs.x - as.x)
+    ctx.beginPath()
+    ctx.moveTo(bs.x, bs.y)
+    ctx.lineTo(bs.x - ah * Math.cos(ang - 0.45), bs.y - ah * Math.sin(ang - 0.45))
+    ctx.lineTo(bs.x - ah * Math.cos(ang + 0.45), bs.y - ah * Math.sin(ang + 0.45))
+    ctx.closePath()
+    ctx.fillStyle = 'rgba(109, 40, 217, 0.95)'
+    ctx.fill()
+    ctx.restore()
+  }
+
+  for (const r of collectParticipantRefs(valid)) {
+    const n = numMap.get(refKey(r))
+    if (n === undefined) continue
+    const pos = planAnchorWorld(r, targets, props)
+    if (!pos) continue
+    const sc = worldToScreen(pos.x, pos.y, tf)
+    ctx.save()
+    const fontPx = Math.max(10, Math.min(20, Math.round(0.14 * tf.pxPerMeter)))
+    ctx.font = `bold ${fontPx}px system-ui, sans-serif`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    const txt = String(n)
+    const w = ctx.measureText(txt).width
+    const pad = fontPx * 0.35
+    const rw = w + pad * 2
+    const rh = fontPx + pad * 0.65
+    ctx.fillStyle = 'rgba(109, 40, 217, 0.92)'
+    ctx.fillRect(sc.x - rw / 2, sc.y - rh / 2, rw, rh)
+    ctx.fillStyle = '#faf5ff'
+    ctx.fillText(txt, sc.x, sc.y)
+    ctx.restore()
+  }
+
+  if (pendingFrom) {
+    const pos = planAnchorWorld(pendingFrom, targets, props)
+    if (pos) {
+      const sc = worldToScreen(pos.x, pos.y, tf)
+      ctx.save()
+      ctx.setLineDash([6, 4])
+      ctx.strokeStyle = 'rgba(234, 179, 8, 0.95)'
+      ctx.lineWidth = 2.5
+      ctx.beginPath()
+      ctx.arc(sc.x, sc.y, Math.max(14, tf.pxPerMeter * 0.22), 0, Math.PI * 2)
+      ctx.stroke()
+      ctx.setLineDash([])
+      ctx.restore()
+    }
+  }
+}
+
 function redraw(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
@@ -1574,6 +1667,9 @@ function redraw(
   formatMeasureDistance: (m: number) => string,
   penaltyZoneSet: PenaltyZoneSet,
   penaltyDraftVertices: readonly Vec2[] | null,
+  activations: readonly ActivationEdge[],
+  activationNumMap: Map<string, number>,
+  activationPendingFrom: StageEntityRef | null,
 ) {
   const dpr = window.devicePixelRatio || 1
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -1822,6 +1918,15 @@ function redraw(
     }
   }
 
+  drawActivationsPlan2D(
+    ctx,
+    tf,
+    activations,
+    targets,
+    props,
+    activationNumMap,
+    activationPendingFrom,
+  )
   drawPlanSelectOutlines(ctx, tf, targets, props, planSelect)
   drawPenaltyVertexHandles(ctx, tf, penaltyZoneSet, planSelect)
 
@@ -1878,6 +1983,10 @@ export type StageCanvasProps = {
   onSelectionLongPress?: () => void
   /** Чернетка полілінії штрафної зони (клацання вершин); null — не в режимі малювання контуру. */
   penaltyDraftVertices: readonly Vec2[] | null
+  /** Режим «зв’язок активації»: два кліки по об’єктах (BL-004). */
+  activationLinkModeActive?: boolean
+  activationPendingFrom?: StageEntityRef | null
+  onActivationEntityPick?: (ref: StageEntityRef) => void
   /** Режим перегляду за share-посиланням: лише пан/зум і вимірювання, без редагування сцени. */
   readOnly?: boolean
 }
@@ -1931,16 +2040,24 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   onPlanSelectionChange,
   onSelectionLongPress,
   penaltyDraftVertices,
+  activationLinkModeActive = false,
+  activationPendingFrom = null,
+  onActivationEntityPick,
   readOnly = false,
 }: StageCanvasProps,
   ref,
 ) {
   const fieldSizeM = useStageStore((s) => s.fieldSizeM)
+  const activations = useStageStore((s) => s.activations)
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
   const movePenaltyVertex = useStageStore((s) => s.movePenaltyVertex)
   const removePenaltyVertex = useStageStore((s) => s.removePenaltyVertex)
   const fw = fieldSizeM.x
   const fh = fieldSizeM.y
+  const activationNumMap = useMemo(
+    () => globalActivationNumberMap(activations),
+    [activations],
+  )
   const faultLineMaxLenM = () => Math.max(fw, fh) * 4
   const safetyAnglesText = useBriefingStore((s) => s.safetyAngles)
 
@@ -2079,6 +2196,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         formatMeasureDistance,
         penaltyZoneSet,
         penaltyDraftVertices,
+        activations,
+        activationNumMap,
+        activationPendingFrom,
       )
 
     const t = transformRef.current
@@ -2101,6 +2221,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     formatMeasureDistance,
     penaltyZoneSet,
     penaltyDraftVertices,
+    activations,
+    activationNumMap,
+    activationPendingFrom,
   ])
 
   useImperativeHandle(
@@ -2163,6 +2286,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   useEffect(() => {
     onSelectionLongPressRef.current = onSelectionLongPress
   }, [onSelectionLongPress])
+
+  const onActivationEntityPickRef = useRef(onActivationEntityPick)
+  useEffect(() => {
+    onActivationEntityPickRef.current = onActivationEntityPick
+  }, [onActivationEntityPick])
 
   const prevFieldWH = useRef<{ w: number; h: number } | null>(null)
   useEffect(() => {
@@ -2373,7 +2501,27 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
-    if (!readOnly && !measureToolActive && !marqueeModeActive && ev.button === 0) {
+    if (activationLinkModeActive && !readOnly && ev.button === 0) {
+      ev.preventDefault()
+      clearLongPressTimer()
+      pendingEmptyPanRef.current = null
+      gridHoverRef.current = null
+      const ppm = transformRef.current.pxPerMeter
+      const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
+      const hitT = pickTargetAt(targets, w.x, w.y, touchPad)
+      if (hitT) {
+        onActivationEntityPickRef.current?.({ kind: 'target', id: hitT.id })
+        return
+      }
+      const hitP = pickPropAt(props, w.x, w.y, touchPad)
+      if (hitP) {
+        onActivationEntityPickRef.current?.({ kind: 'prop', id: hitP.id })
+        return
+      }
+      return
+    }
+
+    if (!readOnly && !measureToolActive && !marqueeModeActive && !activationLinkModeActive && ev.button === 0) {
       const pv = pickPenaltyVertexAt(w.x, w.y, transformRef.current.pxPerMeter, penaltyZoneSet)
       if (pv) {
         ev.preventDefault()
@@ -2447,6 +2595,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       onSelectionLongPress &&
       !placementArmed &&
       !measureToolActive &&
+      !activationLinkModeActive &&
       planSelect.mode !== 'none'
     ) {
       clearLongPressTimer()

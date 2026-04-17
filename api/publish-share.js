@@ -21106,7 +21106,7 @@ function emptyPenaltyZoneSet() {
 
 // src/domain/stageProjectFile.ts
 var STAGE_PROJECT_FORMAT = "stage-builder";
-var STAGE_PROJECT_VERSION = 2;
+var STAGE_PROJECT_VERSION = 3;
 var STAGE_PROJECT_VERSION_MIN = 1;
 var WEAPON_CLASSES = /* @__PURE__ */ new Set(["handgun", "rifle", "shotgun"]);
 var TARGET_TYPE_SET = new Set(ALL_TARGET_TYPES);
@@ -21262,6 +21262,44 @@ function parseProp(raw, idx) {
     rotationRad
   };
 }
+function parseStageEntityRef(raw) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const kind = o.kind;
+  const id = o.id;
+  if (kind !== "target" && kind !== "prop") return null;
+  if (typeof id !== "string" || !id) return null;
+  return { kind, id };
+}
+function ensureUniqueActivationIds(edges) {
+  const seen = /* @__PURE__ */ new Set();
+  return edges.map((e) => {
+    let id = e.id;
+    if (!id || seen.has(id)) id = newEntityId();
+    while (seen.has(id)) id = newEntityId();
+    seen.add(id);
+    return { ...e, id };
+  });
+}
+function parseActivationEdge(raw, idx) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const from = parseStageEntityRef(o.from);
+  const to = parseStageEntityRef(o.to);
+  if (!from || !to) return null;
+  const id = typeof o.id === "string" && o.id ? o.id : `act-${idx}`;
+  return { id, from, to };
+}
+function parseActivations(raw) {
+  if (raw === void 0 || raw === null) return [];
+  if (!Array.isArray(raw)) return [];
+  const out = [];
+  for (let i = 0; i < raw.length; i++) {
+    const e = parseActivationEdge(raw[i], i);
+    if (e) out.push(e);
+  }
+  return ensureUniqueActivationIds(out);
+}
 function parseBriefing(raw) {
   const d = defaultStageBriefing();
   if (typeof raw !== "object" || raw === null) return d;
@@ -21311,7 +21349,12 @@ function buildStageProjectFile(snapshot) {
       targets: snapshot.stage.targets.map((t) => ({ ...t })),
       props: snapshot.stage.props.map((p) => ({ ...p })),
       fieldGroundCover3d: snapshot.stage.fieldGroundCover3d,
-      penaltyZoneSet: clonePenaltyZoneSet(snapshot.stage.penaltyZoneSet)
+      penaltyZoneSet: clonePenaltyZoneSet(snapshot.stage.penaltyZoneSet),
+      activations: snapshot.stage.activations.map((e) => ({
+        id: e.id,
+        from: { ...e.from },
+        to: { ...e.to }
+      }))
     },
     briefing: { ...snapshot.briefing }
   };
@@ -21365,6 +21408,10 @@ function parseStageProjectJson(text) {
     if (pz === null) return { ok: false, errorKey: "invalidShape" };
     penaltyZoneSet = pz;
   }
+  let activations = [];
+  if (version3 >= 3) {
+    activations = parseActivations(stageObj.activations);
+  }
   const data = {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
@@ -21375,7 +21422,8 @@ function parseStageProjectJson(text) {
       targets: ensureUniqueTargetIds(targets),
       props: ensureUniquePropIds(props),
       fieldGroundCover3d,
-      penaltyZoneSet
+      penaltyZoneSet,
+      activations
     },
     briefing: parseBriefing(root.briefing)
   };

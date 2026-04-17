@@ -1,5 +1,6 @@
 import type { Locale } from '../i18n/messages'
-import type { Target } from './models'
+import type { ActivationEdge, Prop, Target } from './models'
+import { buildActivationBriefingBlock } from './activationBriefing'
 import { swingerIsPaperLoad, swingerTargetFaceCount } from './swingerGeometry'
 import { isCeramicTargetType, isPaperTargetType } from './targetSpecs'
 
@@ -54,4 +55,17 @@ export function summarizeTargets(targets: readonly Target[], locale: Locale): st
     parts.push(penalty === 1 ? '1 no-shoot' : `${penalty} no-shoot`)
   }
   return parts.length > 0 ? parts.join(' + ') : '—'
+}
+
+/** Склад мішеней + блок активацій для поля брифінгу «Мішені (текст)». */
+export function summarizeTargetsDescriptionFromScene(
+  targets: readonly Target[],
+  props: readonly Prop[],
+  activations: readonly ActivationEdge[],
+  locale: Locale,
+): string {
+  const summary = summarizeTargets(targets, locale)
+  const act = buildActivationBriefingBlock(activations, targets, props, locale)
+  if (!act) return summary
+  return `${summary}\n\n${act}`
 }

@@ -98,6 +98,17 @@ export type Prop = {
 
 export type StageCategory = 'short' | 'medium' | 'long'
 
+/** Посилання на екземпляр мішені або реквізиту (BL-004 активації). */
+export type StageEntityKind = 'target' | 'prop'
+export type StageEntityRef = { kind: StageEntityKind; id: string }
+
+/** Ребро «активує»: from → to; глобальні номери на плані обчислюються з усіх ребер. */
+export type ActivationEdge = {
+  id: string
+  from: StageEntityRef
+  to: StageEntityRef
+}
+
 export type Stage = {
   name: string
   category: StageCategory

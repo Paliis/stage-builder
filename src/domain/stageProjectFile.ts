@@ -1,10 +1,12 @@
 import { normalizeFieldGroundCover3d, type FieldGroundCover3d } from './fieldGround3d'
 import { clampFieldDimensions, FIELD_SIZE_LIMITS } from './field'
 import type {
+  ActivationEdge,
   MetalPlateRectSideCm,
   Prop,
   PropType,
   StageCategory,
+  StageEntityKind,
   Target,
   TargetType,
   Vec2,
@@ -22,8 +24,8 @@ import {
 } from './penaltyZones'
 
 export const STAGE_PROJECT_FORMAT = 'stage-builder' as const
-/** 1 — початковий формат; 2 — `penaltyZoneSet` (замкнені контури штрафних зон). */
-export const STAGE_PROJECT_VERSION = 2
+/** 1 — початковий формат; 2 — `penaltyZoneSet`; 3 — `activations` (BL-004). */
+export const STAGE_PROJECT_VERSION = 3
 /** Старі файли залишаються валідними при парсингу. */
 export const STAGE_PROJECT_VERSION_MIN = 1
 export const STAGE_PROJECT_FILE_EXTENSION = '.stage.json'
@@ -103,6 +105,8 @@ export type StageProjectSnapshot = {
    * Замкнені контури штрафних зон (BL-019). Для `version === 1` у файлі відсутнє — при парсингу `emptyPenaltyZoneSet()`.
    */
   penaltyZoneSet: PenaltyZoneSet
+  /** Зв’язки активації (BL-004). Для `version < 3` при парсингу — `[]`. */
+  activations: ActivationEdge[]
 }
 
 export type StageProjectFileV1 = {
@@ -229,6 +233,48 @@ function parseProp(raw: unknown, idx: number): Prop | null {
   }
 }
 
+function parseStageEntityRef(raw: unknown): { kind: StageEntityKind; id: string } | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const o = raw as Record<string, unknown>
+  const kind = o.kind
+  const id = o.id
+  if (kind !== 'target' && kind !== 'prop') return null
+  if (typeof id !== 'string' || !id) return null
+  return { kind, id }
+}
+
+function ensureUniqueActivationIds(edges: ActivationEdge[]): ActivationEdge[] {
+  const seen = new Set<string>()
+  return edges.map((e) => {
+    let id = e.id
+    if (!id || seen.has(id)) id = newEntityId()
+    while (seen.has(id)) id = newEntityId()
+    seen.add(id)
+    return { ...e, id }
+  })
+}
+
+function parseActivationEdge(raw: unknown, idx: number): ActivationEdge | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const o = raw as Record<string, unknown>
+  const from = parseStageEntityRef(o.from)
+  const to = parseStageEntityRef(o.to)
+  if (!from || !to) return null
+  const id = typeof o.id === 'string' && o.id ? o.id : `act-${idx}`
+  return { id, from, to }
+}
+
+function parseActivations(raw: unknown): ActivationEdge[] {
+  if (raw === undefined || raw === null) return []
+  if (!Array.isArray(raw)) return []
+  const out: ActivationEdge[] = []
+  for (let i = 0; i < raw.length; i++) {
+    const e = parseActivationEdge(raw[i], i)
+    if (e) out.push(e)
+  }
+  return ensureUniqueActivationIds(out)
+}
+
 function parseBriefing(raw: unknown): StageBriefing {
   const d = defaultStageBriefing()
   if (typeof raw !== 'object' || raw === null) return d
@@ -288,6 +334,11 @@ export function buildStageProjectFile(snapshot: {
       props: snapshot.stage.props.map((p) => ({ ...p })),
       fieldGroundCover3d: snapshot.stage.fieldGroundCover3d,
       penaltyZoneSet: clonePenaltyZoneSet(snapshot.stage.penaltyZoneSet),
+      activations: snapshot.stage.activations.map((e) => ({
+        id: e.id,
+        from: { ...e.from },
+        to: { ...e.to },
+      })),
     },
     briefing: { ...snapshot.briefing },
   }
@@ -363,6 +414,11 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
     penaltyZoneSet = pz
   }
 
+  let activations: ActivationEdge[] = []
+  if (version >= 3) {
+    activations = parseActivations(stageObj.activations)
+  }
+
   const data: StageProjectFileV1 = {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
@@ -374,6 +430,7 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
       props: ensureUniquePropIds(props),
       fieldGroundCover3d,
       penaltyZoneSet,
+      activations,
     },
     briefing: parseBriefing(root.briefing),
   }

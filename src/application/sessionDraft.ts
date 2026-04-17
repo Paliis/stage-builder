@@ -57,7 +57,13 @@ function briefingDiffersFromDefault(b: StageBriefing): boolean {
 export function isSessionDraftMeaningful(envelope: SessionDraftEnvelope): boolean {
   const { stage, briefing } = envelope
   const pz = stage.penaltyZoneSet ?? emptyPenaltyZoneSet()
-  if (stage.targets.length > 0 || stage.props.length > 0 || pz.polygons.length > 0) return true
+  if (
+    stage.targets.length > 0 ||
+    stage.props.length > 0 ||
+    pz.polygons.length > 0 ||
+    (stage.activations?.length ?? 0) > 0
+  )
+    return true
   if (stage.name.trim() !== DEFAULT_STAGE_NAME_UA) return true
   if (stage.fieldSizeM.x !== DEFAULT_FIELD_WIDTH_M || stage.fieldSizeM.y !== DEFAULT_FIELD_HEIGHT_M) return true
   if (stage.weaponClass !== 'handgun') return true
@@ -135,6 +141,7 @@ function persistDraftNow(): void {
     targets,
     props,
     penaltyZoneSet,
+    activations,
   } = useStageStore.getState()
   const envelope: SessionDraftEnvelope = {
     draftMetaVersion: SESSION_DRAFT_META_VERSION,
@@ -147,6 +154,7 @@ function persistDraftNow(): void {
       targets,
       props,
       penaltyZoneSet,
+      activations,
     },
     briefing: briefingSnapshot(),
   }

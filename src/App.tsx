@@ -18,7 +18,8 @@ import { useStageStore } from './application/stageStore'
 import { computeMinRounds, countStageTargetUnits } from './domain/computeMinRounds'
 import type { PlacementMode } from './domain/placementMode'
 import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
-import type { Prop, PropType, StageCategory, Target, TargetType } from './domain/models'
+import { refKey } from './domain/activations'
+import type { Prop, PropType, StageCategory, StageEntityRef, Target, TargetType } from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
 import { FIELD_GROUND_COVER_3D_VALUES, type FieldGroundCover3d } from './domain/fieldGround3d'
 import {
@@ -37,7 +38,7 @@ import {
   serializeStageProject,
   suggestedStageProjectFileName,
 } from './domain/stageProjectFile'
-import { summarizeTargets } from './domain/targetSummary'
+import { summarizeTargetsDescriptionFromScene } from './domain/targetSummary'
 import { useI18n } from './i18n/useI18n'
 import { formatTemplate } from './i18n/format'
 import { defaultStageBriefing, type BriefingPdfLabels } from './domain/stageBriefing'
@@ -98,6 +99,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const resetSceneToDefaults = useStageStore((s) => s.resetSceneToDefaults)
   const pasteCloneEntities = useStageStore((s) => s.pasteCloneEntities)
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
+  const activations = useStageStore((s) => s.activations)
+  const addActivationEdge = useStageStore((s) => s.addActivationEdge)
   const addPenaltyClosedRing = useStageStore((s) => s.addPenaltyClosedRing)
 
   const briefing = useBriefingStore(
@@ -183,6 +186,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     typeof window !== 'undefined' ? window.matchMedia('(max-width: 52rem)').matches : false,
   )
   const [marqueeModeActive, setMarqueeModeActive] = useState(false)
+  const [activationLinkMode, setActivationLinkMode] = useState(false)
+  const [activationPendingFrom, setActivationPendingFrom] = useState<StageEntityRef | null>(null)
   const [planSelectionSummary, setPlanSelectionSummary] = useState({ empty: true, count: 0 })
   const [hasPlanClipboard, setHasPlanClipboard] = useState(false)
   const internalClipboardRef = useRef<{ targets: Target[]; props: Prop[] } | null>(null)
@@ -280,7 +285,16 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
 
   const saveStageProject = useCallback(() => {
     const file = buildStageProjectFile({
-      stage: { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet },
+      stage: {
+        name,
+        weaponClass,
+        fieldSizeM,
+        fieldGroundCover3d,
+        targets,
+        props,
+        penaltyZoneSet,
+        activations,
+      },
       briefing: { ...briefing },
     })
     const json = serializeStageProject(file)
@@ -292,15 +306,24 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     a.download = fname
     a.click()
     URL.revokeObjectURL(url)
-  }, [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, briefing])
+  }, [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, activations, briefing])
 
   const shareProjectRoot = useMemo(
     () =>
       buildStageProjectFile({
-        stage: { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet },
+        stage: {
+          name,
+          weaponClass,
+          fieldSizeM,
+          fieldGroundCover3d,
+          targets,
+          props,
+          penaltyZoneSet,
+          activations,
+        },
         briefing: { ...briefing },
       }),
-    [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, briefing],
+    [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, activations, briefing],
   )
 
   /** Public origin for share links (matches server `resolvePublicOrigin` / `VITE_SHARE_PUBLIC_ORIGIN`). */
@@ -376,13 +399,15 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     setPlacementMode(null)
     clearPenaltyContourDraft()
     setMarqueeModeActive(false)
+    setActivationLinkMode(false)
+    setActivationPendingFrom(null)
     setHasPlanClipboard(false)
     internalClipboardRef.current = null
   }, [resetSceneToDefaults, setBriefing, t, setMobileMenuOpen, clearPenaltyContourDraft])
 
   const applySceneToBriefing = () => {
     setBriefing({
-      targetsDescription: summarizeTargets(targets, locale),
+      targetsDescription: summarizeTargetsDescriptionFromScene(targets, props, activations, locale),
       recommendedShots: String(minRounds),
     })
   }
@@ -396,6 +421,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setMeasureToolActive(false)
       setPlacementMode(null)
       setMarqueeModeActive(false)
+      setActivationLinkMode(false)
+      setActivationPendingFrom(null)
     }
   }, [viewMode])
 
@@ -403,16 +430,34 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     if (marqueeModeActive) {
       setMeasureToolActive(false)
       setPlacementMode(null)
+      setActivationLinkMode(false)
+      setActivationPendingFrom(null)
     }
   }, [marqueeModeActive])
 
   useEffect(() => {
-    if (measureToolActive) setMarqueeModeActive(false)
+    if (measureToolActive) {
+      setMarqueeModeActive(false)
+      setActivationLinkMode(false)
+      setActivationPendingFrom(null)
+    }
   }, [measureToolActive])
 
   useEffect(() => {
-    if (placementMode) setMarqueeModeActive(false)
+    if (placementMode) {
+      setMarqueeModeActive(false)
+      setActivationLinkMode(false)
+      setActivationPendingFrom(null)
+    }
   }, [placementMode])
+
+  useEffect(() => {
+    if (activationLinkMode) {
+      setMeasureToolActive(false)
+      setPlacementMode(null)
+      setMarqueeModeActive(false)
+    }
+  }, [activationLinkMode])
 
   useEffect(() => {
     if (readOnly) return
@@ -437,6 +482,12 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       if (e.code !== 'Escape' || e.repeat) return
       const el = e.target
       if (el instanceof HTMLElement && el.closest('input, textarea, select, [contenteditable="true"]')) return
+      if (activationLinkMode) {
+        e.preventDefault()
+        setActivationLinkMode(false)
+        setActivationPendingFrom(null)
+        return
+      }
       if (marqueeModeActive) {
         e.preventDefault()
         setMarqueeModeActive(false)
@@ -449,11 +500,30 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     }
     window.addEventListener('keydown', onKey, { passive: false })
     return () => window.removeEventListener('keydown', onKey)
-  }, [viewMode, placementMode, marqueeModeActive, clearPenaltyContourDraft, readOnly])
+  }, [
+    viewMode,
+    placementMode,
+    marqueeModeActive,
+    activationLinkMode,
+    clearPenaltyContourDraft,
+    readOnly,
+  ])
 
   const formatMeasureDistance = useCallback(
     (m: number) => formatTemplate(tree.view.measureDistanceMeters, { m: m.toFixed(2) }),
     [tree.view.measureDistanceMeters],
+  )
+
+  const handleActivationEntityPick = useCallback(
+    (ref: StageEntityRef) => {
+      setActivationPendingFrom((prev) => {
+        if (!prev) return ref
+        if (refKey(prev) === refKey(ref)) return null
+        addActivationEdge(prev, ref)
+        return null
+      })
+    },
+    [addActivationEdge],
   )
 
   const armTargetPlacement = useCallback((type: TargetType, isNoShoot = false) => {
@@ -1131,6 +1201,9 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       penaltyDraftVertices={
                         placementMode?.kind === 'penaltyZoneContour' ? penaltyDraftVertices : null
                       }
+                      activationLinkModeActive={!readOnly && activationLinkMode}
+                      activationPendingFrom={activationPendingFrom}
+                      onActivationEntityPick={readOnly ? undefined : handleActivationEntityPick}
                     />
                     {!readOnly ? (
                     <div className="app__plan-map-actions" role="toolbar" aria-label={tree.view.planMapActionsAria}>
@@ -1203,6 +1276,35 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         >
                           <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
                           <rect x="8" y="2" width="8" height="4" rx="1" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        className={`app__plan-map-action-btn${activationLinkMode ? ' is-active' : ''}`}
+                        aria-pressed={activationLinkMode}
+                        aria-label={tree.view.activationLinkMode}
+                        title={tree.view.activationLinkModeTitle}
+                        onClick={() => {
+                          setPlacementMode(null)
+                          setActivationLinkMode((v) => !v)
+                          setActivationPendingFrom(null)
+                        }}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <circle cx="7" cy="12" r="3" />
+                          <circle cx="17" cy="12" r="3" />
+                          <path d="M10 12h4" />
+                          <path d="M14 10l2-1M14 14l2 1" />
                         </svg>
                       </button>
                       <button

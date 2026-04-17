@@ -1,6 +1,20 @@
 import { create } from 'zustand'
 import { temporal } from 'zundo'
-import type { MetalPlateRectSideCm, Prop, PropType, Target, TargetType, Vec2 } from '../domain/models'
+import type {
+  ActivationEdge,
+  MetalPlateRectSideCm,
+  Prop,
+  PropType,
+  StageEntityRef,
+  Target,
+  TargetType,
+  Vec2,
+} from '../domain/models'
+import {
+  filterActivationsAfterRemoveProp,
+  filterActivationsAfterRemoveTarget,
+  refKey,
+} from '../domain/activations'
 import {
   emptyPenaltyZoneSet,
   newPolygonId,
@@ -85,6 +99,8 @@ export type StageState = {
   props: Prop[]
   /** Замкнені контури штрафних зон (BL-019). */
   penaltyZoneSet: PenaltyZoneSet
+  /** Зв’язки активації (BL-004). */
+  activations: ActivationEdge[]
   setStageName: (name: string) => void
   setFieldGroundCover3d: (cover: FieldGroundCover3d) => void
   /** Повна заміна сцени (напр. з файлу вправи). */
@@ -96,6 +112,7 @@ export type StageState = {
     props: Prop[]
     fieldGroundCover3d?: FieldGroundCover3d
     penaltyZoneSet?: PenaltyZoneSet
+    activations?: ActivationEdge[]
   }) => void
   setWeaponClass: (wc: WeaponClass) => void
   setFieldSizeM: (size: Vec2) => void
@@ -113,6 +130,8 @@ export type StageState = {
   pasteCloneEntities: (targets: Target[], props: Prop[]) => void
   /** Порожня сцена, дефолтний розмір поля та ім’я (кнопка «нова вправа»). */
   resetSceneToDefaults: () => void
+  /** Додати ребро активації (from → to); ігнорує дублікат або петлю. */
+  addActivationEdge: (from: StageEntityRef, to: StageEntityRef) => void
   setPenaltyZoneSet: (pz: PenaltyZoneSet) => void
   /** Замкнений контур: автоматично — новий полігон або дірка в існуючому (за геометрією, не «останній»). */
   addPenaltyClosedRing: (vertices: Vec2[]) => void
@@ -129,6 +148,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   targets: [],
   props: [],
   penaltyZoneSet: emptyPenaltyZoneSet(),
+  activations: [],
 
   setStageName: (name) =>
     set({
@@ -147,6 +167,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         next.x,
         next.y,
       )
+      const activations = snapshot.activations ?? []
       return {
         name: snapshot.name.trim().slice(0, 200) || s.name,
         weaponClass: snapshot.weaponClass,
@@ -155,6 +176,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         targets,
         props,
         penaltyZoneSet,
+        activations,
       }
     }),
 
@@ -169,7 +191,19 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         targets: [],
         props: [],
         penaltyZoneSet: emptyPenaltyZoneSet(),
+        activations: [],
       }
+    }),
+
+  addActivationEdge: (from, to) =>
+    set((s) => {
+      if (refKey(from) === refKey(to)) return s
+      const dup = s.activations.some(
+        (e) => refKey(e.from) === refKey(from) && refKey(e.to) === refKey(to),
+      )
+      if (dup) return s
+      const edge: ActivationEdge = { id: newId(), from, to }
+      return { activations: [...s.activations, edge] }
     }),
 
   setPenaltyZoneSet: (pz) => set({ penaltyZoneSet: pz }),
@@ -375,11 +409,13 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   removeTarget: (id) =>
     set((s) => ({
       targets: s.targets.filter((x) => x.id !== id),
+      activations: filterActivationsAfterRemoveTarget(s.activations, id),
     })),
 
   removeProp: (id) =>
     set((s) => ({
       props: s.props.filter((x) => x.id !== id),
+      activations: filterActivationsAfterRemoveProp(s.activations, id),
     })),
 
   pasteCloneEntities: (targets, props) =>
@@ -390,8 +426,25 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
 }), {
   limit: 50,
   partialize: (state) => {
-    const { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet } =
-      state
-    return { name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet }
+    const {
+      name,
+      weaponClass,
+      fieldSizeM,
+      fieldGroundCover3d,
+      targets,
+      props,
+      penaltyZoneSet,
+      activations,
+    } = state
+    return {
+      name,
+      weaponClass,
+      fieldSizeM,
+      fieldGroundCover3d,
+      targets,
+      props,
+      penaltyZoneSet,
+      activations,
+    }
   },
 }))

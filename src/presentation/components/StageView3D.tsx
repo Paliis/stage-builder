@@ -1,4 +1,4 @@
-import { OrbitControls } from '@react-three/drei'
+import { Line, OrbitControls, Text } from '@react-three/drei'
 import { Canvas, useThree, type RootState } from '@react-three/fiber'
 import {
   forwardRef,
@@ -18,6 +18,14 @@ import { PerspectiveCamera, type Scene, type WebGLRenderer } from 'three'
 import { useStageStore } from '../../application/stageStore'
 import { pdfSnapshotPixelSize, stageViewportAspectRatio } from '../../domain/a4PrintLayout'
 import type { OrbitControls as OrbitControlsType } from 'three-stdlib'
+import {
+  collectParticipantRefs,
+  dedupeActivationEdges,
+  filterActivationsValid,
+  globalActivationNumberMap,
+  planAnchorWorld,
+  refKey,
+} from '../../domain/activations'
 import type { Prop, Target, TargetType } from '../../domain/models'
 import { CERAMIC_FACE_HEX, CERAMIC_RADIUS_M } from '../../domain/ceramicPlateSpec'
 import {
@@ -65,6 +73,64 @@ import {
   overviewAnchorRelevantSignature,
 } from '../../domain/overviewAnchor'
 import { stageToThreeXZ, type StageFieldM } from '../lib/stageCoordinates3d'
+
+function Activations3D() {
+  const targets = useStageStore((s) => s.targets)
+  const props = useStageStore((s) => s.props)
+  const activations = useStageStore((s) => s.activations)
+  const { widthM, heightM } = useStageFieldM()
+  const field = useMemo((): StageFieldM => ({ widthM, heightM }), [widthM, heightM])
+  const valid = useMemo(
+    () => dedupeActivationEdges(filterActivationsValid(activations, targets, props)),
+    [activations, targets, props],
+  )
+  const numMap = useMemo(() => globalActivationNumberMap(activations), [activations])
+  const lineY = 1.14
+  const labelY = 1.38
+  return (
+    <group>
+      {valid.map((e) => {
+        const a = planAnchorWorld(e.from, targets, props)
+        const b = planAnchorWorld(e.to, targets, props)
+        if (!a || !b) return null
+        const p0 = stageToThreeXZ(a, field)
+        const p1 = stageToThreeXZ(b, field)
+        return (
+          <Line
+            key={e.id}
+            points={[
+              [p0[0], lineY, p0[2]],
+              [p1[0], lineY, p1[2]],
+            ]}
+            color="#7c3aed"
+            lineWidth={2}
+          />
+        )
+      })}
+      {collectParticipantRefs(valid).map((r) => {
+        const n = numMap.get(refKey(r))
+        if (n === undefined) return null
+        const pos = planAnchorWorld(r, targets, props)
+        if (!pos) return null
+        const [x, , z] = stageToThreeXZ(pos, field)
+        return (
+          <Text
+            key={refKey(r)}
+            position={[x, labelY, z]}
+            fontSize={0.32}
+            color="#581c87"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.03}
+            outlineColor="#faf5ff"
+          >
+            {String(n)}
+          </Text>
+        )
+      })}
+    </group>
+  )
+}
 
 function useStageFieldM(): StageFieldM {
   const x = useStageStore((s) => s.fieldSizeM.x)
@@ -1810,6 +1876,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
         {targetsDrawOrder(targets).map((t) => (
           <Target3D key={t.id} t={t} />
         ))}
+        <Activations3D />
       </StageView3DCanvasSized>
     </StageView3DCanvasShell>
   )

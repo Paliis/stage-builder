@@ -29,6 +29,7 @@ describe('stageProjectFile', () => {
         ],
         props: [],
         penaltyZoneSet: emptyPenaltyZoneSet(),
+        activations: [],
       },
       briefing,
     })
@@ -120,5 +121,49 @@ describe('stageProjectFile', () => {
     expect(parsed.ok).toBe(true)
     if (!parsed.ok) return
     expect(parsed.data.stage.penaltyZoneSet.polygons).toHaveLength(0)
+    expect(parsed.data.stage.activations).toEqual([])
+  })
+
+  it('roundtrips activations', () => {
+    const briefing = defaultStageBriefing()
+    const file = buildStageProjectFile({
+      stage: {
+        name: 'Act',
+        weaponClass: 'handgun',
+        fieldSizeM: { x: 20, y: 30 },
+        fieldGroundCover3d: 'grass',
+        targets: [
+          {
+            id: 'ta',
+            type: 'metalPlate',
+            isNoShoot: false,
+            position: { x: 1, y: 1 },
+            rotationRad: 0,
+          },
+          {
+            id: 'tb',
+            type: 'metalPlate',
+            isNoShoot: false,
+            position: { x: 2, y: 2 },
+            rotationRad: 0,
+          },
+        ],
+        props: [],
+        penaltyZoneSet: emptyPenaltyZoneSet(),
+        activations: [
+          {
+            id: 'e1',
+            from: { kind: 'target', id: 'ta' },
+            to: { kind: 'target', id: 'tb' },
+          },
+        ],
+      },
+      briefing,
+    })
+    const parsed = parseStageProjectJson(serializeStageProject(file))
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    expect(parsed.data.stage.activations).toHaveLength(1)
+    expect(parsed.data.stage.activations[0]!.from.id).toBe('ta')
   })
 })
