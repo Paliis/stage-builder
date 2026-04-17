@@ -12,7 +12,7 @@ import { useStageStore } from '../../application/stageStore'
 import { CERAMIC_FACE_RGBA } from '../../domain/ceramicPlateSpec'
 import type { ActivationEdge, MetalPlateRectSideCm, Prop, StageEntityRef, Target } from '../../domain/models'
 import {
-  activationPlanLabelPoint,
+  activationPlanLabelRenderPoint,
   activationPlanPointToward,
   collectParticipantRefs,
   dedupeActivationEdges,
@@ -1617,7 +1617,7 @@ function drawActivationsPlan2D(
   for (const r of collectParticipantRefs(valid)) {
     const n = numMap.get(refKey(r))
     if (n === undefined) continue
-    const pos = activationPlanLabelPoint(r, valid, targets, props)
+    const pos = activationPlanLabelRenderPoint(r, valid, targets, props)
     if (!pos) continue
     const sc = worldToScreen(pos.x, pos.y, tf)
     ctx.save()

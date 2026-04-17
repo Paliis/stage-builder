@@ -1,6 +1,7 @@
 import type { ActivationEdge, Prop, StageEntityRef, Target, Vec2 } from './models'
 import { propHeightM, propOutlineWorld } from './propGeometry'
 import {
+  isSquareSteelPlateTargetType,
   targetActivationLabelWorldYM,
   targetFootprintWorld,
 } from './targetSpecs'
@@ -179,6 +180,54 @@ export function activationPlanLabelPoint(
   const dir = { x: sx / c - selfCenter.x, y: sy / c - selfCenter.y }
   if (Math.hypot(dir.x, dir.y) < 1e-9) return selfCenter
   return planFootprintExitTowardDir(ref, dir, targets, props) ?? selfCenter
+}
+
+/** Зсув підпису вбік (м), щоб великий номер не перекривав малу мішень у 3D/на плані. */
+const ACTIVATION_LABEL_COMPACT_SIDE_SHIFT_M = 0.32
+
+function activationCompactLabelSideShiftM(
+  ref: StageEntityRef,
+  targets: readonly Target[],
+  props: readonly Prop[],
+): number {
+  if (ref.kind !== 'target') return 0
+  const t = resolveEntityRef(ref, targets, props) as Target | null
+  if (!t) return 0
+  if (
+    isSquareSteelPlateTargetType(t.type) ||
+    t.type === 'ceramicPlate' ||
+    t.type === 'miniPopper'
+  ) {
+    return ACTIVATION_LABEL_COMPACT_SIDE_SHIFT_M
+  }
+  return 0
+}
+
+/**
+ * Позиція підпису номера для відображення (план і 3D): для компактних мішеней —
+ * зсув перпендикулярно до напрямку «центр → точка на контурі», щоб цифра не лягала на лице.
+ */
+export function activationPlanLabelRenderPoint(
+  ref: StageEntityRef,
+  edges: readonly ActivationEdge[],
+  targets: readonly Target[],
+  props: readonly Prop[],
+): Vec2 | null {
+  const base = activationPlanLabelPoint(ref, edges, targets, props)
+  const center = planAnchorWorld(ref, targets, props)
+  if (!base || !center) return base
+  const shift = activationCompactLabelSideShiftM(ref, targets, props)
+  if (shift < 1e-9) return base
+  const dx = base.x - center.x
+  const dy = base.y - center.y
+  const len = Math.hypot(dx, dy)
+  if (len < 1e-9) return base
+  const ux = dx / len
+  const uy = dy / len
+  // Лівий перпендикуляр до «виходу» на контур — стабільний бічний зсув на плані.
+  const px = -uy
+  const py = ux
+  return { x: base.x + px * shift, y: base.y + py * shift }
 }
 
 /** Висота Y у світі Three.js для підпису номера активації (над лицем / над реквізитом). */

@@ -20,7 +20,7 @@ import { pdfSnapshotPixelSize, stageViewportAspectRatio } from '../../domain/a4P
 import type { OrbitControls as OrbitControlsType } from 'three-stdlib'
 import {
   activationEntityLabelWorldYM,
-  activationPlanLabelPoint,
+  activationPlanLabelRenderPoint,
   activationPlanPointToward,
   collectParticipantRefs,
   dedupeActivationEdges,
@@ -112,7 +112,7 @@ function Activations3D() {
       {collectParticipantRefs(valid).map((r) => {
         const n = numMap.get(refKey(r))
         if (n === undefined) return null
-        const pos = activationPlanLabelPoint(r, valid, targets, props)
+        const pos = activationPlanLabelRenderPoint(r, valid, targets, props)
         if (!pos) return null
         const [x, , z] = stageToThreeXZ(pos, field)
         const labelY = activationEntityLabelWorldYM(r, targets, props)

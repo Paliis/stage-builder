@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
+  activationPlanLabelPoint,
+  activationPlanLabelRenderPoint,
   collectParticipantRefs,
   dedupeActivationEdges,
   filterActivationsValid,
@@ -11,6 +13,14 @@ import type { ActivationEdge, Prop, Target } from './models'
 const t = (id: string, x: number, y: number): Target => ({
   id,
   type: 'metalPlate',
+  isNoShoot: false,
+  position: { x, y },
+  rotationRad: 0,
+})
+
+const paper = (id: string, x: number, y: number): Target => ({
+  id,
+  type: 'paperIpscTwoPostGround',
   isNoShoot: false,
   position: { x, y },
   rotationRad: 0,
@@ -64,5 +74,32 @@ describe('activations domain', () => {
       { id: '1', from: { kind: 'prop', id: 'z' }, to: { kind: 'target', id: 't' } },
     ])
     expect(refs.map(refKey)).toEqual([refKey({ kind: 'target', id: 't' }), refKey({ kind: 'prop', id: 'z' })])
+  })
+
+  it('shifts activation label sideways for compact steel/ceramic/miniPopper targets', () => {
+    const targets: Target[] = [t('plate', 0, 0), t('other', 8, 0)]
+    const props: Prop[] = []
+    const edges: ActivationEdge[] = [
+      { id: 'e1', from: { kind: 'target', id: 'plate' }, to: { kind: 'target', id: 'other' } },
+    ]
+    const ref = { kind: 'target' as const, id: 'plate' }
+    const base = activationPlanLabelPoint(ref, edges, targets, props)
+    const render = activationPlanLabelRenderPoint(ref, edges, targets, props)
+    expect(base).not.toBeNull()
+    expect(render).not.toBeNull()
+    const d = Math.hypot(render!.x - base!.x, render!.y - base!.y)
+    expect(d).toBeCloseTo(0.32, 2)
+  })
+
+  it('does not shift label for large paper targets', () => {
+    const targets: Target[] = [paper('p', 0, 0), t('other', 8, 0)]
+    const props: Prop[] = []
+    const edges: ActivationEdge[] = [
+      { id: 'e1', from: { kind: 'target', id: 'p' }, to: { kind: 'target', id: 'other' } },
+    ]
+    const ref = { kind: 'target' as const, id: 'p' }
+    expect(activationPlanLabelPoint(ref, edges, targets, props)).toEqual(
+      activationPlanLabelRenderPoint(ref, edges, targets, props),
+    )
   })
 })
