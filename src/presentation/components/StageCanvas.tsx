@@ -12,6 +12,8 @@ import { useStageStore } from '../../application/stageStore'
 import { CERAMIC_FACE_RGBA } from '../../domain/ceramicPlateSpec'
 import type { ActivationEdge, MetalPlateRectSideCm, Prop, StageEntityRef, Target } from '../../domain/models'
 import {
+  activationPlanLabelPoint,
+  activationPlanPointToward,
   collectParticipantRefs,
   dedupeActivationEdges,
   filterActivationsValid,
@@ -1577,18 +1579,19 @@ function drawActivationsPlan2D(
   pendingFrom: StageEntityRef | null,
 ) {
   const valid = dedupeActivationEdges(filterActivationsValid(edges, targets, props))
-  const trim = 0.2
+  const trim = 0.05
   for (const e of valid) {
-    const a = planAnchorWorld(e.from, targets, props)
-    const b = planAnchorWorld(e.to, targets, props)
+    const a = activationPlanPointToward(e.from, e.to, targets, props)
+    const b = activationPlanPointToward(e.to, e.from, targets, props)
     if (!a || !b) continue
     const dx = b.x - a.x
     const dy = b.y - a.y
     const len = Math.hypot(dx, dy) || 1
     const ux = dx / len
     const uy = dy / len
-    const shortenedA = { x: a.x + ux * trim, y: a.y + uy * trim }
-    const shortenedB = { x: b.x - ux * trim, y: b.y - uy * trim }
+    const t = len > trim * 2 ? trim : len * 0.25
+    const shortenedA = { x: a.x + ux * t, y: a.y + uy * t }
+    const shortenedB = { x: b.x - ux * t, y: b.y - uy * t }
     const as = worldToScreen(shortenedA.x, shortenedA.y, tf)
     const bs = worldToScreen(shortenedB.x, shortenedB.y, tf)
     ctx.save()
@@ -1614,7 +1617,7 @@ function drawActivationsPlan2D(
   for (const r of collectParticipantRefs(valid)) {
     const n = numMap.get(refKey(r))
     if (n === undefined) continue
-    const pos = planAnchorWorld(r, targets, props)
+    const pos = activationPlanLabelPoint(r, valid, targets, props)
     if (!pos) continue
     const sc = worldToScreen(pos.x, pos.y, tf)
     ctx.save()

@@ -1,6 +1,9 @@
 import type { ActivationEdge, Prop, StageEntityRef, Target, Vec2 } from './models'
-import { propHeightM } from './propGeometry'
-import { targetActivationLabelWorldYM } from './targetSpecs'
+import { propHeightM, propOutlineWorld } from './propGeometry'
+import {
+  targetActivationLabelWorldYM,
+  targetFootprintWorld,
+} from './targetSpecs'
 
 export function refKey(r: StageEntityRef): string {
   return `${r.kind}:${r.id}`
@@ -56,6 +59,126 @@ export function planAnchorWorld(
   const e = resolveEntityRef(ref, targets, props)
   if (!e) return null
   return e.position
+}
+
+function normalize2(v: Vec2): Vec2 {
+  const l = Math.hypot(v.x, v.y) || 1
+  return { x: v.x / l, y: v.y / l }
+}
+
+function polygonSupportRadiusM(poly: Vec2[], center: Vec2, dir: Vec2): number {
+  let max = 0
+  for (const p of poly) {
+    const dx = p.x - center.x
+    const dy = p.y - center.y
+    max = Math.max(max, dx * dir.x + dy * dir.y)
+  }
+  return Math.max(max, 1e-4)
+}
+
+/**
+ * Промінь з центру сутності в напрямку `dir` (одиничний) — перетин з контуром «підошви» на плані.
+ * Точка на межі об’єкта, найближча до напрямку на іншого учасника (вихід у бік «іншого»).
+ */
+function planFootprintExitTowardDir(
+  ref: StageEntityRef,
+  dir: Vec2,
+  targets: readonly Target[],
+  props: readonly Prop[],
+): Vec2 | null {
+  const e = resolveEntityRef(ref, targets, props)
+  if (!e) return null
+  const center = e.position
+  const poly =
+    ref.kind === 'target'
+      ? targetFootprintWorld(e as Target).poly
+      : propOutlineWorld(e as Prop)
+  if (poly.length < 2) return null
+  const du = normalize2(dir)
+  let bestT = Infinity
+  const n = poly.length
+  for (let i = 0; i < n; i++) {
+    const a = poly[i]!
+    const b = poly[(i + 1) % n]!
+    const t = raySegmentForwardParam(center, du, a, b)
+    if (t !== null && t > 1e-5 && t < bestT) bestT = t
+  }
+  if (bestT !== Infinity) {
+    return { x: center.x + du.x * bestT, y: center.y + du.y * bestT }
+  }
+  const r = polygonSupportRadiusM(poly, center, du)
+  return { x: center.x + du.x * r, y: center.y + du.y * r }
+}
+
+/** Промінь center + t·dir, t>0, перетин із відрізком [a,b]. */
+function raySegmentForwardParam(origin: Vec2, dir: Vec2, a: Vec2, b: Vec2): number | null {
+  const dx = b.x - a.x
+  const dy = b.y - a.y
+  const det = dir.x * dy - dir.y * dx
+  if (Math.abs(det) < 1e-12) return null
+  const rx = a.x - origin.x
+  const ry = a.y - origin.y
+  const t = (rx * dy - ry * dx) / det
+  const s = (rx * dir.y - ry * dir.x) / det
+  if (t < 1e-5) return null
+  if (s < -1e-5 || s > 1 + 1e-5) return null
+  return t
+}
+
+/**
+ * Точка на контурі об’єкта `from` у бік `to` (для ліній активації 2D/3D).
+ */
+export function activationPlanPointToward(
+  from: StageEntityRef,
+  to: StageEntityRef,
+  targets: readonly Target[],
+  props: readonly Prop[],
+): Vec2 | null {
+  const cFrom = planAnchorWorld(from, targets, props)
+  const cTo = planAnchorWorld(to, targets, props)
+  if (!cFrom || !cTo) return null
+  const dir = { x: cTo.x - cFrom.x, y: cTo.y - cFrom.y }
+  if (Math.hypot(dir.x, dir.y) < 1e-9) return cFrom
+  return planFootprintExitTowardDir(from, dir, targets, props) ?? cFrom
+}
+
+/**
+ * Горизонтальна позиція підпису номера: на межі «підошви» у бік сусідів по графу.
+ */
+export function activationPlanLabelPoint(
+  ref: StageEntityRef,
+  edges: readonly ActivationEdge[],
+  targets: readonly Target[],
+  props: readonly Prop[],
+): Vec2 | null {
+  const selfCenter = planAnchorWorld(ref, targets, props)
+  if (!selfCenter) return null
+  const neighbors: StageEntityRef[] = []
+  for (const e of edges) {
+    if (refKey(e.from) === refKey(ref)) neighbors.push(e.to)
+    else if (refKey(e.to) === refKey(ref)) neighbors.push(e.from)
+  }
+  if (neighbors.length === 0) return selfCenter
+  if (neighbors.length === 1) {
+    return (
+      activationPlanPointToward(ref, neighbors[0]!, targets, props) ?? selfCenter
+    )
+  }
+  let sx = 0
+  let sy = 0
+  let c = 0
+  for (const n of neighbors) {
+    const p = planAnchorWorld(n, targets, props)
+    if (p) {
+      sx += p.x
+      sy += p.y
+      c++
+    }
+  }
+  if (c === 0) return selfCenter
+  const dir = { x: sx / c - selfCenter.x, y: sy / c - selfCenter.y }
+  if (Math.hypot(dir.x, dir.y) < 1e-9) return selfCenter
+  return planFootprintExitTowardDir(ref, dir, targets, props) ?? selfCenter
 }
 
 /** Висота Y у світі Three.js для підпису номера активації (над лицем / над реквізитом). */

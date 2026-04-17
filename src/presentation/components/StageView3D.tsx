@@ -20,11 +20,12 @@ import { pdfSnapshotPixelSize, stageViewportAspectRatio } from '../../domain/a4P
 import type { OrbitControls as OrbitControlsType } from 'three-stdlib'
 import {
   activationEntityLabelWorldYM,
+  activationPlanLabelPoint,
+  activationPlanPointToward,
   collectParticipantRefs,
   dedupeActivationEdges,
   filterActivationsValid,
   globalActivationNumberMap,
-  planAnchorWorld,
   refKey,
 } from '../../domain/activations'
 import type { Prop, Target, TargetType } from '../../domain/models'
@@ -86,22 +87,22 @@ function Activations3D() {
     [activations, targets, props],
   )
   const numMap = useMemo(() => globalActivationNumberMap(activations), [activations])
+  /** Лінії на рівні «підошви» (ближня межа силуету в плані → низ у 3D). */
+  const groundLineY = 0.06
   return (
     <group>
       {valid.map((e) => {
-        const a = planAnchorWorld(e.from, targets, props)
-        const b = planAnchorWorld(e.to, targets, props)
+        const a = activationPlanPointToward(e.from, e.to, targets, props)
+        const b = activationPlanPointToward(e.to, e.from, targets, props)
         if (!a || !b) return null
         const p0 = stageToThreeXZ(a, field)
         const p1 = stageToThreeXZ(b, field)
-        const y0 = activationEntityLabelWorldYM(e.from, targets, props) - 0.06
-        const y1 = activationEntityLabelWorldYM(e.to, targets, props) - 0.06
         return (
           <Line
             key={e.id}
             points={[
-              [p0[0], y0, p0[2]],
-              [p1[0], y1, p1[2]],
+              [p0[0], groundLineY, p0[2]],
+              [p1[0], groundLineY, p1[2]],
             ]}
             color="#7c3aed"
             lineWidth={2}
@@ -111,7 +112,7 @@ function Activations3D() {
       {collectParticipantRefs(valid).map((r) => {
         const n = numMap.get(refKey(r))
         if (n === undefined) return null
-        const pos = planAnchorWorld(r, targets, props)
+        const pos = activationPlanLabelPoint(r, valid, targets, props)
         if (!pos) return null
         const [x, , z] = stageToThreeXZ(pos, field)
         const labelY = activationEntityLabelWorldYM(r, targets, props)
