@@ -19,6 +19,7 @@ import { useStageStore } from '../../application/stageStore'
 import { pdfSnapshotPixelSize, stageViewportAspectRatio } from '../../domain/a4PrintLayout'
 import type { OrbitControls as OrbitControlsType } from 'three-stdlib'
 import {
+  activationEntityLabelWorldYM,
   collectParticipantRefs,
   dedupeActivationEdges,
   filterActivationsValid,
@@ -85,8 +86,6 @@ function Activations3D() {
     [activations, targets, props],
   )
   const numMap = useMemo(() => globalActivationNumberMap(activations), [activations])
-  const lineY = 1.14
-  const labelY = 1.38
   return (
     <group>
       {valid.map((e) => {
@@ -95,12 +94,14 @@ function Activations3D() {
         if (!a || !b) return null
         const p0 = stageToThreeXZ(a, field)
         const p1 = stageToThreeXZ(b, field)
+        const y0 = activationEntityLabelWorldYM(e.from, targets, props) - 0.06
+        const y1 = activationEntityLabelWorldYM(e.to, targets, props) - 0.06
         return (
           <Line
             key={e.id}
             points={[
-              [p0[0], lineY, p0[2]],
-              [p1[0], lineY, p1[2]],
+              [p0[0], y0, p0[2]],
+              [p1[0], y1, p1[2]],
             ]}
             color="#7c3aed"
             lineWidth={2}
@@ -113,16 +114,19 @@ function Activations3D() {
         const pos = planAnchorWorld(r, targets, props)
         if (!pos) return null
         const [x, , z] = stageToThreeXZ(pos, field)
+        const labelY = activationEntityLabelWorldYM(r, targets, props)
         return (
           <Text
             key={refKey(r)}
             position={[x, labelY, z]}
-            fontSize={0.32}
+            fontSize={0.36}
             color="#581c87"
             anchorX="center"
             anchorY="middle"
-            outlineWidth={0.03}
+            outlineWidth={0.05}
             outlineColor="#faf5ff"
+            depthOffset={-0.5}
+            renderOrder={2000}
           >
             {String(n)}
           </Text>

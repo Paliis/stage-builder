@@ -625,6 +625,34 @@ export function targetFaceSizeM(t: Target): { w: number; h: number } {
 }
 
 /**
+ * Підпис глобального номера активації (BL-004) у 3D: трохи над центром лиця.
+ */
+export function targetActivationLabelWorldYM(t: Target): number {
+  if (isPaperTwoPostTargetType(t.type)) {
+    const bottom = paperTwoPostFaceBottomHeightM(t.type)
+    const { h } = targetFaceSizeM(t)
+    return bottom + h * 0.55 + 0.08
+  }
+  if (isSquareSteelPlateTargetType(t.type)) {
+    const bottom = t.type === 'metalPlate' ? 0 : t.type === 'metalPlateStand50' ? 0.5 : 1.0
+    const { h } = targetFaceSizeM(t)
+    return bottom + h * 0.5 + 0.08
+  }
+  if (t.type === 'ceramicPlate') {
+    const { h } = targetFaceSizeM(t)
+    return 0.1 + h * 0.5 + 0.06
+  }
+  if (t.type === 'popper' || t.type === 'miniPopper') {
+    const { h } = targetFaceSizeM(t)
+    return 0.12 + h * 0.45
+  }
+  if (isSwingerTargetType(t.type)) {
+    return 0.95
+  }
+  return 1.35
+}
+
+/**
  * Порядок для 2D/3D: спочатку основні мішені, поверх — NS (перекриття штрафної
  * над «своєю» мішенню не залежить від порядку додавання в масив).
  */

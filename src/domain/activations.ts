@@ -1,4 +1,6 @@
 import type { ActivationEdge, Prop, StageEntityRef, Target, Vec2 } from './models'
+import { propHeightM } from './propGeometry'
+import { targetActivationLabelWorldYM } from './targetSpecs'
 
 export function refKey(r: StageEntityRef): string {
   return `${r.kind}:${r.id}`
@@ -54,6 +56,18 @@ export function planAnchorWorld(
   const e = resolveEntityRef(ref, targets, props)
   if (!e) return null
   return e.position
+}
+
+/** Висота Y у світі Three.js для підпису номера активації (над лицем / над реквізитом). */
+export function activationEntityLabelWorldYM(
+  ref: StageEntityRef,
+  targets: readonly Target[],
+  props: readonly Prop[],
+): number {
+  const e = resolveEntityRef(ref, targets, props)
+  if (!e) return 1.45
+  if ('sizeM' in e) return propHeightM(e as Prop) + 0.22
+  return targetActivationLabelWorldYM(e as Target)
 }
 
 export function filterActivationsValid(
