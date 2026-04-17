@@ -23,7 +23,7 @@
 
 | Шар | Каталог | Відповідальність |
 |-----|---------|------------------|
-| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), опорна точка огляду 3D (`overviewAnchor.ts`), покриття площадки в 3D (`fieldGround3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
+| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), **чернетка тексту активацій для брифінгу** (`activationBriefing.ts`, BL-004), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), опорна точка огляду 3D (`overviewAnchor.ts`), покриття площадки в 3D (`fieldGround3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
 | **Application** | `src/application/` | Zustand: сцена (`stageStore`, undo/redo через `zundo`), брифінг (`briefingStore`), чернетка `localStorage` (`sessionDraft.ts`), компонент **`SessionDraftPersist.tsx`** (підписка + debounce) |
 | **Presentation** | `src/presentation/` | React-компоненти: `StageCanvas`, `StageView3D`, `StageBuilderToolbar`, `StageMinimap`, `GoogleAnalytics`; хуки (`usePwaInstall`); бібліотеки: `exportBriefingPdf`, `pdfFonts`, `viewTransform` |
 | **Корінь UI** | `src/App.tsx` | Композиція layout, брифінг-форма, гарячі клавіші, lazy-3D, стрічка staging, посилання на канвас через `ref` (`StageCanvasHandle`) |
@@ -151,7 +151,7 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 ### TypeScript і тести
 
 - `tsconfig.app.json` **виключає** `src/**/*.test.ts` з `tsc -b`; фікстури в тестах мають відповідати доменним типам.
-- Unit-тести в `src/domain/`: `field.test.ts` (розмір поля, snap, clamp), `safetyAngles.test.ts` (парсинг кутів, клин безпеки), `fieldEntityReclamp.test.ts` (reclamp після зміни поля, міграція `wall`), `computeMinRounds.test.ts`, `targetSummary.test.ts`, `stageProjectFile.test.ts` (у т. ч. міграції застарілих типів мішеней у JSON), `fieldResizeImpact.test.ts`, `penaltyZones.test.ts`, `overviewAnchor.test.ts`, `planClipboard.test.ts` (центроїд, вставка), `a4PrintLayout.test.ts` (aspect PNG для PDF).
+- Unit-тести в `src/domain/`: `field.test.ts` (розмір поля, snap, clamp), `safetyAngles.test.ts` (парсинг кутів, клин безпеки), `fieldEntityReclamp.test.ts` (reclamp після зміни поля, міграція `wall`), `computeMinRounds.test.ts`, `targetSummary.test.ts`, `activationBriefing.test.ts` (списки номерів для BL-004), `stageProjectFile.test.ts` (у т. ч. міграції застарілих типів мішеней у JSON), `fieldResizeImpact.test.ts`, `penaltyZones.test.ts`, `overviewAnchor.test.ts`, `planClipboard.test.ts` (центроїд, вставка), `a4PrintLayout.test.ts` (aspect PNG для PDF).
 - Unit-тести в `src/presentation/lib/`: `viewTransform.test.ts` (світ ↔ екран, pan до центру).
 - **Перевірка як у CI:** `npm run check` → ESLint, Vitest, `tsc -b`, production `vite build` (успішний вихід = готово до push у `main` / `staging`).
 

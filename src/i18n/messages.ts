@@ -228,6 +228,16 @@ export type MessageTree = {
       medium: string
       long: string
     }
+    /** Заголовок блоку активацій у `targetsDescription` (BL-004). */
+    activationHeading: string
+    /** Одне ребро: глобальні номери {{from}} → {{to}}. */
+    activationOneToOne: string
+    /** Одне джерело, кілька цілей; {{toList}} — уже відформатований список номерів. */
+    activationOneToMany: string
+    /** Два номери в списку цілей (UK: «та»). */
+    activationNumberListTwo: string
+    /** Три й більше номерів: {{init}} — усі, крім останнього, через кому; {{last}} — останній. */
+    activationNumberListMany: string
   }
   pdf: {
     rowExerciseType: string
@@ -586,6 +596,13 @@ export const ukMessages: MessageTree = {
       medium: '\u0421\u0435\u0440\u0435\u0434\u043d\u044f',
       long: '\u0414\u043e\u0432\u0433\u0430',
     },
+    activationHeading: '\u0410\u043a\u0442\u0438\u0432\u0430\u0446\u0456\u0457:',
+    activationOneToOne:
+      '\u041e\u0431\u2019\u0454\u043a\u0442 \u2116{{from}} \u0430\u043a\u0442\u0438\u0432\u0443\u0454 \u043e\u0431\u2019\u0454\u043a\u0442 \u2116{{to}}.',
+    activationOneToMany:
+      '\u041e\u0431\u2019\u0454\u043a\u0442 \u2116{{from}} \u0430\u043a\u0442\u0438\u0432\u0443\u0454 \u043e\u0431\u2019\u0454\u043a\u0442\u0438 {{toList}}.',
+    activationNumberListTwo: '{{a}} \u0442\u0430 {{b}}',
+    activationNumberListMany: '{{init}} \u0442\u0430 {{last}}',
   },
   pdf: {
     rowExerciseType: '\u0422\u0438\u043f \u0432\u043f\u0440\u0430\u0432\u0438',
@@ -956,6 +973,11 @@ export const enMessages: MessageTree = {
       medium: 'Medium',
       long: 'Long',
     },
+    activationHeading: 'Activations:',
+    activationOneToOne: 'Object #{{from}} activates object #{{to}}.',
+    activationOneToMany: 'Object #{{from}} activates objects {{toList}}.',
+    activationNumberListTwo: '{{a}} and {{b}}',
+    activationNumberListMany: '{{init}}, and {{last}}',
   },
   pdf: {
     rowExerciseType: 'Exercise type',
