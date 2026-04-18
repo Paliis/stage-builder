@@ -9,4 +9,8 @@
 | C36     | failure-to-engage     | handgun    | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7**; залік і штраф звіряти разом у PDF. |
 | C41     | significant-advantage | handgun    | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2**; чернетка — рев’ю з PDF. |
 | C46     | creeping              | handgun    | penalties | draft     | draft     | false               | —        | **10.2.6**; чернетка — рев’ю з PDF. |
+| C51     | mandatory-reload      | handgun    | penalties | draft     | draft     | false               | —        | **10.2.4**; чернетка — рев’ю з PDF Jan 2026. |
+| C56     | mandatory-position    | handgun    | penalties | draft     | draft     | false               | —        | **10.2.2**, **10.2.8**; чернетка — рев’ю з PDF. |
+| C61     | unauthorized-assistance | handgun    | penalties | draft     | draft     | false               | —        | **8.6.2** (+ контекст **8.6**); чернетка — рев’ю з PDF. |
+| C66     | sight-picture-fault   | handgun    | penalties | draft     | draft     | false               | —        | **8.7.1**, **8.7.2**; чернетка — рев’ю з PDF. |
 | C105    | break-180             | handgun    | safety    | draft     | draft     | false               | —        | Frontmatter aligned with RO_HELPER_V0 §2.2; pin `primary_url` to official Handgun PDF when URL is registered. |

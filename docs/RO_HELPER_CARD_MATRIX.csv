@@ -24,22 +24,22 @@ C47,creeping,rifle,penalties,Creeping before start signal,«Підкраданн
 C48,creeping,pcc,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C49,creeping,mini_rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C50,creeping,shotgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C51,mandatory-reload,handgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C51,mandatory-reload,handgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C52,mandatory-reload,rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C53,mandatory-reload,pcc,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C54,mandatory-reload,mini_rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C55,mandatory-reload,shotgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C56,mandatory-position,handgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C56,mandatory-position,handgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C57,mandatory-position,rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C58,mandatory-position,pcc,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C59,mandatory-position,mini_rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C60,mandatory-position,shotgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C61,unauthorized-assistance,handgun,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C61,unauthorized-assistance,handgun,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C62,unauthorized-assistance,rifle,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C63,unauthorized-assistance,pcc,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C64,unauthorized-assistance,mini_rifle,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C65,unauthorized-assistance,shotgun,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C66,sight-picture-fault,handgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C66,sight-picture-fault,handgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C67,sight-picture-fault,rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C68,sight-picture-fault,pcc,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C69,sight-picture-fault,mini_rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
