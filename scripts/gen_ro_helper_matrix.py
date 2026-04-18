@@ -1,15 +1,21 @@
 ﻿# -*- coding: utf-8 -*-
-"""Generate docs/RO_HELPER_CARD_MATRIX.csv — full card matrix (regenerate after slug changes)."""
+"""Generate docs/RO_HELPER_CARD_MATRIX.csv — full card matrix (regenerate after slug changes).
+
+If the CSV is locked (e.g. open in Excel), run:
+  python scripts/gen_ro_helper_matrix.py --out docs/RO_HELPER_CARD_MATRIX.new.csv
+then replace the file when unlocked.
+"""
 from __future__ import annotations
 
 import csv
+import sys
 from pathlib import Path
 
 DISC = ["handgun", "pcc", "rifle", "mini_rifle", "shotgun"]
 
 
-def explicit_c26_c76() -> list[tuple[str, str, str, str, str, str]]:
-    rows: list[tuple[str, str, str, str, str, str]] = []
+def explicit_c26_c76() -> list[tuple[str, str, str, str, str, str, str]]:
+    rows: list[tuple[str, str, str, str, str, str, str]] = []
     seq = [
         (26, "procedural-fault", "handgun"),
         (27, "procedural-fault", "rifle"),
@@ -160,7 +166,134 @@ def fpsu_hint(category: str) -> str:
     return "II п.7; IV; XI; IX"
 
 
+def notes_for(slug: str, disc: str) -> str:
+    if slug == "wrong-ammo-shot":
+        return "shotgun only"
+    if slug == "burst-or-automatic-fire":
+        return "pcc/rifle/mini_rifle only; 10.2.12"
+    if slug == "disappearing-targets-scoring":
+        return (
+            "HG Jan 2026: розвести 9.9.2 (рух vs «зникаюча») та логіку активатора; "
+            "інші дисципліни — звірити PDF."
+        )
+    if slug == "metal-target-min-distance-dq":
+        return {
+            "handgun": "HG Jan 2026: 10.4.7 — мін. відстань до металу (DQ).",
+            "pcc": "Аудит: довгі стволи — свої дистанції vs метал; звірити PCC PDF.",
+            "rifle": "Аудит: напр. 5 м vs метал (уточнити в Rifle PDF).",
+            "mini_rifle": "Звірити Mini Rifle PDF (відстань до металу).",
+            "shotgun": "Звірити Shotgun PDF (відстань до металу / клапан).",
+        }.get(disc, "")
+    if slug == "ammo-in-safety-area":
+        return (
+            "HG Jan 2026: 10.5.14 — набої в Safety Area (типовий DQ); "
+            "розширити unsafe-gun-handling або окрема картка; інші PDF — звірити."
+        )
+    if slug == "external-safety-long-gun":
+        return (
+            "10.5.11 long gun: рух із вимкненим зовнішнім запобіжником (PCC/Rifle/MR/SG); "
+            "HG 10.5.11 — інший зміст (палець); для handgun див. trigger-finger."
+        )
+    if slug == "popper-calibration":
+        return "Appendix C1 (HG): оскарження калібрування поппера; інші дисципліни — свій Appendix."
+    if slug == "trigger-pull-check":
+        return (
+            "HG Production: Appendix D / D4 §6 (2.27 kg pull); "
+            "інші дивізіони/дисципліни — окремі пороги у PDF."
+        )
+    return ""
+
+
+def append_audit_rows_c310() -> list[tuple[str, str, str, str, str, str, str]]:
+    """External audit 2026 — new cards only (no renumbering C26–C309)."""
+    rows: list[tuple[str, str, str, str, str, str, str]] = []
+    n = 310
+
+    metal_ref = {
+        "handgun": "10.4.7 (HG Jan 2026 — min distance to metal, DQ)",
+        "pcc": "10.4.x — verify PCC PDF vs metal",
+        "rifle": "10.4.x — verify Rifle PDF vs metal (audit: 5 m context)",
+        "mini_rifle": "10.4.x — verify Mini Rifle PDF vs metal",
+        "shotgun": "10.4.x — verify Shotgun PDF vs metal",
+    }
+    for d in DISC:
+        rows.append(
+            (
+                f"C{n}",
+                "metal-target-min-distance-dq",
+                d,
+                "safety",
+                metal_ref[d],
+                "Min distance to metal (DQ)",
+                "Мінімальна відстань до металу (DQ)",
+            )
+        )
+        n += 1
+
+    for d in DISC:
+        rows.append(
+            (
+                f"C{n}",
+                "ammo-in-safety-area",
+                d,
+                "safety",
+                "10.5.14 (HG Jan 2026); verify per PDF",
+                "Ammunition in Safety Area (DQ)",
+                "Набої в Safety Area (DQ)",
+            )
+        )
+        n += 1
+
+    for d in ["pcc", "rifle", "mini_rifle", "shotgun"]:
+        rows.append(
+            (
+                f"C{n}",
+                "external-safety-long-gun",
+                d,
+                "safety",
+                "10.5.11 (long gun — external safety / movement); verify PDF",
+                "External safety during movement (long gun)",
+                "Зовнішній запобіжник під час руху (long gun)",
+            )
+        )
+        n += 1
+
+    for d in DISC:
+        rows.append(
+            (
+                f"C{n}",
+                "popper-calibration",
+                d,
+                "scoring",
+                "Appendix C1 (HG popper calibration challenge); verify per PDF",
+                "Popper calibration challenge",
+                "Оскарження калібрування поппера",
+            )
+        )
+        n += 1
+
+    for d in DISC:
+        rows.append(
+            (
+                f"C{n}",
+                "trigger-pull-check",
+                d,
+                "equipment",
+                "Appendix D Production D4 §6 (2.27 kg HG); verify division PDF",
+                "Trigger pull weight check (Production etc.)",
+                "Контроль зусилля спуску (Production тощо)",
+            )
+        )
+        n += 1
+
+    return rows
+
+
 def main() -> None:
+    out_path = Path("docs/RO_HELPER_CARD_MATRIX.csv")
+    if len(sys.argv) >= 3 and sys.argv[1] == "--out":
+        out_path = Path(sys.argv[2])
+
     all_rows: list[tuple[str, str, str, str, str, str, str]] = []
     all_rows.extend(explicit_c26_c76())
     next_id = 77
@@ -189,7 +322,8 @@ def main() -> None:
     safety_slugs = [
         ("break-180", "10.5.2", "Muzzle safe angles / 180", "Безпечний сектор / 180°"),
         ("accidental-discharge", "10.4", "Accidental discharge (DQ)", "Випадковий постріл (DQ)"),
-        ("trigger-finger", "10.5.8-11", "Finger in trigger guard", "Палець у скобі"),
+        # Audited Jan 2026 HG: trigger guard = 10.5.9–10.5.11 (not 10.5.8)
+        ("trigger-finger", "10.5.9–10.5.11 (HG Jan 2026); verify per PDF", "Finger in trigger guard", "Палець у скобі"),
         ("dropped-gun", "10.5.3", "Dropped firearm (DQ)", "Впущена зброя (DQ)"),
         ("unsafe-gun-handling", "10.5.1", "Unsafe gun handling", "Небезпечне поводження"),
         ("dq-general", "10.3", "DQ — general", "Дискваліфікація — загальні"),
@@ -247,8 +381,9 @@ def main() -> None:
     r, next_id = cartesian(admin_slugs, "match-admin", next_id)
     all_rows.extend(r)
 
-    out = Path("docs/RO_HELPER_CARD_MATRIX.csv")
-    with out.open("w", newline="", encoding="utf-8-sig") as f:
+    all_rows.extend(append_audit_rows_c310())
+
+    with out_path.open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f)
         w.writerow(
             [
@@ -266,11 +401,6 @@ def main() -> None:
             ]
         )
         for card_id, slug, disc, cat, ref, en, uk in all_rows:
-            note = ""
-            if slug == "wrong-ammo-shot":
-                note = "shotgun only"
-            if slug == "burst-or-automatic-fire":
-                note = "pcc/rifle/mini_rifle only; 10.2.12"
             w.writerow(
                 [
                     card_id,
@@ -283,11 +413,11 @@ def main() -> None:
                     fpsu_hint(cat),
                     "todo",
                     "todo",
-                    note,
+                    notes_for(slug, disc),
                 ]
             )
 
-    print("rows", len(all_rows), "last_id", all_rows[-1][0], "->", out)
+    print("rows", len(all_rows), "last_id", all_rows[-1][0], "->", out_path)
 
 
 if __name__ == "__main__":
