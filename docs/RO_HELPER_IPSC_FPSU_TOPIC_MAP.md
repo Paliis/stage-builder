@@ -17,7 +17,7 @@
 
 **Первинник ФПСУ (веб):** [Правила спортивних змагань з практичної стрільби, редакція на сайті ФПСУ](https://upsf.org.ua/rules/upsf/2020/index?type=rules) — затверджені Мінмолодьспорту 08.09.2020 (далі **«Правила ФПСУ 2020»**).
 
-**Зв’язок:** [RO_HELPER_V0.md](./RO_HELPER_V0.md), [RO_HELPER_CARD_REGISTRY.md](./RO_HELPER_CARD_REGISTRY.md).
+**Зв’язок:** [RO_HELPER_V0.md](./RO_HELPER_V0.md), [RO_HELPER_CARD_REGISTRY.md](./RO_HELPER_CARD_REGISTRY.md), [RO_HELPER_CARD_MATRIX.md](./RO_HELPER_CARD_MATRIX.md).
 
 ---
 

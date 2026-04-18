@@ -318,6 +318,8 @@ IPSC: {пункти} ({ipsc_edition})
 
 **Мапінг глав IPSC (5 дисциплін) і ФПСУ на блоки SOS:** [RO_HELPER_IPSC_FPSU_TOPIC_MAP.md](./RO_HELPER_IPSC_FPSU_TOPIC_MAP.md).
 
+**Повна матриця карток (CSV):** [RO_HELPER_CARD_MATRIX.md](./RO_HELPER_CARD_MATRIX.md).
+
 ---
 
 *Документ можна доповнювати таблицею «Релізи контенту» (дата, редакція IPSC, відповідальний рев’юер) по мірі оновлень правил.*
