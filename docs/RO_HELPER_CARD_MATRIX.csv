@@ -1,25 +1,25 @@
 ﻿card_id,slug,discipline,category,label_en,label_uk,ipsc_anchor_hint,fpsu_section_hint,status_uk,status_en,notes
-C26,procedural-fault,handgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C26,procedural-fault,handgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo
 C27,procedural-fault,rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C28,procedural-fault,pcc,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C29,procedural-fault,mini_rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C30,procedural-fault,shotgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C31,foot-fault,handgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
+C31,foot-fault,handgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C32,foot-fault,rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
 C33,foot-fault,pcc,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
 C34,foot-fault,mini_rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
 C35,foot-fault,shotgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
-C36,failure-to-engage,handgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C36,failure-to-engage,handgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C37,failure-to-engage,rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C38,failure-to-engage,pcc,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C39,failure-to-engage,mini_rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C40,failure-to-engage,shotgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C41,significant-advantage,handgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C41,significant-advantage,handgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C42,significant-advantage,rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C43,significant-advantage,pcc,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C44,significant-advantage,mini_rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C45,significant-advantage,shotgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C46,creeping,handgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C46,creeping,handgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C47,creeping,rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C48,creeping,pcc,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C49,creeping,mini_rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
