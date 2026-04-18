@@ -54,3 +54,7 @@
 | C265    | equipment-malfunction | handgun    | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C270    | written-stage-briefing | handgun    | match-admin | draft     | draft     | false               | —        | **3.2** (WSB); чернетка — рев’ю з PDF. |
 | C275    | local-regional-rules  | handgun    | match-admin | draft     | draft     | false               | —        | **3.3**; чернетка — рев’ю з PDF. |
+| C280    | match-structure-and-categories | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.6**; чернетка — рев’ю з PDF. |
+| C285    | md-ro-roles           | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
+| C290    | protests-arbitration  | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.11**; чернетка — рев’ю з PDF. |
+| C295    | miscellaneous-matters | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.12**; чернетка — рев’ю з PDF. |
