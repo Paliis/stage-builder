@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "check": "npm run lint && npm test && npm run build",
-    "icons": "node scripts/generate-icons-from-preview.mjs"
+    "icons": "node scripts/generate-icons-from-preview.mjs",
+    "icons:st": "node scripts/apply-st-to-icon-preview.mjs && node scripts/generate-icons-from-preview.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

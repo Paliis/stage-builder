@@ -148,6 +148,7 @@ npm test          # Vitest (src/**/*.test.ts)
 npm run lint      # ESLint
 npm run check     # як у CI: lint + test + build
 npm run icons     # node scripts/generate-icons-from-preview.mjs
+npm run icons:st  # SB→ST на master-растрі (git HEAD icon-preview) + npm run icons
 ```
 
 ### TypeScript і тести
@@ -270,4 +271,4 @@ npm run icons     # node scripts/generate-icons-from-preview.mjs
 | PWA: реєстрація SW, ліміт банера | `src/main.tsx`, `src/application/pwaUpdateGate.ts` |
 | PWA: банер оновлення | `src/presentation/components/PwaUpdateBanner.tsx` |
 | PWA + HTML transform | `vite.config.ts` |
-| Генерація іконок | `scripts/generate-icons-from-preview.mjs` |
+| Генерація іконок | `scripts/generate-icons-from-preview.mjs`; накладення **ST** на збережений силует мішені — `scripts/apply-st-to-icon-preview.mjs` + `npm run icons` (див. `npm run icons:st`) |
