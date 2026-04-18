@@ -1,5 +1,5 @@
 ---
-title: "Захист очей і слуху"
+title: "Захист очей і вух"
 card_id: "C255"
 slug: "eye-and-ear-protection"
 category: equipment
