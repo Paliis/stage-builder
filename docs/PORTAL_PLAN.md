@@ -211,6 +211,7 @@
 - [BACKLOG.md](./BACKLOG.md) — ідеї та задачі
 - [VERSIONING.md](./VERSIONING.md) — версії продукту для користувачів
 - [RO_HELPER_V0.md](./RO_HELPER_V0.md) — RO Helper v0: контент, UX, IPSC + ФПСУ, аналітика, чекліст
+- [RO_HELPER_CONTENT_TZ.md](./RO_HELPER_CONTENT_TZ.md) — ТЗ на підготовку статей (пайплайн, промпт, критерії приймання)
 
 ---
 
