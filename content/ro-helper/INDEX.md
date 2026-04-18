@@ -30,3 +30,7 @@
 | C145    | range-safety-zones    | handgun    | safety    | draft     | draft     | false               | —        | **Ch.2**; чернетка — рев’ю з PDF. |
 | C150    | movement-and-trigger-safety | handgun    | safety    | draft     | draft     | false               | —        | **8.5**; чернетка — рев’ю з PDF. |
 | C155    | approaching-touching-targets | handgun    | scoring   | draft     | draft     | false               | —        | **9.1**; чернетка — рев’ю з PDF. |
+| C160    | scoring-methods       | handgun    | scoring   | draft     | draft     | false               | —        | **9.2**; чернетка — рев’ю з PDF. |
+| C165    | scoring-ties          | handgun    | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
+| C170    | hits-misses-noshoot-values | handgun    | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
+| C175    | paper-scoring-policy  | handgun    | scoring   | draft     | draft     | false               | —        | **9.5**; чернетка — рев’ю з PDF. |
