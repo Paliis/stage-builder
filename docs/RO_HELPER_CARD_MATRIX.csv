@@ -57,11 +57,11 @@ C80,procedural-cap,mini_rifle,penalties,Procedural penalty cap,Стеля про
 C81,procedural-cap,shotgun,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C82,cooper-tunnel,handgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C83,cooper-tunnel,pcc,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C84,cooper-tunnel,rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C85,cooper-tunnel,mini_rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C86,cooper-tunnel,shotgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C84,cooper-tunnel,rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C85,cooper-tunnel,mini_rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C86,cooper-tunnel,shotgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C87,penalty-in-lieu,handgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C88,penalty-in-lieu,pcc,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C88,penalty-in-lieu,pcc,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C89,penalty-in-lieu,rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C90,penalty-in-lieu,mini_rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C91,penalty-in-lieu,shotgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,

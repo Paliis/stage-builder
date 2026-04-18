@@ -62,7 +62,11 @@
 | C81     | procedural-cap        | shotgun    | penalties | draft     | draft     | false               | —        | **10.2.3** (Shotgun); чернетка — рев’ю з PDF. |
 | C82     | cooper-tunnel         | handgun    | penalties | draft     | draft     | false               | —        | **10.2.5**; чернетка — рев’ю з PDF. |
 | C83     | cooper-tunnel         | pcc        | penalties | draft     | draft     | false               | —        | **10.2.5** (PCC); чернетка — рев’ю з PDF. |
+| C84     | cooper-tunnel         | rifle      | penalties | draft     | draft     | false               | —        | **10.2.5** (Rifle); чернетка — рев’ю з PDF. |
+| C85     | cooper-tunnel         | mini_rifle | penalties | draft     | draft     | false               | —        | **10.2.5** (Mini Rifle); чернетка — рев’ю з PDF. |
+| C86     | cooper-tunnel         | shotgun    | penalties | draft     | draft     | false               | —        | **10.2.5** (Shotgun); чернетка — рев’ю з PDF. |
 | C87     | penalty-in-lieu       | handgun    | penalties | draft     | draft     | false               | —        | **10.2.10** (RM); чернетка — рев’ю з PDF. |
+| C88     | penalty-in-lieu       | pcc        | penalties | draft     | draft     | false               | —        | **10.2.10** (PCC, RM); чернетка — рев’ю з PDF. |
 | C92     | re-engage-same-location | handgun    | penalties | draft     | draft     | false               | —        | **10.2.9**; чернетка — рев’ю з PDF Jan 2026. |
 | C97     | walkthrough-interference | handgun    | penalties | draft     | draft     | false               | —        | **8.7.2**, **8.7.3**; чернетка — рев’ю з PDF. |
 | C105    | break-180             | handgun    | safety    | draft     | draft     | false               | —        | Frontmatter aligned with RO_HELPER_V0 §2.2; pin `primary_url` to official Handgun PDF when URL is registered. |
