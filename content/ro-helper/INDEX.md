@@ -34,3 +34,7 @@
 | C165    | scoring-ties          | handgun    | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
 | C170    | hits-misses-noshoot-values | handgun    | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
 | C175    | paper-scoring-policy  | handgun    | scoring   | draft     | draft     | false               | —        | **9.5**; чернетка — рев’ю з PDF. |
+| C180    | paper-zones-major-minor | handgun    | scoring   | draft     | draft     | false               | —        | **9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF. |
+| C185    | radial-tears-enlarged-holes | handgun    | scoring   | draft     | draft     | false               | —        | **9.5.4**; чернетка — рев’ю з PDF. |
+| C190    | fte-scoring-side      | handgun    | scoring   | draft     | draft     | false               | —        | **9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF. |
+| C195    | score-verification-challenge | handgun    | scoring   | draft     | draft     | false               | —        | **9.6**; чернетка — рев’ю з PDF. |
