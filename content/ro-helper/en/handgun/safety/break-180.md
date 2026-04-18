@@ -1,5 +1,5 @@
 ---
-title: "Muzzle safe angles (180° violation)"
+title: "Muzzle Safe Angles (180° Rule)"
 card_id: "C105"
 slug: break-180
 discipline: handgun
@@ -18,25 +18,29 @@ draft_source: llm
 
 ## What this is
 
-The “180° rule” is a core IPSC safety principle: the muzzle must stay within the safe sector (generally toward targets relative to the back berm). If the muzzle crosses the defined boundary (typically parallel to the back berm, or as specified in the **WSB**), that is a critical safety breach.
+The “180-degree rule” is a fundamental IPSC safety principle. It requires the muzzle to stay **downrange** within the **designated safe sector**. If the muzzle crosses the imaginary line parallel to the backstop (or boundaries specified in the briefing), that is a **critical safety violation**.
 
-## What the RO does
+## RO actions
 
-1. **Stop:** immediately give a loud, clear **“STOP!”** command.
-2. **Control the firearm:** approach only if safe; confirm shooting has ceased and the muzzle is pointed safely.
-3. **Unload:** order an unload and show clear chamber per match procedures / rules.
-4. **Holster:** after the safety check, order the firearm holstered. Under **10.5.2**, breaking muzzle-safe angles is normally a **disqualification (DQ)** — confirm wording in the current **Handgun** PDF for your edition.
-5. **Document:** notify the Range Master; record on the scoresheet a **DQ for 10.5.2 (180° / muzzle safe angles)** with time and location.
+1. **Stop:** Immediately issue a loud, clear **“STOP!”** command.
+2. **Control:** Approach the competitor (only if safe), ensure they cease fire, and hold the firearm in a safe direction.
+3. **Unload:** Direct the competitor to unload and show clear per match procedures.
+4. **Holster / dismissal:** After safety is verified, order the firearm holstered. Under **10.5.2**, a muzzle-safe-angle breach is normally a **match disqualification (DQ)** — confirm exact wording in the current **Handgun** PDF. The competitor does not continue the match after a DQ under this rule.
+5. **Report:** Summon the Range Master. Record **“DQ — Rule 10.5.2 (180° / muzzle safe angles)”** on the scoresheet, with time and location of the violation.
 
 ## IPSC (Jan 2026)
 
-Per **10.5.2**, a DQ applies if, at any time during the course of fire, the competitor allows the muzzle to point “backwards” (more than **90°** from the median perpendicular to the back berm) or outside angles **explicitly stated in the WSB**.
+Per **10.5.2**, disqualification applies if, at any time during the course of fire, the competitor allows the muzzle to point rearwards (**further than 90°** from the median perpendicular line to the backstop), or outside **muzzle safe angles** specified in the **Written Stage Briefing (WSB)**.
 
-- The rule still applies while moving, clearing malfunctions, and reloading.
-- Holster draw / holstering exceptions depend on rule edition and division — verify the primary source.
+- This applies during **movement**, **malfunction clearance**, and **reloading**.
+- **Holstering / unholstering:** exceptions depend on **division rules** and the rulebook edition — verify the primary source.
+
+## Local (FPSU)
+
+For matches run under **FPSU / UPSF** rules, treat the **official FPSU rulebook** as authoritative for local numbering and any national nuance; compare with this IPSC anchor (**10.5.2**) during review (`fpsu_delta_verified` stays **false** until a reviewer signs off per **RO_HELPER_V0 §4.1**). ROs should stay especially alert on stages with **uprange movement**—the firearm must remain clearly oriented within the safe sector defined by the stage and berms.
 
 ## Common mistakes
 
-- **Lazy gun arm:** after engaging a target to the side, the competitor turns their body to move but the pistol arm lags, swinging the muzzle past the 180° line.
-- **Reload on the move:** the gun comes up high near the face and rotates sideways; combined with footwork this easily breaks the safe sector.
-- **Holster handling:** “blind” holstering after finish commands, with the muzzle lifting up and rearward.
+- **“Lagging arm”:** After engaging a lateral target, the competitor moves while the gun arm lags, rotating the muzzle past the 180° line.
+- **Reloading on the move:** The handgun is brought high toward the chest and canted; combined with torso rotation, that often breaks the safe angle.
+- **Blind holstering:** Holstering without visual control after a **“Holster”** (or related) command, so the muzzle tips up and rearward.
