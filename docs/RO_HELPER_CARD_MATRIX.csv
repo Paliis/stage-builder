@@ -17,11 +17,11 @@ C40,failure-to-engage,shotgun,penalties,Failure to engage,Необстрілян
 C41,significant-advantage,handgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C42,significant-advantage,rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
 C43,significant-advantage,pcc,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C44,significant-advantage,mini_rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C45,significant-advantage,shotgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C44,significant-advantage,mini_rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
+C45,significant-advantage,shotgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
 C46,creeping,handgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C47,creeping,rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C48,creeping,pcc,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C47,creeping,rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
+C48,creeping,pcc,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
 C49,creeping,mini_rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C50,creeping,shotgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C51,mandatory-reload,handgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026

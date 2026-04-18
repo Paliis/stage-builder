@@ -22,7 +22,11 @@
 | C41     | significant-advantage | handgun    | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2**; чернетка — рев’ю з PDF. |
 | C42     | significant-advantage | rifle      | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2** (Rifle); чернетка — рев’ю з PDF. |
 | C43     | significant-advantage | pcc        | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2** (PCC); чернетка — рев’ю з PDF. |
+| C44     | significant-advantage | mini_rifle | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2** (Mini Rifle); чернетка — рев’ю з PDF. |
+| C45     | significant-advantage | shotgun    | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2** (Shotgun); чернетка — рев’ю з PDF. |
 | C46     | creeping              | handgun    | penalties | draft     | draft     | false               | —        | **10.2.6**; чернетка — рев’ю з PDF. |
+| C47     | creeping              | rifle      | penalties | draft     | draft     | false               | —        | **10.2.6** (Rifle); чернетка — рев’ю з PDF. |
+| C48     | creeping              | pcc        | penalties | draft     | draft     | false               | —        | **10.2.6** (PCC); чернетка — рев’ю з PDF. |
 | C51     | mandatory-reload      | handgun    | penalties | draft     | draft     | false               | —        | **10.2.4**; чернетка — рев’ю з PDF Jan 2026. |
 | C56     | mandatory-position    | handgun    | penalties | draft     | draft     | false               | —        | **10.2.2**, **10.2.8**; чернетка — рев’ю з PDF. |
 | C61     | unauthorized-assistance | handgun    | penalties | draft     | draft     | false               | —        | **8.6.2** (+ контекст **8.6**); чернетка — рев’ю з PDF. |
