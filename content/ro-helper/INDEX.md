@@ -42,3 +42,7 @@
 | C205    | provisional-results-stats-appeal | handgun    | scoring   | draft     | draft     | false               | —        | **9.8**; чернетка — рев’ю з PDF. |
 | C210    | disappearing-targets-scoring | handgun    | scoring   | draft     | draft     | false               | —        | **9.9** (9.9.2 vs активатор); чернетка — рев’ю з PDF. |
 | C215    | official-time         | handgun    | scoring   | draft     | draft     | false               | —        | **9.10**; чернетка — рев’ю з PDF. |
+| C220    | scoring-programs      | handgun    | scoring   | draft     | draft     | false               | —        | **9.11**; чернетка — рев’ю з PDF. |
+| C225    | division-overview     | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
+| C230    | ready-conditions      | handgun    | equipment | draft     | draft     | false               | —        | **8.1–8.3**; чернетка — рев’ю з PDF. |
+| C235    | holster-or-carry-long-gun | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5** (кобура handgun); чернетка — рев’ю з PDF. |

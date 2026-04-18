@@ -1,0 +1,46 @@
+---
+title: "Scoring programs"
+card_id: "C220"
+slug: "scoring-programs"
+category: scoring
+locale: en
+discipline: handgun
+control_values: "Verify Handgun Jan 2026 PDF — 9.11 (approved software, export, scoring responsibility)"
+ipsc_edition: "Jan 2026"
+ipsc_refs:
+  - rule: "9.11"
+    note: "Scoring programs / software — Handgun"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+fpsu_refs: []
+fpsu_delta_verified: false
+reviewer: ""
+review_date: ""
+draft_source: llm
+status: draft
+---
+
+## What this is
+
+**9.11** sets requirements for **scoring programs** (software) permitted at IPSC matches: approved builds, formula alignment with **Chapter 9**, results export, etc. The bay **RO** rarely picks the app but must **enter data** in the fields the software expects and **not patch** discrepancies manually outside **9.7**.
+
+## What the Range Officer (RO) does
+
+1. **Use scoresheet / tablet fields** that map to the rules (time, zones, procedurals, FTE, etc.).
+2. **Do not alter** synced values without **scoring / RM**.
+3. **Report bugs** (missing procedurals, wrong division math) to **chief scoring**, not workaround “notes”.
+4. **Verify** the competitor’s **division** and **category** match registration.
+5. **If connectivity fails** — paper fallback per **MD** instructions.
+
+## IPSC (Jan 2026)
+
+- Anchor: **9.11**; approved program versions — per **MD** / IPSC notices.
+
+## Local (FPSU)
+
+Often the same ecosystem as IPSC; local modules per **MD**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+
+## Common mistakes
+
+- **Wrong division** on the card — wrong Major/Minor handling.
+- **Manual “fixes”** to points in the RO app.
+- **Bypassing** official software for ad-hoc spreadsheets on the bay.
