@@ -46,3 +46,7 @@
 | C225    | division-overview     | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
 | C230    | ready-conditions      | handgun    | equipment | draft     | draft     | false               | —        | **8.1–8.3**; чернетка — рев’ю з PDF. |
 | C235    | holster-or-carry-long-gun | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5** (кобура handgun); чернетка — рев’ю з PDF. |
+| C240    | firearms-and-ammunition-rules | handgun    | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
+| C245    | chronograph-and-power-factor | handgun    | equipment | draft     | draft     | false               | —        | **5.6–5.7**; чернетка — рев’ю з PDF. |
+| C250    | magazines-and-loading-devices | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5**; чернетка — рев’ю з PDF. |
+| C255    | eye-and-ear-protection | handgun    | equipment | draft     | draft     | false               | —        | **5.4**; чернетка — рев’ю з PDF. |
