@@ -1,26 +1,28 @@
 ---
 title: "Muzzle Safe Angles (180° Rule)"
 card_id: "C105"
-slug: break-180
-discipline: handgun
-locale: en
+slug: "break-180"
 category: safety
+locale: en
+discipline: handgun
 ipsc_edition: "Jan 2026"
 ipsc_refs:
-  - "10.5.2"
+  - rule: "10.5.2"
+    note: "Muzzle safe angles / 180° (Handgun)"
+primary_url: "https://www.ipsc.org/rules"
+fpsu_refs: []
 fpsu_delta_verified: false
-primary_url: "https://ipsc.org/rules"
-status: draft
 reviewer: ""
 review_date: ""
 draft_source: llm
+status: draft
 ---
 
 ## What this is
 
 The “180-degree rule” is a fundamental IPSC safety principle. It requires the muzzle to stay **downrange** within the **designated safe sector**. If the muzzle crosses the imaginary line parallel to the backstop (or boundaries specified in the briefing), that is a **critical safety violation**.
 
-## RO actions
+## What the RO does
 
 1. **Stop:** Immediately issue a loud, clear **“STOP!”** command.
 2. **Control:** Approach the competitor (only if safe), ensure they cease fire, and hold the firearm in a safe direction.

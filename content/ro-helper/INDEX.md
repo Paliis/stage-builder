@@ -4,4 +4,4 @@
 
 | card_id | slug       | discipline | category | status_uk | status_en | fpsu_delta_verified | reviewer | notes |
 |---------|------------|------------|----------|-----------|-----------|---------------------|----------|-------|
-| C105    | break-180  | handgun    | safety   | draft     | draft     | false               | —        | First sample pair; verify 10.5.2 wording vs Handgun Jan 2026 PDF. |
+| C105    | break-180  | handgun    | safety   | draft     | draft     | false               | —        | Frontmatter aligned with RO_HELPER_V0 §2.2; pin `primary_url` to official Handgun PDF when URL is registered. |

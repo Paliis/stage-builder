@@ -1,19 +1,21 @@
 ---
 title: "Порушення кутів безпеки (180°)"
 card_id: "C105"
-slug: break-180
-discipline: handgun
-locale: uk
+slug: "break-180"
 category: safety
+locale: uk
+discipline: handgun
 ipsc_edition: "Jan 2026"
 ipsc_refs:
-  - "10.5.2"
+  - rule: "10.5.2"
+    note: "Muzzle safe angles / 180° (Handgun)"
+primary_url: "https://www.ipsc.org/rules"
+fpsu_refs: []
 fpsu_delta_verified: false
-primary_url: "https://ipsc.org/rules"
-status: draft
 reviewer: ""
 review_date: ""
 draft_source: llm
+status: draft
 ---
 
 ## Що це
