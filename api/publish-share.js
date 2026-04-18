@@ -21434,6 +21434,9 @@ function serializeStageProject(file) {
 `;
 }
 
+// src/seo/canonicalProductionOrigin.ts
+var CANONICAL_PRODUCTION_ORIGIN = "https://shooters-tools.com";
+
 // src/lib/resolvePublicOriginFromEnv.ts
 function resolvePublicOriginFromEnv(requestFallback) {
   const env = process.env.VITE_SHARE_PUBLIC_ORIGIN?.replace(/\/$/, "");
@@ -21441,11 +21444,15 @@ function resolvePublicOriginFromEnv(requestFallback) {
   const prod = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
   if (prod) {
     const host = prod.replace(/^https?:\/\//, "").replace(/\/$/, "");
-    return `https://${host}`;
+    const fromProd = `https://${host}`;
+    if (fromProd === "https://stage-builder.vercel.app") return CANONICAL_PRODUCTION_ORIGIN;
+    return fromProd;
   }
   const vu = process.env.VERCEL_URL;
   if (vu) return `https://${vu.replace(/^https?:\/\//, "")}`;
-  return requestFallback.replace(/\/$/, "");
+  const out = requestFallback.replace(/\/$/, "");
+  if (out === "https://stage-builder.vercel.app") return CANONICAL_PRODUCTION_ORIGIN;
+  return out;
 }
 
 // src/server/sharePublish.ts

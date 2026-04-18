@@ -11,6 +11,7 @@ import { PublishPolicyRoute } from './presentation/components/PublishPolicyRoute
 import { ShareStageRoute } from './share/ShareStageRoute'
 import './index.css'
 import App from './App.tsx'
+import { PortalHome } from './portal/PortalHome'
 
 hydrateSessionDraft()
 
@@ -27,7 +28,8 @@ createRoot(document.getElementById('root')!).render(
     <I18nProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<PortalHome />} />
+          <Route path="/stage-builder" element={<App />} />
           <Route path="/publish-policy" element={<PublishPolicyRoute />} />
           <Route path="/v/:shareId" element={<ShareStageRoute mode="view" />} />
           <Route path="/e/:shareId" element={<ShareStageRoute mode="edit" />} />

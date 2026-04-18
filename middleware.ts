@@ -65,8 +65,8 @@ export default async function middleware(request: Request): Promise<Response> {
     const assetOrigin = resolvePublicOriginFromEnv(url.origin)
     const ogImage = escapeHtml(`${assetOrigin}/og-image.png${OG_IMAGE_ASSET_QUERY}`)
     const ogImageAlt = escapeHtml('Stage Builder — stage plan, targets, PDF briefing export')
-    const ogDesc = escapeHtml(`${title} — Stage Builder`)
-    const siteName = escapeHtml('Stage Builder')
+    const ogDesc = escapeHtml(`${title} — Shooters Tools / Stage Builder`)
+    const siteName = escapeHtml('Shooters Tools')
 
     const html = `<!DOCTYPE html>
 <html lang="uk">

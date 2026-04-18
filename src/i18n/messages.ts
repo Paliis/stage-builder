@@ -319,6 +319,14 @@ export type MessageTree = {
     /** `/v/` view-only: short notice above the editor link. */
     viewModeHint: string
   }
+  /** Home page of the Shooters Tools portal (`/`). */
+  portal: {
+    title: string
+    lead: string
+    stageBuilderTitle: string
+    stageBuilderDesc: string
+    openStageBuilder: string
+  }
   footer: {
     feedbackHeading: string
     feedbackText: string
@@ -392,7 +400,7 @@ export const ukMessages: MessageTree = {
     toolbarDrawerOpen: '\u041c\u0456\u0448\u0435\u043d\u0456 \u0442\u0430 \u043e\u0431\u2019\u0454\u043a\u0442\u0438',
     toolbarDrawerClose: '\u0421\u0445\u043e\u0432\u0430\u0442\u0438 \u043f\u0430\u043d\u0435\u043b\u044c',
     stagingRibbon:
-      '\u0422\u0435\u0441\u0442\u043e\u0432\u0435 \u0441\u0435\u0440\u0435\u0434\u043e\u0432\u0438\u0449\u0435 (staging). \u0414\u043b\u044f \u0431\u043e\u044e \u0432\u0438\u043a\u043e\u0440\u0438\u0441\u0442\u043e\u0432\u0443\u0439\u0442\u0435 stage-builder.vercel.app.',
+      '\u0422\u0435\u0441\u0442\u043e\u0432\u0435 \u0441\u0435\u0440\u0435\u0434\u043e\u0432\u0438\u0449\u0435 (staging). \u0414\u043b\u044f \u0431\u043e\u044e \u0432\u0438\u043a\u043e\u0440\u0438\u0441\u0442\u043e\u0432\u0443\u0439\u0442\u0435 shooters-tools.com.',
   },
   stats: {
     targets: '\u041c\u0456\u0448\u0435\u043d\u0456',
@@ -703,6 +711,14 @@ export const ukMessages: MessageTree = {
     publishErrorHtmlResponse:
       '\u0421\u0435\u0440\u0432\u0435\u0440 \u043f\u043e\u0432\u0435\u0440\u043d\u0443\u0432 HTML \u0437\u0430\u043c\u0456\u0441\u0442\u044c JSON \u2014 \u043f\u0435\u0440\u0435\u0432\u0456\u0440\u0442\u0435 \u0434\u0435\u043f\u043b\u043e\u0439 /api/publish-share \u0442\u0430 \u0437\u043c\u0456\u043d\u043d\u0456 Vercel (SUPABASE_SERVICE_ROLE_KEY, URL).',
   },
+  portal: {
+    title: 'Shooters Tools',
+    lead: '\u0406\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438 \u0434\u043b\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u043e\u0457 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 \u0442\u0430 IPSC. \u041d\u043e\u0432\u0456 \u043c\u043e\u0434\u0443\u043b\u0456 \u0434\u043e\u0434\u0430\u0432\u0430\u0442\u0438\u043c\u0443\u0442\u044c\u0441\u044f \u043f\u043e\u0441\u0442\u0443\u043f\u043e\u0432\u043e.',
+    stageBuilderTitle: 'Stage Builder',
+    stageBuilderDesc:
+      '\u041c\u0435\u0442\u0440\u0438\u0447\u043d\u0438\u0439 \u043f\u043b\u0430\u043d, 3D, \u0431\u0440\u0438\u0444\u0456\u043d\u0433, PDF, \u0444\u0430\u0439\u043b\u0438 \u0432\u043f\u0440\u0430\u0432.',
+    openStageBuilder: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Stage Builder',
+  },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
     feedbackText: '\u0417\u043d\u0430\u0439\u0448\u043b\u0438 \u043f\u043e\u043c\u0438\u043b\u043a\u0443, \u043c\u0430\u0454\u0442\u0435 \u043f\u0440\u043e\u043f\u043e\u0437\u0438\u0446\u0456\u044e \u0447\u0438 \u0432\u0456\u0434\u0433\u0443\u043a? \u041d\u0430\u043f\u0438\u0448\u0456\u0442\u044c:',
@@ -777,7 +793,7 @@ export const enMessages: MessageTree = {
     toolbarDrawerOpen: 'Targets & objects',
     toolbarDrawerClose: 'Hide panel',
     stagingRibbon:
-      'Staging environment — not the live site. Use stage-builder.vercel.app for production.',
+      'Staging environment — not the live site. Production: shooters-tools.com.',
   },
   stats: {
     targets: 'Targets',
@@ -1072,6 +1088,13 @@ export const enMessages: MessageTree = {
     viewModeHint: 'View-only mode. To edit the stage, open it in the editor.',
     publishErrorHtmlResponse:
       'Server returned HTML instead of JSON — check deployment of /api/publish-share and Vercel env (SUPABASE_SERVICE_ROLE_KEY, Supabase URL).',
+  },
+  portal: {
+    title: 'Shooters Tools',
+    lead: 'Tools for practical shooting and IPSC. More modules will roll out over time.',
+    stageBuilderTitle: 'Stage Builder',
+    stageBuilderDesc: 'Metric plan, 3D, briefing, PDF, stage files.',
+    openStageBuilder: 'Open Stage Builder',
   },
   footer: {
     feedbackHeading: 'Feedback',

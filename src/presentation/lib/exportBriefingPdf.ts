@@ -5,9 +5,11 @@ import { PDF_MARGIN_MM } from '../../domain/a4PrintLayout'
 import type { StageBriefing } from '../../domain/stageBriefing'
 import { briefingTableRows, type BriefingPdfLabels } from '../../domain/stageBriefing'
 import type { StageCategory } from '../../domain/models'
+import { CANONICAL_PRODUCTION_ORIGIN } from '../../seo/canonicalProductionOrigin'
 import { registerPdfFonts, PDF_FONT_FAMILY } from './pdfFonts'
 
-const APP_URL = 'https://stage-builder.vercel.app'
+/** Default link in PDF footer / QR when caller does not pass `qrTargetUrl` (matches portal editor path). */
+const DEFAULT_PDF_PUBLIC_URL = `${CANONICAL_PRODUCTION_ORIGIN}/stage-builder`
 
 export type BriefingPdfExportStrings = {
   labels: BriefingPdfLabels
@@ -109,8 +111,9 @@ function measureBrandBlockHeightMm(
   doc: InstanceType<typeof jsPDF>,
   contentW: number,
   pdf: BriefingPdfExportStrings,
+  publicSiteUrl: string,
 ): number {
-  const combined = `${pdf.generatedBy}  ${APP_URL}`
+  const combined = `${pdf.generatedBy}  ${publicSiteUrl}`
   let fs = 6
   doc.setFont(PDF_FONT_FAMILY, 'normal')
   doc.setFontSize(fs)
@@ -135,9 +138,10 @@ function drawPdfBrandCenteredBelowImage(
   pageW: number,
   margin: number,
   yTop: number,
+  publicSiteUrl: string,
 ): void {
   const contentW = pageW - margin * 2
-  const combined = `${pdf.generatedBy}  ${APP_URL}`
+  const combined = `${pdf.generatedBy}  ${publicSiteUrl}`
   doc.setFont(PDF_FONT_FAMILY, 'normal')
   let fs = 6
   doc.setFontSize(fs)
@@ -189,7 +193,7 @@ export async function exportBriefingPdf(opts: {
   const pageH = doc.internal.pageSize.getHeight()
   const contentW = pageW - margin * 2
 
-  const qrEncodeUrl = qrTargetUrl?.trim() || APP_URL
+  const qrEncodeUrl = (qrTargetUrl?.trim() || DEFAULT_PDF_PUBLIC_URL).replace(/\/$/, '')
   let qrDataUrl: string | null = null
   try {
     qrDataUrl = await generateQrDataUrl(qrEncodeUrl)
@@ -218,7 +222,7 @@ export async function exportBriefingPdf(opts: {
 
   const tableH = measureTableHeight(tableBody, margin, contentW, tableMarginBottomMm)
 
-  const brandBlockH = qrDataUrl ? measureBrandBlockHeightMm(doc, contentW, pdf) : 0
+  const brandBlockH = qrDataUrl ? measureBrandBlockHeightMm(doc, contentW, pdf, qrEncodeUrl) : 0
   const brandBelowImageH = qrDataUrl ? GAP_IMAGE_BRAND + brandBlockH + GAP_BRAND_TABLE : GAP_BRAND_TABLE
 
   const baseImageTop = yAfterTitle + GAP_TITLE_IMAGE
@@ -267,7 +271,7 @@ export async function exportBriefingPdf(opts: {
       cursorY += finalH
       if (qrDataUrl) {
         const brandTop = cursorY + GAP_IMAGE_BRAND
-        drawPdfBrandCenteredBelowImage(doc, pdf, pageW, margin, brandTop)
+        drawPdfBrandCenteredBelowImage(doc, pdf, pageW, margin, brandTop, qrEncodeUrl)
         cursorY = brandTop + brandBlockH
       }
       cursorY += GAP_BRAND_TABLE
@@ -280,7 +284,7 @@ export async function exportBriefingPdf(opts: {
       cursorY += 8
       if (qrDataUrl) {
         const brandTop = cursorY + GAP_IMAGE_BRAND
-        drawPdfBrandCenteredBelowImage(doc, pdf, pageW, margin, brandTop)
+        drawPdfBrandCenteredBelowImage(doc, pdf, pageW, margin, brandTop, qrEncodeUrl)
         cursorY = brandTop + brandBlockH
         cursorY += GAP_BRAND_TABLE
       }
@@ -294,7 +298,7 @@ export async function exportBriefingPdf(opts: {
     cursorY += 8
     if (qrDataUrl) {
       const brandTop = cursorY + GAP_IMAGE_BRAND
-      drawPdfBrandCenteredBelowImage(doc, pdf, pageW, margin, brandTop)
+      drawPdfBrandCenteredBelowImage(doc, pdf, pageW, margin, brandTop, qrEncodeUrl)
       cursorY = brandTop + brandBlockH
       cursorY += GAP_BRAND_TABLE
     }

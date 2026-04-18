@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://stage-builder.vercel.app/sitemap_index.xml
-Sitemap: https://stage-builder.vercel.app/sitemap.xml
+Sitemap: https://shooters-tools.com/sitemap_index.xml
+Sitemap: https://shooters-tools.com/sitemap.xml

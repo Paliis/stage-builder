@@ -3,9 +3,19 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "stage-builder.vercel.app" }],
+      "destination": "https://shooters-tools.com/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/v/:path*", "destination": "/index.html" },
-    { "source": "/e/:path*", "destination": "/index.html" }
+    { "source": "/e/:path*", "destination": "/index.html" },
+    { "source": "/stage-builder", "destination": "/index.html" },
+    { "source": "/publish-policy", "destination": "/index.html" }
   ],
   "headers": [
     {

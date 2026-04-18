@@ -1,9 +1,9 @@
 # Stage Builder
 
 [![CI](https://github.com/Paliis/stage-builder/actions/workflows/ci.yml/badge.svg)](https://github.com/Paliis/stage-builder/actions/workflows/ci.yml)
-[![Deploy](https://img.shields.io/badge/live-stage--builder.vercel.app-black?logo=vercel)](https://stage-builder.vercel.app)
+[![Deploy](https://img.shields.io/badge/live-shooters--tools.com-black?logo=vercel)](https://shooters-tools.com)
 
-**[stage-builder.vercel.app](https://stage-builder.vercel.app)** — безкоштовний онлайн-редактор стрільбищних вправ IPSC.
+**[shooters-tools.com](https://shooters-tools.com)** — портал Shooters Tools; **Stage Builder** (редактор вправ) — за шляхом [`/stage-builder`](https://shooters-tools.com/stage-builder). Старий хост `stage-builder.vercel.app` редіректить на канонічний домен.
 
 Розставляйте мішені й реквізит на площадці з метричною сіткою, переглядайте сцену в 3D, готуйте текст брифінгу та експортуйте PDF. Інтерфейс **українською та англійською**, працює офлайн (PWA).
 
@@ -56,7 +56,7 @@ npm run check        # lint + тести + build (як у CI)
 
 Проєкт автоматично деплоїться на **Vercel** з гілки `main`:
 
-- Push в `main` → production deploy на [stage-builder.vercel.app](https://stage-builder.vercel.app)
+- Push в `main` → production deploy на [shooters-tools.com](https://shooters-tools.com)
 - Pull request → preview deploy з унікальним URL
 - CI (GitHub Actions) перевіряє lint + тести + build на push/PR у **`main`** і **`staging`**
 
@@ -66,7 +66,7 @@ npm run check        # lint + тести + build (як у CI)
 
 **Публікація посилань (share):** у змінних Vercel задайте **`SUPABASE_SERVICE_ROLE_KEY`**, **`SUPABASE_URL`** або **`VITE_SUPABASE_URL`**; опційно **`VITE_SHARE_PUBLIC_ORIGIN`** (явний канонічний хост для URL). Якщо змінну не задано, сервер і бандл використовують системну **`VERCEL_PROJECT_PRODUCTION_URL`** (production-домен проєкту **без** піддомену preview на кшталт `*-account-projects.vercel.app`). Для **OG-прев’ю** в Telegram тощо Edge-**`middleware.ts`** додає **`og:image`** (той самий **`/og-image.png`**, що й головна), **`og:description`**, **`twitter:*`**, і звертається до Supabase через **`VITE_SUPABASE_URL`** та **`VITE_SUPABASE_ANON_KEY`**. Звичайний **`npm run dev`** не виконує serverless і middleware — для перевірки **`POST /api/publish-share`** і прев’ю: **`vercel dev`** (потрібен **`api/publish-share.js`** у репо після **`npm run build`**) або preview/production deploy. Файл **`api/publish-share.js`** зберігається в Git — його оновлюють після змін у **`publishShareApiHandler`**. У **`api/package.json`** задано **`"type": "commonjs"`** (корінь репо — `"module"`), інакше serverless падає на Vercel.
 
-**SEO:** `robots.txt`, `sitemap.xml` у `public/` (після деплою — `https://stage-builder.vercel.app/sitemap.xml`). Мета-теги та JSON-LD — у `index.html`. Для індексації в Google варто додати сайт у Search Console і вказати sitemap.
+**SEO:** `robots.txt`, `sitemap*.xml` у `public/` (канонічний хост — `https://shooters-tools.com`). Мета-теги та JSON-LD — у `index.html` (плейсхолдер `__SITE_ORIGIN__` підставляє `vite build`). Для індексації в Google варто додати сайт у Search Console і вказати sitemap.
 
 **Аналітика:** [Vercel Web Analytics](https://vercel.com/docs/analytics) у `main.tsx` (`@vercel/analytics/react`) — увімкніть у проєкті на Vercel. **Google Analytics 4:** додайте в Vercel змінну `VITE_GA_MEASUREMENT_ID` = Measurement ID з GA4 (`G-…`), зробіть redeploy; приклад — `.env.example`. Покрокова інструкція (потік Web, перевірка Realtime, Search Console, приватність) — `docs/TECH.md` → «Аналітика» → **Google Analytics 4 (покроково)**.
 

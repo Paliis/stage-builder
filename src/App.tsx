@@ -40,6 +40,7 @@ import {
 } from './domain/stageProjectFile'
 import { summarizeTargetsDescriptionFromScene } from './domain/targetSummary'
 import { useI18n } from './i18n/useI18n'
+import { CANONICAL_PRODUCTION_ORIGIN } from './seo/canonicalProductionOrigin'
 import { formatTemplate } from './i18n/format'
 import { defaultStageBriefing, type BriefingPdfLabels } from './domain/stageBriefing'
 import { StageBuilderToolbar } from './presentation/components/StageBuilderToolbar'
@@ -342,7 +343,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       return prod
     }
     if (typeof window !== 'undefined') return window.location.origin
-    return 'https://stage-builder.vercel.app'
+    return CANONICAL_PRODUCTION_ORIGIN
   }, [])
 
   const sharePdfQrUrl = useMemo(() => {
@@ -671,7 +672,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
           generatedBy: tree.pdfBranding.generatedBy,
         },
         fileName: safeName,
-        qrTargetUrl: sharePdfQrUrl,
+        qrTargetUrl: sharePdfQrUrl ?? `${sharePublicOrigin}/stage-builder`,
       })
     } catch (e) {
       console.error(e)

@@ -13,11 +13,11 @@ describe('resolvePublicOriginFromEnv', () => {
     expect(resolvePublicOriginFromEnv('https://fallback.test')).toBe('https://example.com')
   })
 
-  it('uses VERCEL_PROJECT_PRODUCTION_URL without team slug when override unset', () => {
+  it('maps legacy production hostname to canonical custom domain when override unset', () => {
     vi.stubEnv('VITE_SHARE_PUBLIC_ORIGIN', '')
     vi.stubEnv('VERCEL_PROJECT_PRODUCTION_URL', 'stage-builder.vercel.app')
     vi.stubEnv('VERCEL_URL', 'stage-builder-git-main-user-projects.vercel.app')
-    expect(resolvePublicOriginFromEnv('')).toBe('https://stage-builder.vercel.app')
+    expect(resolvePublicOriginFromEnv('')).toBe('https://shooters-tools.com')
   })
 
   it('falls back to VERCEL_URL then request host', () => {
@@ -32,5 +32,12 @@ describe('resolvePublicOriginFromEnv', () => {
     vi.stubEnv('VERCEL_PROJECT_PRODUCTION_URL', '')
     vi.stubEnv('VERCEL_URL', '')
     expect(resolvePublicOriginFromEnv('http://localhost:5173')).toBe('http://localhost:5173')
+  })
+
+  it('rewrites legacy production origin when passed only as request fallback', () => {
+    vi.stubEnv('VITE_SHARE_PUBLIC_ORIGIN', '')
+    vi.stubEnv('VERCEL_PROJECT_PRODUCTION_URL', '')
+    vi.stubEnv('VERCEL_URL', '')
+    expect(resolvePublicOriginFromEnv('https://stage-builder.vercel.app')).toBe('https://shooters-tools.com')
   })
 })
