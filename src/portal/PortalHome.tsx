@@ -36,6 +36,12 @@ export function PortalHome() {
         <p className="portal-home__card-desc">{p.stageBuilderDesc}</p>
         <p className="portal-home__card-cta">{p.openStageBuilder} →</p>
       </Link>
+      <div className="portal-home__demo">
+        <Link to="/ro-helper/demo" className="portal-home__demo-link">
+          {p.roHelperDemoCta} →
+        </Link>
+        <p className="portal-home__demo-desc">{p.roHelperDemoLead}</p>
+      </div>
     </div>
   )
 }

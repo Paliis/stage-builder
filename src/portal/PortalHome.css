@@ -97,3 +97,28 @@
   font-weight: 600;
   color: var(--accent);
 }
+
+.portal-home__demo {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.portal-home__demo-link {
+  display: inline-block;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.portal-home__demo-link:hover {
+  text-decoration: underline;
+}
+
+.portal-home__demo-desc {
+  margin: 0.4rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--text);
+}

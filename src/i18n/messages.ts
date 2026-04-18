@@ -326,6 +326,22 @@ export type MessageTree = {
     stageBuilderTitle: string
     stageBuilderDesc: string
     openStageBuilder: string
+    roHelperDemoCta: string
+    roHelperDemoLead: string
+  }
+  /** `/ro-helper/demo` — UI prototype for one RO Helper article */
+  roHelperDemo: {
+    pageTitle: string
+    ribbon: string
+    backHome: string
+    categorySafety: string
+    metaTemplate: string
+    rulesCta: string
+    draftBadge: string
+    disclaimerTitle: string
+    disclaimerBody: string
+    toggleFpsuLabel: string
+    toggleFpsuHint: string
   }
   footer: {
     feedbackHeading: string
@@ -718,6 +734,26 @@ export const ukMessages: MessageTree = {
     stageBuilderDesc:
       '\u041c\u0435\u0442\u0440\u0438\u0447\u043d\u0438\u0439 \u043f\u043b\u0430\u043d, 3D, \u0431\u0440\u0438\u0444\u0456\u043d\u0433, PDF, \u0444\u0430\u0439\u043b\u0438 \u0432\u043f\u0440\u0430\u0432.',
     openStageBuilder: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Stage Builder',
+    roHelperDemoCta: 'RO Helper: \u043f\u0440\u0438\u043a\u043b\u0430\u0434 \u043a\u0430\u0440\u0442\u043a\u0438 (\u0434\u0435\u043c\u043e)',
+    roHelperDemoLead:
+      '\u041c\u0430\u043a\u0435\u0442 \u0441\u0442\u0430\u0442\u0442\u0456 \u0431\u0435\u0437\u043f\u0435\u043a\u0430 \u2014 SOS-\u043a\u043e\u043b\u044c\u043e\u0440, \u043c\u0435\u0442\u0430, \u0434\u0438\u0441\u043a\u043b\u0435\u0439\u043c\u0435\u0440, \u0448\u0430\u0440 \u0424\u041f\u0421\u0423.',
+  },
+  roHelperDemo: {
+    pageTitle: 'RO Helper \u2014 \u0434\u0435\u043c\u043e \u043a\u0430\u0440\u0442\u043a\u0438',
+    ribbon:
+      '\u0426\u0435 \u043d\u0435 \u043f\u0440\u043e\u0434\u0430\u043a\u0448\u043d-\u043c\u043e\u0434\u0443\u043b\u044c. \u041f\u0435\u0440\u0435\u0433\u043b\u044f\u0434 \u043c\u0430\u043a\u0435\u0442\u0443 UX \u0434\u043b\u044f \u043e\u0434\u043d\u0456\u0454\u0457 \u0441\u0442\u0430\u0442\u0442\u0456 (break-180 / handgun).',
+    backHome: '\u041d\u0430 \u0433\u043e\u043b\u043e\u0432\u043d\u0443',
+    categorySafety: 'Safety / DQ',
+    metaTemplate:
+      '\u041a\u0430\u0440\u0442\u043a\u0430 {{cardId}} \u00b7 handgun \u00b7 IPSC {{edition}} \u00b7 \u00a7{{ruleRef}}',
+    rulesCta: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u043f\u0440\u0430\u0432\u0438\u043b\u0430 IPSC (\u043f\u0435\u0440\u0432\u0438\u043d\u043d\u0438\u043a)',
+    draftBadge: 'DRAFT',
+    disclaimerTitle: '\u0412\u0430\u0436\u043b\u0438\u0432\u043e',
+    disclaimerBody:
+      'RO Helper / Shooters Tools \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u044e\u0454 \u043e\u0444\u0456\u0446\u0456\u0439\u043d\u0456 \u043f\u0440\u0430\u0432\u0438\u043b\u0430 IPSC \u0447\u0438 \u0440\u0456\u0448\u0435\u043d\u043d\u044f Range Master. \u041f\u0435\u0440\u0435\u0432\u0456\u0440\u044f\u0439\u0442\u0435 \u043f\u0443\u043d\u043a\u0442\u0438 \u0437\u0430 PDF \u0432\u0430\u0448\u043e\u0457 \u0434\u0438\u0441\u0446\u0438\u043f\u043b\u0456\u043d\u0438.',
+    toggleFpsuLabel: '\u041f\u043e\u043a\u0430\u0437\u0443\u0432\u0430\u0442\u0438 \u0448\u0430\u0440 \u00ab\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u043e (\u0424\u041f\u0421\u0423)\u00bb',
+    toggleFpsuHint:
+      '\u0423 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0456 \u0446\u0435 \u043d\u0435\u0437\u0430\u043b\u0435\u0436\u043d\u043e \u0432\u0456\u0434 UI \u043c\u043e\u0432\u0438 (\u0434\u0438\u0432. RO_HELPER_V0 \u00a74).',
   },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
@@ -1095,6 +1131,23 @@ export const enMessages: MessageTree = {
     stageBuilderTitle: 'Stage Builder',
     stageBuilderDesc: 'Metric plan, 3D, briefing, PDF, stage files.',
     openStageBuilder: 'Open Stage Builder',
+    roHelperDemoCta: 'RO Helper: article preview (demo)',
+    roHelperDemoLead: 'UX mock for one safety article — SOS colour, meta, disclaimer, FPSU layer toggle.',
+  },
+  roHelperDemo: {
+    pageTitle: 'RO Helper — card demo',
+    ribbon:
+      'This is not the production module. Preview UX for a single article (break-180 / handgun).',
+    backHome: 'Home',
+    categorySafety: 'Safety / DQ',
+    metaTemplate: 'Card {{cardId}} · handgun · IPSC {{edition}} · §{{ruleRef}}',
+    rulesCta: 'Open IPSC rules (primary source)',
+    draftBadge: 'DRAFT',
+    disclaimerTitle: 'Important',
+    disclaimerBody:
+      'RO Helper / Shooters Tools does not replace official IPSC rules or Range Master decisions. Always verify against the PDF for your discipline and edition.',
+    toggleFpsuLabel: 'Show “Local (FPSU)” layer',
+    toggleFpsuHint: 'In the product this will be independent of article language (see RO_HELPER_V0 §4).',
   },
   footer: {
     feedbackHeading: 'Feedback',

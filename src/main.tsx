@@ -12,6 +12,7 @@ import { ShareStageRoute } from './share/ShareStageRoute'
 import './index.css'
 import App from './App.tsx'
 import { PortalHome } from './portal/PortalHome'
+import { RoHelperCardDemo } from './portal/RoHelperCardDemo'
 
 hydrateSessionDraft()
 
@@ -29,6 +30,7 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<PortalHome />} />
+          <Route path="/ro-helper/demo" element={<RoHelperCardDemo />} />
           <Route path="/stage-builder" element={<App />} />
           <Route path="/publish-policy" element={<PublishPolicyRoute />} />
           <Route path="/v/:shareId" element={<ShareStageRoute mode="view" />} />

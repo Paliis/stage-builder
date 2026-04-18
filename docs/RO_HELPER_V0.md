@@ -226,6 +226,7 @@ status: draft|reviewed|published
 - **Код:** рекомендовано `src/features/ro-helper/` (lazy route); не імпортувати внутрішні модулі **stage-builder** без контракту ([PORTAL_PLAN.md](./PORTAL_PLAN.md) §2.3).
 - **Контент:** Markdown; для **офлайн PWA** бажано **імпорт у бандл** (або згенерований індекс при збірці). Файли лише в `public/*.md` з `fetch` **можуть** не потрапити в Workbox precache — див. [TECH.md](./TECH.md) та `vite.config.ts` (`globPatterns`).
 - **Рендер:** легкий MD → HTML (бібліотека на вибір на етапі імплементації).
+- **Прототип UI однієї картки (репозиторій Stage Builder):** маршрут **`/ro-helper/demo`** — статичний макет (SOS-колір `safety`, мета, дисклеймер, перемикач шару «Локально (ФПСУ)») на прикладі `break-180` / handgun; не замінює майбутній lazy-модуль `/ro-helper`.
 
 ---
 
