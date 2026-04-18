@@ -65,12 +65,12 @@ C88,penalty-in-lieu,pcc,penalties,Penalty in lieu (RM),Штраф замість
 C89,penalty-in-lieu,rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C90,penalty-in-lieu,mini_rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C91,penalty-in-lieu,shotgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C92,re-engage-same-location,handgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C92,re-engage-same-location,handgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C93,re-engage-same-location,pcc,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C94,re-engage-same-location,rifle,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C95,re-engage-same-location,mini_rifle,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C96,re-engage-same-location,shotgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C97,walkthrough-interference,handgun,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C97,walkthrough-interference,handgun,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C98,walkthrough-interference,pcc,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C99,walkthrough-interference,rifle,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C100,walkthrough-interference,mini_rifle,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,todo,todo,
@@ -78,17 +78,17 @@ C101,walkthrough-interference,shotgun,penalties,Walkthrough violations,Пору�
 C102,burst-or-automatic-fire,pcc,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,todo,todo,pcc/rifle/mini_rifle only; 10.2.12
 C103,burst-or-automatic-fire,rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,todo,todo,pcc/rifle/mini_rifle only; 10.2.12
 C104,burst-or-automatic-fire,mini_rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,todo,todo,pcc/rifle/mini_rifle only; 10.2.12
-C105,break-180,handgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
+C105,break-180,handgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C106,break-180,pcc,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
 C107,break-180,rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
 C108,break-180,mini_rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
 C109,break-180,shotgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
-C110,accidental-discharge,handgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
+C110,accidental-discharge,handgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C111,accidental-discharge,pcc,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
 C112,accidental-discharge,rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
 C113,accidental-discharge,mini_rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
 C114,accidental-discharge,shotgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
-C115,trigger-finger,handgun,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,
+C115,trigger-finger,handgun,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C116,trigger-finger,pcc,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,
 C117,trigger-finger,rifle,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,
 C118,trigger-finger,mini_rifle,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,

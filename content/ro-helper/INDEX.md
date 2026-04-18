@@ -17,4 +17,8 @@
 | C77     | procedural-cap        | handgun    | penalties | draft     | draft     | false               | —        | **10.2.3**; чернетка — рев’ю з PDF. |
 | C82     | cooper-tunnel         | handgun    | penalties | draft     | draft     | false               | —        | **10.2.5**; чернетка — рев’ю з PDF. |
 | C87     | penalty-in-lieu       | handgun    | penalties | draft     | draft     | false               | —        | **10.2.10** (RM); чернетка — рев’ю з PDF. |
+| C92     | re-engage-same-location | handgun    | penalties | draft     | draft     | false               | —        | **10.2.9**; чернетка — рев’ю з PDF Jan 2026. |
+| C97     | walkthrough-interference | handgun    | penalties | draft     | draft     | false               | —        | **8.7.2**, **8.7.3**; чернетка — рев’ю з PDF. |
 | C105    | break-180             | handgun    | safety    | draft     | draft     | false               | —        | Frontmatter aligned with RO_HELPER_V0 §2.2; pin `primary_url` to official Handgun PDF when URL is registered. |
+| C110    | accidental-discharge  | handgun    | safety    | draft     | draft     | false               | —        | **10.4** (AD / DQ); чернетка — рев’ю з PDF. |
+| C115    | trigger-finger        | handgun    | safety    | draft     | draft     | false               | —        | **10.5.9–10.5.11**; чернетка — рев’ю з PDF. |
