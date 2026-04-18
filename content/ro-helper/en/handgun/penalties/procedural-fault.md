@@ -10,7 +10,7 @@ ipsc_edition: "Jan 2026"
 ipsc_refs:
   - rule: "10.1"
     note: "General procedural penalties (check 10.1.1–10.1.2 in Handgun PDF)"
-primary_url: "https://www.ipsc.org/rules"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 fpsu_refs: []
 fpsu_delta_verified: false
 reviewer: ""
@@ -21,7 +21,7 @@ status: draft
 
 ## What this is
 
-A **procedural penalty** applies when the competitor violates **procedure** for the **course of fire (COF)** or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In Handgun, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical Handgun guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.
+A **procedural penalty** applies when the competitor violates **procedure** for the **course of fire (COF)** or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In the **IPSC Handgun Competition Rules**, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical **Handgun** guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.
 
 ## What the Range Officer (RO) does
 
@@ -34,7 +34,7 @@ A **procedural penalty** applies when the competitor violates **procedure** for 
 ## IPSC (Jan 2026)
 
 - **10.1** frames **general procedural penalties** for procedure / briefing breaches when no other detailed penalty clause applies.
-- How many procedurals apply per unit of fault (e.g. per **shot** vs per **episode**) and any exceptions come **only** from the current **Handgun** PDF for your edition (**10.1.1**, **10.1.2**, etc.).
+- How many procedurals apply per unit of fault (e.g. per **shot** vs per **episode**) and any exceptions come **only** from the official **IPSC Handgun Competition Rules** PDF for your edition (this card uses **Jan 2026**), **Chapter 10** (**10.1.1**, **10.1.2**, etc.).
 - Any **cap** on procedurals for a single **course of fire (COF)** (if the rules provide one) is a separate topic (**10.2.3**); this card focuses on **whether** a procedural is due and **how many** apply per the primary source.
 
 ## Local (FPSU)

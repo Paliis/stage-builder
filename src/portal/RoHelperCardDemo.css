@@ -169,12 +169,37 @@
   opacity: 0.5;
 }
 
-.ro-helper-demo__rules-link {
-  display: inline-block;
+.ro-helper-demo__rules-block {
   margin-bottom: 1rem;
+}
+
+.ro-helper-demo__rules-link {
+  display: inline;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--accent);
+  text-decoration: none;
+}
+
+.ro-helper-demo__rules-link:hover {
+  text-decoration: underline;
+}
+
+.ro-helper-demo__rules-link--hub {
+  font-weight: 500;
+}
+
+.ro-helper-demo__rules-sep {
+  font-size: 0.875rem;
+  color: var(--text);
+  opacity: 0.45;
+}
+
+.ro-helper-demo__rules-hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--text);
 }
 
 .ro-helper-demo__disclaimer {

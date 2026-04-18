@@ -337,7 +337,10 @@ export type MessageTree = {
     categorySafety: string
     categoryPenalties: string
     metaTemplate: string
-    rulesCta: string
+    /** Main CTA: {{edition}} {{ruleRef}} {{chapter}} */
+    rulesPdfCtaTemplate: string
+    rulesHubCta: string
+    rulesPdfHintTemplate: string
     draftBadge: string
     invalidCardBanner: string
     demoCardExamplesLabel: string
@@ -750,7 +753,11 @@ export const ukMessages: MessageTree = {
     categoryPenalties: '\u0428\u0442\u0440\u0430\u0444\u0438',
     metaTemplate:
       '\u041a\u0430\u0440\u0442\u043a\u0430 {{cardId}} \u00b7 {{discipline}} \u00b7 IPSC {{edition}} \u00b7 \u00a7{{ruleRef}}',
-    rulesCta: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u043f\u0440\u0430\u0432\u0438\u043b\u0430 IPSC (\u043f\u0435\u0440\u0432\u0438\u043d\u043d\u0438\u043a)',
+    rulesPdfCtaTemplate:
+      'PDF \u00abHandgun Competition Rules\u00bb ({{edition}}) \u2014 \u00a7{{ruleRef}} (\u0440\u043e\u0437\u0434\u0456\u043b {{chapter}})',
+    rulesHubCta: '\u0423\u0441\u0456 rule books \u043d\u0430 ipsc.org',
+    rulesPdfHintTemplate:
+      '\u0423 PDF \u0432\u0456\u0434\u043a\u0440\u0438\u0439\u0442\u0435 **Chapter {{chapter}}** / \u043f\u0440\u0430\u0432\u0438\u043b\u043e \u00a7{{ruleRef}} (\u0430\u0431\u043e \u043f\u043e\u0448\u0443\u043a \u0443 \u0440\u0438\u0434\u0435\u0440\u0456 \u0437\u0430 \u00ab{{ruleRef}}\u00bb).',
     draftBadge: 'DRAFT',
     invalidCardBanner:
       '\u041d\u0435\u0432\u0456\u0434\u043e\u043c\u0438\u0439 \u043d\u043e\u043c\u0435\u0440 \u0060{{requested}}\u0060. \u041f\u043e\u043a\u0430\u0437\u0430\u043d\u043e \u043a\u0430\u0440\u0442\u043a\u0443 \u0437\u0430 \u0437\u0430\u043c\u043e\u0432\u0447\u0443\u0432\u0430\u043d\u043d\u044f\u043c (C105).',
@@ -1150,7 +1157,10 @@ export const enMessages: MessageTree = {
     categorySafety: 'Safety / DQ',
     categoryPenalties: 'Penalties',
     metaTemplate: 'Card {{cardId}} · {{discipline}} · IPSC {{edition}} · §{{ruleRef}}',
-    rulesCta: 'Open IPSC rules (primary source)',
+    rulesPdfCtaTemplate: 'Handgun Competition Rules PDF ({{edition}}) — §{{ruleRef}} (Ch. {{chapter}})',
+    rulesHubCta: 'All rule books on ipsc.org',
+    rulesPdfHintTemplate:
+      'In the PDF, open **Chapter {{chapter}}** / Rule **{{ruleRef}}** (or use your viewer’s find for “{{ruleRef}}”).',
     draftBadge: 'DRAFT',
     invalidCardBanner: 'Unknown card id `{{requested}}`. Showing the default card (C105).',
     demoCardExamplesLabel: 'Available demo cards:',

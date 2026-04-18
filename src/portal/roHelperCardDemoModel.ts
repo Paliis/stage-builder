@@ -1,5 +1,16 @@
 /** Inline copy for `/ro-helper/demo?card=…` — sync with `content/ro-helper/...` when articles change. */
 
+/** Official IPSC downloads hub (per discipline). Avoid `/rules`, which resolves to Rules FAQs, not the rulebooks. */
+export const IPSC_RULE_BOOKS_HUB_URL = 'https://www.ipsc.org/ipsc-rules/rule-books/'
+
+/**
+ * English **IPSC Handgun Competition Rules, January 2026 Edition** (Final 29 Dec 2025).
+ * Same publication as linked from ipsc.org Rule Books; direct `wp-content` URL on ipsc.org is not stable in tooling,
+ * so this mirror is used for a reliable PDF link. If it breaks, download Handgun Jan 2026 from `IPSC_RULE_BOOKS_HUB_URL`.
+ */
+export const IPSC_HANDGUN_JAN_2026_PDF_EN_URL =
+  'https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf'
+
 export type DemoSection = {
   id: string
   heading: string
@@ -24,6 +35,10 @@ export type DemoCardDefinition = {
   ipscEdition: string
   /** Shown after § in the meta line */
   ruleRef: string
+  /** IPSC rulebook chapter number (string for display), e.g. Handgun Ch. 10 for penalties/DQ */
+  ipscChapter: string
+  /** Primary PDF for this card’s discipline/edition (English rulebook) */
+  primaryRulesPdfUrl: string
   contentByLocale: Record<'uk' | 'en', DemoCardBundle>
 }
 
@@ -44,7 +59,7 @@ const break180Uk: DemoCardBundle = {
         '**Зупинка:** негайно подати гучну й чітку команду **«STOP!»**.',
         '**Контроль зброї:** підійти до спортсмена лише якщо це безпечно; переконатися, що вогонь припинено й зброя спрямована безпечно.',
         '**Розряджання:** наказати розрядити зброю та показати порожній патронник (за процедурою правил / брифінгу).',
-        '**Вилучення:** після перевірки безпеки наказати вкласти зброю в кобуру. За **10.5.2** порушення кутів безпеки зазвичай тягне **дискваліфікацію (DQ)** — уточніть формулювання в актуальному PDF Handgun для вашої редакції. Після DQ за цим правилом спортсмен **не продовжує** матч.',
+        '**Вилучення:** після перевірки безпеки наказати вкласти зброю в кобуру. За **10.5.2** порушення кутів безпеки зазвичай тягне **дискваліфікацію (DQ)** — звірте формулювання в офіційному PDF **IPSC Handgun Competition Rules** вашої редакції (на картці — **Jan 2026**), **розділ 10**. Після DQ за цим правилом спортсмен **не продовжує** матч.',
         '**Документування:** повідомити **головного суддю змагань (RM)**; у **заліковому листі** зафіксувати **«DQ — п. 10.5.2 (180° / muzzle safe angles)»**, час і місце події.',
       ],
     },
@@ -96,7 +111,7 @@ const break180En: DemoCardBundle = {
         '**Stop:** Immediately issue a loud, clear **“STOP!”** command.',
         '**Control:** Approach the competitor (only if safe), ensure they cease fire, and hold the firearm in a safe direction.',
         '**Unload:** Direct the competitor to unload and show clear per match procedures.',
-        '**Holster / dismissal:** After safety is verified, order the firearm holstered. Under **10.5.2**, a muzzle-safe-angle breach is normally a **match disqualification (DQ)** — confirm exact wording in the current **Handgun** PDF. The competitor does not continue the match after a DQ under this rule.',
+        '**Holster / dismissal:** After safety is verified, order the firearm holstered. Under **10.5.2**, a muzzle-safe-angle breach is normally a **match disqualification (DQ)** — confirm exact wording in the official **IPSC Handgun Competition Rules** PDF for your edition (this card uses **Jan 2026**), **Chapter 10**. The competitor does not continue the match after a DQ under this rule.',
         '**Report:** Summon the **Range Master (RM)**. Record **“DQ — Rule 10.5.2 (180° / muzzle safe angles)”** on the **scoresheet**, with time and location of the violation.',
       ],
     },
@@ -138,7 +153,7 @@ const proceduralUk: DemoCardBundle = {
       id: 'what',
       heading: 'Що це',
       paragraphs: [
-        '**Процедурний штраф (procedural)** — це штрафні очки за порушення **процедури** **виконання вправи (COF)** або умов **письмового брифінгу до вправи (WSB)**, коли порушення **не** підпадає під інші спеціальні правила розділу про штрафи. У Handgun базову логіку задає **10.1** (підпункти **10.1.1–10.1.2** — уточнення за первинником). Типовий орієнтир для Handgun: **−10 залікових балів за один procedural** за подією, якщо правила не встановлюють інше для конкретного випадку.',
+        '**Процедурний штраф (procedural)** — це штрафні очки за порушення **процедури** **виконання вправи (COF)** або умов **письмового брифінгу до вправи (WSB)**, коли порушення **не** підпадає під інші спеціальні правила розділу про штрафи. У **IPSC Handgun Competition Rules** базову логіку задає **10.1** (підпункти **10.1.1–10.1.2** — уточнення за первинником). Типовий орієнтир для дисципліни **Handgun**: **−10 залікових балів за один procedural** за подією, якщо правила не встановлюють інше для конкретного випадку.',
       ],
     },
     {
@@ -157,7 +172,7 @@ const proceduralUk: DemoCardBundle = {
       heading: 'IPSC (Jan 2026)',
       bullets: [
         '**10.1** визначає рамку **загальних процедурних штрафів** за порушення процедури / **письмового брифінгу до вправи (WSB)**, коли не застосовується окремий пункт з детальним описом.',
-        'Деталі кількості procedural за одиницю події (наприклад, за **постріл** чи за **епізод**) і винятки — **лише з актуального PDF Handgun** вашої редакції (**10.1.1**, **10.1.2** тощо).',
+        'Деталі кількості procedural за одиницю події (наприклад, за **постріл** чи за **епізод**) і винятки — **лише з офіційного PDF** **IPSC Handgun Competition Rules** вашої редакції (на картці — **Jan 2026**), **розділ 10** (**10.1.1**, **10.1.2** тощо).',
         'Загальна **стеля** процедурних на **одному виконанні вправи (COF)** (якщо передбачена правилами) — окрема тема (**10.2.3**); на цій картці зосередьтесь на тому, **чи взагалі** нараховано procedural і скільки разів за подію згідно з первинником.',
       ],
     },
@@ -188,7 +203,7 @@ const proceduralEn: DemoCardBundle = {
       id: 'what',
       heading: 'What this is',
       paragraphs: [
-        'A **procedural penalty** applies when the competitor violates **procedure** for the **course of fire (COF)** or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In Handgun, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical Handgun guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.',
+        'A **procedural penalty** applies when the competitor violates **procedure** for the **course of fire (COF)** or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In the **IPSC Handgun Competition Rules**, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical **Handgun** guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.',
       ],
     },
     {
@@ -207,7 +222,7 @@ const proceduralEn: DemoCardBundle = {
       heading: 'IPSC (Jan 2026)',
       bullets: [
         '**10.1** frames **general procedural penalties** for procedure / briefing breaches when no other detailed penalty clause applies.',
-        'How many procedurals apply per unit of fault (e.g. per **shot** vs per **episode**) and any exceptions come **only** from the current **Handgun** PDF for your edition (**10.1.1**, **10.1.2**, etc.).',
+        'How many procedurals apply per unit of fault (e.g. per **shot** vs per **episode**) and any exceptions come **only** from the official **IPSC Handgun Competition Rules** PDF for your edition (this card uses **Jan 2026**), **Chapter 10** (**10.1.1**, **10.1.2**, etc.).',
         'Any **cap** on procedurals for a single **course of fire (COF)** (if the rules provide one) is a separate topic (**10.2.3**); this card focuses on **whether** a procedural is due and **how many** apply per the primary source.',
       ],
     },
@@ -239,6 +254,8 @@ export const DEMO_CARD_DEFS: Record<string, DemoCardDefinition> = {
     category: 'safety',
     ipscEdition: 'Jan 2026',
     ruleRef: '10.5.2',
+    ipscChapter: '10',
+    primaryRulesPdfUrl: IPSC_HANDGUN_JAN_2026_PDF_EN_URL,
     contentByLocale: { uk: break180Uk, en: break180En },
   },
   C26: {
@@ -248,6 +265,8 @@ export const DEMO_CARD_DEFS: Record<string, DemoCardDefinition> = {
     category: 'penalties',
     ipscEdition: 'Jan 2026',
     ruleRef: '10.1',
+    ipscChapter: '10',
+    primaryRulesPdfUrl: IPSC_HANDGUN_JAN_2026_PDF_EN_URL,
     contentByLocale: { uk: proceduralUk, en: proceduralEn },
   },
 }

@@ -57,7 +57,7 @@ ipsc_edition: "YYYY або label"   # заповнити при релізі
 ipsc_refs:
   - rule: "10.5.2"
     note: "опційно"
-primary_url: "https://…"   # офіційний PDF/HTML IPSC для цієї дисципліни
+primary_url: "https://…"   # прямий PDF/HTML **IPSC … Competition Rules** для цієї дисципліни та редакції (офіційна англ. назва документа — на титульній сторінці PDF). Каталог усіх PDF: **https://www.ipsc.org/ipsc-rules/rule-books/** (не плутати з `/ipsc-rules/rules-faqs/` — це FAQ, не rulebook). Якщо прямий `wp-content`-URL на ipsc.org нестабільний, допускається дзеркало того ж **Final**-файлу з регіонального сайту IPSC — з коментарем у PR / рев’ю.
 fpsu_refs: []              # опційно: локальні документи (URL / назва)
 fpsu_delta_verified: false # true лише після п. §4.1
 reviewer: "ім’я"           # хто підписав рев’ю цієї мовної версії
@@ -227,7 +227,7 @@ status: draft|reviewed|published
 - **Код:** рекомендовано `src/features/ro-helper/` (lazy route); не імпортувати внутрішні модулі **stage-builder** без контракту ([PORTAL_PLAN.md](./PORTAL_PLAN.md) §2.3).
 - **Контент:** Markdown; для **офлайн PWA** бажано **імпорт у бандл** (або згенерований індекс при збірці). Файли лише в `public/*.md` з `fetch` **можуть** не потрапити в Workbox precache — див. [TECH.md](./TECH.md) та `vite.config.ts` (`globPatterns`).
 - **Рендер:** легкий MD → HTML (бібліотека на вибір на етапі імплементації).
-- **Прототип UI картки (репозиторій Stage Builder):** маршрут **`/ro-helper/demo`** — макет картки (SOS за категорією, мета, дисклеймер, перемикач шару «Локально (ФПСУ)»). Номер картки в демо обирається query-параметром **`?card=`** (наприклад **`?card=C105`** — break-180 / safety; **`?card=C26`** — procedural / penalties); за замовчуванням без параметра — C105. Не замінює майбутній lazy-модуль `/ro-helper`.
+- **Прототип UI картки (репозиторій Stage Builder):** маршрут **`/ro-helper/demo`** — макет картки (SOS за категорією, мета, дисклеймер, перемикач шару «Локально (ФПСУ)»). Номер картки в демо обирається query-параметром **`?card=`** (наприклад **`?card=C105`** — break-180 / safety; **`?card=C26`** — procedural / penalties); за замовчуванням без параметра — C105. Посилання на первинник IPSC: **PDF** *IPSC Handgun Competition Rules* (Jan 2026) + каталог **Rule Books** на ipsc.org (не використовувати `/rules` → Rules FAQs як заміну rulebook). Не замінює майбутній lazy-модуль `/ro-helper`.
 
 ---
 

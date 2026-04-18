@@ -2,10 +2,13 @@ import { Fragment, type ReactNode, useId, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { formatTemplate } from '../i18n/format'
-import { DEMO_CARD_IDS, resolveDemoCard, type DemoSection } from './roHelperCardDemoModel'
+import {
+  DEMO_CARD_IDS,
+  IPSC_RULE_BOOKS_HUB_URL,
+  resolveDemoCard,
+  type DemoSection,
+} from './roHelperCardDemoModel'
 import './RoHelperCardDemo.css'
-
-const PRIMARY_RULES_URL = 'https://www.ipsc.org/rules'
 
 function renderBoldSegments(line: string): ReactNode[] {
   const parts = line.split(/(\*\*[^*]+\*\*)/g)
@@ -73,6 +76,25 @@ export function RoHelperCardDemo() {
     if (!invalidRequested) return null
     return formatTemplate(d.invalidCardBanner, { requested: requestedId })
   }, [d.invalidCardBanner, invalidRequested, requestedId])
+
+  const rulesPdfLine = useMemo(
+    () =>
+      formatTemplate(d.rulesPdfCtaTemplate, {
+        edition: def.ipscEdition,
+        ruleRef: def.ruleRef,
+        chapter: def.ipscChapter,
+      }),
+    [d.rulesPdfCtaTemplate, def.ipscChapter, def.ipscEdition, def.ruleRef],
+  )
+
+  const rulesHintLine = useMemo(
+    () =>
+      formatTemplate(d.rulesPdfHintTemplate, {
+        ruleRef: def.ruleRef,
+        chapter: def.ipscChapter,
+      }),
+    [d.rulesPdfHintTemplate, def.ipscChapter, def.ruleRef],
+  )
 
   const visibleSections = useMemo(
     () => bundle.sections.filter((s) => !s.onlyWhenFpsuOn || fpsuOn),
@@ -148,9 +170,28 @@ export function RoHelperCardDemo() {
           <span className="ro-helper-demo__sep">·</span>
           <span>{def.discipline}</span>
         </p>
-        <a className="ro-helper-demo__rules-link" href={PRIMARY_RULES_URL} target="_blank" rel="noopener noreferrer">
-          {d.rulesCta}
-        </a>
+        <div className="ro-helper-demo__rules-block">
+          <a
+            className="ro-helper-demo__rules-link"
+            href={def.primaryRulesPdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {rulesPdfLine}
+          </a>
+          <span className="ro-helper-demo__rules-sep" aria-hidden>
+            {' · '}
+          </span>
+          <a
+            className="ro-helper-demo__rules-link ro-helper-demo__rules-link--hub"
+            href={IPSC_RULE_BOOKS_HUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {d.rulesHubCta}
+          </a>
+          <p className="ro-helper-demo__rules-hint">{renderBoldSegments(rulesHintLine)}</p>
+        </div>
 
         <section className="ro-helper-demo__disclaimer" aria-label={d.disclaimerTitle}>
           <h3 className="ro-helper-demo__disclaimer-title">{d.disclaimerTitle}</h3>

@@ -9,7 +9,7 @@ ipsc_edition: "Jan 2026"
 ipsc_refs:
   - rule: "10.5.2"
     note: "Muzzle safe angles / 180° (Handgun)"
-primary_url: "https://www.ipsc.org/rules"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 fpsu_refs: []
 fpsu_delta_verified: false
 reviewer: ""
@@ -27,7 +27,7 @@ The “180-degree rule” is a fundamental IPSC safety principle. It requires th
 1. **Stop:** Immediately issue a loud, clear **“STOP!”** command.
 2. **Control:** Approach the competitor (only if safe), ensure they cease fire, and hold the firearm in a safe direction.
 3. **Unload:** Direct the competitor to unload and show clear per match procedures.
-4. **Holster / dismissal:** After safety is verified, order the firearm holstered. Under **10.5.2**, a muzzle-safe-angle breach is normally a **match disqualification (DQ)** — confirm exact wording in the current **Handgun** PDF. The competitor does not continue the match after a DQ under this rule.
+4. **Holster / dismissal:** After safety is verified, order the firearm holstered. Under **10.5.2**, a muzzle-safe-angle breach is normally a **match disqualification (DQ)** — confirm exact wording in the official **IPSC Handgun Competition Rules** PDF for your edition (this card uses **Jan 2026**), **Chapter 10**. The competitor does not continue the match after a DQ under this rule.
 5. **Report:** Summon the **Range Master (RM)**. Record **“DQ — Rule 10.5.2 (180° / muzzle safe angles)”** on the **scoresheet**, with time and location of the violation.
 
 ## IPSC (Jan 2026)
