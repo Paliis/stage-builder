@@ -8,7 +8,7 @@
 
 ## 1. Результат роботи (deliverables)
 
-1. Для **кожного** інстансу теми з [RO_HELPER_V0.md §8](./RO_HELPER_V0.md#8-повна-структура-контенту-категорії-та-статті-v0) по кожній з п’яти дисциплін (`handgun` \| `pcc` \| `rifle` \| `mini_rifle` \| `shotgun`) — **два** файли **`*.md`** (`locale: uk` та `locale: en`) з валідним **YAML frontmatter** ([§2.2](./RO_HELPER_V0.md#22-поля-контенту-рекомендований-frontmatter)): однаковий `slug`, `discipline`, `ipsc_refs`, узгоджені `primary_url` (зазвичай однакові для пари мов). Унікальний slug на дисципліну — див. [§6](./RO_HELPER_V0.md#6-дисципліни-види-стрільби-та-документи-ipsc) / інтро §8.
+1. Для **кожної** картки з [RO_HELPER_CARD_REGISTRY.md](./RO_HELPER_CARD_REGISTRY.md) (або узгодженого доповнення до неї) — **два** файли **`*.md`** (`locale: uk` та `locale: en`) з валідним **YAML frontmatter** ([§2.2](./RO_HELPER_V0.md#22-поля-контенту-рекомендований-frontmatter)): однакові `slug`, `discipline`, `category`, `card_id` (якщо призначено), `ipsc_refs`, узгоджені `primary_url` (зазвичай однакові для пари мов). Одна стаття = **`slug` + `discipline`**; див. також [§5](./RO_HELPER_V0.md#5-інформаційна-архітектура-та-url).
 2. Звірені пункти IPSC з **правильного** PDF для **`discipline`** (завжди той rulebook, який відповідає полю `discipline`; не змішувати документи).
 3. Блок **«Локально (ФПСУ)»** — лише якщо виконано [RO_HELPER_V0.md §4.1](./RO_HELPER_V0.md#41-хто-фіксує-відмінності-фпсу-від-ipsc); інакше розділ відсутній, `fpsu_delta_verified: false`.
 4. Рядок у **`content/ro-helper/INDEX.md`**: slug, `discipline`, статуси **uk** / **en** окремо, `fpsu_delta_verified`, рев’юер, дати.
@@ -23,7 +23,7 @@
 |------|--------|
 | Офіційні PDF / сторінки **IPSC** | П’ять rulebook: Handgun, PCC, Rifle, Mini Rifle, Shotgun — по одному первиннику на `discipline` |
 | Документи **ФПСУ** | Для верифікації відмінностей; без них — не писати блок ФПСУ |
-| Таблиця статей | [RO_HELPER_V0.md §8](./RO_HELPER_V0.md#8-повна-структура-контенту-категорії-та-статті-v0) — базові назви тем + суфікс дисципліни; стабільний `slug` не змінювати без узгодження |
+| Таблиця статей | [RO_HELPER_CARD_REGISTRY.md](./RO_HELPER_CARD_REGISTRY.md) + за потреби [RO_HELPER_V0.md §8](./RO_HELPER_V0.md#8-повна-структура-контенту-категорії-та-статті-v0); стабільні `slug` і `card_id` не змінювати без узгодження |
 | Рев’юер | Підписує **обидві** мовні версії (можна одна дата, якщо рев’ю послідовне) |
 | Хто порівнює ФПСУ з IPSC | **Той самий рев’юер** або узгоджений консультант; див. §4.1 спеки |
 
@@ -37,14 +37,18 @@
 content/ro-helper/
   INDEX.md
   uk/
-    safety/
-      break-180.md
+    handgun/
+      penalties/
+        foot-fault.md
     ...
   en/
-    safety/
-      break-180.md
+    handgun/
+      penalties/
+        foot-fault.md
     ...
 ```
+
+(Рекомендація: перший рівень після мови = `discipline`, далі `category`, файл = `slug.md` — щоб один `slug` не колізив між дисциплінами.)
 
 Після появи `src/features/ro-helper/` шлях можна перенести або залишити `content/ro-helper` як джерело правди — узгодити з розробкою в одному коміті.
 
@@ -138,10 +142,10 @@ category: {category}
 
 **ipsc_edition:** зафіксувати окремо для handgun / pcc / rifle / mini_rifle / shotgun.
 
-| slug | discipline | category | status_uk | status_en | fpsu_delta_verified | reviewer | notes |
-|------|------------|----------|-----------|-------------|---------------------|----------|-------|
-| break-180-handgun | handgun | safety | draft | draft | false | — | |
-| break-180-pcc | pcc | safety | draft | draft | false | — | |
+| card_id | slug | discipline | category | status_uk | status_en | fpsu_delta_verified | reviewer | notes |
+|---------|------|------------|----------|-----------|-------------|---------------------|----------|-------|
+| C31 | foot-fault | handgun | penalties | draft | draft | false | — | |
+| C32 | foot-fault | rifle | penalties | draft | draft | false | — | |
 ```
 
 Оновлювати після рев’ю **кожної** мови; `fpsu_delta_verified` — лише `true` після §4.1 спеки.
