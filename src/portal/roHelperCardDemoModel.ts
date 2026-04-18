@@ -34,25 +34,25 @@ const break180Uk: DemoCardBundle = {
       id: 'what',
       heading: 'Що це',
       paragraphs: [
-        'Правило «180 градусів» — фундаментальний принцип безпечного поводження зі зброєю в IPSC. **Ствол зброї** має залишатися **спрямованим** у межах безпечного сектора (зазвичай — у бік мішеней відносно лінії валу). Якщо **напрямок стволу** перетинає умовну межу, паралельну задньому валу (або межі, визначені в письмовому брифінгу, WSB), це критична загроза безпеці.',
+        'Правило «180 градусів» — фундаментальний принцип безпечного поводження зі зброєю в IPSC. **Ствол зброї** має залишатися **спрямованим** у межах безпечного сектора (зазвичай — у бік мішеней відносно лінії валу). Якщо **напрямок стволу** перетинає умовну межу, паралельну задньому валу (або межі, визначені в **письмовому брифінгу до вправи (WSB)**), це критична загроза безпеці.',
       ],
     },
     {
       id: 'ro',
-      heading: 'Що робить RO',
+      heading: 'Що робить суддя змагань (RO)',
       ordered: [
         '**Зупинка:** негайно подати гучну й чітку команду **«STOP!»**.',
-        '**Контроль зброї:** підійти до стрільця лише якщо це безпечно; переконатися, що вогонь припинено й зброя спрямована безпечно.',
+        '**Контроль зброї:** підійти до спортсмена лише якщо це безпечно; переконатися, що вогонь припинено й зброя спрямована безпечно.',
         '**Розряджання:** наказати розрядити зброю та показати порожній патронник (за процедурою правил / брифінгу).',
-        '**Вилучення:** після перевірки безпеки наказати вкласти зброю в кобуру. За **10.5.2** порушення кутів безпеки зазвичай тягне **дискваліфікацію (DQ)** — уточніть формулювання в актуальному PDF Handgun для вашої редакції. Після DQ за цим правилом стрілець **не продовжує** матч.',
-        '**Документування:** повідомити Range Master; у скоршиті зафіксувати **«DQ — п. 10.5.2 (180° / muzzle safe angles)»**, час і місце події.',
+        '**Вилучення:** після перевірки безпеки наказати вкласти зброю в кобуру. За **10.5.2** порушення кутів безпеки зазвичай тягне **дискваліфікацію (DQ)** — уточніть формулювання в актуальному PDF Handgun для вашої редакції. Після DQ за цим правилом спортсмен **не продовжує** матч.',
+        '**Документування:** повідомити **головного суддю змагань (RM)**; у **заліковому листі** зафіксувати **«DQ — п. 10.5.2 (180° / muzzle safe angles)»**, час і місце події.',
       ],
     },
     {
       id: 'ipsc',
       heading: 'IPSC (Jan 2026)',
       paragraphs: [
-        'За **10.5.2** DQ застосовується, якщо у будь-який момент під час виконання вправи **ствол зброї** **спрямований** «назад» (далі ніж на **90°** від медіанної перпендикулярної лінії до заднього валу) або за межі кутів, **явно вказаних у WSB**.',
+        'За **10.5.2** DQ застосовується, якщо у будь-який момент під час **виконання вправи (COF)** **ствол зброї** **спрямований** «назад» (далі ніж на **90°** від медіанної перпендикулярної лінії до заднього валу) або за межі кутів, **явно вказаних у письмовому брифінгу до вправи (WSB)**.',
       ],
       bullets: [
         'Правило діє також під час переміщення, усунення затримок і перезаряджання.',
@@ -71,7 +71,7 @@ const break180Uk: DemoCardBundle = {
       id: 'mistakes',
       heading: 'Типові помилки',
       bullets: [
-        '**«Розслаблена рука»:** після серії по мішені збоку стрілець розвертає корпус для руху, а рука з пістолетом «відстає» — **ствол зброї** перетинає лінію 180°.',
+        '**«Розслаблена рука»:** після серії по мішені збоку спортсмен розвертає корпус для руху, а рука з пістолетом «відстає» — **ствол зброї** перетинає лінію 180°.',
         '**Перезаряджання під час руху:** пістолет піднімають занадто високо біля обличчя й розвертають боком; у поєднанні з кроком **ствол** легко виходить за межі сектора.',
         '**Маніпуляції з кобурою:** «наосліп» після команд завершення, коли **ствол зброї** задирається вгору й назад.',
       ],
@@ -86,25 +86,25 @@ const break180En: DemoCardBundle = {
       id: 'what',
       heading: 'What this is',
       paragraphs: [
-        'The “180-degree rule” is a fundamental IPSC safety principle. It requires the muzzle to stay **downrange** within the **designated safe sector**. If the muzzle crosses the imaginary line parallel to the backstop (or boundaries specified in the briefing), that is a **critical safety violation**.',
+        'The “180-degree rule” is a fundamental IPSC safety principle. It requires the muzzle to stay **downrange** within the **designated safe sector**. If the muzzle crosses the imaginary line parallel to the backstop (or boundaries specified in the **Written Stage Briefing (WSB)**), that is a **critical safety violation**.',
       ],
     },
     {
       id: 'ro',
-      heading: 'What the RO does',
+      heading: 'What the Range Officer (RO) does',
       ordered: [
         '**Stop:** Immediately issue a loud, clear **“STOP!”** command.',
         '**Control:** Approach the competitor (only if safe), ensure they cease fire, and hold the firearm in a safe direction.',
         '**Unload:** Direct the competitor to unload and show clear per match procedures.',
         '**Holster / dismissal:** After safety is verified, order the firearm holstered. Under **10.5.2**, a muzzle-safe-angle breach is normally a **match disqualification (DQ)** — confirm exact wording in the current **Handgun** PDF. The competitor does not continue the match after a DQ under this rule.',
-        '**Report:** Summon the Range Master. Record **“DQ — Rule 10.5.2 (180° / muzzle safe angles)”** on the scoresheet, with time and location of the violation.',
+        '**Report:** Summon the **Range Master (RM)**. Record **“DQ — Rule 10.5.2 (180° / muzzle safe angles)”** on the **scoresheet**, with time and location of the violation.',
       ],
     },
     {
       id: 'ipsc',
       heading: 'IPSC (Jan 2026)',
       paragraphs: [
-        'Per **10.5.2**, disqualification applies if, at any time during the course of fire, the competitor allows the muzzle to point rearwards (**further than 90°** from the median perpendicular line to the backstop), or outside **muzzle safe angles** specified in the **Written Stage Briefing (WSB)**.',
+        'Per **10.5.2**, disqualification applies if, at any time during the **course of fire (COF)**, the competitor allows the muzzle to point rearwards (**further than 90°** from the median perpendicular line to the backstop), or outside **muzzle safe angles** specified in the **Written Stage Briefing (WSB)**.',
       ],
       bullets: [
         'This applies during **movement**, **malfunction clearance**, and **reloading**.',
@@ -138,17 +138,17 @@ const proceduralUk: DemoCardBundle = {
       id: 'what',
       heading: 'Що це',
       paragraphs: [
-        '**Процедурний штраф (procedural)** — це штрафні очки за порушення **процедури** виконання вправи або умов **письмового брифінгу (WSB)**, коли порушення **не** підпадає під інші спеціальні правила розділу про штрафи. У Handgun базову логіку задає **10.1** (підпункти **10.1.1–10.1.2** — уточнення за первинником). Типовий орієнтир для Handgun: **−10 залікових балів за один procedural** за подією, якщо правила не встановлюють інше для конкретного випадку.',
+        '**Процедурний штраф (procedural)** — це штрафні очки за порушення **процедури** **виконання вправи (COF)** або умов **письмового брифінгу до вправи (WSB)**, коли порушення **не** підпадає під інші спеціальні правила розділу про штрафи. У Handgun базову логіку задає **10.1** (підпункти **10.1.1–10.1.2** — уточнення за первинником). Типовий орієнтир для Handgun: **−10 залікових балів за один procedural** за подією, якщо правила не встановлюють інше для конкретного випадку.',
       ],
     },
     {
       id: 'ro',
-      heading: 'Що робить RO',
+      heading: 'Що робить суддя змагань (RO)',
       ordered: [
-        '**Зафіксувати факт:** що саме зробив (або не зробив) стрілець і в який момент COF (відносно пострілів, позицій, перезарядження тощо).',
-        '**Звірити з WSB:** чи дійсно порушено **умови етапу** або загальні процедурні вимоги; за потреби уточнити у **CRO/RM**, якщо трактування неоднозначне.',
-        '**Застосувати штраф:** додати відповідну кількість **procedural(s)** на заліковому листі згідно з **10.1** та (за наявності) спеціальними пунктами для цього типу порушення.',
-        '**Пояснити стрільцю:** коротко, за який елемент COF нараховано procedural (без суперечки на лінії; оскарження — за процедурою **9.6**).',
+        '**Зафіксувати факт:** що саме зробив (або не зробив) спортсмен і в який момент **виконання вправи (COF)** (відносно пострілів, позицій, перезарядження тощо).',
+        '**Звірити з письмовим брифінгом до вправи (WSB):** чи дійсно порушено **умови вправи** (за текстом WSB) або загальні процедурні вимоги; за потреби звернутися до **старшого судді на лінії (CRO)** або **головного суддю змагань (RM)**, якщо трактування неоднозначне.',
+        '**Застосувати штраф:** додати відповідну кількість **procedural(s)** на **заліковому листі** згідно з **10.1** та (за наявності) спеціальними пунктами для цього типу порушення.',
+        '**Пояснити спортсмену:** коротко, за який елемент **виконання вправи (COF)** нараховано procedural (без суперечки на лінії; оскарження — за процедурою **9.6**).',
         '**Документувати:** запис має бути **чітким і перевірним** (наприклад, «1 procedural — п. 10.1 / заступ за лінією на постріл N» — формулювання після звірки з PDF).',
       ],
     },
@@ -156,9 +156,9 @@ const proceduralUk: DemoCardBundle = {
       id: 'ipsc',
       heading: 'IPSC (Jan 2026)',
       bullets: [
-        '**10.1** визначає рамку **загальних процедурних штрафів** за порушення процедури / брифінгу, коли не застосовується окремий пункт з детальним описом.',
+        '**10.1** визначає рамку **загальних процедурних штрафів** за порушення процедури / **письмового брифінгу до вправи (WSB)**, коли не застосовується окремий пункт з детальним описом.',
         'Деталі кількості procedural за одиницю події (наприклад, за **постріл** чи за **епізод**) і винятки — **лише з актуального PDF Handgun** вашої редакції (**10.1.1**, **10.1.2** тощо).',
-        'Загальна **стеля** процедурних на COF (якщо передбачена правилами) — окрема тема (**10.2.3**); на цій картці зосередьтесь на тому, **чи взагалі** нараховано procedural і скільки разів за подію згідно з первинником.',
+        'Загальна **стеля** процедурних на **одному виконанні вправи (COF)** (якщо передбачена правилами) — окрема тема (**10.2.3**); на цій картці зосередьтесь на тому, **чи взагалі** нараховано procedural і скільки разів за подію згідно з первинником.',
       ],
     },
     {
@@ -174,8 +174,8 @@ const proceduralUk: DemoCardBundle = {
       heading: 'Типові помилки',
       bullets: [
         '**Плутання з іншими штрафами:** наприклад, **заступ** — окремий пункт (**10.2.1**); не підміняйте його загальним «procedural», якщо правило явно вимагає іншого підходу.',
-        '**Занадто загальний запис у скоршиті:** «procedural» без прив’язки до пострілу / зони / умови WSB — потім неможливо перевірити або оскарити коректно.',
-        '**Подвійне покарання:** одна й та сама дія не повинна давати **два** штрафи за одним і тим самим правилом — перевіряйте логіку COF і текст WSB.',
+        '**Занадто загальний запис у заліковому листі:** «procedural» без прив’язки до пострілу / зони / умови **письмового брифінгу до вправи (WSB)** — потім неможливо перевірити або оскарити коректно.',
+        '**Подвійне покарання:** одна й та сама дія не повинна давати **два** штрафи за одним і тим самим правилом — перевіряйте логіку **виконання вправи (COF)** і текст **WSB**.',
       ],
     },
   ],
@@ -188,17 +188,17 @@ const proceduralEn: DemoCardBundle = {
       id: 'what',
       heading: 'What this is',
       paragraphs: [
-        'A **procedural penalty** applies when the competitor violates **procedure** for the course of fire or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In Handgun, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical Handgun guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.',
+        'A **procedural penalty** applies when the competitor violates **procedure** for the **course of fire (COF)** or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In Handgun, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical Handgun guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.',
       ],
     },
     {
       id: 'ro',
-      heading: 'What the RO does',
+      heading: 'What the Range Officer (RO) does',
       ordered: [
-        '**Capture the fact:** what the competitor did or failed to do, and when during the COF (relative to shots, positions, reloads, etc.).',
-        '**Check the WSB:** confirm the stage conditions or general procedural requirements were actually breached; involve **CRO/RM** if interpretation is unclear.',
+        '**Capture the fact:** what the competitor did or failed to do, and when during the **course of fire (COF)** (relative to shots, positions, reloads, etc.).',
+        '**Check the WSB:** confirm the stage conditions or general procedural requirements were actually breached; involve the **Chief Range Officer (CRO)** or **Range Master (RM)** if interpretation is unclear.',
         '**Apply the penalty:** add the correct number of **procedural(s)** on the scoresheet per **10.1** and any more specific rule that governs that breach.',
-        '**Brief the competitor:** state briefly which COF element triggered the procedural (no debate on the line; challenges follow **9.6**).',
+        '**Brief the competitor:** state briefly which element of the **COF** triggered the procedural (no debate on the line; challenges follow **9.6**).',
         '**Document clearly:** the entry must be **auditable** (for example, “1 procedural — 10.1 / foot fault on shot N” — adjust wording after verification against the PDF).',
       ],
     },
@@ -208,7 +208,7 @@ const proceduralEn: DemoCardBundle = {
       bullets: [
         '**10.1** frames **general procedural penalties** for procedure / briefing breaches when no other detailed penalty clause applies.',
         'How many procedurals apply per unit of fault (e.g. per **shot** vs per **episode**) and any exceptions come **only** from the current **Handgun** PDF for your edition (**10.1.1**, **10.1.2**, etc.).',
-        'Any **cap** on procedurals for the COF (if the rules provide one) is a separate topic (**10.2.3**); this card focuses on **whether** a procedural is due and **how many** apply per the primary source.',
+        'Any **cap** on procedurals for a single **course of fire (COF)** (if the rules provide one) is a separate topic (**10.2.3**); this card focuses on **whether** a procedural is due and **how many** apply per the primary source.',
       ],
     },
     {
@@ -225,7 +225,7 @@ const proceduralEn: DemoCardBundle = {
       bullets: [
         '**Wrong bucket:** e.g. a **foot fault** is anchored under **10.2.1** — do not relabel it as a vague “10.1 only” procedural if the rulebook assigns a specific treatment.',
         '**Vague scoresheet notes:** “procedural” with no link to shot / area / WSB condition makes verification and protests harder.',
-        '**Double punishment:** the same act should not produce **two** penalties under the same rule logic — re-read the COF and WSB.',
+        '**Double punishment:** the same act should not produce **two** penalties under the same rule logic — re-read the **COF** and **WSB**.',
       ],
     },
   ],

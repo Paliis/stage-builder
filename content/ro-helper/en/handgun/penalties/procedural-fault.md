@@ -21,21 +21,21 @@ status: draft
 
 ## What this is
 
-A **procedural penalty** applies when the competitor violates **procedure** for the course of fire or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In Handgun, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical Handgun guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.
+A **procedural penalty** applies when the competitor violates **procedure** for the **course of fire (COF)** or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In Handgun, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical Handgun guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.
 
-## What the RO does
+## What the Range Officer (RO) does
 
-1. **Capture the fact:** what the competitor did or failed to do, and when during the COF (relative to shots, positions, reloads, etc.).
-2. **Check the WSB:** confirm the stage conditions or general procedural requirements were actually breached; involve **CRO/RM** if interpretation is unclear.
+1. **Capture the fact:** what the competitor did or failed to do, and when during the **course of fire (COF)** (relative to shots, positions, reloads, etc.).
+2. **Check the WSB:** confirm the stage conditions or general procedural requirements were actually breached; involve the **Chief Range Officer (CRO)** or **Range Master (RM)** if interpretation is unclear.
 3. **Apply the penalty:** add the correct number of **procedural(s)** on the scoresheet per **10.1** and any more specific rule that governs that breach.
-4. **Brief the competitor:** state briefly which COF element triggered the procedural (no debate on the line; challenges follow **9.6**).
+4. **Brief the competitor:** state briefly which element of the **COF** triggered the procedural (no debate on the line; challenges follow **9.6**).
 5. **Document clearly:** the entry must be **auditable** (for example, “1 procedural — 10.1 / foot fault on shot N” — adjust wording after verification against the PDF).
 
 ## IPSC (Jan 2026)
 
 - **10.1** frames **general procedural penalties** for procedure / briefing breaches when no other detailed penalty clause applies.
 - How many procedurals apply per unit of fault (e.g. per **shot** vs per **episode**) and any exceptions come **only** from the current **Handgun** PDF for your edition (**10.1.1**, **10.1.2**, etc.).
-- Any **cap** on procedurals for the COF (if the rules provide one) is a separate topic (**10.2.3**); this card focuses on **whether** a procedural is due and **how many** apply per the primary source.
+- Any **cap** on procedurals for a single **course of fire (COF)** (if the rules provide one) is a separate topic (**10.2.3**); this card focuses on **whether** a procedural is due and **how many** apply per the primary source.
 
 ## Local (FPSU)
 
@@ -45,4 +45,4 @@ For matches under **FPSU / UPSF** rules, numbering and penalty mechanics may dif
 
 - **Wrong bucket:** e.g. a **foot fault** is anchored under **10.2.1** — do not relabel it as a vague “10.1 only” procedural if the rulebook assigns a specific treatment.
 - **Vague scoresheet notes:** “procedural” with no link to shot / area / WSB condition makes verification and protests harder.
-- **Double punishment:** the same act should not produce **two** penalties under the same rule logic — re-read the COF and WSB.
+- **Double punishment:** the same act should not produce **two** penalties under the same rule logic — re-read the **COF** and **WSB**.
