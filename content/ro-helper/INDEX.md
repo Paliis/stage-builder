@@ -17,7 +17,11 @@
 | C36     | failure-to-engage     | handgun    | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7**; залік і штраф звіряти разом у PDF. |
 | C37     | failure-to-engage     | rifle      | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7** (Rifle); залік і штраф разом з PDF. |
 | C38     | failure-to-engage     | pcc        | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7** (PCC); залік і штраф разом з PDF. |
+| C39     | failure-to-engage     | mini_rifle | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7** (Mini Rifle); залік і штраф разом з PDF. |
+| C40     | failure-to-engage     | shotgun    | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7** (Shotgun); залік і штраф разом з PDF. |
 | C41     | significant-advantage | handgun    | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2**; чернетка — рев’ю з PDF. |
+| C42     | significant-advantage | rifle      | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2** (Rifle); чернетка — рев’ю з PDF. |
+| C43     | significant-advantage | pcc        | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2** (PCC); чернетка — рев’ю з PDF. |
 | C46     | creeping              | handgun    | penalties | draft     | draft     | false               | —        | **10.2.6**; чернетка — рев’ю з PDF. |
 | C51     | mandatory-reload      | handgun    | penalties | draft     | draft     | false               | —        | **10.2.4**; чернетка — рев’ю з PDF Jan 2026. |
 | C56     | mandatory-position    | handgun    | penalties | draft     | draft     | false               | —        | **10.2.2**, **10.2.8**; чернетка — рев’ю з PDF. |

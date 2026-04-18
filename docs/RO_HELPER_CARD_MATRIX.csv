@@ -12,11 +12,11 @@ C35,foot-fault,shotgun,penalties,Foot fault / fault line,Заступ / ліні
 C36,failure-to-engage,handgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C37,failure-to-engage,rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
 C38,failure-to-engage,pcc,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C39,failure-to-engage,mini_rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C40,failure-to-engage,shotgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C39,failure-to-engage,mini_rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
+C40,failure-to-engage,shotgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
 C41,significant-advantage,handgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C42,significant-advantage,rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C43,significant-advantage,pcc,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C42,significant-advantage,rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
+C43,significant-advantage,pcc,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
 C44,significant-advantage,mini_rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C45,significant-advantage,shotgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C46,creeping,handgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
