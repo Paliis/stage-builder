@@ -72,7 +72,11 @@
 | C91     | penalty-in-lieu       | shotgun    | penalties | draft     | draft     | false               | —        | **10.2.10** (Shotgun, RM); чернетка — рев’ю з PDF. |
 | C92     | re-engage-same-location | handgun    | penalties | draft     | draft     | false               | —        | **10.2.9**; чернетка — рев’ю з PDF Jan 2026. |
 | C93     | re-engage-same-location | pcc        | penalties | draft     | draft     | false               | —        | **10.2.9** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C94     | re-engage-same-location | rifle      | penalties | draft     | draft     | false               | —        | **10.2.9** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C95     | re-engage-same-location | mini_rifle | penalties | draft     | draft     | false               | —        | **10.2.9** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C96     | re-engage-same-location | shotgun    | penalties | draft     | draft     | false               | —        | **10.2.9** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C97     | walkthrough-interference | handgun    | penalties | draft     | draft     | false               | —        | **8.7.2**, **8.7.3**; чернетка — рев’ю з PDF. |
+| C98     | walkthrough-interference | pcc        | penalties | draft     | draft     | false               | —        | **8.7.2**, **8.7.3** (PCC); чернетка — рев’ю з PDF. |
 | C105    | break-180             | handgun    | safety    | draft     | draft     | false               | —        | Frontmatter aligned with RO_HELPER_V0 §2.2; pin `primary_url` to official Handgun PDF when URL is registered. |
 | C110    | accidental-discharge  | handgun    | safety    | draft     | draft     | false               | —        | **10.4** (AD / DQ); чернетка — рев’ю з PDF. |
 | C115    | trigger-finger        | handgun    | safety    | draft     | draft     | false               | —        | **10.5.9–10.5.11**; чернетка — рев’ю з PDF. |
