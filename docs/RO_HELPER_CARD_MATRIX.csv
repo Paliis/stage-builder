@@ -2,11 +2,11 @@
 C26,procedural-fault,handgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo
 C27,procedural-fault,rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
 C28,procedural-fault,pcc,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C29,procedural-fault,mini_rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C30,procedural-fault,shotgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C29,procedural-fault,mini_rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
+C30,procedural-fault,shotgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
 C31,foot-fault,handgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C32,foot-fault,rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
-C33,foot-fault,pcc,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
+C32,foot-fault,rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
+C33,foot-fault,pcc,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
 C34,foot-fault,mini_rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
 C35,foot-fault,shotgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
 C36,failure-to-engage,handgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026

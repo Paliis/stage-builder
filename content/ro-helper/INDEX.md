@@ -7,7 +7,11 @@
 | C26     | procedural-fault      | handgun    | penalties | draft     | draft     | false               | —        | HG **10.1** (+10.1.1–10.1.2); control hint −10 pts/procedural — verify PDF; pin `primary_url` to Handgun PDF when registered. |
 | C27     | procedural-fault      | rifle      | penalties | draft     | draft     | false               | —        | **10.1** (Rifle); очки за procedural — звірити з PDF Jan 2026. |
 | C28     | procedural-fault      | pcc        | penalties | draft     | draft     | false               | —        | **10.1** (PCC); очки за procedural — звірити з PDF Jan 2026. |
+| C29     | procedural-fault      | mini_rifle | penalties | draft     | draft     | false               | —        | **10.1** (Mini Rifle); очки за procedural — звірити з PDF Jan 2026. |
+| C30     | procedural-fault      | shotgun    | penalties | draft     | draft     | false               | —        | **10.1** (Shotgun); очки за procedural — звірити з PDF Jan 2026. |
 | C31     | foot-fault            | handgun    | penalties | draft     | draft     | false               | —        | HG **10.2.1** (+10.2.1.1); LLM чернетка — рев’ю з PDF Jan 2026. |
+| C32     | foot-fault            | rifle      | penalties | draft     | draft     | false               | —        | **10.2.1** (+10.2.1.1) Rifle; звірити з PDF Jan 2026. |
+| C33     | foot-fault            | pcc        | penalties | draft     | draft     | false               | —        | **10.2.1** (+10.2.1.1) PCC; звірити з PDF Jan 2026. |
 | C36     | failure-to-engage     | handgun    | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7**; залік і штраф звіряти разом у PDF. |
 | C41     | significant-advantage | handgun    | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2**; чернетка — рев’ю з PDF. |
 | C46     | creeping              | handgun    | penalties | draft     | draft     | false               | —        | **10.2.6**; чернетка — рев’ю з PDF. |
