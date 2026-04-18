@@ -62,11 +62,11 @@ C85,cooper-tunnel,mini_rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / н
 C86,cooper-tunnel,shotgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C87,penalty-in-lieu,handgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C88,penalty-in-lieu,pcc,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C89,penalty-in-lieu,rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C90,penalty-in-lieu,mini_rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C91,penalty-in-lieu,shotgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C89,penalty-in-lieu,rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C90,penalty-in-lieu,mini_rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C91,penalty-in-lieu,shotgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C92,re-engage-same-location,handgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C93,re-engage-same-location,pcc,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C93,re-engage-same-location,pcc,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C94,re-engage-same-location,rifle,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C95,re-engage-same-location,mini_rifle,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C96,re-engage-same-location,shotgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,todo,todo,
