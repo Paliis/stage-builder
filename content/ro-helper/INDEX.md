@@ -73,4 +73,8 @@
 | C324    | popper-calibration    | handgun    | scoring   | draft     | draft     | false               | —        | **Appendix C1**; чернетка — рев’ю з PDF. |
 | C325    | popper-calibration    | pcc        | scoring   | draft     | draft     | false               | —        | Додаток popper calibration (PCC); звірити букву в PDF. |
 | C326    | popper-calibration    | rifle      | scoring   | draft     | draft     | false               | —        | Додаток popper calibration (Rifle); звірити букву в PDF. |
+| C327    | popper-calibration    | mini_rifle | scoring   | draft     | draft     | false               | —        | Додаток popper calibration (Mini Rifle); звірити букву в PDF. |
+| C328    | popper-calibration    | shotgun    | scoring   | draft     | draft     | false               | —        | Додаток popper calibration (Shotgun); звірити букву в PDF. |
 | C329    | trigger-pull-check    | handgun    | equipment | draft     | draft     | false               | —        | **Appendix D** Production; чернетка — рев’ю з PDF. |
+| C330    | trigger-pull-check    | pcc        | equipment | draft     | draft     | false               | —        | Додаток зусилля спуску (PCC); звірити з PDF Jan 2026. |
+| C331    | trigger-pull-check    | rifle      | equipment | draft     | draft     | false               | —        | Додаток зусилля спуску (Rifle); звірити з PDF Jan 2026. |
