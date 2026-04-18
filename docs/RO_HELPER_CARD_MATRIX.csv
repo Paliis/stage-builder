@@ -273,22 +273,22 @@ C296,miscellaneous-matters,pcc,match-admin,Miscellaneous,Інше (розділ 
 C297,miscellaneous-matters,rifle,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C298,miscellaneous-matters,mini_rifle,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C299,miscellaneous-matters,shotgun,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C300,reshoots,handgun,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",todo,todo,
+C300,reshoots,handgun,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C301,reshoots,pcc,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C302,reshoots,rifle,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C303,reshoots,mini_rifle,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C304,reshoots,shotgun,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C305,course-design-safety-balance,handgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
+C305,course-design-safety-balance,handgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C306,course-design-safety-balance,pcc,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C307,course-design-safety-balance,rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C308,course-design-safety-balance,mini_rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C309,course-design-safety-balance,shotgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C310,metal-target-min-distance-dq,handgun,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (HG Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,todo,todo,HG Jan 2026: 10.4.7 — мін. відстань до металу (DQ).
+C310,metal-target-min-distance-dq,handgun,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (HG Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C311,metal-target-min-distance-dq,pcc,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),10.4.x — verify PCC PDF vs metal,II п.7; IV; XI; IX,todo,todo,Аудит: довгі стволи — свої дистанції vs метал; звірити PCC PDF.
 C312,metal-target-min-distance-dq,rifle,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),10.4.x — verify Rifle PDF vs metal (audit: 5 m context),II п.7; IV; XI; IX,todo,todo,Аудит: напр. 5 м vs метал (уточнити в Rifle PDF).
 C313,metal-target-min-distance-dq,mini_rifle,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),10.4.x — verify Mini Rifle PDF vs metal,II п.7; IV; XI; IX,todo,todo,Звірити Mini Rifle PDF (відстань до металу).
 C314,metal-target-min-distance-dq,shotgun,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),10.4.x — verify Shotgun PDF vs metal,II п.7; IV; XI; IX,todo,todo,Звірити Shotgun PDF (відстань до металу / клапан).
-C315,ammo-in-safety-area,handgun,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,HG Jan 2026: 10.5.14 — набої в Safety Area (типовий DQ); розширити unsafe-gun-handling або окрема картка; інші PDF — звірити.
+C315,ammo-in-safety-area,handgun,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C316,ammo-in-safety-area,pcc,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,HG Jan 2026: 10.5.14 — набої в Safety Area (типовий DQ); розширити unsafe-gun-handling або окрема картка; інші PDF — звірити.
 C317,ammo-in-safety-area,rifle,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,HG Jan 2026: 10.5.14 — набої в Safety Area (типовий DQ); розширити unsafe-gun-handling або окрема картка; інші PDF — звірити.
 C318,ammo-in-safety-area,mini_rifle,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,HG Jan 2026: 10.5.14 — набої в Safety Area (типовий DQ); розширити unsafe-gun-handling або окрема картка; інші PDF — звірити.
