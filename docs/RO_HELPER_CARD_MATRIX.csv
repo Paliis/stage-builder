@@ -42,17 +42,17 @@ C65,unauthorized-assistance,shotgun,penalties,Unauthorized assistance,Несан
 C66,sight-picture-fault,handgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C67,sight-picture-fault,rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C68,sight-picture-fault,pcc,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C69,sight-picture-fault,mini_rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C70,sight-picture-fault,shotgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C69,sight-picture-fault,mini_rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C70,sight-picture-fault,shotgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C71,forbidden-action,handgun,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C72,forbidden-action,rifle,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C73,forbidden-action,pcc,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C74,forbidden-action,mini_rifle,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C75,forbidden-action,shotgun,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C72,forbidden-action,rifle,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C73,forbidden-action,pcc,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C74,forbidden-action,mini_rifle,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C75,forbidden-action,shotgun,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C76,wrong-ammo-shot,shotgun,penalties,Wrong ammunition type (shotgun),Неправильний тип набою (дробовик),10.2.12 SG only,XI (штрафи/DQ); перетин IX–X,todo,todo,shotgun only
 C77,procedural-cap,handgun,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C78,procedural-cap,pcc,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C79,procedural-cap,rifle,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C78,procedural-cap,pcc,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C79,procedural-cap,rifle,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C80,procedural-cap,mini_rifle,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C81,procedural-cap,shotgun,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C82,cooper-tunnel,handgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026

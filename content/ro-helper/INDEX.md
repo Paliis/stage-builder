@@ -47,8 +47,16 @@
 | C66     | sight-picture-fault   | handgun    | penalties | draft     | draft     | false               | —        | **8.7.1**, **8.7.2**; чернетка — рев’ю з PDF. |
 | C67     | sight-picture-fault   | rifle      | penalties | draft     | draft     | false               | —        | **8.7.1**, **8.7.2** (Rifle); чернетка — рев’ю з PDF. |
 | C68     | sight-picture-fault   | pcc        | penalties | draft     | draft     | false               | —        | **8.7.1**, **8.7.2** (PCC); чернетка — рев’ю з PDF. |
+| C69     | sight-picture-fault   | mini_rifle | penalties | draft     | draft     | false               | —        | **8.7.1**, **8.7.2** (Mini Rifle); чернетка — рев’ю з PDF. |
+| C70     | sight-picture-fault   | shotgun    | penalties | draft     | draft     | false               | —        | **8.7.1**, **8.7.2** (Shotgun); чернетка — рев’ю з PDF. |
 | C71     | forbidden-action      | handgun    | penalties | draft     | draft     | false               | —        | **10.2.11**; чернетка — рев’ю з PDF Jan 2026. |
+| C72     | forbidden-action      | rifle      | penalties | draft     | draft     | false               | —        | **10.2.11** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C73     | forbidden-action      | pcc        | penalties | draft     | draft     | false               | —        | **10.2.11** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C74     | forbidden-action      | mini_rifle | penalties | draft     | draft     | false               | —        | **10.2.11** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C75     | forbidden-action      | shotgun    | penalties | draft     | draft     | false               | —        | **10.2.11** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C77     | procedural-cap        | handgun    | penalties | draft     | draft     | false               | —        | **10.2.3**; чернетка — рев’ю з PDF. |
+| C78     | procedural-cap        | pcc        | penalties | draft     | draft     | false               | —        | **10.2.3** (PCC); чернетка — рев’ю з PDF. |
+| C79     | procedural-cap        | rifle      | penalties | draft     | draft     | false               | —        | **10.2.3** (Rifle); чернетка — рев’ю з PDF. |
 | C82     | cooper-tunnel         | handgun    | penalties | draft     | draft     | false               | —        | **10.2.5**; чернетка — рев’ю з PDF. |
 | C87     | penalty-in-lieu       | handgun    | penalties | draft     | draft     | false               | —        | **10.2.10** (RM); чернетка — рев’ю з PDF. |
 | C92     | re-engage-same-location | handgun    | penalties | draft     | draft     | false               | —        | **10.2.9**; чернетка — рев’ю з PDF Jan 2026. |
