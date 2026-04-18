@@ -316,6 +316,8 @@ IPSC: {пункти} ({ipsc_edition})
 
 **Реєстр карток (`card_id`, штрафи C26+ тощо):** [RO_HELPER_CARD_REGISTRY.md](./RO_HELPER_CARD_REGISTRY.md).
 
+**Мапінг глав IPSC (5 дисциплін) і ФПСУ на блоки SOS:** [RO_HELPER_IPSC_FPSU_TOPIC_MAP.md](./RO_HELPER_IPSC_FPSU_TOPIC_MAP.md).
+
 ---
 
 *Документ можна доповнювати таблицею «Релізи контенту» (дата, редакція IPSC, відповідальний рев’юер) по мірі оновлень правил.*

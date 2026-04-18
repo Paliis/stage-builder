@@ -4,6 +4,8 @@
 
 **Останнє оновлення:** квітень 2026 (UK+EN, дисципліни, ФПСУ — хто верифікує).
 
+**Мапінг розділів IPSC / ФПСУ на категорії карток:** [RO_HELPER_IPSC_FPSU_TOPIC_MAP.md](./RO_HELPER_IPSC_FPSU_TOPIC_MAP.md).
+
 ---
 
 ## 1. Результат роботи (deliverables)
