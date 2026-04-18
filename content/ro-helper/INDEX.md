@@ -62,3 +62,7 @@
 | C305    | course-design-safety-balance | handgun    | match-admin | draft     | draft     | false               | —        | **1.1**; чернетка — рев’ю з PDF. |
 | C310    | metal-target-min-distance-dq | handgun    | safety    | draft     | draft     | false               | —        | **10.4.7**; чернетка — рев’ю з PDF. |
 | C315    | ammo-in-safety-area   | handgun    | safety    | draft     | draft     | false               | —        | **10.5.14**; чернетка — рев’ю з PDF. |
+| C316    | ammo-in-safety-area   | pcc        | safety    | draft     | draft     | false               | —        | **10.5.14** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C317    | ammo-in-safety-area   | rifle      | safety    | draft     | draft     | false               | —        | **10.5.14** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C324    | popper-calibration    | handgun    | scoring   | draft     | draft     | false               | —        | **Appendix C1**; чернетка — рев’ю з PDF. |
+| C329    | trigger-pull-check    | handgun    | equipment | draft     | draft     | false               | —        | **Appendix D** Production; чернетка — рев’ю з PDF. |
