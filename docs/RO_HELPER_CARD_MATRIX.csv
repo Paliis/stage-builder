@@ -27,11 +27,11 @@ C50,creeping,shotgun,penalties,Creeping before start signal,«Підкрадан
 C51,mandatory-reload,handgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C52,mandatory-reload,rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C53,mandatory-reload,pcc,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C54,mandatory-reload,mini_rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C55,mandatory-reload,shotgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C54,mandatory-reload,mini_rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C55,mandatory-reload,shotgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C56,mandatory-position,handgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C57,mandatory-position,rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C58,mandatory-position,pcc,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C57,mandatory-position,rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C58,mandatory-position,pcc,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C59,mandatory-position,mini_rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C60,mandatory-position,shotgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C61,unauthorized-assistance,handgun,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
