@@ -83,6 +83,50 @@
   border-radius: 0.35rem;
 }
 
+.ro-helper-demo__badge--penalties {
+  background: #b45309;
+}
+
+.ro-helper-demo__invalid {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.55rem;
+  border: 1px solid #fbbf24;
+  background: #fffbeb;
+}
+
+.ro-helper-demo__invalid-text {
+  margin: 0 0 0.45rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: #78350f;
+}
+
+.ro-helper-demo__invalid-links {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #78350f;
+}
+
+.ro-helper-demo__invalid-links-label {
+  font-weight: 600;
+}
+
+.ro-helper-demo__invalid-link {
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.ro-helper-demo__invalid-link:hover {
+  text-decoration: underline;
+}
+
+.ro-helper-demo__invalid-sep {
+  opacity: 0.55;
+}
+
 .ro-helper-demo__draft {
   font-size: 0.75rem;
   font-weight: 600;

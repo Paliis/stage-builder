@@ -1,8 +1,8 @@
 import { Fragment, type ReactNode, useId, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { formatTemplate } from '../i18n/format'
-import { break180DemoByLocale, type DemoSection } from './roHelperCardDemoModel'
+import { DEMO_CARD_IDS, resolveDemoCard, type DemoSection } from './roHelperCardDemoModel'
 import './RoHelperCardDemo.css'
 
 const PRIMARY_RULES_URL = 'https://www.ipsc.org/rules'
@@ -47,25 +47,43 @@ function SectionBody({ section }: { section: DemoSection }) {
 export function RoHelperCardDemo() {
   const { locale, setLocale, tree } = useI18n()
   const d = tree.roHelperDemo
+  const [searchParams] = useSearchParams()
   const [fpsuOn, setFpsuOn] = useState(true)
   const toggleId = useId()
 
-  const bundle = break180DemoByLocale[locale]
+  const { def, invalidRequested, requestedId } = useMemo(
+    () => resolveDemoCard(searchParams.get('card')),
+    [searchParams],
+  )
+
+  const bundle = def.contentByLocale[locale]
 
   const metaLine = useMemo(
     () =>
       formatTemplate(d.metaTemplate, {
-        cardId: 'C105',
-        edition: 'Jan 2026',
-        ruleRef: '10.5.2',
+        cardId: def.cardId,
+        discipline: def.discipline,
+        edition: def.ipscEdition,
+        ruleRef: def.ruleRef,
       }),
-    [d.metaTemplate],
+    [d.metaTemplate, def.cardId, def.discipline, def.ipscEdition, def.ruleRef],
   )
+
+  const invalidNotice = useMemo(() => {
+    if (!invalidRequested) return null
+    return formatTemplate(d.invalidCardBanner, { requested: requestedId })
+  }, [d.invalidCardBanner, invalidRequested, requestedId])
 
   const visibleSections = useMemo(
     () => bundle.sections.filter((s) => !s.onlyWhenFpsuOn || fpsuOn),
     [bundle.sections, fpsuOn],
   )
+
+  const categoryLabel = def.category === 'penalties' ? d.categoryPenalties : d.categorySafety
+  const badgeClass =
+    def.category === 'penalties'
+      ? 'ro-helper-demo__badge ro-helper-demo__badge--penalties'
+      : 'ro-helper-demo__badge'
 
   return (
     <div className="ro-helper-demo">
@@ -100,8 +118,25 @@ export function RoHelperCardDemo() {
       </header>
 
       <article className="ro-helper-demo__card" aria-labelledby="ro-helper-demo-title">
+        {invalidNotice ? (
+          <div className="ro-helper-demo__invalid" role="alert">
+            <p className="ro-helper-demo__invalid-text">{invalidNotice}</p>
+            <p className="ro-helper-demo__invalid-links">
+              <span className="ro-helper-demo__invalid-links-label">{d.demoCardExamplesLabel} </span>
+              {DEMO_CARD_IDS.map((id, i) => (
+                <Fragment key={id}>
+                  {i > 0 ? <span className="ro-helper-demo__invalid-sep"> · </span> : null}
+                  <Link to={`/ro-helper/demo?card=${id}`} className="ro-helper-demo__invalid-link">
+                    {id}
+                  </Link>
+                </Fragment>
+              ))}
+            </p>
+          </div>
+        ) : null}
+
         <div className="ro-helper-demo__card-head">
-          <span className="ro-helper-demo__badge">{d.categorySafety}</span>
+          <span className={badgeClass}>{categoryLabel}</span>
           <span className="ro-helper-demo__draft">{d.draftBadge}</span>
         </div>
         <h2 id="ro-helper-demo-title" className="ro-helper-demo__title">
@@ -109,9 +144,9 @@ export function RoHelperCardDemo() {
         </h2>
         <p className="ro-helper-demo__meta">{metaLine}</p>
         <p className="ro-helper-demo__slug">
-          <code>break-180</code>
+          <code>{def.slug}</code>
           <span className="ro-helper-demo__sep">·</span>
-          <span>handgun</span>
+          <span>{def.discipline}</span>
         </p>
         <a className="ro-helper-demo__rules-link" href={PRIMARY_RULES_URL} target="_blank" rel="noopener noreferrer">
           {d.rulesCta}
