@@ -17,7 +17,7 @@
 
 **Первинник ФПСУ (веб):** [Правила спортивних змагань з практичної стрільби, редакція на сайті ФПСУ](https://upsf.org.ua/rules/upsf/2020/index?type=rules) — затверджені Мінмолодьспорту 08.09.2020 (далі **«Правила ФПСУ 2020»**).
 
-**Зв’язок:** [RO_HELPER_V0.md](./RO_HELPER_V0.md), [RO_HELPER_CARD_REGISTRY.md](./RO_HELPER_CARD_REGISTRY.md), [RO_HELPER_CARD_MATRIX.md](./RO_HELPER_CARD_MATRIX.md).
+**Зв’язок:** [RO_HELPER_V0.md](./RO_HELPER_V0.md), [RO_HELPER_CARD_REGISTRY.md](./RO_HELPER_CARD_REGISTRY.md), [RO_HELPER_CARD_MATRIX.md](./RO_HELPER_CARD_MATRIX.md), [RO_HELPER_IPSC_FPSU_GLOSSARY.md](./RO_HELPER_IPSC_FPSU_GLOSSARY.md) (терміни EN↔UK — чернетка на верифікацію).
 
 ---
 
@@ -168,6 +168,7 @@
 1. Імпортувати перелік карток з [RO_HELPER_CARD_REGISTRY.md](./RO_HELPER_CARD_REGISTRY.md) і розширити його під **9.x**, **10.4–10.5**, **4–5**, **3/6/7/11** за цим документом.  
 2. Для кожної майбутньої картки: `discipline` + `slug` + `card_id` + **два** файли UK/EN.  
 3. Для ФПСУ: окремий прохід «параграф ФПСУ ↔ тема картки» у внутрішньому трекері, без автозіставлення номерів IPSC ↔ ФПСУ.
+4. Термінологія UK/EN при генерації: [RO_HELPER_IPSC_FPSU_GLOSSARY.md](./RO_HELPER_IPSC_FPSU_GLOSSARY.md) (після верифікації рев’юером).
 
 ---
 

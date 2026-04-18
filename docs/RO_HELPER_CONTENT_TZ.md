@@ -6,6 +6,8 @@
 
 **Мапінг розділів IPSC / ФПСУ на категорії карток:** [RO_HELPER_IPSC_FPSU_TOPIC_MAP.md](./RO_HELPER_IPSC_FPSU_TOPIC_MAP.md).
 
+**Словник термінів IPSC (EN) ↔ ФПСУ (UK) для чернеток карток:** [RO_HELPER_IPSC_FPSU_GLOSSARY.md](./RO_HELPER_IPSC_FPSU_GLOSSARY.md) — **чернетка; потребує верифікації** рев’юером з первинниками.
+
 **Повна матриця карток:** [RO_HELPER_CARD_MATRIX.md](./RO_HELPER_CARD_MATRIX.md) ([CSV](./RO_HELPER_CARD_MATRIX.csv)).
 
 ---
