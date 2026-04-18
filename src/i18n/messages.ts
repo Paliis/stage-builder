@@ -339,7 +339,6 @@ export type MessageTree = {
     metaTemplate: string
     /** Main CTA: {{edition}} {{ruleRef}} {{chapter}} */
     rulesPdfCtaTemplate: string
-    rulesHubCta: string
     rulesPdfHintTemplate: string
     draftBadge: string
     invalidCardBanner: string
@@ -754,8 +753,7 @@ export const ukMessages: MessageTree = {
     metaTemplate:
       '\u041a\u0430\u0440\u0442\u043a\u0430 {{cardId}} \u00b7 {{discipline}} \u00b7 IPSC {{edition}} \u00b7 \u00a7{{ruleRef}}',
     rulesPdfCtaTemplate:
-      'PDF \u00abHandgun Competition Rules\u00bb ({{edition}}) \u2014 \u00a7{{ruleRef}} (\u0440\u043e\u0437\u0434\u0456\u043b {{chapter}})',
-    rulesHubCta: '\u0423\u0441\u0456 rule books \u043d\u0430 ipsc.org',
+      '\u041e\u0444\u0456\u0446\u0456\u0439\u043d\u0438\u0439 PDF \u043f\u0440\u0430\u0432\u0438\u043b Handgun ({{edition}}) \u2014 \u00a7{{ruleRef}} (\u0440\u043e\u0437\u0434\u0456\u043b {{chapter}})',
     rulesPdfHintTemplate:
       '\u0423 PDF \u0432\u0456\u0434\u043a\u0440\u0438\u0439\u0442\u0435 **Chapter {{chapter}}** / \u043f\u0440\u0430\u0432\u0438\u043b\u043e \u00a7{{ruleRef}} (\u0430\u0431\u043e \u043f\u043e\u0448\u0443\u043a \u0443 \u0440\u0438\u0434\u0435\u0440\u0456 \u0437\u0430 \u00ab{{ruleRef}}\u00bb).',
     draftBadge: 'DRAFT',
@@ -1157,8 +1155,7 @@ export const enMessages: MessageTree = {
     categorySafety: 'Safety / DQ',
     categoryPenalties: 'Penalties',
     metaTemplate: 'Card {{cardId}} · {{discipline}} · IPSC {{edition}} · §{{ruleRef}}',
-    rulesPdfCtaTemplate: 'Handgun Competition Rules PDF ({{edition}}) — §{{ruleRef}} (Ch. {{chapter}})',
-    rulesHubCta: 'All rule books on ipsc.org',
+    rulesPdfCtaTemplate: 'Official Handgun rules PDF ({{edition}}) — §{{ruleRef}} (Ch. {{chapter}})',
     rulesPdfHintTemplate:
       'In the PDF, open **Chapter {{chapter}}** / Rule **{{ruleRef}}** (or use your viewer’s find for “{{ruleRef}}”).',
     draftBadge: 'DRAFT',

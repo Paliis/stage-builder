@@ -2,12 +2,7 @@ import { Fragment, type ReactNode, useId, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { formatTemplate } from '../i18n/format'
-import {
-  DEMO_CARD_IDS,
-  IPSC_RULE_BOOKS_HUB_URL,
-  resolveDemoCard,
-  type DemoSection,
-} from './roHelperCardDemoModel'
+import { DEMO_CARD_IDS, resolveDemoCard, type DemoSection } from './roHelperCardDemoModel'
 import './RoHelperCardDemo.css'
 
 function renderBoldSegments(line: string): ReactNode[] {
@@ -178,17 +173,6 @@ export function RoHelperCardDemo() {
             rel="noopener noreferrer"
           >
             {rulesPdfLine}
-          </a>
-          <span className="ro-helper-demo__rules-sep" aria-hidden>
-            {' · '}
-          </span>
-          <a
-            className="ro-helper-demo__rules-link ro-helper-demo__rules-link--hub"
-            href={IPSC_RULE_BOOKS_HUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {d.rulesHubCta}
           </a>
           <p className="ro-helper-demo__rules-hint">{renderBoldSegments(rulesHintLine)}</p>
         </div>
