@@ -81,7 +81,10 @@
 | C100    | walkthrough-interference | mini_rifle | penalties | draft     | draft     | false               | —        | **8.7.2**, **8.7.3** (Mini Rifle); чернетка — рев’ю з PDF. |
 | C101    | walkthrough-interference | shotgun    | penalties | draft     | draft     | false               | —        | **8.7.2**, **8.7.3** (Shotgun); чернетка — рев’ю з PDF. |
 | C102    | burst-or-automatic-fire | pcc        | penalties | draft     | draft     | false               | —        | **10.2.12** (PCC); чернетка — рев’ю з PDF Jan 2026. |
-| C105    | break-180             | handgun    | safety    | draft     | draft     | false               | —        | Frontmatter aligned with RO_HELPER_V0 §2.2; pin `primary_url` to official Handgun PDF when URL is registered. |
+| C103    | burst-or-automatic-fire | rifle      | penalties | draft     | draft     | false               | —        | **10.2.12** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C104    | burst-or-automatic-fire | mini_rifle | penalties | draft     | draft     | false               | —        | **10.2.12** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C105    | break-180             | handgun    | safety    | draft     | draft     | false               | —        | **10.5.2** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C106    | break-180             | pcc        | safety    | draft     | draft     | false               | —        | **10.5.2** (PCC); чернетка — рев’ю з PDF Jan 2026. |
 | C110    | accidental-discharge  | handgun    | safety    | draft     | draft     | false               | —        | **10.4** (AD / DQ); чернетка — рев’ю з PDF. |
 | C115    | trigger-finger        | handgun    | safety    | draft     | draft     | false               | —        | **10.5.9–10.5.11**; чернетка — рев’ю з PDF. |
 | C120    | dropped-gun           | handgun    | safety    | draft     | draft     | false               | —        | **10.5.3** (DQ); чернетка — рев’ю з PDF. |

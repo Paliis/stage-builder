@@ -76,10 +76,10 @@ C99,walkthrough-interference,rifle,penalties,Walkthrough violations,Поруше
 C100,walkthrough-interference,mini_rifle,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C101,walkthrough-interference,shotgun,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C102,burst-or-automatic-fire,pcc,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; pcc/rifle/mini_rifle only; 10.2.12
-C103,burst-or-automatic-fire,rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,todo,todo,pcc/rifle/mini_rifle only; 10.2.12
-C104,burst-or-automatic-fire,mini_rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,todo,todo,pcc/rifle/mini_rifle only; 10.2.12
+C103,burst-or-automatic-fire,rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; pcc/rifle/mini_rifle only; 10.2.12
+C104,burst-or-automatic-fire,mini_rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; pcc/rifle/mini_rifle only; 10.2.12
 C105,break-180,handgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C106,break-180,pcc,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
+C106,break-180,pcc,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C107,break-180,rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
 C108,break-180,mini_rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
 C109,break-180,shotgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,todo,todo,
