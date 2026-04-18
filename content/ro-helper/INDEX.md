@@ -26,3 +26,7 @@
 | C125    | unsafe-gun-handling   | handgun    | safety    | draft     | draft     | false               | —        | **10.5.1**; чернетка — рев’ю з PDF. |
 | C130    | dq-general            | handgun    | safety    | draft     | draft     | false               | —        | **10.3**; чернетка — рев’ю з PDF. |
 | C135    | prohibited-substances | handgun    | safety    | draft     | draft     | false               | —        | **10.7**; чернетка — рев’ю з PDF. |
+| C140    | unsportsmanlike-conduct | handgun    | safety    | draft     | draft     | false               | —        | **10.6**; чернетка — рев’ю з PDF. |
+| C145    | range-safety-zones    | handgun    | safety    | draft     | draft     | false               | —        | **Ch.2**; чернетка — рев’ю з PDF. |
+| C150    | movement-and-trigger-safety | handgun    | safety    | draft     | draft     | false               | —        | **8.5**; чернетка — рев’ю з PDF. |
+| C155    | approaching-touching-targets | handgun    | scoring   | draft     | draft     | false               | —        | **9.1**; чернетка — рев’ю з PDF. |

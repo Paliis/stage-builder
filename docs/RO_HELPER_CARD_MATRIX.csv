@@ -113,22 +113,22 @@ C136,prohibited-substances,pcc,safety,Prohibited substances,Заборонені
 C137,prohibited-substances,rifle,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,todo,todo,
 C138,prohibited-substances,mini_rifle,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,todo,todo,
 C139,prohibited-substances,shotgun,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,todo,todo,
-C140,unsportsmanlike-conduct,handgun,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,todo,todo,
+C140,unsportsmanlike-conduct,handgun,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C141,unsportsmanlike-conduct,pcc,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,todo,todo,
 C142,unsportsmanlike-conduct,rifle,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,todo,todo,
 C143,unsportsmanlike-conduct,mini_rifle,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,todo,todo,
 C144,unsportsmanlike-conduct,shotgun,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,todo,todo,
-C145,range-safety-zones,handgun,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,todo,todo,
+C145,range-safety-zones,handgun,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C146,range-safety-zones,pcc,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,todo,todo,
 C147,range-safety-zones,rifle,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,todo,todo,
 C148,range-safety-zones,mini_rifle,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,todo,todo,
 C149,range-safety-zones,shotgun,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,todo,todo,
-C150,movement-and-trigger-safety,handgun,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,todo,todo,
+C150,movement-and-trigger-safety,handgun,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C151,movement-and-trigger-safety,pcc,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,todo,todo,
 C152,movement-and-trigger-safety,rifle,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,todo,todo,
 C153,movement-and-trigger-safety,mini_rifle,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,todo,todo,
 C154,movement-and-trigger-safety,shotgun,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,todo,todo,
-C155,approaching-touching-targets,handgun,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),todo,todo,
+C155,approaching-touching-targets,handgun,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C156,approaching-touching-targets,pcc,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),todo,todo,
 C157,approaching-touching-targets,rifle,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),todo,todo,
 C158,approaching-touching-targets,mini_rifle,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),todo,todo,
