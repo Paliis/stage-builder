@@ -210,6 +210,7 @@
 - [TECH.md](./TECH.md) — стек, share, middleware, збірка
 - [BACKLOG.md](./BACKLOG.md) — ідеї та задачі
 - [VERSIONING.md](./VERSIONING.md) — версії продукту для користувачів
+- [RO_HELPER_V0.md](./RO_HELPER_V0.md) — RO Helper v0: контент, UX, IPSC + ФПСУ, аналітика, чекліст
 
 ---
 
