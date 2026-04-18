@@ -12,7 +12,11 @@
 | C31     | foot-fault            | handgun    | penalties | draft     | draft     | false               | —        | HG **10.2.1** (+10.2.1.1); LLM чернетка — рев’ю з PDF Jan 2026. |
 | C32     | foot-fault            | rifle      | penalties | draft     | draft     | false               | —        | **10.2.1** (+10.2.1.1) Rifle; звірити з PDF Jan 2026. |
 | C33     | foot-fault            | pcc        | penalties | draft     | draft     | false               | —        | **10.2.1** (+10.2.1.1) PCC; звірити з PDF Jan 2026. |
+| C34     | foot-fault            | mini_rifle | penalties | draft     | draft     | false               | —        | **10.2.1** (+10.2.1.1) Mini Rifle; звірити з PDF Jan 2026. |
+| C35     | foot-fault            | shotgun    | penalties | draft     | draft     | false               | —        | **10.2.1** (+10.2.1.1) Shotgun; звірити з PDF Jan 2026. |
 | C36     | failure-to-engage     | handgun    | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7**; залік і штраф звіряти разом у PDF. |
+| C37     | failure-to-engage     | rifle      | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7** (Rifle); залік і штраф разом з PDF. |
+| C38     | failure-to-engage     | pcc        | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7** (PCC); залік і штраф разом з PDF. |
 | C41     | significant-advantage | handgun    | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2**; чернетка — рев’ю з PDF. |
 | C46     | creeping              | handgun    | penalties | draft     | draft     | false               | —        | **10.2.6**; чернетка — рев’ю з PDF. |
 | C51     | mandatory-reload      | handgun    | penalties | draft     | draft     | false               | —        | **10.2.4**; чернетка — рев’ю з PDF Jan 2026. |

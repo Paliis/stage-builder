@@ -7,11 +7,11 @@ C30,procedural-fault,shotgun,penalties,Procedural penalties (general),Проце
 C31,foot-fault,handgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C32,foot-fault,rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
 C33,foot-fault,pcc,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C34,foot-fault,mini_rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
-C35,foot-fault,shotgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,todo,todo,
+C34,foot-fault,mini_rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
+C35,foot-fault,shotgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
 C36,failure-to-engage,handgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C37,failure-to-engage,rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
-C38,failure-to-engage,pcc,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
+C37,failure-to-engage,rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
+C38,failure-to-engage,pcc,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
 C39,failure-to-engage,mini_rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C40,failure-to-engage,shotgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,todo,todo,
 C41,significant-advantage,handgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
