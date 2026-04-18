@@ -5,6 +5,8 @@
 | card_id | slug             | discipline | category  | status_uk | status_en | fpsu_delta_verified | reviewer | notes |
 |---------|------------------|------------|-----------|-----------|-----------|---------------------|----------|-------|
 | C26     | procedural-fault      | handgun    | penalties | draft     | draft     | false               | —        | HG **10.1** (+10.1.1–10.1.2); control hint −10 pts/procedural — verify PDF; pin `primary_url` to Handgun PDF when registered. |
+| C27     | procedural-fault      | rifle      | penalties | draft     | draft     | false               | —        | **10.1** (Rifle); очки за procedural — звірити з PDF Jan 2026. |
+| C28     | procedural-fault      | pcc        | penalties | draft     | draft     | false               | —        | **10.1** (PCC); очки за procedural — звірити з PDF Jan 2026. |
 | C31     | foot-fault            | handgun    | penalties | draft     | draft     | false               | —        | HG **10.2.1** (+10.2.1.1); LLM чернетка — рев’ю з PDF Jan 2026. |
 | C36     | failure-to-engage     | handgun    | penalties | draft     | draft     | false               | —        | **9.5.6** + **10.2.7**; залік і штраф звіряти разом у PDF. |
 | C41     | significant-advantage | handgun    | penalties | draft     | draft     | false               | —        | **10.2.1.1**, **10.2.2**; чернетка — рев’ю з PDF. |
@@ -78,3 +80,5 @@
 | C329    | trigger-pull-check    | handgun    | equipment | draft     | draft     | false               | —        | **Appendix D** Production; чернетка — рев’ю з PDF. |
 | C330    | trigger-pull-check    | pcc        | equipment | draft     | draft     | false               | —        | Додаток зусилля спуску (PCC); звірити з PDF Jan 2026. |
 | C331    | trigger-pull-check    | rifle      | equipment | draft     | draft     | false               | —        | Додаток зусилля спуску (Rifle); звірити з PDF Jan 2026. |
+| C332    | trigger-pull-check    | mini_rifle | equipment | draft     | draft     | false               | —        | Додаток зусилля спуску (Mini Rifle); звірити з PDF Jan 2026. |
+| C333    | trigger-pull-check    | shotgun    | equipment | draft     | draft     | false               | —        | Додаток спуску / release (Shotgun); звірити з PDF Jan 2026. |
