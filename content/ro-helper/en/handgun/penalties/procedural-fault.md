@@ -1,0 +1,48 @@
+---
+title: "Procedural penalties (general)"
+card_id: "C26"
+slug: "procedural-fault"
+category: penalties
+locale: en
+discipline: handgun
+control_values: "−10 pts / procedural (Handgun — verify edition in PDF)"
+ipsc_edition: "Jan 2026"
+ipsc_refs:
+  - rule: "10.1"
+    note: "General procedural penalties (check 10.1.1–10.1.2 in Handgun PDF)"
+primary_url: "https://www.ipsc.org/rules"
+fpsu_refs: []
+fpsu_delta_verified: false
+reviewer: ""
+review_date: ""
+draft_source: llm
+status: draft
+---
+
+## What this is
+
+A **procedural penalty** applies when the competitor violates **procedure** for the course of fire or the **Written Stage Briefing (WSB)**, and the situation is **not** covered by a more specific penalty rule later in Chapter 10. In Handgun, the baseline framework is **10.1** (see **10.1.1–10.1.2** in the primary source). Typical Handgun guidance: **−10 match points per procedural** per occurrence unless the rules specify a different treatment for a particular case.
+
+## What the RO does
+
+1. **Capture the fact:** what the competitor did or failed to do, and when during the COF (relative to shots, positions, reloads, etc.).
+2. **Check the WSB:** confirm the stage conditions or general procedural requirements were actually breached; involve **CRO/RM** if interpretation is unclear.
+3. **Apply the penalty:** add the correct number of **procedural(s)** on the scoresheet per **10.1** and any more specific rule that governs that breach.
+4. **Brief the competitor:** state briefly which COF element triggered the procedural (no debate on the line; challenges follow **9.6**).
+5. **Document clearly:** the entry must be **auditable** (for example, “1 procedural — 10.1 / foot fault on shot N” — adjust wording after verification against the PDF).
+
+## IPSC (Jan 2026)
+
+- **10.1** frames **general procedural penalties** for procedure / briefing breaches when no other detailed penalty clause applies.
+- How many procedurals apply per unit of fault (e.g. per **shot** vs per **episode**) and any exceptions come **only** from the current **Handgun** PDF for your edition (**10.1.1**, **10.1.2**, etc.).
+- Any **cap** on procedurals for the COF (if the rules provide one) is a separate topic (**10.2.3**); this card focuses on **whether** a procedural is due and **how many** apply per the primary source.
+
+## Local (FPSU)
+
+For matches under **FPSU / UPSF** rules, numbering and penalty mechanics may differ from IPSC. Compare the **official FPSU text** and record deltas only after reviewer sign-off (**`fpsu_delta_verified`** stays **false** until **RO_HELPER_V0 §4.1**).
+
+## Common mistakes
+
+- **Wrong bucket:** e.g. a **foot fault** is anchored under **10.2.1** — do not relabel it as a vague “10.1 only” procedural if the rulebook assigns a specific treatment.
+- **Vague scoresheet notes:** “procedural” with no link to shot / area / WSB condition makes verification and protests harder.
+- **Double punishment:** the same act should not produce **two** penalties under the same rule logic — re-read the COF and WSB.
