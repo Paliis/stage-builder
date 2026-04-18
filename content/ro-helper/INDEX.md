@@ -37,7 +37,11 @@
 | C56     | mandatory-position    | handgun    | penalties | draft     | draft     | false               | —        | **10.2.2**, **10.2.8**; чернетка — рев’ю з PDF. |
 | C57     | mandatory-position    | rifle      | penalties | draft     | draft     | false               | —        | **10.2.2**, **10.2.8** (Rifle); чернетка — рев’ю з PDF. |
 | C58     | mandatory-position    | pcc        | penalties | draft     | draft     | false               | —        | **10.2.2**, **10.2.8** (PCC); чернетка — рев’ю з PDF. |
+| C59     | mandatory-position    | mini_rifle | penalties | draft     | draft     | false               | —        | **10.2.2**, **10.2.8** (Mini Rifle); чернетка — рев’ю з PDF. |
+| C60     | mandatory-position    | shotgun    | penalties | draft     | draft     | false               | —        | **10.2.2**, **10.2.8** (Shotgun); чернетка — рев’ю з PDF. |
 | C61     | unauthorized-assistance | handgun    | penalties | draft     | draft     | false               | —        | **8.6.2** (+ контекст **8.6**); чернетка — рев’ю з PDF. |
+| C62     | unauthorized-assistance | rifle      | penalties | draft     | draft     | false               | —        | **8.6.2** (Rifle); чернетка — рев’ю з PDF. |
+| C63     | unauthorized-assistance | pcc        | penalties | draft     | draft     | false               | —        | **8.6.2** (PCC); чернетка — рев’ю з PDF. |
 | C66     | sight-picture-fault   | handgun    | penalties | draft     | draft     | false               | —        | **8.7.1**, **8.7.2**; чернетка — рев’ю з PDF. |
 | C71     | forbidden-action      | handgun    | penalties | draft     | draft     | false               | —        | **10.2.11**; чернетка — рев’ю з PDF Jan 2026. |
 | C77     | procedural-cap        | handgun    | penalties | draft     | draft     | false               | —        | **10.2.3**; чернетка — рев’ю з PDF. |
