@@ -233,22 +233,22 @@ C256,eye-and-ear-protection,pcc,equipment,Eye & ear protection,Захист оч
 C257,eye-and-ear-protection,rifle,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,todo,todo,
 C258,eye-and-ear-protection,mini_rifle,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,todo,todo,
 C259,eye-and-ear-protection,shotgun,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,todo,todo,
-C260,athlete-clothing,handgun,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,todo,todo,
+C260,athlete-clothing,handgun,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C261,athlete-clothing,pcc,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,todo,todo,
 C262,athlete-clothing,rifle,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,todo,todo,
 C263,athlete-clothing,mini_rifle,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,todo,todo,
 C264,athlete-clothing,shotgun,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,todo,todo,
-C265,equipment-malfunction,handgun,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,todo,todo,
+C265,equipment-malfunction,handgun,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C266,equipment-malfunction,pcc,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,todo,todo,
 C267,equipment-malfunction,rifle,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,todo,todo,
 C268,equipment-malfunction,mini_rifle,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,todo,todo,
 C269,equipment-malfunction,shotgun,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,todo,todo,
-C270,written-stage-briefing,handgun,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",todo,todo,
+C270,written-stage-briefing,handgun,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C271,written-stage-briefing,pcc,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C272,written-stage-briefing,rifle,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C273,written-stage-briefing,mini_rifle,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C274,written-stage-briefing,shotgun,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C275,local-regional-rules,handgun,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",todo,todo,
+C275,local-regional-rules,handgun,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C276,local-regional-rules,pcc,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C277,local-regional-rules,rifle,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C278,local-regional-rules,mini_rifle,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",todo,todo,
