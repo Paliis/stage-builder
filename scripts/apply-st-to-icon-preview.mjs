@@ -28,7 +28,9 @@ const OVERLAY_TOP = Math.round((1024 - OVERLAY_H) / 2 + 12)
 /** Inner flat-top octagon (white), ~ inner ring around monogram — tweak R/cy if needed. */
 const INNER_CX = OVERLAY_W / 2
 const INNER_CY = OVERLAY_H * 0.48
-const INNER_R = 108
+/** Radius + outward stroke: must fully cover SB ghost pixels (often right of “T”). */
+const INNER_R = 128
+const INNER_WHITE_STROKE = 18
 
 function flatTopOctagonPoints(cx, cy, R) {
   const pts = []
@@ -41,22 +43,28 @@ function flatTopOctagonPoints(cx, cy, R) {
 
 const innerWhite = flatTopOctagonPoints(INNER_CX, INNER_CY, INNER_R)
 
-/** ST: black only, size aligned visually with heavy target strokes (~28px on 512 ≈ 56 on 1024 → ~0.11 of width). */
-const ST_FONT_PX = 208
+/** ST: pure black; weight 800 reads closer to target line thickness than 900. */
+const ST_FONT_PX = 222
 const ST_BASELINE_Y = Math.round(INNER_CY + ST_FONT_PX * 0.31)
 
 const ST_SVG = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${OVERLAY_W}" height="${OVERLAY_H}" viewBox="0 0 ${OVERLAY_W} ${OVERLAY_H}">
-  <polygon fill="#ffffff" stroke="none" points="${innerWhite}"/>
+  <polygon
+    fill="#ffffff"
+    stroke="#ffffff"
+    stroke-width="${INNER_WHITE_STROKE}"
+    stroke-linejoin="round"
+    points="${innerWhite}"
+  />
   <text
     x="${INNER_CX}"
     y="${ST_BASELINE_Y}"
     text-anchor="middle"
     font-family="system-ui, Arial Black, Helvetica, sans-serif"
     font-size="${ST_FONT_PX}"
-    font-weight="900"
+    font-weight="800"
     fill="#000000"
-    letter-spacing="-10"
+    letter-spacing="-12"
   >ST</text>
 </svg>`
 
