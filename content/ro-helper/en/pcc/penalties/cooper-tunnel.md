@@ -1,0 +1,46 @@
+---
+title: "Cooper tunnel / overhead cover"
+card_id: "C83"
+slug: "cooper-tunnel"
+category: penalties
+locale: en
+discipline: pcc
+control_values: "Verify PCC Jan 2026 PDF — 10.2.5 (cover geometry and shot)"
+ipsc_edition: "Jan 2026"
+ipsc_refs:
+  - rule: "10.2.5"
+    note: "Overhead / Cooper tunnel type shots — PCC Jan 2026; full text in PDF"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+fpsu_refs: []
+fpsu_delta_verified: false
+reviewer: ""
+review_date: ""
+draft_source: llm
+status: draft
+---
+
+## What this is
+
+**Cooper tunnel** in IPSC slang describes a pattern where the competitor **“covers”** a port (approach from above / specific geometry relative to a window or tunnel), and **PCC** **10.2.5** states **when** such behaviour with a shot incurs **procedural** (or other outcome). **PCC** body and muzzle height differ from **handgun** — read **PCC** **Chapter 10** only. Exact criteria and exceptions are **only** from the **Jan 2026** PDF — do not confuse with **10.2.11** if the rulebook separates the cases.
+
+## What the Range Officer (RO) does
+
+1. **Observe:** how the competitor enters the window / tunnel; body and **carbine** position; whether a shot occurs in a disputed posture.
+2. **Verify against the PDF:** whether **10.2.5** conditions are met (do not substitute your own “covered” definition).
+3. **Apply the penalty** per **10.2.5**; **scoresheet** entry with a short episode description.
+4. **If stage props are ambiguous** — **RM** per match procedure.
+5. **Safety first** if muzzle direction is unsafe alongside the cover issue.
+
+## IPSC (Jan 2026)
+
+- Anchor: **10.2.5** in **PCC** **Chapter 10**; cross-check **10.2.11** if it looks like a forbidden shot over/through cover.
+
+## Local (FPSU)
+
+Window proportions and typical props may differ; align interpretation with **RM** and regs. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+
+## Common mistakes
+
+- **Handgun-only** sightlines for **PCC** ports without reading **PCC** PDF.
+- **Bad RO sightline:** cannot confirm overhead cover — second official or video per policy.
+- **Confusing with WSB position:** a WSB-allowed approach must still be **compatible** with the rulebook.
