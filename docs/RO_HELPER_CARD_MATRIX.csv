@@ -173,22 +173,22 @@ C196,score-verification-challenge,pcc,scoring,Score verification & challenges,П
 C197,score-verification-challenge,rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),todo,todo,
 C198,score-verification-challenge,mini_rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),todo,todo,
 C199,score-verification-challenge,shotgun,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),todo,todo,
-C200,score-sheets-corrections,handgun,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),todo,todo,
+C200,score-sheets-corrections,handgun,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C201,score-sheets-corrections,pcc,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),todo,todo,
 C202,score-sheets-corrections,rifle,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),todo,todo,
 C203,score-sheets-corrections,mini_rifle,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),todo,todo,
 C204,score-sheets-corrections,shotgun,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),todo,todo,
-C205,provisional-results-stats-appeal,handgun,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),todo,todo,
+C205,provisional-results-stats-appeal,handgun,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C206,provisional-results-stats-appeal,pcc,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),todo,todo,
 C207,provisional-results-stats-appeal,rifle,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),todo,todo,
 C208,provisional-results-stats-appeal,mini_rifle,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),todo,todo,
 C209,provisional-results-stats-appeal,shotgun,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),todo,todo,
-C210,disappearing-targets-scoring,handgun,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),todo,todo,HG Jan 2026: розвести 9.9.2 (рух vs «зникаюча») та логіку активатора; інші дисципліни — звірити PDF.
+C210,disappearing-targets-scoring,handgun,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; HG: 9.9.2 vs activator
 C211,disappearing-targets-scoring,pcc,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),todo,todo,HG Jan 2026: розвести 9.9.2 (рух vs «зникаюча») та логіку активатора; інші дисципліни — звірити PDF.
 C212,disappearing-targets-scoring,rifle,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),todo,todo,HG Jan 2026: розвести 9.9.2 (рух vs «зникаюча») та логіку активатора; інші дисципліни — звірити PDF.
 C213,disappearing-targets-scoring,mini_rifle,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),todo,todo,HG Jan 2026: розвести 9.9.2 (рух vs «зникаюча») та логіку активатора; інші дисципліни — звірити PDF.
 C214,disappearing-targets-scoring,shotgun,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),todo,todo,HG Jan 2026: розвести 9.9.2 (рух vs «зникаюча») та логіку активатора; інші дисципліни — звірити PDF.
-C215,official-time,handgun,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),todo,todo,
+C215,official-time,handgun,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C216,official-time,pcc,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),todo,todo,
 C217,official-time,rifle,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),todo,todo,
 C218,official-time,mini_rifle,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),todo,todo,

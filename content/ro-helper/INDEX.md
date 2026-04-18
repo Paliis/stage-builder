@@ -38,3 +38,7 @@
 | C185    | radial-tears-enlarged-holes | handgun    | scoring   | draft     | draft     | false               | —        | **9.5.4**; чернетка — рев’ю з PDF. |
 | C190    | fte-scoring-side      | handgun    | scoring   | draft     | draft     | false               | —        | **9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF. |
 | C195    | score-verification-challenge | handgun    | scoring   | draft     | draft     | false               | —        | **9.6**; чернетка — рев’ю з PDF. |
+| C200    | score-sheets-corrections | handgun    | scoring   | draft     | draft     | false               | —        | **9.7**; чернетка — рев’ю з PDF. |
+| C205    | provisional-results-stats-appeal | handgun    | scoring   | draft     | draft     | false               | —        | **9.8**; чернетка — рев’ю з PDF. |
+| C210    | disappearing-targets-scoring | handgun    | scoring   | draft     | draft     | false               | —        | **9.9** (9.9.2 vs активатор); чернетка — рев’ю з PDF. |
+| C215    | official-time         | handgun    | scoring   | draft     | draft     | false               | —        | **9.10**; чернетка — рев’ю з PDF. |
