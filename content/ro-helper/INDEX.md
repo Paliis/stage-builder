@@ -68,5 +68,9 @@
 | C319    | ammo-in-safety-area   | shotgun    | safety    | draft     | draft     | false               | —        | **10.5.14** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C320    | external-safety-long-gun | pcc     | safety    | draft     | draft     | false               | —        | **10.5.11** long gun (PCC); не плутати з HG 10.5.11. |
 | C321    | external-safety-long-gun | rifle   | safety    | draft     | draft     | false               | —        | **10.5.11** long gun (Rifle); не плутати з HG 10.5.11. |
+| C322    | external-safety-long-gun | mini_rifle | safety  | draft     | draft     | false               | —        | **10.5.11** long gun (Mini Rifle); не плутати з HG 10.5.11. |
+| C323    | external-safety-long-gun | shotgun | safety    | draft     | draft     | false               | —        | **10.5.11** long gun (Shotgun); не плутати з HG 10.5.11. |
 | C324    | popper-calibration    | handgun    | scoring   | draft     | draft     | false               | —        | **Appendix C1**; чернетка — рев’ю з PDF. |
+| C325    | popper-calibration    | pcc        | scoring   | draft     | draft     | false               | —        | Додаток popper calibration (PCC); звірити букву в PDF. |
+| C326    | popper-calibration    | rifle      | scoring   | draft     | draft     | false               | —        | Додаток popper calibration (Rifle); звірити букву в PDF. |
 | C329    | trigger-pull-check    | handgun    | equipment | draft     | draft     | false               | —        | **Appendix D** Production; чернетка — рев’ю з PDF. |

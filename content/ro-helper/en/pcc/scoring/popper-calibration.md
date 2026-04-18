@@ -1,0 +1,46 @@
+---
+title: "Popper calibration challenge"
+card_id: "C325"
+slug: "popper-calibration"
+category: scoring
+locale: en
+discipline: pcc
+control_values: "Verify PCC Jan 2026 PDF — popper calibration appendix (matrix cites HG Appendix C1 as hint; confirm letter/title in PCC PDF)"
+ipsc_edition: "Jan 2026"
+ipsc_refs:
+  - rule: "Appendix C1"
+    note: "Popper calibration — verify appendix ID and text in PCC Jan 2026 PDF (may differ from Handgun C1 label)"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+fpsu_refs: []
+fpsu_delta_verified: false
+reviewer: ""
+review_date: ""
+draft_source: llm
+status: draft
+---
+
+## What this is
+
+The **PCC Jan 2026** rulebook contains a **popper calibration challenge** procedure in its **target / scoring appendices** (the planning matrix references **Handgun Appendix C1** as a parallel — **you must locate the correct appendix letter and title in the PCC PDF**). It governs disputes about whether a **popper** fell due to **proper calibration**, who may file, time limits, **RM** involvement, and any **test shot** rules. **Do not** paste **Handgun C1** steps into a PCC match without verifying every sentence against **PCC**.
+
+## What the Range Officer (RO) does
+
+1. **Stop** on-bay arguments; record **facts** and send the competitor to the **official challenge path** in the **PCC** appendix you verified.
+2. **Preserve evidence** (steel position, scores, timer) until **RM** / **CRO** instructs.
+3. **Do not** run an informal calibration shot without **RM** authorisation.
+4. **Stay neutral** if interviewed by **RM**.
+5. **On multi-gun ranges**, double-check you opened **PCC**, not **Handgun** or **Rifle**.
+
+## IPSC (Jan 2026)
+
+- Find the **popper calibration** appendix in **PCC**; cross-link to **Chapter 9** and **Chapter 4** where your PDF ties them.
+
+## Local (FPSU)
+
+Appeal windows may be shortened only if **MD** stays within the event’s IPSC tier. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+
+## Common mistakes
+
+- **Assuming** the appendix is still literally **“C1”** on every discipline’s cover sheet.
+- **Resetting steel** before **RM** review.
+- **Borrowing** handgun-only fees / forms without checking **PCC** text.
