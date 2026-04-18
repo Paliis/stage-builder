@@ -22,3 +22,7 @@
 | C105    | break-180             | handgun    | safety    | draft     | draft     | false               | —        | Frontmatter aligned with RO_HELPER_V0 §2.2; pin `primary_url` to official Handgun PDF when URL is registered. |
 | C110    | accidental-discharge  | handgun    | safety    | draft     | draft     | false               | —        | **10.4** (AD / DQ); чернетка — рев’ю з PDF. |
 | C115    | trigger-finger        | handgun    | safety    | draft     | draft     | false               | —        | **10.5.9–10.5.11**; чернетка — рев’ю з PDF. |
+| C120    | dropped-gun           | handgun    | safety    | draft     | draft     | false               | —        | **10.5.3** (DQ); чернетка — рев’ю з PDF. |
+| C125    | unsafe-gun-handling   | handgun    | safety    | draft     | draft     | false               | —        | **10.5.1**; чернетка — рев’ю з PDF. |
+| C130    | dq-general            | handgun    | safety    | draft     | draft     | false               | —        | **10.3**; чернетка — рев’ю з PDF. |
+| C135    | prohibited-substances | handgun    | safety    | draft     | draft     | false               | —        | **10.7**; чернетка — рев’ю з PDF. |
