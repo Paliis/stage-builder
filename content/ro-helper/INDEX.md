@@ -179,6 +179,10 @@
 | C198    | score-verification-challenge | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.6**; чернетка — рев’ю з PDF. |
 | C199    | score-verification-challenge | shotgun    | scoring   | draft     | draft     | false               | —        | **9.6**; чернетка — рев’ю з PDF. |
 | C200    | score-sheets-corrections | handgun    | scoring   | draft     | draft     | false               | —        | **9.7**; чернетка — рев’ю з PDF. |
+| C201    | score-sheets-corrections | pcc        | scoring   | draft     | draft     | false               | —        | **9.7**; чернетка — рев’ю з PDF. |
+| C202    | score-sheets-corrections | rifle      | scoring   | draft     | draft     | false               | —        | **9.7**; чернетка — рев’ю з PDF. |
+| C203    | score-sheets-corrections | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.7**; чернетка — рев’ю з PDF. |
+| C204    | score-sheets-corrections | shotgun    | scoring   | draft     | draft     | false               | —        | **9.7**; чернетка — рев’ю з PDF. |
 | C205    | provisional-results-stats-appeal | handgun    | scoring   | draft     | draft     | false               | —        | **9.8**; чернетка — рев’ю з PDF. |
 | C210    | disappearing-targets-scoring | handgun    | scoring   | draft     | draft     | false               | —        | **9.9** (9.9.2 vs активатор); чернетка — рев’ю з PDF. |
 | C215    | official-time         | handgun    | scoring   | draft     | draft     | false               | —        | **9.10**; чернетка — рев’ю з PDF. |
