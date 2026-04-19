@@ -279,6 +279,10 @@
 | C298    | miscellaneous-matters | mini_rifle | match-admin | draft     | draft     | false               | —        | **Ch.12**; чернетка — рев’ю з PDF. |
 | C299    | miscellaneous-matters | shotgun    | match-admin | draft     | draft     | false               | —        | **Ch.12**; чернетка — рев’ю з PDF. |
 | C300    | reshoots              | handgun    | match-admin | draft     | draft     | false               | —        | **4.7**; чернетка — рев’ю з PDF. |
+| C301    | reshoots              | pcc        | match-admin | draft     | draft     | false               | —        | **4.7**; чернетка — рев’ю з PDF. |
+| C302    | reshoots              | rifle      | match-admin | draft     | draft     | false               | —        | **4.7**; чернетка — рев’ю з PDF. |
+| C303    | reshoots              | mini_rifle | match-admin | draft     | draft     | false               | —        | **4.7**; чернетка — рев’ю з PDF. |
+| C304    | reshoots              | shotgun    | match-admin | draft     | draft     | false               | —        | **4.7**; чернетка — рев’ю з PDF. |
 | C305    | course-design-safety-balance | handgun    | match-admin | draft     | draft     | false               | —        | **1.1**; чернетка — рев’ю з PDF. |
 | C310    | metal-target-min-distance-dq | handgun    | safety    | draft     | draft     | false               | —        | **10.4.7**; чернетка — рев’ю з PDF. |
 | C315    | ammo-in-safety-area   | handgun    | safety    | draft     | draft     | false               | —        | **10.5.14**; чернетка — рев’ю з PDF. |
