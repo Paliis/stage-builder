@@ -93,7 +93,11 @@
 | C112    | accidental-discharge  | rifle      | safety    | draft     | draft     | false               | —        | **10.4** (Rifle AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
 | C113    | accidental-discharge  | mini_rifle | safety    | draft     | draft     | false               | —        | **10.4** (Mini Rifle AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
 | C114    | accidental-discharge  | shotgun    | safety    | draft     | draft     | false               | —        | **10.4** (Shotgun AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
-| C115    | trigger-finger        | handgun    | safety    | draft     | draft     | false               | —        | **10.5.9–10.5.11**; чернетка — рев’ю з PDF. |
+| C115    | trigger-finger        | handgun    | safety    | draft     | draft     | false               | —        | **10.5.9–10.5.11** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C116    | trigger-finger        | pcc        | safety    | draft     | draft     | false               | —        | **Ch.10.5** (PCC); звірити 10.5.9–11 у PDF Jan 2026. |
+| C117    | trigger-finger        | rifle      | safety    | draft     | draft     | false               | —        | **Ch.10.5** (Rifle); звірити 10.5.9–11 у PDF Jan 2026. |
+| C118    | trigger-finger        | mini_rifle | safety    | draft     | draft     | false               | —        | **Ch.10.5** (Mini Rifle); звірити 10.5.9–11 у PDF Jan 2026. |
+| C119    | trigger-finger        | shotgun    | safety    | draft     | draft     | false               | —        | **Ch.10.5** (Shotgun); звірити 10.5.9–11 у PDF Jan 2026. |
 | C120    | dropped-gun           | handgun    | safety    | draft     | draft     | false               | —        | **10.5.3** (DQ); чернетка — рев’ю з PDF. |
 | C125    | unsafe-gun-handling   | handgun    | safety    | draft     | draft     | false               | —        | **10.5.1**; чернетка — рев’ю з PDF. |
 | C130    | dq-general            | handgun    | safety    | draft     | draft     | false               | —        | **10.3**; чернетка — рев’ю з PDF. |
