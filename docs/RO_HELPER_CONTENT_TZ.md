@@ -45,6 +45,8 @@ npm run ro-helper:export-relevance
 
 У **`exports/`** з’явиться **`ro-helper-relevance-<timestamp>.zip`**: `relevance.csv` (колонки `manual_*` для ручного заповнення), `relevance.json`, `REVIEW_FORM_UA.md`, `schema.json`, за наявності — `context/*.csv`. Деталі колонок — у `REVIEW_FORM_UA.md` всередині архіву.
 
+Промпт для **другого агента** (перехресна перевірка покриття, якості та IPSC/ФПСУ): [RO_HELPER_CROSS_REVIEW_AGENT_PROMPT.md](./RO_HELPER_CROSS_REVIEW_AGENT_PROMPT.md).
+
 У каталозі **`exports/`** (не комітиться в git) з’явиться файл на кшталт **`ro-helper-review-<timestamp>.zip`**. Усередині:
 
 - `content/ro-helper/**` — статті UK/EN та `INDEX.md`;
