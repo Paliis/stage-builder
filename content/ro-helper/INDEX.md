@@ -133,7 +133,11 @@
 | C152    | movement-and-trigger-safety | rifle      | safety    | draft     | draft     | false               | —        | **8.5** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C153    | movement-and-trigger-safety | mini_rifle | safety    | draft     | draft     | false               | —        | **8.5** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C154    | movement-and-trigger-safety | shotgun    | safety    | draft     | draft     | false               | —        | **8.5** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
-| C155    | approaching-touching-targets | handgun    | scoring   | draft     | draft     | false               | —        | **9.1**; чернетка — рев’ю з PDF. |
+| C155    | approaching-touching-targets | handgun    | scoring   | draft     | draft     | false               | —        | **9.1** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C156    | approaching-touching-targets | pcc        | scoring   | draft     | draft     | false               | —        | **9.1** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C157    | approaching-touching-targets | rifle      | scoring   | draft     | draft     | false               | —        | **9.1** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C158    | approaching-touching-targets | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.1** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C159    | approaching-touching-targets | shotgun    | scoring   | draft     | draft     | false               | —        | **9.1** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C160    | scoring-methods       | handgun    | scoring   | draft     | draft     | false               | —        | **9.2**; чернетка — рев’ю з PDF. |
 | C165    | scoring-ties          | handgun    | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
 | C170    | hits-misses-noshoot-values | handgun    | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
