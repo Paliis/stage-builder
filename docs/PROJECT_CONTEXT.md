@@ -72,7 +72,7 @@
 | **Presentation** | `src/presentation/` | `StageCanvas`, `StageView3D`, тулбар, міні-карта, PDF, банери |
 | **i18n** | `src/i18n/` | UK/EN у `messages.ts` |
 | **Портал** | `src/portal/` | `PortalShell`, `PortalHome`, футер, демо RO Helper |
-| **RO Helper** | `src/ro-helper/` | Маршрутизований модуль: markdown, glob контенту, ФПСУ |
+| **RO Helper** | `src/ro-helper/` | Markdown, glob контенту, ФПСУ; **Quick Cite**; клієнтський **Helmet** (title/description); lazy-чанк з `src/portal/roHelperLazyRoutes.ts` |
 | **Server / SEO** | `src/server/`, `src/seo/`, `src/lib/` | Публікація share, канонічний origin, Supabase client |
 
 Точка входу: `src/main.tsx` → гідратація чернетки, PWA, роутер, аналітика.

@@ -322,6 +322,10 @@ export type MessageTree = {
   /** Home page of the Shooters Tools portal (`/`). */
   portal: {
     title: string
+    /** `<title>` for `/` (Helmet). */
+    helmetTitle: string
+    /** Short meta description for `/` (Helmet). */
+    metaDescription: string
     lead: string
     stageBuilderTitle: string
     stageBuilderDesc: string
@@ -383,6 +387,21 @@ export type MessageTree = {
     catScoring: string
     catEquipment: string
     catMatchAdmin: string
+    /** Default `<meta name="description">` for RO Helper list pages (not article body). */
+    seoModuleDescription: string
+    quickCiteButton: string
+    quickCiteAria: string
+    quickCiteCopied: string
+    quickCiteFailed: string
+    quickCiteHeader: string
+    quickCiteTopic: string
+    quickCiteIpsc: string
+    quickCitePrimary: string
+    quickCiteUnset: string
+    quickCiteNoRules: string
+    quickCiteFpsu: string
+    quickCiteFpsuSeeBlock: string
+    quickCiteNote: string
   }
   footer: {
     feedbackHeading: string
@@ -774,6 +793,9 @@ export const ukMessages: MessageTree = {
   },
   portal: {
     title: 'Shooters Tools',
+    helmetTitle: 'Shooters Tools — IPSC / \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u0430 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0430',
+    metaDescription:
+      '\u0406\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438 \u0434\u043b\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u043e\u0457 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 \u0442\u0430 IPSC: Stage Builder (\u043f\u043b\u0430\u043d, 3D, PDF), RO Helper (\u0434\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u0430\u0432\u0438\u043b).',
     lead: '\u0406\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438 \u0434\u043b\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u043e\u0457 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 \u0442\u0430 IPSC. \u041d\u043e\u0432\u0456 \u043c\u043e\u0434\u0443\u043b\u0456 \u0434\u043e\u0434\u0430\u0432\u0430\u0442\u0438\u043c\u0443\u0442\u044c\u0441\u044f \u043f\u043e\u0441\u0442\u0443\u043f\u043e\u0432\u043e.',
     stageBuilderTitle: 'Stage Builder',
     stageBuilderDesc:
@@ -843,6 +865,22 @@ export const ukMessages: MessageTree = {
     catScoring: 'Scoring',
     catEquipment: 'Equipment',
     catMatchAdmin: 'Match admin',
+    seoModuleDescription:
+      'RO Helper \u2014 \u0434\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440 \u0442\u0430 \u043f\u0440\u0430\u0432\u0438\u043b IPSC-\u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 (\u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438; \u0437\u0430\u0432\u0436\u0434\u0438 PDF).',
+    quickCiteButton: '\u0428\u0432\u0438\u0434\u043a\u0435 \u0434\u043b\u044f \u0437\u0432\u0456\u0442\u0443',
+    quickCiteAria: '\u0421\u043a\u043e\u043f\u0456\u044e\u0432\u0430\u0442\u0438 \u043a\u043e\u0440\u043e\u0442\u043a\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0434\u043b\u044f \u0437\u0432\u0456\u0442\u0443',
+    quickCiteCopied: '\u0421\u043a\u043e\u043f\u0456\u0439\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440',
+    quickCiteFailed: '\u041d\u0435 \u0432\u0434\u0430\u043b\u043e\u0441\u044f \u0441\u043a\u043e\u043f\u0456\u044e\u0432\u0430\u0442\u0438',
+    quickCiteHeader: '[RO Helper / Shooters Tools]',
+    quickCiteTopic: '\u0422\u0435\u043c\u0430:',
+    quickCiteIpsc: 'IPSC:',
+    quickCitePrimary: '\u041f\u0435\u0440\u0432\u0438\u043d\u043d\u0438\u043a:',
+    quickCiteUnset: '\u2014',
+    quickCiteNoRules: '\u2014',
+    quickCiteFpsu: '\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u043e (\u0424\u041f\u0421\u0423):',
+    quickCiteFpsuSeeBlock: '\u0434\u0438\u0432. \u0431\u043b\u043e\u043a \u0443 \u043a\u0430\u0440\u0442\u0446\u0456 (\u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0434\u0436\u0435\u0440\u0435\u043b\u0430 \u0431\u0435\u0437 \u043f\u043e\u0432\u043d\u043e\u0433\u043e \u0442\u0435\u043a\u0441\u0442\u0443)',
+    quickCiteNote:
+      '\u041f\u0440\u0438\u043c\u0456\u0442\u043a\u0430: \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u044e\u0454 \u0440\u0456\u0448\u0435\u043d\u043d\u044f RM / \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0438 \u043c\u0430\u0442\u0447\u0443.',
   },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
@@ -1220,6 +1258,9 @@ export const enMessages: MessageTree = {
   },
   portal: {
     title: 'Shooters Tools',
+    helmetTitle: 'Shooters Tools — IPSC / practical shooting',
+    metaDescription:
+      'Practical shooting and IPSC tools: Stage Builder (2D plan, 3D, PDF briefing), RO Helper (rules reference).',
     lead: 'Tools for practical shooting and IPSC. More modules will roll out over time.',
     stageBuilderTitle: 'Stage Builder',
     stageBuilderDesc: 'Metric plan, 3D, briefing, PDF, stage files.',
@@ -1283,6 +1324,21 @@ export const enMessages: MessageTree = {
     catScoring: 'Scoring',
     catEquipment: 'Equipment',
     catMatchAdmin: 'Match admin',
+    seoModuleDescription:
+      'RO Helper — IPSC-style match rules and procedures reference (draft articles; always verify with your official PDF).',
+    quickCiteButton: 'Quick Cite',
+    quickCiteAria: 'Copy a short citation for reports or messages',
+    quickCiteCopied: 'Copied to clipboard',
+    quickCiteFailed: 'Could not copy',
+    quickCiteHeader: '[RO Helper / Shooters Tools]',
+    quickCiteTopic: 'Topic:',
+    quickCiteIpsc: 'IPSC:',
+    quickCitePrimary: 'Primary source:',
+    quickCiteUnset: '—',
+    quickCiteNoRules: '—',
+    quickCiteFpsu: 'Local (FPSU):',
+    quickCiteFpsuSeeBlock: 'see block in article (link targets only; not full text)',
+    quickCiteNote: 'Note: does not replace Range Master decisions or match documents.',
   },
   footer: {
     feedbackHeading: 'Feedback',

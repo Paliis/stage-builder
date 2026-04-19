@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { RO_HELPER_CATEGORIES, isRoHelperDiscipline } from './constants'
@@ -13,9 +14,16 @@ export function RoHelperDisciplinePage() {
     return <Navigate to="/ro-helper" replace />
   }
 
+  const dLabel = disciplineLabel(discipline, rh)
+  const helmetTitle = `${dLabel} · ${rh.breadcrumbRo} — ${tree.portal.title}`
+
   return (
     <div className="ro-helper-list">
-      <h1 className="ro-helper-list__title">{disciplineLabel(discipline, rh)}</h1>
+      <Helmet>
+        <title>{helmetTitle}</title>
+        <meta name="description" content={rh.seoModuleDescription} />
+      </Helmet>
+      <h1 className="ro-helper-list__title">{dLabel}</h1>
       <p className="ro-helper-list__sub">{rh.categoryTitle}</p>
       <ul className="ro-helper-list__tiles">
         {RO_HELPER_CATEGORIES.map((c) => (

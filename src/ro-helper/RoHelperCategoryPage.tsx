@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { loadArticleRaw, listSlugsFor } from './articleGlob'
@@ -47,11 +48,16 @@ export function RoHelperCategoryPage() {
     return <Navigate to="/ro-helper" replace />
   }
 
+  const pageTitle = `${disciplineLabel(discipline, rh)} · ${categoryLabel(category, rh)}`
+  const helmetTitle = `${pageTitle} · ${rh.breadcrumbRo} — ${tree.portal.title}`
+
   return (
     <div className="ro-helper-list">
-      <h1 className="ro-helper-list__title">
-        {disciplineLabel(discipline, rh)} · {categoryLabel(category, rh)}
-      </h1>
+      <Helmet>
+        <title>{helmetTitle}</title>
+        <meta name="description" content={rh.seoModuleDescription} />
+      </Helmet>
+      <h1 className="ro-helper-list__title">{pageTitle}</h1>
       {rows === null ? (
         <p className="ro-helper-list__loading">{rh.loading}</p>
       ) : rows.length === 0 ? (

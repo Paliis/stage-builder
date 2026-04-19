@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import './PortalHome.css'
@@ -9,6 +10,10 @@ export function PortalHome() {
 
   return (
     <div className="portal-home">
+      <Helmet>
+        <title>{p.helmetTitle}</title>
+        <meta name="description" content={p.metaDescription} />
+      </Helmet>
       <h1 className="portal-home__sr-only">{p.title}</h1>
       <p className="portal-home__lead">{p.lead}</p>
       <Link to="/stage-builder" className="portal-home__card">

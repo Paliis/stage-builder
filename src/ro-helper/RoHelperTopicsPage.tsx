@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { listRefsForTopic } from './articleGlob'
@@ -34,12 +35,16 @@ export function RoHelperTopicsPage() {
   }
 
   const catLab = categoryLabel(categoryOk, rh)
+  const pageH1 = `${rh.topicsTitle}: ${catLab}`
+  const helmetTitle = `${pageH1} · ${rh.breadcrumbRo} — ${tree.portal.title}`
 
   return (
     <div className="ro-helper-list">
-      <h1 className="ro-helper-list__title">
-        {rh.topicsTitle}: {catLab}
-      </h1>
+      <Helmet>
+        <title>{helmetTitle}</title>
+        <meta name="description" content={rh.seoModuleDescription} />
+      </Helmet>
+      <h1 className="ro-helper-list__title">{pageH1}</h1>
       {refs.length === 0 ? (
         <p className="ro-helper-list__empty">{rh.articlesEmpty}</p>
       ) : (

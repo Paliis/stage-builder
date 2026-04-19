@@ -1,9 +1,14 @@
+import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import type { MessageTree } from '../i18n/messages'
 import { useI18n } from '../i18n/useI18n'
 import { RO_HELPER_DISCIPLINES, type RoHelperCategory } from './constants'
 import { disciplineLabel } from './labels'
+import { trackRoHelperEvent } from './roHelperAnalytics'
 import './RoHelperHome.css'
+
+const GA_SESSION_MODULE_KEY = 'st_ga_rh_module_open'
 
 const SOS: { category: RoHelperCategory; tone: string }[] = [
   { category: 'safety', tone: 'safety' },
@@ -34,8 +39,24 @@ export function RoHelperHome() {
   const { tree } = useI18n()
   const rh = tree.roHelper
 
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(GA_SESSION_MODULE_KEY)) return
+      sessionStorage.setItem(GA_SESSION_MODULE_KEY, '1')
+    } catch {
+      /* ignore */
+    }
+    trackRoHelperEvent('module_open', { module: 'ro-helper' })
+  }, [])
+
+  const helmetTitle = `${rh.moduleTitle} — ${tree.portal.title}`
+
   return (
     <div className="ro-helper-home">
+      <Helmet>
+        <title>{helmetTitle}</title>
+        <meta name="description" content={rh.seoModuleDescription} />
+      </Helmet>
       <h1 className="ro-helper-home__title">{rh.moduleTitle}</h1>
       <p className="ro-helper-home__lead">{rh.lead}</p>
 
