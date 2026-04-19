@@ -169,6 +169,10 @@
 | C188    | radial-tears-enlarged-holes | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.5.4**; чернетка — рев’ю з PDF. |
 | C189    | radial-tears-enlarged-holes | shotgun    | scoring   | draft     | draft     | false               | —        | **9.5.4**; чернетка — рев’ю з PDF. |
 | C190    | fte-scoring-side      | handgun    | scoring   | draft     | draft     | false               | —        | **9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF. |
+| C191    | fte-scoring-side      | pcc        | scoring   | draft     | draft     | false               | —        | **9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF. |
+| C192    | fte-scoring-side      | rifle      | scoring   | draft     | draft     | false               | —        | **9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF. |
+| C193    | fte-scoring-side      | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF. |
+| C194    | fte-scoring-side      | shotgun    | scoring   | draft     | draft     | false               | —        | **9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF. |
 | C195    | score-verification-challenge | handgun    | scoring   | draft     | draft     | false               | —        | **9.6**; чернетка — рев’ю з PDF. |
 | C200    | score-sheets-corrections | handgun    | scoring   | draft     | draft     | false               | —        | **9.7**; чернетка — рев’ю з PDF. |
 | C205    | provisional-results-stats-appeal | handgun    | scoring   | draft     | draft     | false               | —        | **9.8**; чернетка — рев’ю з PDF. |
