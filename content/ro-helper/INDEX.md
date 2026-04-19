@@ -189,6 +189,10 @@
 | C208    | provisional-results-stats-appeal | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.8**; чернетка — рев’ю з PDF. |
 | C209    | provisional-results-stats-appeal | shotgun    | scoring   | draft     | draft     | false               | —        | **9.8**; чернетка — рев’ю з PDF. |
 | C210    | disappearing-targets-scoring | handgun    | scoring   | draft     | draft     | false               | —        | **9.9** (9.9.2 vs активатор); чернетка — рев’ю з PDF. |
+| C211    | disappearing-targets-scoring | pcc        | scoring   | draft     | draft     | false               | —        | **9.9**; чернетка — рев’ю з PDF. |
+| C212    | disappearing-targets-scoring | rifle      | scoring   | draft     | draft     | false               | —        | **9.9**; чернетка — рев’ю з PDF. |
+| C213    | disappearing-targets-scoring | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.9**; чернетка — рев’ю з PDF. |
+| C214    | disappearing-targets-scoring | shotgun    | scoring   | draft     | draft     | false               | —        | **9.9**; чернетка — рев’ю з PDF. |
 | C215    | official-time         | handgun    | scoring   | draft     | draft     | false               | —        | **9.10**; чернетка — рев’ю з PDF. |
 | C220    | scoring-programs      | handgun    | scoring   | draft     | draft     | false               | —        | **9.11**; чернетка — рев’ю з PDF. |
 | C225    | division-overview     | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
