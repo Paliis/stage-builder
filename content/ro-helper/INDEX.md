@@ -244,6 +244,10 @@
 | C263    | athlete-clothing      | mini_rifle | equipment | draft     | draft     | false               | —        | **5.3**; чернетка — рев’ю з PDF. |
 | C264    | athlete-clothing      | shotgun    | equipment | draft     | draft     | false               | —        | **5.3**; чернетка — рев’ю з PDF. |
 | C265    | equipment-malfunction | handgun    | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
+| C266    | equipment-malfunction | pcc        | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
+| C267    | equipment-malfunction | rifle      | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
+| C268    | equipment-malfunction | mini_rifle | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
+| C269    | equipment-malfunction | shotgun    | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C270    | written-stage-briefing | handgun    | match-admin | draft     | draft     | false               | —        | **3.2** (WSB); чернетка — рев’ю з PDF. |
 | C275    | local-regional-rules  | handgun    | match-admin | draft     | draft     | false               | —        | **3.3**; чернетка — рев’ю з PDF. |
 | C280    | match-structure-and-categories | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.6**; чернетка — рев’ю з PDF. |
