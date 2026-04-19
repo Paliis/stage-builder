@@ -159,6 +159,10 @@
 | C178    | paper-scoring-policy  | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.5**; чернетка — рев’ю з PDF. |
 | C179    | paper-scoring-policy  | shotgun    | scoring   | draft     | draft     | false               | —        | **9.5**; чернетка — рев’ю з PDF. |
 | C180    | paper-zones-major-minor | handgun    | scoring   | draft     | draft     | false               | —        | **9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF. |
+| C181    | paper-zones-major-minor | pcc        | scoring   | draft     | draft     | false               | —        | **9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF. |
+| C182    | paper-zones-major-minor | rifle      | scoring   | draft     | draft     | false               | —        | **9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF. |
+| C183    | paper-zones-major-minor | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF. |
+| C184    | paper-zones-major-minor | shotgun    | scoring   | draft     | draft     | false               | —        | **9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF. |
 | C185    | radial-tears-enlarged-holes | handgun    | scoring   | draft     | draft     | false               | —        | **9.5.4**; чернетка — рев’ю з PDF. |
 | C190    | fte-scoring-side      | handgun    | scoring   | draft     | draft     | false               | —        | **9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF. |
 | C195    | score-verification-challenge | handgun    | scoring   | draft     | draft     | false               | —        | **9.6**; чернетка — рев’ю з PDF. |
