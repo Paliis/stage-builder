@@ -99,10 +99,10 @@ C122,dropped-gun,rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ
 C123,dropped-gun,mini_rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C124,dropped-gun,shotgun,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C125,unsafe-gun-handling,handgun,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C126,unsafe-gun-handling,pcc,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,todo,todo,
-C127,unsafe-gun-handling,rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,todo,todo,
-C128,unsafe-gun-handling,mini_rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,todo,todo,
-C129,unsafe-gun-handling,shotgun,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,todo,todo,
+C126,unsafe-gun-handling,pcc,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C127,unsafe-gun-handling,rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C128,unsafe-gun-handling,mini_rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C129,unsafe-gun-handling,shotgun,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C130,dq-general,handgun,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C131,dq-general,pcc,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,todo,todo,
 C132,dq-general,rifle,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,todo,todo,
