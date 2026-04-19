@@ -279,10 +279,10 @@ C302,reshoots,rifle,match-admin,Reshoots / equipment failure,Перестріл 
 C303,reshoots,mini_rifle,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C304,reshoots,shotgun,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C305,course-design-safety-balance,handgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C306,course-design-safety-balance,pcc,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C307,course-design-safety-balance,rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C308,course-design-safety-balance,mini_rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C309,course-design-safety-balance,shotgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",todo,todo,
+C306,course-design-safety-balance,pcc,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C307,course-design-safety-balance,rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C308,course-design-safety-balance,mini_rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C309,course-design-safety-balance,shotgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C310,metal-target-min-distance-dq,handgun,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (HG Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C311,metal-target-min-distance-dq,pcc,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),10.4.x — verify PCC PDF vs metal,II п.7; IV; XI; IX,todo,todo,Аудит: довгі стволи — свої дистанції vs метал; звірити PCC PDF.
 C312,metal-target-min-distance-dq,rifle,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),10.4.x — verify Rifle PDF vs metal (audit: 5 m context),II п.7; IV; XI; IX,todo,todo,Аудит: напр. 5 м vs метал (уточнити в Rifle PDF).
