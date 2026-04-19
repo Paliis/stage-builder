@@ -249,6 +249,10 @@
 | C268    | equipment-malfunction | mini_rifle | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C269    | equipment-malfunction | shotgun    | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C270    | written-stage-briefing | handgun    | match-admin | draft     | draft     | false               | —        | **3.2** (WSB); чернетка — рев’ю з PDF. |
+| C271    | written-stage-briefing | pcc        | match-admin | draft     | draft     | false               | —        | **3.2** (WSB); чернетка — рев’ю з PDF. |
+| C272    | written-stage-briefing | rifle      | match-admin | draft     | draft     | false               | —        | **3.2** (WSB); чернетка — рев’ю з PDF. |
+| C273    | written-stage-briefing | mini_rifle | match-admin | draft     | draft     | false               | —        | **3.2** (WSB); чернетка — рев’ю з PDF. |
+| C274    | written-stage-briefing | shotgun    | match-admin | draft     | draft     | false               | —        | **3.2** (WSB); чернетка — рев’ю з PDF. |
 | C275    | local-regional-rules  | handgun    | match-admin | draft     | draft     | false               | —        | **3.3**; чернетка — рев’ю з PDF. |
 | C280    | match-structure-and-categories | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.6**; чернетка — рев’ю з PDF. |
 | C285    | md-ro-roles           | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
