@@ -219,6 +219,10 @@
 | C238    | holster-or-carry-long-gun | mini_rifle | equipment | draft     | draft     | false               | —        | **Ch.5** (ремень / носіння); чернетка — рев’ю з PDF. |
 | C239    | holster-or-carry-long-gun | shotgun    | equipment | draft     | draft     | false               | —        | **Ch.5** (носіння / постановка); чернетка — рев’ю з PDF. |
 | C240    | firearms-and-ammunition-rules | handgun    | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
+| C241    | firearms-and-ammunition-rules | pcc        | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
+| C242    | firearms-and-ammunition-rules | rifle      | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
+| C243    | firearms-and-ammunition-rules | mini_rifle | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
+| C244    | firearms-and-ammunition-rules | shotgun    | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
 | C245    | chronograph-and-power-factor | handgun    | equipment | draft     | draft     | false               | —        | **5.6–5.7**; чернетка — рев’ю з PDF. |
 | C250    | magazines-and-loading-devices | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5**; чернетка — рев’ю з PDF. |
 | C255    | eye-and-ear-protection | handgun    | equipment | draft     | draft     | false               | —        | **5.4**; чернетка — рев’ю з PDF. |
