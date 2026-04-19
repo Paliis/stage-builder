@@ -128,7 +128,11 @@
 | C147    | range-safety-zones    | rifle      | safety    | draft     | draft     | false               | —        | **Ch.2** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C148    | range-safety-zones    | mini_rifle | safety    | draft     | draft     | false               | —        | **Ch.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C149    | range-safety-zones    | shotgun    | safety    | draft     | draft     | false               | —        | **Ch.2** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
-| C150    | movement-and-trigger-safety | handgun    | safety    | draft     | draft     | false               | —        | **8.5**; чернетка — рев’ю з PDF. |
+| C150    | movement-and-trigger-safety | handgun    | safety    | draft     | draft     | false               | —        | **8.5** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C151    | movement-and-trigger-safety | pcc        | safety    | draft     | draft     | false               | —        | **8.5** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C152    | movement-and-trigger-safety | rifle      | safety    | draft     | draft     | false               | —        | **8.5** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C153    | movement-and-trigger-safety | mini_rifle | safety    | draft     | draft     | false               | —        | **8.5** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C154    | movement-and-trigger-safety | shotgun    | safety    | draft     | draft     | false               | —        | **8.5** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C155    | approaching-touching-targets | handgun    | scoring   | draft     | draft     | false               | —        | **9.1**; чернетка — рев’ю з PDF. |
 | C160    | scoring-methods       | handgun    | scoring   | draft     | draft     | false               | —        | **9.2**; чернетка — рев’ю з PDF. |
 | C165    | scoring-ties          | handgun    | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
