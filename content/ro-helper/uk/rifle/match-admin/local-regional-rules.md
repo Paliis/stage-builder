@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "3.3"
     note: "Local / regional rules — Rifle"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "I"
+    note: "Загальні положення"
+    url: "https://upsf.org.ua/rules/upsf/2020/01-general-provisions"
+  - rule: "II"
+    note: "Загальні умови та учасники"
+    url: "https://upsf.org.ua/rules/upsf/2020/02-general-conditions"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - Якір — **3.3 Rifle**; межа — **безпека** та **чесність** з **розділами 2, 9, 10**.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [I — Загальні положення](https://upsf.org.ua/rules/upsf/2020/01-general-provisions)
+- [II — Загальні умови та учасники](https://upsf.org.ua/rules/upsf/2020/02-general-conditions)
+
 
 Правила ФПСУ / UPSF можуть накладати додаткові вимоги; вони мають бути **прозорі** до старту. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

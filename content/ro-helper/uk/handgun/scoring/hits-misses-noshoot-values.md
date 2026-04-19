@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "9.4"
     note: "Hits, misses, no-shoot values — Handgun; таблиці в PDF і додатках"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "X §4"
+    note: "Підрахунок очок та штрафів"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#4-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D0%BE%D1%87%D0%BE%D0%BA-%D1%82%D0%B0-%D1%88%D1%82%D1%80%D0%B0%D1%84%D1%96%D0%B2"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - **9.4** працює разом із **9.5** (папір) та **9.9** (рухомі / спеціальні мішені, якщо релевантно).
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [X §4 — Підрахунок очок та штрафів](https://upsf.org.ua/rules/upsf/2020/10-scoring#4-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D0%BE%D1%87%D0%BE%D0%BA-%D1%82%D0%B0-%D1%88%D1%82%D1%80%D0%B0%D1%84%D1%96%D0%B2)
+
 
 Калібри та типи мішеней мають відповідати додаткам матчу. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

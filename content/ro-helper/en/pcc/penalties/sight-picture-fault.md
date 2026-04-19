@@ -13,7 +13,13 @@ ipsc_refs:
   - rule: "8.7.2"
     note: "Limits during official COF inspection / walkthrough — PCC Jan 2026"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "IX §7"
+    note: "Aiming / walkthrough"
+    url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#7-%D0%BF%D1%80%D0%B8%D1%86%D1%96%D0%BB%D1%8E%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F-%D1%82%D0%B0-%D0%BE%D0%B7%D0%BD%D0%B0%D0%B9%D0%BE%D0%BC%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F-%D1%96%D0%B7-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%8E"
+  - rule: "XI §2"
+    note: "Procedural penalty examples"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -44,6 +50,11 @@ Outcomes are **only** from the **Jan 2026 PCC** PDF. Broader walkthrough issues 
 - Do not confuse with **Chapter 10** safety **DQ** issues — if unsafe, follow safety escalation and **RM** involvement.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [IX §7 — Aiming / walkthrough](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#7-%D0%BF%D1%80%D0%B8%D1%86%D1%96%D0%BB%D1%8E%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F-%D1%82%D0%B0-%D0%BE%D0%B7%D0%BD%D0%B0%D0%B9%D0%BE%D0%BC%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F-%D1%96%D0%B7-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%8E)
+- [XI §2 — Procedural penalty examples](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8)
+
 
 FPSU match briefings / walkthroughs may add local instructions; verify match regs and FPSU text. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

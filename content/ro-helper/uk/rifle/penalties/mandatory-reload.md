@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "10.2.4"
     note: "Порушення вимоги WSB щодо обов’язкового перезарядження — Rifle Jan 2026"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "XI §2"
+    note: "Процедурні штрафи — приклади"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
+  - rule: "IX §4"
+    note: "Заряджання / перезарядження"
+    url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#4-%D0%B7%D0%B0%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F-%D0%BF%D0%B5%D1%80%D0%B5%D0%B7%D0%B0%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B0%D0%B1%D0%BE-%D1%80%D0%BE%D0%B7%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -37,6 +43,11 @@ status: draft
 - Якщо краще підходить інший підпункт — застосовуйте **його** після читання PDF.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XI §2 — Процедурні штрафи — приклади](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8)
+- [IX §4 — Заряджання / перезарядження](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#4-%D0%B7%D0%B0%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F-%D0%BF%D0%B5%D1%80%D0%B5%D0%B7%D0%B0%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B0%D0%B1%D0%BE-%D1%80%D0%BE%D0%B7%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F)
+
 
 Формулювання WSB можуть відрізнятися; **`fpsu_delta_verified`**: **false** до **RO_HELPER_V0 §4.1**.
 

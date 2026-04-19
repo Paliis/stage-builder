@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "10.1"
     note: "General procedural penalties (check 10.1.1–10.1.2 in Handgun PDF)"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "XI §1"
+    note: "Procedural penalties — general"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#1-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%B7%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0"
+  - rule: "XI §2"
+    note: "Procedural penalties — examples"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -38,6 +44,11 @@ A **procedural penalty** applies when the competitor violates **procedure** for 
 - Any **cap** on procedurals for a single **course of fire (COF)** (if the rules provide one) is a separate topic (**10.2.3**); this card focuses on **whether** a procedural is due and **how many** apply per the primary source.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [XI §1 — Procedural penalties — general](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#1-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%B7%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0)
+- [XI §2 — Procedural penalties — examples](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8)
+
 
 For matches under **FPSU / UPSF** rules, numbering and penalty mechanics may differ from IPSC. Compare the **official FPSU text** and record deltas only after reviewer sign-off (**`fpsu_delta_verified`** stays **false** until **RO_HELPER_V0 §4.1**).
 

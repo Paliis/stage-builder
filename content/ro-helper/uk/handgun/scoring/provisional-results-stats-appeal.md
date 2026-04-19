@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "9.8"
     note: "Provisional results and statistics — Handgun"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "X §8"
+    note: "Відповідальність за підрахунок"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#8-%D0%B2%D1%96%D0%B4%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D0%B0%D0%BB%D1%8C%D0%BD%D1%96%D1%81%D1%82%D1%8C-%D0%B7%D0%B0-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%D1%96%D0%B2"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - Якір — **9.8**; перехресно **9.6** (протест) і **9.3** (нічиї).
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [X §8 — Відповідальність за підрахунок](https://upsf.org.ua/rules/upsf/2020/10-scoring#8-%D0%B2%D1%96%D0%B4%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D0%B0%D0%BB%D1%8C%D0%BD%D1%96%D1%81%D1%82%D1%8C-%D0%B7%D0%B0-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%D1%96%D0%B2)
+
 
 Онлайн-табло може оновлюватися з затримкою; строки протесту — з **MD**. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

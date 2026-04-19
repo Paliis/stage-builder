@@ -13,7 +13,10 @@ ipsc_refs:
   - rule: "5.7"
     note: "Power factor — PCC"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VII §6"
+    note: "Chronograph and power factor"
+    url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#6-%D1%85%D1%80%D0%BE%D0%BD%D0%BE%D0%B3%D1%80%D0%B0%D1%84-%D1%82%D0%B0-%D1%84%D0%B0%D0%BA%D1%82%D0%BE%D1%80-%D0%BF%D0%BE%D1%82%D1%83%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D1%96"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -38,6 +41,10 @@ status: draft
 - **5.6–5.7 PCC** plus PF tables in **Chapter 5** / appendices; align with division (**Major/Minor**).
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [VII §6 — Chronograph and power factor](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#6-%D1%85%D1%80%D0%BE%D0%BD%D0%BE%D0%B3%D1%80%D0%B0%D1%84-%D1%82%D0%B0-%D1%84%D0%B0%D0%BA%D1%82%D0%BE%D1%80-%D0%BF%D0%BE%D1%82%D1%83%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D1%96)
+
 
 PF thresholds may mirror IPSC; extra velocity caps — per **MD**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "11"
     note: "Protests and arbitration — Handgun Ch.11"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "XII"
+    note: "Арбітражний комітет"
+    url: "https://upsf.org.ua/rules/upsf/2020/12-arbitration"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - **Розділ 11** + зв’язок із **9.6** / **9.8** залежно від предмета спору.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XII — Арбітражний комітет](https://upsf.org.ua/rules/upsf/2020/12-arbitration)
+
 
 ФПСУ може мати власні строки подання; **регламент матчу** має бути опублікований. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

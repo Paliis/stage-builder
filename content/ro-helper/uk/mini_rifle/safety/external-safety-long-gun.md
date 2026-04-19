@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "10.5.11"
     note: "Long gun — зовнішній запобіжник під час руху — Mini Rifle Jan 2026; у Handgun 10.5.11 — інший зміст (палець)"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VII §1"
+    note: "Зброя"
+    url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#1-%D0%B7%D0%B1%D1%80%D0%BE%D1%8F"
+  - rule: "IX §1"
+    note: "Положення готовності зброї"
+    url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#1-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D0%B7%D0%B1%D1%80%D0%BE%D1%97"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - Якір — **10.5.11** у **Mini Rifle**; перегляньте сусідні **10.5.x** у тому ж PDF.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [VII §1 — Зброя](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#1-%D0%B7%D0%B1%D1%80%D0%BE%D1%8F)
+- [IX §1 — Положення готовності зброї](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#1-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D0%B7%D0%B1%D1%80%D0%BE%D1%97)
+
 
 Спрощені команди на клубних матчах мають лишатися сумісними з рівнем правил. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

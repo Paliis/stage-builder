@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "5.3"
     note: "Competitor clothing — Rifle"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VII §3"
+    note: "Athlete clothing"
+    url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#3-%D0%BE%D0%B4%D1%8F%D0%B3-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D1%96%D0%B2"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - Anchor: **5.3 Rifle**; cross-check **5.4** (eye protection as safety gear).
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [VII §3 — Athlete clothing](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#3-%D0%BE%D0%B4%D1%8F%D0%B3-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D1%96%D0%B2)
+
 
 FPSU may require specific jersey rules or face-cover limits — match regs. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

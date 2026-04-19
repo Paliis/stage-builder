@@ -13,7 +13,13 @@ ipsc_refs:
   - rule: "9.5.6"
     note: "Залік / промах обов’язкової мішені — таблиці в PDF Mini Rifle"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "X §4–5"
+    note: "Підрахунок очок та штрафів"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#4-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D0%BE%D1%87%D0%BE%D0%BA-%D1%82%D0%B0-%D1%88%D1%82%D1%80%D0%B0%D1%84%D1%96%D0%B2"
+  - rule: "XI §2"
+    note: "Процедурні штрафи — приклади"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -39,6 +45,11 @@ status: draft
 - **9.5.6** — заліковий якір; читати разом із **10.2.7**.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [X §4–5 — Підрахунок очок та штрафів](https://upsf.org.ua/rules/upsf/2020/10-scoring#4-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D0%BE%D1%87%D0%BE%D0%BA-%D1%82%D0%B0-%D1%88%D1%82%D1%80%D0%B0%D1%84%D1%96%D0%B2)
+- [XI §2 — Процедурні штрафи — приклади](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8)
+
 
 Спрощення на шкільних / клубних матчах **не** прибирають обов’язкові мішені без повноважень **MD** у межах рівня правил. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

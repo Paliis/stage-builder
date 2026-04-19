@@ -86,6 +86,7 @@
 ## 5. Перевірки репозиторію
 
 - `npm run build`
+- Повторне заповнення `fpsu_refs` і блоку посилань у «Локально (ФПСУ)» / «Local (FPSU)» (після зміни мапінгу): `npm run ro-helper:inject-fpsu-refs` — джерело URL: [scripts/data/ro-helper-fpsu-urls.mjs](../scripts/data/ro-helper-fpsu-urls.mjs).
 - За змінами в INDEX/матриці — узгодження з [content/ro-helper/INDEX.md](../content/ro-helper/INDEX.md) і колонкою `notes` у CSV (за домовленістю команди).
 
 ---

@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "3.3"
     note: "Local / regional rules — Rifle"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "I"
+    note: "General provisions"
+    url: "https://upsf.org.ua/rules/upsf/2020/01-general-provisions"
+  - rule: "II"
+    note: "General conditions and participants"
+    url: "https://upsf.org.ua/rules/upsf/2020/02-general-conditions"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - Anchor: **3.3 Rifle**; boundary is **safety** and **fair play** in **Chapters 2, 9, 10**.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [I — General provisions](https://upsf.org.ua/rules/upsf/2020/01-general-provisions)
+- [II — General conditions and participants](https://upsf.org.ua/rules/upsf/2020/02-general-conditions)
+
 
 FPSU / UPSF layers must be **transparent** before the start. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

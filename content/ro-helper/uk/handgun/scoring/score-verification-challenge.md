@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "9.6"
     note: "Score verification and challenges — Handgun"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "X §6"
+    note: "Перевірка підрахунку та спірні питання"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#6-%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D1%96%D1%80%D0%BA%D0%B0-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%83-%D0%BE%D1%87%D0%BA%D1%96%D0%B2-%D1%82%D0%B0-%D1%81%D0%BF%D1%96%D1%80%D0%BD%D1%96-%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D0%BD%D1%8F"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - Якір — **9.6**; зв’язок із **9.7** (виправлення листів) та **9.8** (попередні результати) — перевіряти в PDF за контекстом матчу.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [X §6 — Перевірка підрахунку та спірні питання](https://upsf.org.ua/rules/upsf/2020/10-scoring#6-%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D1%96%D1%80%D0%BA%D0%B0-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%83-%D0%BE%D1%87%D0%BA%D1%96%D0%B2-%D1%82%D0%B0-%D1%81%D0%BF%D1%96%D1%80%D0%BD%D1%96-%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D0%BD%D1%8F)
+
 
 Табло та онлайн-протести можуть мати додаткові правила; дотримуйтесь **MD**. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

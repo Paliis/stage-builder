@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "6"
     note: "Match structure and categories — Shotgun Ch.6"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Shotgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VIII §2"
+    note: "Classes"
+    url: "https://upsf.org.ua/rules/upsf/2020/08-match-structure#2-%D0%BA%D0%BB%D0%B0%D1%81%D0%B8-%D1%83-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85"
+  - rule: "VIII §3"
+    note: "Categories"
+    url: "https://upsf.org.ua/rules/upsf/2020/08-match-structure#3-%D0%BA%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D1%96%D1%97-%D0%BD%D0%B0-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%96"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - Anchor: **Chapter 6 Shotgun**; details depend on match level (I–III) — confirm in PDF + **MD**.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [VIII §2 — Classes](https://upsf.org.ua/rules/upsf/2020/08-match-structure#2-%D0%BA%D0%BB%D0%B0%D1%81%D0%B8-%D1%83-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85)
+- [VIII §3 — Categories](https://upsf.org.ua/rules/upsf/2020/08-match-structure#3-%D0%BA%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D1%96%D1%97-%D0%BD%D0%B0-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%96)
+
 
 FPSU club matches may simplify stages; **MD** is the on-site source of truth. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

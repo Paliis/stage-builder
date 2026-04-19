@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "9.7"
     note: "Score sheets and corrections — Shotgun"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Shotgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "X §7"
+    note: "Залікові відомості"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#7-%D0%B7%D0%B0%D0%BB%D1%96%D0%BA%D0%BE%D0%B2%D1%96-%D0%B2%D1%96%D0%B4%D0%BE%D0%BC%D0%BE%D1%81%D1%82%D1%96"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -34,6 +37,10 @@ status: draft
 - **9.7 Shotgun**; **9.6** / **9.8** у контексті **розділу 9**.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [X §7 — Залікові відомості](https://upsf.org.ua/rules/upsf/2020/10-scoring#7-%D0%B7%D0%B0%D0%BB%D1%96%D0%BA%D0%BE%D0%B2%D1%96-%D0%B2%D1%96%D0%B4%D0%BE%D0%BC%D0%BE%D1%81%D1%82%D1%96)
+
 
 **`fpsu_delta_verified`**: **false** до **RO_HELPER_V0 §4.1**.
 

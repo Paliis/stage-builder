@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "10.5.1"
     note: "Unsafe firearm handling — PCC; узгодити з іншими підпунктами 10.5"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "XI §5"
+    note: "Дискваліфікація — небезпечне поводження"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#5-%D0%B4%D0%B8%D1%81%D0%BA%D0%B2%D0%B0%D0%BB%D1%96%D1%84%D1%96%D0%BA%D0%B0%D1%86%D1%96%D1%8F-%D0%BD%D0%B5%D0%B1%D0%B5%D0%B7%D0%BF%D0%B5%D1%87%D0%BD%D0%B5-%D0%BF%D0%BE%D0%B2%D0%BE%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B7%D1%96-%D0%B7%D0%B1%D1%80%D0%BE%D1%94%D1%8E"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - Читати **10.5.1** разом із усім **розд. 10.5 PCC** — залишкова норма, не заміна специфіці.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XI §5 — Дискваліфікація — небезпечне поводження](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#5-%D0%B4%D0%B8%D1%81%D0%BA%D0%B2%D0%B0%D0%BB%D1%96%D1%84%D1%96%D0%BA%D0%B0%D1%86%D1%96%D1%8F-%D0%BD%D0%B5%D0%B1%D0%B5%D0%B7%D0%BF%D0%B5%D1%87%D0%BD%D0%B5-%D0%BF%D0%BE%D0%B2%D0%BE%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B7%D1%96-%D0%B7%D0%B1%D1%80%D0%BE%D1%94%D1%8E)
+
 
 **`fpsu_delta_verified`**: **false** до **RO_HELPER_V0 §4.1**.
 

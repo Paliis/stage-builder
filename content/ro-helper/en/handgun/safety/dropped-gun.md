@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "10.5.3"
     note: "Dropped firearm — Handgun; full text and exceptions in PDF"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "XI §5"
+    note: "DQ — unsafe gun handling"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#5-%D0%B4%D0%B8%D1%81%D0%BA%D0%B2%D0%B0%D0%BB%D1%96%D1%84%D1%96%D0%BA%D0%B0%D1%86%D1%96%D1%8F-%D0%BD%D0%B5%D0%B1%D0%B5%D0%B7%D0%BF%D0%B5%D1%87%D0%BD%D0%B5-%D0%BF%D0%BE%D0%B2%D0%BE%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B7%D1%96-%D0%B7%D0%B1%D1%80%D0%BE%D1%94%D1%8E"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ A **dropped firearm** (the handgun **falls** from the hand / holster during the 
 - Anchor: **10.5.3** in **Section 10.5**; cross-check **10.4** if a shot happened during the drop.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [XI §5 — DQ — unsafe gun handling](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#5-%D0%B4%D0%B8%D1%81%D0%BA%D0%B2%D0%B0%D0%BB%D1%96%D1%84%D1%96%D0%BA%D0%B0%D1%86%D1%96%D1%8F-%D0%BD%D0%B5%D0%B1%D0%B5%D0%B7%D0%BF%D0%B5%D1%87%D0%BD%D0%B5-%D0%BF%D0%BE%D0%B2%D0%BE%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B7%D1%96-%D0%B7%D0%B1%D1%80%D0%BE%D1%94%D1%8E)
+
 
 Holster retention and post-incident handling may be detailed in the match briefing. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

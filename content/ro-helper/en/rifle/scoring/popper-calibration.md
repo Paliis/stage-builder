@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "Appendix C1"
     note: "Popper calibration — verify appendix ID and text in Rifle Jan 2026 PDF (may differ from Handgun C1 label)"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VI §3"
+    note: "Metal / hard targets"
+    url: "https://upsf.org.ua/rules/upsf/2020/06-range-equipment#3-%D0%BC%D0%B5%D1%82%D0%B0%D0%BB%D0%B5%D0%B2%D1%96-%D1%82%D0%B0-%D1%82%D0%B2%D0%B5%D1%80%D0%B4%D1%96-%D0%BC%D1%96%D1%88%D0%B5%D0%BD%D1%96"
+  - rule: "X §5"
+    note: "Paper scoring policy"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#5-%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D0%BE%D0%B2%D0%B0-%D0%BF%D0%BE%D0%BB%D1%96%D1%82%D0%B8%D0%BA%D0%B0"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ The **Rifle Jan 2026** rulebook includes a **popper calibration challenge** proc
 - Find the **popper calibration** appendix in **Rifle**; tie to **Chapter 9** / **Chapter 4** per your PDF’s cross-references.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [VI §3 — Metal / hard targets](https://upsf.org.ua/rules/upsf/2020/06-range-equipment#3-%D0%BC%D0%B5%D1%82%D0%B0%D0%BB%D0%B5%D0%B2%D1%96-%D1%82%D0%B0-%D1%82%D0%B2%D0%B5%D1%80%D0%B4%D1%96-%D0%BC%D1%96%D1%88%D0%B5%D0%BD%D1%96)
+- [X §5 — Paper scoring policy](https://upsf.org.ua/rules/upsf/2020/10-scoring#5-%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D0%BE%D0%B2%D0%B0-%D0%BF%D0%BE%D0%BB%D1%96%D1%82%D0%B8%D0%BA%D0%B0)
+
 
 Appeal logistics may be tablet-based — follow **MD** without bypassing **RM** authority. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

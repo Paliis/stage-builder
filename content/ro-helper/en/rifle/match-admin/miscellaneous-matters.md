@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "12"
     note: "Miscellaneous — Rifle Ch.12"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "XIV §2"
+    note: "Terminology dictionary"
+    url: "https://upsf.org.ua/rules/upsf/2020/14-other#2-%D1%81%D0%BB%D0%BE%D0%B2%D0%BD%D0%B8%D0%BA-%D1%82%D0%B5%D1%80%D0%BC%D1%96%D0%BD%D1%96%D0%B2"
+  - rule: "I"
+    note: "General provisions"
+    url: "https://upsf.org.ua/rules/upsf/2020/01-general-provisions"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - Read **Chapter 12 Rifle** for admin gaps not covered elsewhere in the card pack.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [XIV §2 — Terminology dictionary](https://upsf.org.ua/rules/upsf/2020/14-other#2-%D1%81%D0%BB%D0%BE%D0%B2%D0%BD%D0%B8%D0%BA-%D1%82%D0%B5%D1%80%D0%BC%D1%96%D0%BD%D1%96%D0%B2)
+- [I — General provisions](https://upsf.org.ua/rules/upsf/2020/01-general-provisions)
+
 
 National addenda may sit in a separate bulletin rather than IPSC **12** — verify **MD**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

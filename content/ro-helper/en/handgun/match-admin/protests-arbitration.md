@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "11"
     note: "Protests and arbitration — Handgun Ch.11"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "XII"
+    note: "Arbitration committee"
+    url: "https://upsf.org.ua/rules/upsf/2020/12-arbitration"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - **Chapter 11** plus links to **9.6** / **9.8** depending on the dispute subject.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [XII — Arbitration committee](https://upsf.org.ua/rules/upsf/2020/12-arbitration)
+
 
 FPSU may set its own filing windows — must be **published** in match regs. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

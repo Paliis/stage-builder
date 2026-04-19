@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "9.5"
     note: "Paper zones A/C/D; link to Major/Minor tables — PCC"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "X §5"
+    note: "Paper scoring policy"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#5-%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D0%BE%D0%B2%D0%B0-%D0%BF%D0%BE%D0%BB%D1%96%D1%82%D0%B8%D0%BA%D0%B0"
+  - rule: "VI §2"
+    note: "Paper targets (section)"
+    url: "https://upsf.org.ua/rules/upsf/2020/06-range-equipment"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - **9.5 PCC** + tables / appendices; align with **9.4 PCC** (values).
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [X §5 — Paper scoring policy](https://upsf.org.ua/rules/upsf/2020/10-scoring#5-%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D0%BE%D0%B2%D0%B0-%D0%BF%D0%BE%D0%BB%D1%96%D1%82%D0%B8%D0%BA%D0%B0)
+- [VI §2 — Paper targets (section)](https://upsf.org.ua/rules/upsf/2020/06-range-equipment)
+
 
 **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

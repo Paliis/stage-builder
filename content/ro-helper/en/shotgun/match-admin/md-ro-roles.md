@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "7"
     note: "Officials — MD / RM / RO — Shotgun Ch.7"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Shotgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "II §3"
+    note: "Match officials — judges"
+    url: "https://upsf.org.ua/rules/upsf/2020/02-general-conditions#3-%D1%81%D1%83%D0%B4%D0%B4%D1%96-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D1%8C"
+  - rule: "II §4"
+    note: "Other officials"
+    url: "https://upsf.org.ua/rules/upsf/2020/02-general-conditions#4-%D1%96%D0%BD%D1%88%D1%96-%D0%BE%D1%84%D1%96%D1%86%D1%96%D0%B9%D0%BD%D1%96-%D0%BE%D1%81%D0%BE%D0%B1%D0%B8"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - Anchor: **Chapter 7 Shotgun**; confirm **jury** / **arbitration** powers for your match level in the PDF.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [II §3 — Match officials — judges](https://upsf.org.ua/rules/upsf/2020/02-general-conditions#3-%D1%81%D1%83%D0%B4%D0%B4%D1%96-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D1%8C)
+- [II §4 — Other officials](https://upsf.org.ua/rules/upsf/2020/02-general-conditions#4-%D1%96%D0%BD%D1%88%D1%96-%D0%BE%D1%84%D1%96%D1%86%D1%96%D0%B9%D0%BD%D1%96-%D0%BE%D1%81%D0%BE%D0%B1%D0%B8)
+
 
 Role titles may mirror IPSC; extra deputies — per **MD**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

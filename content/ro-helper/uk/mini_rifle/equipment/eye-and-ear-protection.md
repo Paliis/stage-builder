@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "5.4"
     note: "Eye and hearing protection — Mini Rifle"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VII §4"
+    note: "Захист для очей та вух"
+    url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#4-%D0%B7%D0%B0%D1%85%D0%B8%D1%81%D1%82-%D0%B4%D0%BB%D1%8F-%D0%BE%D1%87%D0%B5%D0%B9-%D1%82%D0%B0-%D0%B2%D1%83%D1%85"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - Якір — **5.4 Mini Rifle**; можливі перехресні посилання на **розділ 2** / **MD** для зон.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [VII §4 — Захист для очей та вух](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#4-%D0%B7%D0%B0%D1%85%D0%B8%D1%81%D1%82-%D0%B4%D0%BB%D1%8F-%D0%BE%D1%87%D0%B5%D0%B9-%D1%82%D0%B0-%D0%B2%D1%83%D1%85)
+
 
 ФПСУ часто жорстко вимагає **закриті** окуляри; дотримуйтесь брифінгу. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

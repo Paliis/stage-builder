@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "5.7"
     note: "Matrix anchor — Handgun; уточнити в PDF фактичний пункт для malfunction vs PF"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VI §6"
+    note: "Несправність обладнання вправи"
+    url: "https://upsf.org.ua/rules/upsf/2020/06-range-equipment#6-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D1%96%D1%81%D1%82%D1%8C-%D0%BE%D0%B1%D0%BB%D0%B0%D0%B4%D0%BD%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%B8-%D1%82%D0%B0-%D1%96%D0%BD%D1%88%D1%96-%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D0%BD%D1%8F"
+  - rule: "VII §7"
+    note: "Несправності спорядження"
+    url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#7-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -37,6 +43,11 @@ status: draft
 - Перехресно **4.7** (якщо PDF поміщає перестріл там) і **9.10** (час).
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [VI §6 — Несправність обладнання вправи](https://upsf.org.ua/rules/upsf/2020/06-range-equipment#6-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D1%96%D1%81%D1%82%D1%8C-%D0%BE%D0%B1%D0%BB%D0%B0%D0%B4%D0%BD%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%B8-%D1%82%D0%B0-%D1%96%D0%BD%D1%88%D1%96-%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D0%BD%D1%8F)
+- [VII §7 — Несправності спорядження](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#7-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0)
+
 
 Деякі матчі обмежують кількість перестрілів через збої — **MD**. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

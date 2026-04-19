@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "5"
     note: "Magazines and loading devices — Mini Rifle Ch.5 + division appendix"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VII §2"
+    note: "Спорядження учасника"
+    url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#2-%D0%BF%D0%B5%D1%80%D0%B5%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8F-%D1%82%D0%B0-%D0%B7%D0%B1%D0%B5%D1%80%D1%96%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B7%D0%B1%D1%80%D0%BE%D1%97-%D0%BD%D0%B0-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85-%D1%81%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D1%83%D1%87%D0%B0%D1%81%D0%BD%D0%B8%D0%BA%D0%B0"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - **Розділ 5 Mini Rifle** + Appendix; перехресно **8.1** (заряджений магазин у зброї на лінії) — за текстом Mini Rifle rulebook.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [VII §2 — Спорядження учасника](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#2-%D0%BF%D0%B5%D1%80%D0%B5%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8F-%D1%82%D0%B0-%D0%B7%D0%B1%D0%B5%D1%80%D1%96%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B7%D0%B1%D1%80%D0%BE%D1%97-%D0%BD%D0%B0-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85-%D1%81%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D1%83%D1%87%D0%B0%D1%81%D0%BD%D0%B8%D0%BA%D0%B0)
+
 
 Обмеження набоїв на сцені — **WSB**, не лише **розділ 5**. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

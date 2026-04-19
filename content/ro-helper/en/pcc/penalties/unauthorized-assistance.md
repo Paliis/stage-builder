@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "8.6.2"
     note: "Assistance to competitor outside what is allowed — PCC Jan 2026; read full 8.6"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "IX §6"
+    note: "Assistance / interference"
+    url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#6-%D1%81%D0%BF%D1%80%D0%B8%D1%8F%D0%BD%D0%BD%D1%8F-%D0%B0%D0%B1%D0%BE-%D0%B2%D1%82%D1%80%D1%83%D1%87%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2-%D0%B4%D1%96%D1%97-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0-%D0%BF%D1%96%D0%B4-%D1%87%D0%B0%D1%81-%D0%B2%D0%B8%D0%BA%D0%BE%D0%BD%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%B8"
+  - rule: "XI §2"
+    note: "Procedural penalty examples"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -37,6 +43,11 @@ status: draft
 - Do not replace **8.6.2** with generic **10.1** when the rulebook routes the outcome to **8.6**.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [IX §6 — Assistance / interference](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#6-%D1%81%D0%BF%D1%80%D0%B8%D1%8F%D0%BD%D0%BD%D1%8F-%D0%B0%D0%B1%D0%BE-%D0%B2%D1%82%D1%80%D1%83%D1%87%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2-%D0%B4%D1%96%D1%97-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0-%D0%BF%D1%96%D0%B4-%D1%87%D0%B0%D1%81-%D0%B2%D0%B8%D0%BA%D0%BE%D0%BD%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%B8)
+- [XI §2 — Procedural penalty examples](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8)
+
 
 FPSU range conduct rules may add constraints; verify official FPSU text. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

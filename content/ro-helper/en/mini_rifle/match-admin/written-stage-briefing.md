@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "3.2"
     note: "Written stage briefing — Mini Rifle"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "V §2"
+    note: "Written stage briefings"
+    url: "https://upsf.org.ua/rules/upsf/2020/05-stage-information#2-%D0%BF%D0%B8%D1%81%D1%8C%D0%BC%D0%BE%D0%B2%D1%96-%D0%B1%D1%80%D0%B8%D1%84%D1%96%D0%BD%D0%B3%D0%B8-%D0%B4%D0%BE-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2"
+  - rule: "V"
+    note: "Stage information"
+    url: "https://upsf.org.ua/rules/upsf/2020/05-stage-information"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - Anchor: **3.2 Mini Rifle**; align with **Chapter 1** (stage design) and **Chapter 10** (penalties for WSB breaches).
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [V §2 — Written stage briefings](https://upsf.org.ua/rules/upsf/2020/05-stage-information#2-%D0%BF%D0%B8%D1%81%D1%8C%D0%BC%D0%BE%D0%B2%D1%96-%D0%B1%D1%80%D0%B8%D1%84%D1%96%D0%BD%D0%B3%D0%B8-%D0%B4%D0%BE-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2)
+- [V — Stage information](https://upsf.org.ua/rules/upsf/2020/05-stage-information)
+
 
 Translated WSB at FPSU events must match the approved text; changes only via **MD**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
 

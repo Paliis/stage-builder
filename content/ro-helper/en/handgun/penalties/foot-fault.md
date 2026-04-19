@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "10.2.1"
     note: "Foot fault / fault line — Handgun; check 10.2.1.1"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "XI §2"
+    note: "Procedural penalty examples"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
+  - rule: "IX §5"
+    note: "Movement during the course of fire"
+    url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#5-%D1%80%D1%83%D1%85"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -37,6 +43,11 @@ A **foot fault** is when the competitor, during the **course of fire (COF)**, to
 - If another **Chapter 10** clause fits better, use **that** clause instead of a vague “general procedural”.
 
 ## Local (FPSU)
+**Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
+
+- [XI §2 — Procedural penalty examples](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8)
+- [IX §5 — Movement during the course of fire](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#5-%D1%80%D1%83%D1%85)
+
 
 Under **FPSU / UPSF** rules, numbering and zone names may differ; verify against the official FPSU text. **`fpsu_delta_verified`** stays **false** until reviewer sign-off per **RO_HELPER_V0 §4.1**.
 

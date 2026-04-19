@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "9.10"
     note: "Official time — Handgun"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "X §10"
+    note: "Офіційний час"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#10-%D0%BE%D1%84%D1%96%D1%86%D1%96%D0%B9%D0%BD%D0%B8%D0%B9-%D1%87%D0%B0%D1%81"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - Якір — **9.10**; узгодити з правилами **перестрілу** (**розділ 4** / **MD**, якщо PDF посилається).
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [X §10 — Офіційний час](https://upsf.org.ua/rules/upsf/2020/10-scoring#10-%D0%BE%D1%84%D1%96%D1%86%D1%96%D0%B9%D0%BD%D0%B8%D0%B9-%D1%87%D0%B0%D1%81)
+
 
 Якщо використовують кілька таймерів — хто «головний», з **MD**. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

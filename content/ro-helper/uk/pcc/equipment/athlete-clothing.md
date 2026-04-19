@@ -11,7 +11,10 @@ ipsc_refs:
   - rule: "5.3"
     note: "Competitor clothing — PCC"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VII §3"
+    note: "Одяг спортсменів"
+    url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#3-%D0%BE%D0%B4%D1%8F%D0%B3-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D1%96%D0%B2"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +39,10 @@ status: draft
 - Якір — **5.3 PCC**; перехресно **5.4** (окуляри як частина захисту).
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [VII §3 — Одяг спортсменів](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#3-%D0%BE%D0%B4%D1%8F%D0%B3-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D1%96%D0%B2)
+
 
 ФПСУ може вимагати певний вигляд форми або заборону маскування обличчя — **регламент матчу**. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 

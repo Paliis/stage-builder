@@ -11,7 +11,13 @@ ipsc_refs:
   - rule: "6"
     note: "Match structure and categories — Mini Rifle Ch.6"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-fpsu_refs: []
+fpsu_refs:
+  - rule: "VIII §2"
+    note: "Класи у змаганнях"
+    url: "https://upsf.org.ua/rules/upsf/2020/08-match-structure#2-%D0%BA%D0%BB%D0%B0%D1%81%D0%B8-%D1%83-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85"
+  - rule: "VIII §3"
+    note: "Категорії на змаганні"
+    url: "https://upsf.org.ua/rules/upsf/2020/08-match-structure#3-%D0%BA%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D1%96%D1%97-%D0%BD%D0%B0-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%96"
 fpsu_delta_verified: false
 reviewer: ""
 review_date: ""
@@ -36,6 +42,11 @@ status: draft
 - Якір — **розділ 6 Mini Rifle**; деталі залежать від типу матчу (Level I–III) — уточнювати в PDF і **MD**.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [VIII §2 — Класи у змаганнях](https://upsf.org.ua/rules/upsf/2020/08-match-structure#2-%D0%BA%D0%BB%D0%B0%D1%81%D0%B8-%D1%83-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85)
+- [VIII §3 — Категорії на змаганні](https://upsf.org.ua/rules/upsf/2020/08-match-structure#3-%D0%BA%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D1%96%D1%97-%D0%BD%D0%B0-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%96)
+
 
 ФПСУ може спрощувати етапи на клубних матчах; **MD** — джерело істини на місці. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
 
