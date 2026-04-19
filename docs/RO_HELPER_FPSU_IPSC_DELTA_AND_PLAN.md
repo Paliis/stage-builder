@@ -87,6 +87,7 @@
 
 - `npm run build`
 - Перевірка пакета карток за матрицею та базовою якістю: `npm run ro-helper:validate` (також входить у `npm run check`).
+- Вигрузка для релевантності (CSV + JSON + форма рев’ю в ZIP): `npm run ro-helper:export-relevance` — див. [RO_HELPER_CONTENT_TZ.md](./RO_HELPER_CONTENT_TZ.md) §1.0.
 - Повторне заповнення `fpsu_refs` і блоку посилань у «Локально (ФПСУ)» / «Local (FPSU)» (після зміни мапінгу): `npm run ro-helper:inject-fpsu-refs` — джерело URL: [scripts/data/ro-helper-fpsu-urls.mjs](../scripts/data/ro-helper-fpsu-urls.mjs).
 - За змінами в INDEX/матриці — узгодження з [content/ro-helper/INDEX.md](../content/ro-helper/INDEX.md) і колонкою `notes` у CSV (за домовленістю команди).
 

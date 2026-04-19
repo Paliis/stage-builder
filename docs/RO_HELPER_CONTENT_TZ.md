@@ -37,6 +37,14 @@ npm run ro-helper:validate
 
 Команда **`npm run check`** (lint + тести + збірка) також запускає **`ro-helper:validate`**.
 
+Вигрузка для **перевірки релевантності** (таблиця + JSON + інструкція форми + контекст матриць у ZIP):
+
+```bash
+npm run ro-helper:export-relevance
+```
+
+У **`exports/`** з’явиться **`ro-helper-relevance-<timestamp>.zip`**: `relevance.csv` (колонки `manual_*` для ручного заповнення), `relevance.json`, `REVIEW_FORM_UA.md`, `schema.json`, за наявності — `context/*.csv`. Деталі колонок — у `REVIEW_FORM_UA.md` всередині архіву.
+
 У каталозі **`exports/`** (не комітиться в git) з’явиться файл на кшталт **`ro-helper-review-<timestamp>.zip`**. Усередині:
 
 - `content/ro-helper/**` — статті UK/EN та `INDEX.md`;
