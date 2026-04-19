@@ -94,10 +94,10 @@ C117,trigger-finger,rifle,safety,Finger in trigger guard,Палець у ско�
 C118,trigger-finger,mini_rifle,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; confirm Ch.10.5 numbering per discipline
 C119,trigger-finger,shotgun,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; confirm Ch.10.5 numbering per discipline
 C120,dropped-gun,handgun,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C121,dropped-gun,pcc,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,todo,todo,
-C122,dropped-gun,rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,todo,todo,
-C123,dropped-gun,mini_rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,todo,todo,
-C124,dropped-gun,shotgun,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,todo,todo,
+C121,dropped-gun,pcc,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C122,dropped-gun,rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C123,dropped-gun,mini_rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C124,dropped-gun,shotgun,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C125,unsafe-gun-handling,handgun,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C126,unsafe-gun-handling,pcc,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,todo,todo,
 C127,unsafe-gun-handling,rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,todo,todo,

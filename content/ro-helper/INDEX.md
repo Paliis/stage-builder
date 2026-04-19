@@ -98,7 +98,11 @@
 | C117    | trigger-finger        | rifle      | safety    | draft     | draft     | false               | —        | **Ch.10.5** (Rifle); звірити 10.5.9–11 у PDF Jan 2026. |
 | C118    | trigger-finger        | mini_rifle | safety    | draft     | draft     | false               | —        | **Ch.10.5** (Mini Rifle); звірити 10.5.9–11 у PDF Jan 2026. |
 | C119    | trigger-finger        | shotgun    | safety    | draft     | draft     | false               | —        | **Ch.10.5** (Shotgun); звірити 10.5.9–11 у PDF Jan 2026. |
-| C120    | dropped-gun           | handgun    | safety    | draft     | draft     | false               | —        | **10.5.3** (DQ); чернетка — рев’ю з PDF. |
+| C120    | dropped-gun           | handgun    | safety    | draft     | draft     | false               | —        | **10.5.3** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C121    | dropped-gun           | pcc        | safety    | draft     | draft     | false               | —        | **10.5.3** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C122    | dropped-gun           | rifle      | safety    | draft     | draft     | false               | —        | **10.5.3** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C123    | dropped-gun           | mini_rifle | safety    | draft     | draft     | false               | —        | **10.5.3** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C124    | dropped-gun           | shotgun    | safety    | draft     | draft     | false               | —        | **10.5.3** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C125    | unsafe-gun-handling   | handgun    | safety    | draft     | draft     | false               | —        | **10.5.1**; чернетка — рев’ю з PDF. |
 | C130    | dq-general            | handgun    | safety    | draft     | draft     | false               | —        | **10.3**; чернетка — рев’ю з PDF. |
 | C135    | prohibited-substances | handgun    | safety    | draft     | draft     | false               | —        | **10.7**; чернетка — рев’ю з PDF. |
