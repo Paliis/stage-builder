@@ -169,10 +169,10 @@ C192,fte-scoring-side,rifle,scoring,FTE (scoring side),FTE (скорингова
 C193,fte-scoring-side,mini_rifle,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C194,fte-scoring-side,shotgun,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C195,score-verification-challenge,handgun,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C196,score-verification-challenge,pcc,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),todo,todo,
-C197,score-verification-challenge,rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),todo,todo,
-C198,score-verification-challenge,mini_rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),todo,todo,
-C199,score-verification-challenge,shotgun,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),todo,todo,
+C196,score-verification-challenge,pcc,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C197,score-verification-challenge,rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C198,score-verification-challenge,mini_rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C199,score-verification-challenge,shotgun,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C200,score-sheets-corrections,handgun,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C201,score-sheets-corrections,pcc,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),todo,todo,
 C202,score-sheets-corrections,rifle,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),todo,todo,
