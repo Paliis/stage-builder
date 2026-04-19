@@ -254,10 +254,10 @@ C277,local-regional-rules,rifle,match-admin,Local / regional rules,Локаль�
 C278,local-regional-rules,mini_rifle,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C279,local-regional-rules,shotgun,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C280,match-structure-and-categories,handgun,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C281,match-structure-and-categories,pcc,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C282,match-structure-and-categories,rifle,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C283,match-structure-and-categories,mini_rifle,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",todo,todo,
-C284,match-structure-and-categories,shotgun,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",todo,todo,
+C281,match-structure-and-categories,pcc,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C282,match-structure-and-categories,rifle,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C283,match-structure-and-categories,mini_rifle,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C284,match-structure-and-categories,shotgun,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C285,md-ro-roles,handgun,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C286,md-ro-roles,pcc,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",todo,todo,
 C287,md-ro-roles,rifle,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",todo,todo,

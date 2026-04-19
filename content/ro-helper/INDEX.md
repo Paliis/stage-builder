@@ -259,6 +259,10 @@
 | C278    | local-regional-rules  | mini_rifle | match-admin | draft     | draft     | false               | —        | **3.3**; чернетка — рев’ю з PDF. |
 | C279    | local-regional-rules  | shotgun    | match-admin | draft     | draft     | false               | —        | **3.3**; чернетка — рев’ю з PDF. |
 | C280    | match-structure-and-categories | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.6**; чернетка — рев’ю з PDF. |
+| C281    | match-structure-and-categories | pcc        | match-admin | draft     | draft     | false               | —        | **Ch.6**; чернетка — рев’ю з PDF. |
+| C282    | match-structure-and-categories | rifle      | match-admin | draft     | draft     | false               | —        | **Ch.6**; чернетка — рев’ю з PDF. |
+| C283    | match-structure-and-categories | mini_rifle | match-admin | draft     | draft     | false               | —        | **Ch.6**; чернетка — рев’ю з PDF. |
+| C284    | match-structure-and-categories | shotgun    | match-admin | draft     | draft     | false               | —        | **Ch.6**; чернетка — рев’ю з PDF. |
 | C285    | md-ro-roles           | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
 | C290    | protests-arbitration  | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.11**; чернетка — рев’ю з PDF. |
 | C295    | miscellaneous-matters | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.12**; чернетка — рев’ю з PDF. |
