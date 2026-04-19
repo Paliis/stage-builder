@@ -84,10 +84,10 @@ C107,break-180,rifle,safety,Muzzle safe angles / 180,Безпечний сект
 C108,break-180,mini_rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C109,break-180,shotgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C110,accidental-discharge,handgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C111,accidental-discharge,pcc,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
-C112,accidental-discharge,rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
-C113,accidental-discharge,mini_rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
-C114,accidental-discharge,shotgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,todo,todo,
+C111,accidental-discharge,pcc,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C112,accidental-discharge,rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C113,accidental-discharge,mini_rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+C114,accidental-discharge,shotgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C115,trigger-finger,handgun,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
 C116,trigger-finger,pcc,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,
 C117,trigger-finger,rifle,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,todo,todo,

@@ -89,6 +89,10 @@
 | C108    | break-180             | mini_rifle | safety    | draft     | draft     | false               | —        | **10.5.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C109    | break-180             | shotgun    | safety    | draft     | draft     | false               | —        | **10.5.2** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C110    | accidental-discharge  | handgun    | safety    | draft     | draft     | false               | —        | **10.4** (Handgun AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
+| C111    | accidental-discharge  | pcc        | safety    | draft     | draft     | false               | —        | **10.4** (PCC AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
+| C112    | accidental-discharge  | rifle      | safety    | draft     | draft     | false               | —        | **10.4** (Rifle AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
+| C113    | accidental-discharge  | mini_rifle | safety    | draft     | draft     | false               | —        | **10.4** (Mini Rifle AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
+| C114    | accidental-discharge  | shotgun    | safety    | draft     | draft     | false               | —        | **10.4** (Shotgun AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
 | C115    | trigger-finger        | handgun    | safety    | draft     | draft     | false               | —        | **10.5.9–10.5.11**; чернетка — рев’ю з PDF. |
 | C120    | dropped-gun           | handgun    | safety    | draft     | draft     | false               | —        | **10.5.3** (DQ); чернетка — рев’ю з PDF. |
 | C125    | unsafe-gun-handling   | handgun    | safety    | draft     | draft     | false               | —        | **10.5.1**; чернетка — рев’ю з PDF. |
