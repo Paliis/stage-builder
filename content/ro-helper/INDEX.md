@@ -224,6 +224,10 @@
 | C243    | firearms-and-ammunition-rules | mini_rifle | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
 | C244    | firearms-and-ammunition-rules | shotgun    | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
 | C245    | chronograph-and-power-factor | handgun    | equipment | draft     | draft     | false               | —        | **5.6–5.7**; чернетка — рев’ю з PDF. |
+| C246    | chronograph-and-power-factor | pcc        | equipment | draft     | draft     | false               | —        | **5.6–5.7**; чернетка — рев’ю з PDF. |
+| C247    | chronograph-and-power-factor | rifle      | equipment | draft     | draft     | false               | —        | **5.6–5.7**; чернетка — рев’ю з PDF. |
+| C248    | chronograph-and-power-factor | mini_rifle | equipment | draft     | draft     | false               | —        | **5.6–5.7**; чернетка — рев’ю з PDF. |
+| C249    | chronograph-and-power-factor | shotgun    | equipment | draft     | draft     | false               | —        | **5.6–5.7**; чернетка — рев’ю з PDF. |
 | C250    | magazines-and-loading-devices | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5**; чернетка — рев’ю з PDF. |
 | C255    | eye-and-ear-protection | handgun    | equipment | draft     | draft     | false               | —        | **5.4**; чернетка — рев’ю з PDF. |
 | C260    | athlete-clothing      | handgun    | equipment | draft     | draft     | false               | —        | **5.3**; чернетка — рев’ю з PDF. |
