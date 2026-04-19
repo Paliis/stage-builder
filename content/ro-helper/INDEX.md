@@ -289,6 +289,10 @@
 | C308    | course-design-safety-balance | mini_rifle | match-admin | draft     | draft     | false               | —        | **1.1**; чернетка — рев’ю з PDF. |
 | C309    | course-design-safety-balance | shotgun    | match-admin | draft     | draft     | false               | —        | **1.1**; чернетка — рев’ю з PDF. |
 | C310    | metal-target-min-distance-dq | handgun    | safety    | draft     | draft     | false               | —        | **10.4.7**; чернетка — рев’ю з PDF. |
+| C311    | metal-target-min-distance-dq | pcc        | safety    | draft     | draft     | false               | —        | **10.4.7**; чернетка — рев’ю з PDF. |
+| C312    | metal-target-min-distance-dq | rifle      | safety    | draft     | draft     | false               | —        | **10.4.7**; чернетка — рев’ю з PDF. |
+| C313    | metal-target-min-distance-dq | mini_rifle | safety    | draft     | draft     | false               | —        | **10.4.7**; чернетка — рев’ю з PDF. |
+| C314    | metal-target-min-distance-dq | shotgun    | safety    | draft     | draft     | false               | —        | **10.4.7**; чернетка — рев’ю з PDF. |
 | C315    | ammo-in-safety-area   | handgun    | safety    | draft     | draft     | false               | —        | **10.5.14**; чернетка — рев’ю з PDF. |
 | C316    | ammo-in-safety-area   | pcc        | safety    | draft     | draft     | false               | —        | **10.5.14** (PCC); чернетка — рев’ю з PDF Jan 2026. |
 | C317    | ammo-in-safety-area   | rifle      | safety    | draft     | draft     | false               | —        | **10.5.14** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
