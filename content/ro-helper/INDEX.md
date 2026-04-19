@@ -138,7 +138,11 @@
 | C157    | approaching-touching-targets | rifle      | scoring   | draft     | draft     | false               | —        | **9.1** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C158    | approaching-touching-targets | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.1** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C159    | approaching-touching-targets | shotgun    | scoring   | draft     | draft     | false               | —        | **9.1** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
-| C160    | scoring-methods       | handgun    | scoring   | draft     | draft     | false               | —        | **9.2**; чернетка — рев’ю з PDF. |
+| C160    | scoring-methods       | handgun    | scoring   | draft     | draft     | false               | —        | **9.2** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C161    | scoring-methods       | pcc        | scoring   | draft     | draft     | false               | —        | **9.2** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C162    | scoring-methods       | rifle      | scoring   | draft     | draft     | false               | —        | **9.2** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C163    | scoring-methods       | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C164    | scoring-methods       | shotgun    | scoring   | draft     | draft     | false               | —        | **9.2** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C165    | scoring-ties          | handgun    | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
 | C170    | hits-misses-noshoot-values | handgun    | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
 | C175    | paper-scoring-policy  | handgun    | scoring   | draft     | draft     | false               | —        | **9.5**; чернетка — рев’ю з PDF. |
