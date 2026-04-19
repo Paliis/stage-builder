@@ -118,7 +118,11 @@
 | C137    | prohibited-substances | rifle      | safety    | draft     | draft     | false               | —        | **10.7** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C138    | prohibited-substances | mini_rifle | safety    | draft     | draft     | false               | —        | **10.7** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C139    | prohibited-substances | shotgun    | safety    | draft     | draft     | false               | —        | **10.7** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
-| C140    | unsportsmanlike-conduct | handgun    | safety    | draft     | draft     | false               | —        | **10.6**; чернетка — рев’ю з PDF. |
+| C140    | unsportsmanlike-conduct | handgun    | safety    | draft     | draft     | false               | —        | **10.6** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C141    | unsportsmanlike-conduct | pcc        | safety    | draft     | draft     | false               | —        | **10.6** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C142    | unsportsmanlike-conduct | rifle      | safety    | draft     | draft     | false               | —        | **10.6** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C143    | unsportsmanlike-conduct | mini_rifle | safety    | draft     | draft     | false               | —        | **10.6** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C144    | unsportsmanlike-conduct | shotgun    | safety    | draft     | draft     | false               | —        | **10.6** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C145    | range-safety-zones    | handgun    | safety    | draft     | draft     | false               | —        | **Ch.2**; чернетка — рев’ю з PDF. |
 | C150    | movement-and-trigger-safety | handgun    | safety    | draft     | draft     | false               | —        | **8.5**; чернетка — рев’ю з PDF. |
 | C155    | approaching-touching-targets | handgun    | scoring   | draft     | draft     | false               | —        | **9.1**; чернетка — рев’ю з PDF. |
