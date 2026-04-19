@@ -12,7 +12,14 @@ import { ShareStageRoute } from './share/ShareStageRoute'
 import './index.css'
 import App from './App.tsx'
 import { PortalHome } from './portal/PortalHome'
+import { PortalShell } from './portal/PortalShell'
 import { RoHelperCardDemo } from './portal/RoHelperCardDemo'
+import { RoHelperArticlePage } from './ro-helper/RoHelperArticlePage'
+import { RoHelperCategoryPage } from './ro-helper/RoHelperCategoryPage'
+import { RoHelperDisciplinePage } from './ro-helper/RoHelperDisciplinePage'
+import { RoHelperHome } from './ro-helper/RoHelperHome'
+import { RoHelperLayout } from './ro-helper/RoHelperLayout'
+import { RoHelperTopicsPage } from './ro-helper/RoHelperTopicsPage'
 
 hydrateSessionDraft()
 
@@ -29,10 +36,19 @@ createRoot(document.getElementById('root')!).render(
     <I18nProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PortalHome />} />
-          <Route path="/ro-helper/demo" element={<RoHelperCardDemo />} />
+          <Route element={<PortalShell />}>
+            <Route path="/" element={<PortalHome />} />
+            <Route path="/publish-policy" element={<PublishPolicyRoute />} />
+            <Route path="/ro-helper" element={<RoHelperLayout />}>
+              <Route index element={<RoHelperHome />} />
+              <Route path="demo" element={<RoHelperCardDemo />} />
+              <Route path="topics/:category" element={<RoHelperTopicsPage />} />
+              <Route path=":discipline/:category/:slug" element={<RoHelperArticlePage />} />
+              <Route path=":discipline/:category" element={<RoHelperCategoryPage />} />
+              <Route path=":discipline" element={<RoHelperDisciplinePage />} />
+            </Route>
+          </Route>
           <Route path="/stage-builder" element={<App />} />
-          <Route path="/publish-policy" element={<PublishPolicyRoute />} />
           <Route path="/v/:shareId" element={<ShareStageRoute mode="view" />} />
           <Route path="/e/:shareId" element={<ShareStageRoute mode="edit" />} />
           <Route path="*" element={<Navigate to="/" replace />} />

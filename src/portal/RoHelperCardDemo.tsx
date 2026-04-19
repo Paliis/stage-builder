@@ -43,8 +43,9 @@ function SectionBody({ section }: { section: DemoSection }) {
 
 /** Prototype article screen for RO Helper (not production routing). */
 export function RoHelperCardDemo() {
-  const { locale, setLocale, tree } = useI18n()
+  const { locale, tree } = useI18n()
   const d = tree.roHelperDemo
+  const rh = tree.roHelper
   const [searchParams] = useSearchParams()
   const [fpsuOn, setFpsuOn] = useState(true)
   const toggleId = useId()
@@ -106,27 +107,9 @@ export function RoHelperCardDemo() {
     <div className="ro-helper-demo">
       <header className="ro-helper-demo__top">
         <div className="ro-helper-demo__top-row">
-          <Link to="/" className="ro-helper-demo__back">
-            ← {d.backHome}
+          <Link to="/ro-helper" className="ro-helper-demo__back">
+            ← {rh.breadcrumbRo}
           </Link>
-          <div className="portal-home__lang ro-helper-demo__lang" role="group" aria-label={tree.common.langSwitcher}>
-            <button
-              type="button"
-              className={locale === 'uk' ? 'is-active' : ''}
-              onClick={() => setLocale('uk')}
-              lang="uk"
-            >
-              {tree.common.langUk}
-            </button>
-            <button
-              type="button"
-              className={locale === 'en' ? 'is-active' : ''}
-              onClick={() => setLocale('en')}
-              lang="en"
-            >
-              {tree.common.langEn}
-            </button>
-          </div>
         </div>
         <p className="ro-helper-demo__ribbon" role="note">
           {d.ribbon}

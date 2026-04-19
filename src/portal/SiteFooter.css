@@ -1,0 +1,116 @@
+.site-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  background: var(--btn-bg);
+  padding: 1.5rem 1.25rem 1rem;
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 48rem;
+  margin: 0 auto 1rem;
+}
+
+@media (max-width: 520px) {
+  .site-footer__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+.site-footer__card {
+  min-width: 0;
+}
+
+.site-footer__heading {
+  margin: 0 0 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.site-footer__text {
+  margin: 0 0 0.65rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.site-footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.site-footer__link:hover {
+  border-color: var(--accent-border);
+}
+
+.site-footer__link--telegram {
+  border-color: #2aabee;
+  color: #0077aa;
+  background: #e8f7fe;
+}
+
+.site-footer__link--donate {
+  border-color: #f09595;
+  color: #791f1f;
+  background: #fcebeb;
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+}
+
+.site-footer__disclaimer {
+  margin: 0;
+  flex: 1 1 12rem;
+  line-height: 1.45;
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.site-footer__nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.site-footer__nav a:hover {
+  text-decoration: underline;
+}
+
+.site-footer__sep {
+  color: var(--text-muted);
+}

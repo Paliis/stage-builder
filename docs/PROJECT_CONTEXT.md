@@ -71,6 +71,8 @@
 | **Application** | `src/application/` | `stageStore`, `briefingStore`, чернетка сесії, PWA gate |
 | **Presentation** | `src/presentation/` | `StageCanvas`, `StageView3D`, тулбар, міні-карта, PDF, банери |
 | **i18n** | `src/i18n/` | UK/EN у `messages.ts` |
+| **Портал** | `src/portal/` | `PortalShell`, `PortalHome`, футер, демо RO Helper |
+| **RO Helper** | `src/ro-helper/` | Маршрутизований модуль: markdown, glob контенту, ФПСУ |
 | **Server / SEO** | `src/server/`, `src/seo/`, `src/lib/` | Публікація share, канонічний origin, Supabase client |
 
 Точка входу: `src/main.tsx` → гідратація чернетки, PWA, роутер, аналітика.
@@ -79,8 +81,15 @@
 
 | Шлях | Призначення |
 |------|-------------|
+| `/`, `/publish-policy`, `/ro-helper/*` | Обгортка **`PortalShell`**: шапка (бренд + мова), контент, **`SiteFooter`** |
 | `/` | Головна порталу (`PortalHome`) |
-| `/stage-builder` | Повний редактор (`App`) |
+| `/ro-helper` | **RO Helper** — довідник з markdown у `content/ro-helper/`, SOS, преф шару ФПСУ |
+| `/ro-helper/demo` | Демо-картки RO Helper (прототип UI) |
+| `/ro-helper/topics/:category` | Усі статті категорії (усі дисципліни) |
+| `/ro-helper/:discipline` | Сторінка дисципліни |
+| `/ro-helper/:discipline/:category` | Список статей категорії |
+| `/ro-helper/:discipline/:category/:slug` | Стаття |
+| `/stage-builder` | Повний редактор (`App`) — **поза** `PortalShell` |
 | `/publish-policy` | Політика публікації (текст для модалки share) |
 | `/v/:shareId` | Перегляд опублікованої вправи (**стабільний публічний контракт**, QR у PDF) |
 | `/e/:shareId` | Редактор за посиланням (**стабільний контракт**) |

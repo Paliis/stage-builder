@@ -4,37 +4,22 @@ import './PortalHome.css'
 
 /** Launcher at `/` — entry to Stage Builder and future portal modules. */
 export function PortalHome() {
-  const { locale, setLocale, tree } = useI18n()
+  const { tree } = useI18n()
   const p = tree.portal
 
   return (
     <div className="portal-home">
-      <header className="portal-home__header">
-        <h1 className="portal-home__title">{p.title}</h1>
-        <div className="portal-home__lang" role="group" aria-label={tree.common.langSwitcher}>
-          <button
-            type="button"
-            className={locale === 'uk' ? 'is-active' : ''}
-            onClick={() => setLocale('uk')}
-            lang="uk"
-          >
-            {tree.common.langUk}
-          </button>
-          <button
-            type="button"
-            className={locale === 'en' ? 'is-active' : ''}
-            onClick={() => setLocale('en')}
-            lang="en"
-          >
-            {tree.common.langEn}
-          </button>
-        </div>
-      </header>
+      <h1 className="portal-home__sr-only">{p.title}</h1>
       <p className="portal-home__lead">{p.lead}</p>
       <Link to="/stage-builder" className="portal-home__card">
         <h2 className="portal-home__card-title">{p.stageBuilderTitle}</h2>
         <p className="portal-home__card-desc">{p.stageBuilderDesc}</p>
         <p className="portal-home__card-cta">{p.openStageBuilder} →</p>
+      </Link>
+      <Link to="/ro-helper" className="portal-home__card portal-home__card--secondary">
+        <h2 className="portal-home__card-title">{p.roHelperTitle}</h2>
+        <p className="portal-home__card-desc">{p.roHelperDesc}</p>
+        <p className="portal-home__card-cta">{p.openRoHelper} →</p>
       </Link>
       <div className="portal-home__demo">
         <Link to="/ro-helper/demo" className="portal-home__demo-link">

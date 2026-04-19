@@ -326,6 +326,9 @@ export type MessageTree = {
     stageBuilderTitle: string
     stageBuilderDesc: string
     openStageBuilder: string
+    roHelperTitle: string
+    roHelperDesc: string
+    openRoHelper: string
     roHelperDemoCta: string
     roHelperDemoLead: string
   }
@@ -348,6 +351,39 @@ export type MessageTree = {
     toggleFpsuLabel: string
     toggleFpsuHint: string
   }
+  /** `/ro-helper` production module (markdown articles). */
+  roHelper: {
+    moduleTitle: string
+    navPortal: string
+    lead: string
+    sosHeading: string
+    sosSafety: string
+    sosPenalties: string
+    sosScoring: string
+    sosEquipment: string
+    sosMatchAdmin: string
+    topicsTitle: string
+    disciplineTitle: string
+    categoryTitle: string
+    articlesEmpty: string
+    articleNotFound: string
+    invalidPath: string
+    loading: string
+    fpsuLayerLabel: string
+    fpsuLayerHint: string
+    demoLink: string
+    breadcrumbRo: string
+    discHandgun: string
+    discPcc: string
+    discRifle: string
+    discMiniRifle: string
+    discShotgun: string
+    catSafety: string
+    catPenalties: string
+    catScoring: string
+    catEquipment: string
+    catMatchAdmin: string
+  }
   footer: {
     feedbackHeading: string
     feedbackText: string
@@ -359,6 +395,10 @@ export type MessageTree = {
     installHeading: string
     installText: string
     installButton: string
+    /** Short disclaimer under portal footer links */
+    portalDisclaimer: string
+    publishPolicy: string
+    github: string
   }
   pwa: {
     installButton: string
@@ -739,6 +779,10 @@ export const ukMessages: MessageTree = {
     stageBuilderDesc:
       '\u041c\u0435\u0442\u0440\u0438\u0447\u043d\u0438\u0439 \u043f\u043b\u0430\u043d, 3D, \u0431\u0440\u0438\u0444\u0456\u043d\u0433, PDF, \u0444\u0430\u0439\u043b\u0438 \u0432\u043f\u0440\u0430\u0432.',
     openStageBuilder: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Stage Builder',
+    roHelperTitle: 'RO Helper',
+    roHelperDesc:
+      '\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u0430\u0432\u0438\u043b \u0442\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440 \u0434\u043b\u044f IPSC-\u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 (\u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438 \u2014 \u0437\u0430\u0432\u0436\u0434\u0438 \u0437\u0432\u0456\u0440\u044f\u0439\u0442\u0435 \u0437 PDF).',
+    openRoHelper: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 RO Helper',
     roHelperDemoCta: 'RO Helper: \u043f\u0440\u0438\u043a\u043b\u0430\u0434 \u043a\u0430\u0440\u0442\u043a\u0438 (\u0434\u0435\u043c\u043e)',
     roHelperDemoLead:
       '\u041c\u0430\u043a\u0435\u0442 \u043a\u0430\u0440\u0442\u043a\u0438 RO Helper \u2014 SOS, \u043c\u0435\u0442\u0430, \u0434\u0438\u0441\u043a\u043b\u0435\u0439\u043c\u0435\u0440, \u0448\u0430\u0440 \u0424\u041f\u0421\u0423. \u041d\u043e\u043c\u0435\u0440 \u043a\u0430\u0440\u0442\u043a\u0438: \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440 URL \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u2026\u0060 (\u043d\u0430\u043f\u0440\u0438\u043a\u043b\u0430\u0434 \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u0043\u0032\u0036\u0060).',
@@ -767,6 +811,39 @@ export const ukMessages: MessageTree = {
     toggleFpsuHint:
       '\u0423 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0456 \u0446\u0435 \u043d\u0435\u0437\u0430\u043b\u0435\u0436\u043d\u043e \u0432\u0456\u0434 UI \u043c\u043e\u0432\u0438 (\u0434\u0438\u0432. RO_HELPER_V0 \u00a74).',
   },
+  roHelper: {
+    moduleTitle: 'RO Helper',
+    navPortal: '\u041f\u043e\u0440\u0442\u0430\u043b',
+    lead: '\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u0434\u043b\u044f \u0441\u0443\u0434\u0434\u0456\u0432 \u0442\u0430 \u0441\u043f\u043e\u0440\u0442\u0441\u043c\u0435\u043d\u0456\u0432. \u0422\u0435\u043a\u0441\u0442\u0438 \u2014 \u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438; \u043e\u0444\u0456\u0446\u0456\u0439\u043d\u043e \u0437\u0430\u0442\u0432\u0435\u0440\u0434\u0436\u0443\u0439\u0442\u0435 \u0437 PDF \u0432\u0430\u0448\u043e\u0457 \u0434\u0438\u0441\u0446\u0438\u043f\u043b\u0456\u043d\u0438.',
+    sosHeading: 'SOS \u2014 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u0457',
+    sosSafety: 'Safety / DQ',
+    sosPenalties: '\u0428\u0442\u0440\u0430\u0444\u0438 \u0442\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0438',
+    sosScoring: '\u0417\u0430\u043b\u0456\u043a / \u043c\u0456\u0448\u0435\u043d\u0456',
+    sosEquipment: '\u0417\u0431\u0440\u043e\u044f / \u0434\u0438\u0432\u0456\u0437\u0456\u043e\u043d\u0438',
+    sosMatchAdmin: '\u041c\u0430\u0442\u0447 / \u0430\u0434\u043c\u0456\u043d',
+    topicsTitle: '\u0423\u0441\u0456 \u0441\u0442\u0430\u0442\u0442\u0456 \u0443 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u0457',
+    disciplineTitle: '\u041e\u0431\u0435\u0440\u0456\u0442\u044c \u0434\u0438\u0441\u0446\u0438\u043f\u043b\u0456\u043d\u0443',
+    categoryTitle: '\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u044f',
+    articlesEmpty: '\u0421\u0442\u0430\u0442\u0435\u0439 \u043d\u0435 \u0437\u043d\u0430\u0439\u0434\u0435\u043d\u043e.',
+    articleNotFound: '\u0421\u0442\u0430\u0442\u0442\u044e \u043d\u0435 \u0437\u043d\u0430\u0439\u0434\u0435\u043d\u043e \u0434\u043b\u044f \u043e\u0431\u0440\u0430\u043d\u043e\u0457 \u043c\u043e\u0432\u0438.',
+    invalidPath: '\u041d\u0435\u0432\u0456\u0434\u043e\u043c\u0438\u0439 \u0448\u043b\u044f\u0445.',
+    loading: '\u0417\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f\u2026',
+    fpsuLayerLabel: '\u0428\u0430\u0440 \u00ab\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u043e (\u0424\u041f\u0421\u0423)\u00bb \u0443 \u0441\u0442\u0430\u0442\u0442\u044f\u0445',
+    fpsuLayerHint:
+      '\u041d\u0435\u0437\u0430\u043b\u0435\u0436\u043d\u043e \u0432\u0456\u0434 \u043c\u043e\u0432\u0438 \u0456\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0443 (\u0434\u0438\u0432. RO_HELPER_V0 \u00a75.1).',
+    demoLink: '\u0414\u0435\u043c\u043e \u043a\u0430\u0440\u0442\u043a\u0438 (UI \u043f\u0440\u043e\u0442\u043e\u0442\u0438\u043f)',
+    breadcrumbRo: 'RO Helper',
+    discHandgun: 'Handgun',
+    discPcc: 'PCC',
+    discRifle: 'Rifle',
+    discMiniRifle: 'Mini rifle',
+    discShotgun: 'Shotgun',
+    catSafety: 'Safety / DQ',
+    catPenalties: 'Penalties',
+    catScoring: 'Scoring',
+    catEquipment: 'Equipment',
+    catMatchAdmin: 'Match admin',
+  },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
     feedbackText: '\u0417\u043d\u0430\u0439\u0448\u043b\u0438 \u043f\u043e\u043c\u0438\u043b\u043a\u0443, \u043c\u0430\u0454\u0442\u0435 \u043f\u0440\u043e\u043f\u043e\u0437\u0438\u0446\u0456\u044e \u0447\u0438 \u0432\u0456\u0434\u0433\u0443\u043a? \u041d\u0430\u043f\u0438\u0448\u0456\u0442\u044c:',
@@ -778,6 +855,10 @@ export const ukMessages: MessageTree = {
     installHeading: '\u0412\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0438 \u0434\u043e\u0434\u0430\u0442\u043e\u043a',
     installText: '\u0414\u043e\u0434\u0430\u0439\u0442\u0435 Stage Builder \u043d\u0430 \u0440\u043e\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u0456\u043b \u0434\u043b\u044f \u0448\u0432\u0438\u0434\u043a\u043e\u0433\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u0443 \u0442\u0430 \u0440\u043e\u0431\u043e\u0442\u0438 \u043e\u0444\u043b\u0430\u0439\u043d.',
     installButton: '\u0412\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0438',
+    portalDisclaimer:
+      'Shooters Tools / RO Helper \u2014 \u0434\u043e\u0432\u0456\u0434\u043a\u043e\u0432\u0438\u0439 \u043c\u0430\u0442\u0435\u0440\u0456\u0430\u043b; \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u044e\u0454 \u043e\u0444\u0456\u0446\u0456\u0439\u043d\u0456 PDF IPSC \u0447\u0438 \u0440\u0456\u0448\u0435\u043d\u043d\u044f RM.',
+    publishPolicy: '\u041f\u043e\u043b\u0456\u0442\u0438\u043a\u0430 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0457',
+    github: 'GitHub',
   },
   pwa: {
     installButton: '\u0412\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0438 \u0434\u043e\u0434\u0430\u0442\u043e\u043a',
@@ -1143,6 +1224,10 @@ export const enMessages: MessageTree = {
     stageBuilderTitle: 'Stage Builder',
     stageBuilderDesc: 'Metric plan, 3D, briefing, PDF, stage files.',
     openStageBuilder: 'Open Stage Builder',
+    roHelperTitle: 'RO Helper',
+    roHelperDesc:
+      'Rules and procedures reference for IPSC-style shooting (draft articles — always verify against your official PDF).',
+    openRoHelper: 'Open RO Helper',
     roHelperDemoCta: 'RO Helper: article preview (demo)',
     roHelperDemoLead:
       'RO Helper card UX mock — SOS colours, meta, disclaimer, FPSU layer. Pick a card with the URL query `?card=…` (for example `?card=C26`).',
@@ -1167,6 +1252,38 @@ export const enMessages: MessageTree = {
     toggleFpsuLabel: 'Show “Local (FPSU)” layer',
     toggleFpsuHint: 'In the product this will be independent of article language (see RO_HELPER_V0 §4).',
   },
+  roHelper: {
+    moduleTitle: 'RO Helper',
+    navPortal: 'Portal',
+    lead: 'Reference for match staff and competitors. Content is draft — verify every rule call against your discipline PDF.',
+    sosHeading: 'SOS — categories',
+    sosSafety: 'Safety / DQ',
+    sosPenalties: 'Penalties & procedures',
+    sosScoring: 'Scoring & targets',
+    sosEquipment: 'Equipment & divisions',
+    sosMatchAdmin: 'Match administration',
+    topicsTitle: 'All articles in this category',
+    disciplineTitle: 'Choose discipline',
+    categoryTitle: 'Category',
+    articlesEmpty: 'No articles found.',
+    articleNotFound: 'Article not found for the current language.',
+    invalidPath: 'Unknown path.',
+    loading: 'Loading…',
+    fpsuLayerLabel: 'Show “Local (FPSU)” blocks in articles',
+    fpsuLayerHint: 'Independent of UI language (see RO_HELPER_V0 §5.1).',
+    demoLink: 'Card demo (UI prototype)',
+    breadcrumbRo: 'RO Helper',
+    discHandgun: 'Handgun',
+    discPcc: 'PCC',
+    discRifle: 'Rifle',
+    discMiniRifle: 'Mini rifle',
+    discShotgun: 'Shotgun',
+    catSafety: 'Safety / DQ',
+    catPenalties: 'Penalties',
+    catScoring: 'Scoring',
+    catEquipment: 'Equipment',
+    catMatchAdmin: 'Match admin',
+  },
   footer: {
     feedbackHeading: 'Feedback',
     feedbackText: 'Found a bug, have a suggestion, or want to leave a review? Reach out:',
@@ -1178,6 +1295,10 @@ export const enMessages: MessageTree = {
     installHeading: 'Install the app',
     installText: 'Add Stage Builder to your home screen for quick access and offline use.',
     installButton: 'Install',
+    portalDisclaimer:
+      'Shooters Tools / RO Helper is reference material only; it does not replace official IPSC PDFs or Range Master decisions.',
+    publishPolicy: 'Publish policy',
+    github: 'GitHub',
   },
   pwa: {
     installButton: 'Install app',

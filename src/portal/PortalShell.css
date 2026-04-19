@@ -1,0 +1,63 @@
+.portal-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+
+.portal-shell__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--btn-bg);
+}
+
+.portal-shell__brand {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-h);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.portal-shell__brand:hover {
+  color: var(--accent);
+}
+
+.portal-shell__lang {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.portal-shell__lang button {
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.portal-shell__lang button.is-active {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.portal-shell__main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
