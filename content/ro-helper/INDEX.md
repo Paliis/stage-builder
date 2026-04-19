@@ -144,6 +144,10 @@
 | C163    | scoring-methods       | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C164    | scoring-methods       | shotgun    | scoring   | draft     | draft     | false               | —        | **9.2** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C165    | scoring-ties          | handgun    | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
+| C166    | scoring-ties          | pcc        | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
+| C167    | scoring-ties          | rifle      | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
+| C168    | scoring-ties          | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
+| C169    | scoring-ties          | shotgun    | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
 | C170    | hits-misses-noshoot-values | handgun    | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
 | C175    | paper-scoring-policy  | handgun    | scoring   | draft     | draft     | false               | —        | **9.5**; чернетка — рев’ю з PDF. |
 | C180    | paper-zones-major-minor | handgun    | scoring   | draft     | draft     | false               | —        | **9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF. |
