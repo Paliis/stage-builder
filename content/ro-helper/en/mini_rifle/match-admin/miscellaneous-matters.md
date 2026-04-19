@@ -1,0 +1,47 @@
+---
+title: "Miscellaneous (Chapter 12)"
+card_id: "C298"
+slug: "miscellaneous-matters"
+category: match-admin
+locale: en
+discipline: mini_rifle
+control_values: "Verify Mini Rifle Jan 2026 PDF — Ch.12 (residual administrative items)"
+ipsc_edition: "Jan 2026"
+ipsc_refs:
+  - rule: "12"
+    note: "Miscellaneous — Mini Rifle Ch.12"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+fpsu_refs: []
+fpsu_delta_verified: false
+reviewer: ""
+review_date: ""
+draft_source: llm
+status: draft
+---
+
+## What this is
+
+**Chapter 12** collects **miscellaneous** items that do not fit other chapters (**exact list in the Jan 2026** PDF). For **ROs** it is mainly a **lookup**: when a question does not fall under **Chapters 2–11**, check **12** before improvising. **C295** = **Handgun** — use the **Mini Rifle** PDF for **Chapter 12** (do not assume **full Rifle** or **handgun** text without checking).
+
+## What the Range Officer (RO) does
+
+1. **Do not cite** “Chapter 12” in the abstract without a specific sub-clause.
+2. **Route MD/RM** questions on briefing language, official notices, minor discipline — if they live in **12** or **MD** policy.
+3. **Follow** the published command language on the line (English + allowed translation).
+4. **Do not use** “Chapter 12” as a blanket excuse for arbitrary calls.
+5. **Refresh** when a new PDF drops — **12** can change between editions.
+
+## IPSC (Jan 2026)
+
+- Read **Chapter 12 Mini Rifle** for admin gaps not covered elsewhere in the card pack.
+
+## Local (FPSU)
+
+National addenda may sit in a separate bulletin rather than IPSC **12** — verify **MD**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+
+## Common mistakes
+
+- **Invented** “Ch.12 rules” with no cite.
+- **Ignoring MD** because “the internet said so”.
+- **Stale PDF** on a phone during an official match.
+- Using **Handgun** or **full Rifle** **Ch.12** **without** opening the **Mini Rifle** PDF.
