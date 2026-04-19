@@ -234,6 +234,10 @@
 | C253    | magazines-and-loading-devices | mini_rifle | equipment | draft     | draft     | false               | —        | **Ch.5**; чернетка — рев’ю з PDF. |
 | C254    | magazines-and-loading-devices | shotgun    | equipment | draft     | draft     | false               | —        | **Ch.5**; чернетка — рев’ю з PDF. |
 | C255    | eye-and-ear-protection | handgun    | equipment | draft     | draft     | false               | —        | **5.4**; чернетка — рев’ю з PDF. |
+| C256    | eye-and-ear-protection | pcc        | equipment | draft     | draft     | false               | —        | **5.4**; чернетка — рев’ю з PDF. |
+| C257    | eye-and-ear-protection | rifle      | equipment | draft     | draft     | false               | —        | **5.4**; чернетка — рев’ю з PDF. |
+| C258    | eye-and-ear-protection | mini_rifle | equipment | draft     | draft     | false               | —        | **5.4**; чернетка — рев’ю з PDF. |
+| C259    | eye-and-ear-protection | shotgun    | equipment | draft     | draft     | false               | —        | **5.4**; чернетка — рев’ю з PDF. |
 | C260    | athlete-clothing      | handgun    | equipment | draft     | draft     | false               | —        | **5.3**; чернетка — рев’ю з PDF. |
 | C265    | equipment-malfunction | handgun    | equipment | draft     | draft     | false               | —        | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C270    | written-stage-briefing | handgun    | match-admin | draft     | draft     | false               | —        | **3.2** (WSB); чернетка — рев’ю з PDF. |
