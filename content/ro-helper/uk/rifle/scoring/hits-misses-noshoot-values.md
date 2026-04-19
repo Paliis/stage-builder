@@ -1,0 +1,45 @@
+---
+title: "Влучання, miss і no-shoot"
+card_id: "C172"
+slug: "hits-misses-noshoot-values"
+category: scoring
+locale: uk
+discipline: rifle
+control_values: "Перевірити PDF Rifle Jan 2026 — 9.4 (бали за влучання, miss, no-shoot; сталь)"
+ipsc_edition: "Jan 2026"
+ipsc_refs:
+  - rule: "9.4"
+    note: "Hits, misses, no-shoot values — Rifle; таблиці в PDF і додатках"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+fpsu_refs: []
+fpsu_delta_verified: false
+reviewer: ""
+review_date: ""
+draft_source: llm
+status: draft
+---
+
+## Що це
+
+**9.4** **IPSC Rifle** визначає, як **влучання**, **miss** і удари по **no-shoot** перетворюються на **залік** у **Rifle**. Дистанції, паперові зони та логіка **сталі** можуть відрізнятися від handgun — завжди з **Rifle Jan 2026** і додатків. **C170** — база для handgun.
+
+## Що робить суддя змагань (RO)
+
+1. **Застосовувати** **9.5 Rifle** для вимірювання паперу; **9.4** задає «ціну» кожного результату.
+2. **Сталь:** фіксувати за визначенням сцени (падіння / зона влучання) — **9.4** прив’язує штрафи до цих подій.
+3. **No-shoot:** не «забувати» no-shoot у стовпці штрафів.
+4. **Кілька дистанцій:** перед присвоєнням балів переконатися в **типі мішені** та **методі заліковки** за **WSB**.
+5. **Суперечки:** ескалація за **9.6**, не вигадувати **9.4** на місці.
+
+## IPSC (Jan 2026)
+
+- **9.4 Rifle** + **9.5** / **9.9** за посиланнями в книзі правил матчу.
+
+## Локально (ФПСУ)
+
+**`fpsu_delta_verified`**: **false** до **RO_HELPER_V0 §4.1**.
+
+## Типові помилки
+
+- **Звички handgun** на **Rifle** без перевірки **9.4**.
+- **Плутання miss і FTE** — визначення у **розділі 9 Rifle**.

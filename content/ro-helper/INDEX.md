@@ -149,6 +149,10 @@
 | C168    | scoring-ties          | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
 | C169    | scoring-ties          | shotgun    | scoring   | draft     | draft     | false               | —        | **9.3**; чернетка — рев’ю з PDF. |
 | C170    | hits-misses-noshoot-values | handgun    | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
+| C171    | hits-misses-noshoot-values | pcc        | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
+| C172    | hits-misses-noshoot-values | rifle      | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
+| C173    | hits-misses-noshoot-values | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
+| C174    | hits-misses-noshoot-values | shotgun    | scoring   | draft     | draft     | false               | —        | **9.4**; чернетка — рев’ю з PDF. |
 | C175    | paper-scoring-policy  | handgun    | scoring   | draft     | draft     | false               | —        | **9.5**; чернетка — рев’ю з PDF. |
 | C180    | paper-zones-major-minor | handgun    | scoring   | draft     | draft     | false               | —        | **9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF. |
 | C185    | radial-tears-enlarged-holes | handgun    | scoring   | draft     | draft     | false               | —        | **9.5.4**; чернетка — рев’ю з PDF. |
