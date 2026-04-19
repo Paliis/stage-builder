@@ -29,6 +29,14 @@
 npm run ro-helper:export-review
 ```
 
+Перевірка наявності статей за матрицею, полів frontmatter (`ipsc_refs`, `fpsu_refs` з URL на upsf.org.ua), секцій **IPSC** / **Локально (ФПСУ)** та попереджень якості (наприклад UK «дуло» за §1.1):
+
+```bash
+npm run ro-helper:validate
+```
+
+Команда **`npm run check`** (lint + тести + збірка) також запускає **`ro-helper:validate`**.
+
 У каталозі **`exports/`** (не комітиться в git) з’явиться файл на кшталт **`ro-helper-review-<timestamp>.zip`**. Усередині:
 
 - `content/ro-helper/**` — статті UK/EN та `INDEX.md`;

@@ -9,11 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "check": "npm run lint && npm test && npm run build",
+    "check": "npm run lint && npm test && npm run build && npm run ro-helper:validate",
     "icons": "node scripts/generate-icons-from-preview.mjs",
     "icons:st": "node scripts/apply-st-to-icon-preview.mjs && node scripts/generate-icons-from-preview.mjs",
     "ro-helper:export-review": "node scripts/export-ro-helper-review-pack.mjs",
-    "ro-helper:inject-fpsu-refs": "node scripts/inject-ro-helper-fpsu-refs.mjs"
+    "ro-helper:inject-fpsu-refs": "node scripts/inject-ro-helper-fpsu-refs.mjs",
+    "ro-helper:validate": "node scripts/validate-ro-helper-content.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
