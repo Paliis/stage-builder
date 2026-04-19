@@ -269,6 +269,10 @@
 | C288    | md-ro-roles           | mini_rifle | match-admin | draft     | draft     | false               | —        | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
 | C289    | md-ro-roles           | shotgun    | match-admin | draft     | draft     | false               | —        | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
 | C290    | protests-arbitration  | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.11**; чернетка — рев’ю з PDF. |
+| C291    | protests-arbitration  | pcc        | match-admin | draft     | draft     | false               | —        | **Ch.11**; чернетка — рев’ю з PDF. |
+| C292    | protests-arbitration  | rifle      | match-admin | draft     | draft     | false               | —        | **Ch.11**; чернетка — рев’ю з PDF. |
+| C293    | protests-arbitration  | mini_rifle | match-admin | draft     | draft     | false               | —        | **Ch.11**; чернетка — рев’ю з PDF. |
+| C294    | protests-arbitration  | shotgun    | match-admin | draft     | draft     | false               | —        | **Ch.11**; чернетка — рев’ю з PDF. |
 | C295    | miscellaneous-matters | handgun    | match-admin | draft     | draft     | false               | —        | **Ch.12**; чернетка — рев’ю з PDF. |
 | C300    | reshoots              | handgun    | match-admin | draft     | draft     | false               | —        | **4.7**; чернетка — рев’ю з PDF. |
 | C305    | course-design-safety-balance | handgun    | match-admin | draft     | draft     | false               | —        | **1.1**; чернетка — рев’ю з PDF. |
