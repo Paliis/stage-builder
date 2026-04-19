@@ -1,0 +1,43 @@
+---
+title: "Політика заліковки паперових мішеней"
+card_id: "C178"
+slug: "paper-scoring-policy"
+category: scoring
+locale: uk
+discipline: mini_rifle
+control_values: "Перевірити PDF Mini Rifle Jan 2026 — 9.5 (зони A/C/D, перекриття, торки, FTE тощо)"
+ipsc_edition: "Jan 2026"
+ipsc_refs:
+  - rule: "9.5"
+    note: "Paper target scoring — Mini Rifle; повний підрозділ у PDF"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+fpsu_refs: []
+fpsu_delta_verified: false
+reviewer: ""
+review_date: ""
+draft_source: llm
+status: draft
+---
+
+## Що це
+
+**9.5** **IPSC Mini Rifle** визначає заліковку **паперу** на змаганнях **Mini Rifle**. Для юніорів **не** послаблюють правила зон — **9.5** діє так само; **C175** — handgun; з **C177** (повний **Rifle**) варто звірятися редакційно.
+
+## Що робить суддя змагань (RO)
+
+1. **Терпіння** щодо зросту / досяжності — але **залік** лише за **9.5**, без «добродушних» догадок.
+2. **Батьки** не нахиляються над мішенню «щоб назвати отвір» — лише **RO і інструменти**.
+3. **Чітко записувати**, щоб **скоринг** і тренери бачили **однакові** рішення між скводами.
+
+## IPSC (Jan 2026)
+
+- **9.5 Mini Rifle** — перевірити відмінності **додатків** від **повного Rifle** у пакеті **Jan 2026**.
+
+## Локально (ФПСУ)
+
+**`fpsu_delta_verified`**: **false** до **RO_HELPER_V0 §4.1**.
+
+## Типові помилки
+
+- **Пом’якшення** меж зон «для дітей» — **9.5** цього не передбачає.
+- **Дозвіл** не-RO **торкатися** паперу до завершення заліковки.
