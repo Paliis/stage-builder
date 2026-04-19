@@ -99,7 +99,7 @@
 ### Safety & DQ (`safety`)
 
 - Небезпечні постріли / випадковий постріл — **10.4**, **10.5.x** (DQ / safety infractions).
-- Окремі картки: `accidental-discharge`, `trigger-finger`, `break-180`, `dropped-gun`, `unsafe-gun-handling` (узгодити з [RO_HELPER_V0 §8.1](./RO_HELPER_V0.md#81-safety--dq-safety)) × 5 дисциплін.
+- Окремі картки: `accidental-discharge`, `trigger-finger`, `break-180`, `dropped-gun`, `unsafe-gun-handling`, `sweeping`, `muzzle-at-person`, `unauthorized-loading` (узгодити з [RO_HELPER_V0 §8.1](./RO_HELPER_V0.md#81-safety--dq-safety)) × 5 дисциплін.
 - Додати з handgun: **10.5** підпункти за потреби (окремі картки на підтип DQ).
 
 ### Scoring (`scoring`)

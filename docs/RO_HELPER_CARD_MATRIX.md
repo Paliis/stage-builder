@@ -53,19 +53,19 @@ python scripts/gen_ro_helper_matrix.py --out docs/RO_HELPER_CARD_MATRIX.new.csv
 | `category` | Кількість рядків у CSV |
 |--------------|-------------------------|
 | `penalties` | 79 |
-| `safety` | 64 |
+| `safety` | 79 |
 | `scoring` | 75 |
 | `equipment` | 50 |
 | `match-admin` | 40 |
-| **Усього** | **308** |
+| **Усього** | **323** |
 
-Перевірка: `penalties` = 51 (реєстр) + 25 (5 додаткових slug × 5 дисциплін) + 3 (burst лише для 3 long gun) = **79**; `safety` = 50 (базові теми ×5) + 5 (`metal-target-min-distance-dq`) + 5 (`ammo-in-safety-area`) + 4 (`external-safety-long-gun` без handgun) = **64**; `scoring` = 70 + 5 (`popper-calibration`) = **75**; `equipment` = 45 + 5 (`trigger-pull-check`) = **50**.
+Перевірка: `penalties` = 51 (реєстр) + 25 (5 додаткових slug × 5 дисциплін) + 3 (burst лише для 3 long gun) = **79**; `safety` = 50 (базові теми ×5) + 5 (`metal-target-min-distance-dq`) + 5 (`ammo-in-safety-area`) + 4 (`external-safety-long-gun` без handgun) + 15 (`sweeping`, `muzzle-at-person`, `unauthorized-loading` ×5) = **79**; `scoring` = 70 + 5 (`popper-calibration`) = **75**; `equipment` = 45 + 5 (`trigger-pull-check`) = **50**.
 
 ---
 
-## 4. Доповнення за аудитом (C310–C333)
+## 4. Доповнення за аудитом (C310–C348)
 
-Додано окремі картки для «сліпих зон» безпеки, скорингу та екіпірування: **`metal-target-min-distance-dq`**, **`ammo-in-safety-area`**, **`external-safety-long-gun`**, **`popper-calibration`**, **`trigger-pull-check`**. У CSV для `trigger-finger` якір **10.5.9–10.5.11** (HG Jan 2026); для **`disappearing-targets-scoring`** у `notes` зафіксовано розведення **9.9.2** (рух / зникаюча мішень) та логіки активатора.
+Додано окремі картки для «сліпих зон» безпеки, скорингу та екіпірування: **`metal-target-min-distance-dq`**, **`ammo-in-safety-area`**, **`external-safety-long-gun`**, **`popper-calibration`**, **`trigger-pull-check`**, а також безпекові **`sweeping`** (10.5.5), **`muzzle-at-person`** (10.5.6), **`unauthorized-loading`** (10.5.12) × 5 дисциплін (**C334–C348**). У CSV для `trigger-finger` якір **10.5.9–10.5.11** (HG Jan 2026); для **`disappearing-targets-scoring`** у `notes` зафіксовано розведення **9.9.2** (рух / зникаюча мішень) та логіки активатора.
 
 ---
 

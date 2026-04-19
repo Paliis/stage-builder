@@ -8,7 +8,7 @@
 
 ## 1. Межі цього документа
 
-- **Не** замінює ручну звірку первинників. Значення `delta_type` **`stricter_local`** і **`identical`** (у сенсі «зміст збігається») у масштабі всіх 308 карток можна ставити **лише після** порівняння відповідних абзаців IPSC PDF і тексту ФПСУ на [upsf.org.ua](https://upsf.org.ua/rules/upsf/2020/index?type=rules) — згідно з [RO_HELPER_V0 §4.1](./RO_HELPER_V0.md#41-хто-фіксує-відмінності-фпсу-від-ipsc).
+- **Не** замінює ручну звірку первинників. Значення `delta_type` **`stricter_local`** і **`identical`** (у сенсі «зміст збігається») у масштабі всіх **323** карток (рядків у [RO_HELPER_CARD_MATRIX.csv](./RO_HELPER_CARD_MATRIX.csv)) можна ставити **лише після** порівняння відповідних абзаців IPSC PDF і тексту ФПСУ на [upsf.org.ua](https://upsf.org.ua/rules/upsf/2020/index?type=rules) — згідно з [RO_HELPER_V0 §4.1](./RO_HELPER_V0.md#41-хто-фіксує-відмінності-фпсу-від-ipsc).
 - У CSV переважно **`needs_legal_review`**: зафіксовано **де шукати** український шар (частина ФПСУ + URL якоря) і який **IPSC-якір** у матриці карток (`ipsc_anchor_hint` у [RO_HELPER_CARD_MATRIX.csv](./RO_HELPER_CARD_MATRIX.csv)).
 - Структурні відмінності (п’ять PDF vs один документ, римські частини vs Ch.8–11) — **`wording_only`** на рівні нумерації/організації тексту, без автоматичного висновку про «ідентичність норм».
 
@@ -24,6 +24,9 @@
 | T-SAFE-01 | C105 | `break-180` | 10.5.2 | II п.7; IV; XI | `needs_legal_review` | P1 |
 | T-SAFE-02 | C110 | `accidental-discharge` | 10.4 | XI §4 AD | `needs_legal_review` | P1 |
 | T-SAFE-03 | C115 | `trigger-finger` | 10.5.9–11 | XI §5 | `needs_legal_review` | P1 |
+| T-SAFE-08 | C334 | `sweeping` | 10.5.5; 10.5.5.1 (HG) | II п.7; IV; XI | `needs_legal_review` | P1 |
+| T-SAFE-09 | C339 | `muzzle-at-person` | 10.5.6 | II п.7; IV; XI | `needs_legal_review` | P1 |
+| T-SAFE-10 | C344 | `unauthorized-loading` | 10.5.12 | II п.7; IV; XI | `needs_legal_review` | P2 |
 | T-PEN-01 | C26 | `procedural-fault` | 10.1 | XI §1 | `needs_legal_review` | P1 |
 | T-PEN-03 | C36 | `failure-to-engage` | 9.5.6; 10.2.7 | X; XI | `needs_legal_review` | P1 |
 | T-SCR-01 | C160 | `scoring-methods` | 9.2 | X §2 | `needs_legal_review` | P2 |

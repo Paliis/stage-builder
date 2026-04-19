@@ -312,3 +312,18 @@
 | C331    | trigger-pull-check    | rifle      | equipment | draft     | draft     | false               | —        | Додаток зусилля спуску (Rifle); звірити з PDF Jan 2026. |
 | C332    | trigger-pull-check    | mini_rifle | equipment | draft     | draft     | false               | —        | Додаток зусилля спуску (Mini Rifle); звірити з PDF Jan 2026. |
 | C333    | trigger-pull-check    | shotgun    | equipment | draft     | draft     | false               | —        | Додаток спуску / release (Shotgun); звірити з PDF Jan 2026. |
+| C334    | sweeping              | handgun    | safety    | draft     | draft     | false               | —        | **10.5.5** + **10.5.5.1** (виняток кобури HG); чернетка — рев’ю з PDF Jan 2026. |
+| C335    | sweeping              | pcc        | safety    | draft     | draft     | false               | —        | **10.5.5** (PCC); підтвердити номер у PDF Jan 2026 (якір HG). |
+| C336    | sweeping              | rifle      | safety    | draft     | draft     | false               | —        | **10.5.5** (Rifle); підтвердити номер у PDF Jan 2026 (якір HG). |
+| C337    | sweeping              | mini_rifle | safety    | draft     | draft     | false               | —        | **10.5.5** (Mini Rifle); підтвердити номер у PDF Jan 2026 (якір HG). |
+| C338    | sweeping              | shotgun    | safety    | draft     | draft     | false               | —        | **10.5.5** (Shotgun); підтвердити номер у PDF Jan 2026 (якір HG). |
+| C339    | muzzle-at-person      | handgun    | safety    | draft     | draft     | false               | —        | **10.5.6** (Handgun); наведення на людину — рев’ю з PDF Jan 2026. |
+| C340    | muzzle-at-person      | pcc        | safety    | draft     | draft     | false               | —        | **10.5.6** (PCC); підтвердити в PDF Jan 2026 (якір HG). |
+| C341    | muzzle-at-person      | rifle      | safety    | draft     | draft     | false               | —        | **10.5.6** (Rifle); підтвердити в PDF Jan 2026 (якір HG). |
+| C342    | muzzle-at-person      | mini_rifle | safety    | draft     | draft     | false               | —        | **10.5.6** (Mini Rifle); підтвердити в PDF Jan 2026 (якір HG). |
+| C343    | muzzle-at-person      | shotgun    | safety    | draft     | draft     | false               | —        | **10.5.6** (Shotgun); підтвердити в PDF Jan 2026 (якір HG). |
+| C344    | unauthorized-loading  | handgun    | safety    | draft     | draft     | false               | —        | **10.5.12** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C345    | unauthorized-loading  | pcc        | safety    | draft     | draft     | false               | —        | **10.5.12** (PCC); підтвердити в PDF Jan 2026 (якір HG). |
+| C346    | unauthorized-loading  | rifle      | safety    | draft     | draft     | false               | —        | **10.5.12** (Rifle); підтвердити в PDF Jan 2026 (якір HG). |
+| C347    | unauthorized-loading  | mini_rifle | safety    | draft     | draft     | false               | —        | **10.5.12** (Mini Rifle); підтвердити в PDF Jan 2026 (якір HG). |
+| C348    | unauthorized-loading  | shotgun    | safety    | draft     | draft     | false               | —        | **10.5.12** (Shotgun); підтвердити в PDF Jan 2026 (якір HG). |
