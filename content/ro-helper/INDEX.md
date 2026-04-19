@@ -204,6 +204,10 @@
 | C223    | scoring-programs      | mini_rifle | scoring   | draft     | draft     | false               | —        | **9.11**; чернетка — рев’ю з PDF. |
 | C224    | scoring-programs      | shotgun    | scoring   | draft     | draft     | false               | —        | **9.11**; чернетка — рев’ю з PDF. |
 | C225    | division-overview     | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
+| C226    | division-overview     | pcc        | equipment | draft     | draft     | false               | —        | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
+| C227    | division-overview     | rifle      | equipment | draft     | draft     | false               | —        | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
+| C228    | division-overview     | mini_rifle | equipment | draft     | draft     | false               | —        | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
+| C229    | division-overview     | shotgun    | equipment | draft     | draft     | false               | —        | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
 | C230    | ready-conditions      | handgun    | equipment | draft     | draft     | false               | —        | **8.1–8.3**; чернетка — рев’ю з PDF. |
 | C235    | holster-or-carry-long-gun | handgun    | equipment | draft     | draft     | false               | —        | **Ch.5** (кобура handgun); чернетка — рев’ю з PDF. |
 | C240    | firearms-and-ammunition-rules | handgun    | equipment | draft     | draft     | false               | —        | **5.1–5.8**; чернетка — рев’ю з PDF. |
