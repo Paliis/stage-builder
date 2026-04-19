@@ -113,7 +113,11 @@
 | C132    | dq-general            | rifle      | safety    | draft     | draft     | false               | —        | **10.3** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C133    | dq-general            | mini_rifle | safety    | draft     | draft     | false               | —        | **10.3** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C134    | dq-general            | shotgun    | safety    | draft     | draft     | false               | —        | **10.3** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
-| C135    | prohibited-substances | handgun    | safety    | draft     | draft     | false               | —        | **10.7**; чернетка — рев’ю з PDF. |
+| C135    | prohibited-substances | handgun    | safety    | draft     | draft     | false               | —        | **10.7** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C136    | prohibited-substances | pcc        | safety    | draft     | draft     | false               | —        | **10.7** (PCC); чернетка — рев’ю з PDF Jan 2026. |
+| C137    | prohibited-substances | rifle      | safety    | draft     | draft     | false               | —        | **10.7** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C138    | prohibited-substances | mini_rifle | safety    | draft     | draft     | false               | —        | **10.7** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C139    | prohibited-substances | shotgun    | safety    | draft     | draft     | false               | —        | **10.7** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
 | C140    | unsportsmanlike-conduct | handgun    | safety    | draft     | draft     | false               | —        | **10.6**; чернетка — рев’ю з PDF. |
 | C145    | range-safety-zones    | handgun    | safety    | draft     | draft     | false               | —        | **Ch.2**; чернетка — рев’ю з PDF. |
 | C150    | movement-and-trigger-safety | handgun    | safety    | draft     | draft     | false               | —        | **8.5**; чернетка — рев’ю з PDF. |
