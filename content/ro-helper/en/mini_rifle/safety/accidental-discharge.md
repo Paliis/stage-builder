@@ -39,6 +39,11 @@ An **accidental discharge (AD)** under **IPSC Mini Rifle** is defined in **Secti
 
 ## IPSC (Jan 2026)
 
+
+### 10.4.2 — shot into the ground (distance)
+
+- **10.4.2**: a shot **into the ground** within **3 meters** (3 m) — **DQ** per the rule.
+
 - Read **10.4** in **Mini Rifle** completely; do not copy-paste from **Rifle** or **PCC** PDFs.
 
 ## Local (FPSU)

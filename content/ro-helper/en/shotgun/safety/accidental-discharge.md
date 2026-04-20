@@ -39,6 +39,11 @@ An **accidental discharge (AD)** under **IPSC Shotgun** is defined in **Section 
 
 ## IPSC (Jan 2026)
 
+
+### 10.4.2 — shot into the ground (distance)
+
+- **10.4.2**: a shot **into the ground** within **3 meters** (3 m) — **DQ** per the rule.
+
 - Full **10.4** in **Shotgun**; read sub-clauses about when a discharge counts as AD vs. other Ch.10 topics.
 
 ## Local (FPSU)

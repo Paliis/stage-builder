@@ -8,6 +8,8 @@ discipline: pcc
 control_values: "Перевірити PDF PCC Jan 2026 — 8.5; звірити з 10.5.9–10.5.11 для DQ за палець (C116)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "10.5.11"
+    note: ""
   - rule: "8.5"
     note: "Movement with firearm; загальні вимоги безпеки під час COF — PCC"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -40,6 +42,12 @@ status: draft
 4. **RM**, якщо текст санкції неоднозначний.
 
 ## IPSC (Jan 2026)
+
+
+### 10.5.11 — запобіжник під час руху (довгі стволи)
+
+- Для **Rifle / PCC / Shotgun / Mini Rifle** це окрема вимога, не лише «палець поза скобою».
+- **DQ за п. 10.5.11: рух зі зброєю, запобіжник якої не вимкнено (не встановлено в положення safe)** — якщо спортсмен не веде вогонь по мішенях.
 
 - **8.5 PCC**; не змішувати з **10.5.2** (180°), якщо факт інший.
 

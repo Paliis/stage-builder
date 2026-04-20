@@ -8,6 +8,8 @@ discipline: shotgun
 control_values: "Verify Shotgun Jan 2026 PDF — 8.5; cross-check 10.5.9–10.5.11 for finger DQ (C119)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "10.5.11"
+    note: ""
   - rule: "8.5"
     note: "Movement with firearm; general safety during COF — Shotgun"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Shotgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -39,6 +41,12 @@ status: draft
 3. **Cite** **8.5** vs **10.5.x** correctly in the log.
 
 ## IPSC (Jan 2026)
+
+
+### 10.5.11 — safety engaged while moving (long guns)
+
+- For **Rifle / PCC / Shotgun / Mini Rifle** this is a separate requirement (not only trigger finger discipline).
+- **10.5.11 DQ**: moving with the long gun while the **safety is not engaged** (not in **SAFE**) — unless targets are being engaged.
 
 - **8.5 Shotgun** + **Ch.10** finger rules; loading chapter cross-refs per edition.
 

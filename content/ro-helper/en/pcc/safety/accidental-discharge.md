@@ -39,6 +39,11 @@ An **accidental discharge (AD)** under **IPSC PCC** is defined in **Section 10.4
 
 ## IPSC (Jan 2026)
 
+
+### 10.4.2 — shot into the ground (distance)
+
+- **10.4.2**: a shot **into the ground** within **3 meters** (3 m) — **DQ** per the rule.
+
 - Anchor: **10.4** in **PCC**; read all sub-clauses and cross-references.
 - Do not substitute **C110** (Handgun) text for sanction text — open **PCC** PDF.
 

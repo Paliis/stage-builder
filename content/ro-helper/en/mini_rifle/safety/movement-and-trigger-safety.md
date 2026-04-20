@@ -8,6 +8,8 @@ discipline: mini_rifle
 control_values: "Verify Mini Rifle Jan 2026 PDF — 8.5; cross-check 10.5.9–10.5.11 for finger DQ (C118)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "10.5.11"
+    note: ""
   - rule: "8.5"
     note: "Movement with firearm; general safety during COF — Mini Rifle"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -39,6 +41,12 @@ status: draft
 3. **Document** for **RM** when **8.5** vs **10.5.x** is disputed.
 
 ## IPSC (Jan 2026)
+
+
+### 10.5.11 — safety engaged while moving (long guns)
+
+- For **Rifle / PCC / Shotgun / Mini Rifle** this is a separate requirement (not only trigger finger discipline).
+- **10.5.11 DQ**: moving with the long gun while the **safety is not engaged** (not in **SAFE**) — unless targets are being engaged.
 
 - **8.5 Mini Rifle** — compare with **Rifle** **8.5** during editorial review.
 

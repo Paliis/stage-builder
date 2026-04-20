@@ -39,6 +39,11 @@ An **accidental discharge (AD)** under **IPSC Rifle** is defined in **Section 10
 
 ## IPSC (Jan 2026)
 
+
+### 10.4.2 — shot into the ground (distance)
+
+- **10.4.2**: a shot **into the ground** within **3 meters** (3 m) — **DQ** per the rule.
+
 - Full **10.4** text in **Rifle**; check cross-references (steel distance, etc., if cited in that edition).
 - Do not use **Handgun** PDF for AD wording.
 
