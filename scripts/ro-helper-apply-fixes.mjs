@@ -7,6 +7,7 @@
  * 6) Standardize Major/Minor hit values: cite 9.4.1/9.4.2 and add point table + terminology.
  * 7) Popper calibration: add clear RO algorithm (Appendix C1) and reshoot outcome.
  * 8) Procedural cap: highlight 10.2.3 and clarify per-occurrence vs per-shot (unless significant advantage).
+ * 14) Match admin: reshoots + course design balance clarifications.
  *
  * Usage: node scripts/ro-helper-apply-fixes.mjs
  */
@@ -204,6 +205,46 @@ function addProceduralCapClarification(locale, body) {
   return ensureSection(body, heading, content)
 }
 
+function addReshootsClarification(locale, body) {
+  const heading =
+    locale === 'uk'
+      ? '### Перестріл (Reshoot): хто призначає і коли це обов’язково'
+      : '### Reshoot: who authorizes it and when it is mandatory'
+  const content =
+    locale === 'uk'
+      ? [
+          '- **4.6.1 (Range Equipment Failure)**: якщо є **збій обладнання** (таймер, механіка, мішені) — рішення про перестріл приймається за процедурою правил.',
+          '- **Критично:** якщо RO **не впевнений**, чи це саме збій обладнання — **тільки Range Master (RM)** має авторизувати перестріл.',
+          '- **4.7**: перестріл не є «другим шансом» після помилки спортсмена; застосовується лише за умовами, описаними в правилі.',
+          '- **9.10.3**: якщо таймер **не зафіксував час**, перестріл є **обов’язковим**.',
+        ]
+      : [
+          '- **4.6.1 (Range Equipment Failure)**: when there is **range equipment failure** (timer, mechanisms, targets) — reshoot follows the rule procedure.',
+          '- **Critical:** if the RO is **unsure** whether it is equipment failure — **only the Range Master (RM)** should authorize a reshoot.',
+          '- **4.7**: a reshoot is not a “second chance” after competitor error; apply only as written.',
+          '- **9.10.3**: if the timer **fails to record the time**, a reshoot is **mandatory**.',
+        ]
+  return ensureSection(body, heading, content)
+}
+
+function addCourseDesignBalance(locale, body) {
+  const heading =
+    locale === 'uk' ? '### Баланс: Точність, Швидкість, Потужність' : '### Balance: Accuracy, Speed, Power'
+  const content =
+    locale === 'uk'
+      ? [
+          '- **1.1** задає принципи побудови вправ: перш за все **безпека**, далі **справедливість** і **баланс**.',
+          '- **1.1.5 (Freestyle):** у більшості випадків спортсмен має право вирішувати **як** виконувати вправу, якщо це не суперечить WSB і правилам.',
+          '- Практичний тест балансу: вправа має оцінювати комбінацію **Точності, Швидкості, Потужності** (а не лише один параметр).',
+        ]
+      : [
+          '- **1.1** sets course design principles: **safety first**, then **fairness** and **balance**.',
+          '- **1.1.5 (Freestyle):** in most cases the competitor may choose **how** to shoot the COF unless restricted by WSB/rules.',
+          '- A practical balance check: the stage should test a mix of **Accuracy, Speed, Power** (not just one).',
+        ]
+  return ensureSection(body, heading, content)
+}
+
 async function main() {
   if (!existsSync(roRoot)) {
     console.error('Missing content root:', roRoot)
@@ -358,6 +399,53 @@ async function main() {
     const locale = rel.startsWith('uk/') ? 'uk' : 'en'
     const nextBody = addProceduralCapClarification(locale, body)
     const next = joinFrontmatter(meta, nextBody)
+    if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
+  }
+
+  // Step 14: match-admin (C300–C309) — reshoots + course design balance.
+  const reshootFiles = [
+    'uk/handgun/match-admin/reshoots.md',
+    'uk/pcc/match-admin/reshoots.md',
+    'uk/rifle/match-admin/reshoots.md',
+    'uk/mini_rifle/match-admin/reshoots.md',
+    'uk/shotgun/match-admin/reshoots.md',
+    'en/handgun/match-admin/reshoots.md',
+    'en/pcc/match-admin/reshoots.md',
+    'en/rifle/match-admin/reshoots.md',
+    'en/mini_rifle/match-admin/reshoots.md',
+    'en/shotgun/match-admin/reshoots.md',
+  ]
+  for (const rel of reshootFiles) {
+    const abs = join(roRoot, ...rel.split('/'))
+    const raw = await readFile(abs, 'utf8')
+    const { meta, body } = splitFrontmatter(raw)
+    const nextMeta = ensureIpscRefs(meta, ['4.6.1', '4.7', '9.10.3'])
+    const locale = rel.startsWith('uk/') ? 'uk' : 'en'
+    const nextBody = addReshootsClarification(locale, body)
+    const next = joinFrontmatter(nextMeta, nextBody)
+    if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
+  }
+
+  const courseDesignFiles = [
+    'uk/handgun/match-admin/course-design-safety-balance.md',
+    'uk/pcc/match-admin/course-design-safety-balance.md',
+    'uk/rifle/match-admin/course-design-safety-balance.md',
+    'uk/mini_rifle/match-admin/course-design-safety-balance.md',
+    'uk/shotgun/match-admin/course-design-safety-balance.md',
+    'en/handgun/match-admin/course-design-safety-balance.md',
+    'en/pcc/match-admin/course-design-safety-balance.md',
+    'en/rifle/match-admin/course-design-safety-balance.md',
+    'en/mini_rifle/match-admin/course-design-safety-balance.md',
+    'en/shotgun/match-admin/course-design-safety-balance.md',
+  ]
+  for (const rel of courseDesignFiles) {
+    const abs = join(roRoot, ...rel.split('/'))
+    const raw = await readFile(abs, 'utf8')
+    const { meta, body } = splitFrontmatter(raw)
+    const nextMeta = ensureIpscRefs(meta, ['1.1', '1.1.5'])
+    const locale = rel.startsWith('uk/') ? 'uk' : 'en'
+    const nextBody = addCourseDesignBalance(locale, body)
+    const next = joinFrontmatter(nextMeta, nextBody)
     if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
   }
 }

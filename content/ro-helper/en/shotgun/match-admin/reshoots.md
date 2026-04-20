@@ -8,6 +8,10 @@ discipline: shotgun
 control_values: "Verify Shotgun Jan 2026 PDF — 4.7 (when allowed, authority, limits)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "9.10.3"
+    note: ""
+  - rule: "4.6.1"
+    note: ""
   - rule: "4.7"
     note: "Reshoots / range equipment failure — Shotgun"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Shotgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -38,6 +42,14 @@ status: draft
 5. **Do not use** 4.7 as cover for a **practice** run.
 
 ## IPSC (Jan 2026)
+
+
+### Reshoot: who authorizes it and when it is mandatory
+
+- **4.6.1 (Range Equipment Failure)**: when there is **range equipment failure** (timer, mechanisms, targets) — reshoot follows the rule procedure.
+- **Critical:** if the RO is **unsure** whether it is equipment failure — **only the Range Master (RM)** should authorize a reshoot.
+- **4.7**: a reshoot is not a “second chance” after competitor error; apply only as written.
+- **9.10.3**: if the timer **fails to record the time**, a reshoot is **mandatory**.
 
 - Anchor: **4.7 Shotgun**; cross-link **9.10** (time) and **C269** (competitor gear failure — different logic).
 

@@ -22,7 +22,7 @@ fpsu_refs:
   - rule: "IX §3"
     note: "Команди на стрільбищі"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#3-%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D0%B8-%D0%BD%D0%B0-%D1%81%D1%82%D1%80%D1%96%D0%BB%D1%8C%D0%B1%D0%B8%D1%89%D1%96"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm

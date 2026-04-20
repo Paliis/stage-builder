@@ -8,6 +8,8 @@ discipline: rifle
 control_values: "Verify Rifle Jan 2026 PDF — 1.1 (safety, balance, fair COF)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "1.1.5"
+    note: ""
   - rule: "1.1"
     note: "Course design principles — Rifle Ch.1"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -38,6 +40,13 @@ status: draft
 5. **During the match**, do not “fix” design alone — only per **RM** command.
 
 ## IPSC (Jan 2026)
+
+
+### Balance: Accuracy, Speed, Power
+
+- **1.1** sets course design principles: **safety first**, then **fairness** and **balance**.
+- **1.1.5 (Freestyle):** in most cases the competitor may choose **how** to shoot the COF unless restricted by WSB/rules.
+- A practical balance check: the stage should test a mix of **Accuracy, Speed, Power** (not just one).
 
 - **1.1 Rifle** as framing; concrete steel distances — **10.4.7** and other **Chapter 10** rules in the **Rifle** PDF.
 
