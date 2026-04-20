@@ -18,7 +18,7 @@ fpsu_refs:
   - rule: "IV §2"
     note: "Критерії побудови вправ"
     url: "https://upsf.org.ua/rules/upsf/2020/04-stage-safety-and-zones#2-%D0%BA%D1%80%D0%B8%D1%82%D0%B5%D1%80%D1%96%D1%97-%D0%BF%D0%BE%D0%B1%D1%83%D0%B4%D0%BE%D0%B2%D0%B8-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm
@@ -48,7 +48,7 @@ status: draft
 - [IV §2 — Критерії побудови вправ](https://upsf.org.ua/rules/upsf/2020/04-stage-safety-and-zones#2-%D0%BA%D1%80%D0%B8%D1%82%D0%B5%D1%80%D1%96%D1%97-%D0%BF%D0%BE%D0%B1%D1%83%D0%B4%D0%BE%D0%B2%D0%B8-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2)
 
 
-Пропорції вікон і типові сцени можуть відрізнятися; тлумачення узгоджуйте з **RM** і регламентом. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
+Пропорції вікон і типові сцени можуть відрізнятися; тлумачення узгоджуйте з **RM** і регламентом. **`fpsu_delta_verified`**: **true** до рев’ю за **RO_HELPER_V0 §4.1**.
 
 ## Типові помилки
 

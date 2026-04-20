@@ -1,0 +1,324 @@
+# FPSU delta verification — Batch B1 (penalties)
+Generated (UTC): 2026-04-20T17:12:45.994Z
+
+## Marked verified (fpsu_delta_verified: true)
+
+- content/ro-helper\en\handgun\penalties\cooper-tunnel.md
+- content/ro-helper\en\handgun\penalties\creeping.md
+- content/ro-helper\en\handgun\penalties\failure-to-engage.md
+- content/ro-helper\en\handgun\penalties\foot-fault.md
+- content/ro-helper\en\handgun\penalties\forbidden-action.md
+- content/ro-helper\en\handgun\penalties\mandatory-position.md
+- content/ro-helper\en\handgun\penalties\mandatory-reload.md
+- content/ro-helper\en\handgun\penalties\penalty-in-lieu.md
+- content/ro-helper\en\handgun\penalties\procedural-cap.md
+- content/ro-helper\en\handgun\penalties\procedural-fault.md
+- content/ro-helper\en\handgun\penalties\re-engage-same-location.md
+- content/ro-helper\en\handgun\penalties\sight-picture-fault.md
+- content/ro-helper\en\handgun\penalties\significant-advantage.md
+- content/ro-helper\en\handgun\penalties\unauthorized-assistance.md
+- content/ro-helper\en\mini_rifle\penalties\burst-or-automatic-fire.md
+- content/ro-helper\en\mini_rifle\penalties\cooper-tunnel.md
+- content/ro-helper\en\mini_rifle\penalties\creeping.md
+- content/ro-helper\en\mini_rifle\penalties\failure-to-engage.md
+- content/ro-helper\en\mini_rifle\penalties\foot-fault.md
+- content/ro-helper\en\mini_rifle\penalties\forbidden-action.md
+- content/ro-helper\en\mini_rifle\penalties\mandatory-position.md
+- content/ro-helper\en\mini_rifle\penalties\mandatory-reload.md
+- content/ro-helper\en\mini_rifle\penalties\penalty-in-lieu.md
+- content/ro-helper\en\mini_rifle\penalties\procedural-cap.md
+- content/ro-helper\en\mini_rifle\penalties\procedural-fault.md
+- content/ro-helper\en\mini_rifle\penalties\re-engage-same-location.md
+- content/ro-helper\en\mini_rifle\penalties\sight-picture-fault.md
+- content/ro-helper\en\mini_rifle\penalties\significant-advantage.md
+- content/ro-helper\en\mini_rifle\penalties\unauthorized-assistance.md
+- content/ro-helper\en\pcc\penalties\burst-or-automatic-fire.md
+- content/ro-helper\en\pcc\penalties\cooper-tunnel.md
+- content/ro-helper\en\pcc\penalties\creeping.md
+- content/ro-helper\en\pcc\penalties\failure-to-engage.md
+- content/ro-helper\en\pcc\penalties\foot-fault.md
+- content/ro-helper\en\pcc\penalties\forbidden-action.md
+- content/ro-helper\en\pcc\penalties\mandatory-position.md
+- content/ro-helper\en\pcc\penalties\mandatory-reload.md
+- content/ro-helper\en\pcc\penalties\penalty-in-lieu.md
+- content/ro-helper\en\pcc\penalties\procedural-cap.md
+- content/ro-helper\en\pcc\penalties\procedural-fault.md
+- content/ro-helper\en\pcc\penalties\re-engage-same-location.md
+- content/ro-helper\en\pcc\penalties\sight-picture-fault.md
+- content/ro-helper\en\pcc\penalties\significant-advantage.md
+- content/ro-helper\en\pcc\penalties\unauthorized-assistance.md
+- content/ro-helper\en\rifle\penalties\burst-or-automatic-fire.md
+- content/ro-helper\en\rifle\penalties\cooper-tunnel.md
+- content/ro-helper\en\rifle\penalties\creeping.md
+- content/ro-helper\en\rifle\penalties\failure-to-engage.md
+- content/ro-helper\en\rifle\penalties\foot-fault.md
+- content/ro-helper\en\rifle\penalties\forbidden-action.md
+- content/ro-helper\en\rifle\penalties\mandatory-position.md
+- content/ro-helper\en\rifle\penalties\mandatory-reload.md
+- content/ro-helper\en\rifle\penalties\penalty-in-lieu.md
+- content/ro-helper\en\rifle\penalties\procedural-cap.md
+- content/ro-helper\en\rifle\penalties\procedural-fault.md
+- content/ro-helper\en\rifle\penalties\re-engage-same-location.md
+- content/ro-helper\en\rifle\penalties\sight-picture-fault.md
+- content/ro-helper\en\rifle\penalties\significant-advantage.md
+- content/ro-helper\en\rifle\penalties\unauthorized-assistance.md
+- content/ro-helper\en\shotgun\penalties\cooper-tunnel.md
+- content/ro-helper\en\shotgun\penalties\creeping.md
+- content/ro-helper\en\shotgun\penalties\failure-to-engage.md
+- content/ro-helper\en\shotgun\penalties\foot-fault.md
+- content/ro-helper\en\shotgun\penalties\forbidden-action.md
+- content/ro-helper\en\shotgun\penalties\mandatory-position.md
+- content/ro-helper\en\shotgun\penalties\mandatory-reload.md
+- content/ro-helper\en\shotgun\penalties\penalty-in-lieu.md
+- content/ro-helper\en\shotgun\penalties\procedural-cap.md
+- content/ro-helper\en\shotgun\penalties\procedural-fault.md
+- content/ro-helper\en\shotgun\penalties\re-engage-same-location.md
+- content/ro-helper\en\shotgun\penalties\sight-picture-fault.md
+- content/ro-helper\en\shotgun\penalties\significant-advantage.md
+- content/ro-helper\en\shotgun\penalties\unauthorized-assistance.md
+- content/ro-helper\en\shotgun\penalties\wrong-ammo-shot.md
+- content/ro-helper\uk\handgun\penalties\cooper-tunnel.md
+- content/ro-helper\uk\handgun\penalties\creeping.md
+- content/ro-helper\uk\handgun\penalties\failure-to-engage.md
+- content/ro-helper\uk\handgun\penalties\foot-fault.md
+- content/ro-helper\uk\handgun\penalties\forbidden-action.md
+- content/ro-helper\uk\handgun\penalties\mandatory-position.md
+- content/ro-helper\uk\handgun\penalties\mandatory-reload.md
+- content/ro-helper\uk\handgun\penalties\penalty-in-lieu.md
+- content/ro-helper\uk\handgun\penalties\procedural-cap.md
+- content/ro-helper\uk\handgun\penalties\procedural-fault.md
+- content/ro-helper\uk\handgun\penalties\re-engage-same-location.md
+- content/ro-helper\uk\handgun\penalties\sight-picture-fault.md
+- content/ro-helper\uk\handgun\penalties\significant-advantage.md
+- content/ro-helper\uk\handgun\penalties\unauthorized-assistance.md
+- content/ro-helper\uk\mini_rifle\penalties\burst-or-automatic-fire.md
+- content/ro-helper\uk\mini_rifle\penalties\cooper-tunnel.md
+- content/ro-helper\uk\mini_rifle\penalties\creeping.md
+- content/ro-helper\uk\mini_rifle\penalties\failure-to-engage.md
+- content/ro-helper\uk\mini_rifle\penalties\foot-fault.md
+- content/ro-helper\uk\mini_rifle\penalties\forbidden-action.md
+- content/ro-helper\uk\mini_rifle\penalties\mandatory-position.md
+- content/ro-helper\uk\mini_rifle\penalties\mandatory-reload.md
+- content/ro-helper\uk\mini_rifle\penalties\penalty-in-lieu.md
+- content/ro-helper\uk\mini_rifle\penalties\procedural-cap.md
+- content/ro-helper\uk\mini_rifle\penalties\procedural-fault.md
+- content/ro-helper\uk\mini_rifle\penalties\re-engage-same-location.md
+- content/ro-helper\uk\mini_rifle\penalties\sight-picture-fault.md
+- content/ro-helper\uk\mini_rifle\penalties\significant-advantage.md
+- content/ro-helper\uk\mini_rifle\penalties\unauthorized-assistance.md
+- content/ro-helper\uk\pcc\penalties\burst-or-automatic-fire.md
+- content/ro-helper\uk\pcc\penalties\cooper-tunnel.md
+- content/ro-helper\uk\pcc\penalties\creeping.md
+- content/ro-helper\uk\pcc\penalties\failure-to-engage.md
+- content/ro-helper\uk\pcc\penalties\foot-fault.md
+- content/ro-helper\uk\pcc\penalties\forbidden-action.md
+- content/ro-helper\uk\pcc\penalties\mandatory-position.md
+- content/ro-helper\uk\pcc\penalties\mandatory-reload.md
+- content/ro-helper\uk\pcc\penalties\penalty-in-lieu.md
+- content/ro-helper\uk\pcc\penalties\procedural-cap.md
+- content/ro-helper\uk\pcc\penalties\procedural-fault.md
+- content/ro-helper\uk\pcc\penalties\re-engage-same-location.md
+- content/ro-helper\uk\pcc\penalties\sight-picture-fault.md
+- content/ro-helper\uk\pcc\penalties\significant-advantage.md
+- content/ro-helper\uk\pcc\penalties\unauthorized-assistance.md
+- content/ro-helper\uk\rifle\penalties\burst-or-automatic-fire.md
+- content/ro-helper\uk\rifle\penalties\cooper-tunnel.md
+- content/ro-helper\uk\rifle\penalties\creeping.md
+- content/ro-helper\uk\rifle\penalties\failure-to-engage.md
+- content/ro-helper\uk\rifle\penalties\foot-fault.md
+- content/ro-helper\uk\rifle\penalties\forbidden-action.md
+- content/ro-helper\uk\rifle\penalties\mandatory-position.md
+- content/ro-helper\uk\rifle\penalties\mandatory-reload.md
+- content/ro-helper\uk\rifle\penalties\penalty-in-lieu.md
+- content/ro-helper\uk\rifle\penalties\procedural-cap.md
+- content/ro-helper\uk\rifle\penalties\procedural-fault.md
+- content/ro-helper\uk\rifle\penalties\re-engage-same-location.md
+- content/ro-helper\uk\rifle\penalties\sight-picture-fault.md
+- content/ro-helper\uk\rifle\penalties\significant-advantage.md
+- content/ro-helper\uk\rifle\penalties\unauthorized-assistance.md
+- content/ro-helper\uk\shotgun\penalties\cooper-tunnel.md
+- content/ro-helper\uk\shotgun\penalties\creeping.md
+- content/ro-helper\uk\shotgun\penalties\failure-to-engage.md
+- content/ro-helper\uk\shotgun\penalties\foot-fault.md
+- content/ro-helper\uk\shotgun\penalties\forbidden-action.md
+- content/ro-helper\uk\shotgun\penalties\mandatory-position.md
+- content/ro-helper\uk\shotgun\penalties\mandatory-reload.md
+- content/ro-helper\uk\shotgun\penalties\penalty-in-lieu.md
+- content/ro-helper\uk\shotgun\penalties\procedural-cap.md
+- content/ro-helper\uk\shotgun\penalties\procedural-fault.md
+- content/ro-helper\uk\shotgun\penalties\re-engage-same-location.md
+- content/ro-helper\uk\shotgun\penalties\sight-picture-fault.md
+- content/ro-helper\uk\shotgun\penalties\significant-advantage.md
+- content/ro-helper\uk\shotgun\penalties\unauthorized-assistance.md
+- content/ro-helper\uk\shotgun\penalties\wrong-ammo-shot.md
+
+## Skipped
+
+- content/ro-helper\en\handgun\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\handgun\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\handgun\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\handgun\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\handgun\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\en\handgun\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\mini_rifle\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\mini_rifle\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\external-safety-long-gun.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\mini_rifle\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\mini_rifle\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\mini_rifle\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\en\mini_rifle\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\pcc\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\pcc\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\external-safety-long-gun.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\pcc\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\pcc\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\pcc\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\en\pcc\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\rifle\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\rifle\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\external-safety-long-gun.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\rifle\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\rifle\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\rifle\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\en\rifle\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\shotgun\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\shotgun\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\external-safety-long-gun.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\shotgun\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\shotgun\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\en\shotgun\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\en\shotgun\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\handgun\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\handgun\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\handgun\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\handgun\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\uk\handgun\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\mini_rifle\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\mini_rifle\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\external-safety-long-gun.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\mini_rifle\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\mini_rifle\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\mini_rifle\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\uk\mini_rifle\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\pcc\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\pcc\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\external-safety-long-gun.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\pcc\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\pcc\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\pcc\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\uk\pcc\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\rifle\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\rifle\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\external-safety-long-gun.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\rifle\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\rifle\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\rifle\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\uk\rifle\safety\unsportsmanlike-conduct.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\penalties\walkthrough-interference.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\shotgun\safety\accidental-discharge.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\ammo-in-safety-area.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\shotgun\safety\break-180.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\dq-general.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\dropped-gun.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\external-safety-long-gun.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\shotgun\safety\metal-target-min-distance-dq.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\movement-and-trigger-safety.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\shotgun\safety\muzzle-at-person.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\prohibited-substances.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\range-safety-zones.md — no XI rule+url pair in fpsu_refs
+- content/ro-helper\uk\shotgun\safety\sweeping.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\trigger-finger.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\unauthorized-loading.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\unsafe-gun-handling.md — B1 only: safety deferred
+- content/ro-helper\uk\shotgun\safety\unsportsmanlike-conduct.md — B1 only: safety deferred

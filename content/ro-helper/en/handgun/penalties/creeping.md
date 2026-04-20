@@ -18,7 +18,7 @@ fpsu_refs:
   - rule: "IX §5"
     note: "Movement"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#5-%D1%80%D1%83%D1%85"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm

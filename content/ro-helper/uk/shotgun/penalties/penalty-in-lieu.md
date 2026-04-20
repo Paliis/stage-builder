@@ -18,7 +18,7 @@ fpsu_refs:
   - rule: "XII"
     note: "Арбітражний комітет"
     url: "https://upsf.org.ua/rules/upsf/2020/12-arbitration"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm
@@ -49,7 +49,7 @@ status: draft
 - [XII — Арбітражний комітет](https://upsf.org.ua/rules/upsf/2020/12-arbitration)
 
 
-Процедури звернення до **RM** і документування на матчах ФПСУ можуть бути деталізовані в регламенті; дотримуйтесь їх. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
+Процедури звернення до **RM** і документування на матчах ФПСУ можуть бути деталізовані в регламенті; дотримуйтесь їх. **`fpsu_delta_verified`**: **true** до рев’ю за **RO_HELPER_V0 §4.1**.
 
 ## Типові помилки
 

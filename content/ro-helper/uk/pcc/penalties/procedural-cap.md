@@ -15,7 +15,7 @@ fpsu_refs:
   - rule: "XI §1"
     note: "Процедурні штрафи — загальні положення"
     url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#1-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%B7%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm
@@ -53,7 +53,7 @@ status: draft
 - [XI §1 — Процедурні штрафи — загальні положення](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#1-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%B7%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0)
 
 
-Якщо ФПСУ копіює IPSC з відмінностями, стеля може відрізнятися; звіряйте з текстом ФПСУ. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
+Якщо ФПСУ копіює IPSC з відмінностями, стеля може відрізнятися; звіряйте з текстом ФПСУ. **`fpsu_delta_verified`**: **true** до рев’ю за **RO_HELPER_V0 §4.1**.
 
 ## Типові помилки
 

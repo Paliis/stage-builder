@@ -18,7 +18,7 @@ fpsu_refs:
   - rule: "IX §5"
     note: "Movement during the course of fire"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#5-%D1%80%D1%83%D1%85"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm
@@ -48,7 +48,7 @@ A **foot fault** is **out-of-area ground contact** or a **fault-line** breach du
 - [IX §5 — Movement during the course of fire](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#5-%D1%80%D1%83%D1%85)
 
 
-Clay / mixed practical layouts may use unusual fault geometry — **MD** diagram must align with **WSB**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+Clay / mixed practical layouts may use unusual fault geometry — **MD** diagram must align with **WSB**. **`fpsu_delta_verified`**: **true** until **RO_HELPER_V0 §4.1** review.
 
 ## Common mistakes
 

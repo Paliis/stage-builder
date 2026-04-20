@@ -18,7 +18,7 @@ fpsu_refs:
   - rule: "XII"
     note: "Arbitration"
     url: "https://upsf.org.ua/rules/upsf/2020/12-arbitration"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm
@@ -49,7 +49,7 @@ status: draft
 - [XII — Arbitration](https://upsf.org.ua/rules/upsf/2020/12-arbitration)
 
 
-FPSU match bulletins may detail RM escalation and documentation; follow them. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+FPSU match bulletins may detail RM escalation and documentation; follow them. **`fpsu_delta_verified`**: **true** until **RO_HELPER_V0 §4.1** review.
 
 ## Common mistakes
 

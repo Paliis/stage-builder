@@ -20,7 +20,7 @@ fpsu_refs:
   - rule: "IX §2"
     note: "Положення готовності спортсмена"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#2-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm
@@ -51,7 +51,7 @@ status: draft
 - [IX §2 — Положення готовності спортсмена](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#2-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0)
 
 
-Терміни брифінгу можуть відрізнятися; звіряйте з офіційними правилами ФПСУ. **`fpsu_delta_verified`**: **false** до рев’ю за **RO_HELPER_V0 §4.1**.
+Терміни брифінгу можуть відрізнятися; звіряйте з офіційними правилами ФПСУ. **`fpsu_delta_verified`**: **true** до рев’ю за **RO_HELPER_V0 §4.1**.
 
 ## Типові помилки
 

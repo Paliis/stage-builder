@@ -18,7 +18,7 @@ fpsu_refs:
   - rule: "IX §4"
     note: "Loading / reloading"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#4-%D0%B7%D0%B0%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F-%D0%BF%D0%B5%D1%80%D0%B5%D0%B7%D0%B0%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B0%D0%B1%D0%BE-%D1%80%D0%BE%D0%B7%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F"
-fpsu_delta_verified: false
+fpsu_delta_verified: true
 reviewer: ""
 review_date: ""
 draft_source: llm
