@@ -415,3 +415,11 @@
 | C439 | metal-procedure-violation | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.2**; Batch_23. |
 | C440 | metal-procedure-violation | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.2**; Batch_23. |
 | C441 | procedural-no-shoot | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4.4**; Batch_23. |
+| C442 | paper-target-specs | handgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **4.1**, **4.2**; Batch_25 Targets Restoration. |
+| C443 | steel-target-specs | handgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **4.1**, **4.2**; Batch_25. |
+| C444 | fragile-target-specs | shotgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **4.1**, **4.2**; Batch_25. |
+| C445 | target-presentation-mini-rifle | mini_rifle | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **4.1**, **4.2**; Batch_25. |
+| C446 | prematurely-patched-targets | handgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.1.3**; Batch_25. |
+| C447 | unpatched-targets-previous-shooter | rifle | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.1.4**; Batch_25. |
+| C448 | target-restoration-failure | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.1.3**, **9.1.4**; Batch_25. |
+| C449 | scoring-policy-summary | handgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **4.1**, **4.2**, **9.1.3**, **9.1.4**; Batch_25. |
