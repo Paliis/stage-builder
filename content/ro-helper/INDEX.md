@@ -494,3 +494,11 @@
 | C518 | rifle-major-minor-comparison | rifle | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**; Batch_36 (manifest C230). |
 | C519 | pcc-minor-threshold-scoring | pcc | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**; Batch_36 (manifest C231). |
 | C520 | restoration-moving-targets | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.1.3**, **Appendix B**; Batch_36 (manifest C183.1). |
+| C521 | coaching-outside-assistance | handgun | penalties | reviewed | draft | true | Gemini-Rules-2026 | **8.6.1**, **8.6.2**, **10.6**, **10.3**; Batch_37 Ethics Safety Strict v1.3 (manifest C129). |
+| C522 | unsportsmanlike-conduct | handgun | penalties | reviewed | draft | true | Gemini-Rules-2026 | **10.6**, **10.6.1**, **10.3**; Batch_37 (manifest C130). |
+| C523 | forbidden-substances-policy | handgun | safety | reviewed | draft | true | Gemini-Rules-2026 | **10.6.3**, **10.3**, **10.6**; Batch_37 (manifest C131). |
+| C524 | expulsion-from-match | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **10.6.2**, **10.6**, **10.3**; Batch_37 (manifest C132). |
+| C525 | verbal-abuse-dq | handgun | penalties | reviewed | draft | true | Gemini-Rules-2026 | **10.6.1**, **10.6**, **10.3**; Batch_37 (manifest C133). |
+| C526 | third-party-interference | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **8.6.2**, **8.6.4**, **10.6**, **10.3**; Batch_37 (manifest C303). |
+| C527 | dq-official-procedure | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **10.3**, **10.6**; Batch_37 (manifest C304). |
+| C528 | self-inflicted-injury | handgun | safety | reviewed | draft | true | Gemini-Rules-2026 | **10.3.3**, **10.3**, **10.6**; Batch_37 (manifest C127). |
