@@ -510,3 +510,12 @@
 | C534 | stats-office-closing | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.10**, **7.1**; Batch_38 Zero Error (manifest C314). |
 | C535 | match-disassembly-safety | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **7.1**, **9.10**; Batch_38 (manifest C315). |
 | C536 | ro-self-audit-end-of-match | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **7.1**, **6.1.2**, **9.10**; Batch_38 + IROA (manifest C316). |
+| C537 | stage-ready-checklist-30s | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **8.3.1**, **10.5**; Batch_39 Final Matrix (manifest C317). |
+| C538 | timer-echo-handling | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.10**, **8.3.1**; Batch_39 (manifest C318). |
+| C539 | mini-rifle-bolt-safety | mini_rifle | safety | reviewed | draft | true | Gemini-Rules-2026 | **10.5**, **10.5.1**, **8.3.1**; Batch_39 (manifest C319). |
+| C540 | shotgun-loading-volume-penalty | shotgun | penalties | reviewed | draft | true | Gemini-Rules-2026 | **10.5**, **8.3.1**, **9.10**; Batch_39 (manifest C320). |
+| C541 | managing-restoration-errors | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **8.3.1**, **10.5**, **9.10**; Batch_39 (manifest C321). |
+| C542 | final-division-verification-closing | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.10**, **10.5**; Batch_39 (manifest C322). |
+| C543 | ro-debrief-post-match | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.10**, **8.3.1**, **10.5**; Batch_39 + IROA Ethics (manifest C323). |
+| C544 | emergency-stage-modification-protocol | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **10.5**, **8.3.1**, **9.10**; Batch_39 (manifest C324). |
+| C545 | final-ro-ethics-summary | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **10.5**, **8.3.1**, **9.10**; Batch_39 closing + IROA Ethics (manifest C325). |
