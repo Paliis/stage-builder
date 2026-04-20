@@ -344,3 +344,11 @@
 | C367 | handguards-grips-pcc | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_14 Rifle/PCC. |
 | C368 | manual-rifle-ready-conditions | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.1.1**; Batch_14 Rifle/PCC. |
 | C369 | semi-auto-rifle-ready-conditions | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.1.1**; Batch_14 Rifle/PCC. |
+| C370 | open-division-specs | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D1**; Batch_15 Handgun Divisions. |
+| C371 | standard-division-specs | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D2**, **5.2.7**; Batch_15. |
+| C372 | production-division-specs | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D4**; Batch_15. |
+| C373 | classic-division-specs | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D3**; Batch_15. |
+| C374 | revolver-division-specs | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D5**; Batch_15. |
+| C375 | production-optics-specs | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D4a**; Batch_15. |
+| C376 | classic-magazine-constraints | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D3**; Batch_15. |
+| C377 | equipment-position-check | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.2.7**; Batch_15. |
