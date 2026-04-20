@@ -442,3 +442,11 @@
 | C466 | premature-handling-loading | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_28 (manifest C96). |
 | C467 | unauthorized-unloading | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_28 (manifest C97). |
 | C468 | failure-to-clear-malfunction | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_28 (manifest C98). |
+| C469 | lighting-changes | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.1.1**; Batch_29 Environment (manifest C295, was 2.1.2). |
+| C470 | weather-conditions-impact | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.1.1**; Batch_29 (manifest C296). |
+| C471 | loss-of-eye-protection | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **5.4.4**; Batch_29 (manifest C297). |
+| C472 | loss-of-ear-protection | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **5.4.4**; Batch_29 (manifest C298). |
+| C473 | working-with-helpers | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **7.1.9**; Batch_29 (manifest C299). |
+| C474 | stage-surface-maintenance | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.1.5**; Batch_29 (manifest C300). |
+| C475 | ro-personal-safety | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.1.5**; Batch_29 (manifest C301, was 7.1.1). |
+| C476 | spectator-crowd-control | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.1.1**; Batch_29 (manifest C302, was 2.1.9). |
