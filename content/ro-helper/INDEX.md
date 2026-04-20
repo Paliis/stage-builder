@@ -391,3 +391,11 @@
 | C415 | detachable-magazines-shotgun | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D4**, **5.2.3**, **8.1.5**; Batch_20. |
 | C416 | unauthorized-loading-shotgun | shotgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.11**; Batch_20. |
 | C417 | ammunition-compliance | shotgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **5.5**, **10.5.16**; Batch_20. |
+| C418 | pcc-electronic-sights | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.10**, **Appendix D**; Batch_21 Rifle Specs. |
+| C419 | muzzle-devices-rifle | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_21. |
+| C420 | rifle-magazine-standard | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_21. |
+| C421 | mini-rifle-equipment | mini_rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_21. |
+| C422 | manual-action-rifle-specs | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_21. |
+| C423 | rifle-open-specs | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **5.1.3**, **5.1.10**; Batch_21. |
+| C424 | rifle-standard-specs | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **5.1.3**, **5.1.10**; Batch_21. |
+| C425 | pcc-ready-position-specifics | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_21. |
