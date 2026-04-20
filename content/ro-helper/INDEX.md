@@ -317,7 +317,7 @@
 | C336 | sweeping | rifle | safety | draft | draft | false | — | **10.5.5** (Rifle); підтвердити номер у PDF Jan 2026 (якір HG). |
 | C337 | sweeping | mini_rifle | safety | draft | draft | false | — | **10.5.5** (Mini Rifle); підтвердити номер у PDF Jan 2026 (якір HG). |
 | C338 | sweeping | shotgun | safety | draft | draft | false | — | **10.5.5** (Shotgun); підтвердити номер у PDF Jan 2026 (якір HG). |
-| C339 | muzzle-at-person | handgun | safety | draft | draft | false | — | **10.5.6** (Handgun); наведення на людину — рев’ю з PDF Jan 2026. |
+| C398 | muzzle-at-person | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_18 Safety SA Strict v1.3. |
 | C340 | muzzle-at-person | pcc | safety | draft | draft | false | — | **10.5.6** (PCC); підтвердити в PDF Jan 2026 (якір HG). |
 | C341 | muzzle-at-person | rifle | safety | draft | draft | false | — | **10.5.6** (Rifle); підтвердити в PDF Jan 2026 (якір HG). |
 | C342 | muzzle-at-person | mini_rifle | safety | draft | draft | false | — | **10.5.6** (Mini Rifle); підтвердити в PDF Jan 2026 (якір HG). |
@@ -368,3 +368,10 @@
 | C391 | shotgun-modified-specs | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_17. |
 | C392 | handgun-flashlight-laser | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_17. |
 | C393 | magazine-as-support | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**; Batch_17. |
+| C394 | loaded-gun-in-sa | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.12**; Batch_18 Safety SA. |
+| C395 | loaded-gun-in-sa-rifle | rifle | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.12**; Batch_18. |
+| C396 | loaded-gun-sa-pcc | pcc | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.12**; Batch_18. |
+| C397 | muzzle-beyond-1m | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.2**; Batch_18. |
+| C399 | gun-not-clear | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_18. |
+| C400 | unsafe-holster-state | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**, **10.5.2**; Batch_18. |
+| C401 | unauthorized-gun-handling | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_18. |
