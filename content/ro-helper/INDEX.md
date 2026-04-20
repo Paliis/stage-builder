@@ -502,3 +502,11 @@
 | C526 | third-party-interference | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **8.6.2**, **8.6.4**, **10.6**, **10.3**; Batch_37 (manifest C303). |
 | C527 | dq-official-procedure | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **10.3**, **10.6**; Batch_37 (manifest C304). |
 | C528 | self-inflicted-injury | handgun | safety | reviewed | draft | true | Gemini-Rules-2026 | **10.3.3**, **10.3**, **10.6**; Batch_37 (manifest C127). |
+| C529 | level-4-5-protocols | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **6.1.2**, **7.1**, **9.10**; Batch_38 Professional Procedures Strict v1.3 + IROA (manifest C309). |
+| C530 | iroa-official-conduct | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **7.1**, **6.1.2**, **9.10**; Batch_38 + IROA (manifest C310). |
+| C531 | media-press-safety-protocol | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **7.1**, **6.1.2**, **9.10**; Batch_38 (manifest C311). |
+| C532 | vip-guest-management | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **7.1**, **6.1.2**, **9.10**; Batch_38 (manifest C312). |
+| C533 | final-results-verification | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.10**, **7.1**; Batch_38 (manifest C313). |
+| C534 | stats-office-closing | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.10**, **7.1**; Batch_38 Zero Error (manifest C314). |
+| C535 | match-disassembly-safety | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **7.1**, **9.10**; Batch_38 (manifest C315). |
+| C536 | ro-self-audit-end-of-match | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **7.1**, **6.1.2**, **9.10**; Batch_38 + IROA (manifest C316). |
