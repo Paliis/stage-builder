@@ -450,3 +450,11 @@
 | C474 | stage-surface-maintenance | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.1.5**; Batch_29 (manifest C300). |
 | C475 | ro-personal-safety | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.1.5**; Batch_29 (manifest C301, was 7.1.1). |
 | C476 | spectator-crowd-control | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.1.1**; Batch_29 (manifest C302, was 2.1.9). |
+| C477 | magazine-couplers-extensions | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 Shotgun Deep (manifest C214). |
+| C478 | chokes-muzzle-devices | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.4**, **Appendix D**; Batch_30 (manifest C253). |
+| C479 | shotgun-ergonomics-stocks | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C254). |
+| C480 | standard-division-deep | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C256). |
+| C481 | standard-manual-deep | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C257). |
+| C482 | modified-division-deep | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C258). |
+| C483 | open-division-deep | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C259). |
+| C484 | shotgun-speed-loaders | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C261). |
