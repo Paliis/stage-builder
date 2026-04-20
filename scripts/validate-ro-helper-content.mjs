@@ -119,15 +119,22 @@ async function main() {
     });
   }
 
+  /** Every matrix row must have UK; EN is optional until translated. */
   const expectedRel = new Set();
   for (const row of expected) {
-    for (const loc of ["uk", "en"]) {
-      expectedRel.add(`${loc}/${row.discipline}/${row.category}/${row.slug}.md`);
-    }
+    expectedRel.add(`uk/${row.discipline}/${row.category}/${row.slug}.md`);
+    expectedRel.add(`en/${row.discipline}/${row.category}/${row.slug}.md`);
   }
 
   for (const row of expected) {
-    for (const loc of ["uk", "en"]) {
+    const ukRel = `uk/${row.discipline}/${row.category}/${row.slug}.md`;
+    const enRel = `en/${row.discipline}/${row.category}/${row.slug}.md`;
+    const enAbs = join(roRoot, ...enRel.split("/"));
+    const locales = ["uk"];
+    if (existsSync(enAbs)) locales.push("en");
+    else warnings.push(`Missing EN (optional): content/ro-helper/${enRel} (${row.card_id})`);
+
+    for (const loc of locales) {
       const rel = `${loc}/${row.discipline}/${row.category}/${row.slug}.md`;
       const abs = join(roRoot, ...rel.split("/"));
       if (!existsSync(abs)) {
@@ -192,7 +199,7 @@ async function main() {
     }
   }
 
-  console.log(`Matrix rows: ${dataRows.length} → expected article files: ${expected.length * 2}`);
+  console.log(`Matrix rows: ${dataRows.length} → UK required: ${expected.length} (+ EN when present)`);
   console.log(`Errors: ${errors.length}, Warnings: ${warnings.length}`);
 
   for (const w of warnings) console.warn("WARN:", w);

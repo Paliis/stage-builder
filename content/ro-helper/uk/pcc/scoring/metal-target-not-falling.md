@@ -1,5 +1,5 @@
 ---
-card_id: C197
+card_id: C552
 slug: metal-target-not-falling
 discipline: pcc
 locale: uk

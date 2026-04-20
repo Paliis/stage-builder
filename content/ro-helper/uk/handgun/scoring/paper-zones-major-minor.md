@@ -1,5 +1,5 @@
 ---
-card_id: C165
+card_id: C180
 slug: paper-zones-major-minor
 discipline: handgun
 locale: uk

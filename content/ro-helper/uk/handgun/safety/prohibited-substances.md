@@ -1,5 +1,5 @@
 ---
-card_id: C132
+card_id: C135
 slug: prohibited-substances
 discipline: handgun
 locale: uk

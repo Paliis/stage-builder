@@ -1,5 +1,5 @@
 ---
-card_id: C516
+card_id: C210
 slug: disappearing-targets-scoring
 discipline: handgun
 locale: uk

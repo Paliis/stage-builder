@@ -1,5 +1,5 @@
 ---
-card_id: C195
+card_id: C551
 slug: metal-target-not-falling
 discipline: handgun
 locale: uk

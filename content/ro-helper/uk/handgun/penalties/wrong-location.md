@@ -1,5 +1,5 @@
 ---
-card_id: C58
+card_id: C548
 slug: wrong-location
 discipline: handgun
 locale: uk

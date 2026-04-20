@@ -1,5 +1,5 @@
 ---
-card_id: C185
+card_id: C215
 slug: official-time
 discipline: handgun
 locale: uk

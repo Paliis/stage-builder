@@ -1,5 +1,5 @@
 ---
-card_id: C191
+card_id: C326
 slug: popper-calibration
 discipline: rifle
 locale: uk

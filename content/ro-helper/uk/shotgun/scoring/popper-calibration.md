@@ -1,5 +1,5 @@
 ---
-card_id: C194
+card_id: C328
 slug: popper-calibration
 discipline: shotgun
 locale: uk

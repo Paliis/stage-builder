@@ -1,5 +1,5 @@
 ---
-card_id: C125
+card_id: C334
 slug: sweeping
 discipline: handgun
 locale: uk

@@ -1,5 +1,5 @@
 ---
-card_id: C71
+card_id: C77
 slug: procedural-cap
 discipline: handgun
 locale: uk

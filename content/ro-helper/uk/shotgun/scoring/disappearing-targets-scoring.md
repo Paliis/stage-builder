@@ -1,5 +1,5 @@
 ---
-card_id: C184
+card_id: C214
 slug: disappearing-targets-scoring
 discipline: shotgun
 locale: uk

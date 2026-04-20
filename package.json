@@ -18,6 +18,8 @@
     "ro-helper:apply-fixes": "node scripts/ro-helper-apply-fixes.mjs",
     "ro-helper:inject-fpsu-refs": "node scripts/inject-ro-helper-fpsu-refs.mjs",
     "ro-helper:validate": "node scripts/validate-ro-helper-content.mjs",
+    "ro-helper:sync-matrix": "node scripts/sync-ro-helper-matrix-from-index.mjs",
+    "ro-helper:sync-card-ids": "node scripts/sync-ro-helper-frontmatter-card-id.mjs",
     "sitemap:generate": "node scripts/generate-sitemap.mjs"
   },
   "dependencies": {

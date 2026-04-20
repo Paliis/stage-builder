@@ -1,5 +1,5 @@
 ---
-card_id: C182
+card_id: C211
 slug: disappearing-targets-scoring
 discipline: pcc
 locale: uk

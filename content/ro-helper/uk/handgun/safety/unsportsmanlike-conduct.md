@@ -1,5 +1,5 @@
 ---
-card_id: C131
+card_id: C140
 slug: unsportsmanlike-conduct
 discipline: handgun
 locale: uk

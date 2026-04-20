@@ -1,5 +1,5 @@
 ---
-card_id: C175
+card_id: C185
 slug: radial-tears-enlarged-holes
 discipline: handgun
 locale: uk

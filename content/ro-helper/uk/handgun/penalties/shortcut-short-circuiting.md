@@ -1,5 +1,5 @@
 ---
-card_id: C61
+card_id: C546
 slug: shortcut-short-circuiting
 discipline: handgun
 locale: uk

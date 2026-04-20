@@ -1,5 +1,5 @@
 ---
-card_id: C196
+card_id: C553
 slug: metal-target-not-falling
 discipline: rifle
 locale: uk

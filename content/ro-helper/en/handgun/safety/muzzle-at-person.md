@@ -1,6 +1,6 @@
 ---
 title: "Pointing muzzle at a person"
-card_id: "C339"
+card_id: C398
 slug: "muzzle-at-person"
 category: safety
 locale: en

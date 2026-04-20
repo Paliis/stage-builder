@@ -1,5 +1,5 @@
 ---
-card_id: C181
+card_id: C212
 slug: disappearing-targets-scoring
 discipline: rifle
 locale: uk

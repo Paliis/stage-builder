@@ -1,5 +1,5 @@
 ---
-card_id: C33
+card_id: C32
 slug: foot-fault
 discipline: rifle
 locale: uk

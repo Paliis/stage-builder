@@ -1,5 +1,5 @@
 ---
-card_id: C72
+card_id: C79
 slug: procedural-cap
 discipline: rifle
 locale: uk

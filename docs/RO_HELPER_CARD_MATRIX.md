@@ -6,7 +6,19 @@
 
 **Машиночитана матриця:** [RO_HELPER_CARD_MATRIX.csv](./RO_HELPER_CARD_MATRIX.csv) (UTF-8 BOM для Excel).
 
-**Регенерація після зміни slug/складу тем:**
+**Синхронізація CSV з поточним `content/ro-helper/INDEX.md` (рекомендовано після батчів карток):**
+
+```bash
+node scripts/sync-ro-helper-matrix-from-index.mjs
+```
+
+Потім вирівняти `card_id` у frontmatter UK/EN під INDEX:
+
+```bash
+node scripts/sync-ro-helper-frontmatter-card-id.mjs
+```
+
+**Регенерація «скелета» матриці з Python (історичний шлях; може розійтися з INDEX):**
 
 ```bash
 python scripts/gen_ro_helper_matrix.py

@@ -1,5 +1,5 @@
 ---
-card_id: C156
+card_id: C157
 slug: approaching-touching-targets
 discipline: rifle
 locale: uk

@@ -1,5 +1,5 @@
 ---
-card_id: C62
+card_id: C547
 slug: shortcut-short-circuiting
 discipline: rifle
 locale: uk

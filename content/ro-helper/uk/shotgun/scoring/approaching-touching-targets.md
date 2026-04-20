@@ -1,5 +1,5 @@
 ---
-card_id: C160
+card_id: C159
 slug: approaching-touching-targets
 discipline: shotgun
 locale: uk

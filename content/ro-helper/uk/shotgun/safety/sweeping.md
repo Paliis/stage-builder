@@ -1,5 +1,5 @@
 ---
-card_id: C129
+card_id: C338
 slug: sweeping
 discipline: shotgun
 locale: uk

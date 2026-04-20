@@ -1,324 +1,525 @@
-﻿card_id,slug,discipline,category,label_en,label_uk,ipsc_anchor_hint,fpsu_section_hint,status_uk,status_en,notes
-C26,procedural-fault,handgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo
-C27,procedural-fault,rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
-C28,procedural-fault,pcc,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C29,procedural-fault,mini_rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
-C30,procedural-fault,shotgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
-C31,foot-fault,handgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C32,foot-fault,rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
-C33,foot-fault,pcc,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C34,foot-fault,mini_rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
-C35,foot-fault,shotgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
-C36,failure-to-engage,handgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C37,failure-to-engage,rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
-C38,failure-to-engage,pcc,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C39,failure-to-engage,mini_rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
-C40,failure-to-engage,shotgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
-C41,significant-advantage,handgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C42,significant-advantage,rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
-C43,significant-advantage,pcc,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C44,significant-advantage,mini_rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
-C45,significant-advantage,shotgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
-C46,creeping,handgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C47,creeping,rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
-C48,creeping,pcc,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C49,creeping,mini_rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C50,creeping,shotgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C51,mandatory-reload,handgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C52,mandatory-reload,rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C53,mandatory-reload,pcc,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C54,mandatory-reload,mini_rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C55,mandatory-reload,shotgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C56,mandatory-position,handgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C57,mandatory-position,rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C58,mandatory-position,pcc,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C59,mandatory-position,mini_rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C60,mandatory-position,shotgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C61,unauthorized-assistance,handgun,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C62,unauthorized-assistance,rifle,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C63,unauthorized-assistance,pcc,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C64,unauthorized-assistance,mini_rifle,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C65,unauthorized-assistance,shotgun,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C66,sight-picture-fault,handgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C67,sight-picture-fault,rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C68,sight-picture-fault,pcc,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C69,sight-picture-fault,mini_rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C70,sight-picture-fault,shotgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C71,forbidden-action,handgun,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C72,forbidden-action,rifle,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C73,forbidden-action,pcc,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C74,forbidden-action,mini_rifle,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C75,forbidden-action,shotgun,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C76,wrong-ammo-shot,shotgun,penalties,Wrong ammunition type (shotgun),Неправильний тип набою (дробовик),10.2.12 SG only,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; shotgun only
-C77,procedural-cap,handgun,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C78,procedural-cap,pcc,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C79,procedural-cap,rifle,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C80,procedural-cap,mini_rifle,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C81,procedural-cap,shotgun,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C82,cooper-tunnel,handgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C83,cooper-tunnel,pcc,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C84,cooper-tunnel,rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C85,cooper-tunnel,mini_rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C86,cooper-tunnel,shotgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C87,penalty-in-lieu,handgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C88,penalty-in-lieu,pcc,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C89,penalty-in-lieu,rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C90,penalty-in-lieu,mini_rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C91,penalty-in-lieu,shotgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C92,re-engage-same-location,handgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C93,re-engage-same-location,pcc,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C94,re-engage-same-location,rifle,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C95,re-engage-same-location,mini_rifle,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C96,re-engage-same-location,shotgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C97,walkthrough-interference,handgun,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C98,walkthrough-interference,pcc,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C99,walkthrough-interference,rifle,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C100,walkthrough-interference,mini_rifle,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C101,walkthrough-interference,shotgun,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C102,burst-or-automatic-fire,pcc,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; pcc/rifle/mini_rifle only; 10.2.12
-C103,burst-or-automatic-fire,rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; pcc/rifle/mini_rifle only; 10.2.12
-C104,burst-or-automatic-fire,mini_rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; pcc/rifle/mini_rifle only; 10.2.12
-C105,break-180,handgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C106,break-180,pcc,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C107,break-180,rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C108,break-180,mini_rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C109,break-180,shotgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C110,accidental-discharge,handgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C111,accidental-discharge,pcc,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C112,accidental-discharge,rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C113,accidental-discharge,mini_rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C114,accidental-discharge,shotgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C115,trigger-finger,handgun,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C116,trigger-finger,pcc,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; confirm Ch.10.5 numbering per discipline
-C117,trigger-finger,rifle,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; confirm Ch.10.5 numbering per discipline
-C118,trigger-finger,mini_rifle,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; confirm Ch.10.5 numbering per discipline
-C119,trigger-finger,shotgun,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; confirm Ch.10.5 numbering per discipline
-C120,dropped-gun,handgun,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C121,dropped-gun,pcc,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C122,dropped-gun,rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C123,dropped-gun,mini_rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C124,dropped-gun,shotgun,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C125,unsafe-gun-handling,handgun,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C126,unsafe-gun-handling,pcc,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C127,unsafe-gun-handling,rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C128,unsafe-gun-handling,mini_rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C129,unsafe-gun-handling,shotgun,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C130,dq-general,handgun,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C131,dq-general,pcc,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C132,dq-general,rifle,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C133,dq-general,mini_rifle,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C134,dq-general,shotgun,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C135,prohibited-substances,handgun,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C136,prohibited-substances,pcc,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C137,prohibited-substances,rifle,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C138,prohibited-substances,mini_rifle,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C139,prohibited-substances,shotgun,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C140,unsportsmanlike-conduct,handgun,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C141,unsportsmanlike-conduct,pcc,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C142,unsportsmanlike-conduct,rifle,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C143,unsportsmanlike-conduct,mini_rifle,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C144,unsportsmanlike-conduct,shotgun,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C145,range-safety-zones,handgun,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C146,range-safety-zones,pcc,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C147,range-safety-zones,rifle,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C148,range-safety-zones,mini_rifle,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C149,range-safety-zones,shotgun,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C150,movement-and-trigger-safety,handgun,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C151,movement-and-trigger-safety,pcc,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C152,movement-and-trigger-safety,rifle,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C153,movement-and-trigger-safety,mini_rifle,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C154,movement-and-trigger-safety,shotgun,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C155,approaching-touching-targets,handgun,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C156,approaching-touching-targets,pcc,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C157,approaching-touching-targets,rifle,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C158,approaching-touching-targets,mini_rifle,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C159,approaching-touching-targets,shotgun,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C160,scoring-methods,handgun,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C161,scoring-methods,pcc,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C162,scoring-methods,rifle,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C163,scoring-methods,mini_rifle,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C164,scoring-methods,shotgun,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C165,scoring-ties,handgun,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C166,scoring-ties,pcc,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C167,scoring-ties,rifle,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C168,scoring-ties,mini_rifle,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C169,scoring-ties,shotgun,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C170,hits-misses-noshoot-values,handgun,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C171,hits-misses-noshoot-values,pcc,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C172,hits-misses-noshoot-values,rifle,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C173,hits-misses-noshoot-values,mini_rifle,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C174,hits-misses-noshoot-values,shotgun,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C175,paper-scoring-policy,handgun,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C176,paper-scoring-policy,pcc,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C177,paper-scoring-policy,rifle,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C178,paper-scoring-policy,mini_rifle,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C179,paper-scoring-policy,shotgun,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C180,paper-zones-major-minor,handgun,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C181,paper-zones-major-minor,pcc,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C182,paper-zones-major-minor,rifle,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C183,paper-zones-major-minor,mini_rifle,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C184,paper-zones-major-minor,shotgun,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C185,radial-tears-enlarged-holes,handgun,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C186,radial-tears-enlarged-holes,pcc,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C187,radial-tears-enlarged-holes,rifle,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C188,radial-tears-enlarged-holes,mini_rifle,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C189,radial-tears-enlarged-holes,shotgun,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C190,fte-scoring-side,handgun,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C191,fte-scoring-side,pcc,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C192,fte-scoring-side,rifle,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C193,fte-scoring-side,mini_rifle,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C194,fte-scoring-side,shotgun,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C195,score-verification-challenge,handgun,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C196,score-verification-challenge,pcc,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C197,score-verification-challenge,rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C198,score-verification-challenge,mini_rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C199,score-verification-challenge,shotgun,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C200,score-sheets-corrections,handgun,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C201,score-sheets-corrections,pcc,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C202,score-sheets-corrections,rifle,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C203,score-sheets-corrections,mini_rifle,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C204,score-sheets-corrections,shotgun,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C205,provisional-results-stats-appeal,handgun,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C206,provisional-results-stats-appeal,pcc,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C207,provisional-results-stats-appeal,rifle,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C208,provisional-results-stats-appeal,mini_rifle,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C209,provisional-results-stats-appeal,shotgun,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C210,disappearing-targets-scoring,handgun,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026; HG: 9.9.2 vs activator
-C211,disappearing-targets-scoring,pcc,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (HG: 9.9.2 vs activator; інші дисципліни — звірити PDF)
-C212,disappearing-targets-scoring,rifle,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (HG: 9.9.2 vs activator; інші дисципліни — звірити PDF)
-C213,disappearing-targets-scoring,mini_rifle,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (HG: 9.9.2 vs activator; інші дисципліни — звірити PDF)
-C214,disappearing-targets-scoring,shotgun,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (HG: 9.9.2 vs activator; інші дисципліни — звірити PDF)
-C215,official-time,handgun,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C216,official-time,pcc,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C217,official-time,rifle,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C218,official-time,mini_rifle,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C219,official-time,shotgun,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C220,scoring-programs,handgun,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C221,scoring-programs,pcc,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C222,scoring-programs,rifle,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C223,scoring-programs,mini_rifle,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C224,scoring-programs,shotgun,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C225,division-overview,handgun,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C226,division-overview,pcc,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C227,division-overview,rifle,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C228,division-overview,mini_rifle,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C229,division-overview,shotgun,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C230,ready-conditions,handgun,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C231,ready-conditions,pcc,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C232,ready-conditions,rifle,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C233,ready-conditions,mini_rifle,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C234,ready-conditions,shotgun,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C235,holster-or-carry-long-gun,handgun,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C236,holster-or-carry-long-gun,pcc,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C237,holster-or-carry-long-gun,rifle,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C238,holster-or-carry-long-gun,mini_rifle,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C239,holster-or-carry-long-gun,shotgun,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C240,firearms-and-ammunition-rules,handgun,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C241,firearms-and-ammunition-rules,pcc,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C242,firearms-and-ammunition-rules,rifle,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C243,firearms-and-ammunition-rules,mini_rifle,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C244,firearms-and-ammunition-rules,shotgun,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C245,chronograph-and-power-factor,handgun,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C246,chronograph-and-power-factor,pcc,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C247,chronograph-and-power-factor,rifle,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C248,chronograph-and-power-factor,mini_rifle,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C249,chronograph-and-power-factor,shotgun,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C250,magazines-and-loading-devices,handgun,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C251,magazines-and-loading-devices,pcc,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C252,magazines-and-loading-devices,rifle,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C253,magazines-and-loading-devices,mini_rifle,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C254,magazines-and-loading-devices,shotgun,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C255,eye-and-ear-protection,handgun,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C256,eye-and-ear-protection,pcc,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C257,eye-and-ear-protection,rifle,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C258,eye-and-ear-protection,mini_rifle,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C259,eye-and-ear-protection,shotgun,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C260,athlete-clothing,handgun,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C261,athlete-clothing,pcc,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C262,athlete-clothing,rifle,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C263,athlete-clothing,mini_rifle,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C264,athlete-clothing,shotgun,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C265,equipment-malfunction,handgun,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C266,equipment-malfunction,pcc,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C267,equipment-malfunction,rifle,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C268,equipment-malfunction,mini_rifle,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C269,equipment-malfunction,shotgun,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C270,written-stage-briefing,handgun,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C271,written-stage-briefing,pcc,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C272,written-stage-briefing,rifle,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C273,written-stage-briefing,mini_rifle,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C274,written-stage-briefing,shotgun,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C275,local-regional-rules,handgun,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C276,local-regional-rules,pcc,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C277,local-regional-rules,rifle,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C278,local-regional-rules,mini_rifle,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C279,local-regional-rules,shotgun,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C280,match-structure-and-categories,handgun,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C281,match-structure-and-categories,pcc,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C282,match-structure-and-categories,rifle,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C283,match-structure-and-categories,mini_rifle,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C284,match-structure-and-categories,shotgun,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C285,md-ro-roles,handgun,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C286,md-ro-roles,pcc,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C287,md-ro-roles,rifle,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C288,md-ro-roles,mini_rifle,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C289,md-ro-roles,shotgun,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C290,protests-arbitration,handgun,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C291,protests-arbitration,pcc,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C292,protests-arbitration,rifle,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C293,protests-arbitration,mini_rifle,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C294,protests-arbitration,shotgun,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C295,miscellaneous-matters,handgun,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C296,miscellaneous-matters,pcc,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C297,miscellaneous-matters,rifle,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C298,miscellaneous-matters,mini_rifle,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C299,miscellaneous-matters,shotgun,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C300,reshoots,handgun,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C301,reshoots,pcc,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C302,reshoots,rifle,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C303,reshoots,mini_rifle,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C304,reshoots,shotgun,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C305,course-design-safety-balance,handgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C306,course-design-safety-balance,pcc,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C307,course-design-safety-balance,rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C308,course-design-safety-balance,mini_rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C309,course-design-safety-balance,shotgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C310,metal-target-min-distance-dq,handgun,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (HG Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C311,metal-target-min-distance-dq,pcc,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (PCC Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C312,metal-target-min-distance-dq,rifle,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (Rifle Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C313,metal-target-min-distance-dq,mini_rifle,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (Mini Rifle Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C314,metal-target-min-distance-dq,shotgun,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (Shotgun Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C315,ammo-in-safety-area,handgun,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C316,ammo-in-safety-area,pcc,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC primary_url)
-C317,ammo-in-safety-area,rifle,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle primary_url)
-C318,ammo-in-safety-area,mini_rifle,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle primary_url)
-C319,ammo-in-safety-area,shotgun,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun primary_url)
-C320,external-safety-long-gun,pcc,safety,External safety during movement (long gun),Зовнішній запобіжник під час руху (long gun),10.5.11 (long gun — external safety / movement); verify PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (PCC); HG 10.5.11 інший зміст
-C321,external-safety-long-gun,rifle,safety,External safety during movement (long gun),Зовнішній запобіжник під час руху (long gun),10.5.11 (long gun — external safety / movement); verify PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Rifle); HG 10.5.11 інший зміст
-C322,external-safety-long-gun,mini_rifle,safety,External safety during movement (long gun),Зовнішній запобіжник під час руху (long gun),10.5.11 (long gun — external safety / movement); verify PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Mini Rifle); HG 10.5.11 інший зміст
-C323,external-safety-long-gun,shotgun,safety,External safety during movement (long gun),Зовнішній запобіжник під час руху (long gun),10.5.11 (long gun — external safety / movement); verify PDF,II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (Shotgun); HG 10.5.11 інший зміст
-C324,popper-calibration,handgun,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C325,popper-calibration,pcc,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm appendix in PCC PDF)
-C326,popper-calibration,rifle,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm appendix in Rifle PDF)
-C327,popper-calibration,mini_rifle,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm appendix in Mini Rifle PDF)
-C328,popper-calibration,shotgun,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm appendix in Shotgun PDF)
-C329,trigger-pull-check,handgun,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm D4 §6 / kg in PDF)
-C330,trigger-pull-check,pcc,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm appendix values in PCC PDF)
-C331,trigger-pull-check,rifle,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm appendix values in Rifle PDF)
-C332,trigger-pull-check,mini_rifle,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm appendix values in Mini Rifle PDF)
-C333,trigger-pull-check,shotgun,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026 (confirm Shotgun appendix / release rules)
-C334,sweeping,handgun,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),"10.5.5; 10.5.5.1 (HG holster exception — verify PDF)",II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C335,sweeping,pcc,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5 (verify PCC Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C336,sweeping,rifle,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5 (verify Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C337,sweeping,mini_rifle,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5 (verify Mini Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C338,sweeping,shotgun,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5 (verify Shotgun Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C339,muzzle-at-person,handgun,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (HG Jan 2026 — verify PDF),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C340,muzzle-at-person,pcc,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (verify PCC Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C341,muzzle-at-person,rifle,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (verify Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C342,muzzle-at-person,mini_rifle,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (verify Mini Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C343,muzzle-at-person,shotgun,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (verify Shotgun Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C344,unauthorized-loading,handgun,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (HG Jan 2026 — verify PDF),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C345,unauthorized-loading,pcc,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (verify PCC Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C346,unauthorized-loading,rifle,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (verify Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C347,unauthorized-loading,mini_rifle,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (verify Mini Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
-C348,unauthorized-loading,shotgun,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (verify Shotgun Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,Markdown UK+EN у repo — рев’ю з PDF Jan 2026
+card_id,slug,discipline,category,label_en,label_uk,ipsc_anchor_hint,fpsu_section_hint,status_uk,status_en,notes
+C26,procedural-fault,handgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,HG **10.1** (+10.1.1–10.1.2); control hint −10 pts/procedural — verify PDF; pin `primary_url` to Handgun PDF when registered.
+C27,procedural-fault,rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.1** (Rifle); очки за procedural — звірити з PDF Jan 2026.
+C28,procedural-fault,pcc,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.1** (PCC); очки за procedural — звірити з PDF Jan 2026.
+C29,procedural-fault,mini_rifle,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.1** (Mini Rifle); очки за procedural — звірити з PDF Jan 2026.
+C30,procedural-fault,shotgun,penalties,Procedural penalties (general),Процедурні штрафи (загальні),10.1 (HG); verify per PDF,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.1** (Shotgun); очки за procedural — звірити з PDF Jan 2026.
+C31,foot-fault,handgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,HG **10.2.1** (+10.2.1.1); LLM чернетка — рев’ю з PDF Jan 2026.
+C32,foot-fault,rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.1** (+10.2.1.1) Rifle; звірити з PDF Jan 2026.
+C33,foot-fault,pcc,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.1** (+10.2.1.1) PCC; звірити з PDF Jan 2026.
+C34,foot-fault,mini_rifle,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.1** (+10.2.1.1) Mini Rifle; звірити з PDF Jan 2026.
+C35,foot-fault,shotgun,penalties,Foot fault / fault line,Заступ / лінія заступу,10.2.1 (+10.2.1.1 HG),XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.1** (+10.2.1.1) Shotgun; звірити з PDF Jan 2026.
+C36,failure-to-engage,handgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,**9.5.6** + **10.2.7**; залік і штраф звіряти разом у PDF.
+C37,failure-to-engage,rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,**9.5.6** + **10.2.7** (Rifle); залік і штраф разом з PDF.
+C38,failure-to-engage,pcc,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,**9.5.6** + **10.2.7** (PCC); залік і штраф разом з PDF.
+C39,failure-to-engage,mini_rifle,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,**9.5.6** + **10.2.7** (Mini Rifle); залік і штраф разом з PDF.
+C40,failure-to-engage,shotgun,penalties,Failure to engage,Необстріляна мішень (FTE),9.5.6; 10.2.7,XI (штрафи/DQ); перетин IX–X,draft,draft,**9.5.6** + **10.2.7** (Shotgun); залік і штраф разом з PDF.
+C41,significant-advantage,handgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.1.1**, **10.2.2**; чернетка — рев’ю з PDF."
+C42,significant-advantage,rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.1.1**, **10.2.2** (Rifle); чернетка — рев’ю з PDF."
+C43,significant-advantage,pcc,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.1.1**, **10.2.2** (PCC); чернетка — рев’ю з PDF."
+C44,significant-advantage,mini_rifle,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.1.1**, **10.2.2** (Mini Rifle); чернетка — рев’ю з PDF."
+C45,significant-advantage,shotgun,penalties,Significant advantage,Значна перевага,10.2.1.1; 10.2.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.1.1**, **10.2.2** (Shotgun); чернетка — рев’ю з PDF."
+C46,creeping,handgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.6**; чернетка — рев’ю з PDF.
+C47,creeping,rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.6** (Rifle); чернетка — рев’ю з PDF.
+C48,creeping,pcc,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.6** (PCC); чернетка — рев’ю з PDF.
+C49,creeping,mini_rifle,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.6** (Mini Rifle); чернетка — рев’ю з PDF.
+C50,creeping,shotgun,penalties,Creeping before start signal,«Підкрадання» до старту,10.2.6,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.6** (Shotgun); чернетка — рев’ю з PDF.
+C51,mandatory-reload,handgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.4**; чернетка — рев’ю з PDF Jan 2026.
+C52,mandatory-reload,rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.4** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C53,mandatory-reload,pcc,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.4** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C54,mandatory-reload,mini_rifle,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.4** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C55,mandatory-reload,shotgun,penalties,Mandatory reload violation,Обов’язкове перезарядження,10.2.4,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.4** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C56,mandatory-position,handgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.2**, **10.2.8**; чернетка — рев’ю з PDF."
+C57,mandatory-position,rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.2**, **10.2.8** (Rifle); чернетка — рев’ю з PDF."
+C58,mandatory-position,pcc,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.2**, **10.2.8** (PCC); чернетка — рев’ю з PDF."
+C59,mandatory-position,mini_rifle,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.2**, **10.2.8** (Mini Rifle); чернетка — рев’ю з PDF."
+C60,mandatory-position,shotgun,penalties,WSB position / strong-weak hand,Позиція з WSB / сильна-слабка рука,10.2.2; 10.2.8,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.2**, **10.2.8** (Shotgun); чернетка — рев’ю з PDF."
+C61,unauthorized-assistance,handgun,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,**8.6.2** (+ контекст **8.6**); чернетка — рев’ю з PDF.
+C62,unauthorized-assistance,rifle,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,**8.6.2** (Rifle); чернетка — рев’ю з PDF.
+C63,unauthorized-assistance,pcc,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,**8.6.2** (PCC); чернетка — рев’ю з PDF.
+C64,unauthorized-assistance,mini_rifle,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,**8.6.2** (Mini Rifle); чернетка — рев’ю з PDF.
+C65,unauthorized-assistance,shotgun,penalties,Unauthorized assistance,Несанкціонована допомога,8.6.2,XI (штрафи/DQ); перетин IX–X,draft,draft,**8.6.2** (Shotgun); чернетка — рев’ю з PDF.
+C66,sight-picture-fault,handgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.1**, **8.7.2**; чернетка — рев’ю з PDF."
+C67,sight-picture-fault,rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.1**, **8.7.2** (Rifle); чернетка — рев’ю з PDF."
+C68,sight-picture-fault,pcc,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.1**, **8.7.2** (PCC); чернетка — рев’ю з PDF."
+C69,sight-picture-fault,mini_rifle,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.1**, **8.7.2** (Mini Rifle); чернетка — рев’ю з PDF."
+C70,sight-picture-fault,shotgun,penalties,Sight picture / walkthrough violations,Приціл до сигналу / walkthrough,8.7.1; 8.7.2,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.1**, **8.7.2** (Shotgun); чернетка — рев’ю з PDF."
+C71,forbidden-action,handgun,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.11**; чернетка — рев’ю з PDF Jan 2026.
+C72,forbidden-action,rifle,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.11** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C73,forbidden-action,pcc,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.11** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C74,forbidden-action,mini_rifle,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.11** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C75,forbidden-action,shotgun,penalties,Forbidden shots (tall barrier),Заборонені постріли (високий бар’єр),10.2.11,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.11** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C76,wrong-ammo-shot,shotgun,penalties,Wrong ammunition type (shotgun),Неправильний тип набою (дробовик),10.2.12 SG only,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.12** (Shotgun only); чернетка — рев’ю з PDF.
+C77,procedural-cap,handgun,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.3**; чернетка — рев’ю з PDF.
+C78,procedural-cap,pcc,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.3** (PCC); чернетка — рев’ю з PDF.
+C79,procedural-cap,rifle,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.3** (Rifle); чернетка — рев’ю з PDF.
+C80,procedural-cap,mini_rifle,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.3** (Mini Rifle); чернетка — рев’ю з PDF.
+C81,procedural-cap,shotgun,penalties,Procedural penalty cap,Стеля процедурних штрафів,10.2.3,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.3** (Shotgun); чернетка — рев’ю з PDF.
+C82,cooper-tunnel,handgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.5**; чернетка — рев’ю з PDF.
+C83,cooper-tunnel,pcc,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.5** (PCC); чернетка — рев’ю з PDF.
+C84,cooper-tunnel,rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.5** (Rifle); чернетка — рев’ю з PDF.
+C85,cooper-tunnel,mini_rifle,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.5** (Mini Rifle); чернетка — рев’ю з PDF.
+C86,cooper-tunnel,shotgun,penalties,Cooper tunnel overhead,Cooper Tunnel / накриття,10.2.5,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.5** (Shotgun); чернетка — рев’ю з PDF.
+C87,penalty-in-lieu,handgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.10** (RM); чернетка — рев’ю з PDF.
+C88,penalty-in-lieu,pcc,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.10** (PCC, RM); чернетка — рев’ю з PDF."
+C89,penalty-in-lieu,rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.10** (Rifle, RM); чернетка — рев’ю з PDF."
+C90,penalty-in-lieu,mini_rifle,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.10** (Mini Rifle, RM); чернетка — рев’ю з PDF."
+C91,penalty-in-lieu,shotgun,penalties,Penalty in lieu (RM),Штраф замість елемента COF (RM),10.2.10,XI (штрафи/DQ); перетин IX–X,draft,draft,"**10.2.10** (Shotgun, RM); чернетка — рев’ю з PDF."
+C92,re-engage-same-location,handgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.9**; чернетка — рев’ю з PDF Jan 2026.
+C93,re-engage-same-location,pcc,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.9** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C94,re-engage-same-location,rifle,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.9** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C95,re-engage-same-location,mini_rifle,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.9** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C96,re-engage-same-location,shotgun,penalties,Re-engage same location,Повторне стрільбище з тієї ж позиції,10.2.9,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.9** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C97,walkthrough-interference,handgun,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.2**, **8.7.3**; чернетка — рев’ю з PDF."
+C98,walkthrough-interference,pcc,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.2**, **8.7.3** (PCC); чернетка — рев’ю з PDF."
+C99,walkthrough-interference,rifle,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.2**, **8.7.3** (Rifle); чернетка — рев’ю з PDF."
+C100,walkthrough-interference,mini_rifle,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.2**, **8.7.3** (Mini Rifle); чернетка — рев’ю з PDF."
+C101,walkthrough-interference,shotgun,penalties,Walkthrough violations,Порушення під час інспекції COF,8.7.2;8.7.3,XI (штрафи/DQ); перетин IX–X,draft,draft,"**8.7.2**, **8.7.3** (Shotgun); чернетка — рев’ю з PDF."
+C102,burst-or-automatic-fire,pcc,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.12** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C103,burst-or-automatic-fire,rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.12** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C104,burst-or-automatic-fire,mini_rifle,penalties,Burst or fully automatic fire,Черговий / повністю автоматичний вогонь,10.2.12,XI (штрафи/DQ); перетин IX–X,draft,draft,**10.2.12** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C105,break-180,handgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,reviewed,reviewed,**10.5.2**; Batch_27 Safety Movement Strict v1.3.
+C106,break-180,pcc,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,reviewed,reviewed,**10.5.2**; Batch_27.
+C107,break-180,rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,reviewed,reviewed,**10.5.2**; Batch_27.
+C108,break-180,mini_rifle,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,draft,draft,**10.5.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C109,break-180,shotgun,safety,Muzzle safe angles / 180,Безпечний сектор / 180°,10.5.2,II п.7; IV; XI; IX,reviewed,reviewed,**10.5.2**; Batch_27.
+C110,accidental-discharge,handgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,**10.4** (Handgun AD / DQ); чернетка — рев’ю з PDF Jan 2026.
+C111,accidental-discharge,pcc,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,**10.4** (PCC AD / DQ); чернетка — рев’ю з PDF Jan 2026.
+C112,accidental-discharge,rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,**10.4** (Rifle AD / DQ); чернетка — рев’ю з PDF Jan 2026.
+C113,accidental-discharge,mini_rifle,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,**10.4** (Mini Rifle AD / DQ); чернетка — рев’ю з PDF Jan 2026.
+C114,accidental-discharge,shotgun,safety,Accidental discharge (DQ),Випадковий постріл (DQ),10.4,II п.7; IV; XI; IX,draft,draft,**10.4** (Shotgun AD / DQ); чернетка — рев’ю з PDF Jan 2026.
+C115,trigger-finger,handgun,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**10.5.9–10.5.11** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C116,trigger-finger,pcc,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**Ch.10.5** (PCC); звірити 10.5.9–11 у PDF Jan 2026.
+C117,trigger-finger,rifle,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**Ch.10.5** (Rifle); звірити 10.5.9–11 у PDF Jan 2026.
+C118,trigger-finger,mini_rifle,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**Ch.10.5** (Mini Rifle); звірити 10.5.9–11 у PDF Jan 2026.
+C119,trigger-finger,shotgun,safety,Finger in trigger guard,Палець у скобі,10.5.9–10.5.11 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**Ch.10.5** (Shotgun); звірити 10.5.9–11 у PDF Jan 2026.
+C120,dropped-gun,handgun,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,**10.5.3** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C121,dropped-gun,pcc,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,**10.5.3** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C122,dropped-gun,rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,**10.5.3** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C123,dropped-gun,mini_rifle,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,**10.5.3** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C124,dropped-gun,shotgun,safety,Dropped firearm (DQ),Впущена зброя (DQ),10.5.3,II п.7; IV; XI; IX,draft,draft,**10.5.3** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C125,unsafe-gun-handling,handgun,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,**10.5.1** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C126,unsafe-gun-handling,pcc,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,**10.5.1** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C127,unsafe-gun-handling,rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,**10.5.1** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C128,unsafe-gun-handling,mini_rifle,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,**10.5.1** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C129,unsafe-gun-handling,shotgun,safety,Unsafe gun handling,Небезпечне поводження,10.5.1,II п.7; IV; XI; IX,draft,draft,**10.5.1** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C130,dq-general,handgun,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,**10.3** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C131,dq-general,pcc,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,**10.3** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C132,dq-general,rifle,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,**10.3** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C133,dq-general,mini_rifle,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,**10.3** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C134,dq-general,shotgun,safety,DQ — general,Дискваліфікація — загальні,10.3,II п.7; IV; XI; IX,draft,draft,**10.3** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C135,prohibited-substances,handgun,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,**10.7** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C136,prohibited-substances,pcc,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,**10.7** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C137,prohibited-substances,rifle,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,**10.7** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C138,prohibited-substances,mini_rifle,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,**10.7** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C139,prohibited-substances,shotgun,safety,Prohibited substances,Заборонені речовини,10.7,II п.7; IV; XI; IX,draft,draft,**10.7** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C140,unsportsmanlike-conduct,handgun,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,**10.6** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C141,unsportsmanlike-conduct,pcc,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,**10.6** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C142,unsportsmanlike-conduct,rifle,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,**10.6** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C143,unsportsmanlike-conduct,mini_rifle,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,**10.6** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C144,unsportsmanlike-conduct,shotgun,safety,Unsportsmanlike conduct,Неспортивна поведінка,10.6,II п.7; IV; XI; IX,draft,draft,**10.6** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C145,range-safety-zones,handgun,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,reviewed,reviewed,**2.4**; Batch_12 Admin Strict v1.3.
+C146,range-safety-zones,pcc,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,**Ch.2** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C147,range-safety-zones,rifle,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,**Ch.2** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C148,range-safety-zones,mini_rifle,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,**Ch.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C149,range-safety-zones,shotgun,safety,Range safety / zones,Зони безпеки / майданчик,Ch.2,II п.7; IV; XI; IX,draft,draft,**Ch.2** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C150,movement-and-trigger-safety,handgun,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,**8.5** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C151,movement-and-trigger-safety,pcc,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,**8.5** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C152,movement-and-trigger-safety,rifle,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,**8.5** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C153,movement-and-trigger-safety,mini_rifle,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,**8.5** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C154,movement-and-trigger-safety,shotgun,safety,Movement & trigger safety,Рух і палець під час COF,8.5,II п.7; IV; XI; IX,draft,draft,**8.5** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C155,approaching-touching-targets,handgun,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,**9.1** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C156,approaching-touching-targets,pcc,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,**9.1** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C157,approaching-touching-targets,rifle,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,**9.1** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C158,approaching-touching-targets,mini_rifle,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,**9.1** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C159,approaching-touching-targets,shotgun,scoring,Approaching / touching targets,Підхід / дотик до мішеней,9.1,X; додатки мішеней (VI),draft,draft,**9.1** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C160,scoring-methods,handgun,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,**9.2** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C161,scoring-methods,pcc,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,**9.2** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C162,scoring-methods,rifle,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,**9.2** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C163,scoring-methods,mini_rifle,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,**9.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C164,scoring-methods,shotgun,scoring,Scoring methods,Методи підрахунку,9.2,X; додатки мішеней (VI),draft,draft,**9.2** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C165,scoring-ties,handgun,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,**9.3**; чернетка — рев’ю з PDF.
+C166,scoring-ties,pcc,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,**9.3**; чернетка — рев’ю з PDF.
+C167,scoring-ties,rifle,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,**9.3**; чернетка — рев’ю з PDF.
+C168,scoring-ties,mini_rifle,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,**9.3**; чернетка — рев’ю з PDF.
+C169,scoring-ties,shotgun,scoring,Scoring ties,Нічиї,9.3,X; додатки мішеней (VI),draft,draft,**9.3**; чернетка — рев’ю з PDF.
+C170,hits-misses-noshoot-values,handgun,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,**9.4**; чернетка — рев’ю з PDF.
+C171,hits-misses-noshoot-values,pcc,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,**9.4**; чернетка — рев’ю з PDF.
+C172,hits-misses-noshoot-values,rifle,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,**9.4**; чернетка — рев’ю з PDF.
+C173,hits-misses-noshoot-values,mini_rifle,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,**9.4**; чернетка — рев’ю з PDF.
+C174,hits-misses-noshoot-values,shotgun,scoring,"Hits, misses, no-shoot values","Влучання, miss, no-shoot",9.4,X; додатки мішеней (VI),draft,draft,**9.4**; чернетка — рев’ю з PDF.
+C175,paper-scoring-policy,handgun,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,**9.5**; чернетка — рев’ю з PDF.
+C176,paper-scoring-policy,pcc,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,**9.5**; чернетка — рев’ю з PDF.
+C177,paper-scoring-policy,rifle,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,**9.5**; чернетка — рев’ю з PDF.
+C178,paper-scoring-policy,mini_rifle,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,**9.5**; чернетка — рев’ю з PDF.
+C179,paper-scoring-policy,shotgun,scoring,Paper scoring policy,Політика паперових мішеней,9.5,X; додатки мішеней (VI),draft,draft,**9.5**; чернетка — рев’ю з PDF.
+C180,paper-zones-major-minor,handgun,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,**9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF.
+C181,paper-zones-major-minor,pcc,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,**9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF.
+C182,paper-zones-major-minor,rifle,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,**9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF.
+C183,paper-zones-major-minor,mini_rifle,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,**9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF.
+C184,paper-zones-major-minor,shotgun,scoring,Paper zones Major/Minor,Зони A/C/D Major/Minor,9.5;tables,X; додатки мішеней (VI),draft,draft,**9.5** + таблиці Major/Minor; чернетка — рев’ю з PDF.
+C185,radial-tears-enlarged-holes,handgun,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,**9.5.4**; чернетка — рев’ю з PDF.
+C186,radial-tears-enlarged-holes,pcc,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,**9.5.4**; чернетка — рев’ю з PDF.
+C187,radial-tears-enlarged-holes,rifle,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,**9.5.4**; чернетка — рев’ю з PDF.
+C188,radial-tears-enlarged-holes,mini_rifle,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,**9.5.4**; чернетка — рев’ю з PDF.
+C189,radial-tears-enlarged-holes,shotgun,scoring,Radial tears / enlarged holes,Радіальні розриви / розширені отвори,9.5.4,X; додатки мішеней (VI),draft,draft,**9.5.4**; чернетка — рев’ю з PDF.
+C190,fte-scoring-side,handgun,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,**9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF.
+C191,fte-scoring-side,pcc,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,**9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF Jan 2026.
+C192,fte-scoring-side,rifle,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,**9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF Jan 2026.
+C193,fte-scoring-side,mini_rifle,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,**9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF Jan 2026.
+C194,fte-scoring-side,shotgun,scoring,FTE (scoring side),FTE (скорингова частина),9.5.6,X; додатки мішеней (VI),draft,draft,**9.5.6** (+ **10.2.7**); чернетка — рев’ю з PDF Jan 2026.
+C195,score-verification-challenge,handgun,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,**9.6**; чернетка — рев’ю з PDF.
+C196,score-verification-challenge,pcc,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,**9.6**; чернетка — рев’ю з PDF.
+C197,score-verification-challenge,rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,**9.6**; чернетка — рев’ю з PDF.
+C198,score-verification-challenge,mini_rifle,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,**9.6**; чернетка — рев’ю з PDF.
+C199,score-verification-challenge,shotgun,scoring,Score verification & challenges,Перевірка та оскарження,9.6,X; додатки мішеней (VI),draft,draft,**9.6**; чернетка — рев’ю з PDF.
+C200,score-sheets-corrections,handgun,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,**9.7**; чернетка — рев’ю з PDF.
+C201,score-sheets-corrections,pcc,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,**9.7**; чернетка — рев’ю з PDF.
+C202,score-sheets-corrections,rifle,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,**9.7**; чернетка — рев’ю з PDF.
+C203,score-sheets-corrections,mini_rifle,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,**9.7**; чернетка — рев’ю з PDF.
+C204,score-sheets-corrections,shotgun,scoring,Score sheets & corrections,Залікові листи / виправлення,9.7,X; додатки мішеней (VI),draft,draft,**9.7**; чернетка — рев’ю з PDF.
+C205,provisional-results-stats-appeal,handgun,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,**9.8**; чернетка — рев’ю з PDF.
+C206,provisional-results-stats-appeal,pcc,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,**9.8**; чернетка — рев’ю з PDF.
+C207,provisional-results-stats-appeal,rifle,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,**9.8**; чернетка — рев’ю з PDF.
+C208,provisional-results-stats-appeal,mini_rifle,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,**9.8**; чернетка — рев’ю з PDF.
+C209,provisional-results-stats-appeal,shotgun,scoring,Provisional results / stats,Попередні результати / статистика,9.8,X; додатки мішеней (VI),draft,draft,**9.8**; чернетка — рев’ю з PDF.
+C210,disappearing-targets-scoring,handgun,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),reviewed,draft,**9.1**; Batch_36 (manifest C184).
+C211,disappearing-targets-scoring,pcc,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,**9.9**; чернетка — рев’ю з PDF.
+C212,disappearing-targets-scoring,rifle,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,**9.9**; чернетка — рев’ю з PDF.
+C213,disappearing-targets-scoring,mini_rifle,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,**9.9**; чернетка — рев’ю з PDF.
+C214,disappearing-targets-scoring,shotgun,scoring,Disappearing targets,Зникаючі мішені,9.9,X; додатки мішеней (VI),draft,draft,**9.9**; чернетка — рев’ю з PDF.
+C215,official-time,handgun,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,**9.10**; чернетка — рев’ю з PDF.
+C216,official-time,pcc,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,**9.10**; чернетка — рев’ю з PDF.
+C217,official-time,rifle,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,**9.10**; чернетка — рев’ю з PDF.
+C218,official-time,mini_rifle,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,**9.10**; чернетка — рев’ю з PDF.
+C219,official-time,shotgun,scoring,Official time,Офіційний час,9.10,X; додатки мішеней (VI),draft,draft,**9.10**; чернетка — рев’ю з PDF.
+C220,scoring-programs,handgun,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,**9.11**; чернетка — рев’ю з PDF.
+C221,scoring-programs,pcc,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,**9.11**; чернетка — рев’ю з PDF.
+C222,scoring-programs,rifle,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,**9.11**; чернетка — рев’ю з PDF.
+C223,scoring-programs,mini_rifle,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,**9.11**; чернетка — рев’ю з PDF.
+C224,scoring-programs,shotgun,scoring,Scoring programs,Програми підрахунку,9.11,X; додатки мішеней (VI),draft,draft,**9.11**; чернетка — рев’ю з PDF.
+C255,division-overview,handgun,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,reviewed,reviewed,**Appendix D**; Batch_11 Equipment Strict v1.2.
+C226,division-overview,pcc,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,**Ch.5** + Appendix; чернетка — рев’ю з PDF.
+C227,division-overview,rifle,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,**Ch.5** + Appendix; чернетка — рев’ю з PDF.
+C228,division-overview,mini_rifle,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,**Ch.5** + Appendix; чернетка — рев’ю з PDF.
+C229,division-overview,shotgun,equipment,Divisions overview,Дивізіони та класи,5;Appendix,VII; VI; додатки,draft,draft,**Ch.5** + Appendix; чернетка — рев’ю з PDF.
+C230,ready-conditions,handgun,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,reviewed,reviewed,**8.1**; Batch_11 Equipment Strict v1.2.
+C231,ready-conditions,pcc,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,reviewed,reviewed,**8.1**; Batch_11 Equipment Strict v1.2.
+C232,ready-conditions,rifle,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,draft,draft,**8.1–8.3**; чернетка — рев’ю з PDF.
+C233,ready-conditions,mini_rifle,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,draft,draft,**8.1–8.3**; чернетка — рев’ю з PDF.
+C234,ready-conditions,shotgun,equipment,Ready conditions / commands,Стани готовності / команди,8.1-8.3,VII; VI; додатки,draft,draft,**8.1–8.3**; чернетка — рев’ю з PDF.
+C240,holster-or-carry-long-gun,handgun,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,reviewed,reviewed,**5.2.5**; Batch_11 Equipment Strict v1.2.
+C236,holster-or-carry-long-gun,pcc,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,**Ch.5** (ремень / носіння); чернетка — рев’ю з PDF.
+C237,holster-or-carry-long-gun,rifle,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,**Ch.5** (ремень / носіння); чернетка — рев’ю з PDF.
+C238,holster-or-carry-long-gun,mini_rifle,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,**Ch.5** (ремень / носіння); чернетка — рев’ю з PDF.
+C239,holster-or-carry-long-gun,shotgun,equipment,Holster / sling / carry,Кобура / ремінь / носіння,5;Appendix,VII; VI; додатки,draft,draft,**Ch.5** (носіння / постановка); чернетка — рев’ю з PDF.
+C349,firearms-and-ammunition-rules,handgun,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,**5.1–5.8**; ID зміщено через Batch_11 (C240 → holster HG).
+C241,firearms-and-ammunition-rules,pcc,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,**5.1–5.8**; чернетка — рев’ю з PDF.
+C242,firearms-and-ammunition-rules,rifle,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,**5.1–5.8**; чернетка — рев’ю з PDF.
+C243,firearms-and-ammunition-rules,mini_rifle,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,**5.1–5.8**; чернетка — рев’ю з PDF.
+C244,firearms-and-ammunition-rules,shotgun,equipment,Firearm & ammunition,Зброя та набої,5.1-5.8,VII; VI; додатки,draft,draft,**5.1–5.8**; чернетка — рев’ю з PDF.
+C260,chronograph-and-power-factor,handgun,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,reviewed,reviewed,**Appendix C2**; Batch_11 Equipment Strict v1.2.
+C246,chronograph-and-power-factor,pcc,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,**5.6–5.7**; чернетка — рев’ю з PDF.
+C247,chronograph-and-power-factor,rifle,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,**5.6–5.7**; чернетка — рев’ю з PDF.
+C248,chronograph-and-power-factor,mini_rifle,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,**5.6–5.7**; чернетка — рев’ю з PDF.
+C249,chronograph-and-power-factor,shotgun,equipment,Chrono & power factor,Хронограф і PF,5.6-5.7,VII; VI; додатки,draft,draft,**5.6–5.7**; чернетка — рев’ю з PDF.
+C350,magazines-and-loading-devices,handgun,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,**Ch.5**; ID зміщено через Batch_11 (C250 → trigger HG).
+C245,magazines-and-loading-devices,pcc,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,reviewed,reviewed,**5.2**; Batch_11 Equipment Strict v1.2.
+C252,magazines-and-loading-devices,rifle,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,**Ch.5**; чернетка — рев’ю з PDF.
+C253,magazines-and-loading-devices,mini_rifle,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,**Ch.5**; чернетка — рев’ю з PDF.
+C254,magazines-and-loading-devices,shotgun,equipment,Magazines & loading,Магазини та заряджання,5,VII; VI; додатки,draft,draft,**Ch.5**; чернетка — рев’ю з PDF.
+C351,eye-and-ear-protection,handgun,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,**5.4**; ID зміщено через Batch_11 (C255 → division HG).
+C256,eye-and-ear-protection,pcc,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,**5.4**; чернетка — рев’ю з PDF.
+C257,eye-and-ear-protection,rifle,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,**5.4**; чернетка — рев’ю з PDF.
+C258,eye-and-ear-protection,mini_rifle,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,**5.4**; чернетка — рев’ю з PDF.
+C259,eye-and-ear-protection,shotgun,equipment,Eye & ear protection,Захист очей і вух,5.4,VII; VI; додатки,draft,draft,**5.4**; чернетка — рев’ю з PDF.
+C352,athlete-clothing,handgun,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,**5.3**; ID зміщено через Batch_11 (C260 → chrono HG).
+C261,athlete-clothing,pcc,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,**5.3**; чернетка — рев’ю з PDF.
+C262,athlete-clothing,rifle,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,**5.3**; чернетка — рев’ю з PDF.
+C263,athlete-clothing,mini_rifle,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,**5.3**; чернетка — рев’ю з PDF.
+C264,athlete-clothing,shotgun,equipment,Competitor clothing,Одяг спортсмена,5.3,VII; VI; додатки,draft,draft,**5.3**; чернетка — рев’ю з PDF.
+C265,equipment-malfunction,handgun,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,reviewed,reviewed,**5.7**; Batch_11 Equipment Strict v1.2.
+C266,equipment-malfunction,pcc,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,**5.7** (звірити з PDF); чернетка — рев’ю з PDF.
+C267,equipment-malfunction,rifle,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,**5.7** (звірити з PDF); чернетка — рев’ю з PDF.
+C268,equipment-malfunction,mini_rifle,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,**5.7** (звірити з PDF); чернетка — рев’ю з PDF.
+C269,equipment-malfunction,shotgun,equipment,Equipment malfunction,Несправність спорядження,5.7,VII; VI; додатки,draft,draft,**5.7** (звірити з PDF); чернетка — рев’ю з PDF.
+C270,written-stage-briefing,handgun,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",reviewed,reviewed,**3.2** (WSB); Batch_12 Admin Strict v1.3.
+C271,written-stage-briefing,pcc,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,**3.2** (WSB); чернетка — рев’ю з PDF.
+C272,written-stage-briefing,rifle,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,**3.2** (WSB); чернетка — рев’ю з PDF.
+C273,written-stage-briefing,mini_rifle,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,**3.2** (WSB); чернетка — рев’ю з PDF.
+C274,written-stage-briefing,shotgun,match-admin,Written stage briefing,Письмовий брифінг,3.2,"II, VIII, XII; IV–V (контекст)",draft,draft,**3.2** (WSB); чернетка — рев’ю з PDF.
+C275,local-regional-rules,handgun,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",reviewed,reviewed,**3.3**; Batch_12 Admin Strict v1.3.
+C276,local-regional-rules,pcc,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,**3.3**; чернетка — рев’ю з PDF.
+C277,local-regional-rules,rifle,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,**3.3**; чернетка — рев’ю з PDF.
+C278,local-regional-rules,mini_rifle,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,**3.3**; чернетка — рев’ю з PDF.
+C279,local-regional-rules,shotgun,match-admin,Local / regional rules,Локальні / регіональні правила,3.3,"II, VIII, XII; IV–V (контекст)",draft,draft,**3.3**; чернетка — рев’ю з PDF.
+C280,match-structure-and-categories,handgun,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",reviewed,reviewed,**6.1**; Batch_12 Admin Strict v1.3.
+C281,match-structure-and-categories,pcc,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.6**; чернетка — рев’ю з PDF.
+C282,match-structure-and-categories,rifle,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.6**; чернетка — рев’ю з PDF.
+C283,match-structure-and-categories,mini_rifle,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.6**; чернетка — рев’ю з PDF.
+C284,match-structure-and-categories,shotgun,match-admin,Match structure,Структура змагань,6,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.6**; чернетка — рев’ю з PDF.
+C285,md-ro-roles,handgun,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",reviewed,reviewed,**7.1**; Batch_12 Admin Strict v1.3.
+C286,md-ro-roles,pcc,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.7** (MD/RM); чернетка — рев’ю з PDF.
+C287,md-ro-roles,rifle,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.7** (MD/RM); чернетка — рев’ю з PDF.
+C288,md-ro-roles,mini_rifle,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.7** (MD/RM); чернетка — рев’ю з PDF.
+C289,md-ro-roles,shotgun,match-admin,MD / RM roles,Ролі MD / RM,7,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.7** (MD/RM); чернетка — рев’ю з PDF.
+C290,protests-arbitration,handgun,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",reviewed,reviewed,**11.1**; Batch_12 Admin Strict v1.3.
+C291,protests-arbitration,pcc,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.11**; чернетка — рев’ю з PDF.
+C292,protests-arbitration,rifle,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.11**; чернетка — рев’ю з PDF.
+C293,protests-arbitration,mini_rifle,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.11**; чернетка — рев’ю з PDF.
+C294,protests-arbitration,shotgun,match-admin,Protests & arbitration,Протести та арбітраж,11,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.11**; чернетка — рев’ю з PDF.
+C295,miscellaneous-matters,handgun,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.12**; чернетка — рев’ю з PDF.
+C296,miscellaneous-matters,pcc,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.12**; чернетка — рев’ю з PDF.
+C297,miscellaneous-matters,rifle,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.12**; чернетка — рев’ю з PDF.
+C298,miscellaneous-matters,mini_rifle,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.12**; чернетка — рев’ю з PDF.
+C299,miscellaneous-matters,shotgun,match-admin,Miscellaneous,Інше (розділ 12),12,"II, VIII, XII; IV–V (контекст)",draft,draft,**Ch.12**; чернетка — рев’ю з PDF.
+C300,reshoots,handgun,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,**4.7**; чернетка — рев’ю з PDF.
+C301,reshoots,pcc,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,**4.7**; чернетка — рев’ю з PDF.
+C302,reshoots,rifle,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,**4.7**; чернетка — рев’ю з PDF.
+C303,reshoots,mini_rifle,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,**4.7**; чернетка — рев’ю з PDF.
+C304,reshoots,shotgun,match-admin,Reshoots / equipment failure,Перестріл / несправність обладнання,4.7,"II, VIII, XII; IV–V (контекст)",draft,draft,**4.7**; чернетка — рев’ю з PDF.
+C305,course-design-safety-balance,handgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",reviewed,reviewed,**1.1**; Batch_12 Admin Strict v1.3.
+C306,course-design-safety-balance,pcc,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,**1.1**; чернетка — рев’ю з PDF.
+C307,course-design-safety-balance,rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,**1.1**; чернетка — рев’ю з PDF.
+C308,course-design-safety-balance,mini_rifle,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,**1.1**; чернетка — рев’ю з PDF.
+C309,course-design-safety-balance,shotgun,match-admin,Course design principles,Принципи дизайну вправ,1.1,"II, VIII, XII; IV–V (контекст)",draft,draft,**1.1**; чернетка — рев’ю з PDF.
+C310,metal-target-min-distance-dq,handgun,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (HG Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,**10.4.7**; чернетка — рев’ю з PDF.
+C311,metal-target-min-distance-dq,pcc,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (PCC Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,**10.4.7**; чернетка — рев’ю з PDF.
+C312,metal-target-min-distance-dq,rifle,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (Rifle Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,**10.4.7**; чернетка — рев’ю з PDF.
+C313,metal-target-min-distance-dq,mini_rifle,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (Mini Rifle Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,**10.4.7**; чернетка — рев’ю з PDF.
+C314,metal-target-min-distance-dq,shotgun,safety,Min distance to metal (DQ),Мінімальна відстань до металу (DQ),"10.4.7 (Shotgun Jan 2026 — min distance to metal, DQ)",II п.7; IV; XI; IX,draft,draft,**10.4.7**; чернетка — рев’ю з PDF.
+C315,ammo-in-safety-area,handgun,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**10.5.14**; чернетка — рев’ю з PDF.
+C316,ammo-in-safety-area,pcc,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**10.5.14** (PCC); чернетка — рев’ю з PDF Jan 2026.
+C317,ammo-in-safety-area,rifle,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**10.5.14** (Rifle); чернетка — рев’ю з PDF Jan 2026.
+C318,ammo-in-safety-area,mini_rifle,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**10.5.14** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026.
+C319,ammo-in-safety-area,shotgun,safety,Ammunition in Safety Area (DQ),Набої в Safety Area (DQ),10.5.14 (HG Jan 2026); verify per PDF,II п.7; IV; XI; IX,draft,draft,**10.5.14** (Shotgun); чернетка — рев’ю з PDF Jan 2026.
+C320,external-safety-long-gun,pcc,safety,External safety during movement (long gun),Зовнішній запобіжник під час руху (long gun),10.5.11 (long gun — external safety / movement); verify PDF,II п.7; IV; XI; IX,draft,draft,**10.5.11** long gun (PCC); не плутати з HG 10.5.11.
+C321,external-safety-long-gun,rifle,safety,External safety during movement (long gun),Зовнішній запобіжник під час руху (long gun),10.5.11 (long gun — external safety / movement); verify PDF,II п.7; IV; XI; IX,draft,draft,**10.5.11** long gun (Rifle); не плутати з HG 10.5.11.
+C322,external-safety-long-gun,mini_rifle,safety,External safety during movement (long gun),Зовнішній запобіжник під час руху (long gun),10.5.11 (long gun — external safety / movement); verify PDF,II п.7; IV; XI; IX,draft,draft,**10.5.11** long gun (Mini Rifle); не плутати з HG 10.5.11.
+C323,external-safety-long-gun,shotgun,safety,External safety during movement (long gun),Зовнішній запобіжник під час руху (long gun),10.5.11 (long gun — external safety / movement); verify PDF,II п.7; IV; XI; IX,draft,draft,**10.5.11** long gun (Shotgun); не плутати з HG 10.5.11.
+C324,popper-calibration,handgun,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,**Appendix C1**; чернетка — рев’ю з PDF.
+C325,popper-calibration,pcc,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Додаток popper calibration (PCC); звірити букву в PDF.
+C326,popper-calibration,rifle,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Додаток popper calibration (Rifle); звірити букву в PDF.
+C327,popper-calibration,mini_rifle,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Додаток popper calibration (Mini Rifle); звірити букву в PDF.
+C328,popper-calibration,shotgun,scoring,Popper calibration challenge,Оскарження калібрування поппера,Appendix C1 (HG popper calibration challenge); verify per PDF,X; додатки мішеней (VI),draft,draft,Додаток popper calibration (Shotgun); звірити букву в PDF.
+C250,trigger-pull-check,handgun,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,reviewed,reviewed,**Appendix D4**; Batch_11 Equipment Strict v1.2.
+C330,trigger-pull-check,pcc,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Додаток зусилля спуску (PCC); звірити з PDF Jan 2026.
+C331,trigger-pull-check,rifle,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Додаток зусилля спуску (Rifle); звірити з PDF Jan 2026.
+C332,trigger-pull-check,mini_rifle,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Додаток зусилля спуску (Mini Rifle); звірити з PDF Jan 2026.
+C333,trigger-pull-check,shotgun,equipment,Trigger pull weight check (Production etc.),Контроль зусилля спуску (Production тощо),Appendix D Production D4 §6 (2.27 kg HG); verify division PDF,VII; VI; додатки,draft,draft,Додаток спуску / release (Shotgun); звірити з PDF Jan 2026.
+C334,sweeping,handgun,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5; 10.5.5.1 (HG holster exception — verify PDF),II п.7; IV; XI; IX,draft,draft,**10.5.5** + **10.5.5.1** (виняток кобури HG); чернетка — рев’ю з PDF Jan 2026.
+C335,sweeping,pcc,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5 (verify PCC Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.5** (PCC); підтвердити номер у PDF Jan 2026 (якір HG).
+C336,sweeping,rifle,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5 (verify Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.5** (Rifle); підтвердити номер у PDF Jan 2026 (якір HG).
+C337,sweeping,mini_rifle,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5 (verify Mini Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,reviewed,reviewed,**10.5.5**; Batch_27.
+C338,sweeping,shotgun,safety,Sweeping (muzzle across body),Пронесення ствола по тілу (sweeping),10.5.5 (verify Shotgun Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.5** (Shotgun); підтвердити номер у PDF Jan 2026 (якір HG).
+C398,muzzle-at-person,handgun,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (HG Jan 2026 — verify PDF),II п.7; IV; XI; IX,reviewed,reviewed,**10.5.1**; Batch_18 Safety SA Strict v1.3.
+C340,muzzle-at-person,pcc,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (verify PCC Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.6** (PCC); підтвердити в PDF Jan 2026 (якір HG).
+C341,muzzle-at-person,rifle,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (verify Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.6** (Rifle); підтвердити в PDF Jan 2026 (якір HG).
+C342,muzzle-at-person,mini_rifle,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (verify Mini Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.6** (Mini Rifle); підтвердити в PDF Jan 2026 (якір HG).
+C343,muzzle-at-person,shotgun,safety,Pointing muzzle at a person,Наведення ствола на людину,10.5.6 (verify Shotgun Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.6** (Shotgun); підтвердити в PDF Jan 2026 (якір HG).
+C344,unauthorized-loading,handgun,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (HG Jan 2026 — verify PDF),II п.7; IV; XI; IX,draft,draft,**10.5.12** (Handgun); чернетка — рев’ю з PDF Jan 2026.
+C345,unauthorized-loading,pcc,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (verify PCC Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.12** (PCC); підтвердити в PDF Jan 2026 (якір HG).
+C346,unauthorized-loading,rifle,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (verify Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.12** (Rifle); підтвердити в PDF Jan 2026 (якір HG).
+C347,unauthorized-loading,mini_rifle,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (verify Mini Rifle Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.12** (Mini Rifle); підтвердити в PDF Jan 2026 (якір HG).
+C348,unauthorized-loading,shotgun,safety,Unauthorized loading,Несанкціоноване заряджання,10.5.12 (verify Shotgun Jan 2026 PDF; HG anchor),II п.7; IV; XI; IX,draft,draft,**10.5.12** (Shotgun); підтвердити в PDF Jan 2026 (якір HG).
+C353,stage-modification,handgun,match-admin,stage modification,stage modification,**2.3**; Batch_12 Admin Strict v1.3.,XI; verify FPSU docs,reviewed,reviewed,**2.3**; Batch_12 Admin Strict v1.3.
+C354,short-distance-metal,shotgun,safety,short distance metal,short distance metal,**10.5.15**; Batch_13 Shotgun Spec.,XI; verify FPSU docs,reviewed,reviewed,**10.5.15**; Batch_13 Shotgun Spec.
+C355,unauthorized-ammo,shotgun,safety,unauthorized ammo,unauthorized ammo,**10.5.16**; Batch_13 Shotgun Spec.,XI; verify FPSU docs,reviewed,reviewed,**10.5.16**; Batch_13 Shotgun Spec.
+C356,buckshot-scoring,shotgun,scoring,buckshot scoring,buckshot scoring,**9.4**; Batch_13 Shotgun Spec.,XI; verify FPSU docs,reviewed,reviewed,**9.4**; Batch_13 Shotgun Spec.
+C357,slug-scoring,shotgun,scoring,slug scoring,slug scoring,"**9.4**, **9.5.4**; Batch_13 Shotgun Spec.",XI; verify FPSU docs,reviewed,reviewed,"**9.4**, **9.5.4**; Batch_13 Shotgun Spec."
+C358,birdshot-scoring,shotgun,scoring,birdshot scoring,birdshot scoring,"**9.4**, **9.5**; Batch_13 Shotgun Spec.",XI; verify FPSU docs,reviewed,reviewed,"**9.4**, **9.5**; Batch_13 Shotgun Spec."
+C359,shotgun-divisions,shotgun,equipment,shotgun divisions,shotgun divisions,**Appendix D**; Batch_13 Shotgun Spec.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D**; Batch_13 Shotgun Spec.
+C360,loading-devices-shotgun,shotgun,equipment,loading devices shotgun,loading devices shotgun,**5.2**; Batch_13 Shotgun Spec.,XI; verify FPSU docs,reviewed,reviewed,**5.2**; Batch_13 Shotgun Spec.
+C361,shotgun-chamber-safety,shotgun,equipment,shotgun chamber safety,shotgun chamber safety,**8.3**; Batch_13 Shotgun Spec.,XI; verify FPSU docs,reviewed,reviewed,**8.3**; Batch_13 Shotgun Spec.
+C362,bipods-supports-rifle,rifle,equipment,bipods supports rifle,bipods supports rifle,"**5.1.3**, **Appendix D**; Batch_14 Rifle/PCC.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**; Batch_14 Rifle/PCC."
+C363,bipods-supports-pcc,pcc,equipment,bipods supports pcc,bipods supports pcc,"**5.1.3**, **Appendix D**; Batch_14 Rifle/PCC.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**; Batch_14 Rifle/PCC."
+C364,optics-sights-rifle,rifle,equipment,optics sights rifle,optics sights rifle,"**5.1.10**, **Appendix D**; Batch_14 Rifle/PCC.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.10**, **Appendix D**; Batch_14 Rifle/PCC."
+C365,optics-sights-pcc,pcc,equipment,optics sights pcc,optics sights pcc,"**5.1.10**, **Appendix D**; Batch_14 Rifle/PCC.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.10**, **Appendix D**; Batch_14 Rifle/PCC."
+C366,handguards-grips-rifle,rifle,equipment,handguards grips rifle,handguards grips rifle,"**5.1.3**, **Appendix D**; Batch_14 Rifle/PCC.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**; Batch_14 Rifle/PCC."
+C367,handguards-grips-pcc,pcc,equipment,handguards grips pcc,handguards grips pcc,"**5.1.3**, **Appendix D**; Batch_14 Rifle/PCC.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**; Batch_14 Rifle/PCC."
+C368,manual-rifle-ready-conditions,rifle,equipment,manual rifle ready conditions,manual rifle ready conditions,**8.1.1**; Batch_14 Rifle/PCC.,XI; verify FPSU docs,reviewed,reviewed,**8.1.1**; Batch_14 Rifle/PCC.
+C369,semi-auto-rifle-ready-conditions,rifle,equipment,semi auto rifle ready conditions,semi auto rifle ready conditions,**8.1.1**; Batch_14 Rifle/PCC.,XI; verify FPSU docs,reviewed,reviewed,**8.1.1**; Batch_14 Rifle/PCC.
+C370,open-division-specs,handgun,equipment,open division specs,open division specs,**Appendix D1**; Batch_15 Handgun Divisions.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D1**; Batch_15 Handgun Divisions.
+C371,standard-division-specs,handgun,equipment,standard division specs,standard division specs,"**Appendix D2**, **5.2.7**; Batch_15.",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D2**, **5.2.7**; Batch_15."
+C372,production-division-specs,handgun,equipment,production division specs,production division specs,**Appendix D4**; Batch_15.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D4**; Batch_15.
+C373,classic-division-specs,handgun,equipment,classic division specs,classic division specs,**Appendix D3**; Batch_15.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D3**; Batch_15.
+C374,revolver-division-specs,handgun,equipment,revolver division specs,revolver division specs,**Appendix D5**; Batch_15.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D5**; Batch_15.
+C375,production-optics-specs,handgun,equipment,production optics specs,production optics specs,**Appendix D4a**; Batch_15.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D4a**; Batch_15.
+C376,classic-magazine-constraints,handgun,equipment,classic magazine constraints,classic magazine constraints,**Appendix D3**; Batch_15.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D3**; Batch_15.
+C377,equipment-position-check,handgun,equipment,equipment position check,equipment position check,**5.2.7**; Batch_15.,XI; verify FPSU docs,reviewed,reviewed,**5.2.7**; Batch_15.
+C378,shoot-off-general,handgun,match-admin,shoot off general,shoot off general,**1.2.2**; Batch_16 Special Procedures.,XI; verify FPSU docs,reviewed,reviewed,**1.2.2**; Batch_16 Special Procedures.
+C379,shoot-off-safety,handgun,match-admin,shoot off safety,shoot off safety,**1.2.2**; Batch_16.,XI; verify FPSU docs,reviewed,reviewed,**1.2.2**; Batch_16.
+C380,shoot-off-scoring,handgun,match-admin,shoot off scoring,shoot off scoring,**1.2.2**; Batch_16.,XI; verify FPSU docs,reviewed,reviewed,**1.2.2**; Batch_16.
+C381,multigun-mixed-stages,handgun,match-admin,multigun mixed stages,multigun mixed stages,**Appendix G**; Batch_16.,XI; verify FPSU docs,reviewed,reviewed,**Appendix G**; Batch_16.
+C382,multigun-transition-safety,handgun,match-admin,multigun transition safety,multigun transition safety,**Appendix G**; Batch_16.,XI; verify FPSU docs,reviewed,reviewed,**Appendix G**; Batch_16.
+C383,multigun-penalties,handgun,match-admin,multigun penalties,multigun penalties,**Appendix G**; Batch_16.,XI; verify FPSU docs,reviewed,reviewed,**Appendix G**; Batch_16.
+C384,electronic-scoring-ess,handgun,match-admin,electronic scoring ess,electronic scoring ess,**9.11**; Batch_16.,XI; verify FPSU docs,reviewed,reviewed,**9.11**; Batch_16.
+C385,results-verification-display,handgun,match-admin,results verification display,results verification display,"**9.11**, **11.1**; Batch_16.",XI; verify FPSU docs,reviewed,reviewed,"**9.11**, **11.1**; Batch_16."
+C386,classic-holster-rules,handgun,equipment,classic holster rules,classic holster rules,"**5.2.7**, **Appendix D**; Batch_17 Equipment Detail.",XI; verify FPSU docs,reviewed,reviewed,"**5.2.7**, **Appendix D**; Batch_17 Equipment Detail."
+C387,revolver-equipment-position,handgun,equipment,revolver equipment position,revolver equipment position,"**5.2.7**, **Appendix D**; Batch_17.",XI; verify FPSU docs,reviewed,reviewed,"**5.2.7**, **Appendix D**; Batch_17."
+C388,weapon-slings-rules,rifle,equipment,weapon slings rules,weapon slings rules,**5.1.3**; Batch_17.,XI; verify FPSU docs,reviewed,reviewed,**5.1.3**; Batch_17.
+C389,pcc-stock-requirements,pcc,equipment,pcc stock requirements,pcc stock requirements,"**5.1.3**, **Appendix D**; Batch_17.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**; Batch_17."
+C390,pcc-magazine-length,pcc,equipment,pcc magazine length,pcc magazine length,**Appendix D**; Batch_17.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D**; Batch_17.
+C391,shotgun-modified-specs,shotgun,equipment,shotgun modified specs,shotgun modified specs,**Appendix D**; Batch_17.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D**; Batch_17.
+C392,handgun-flashlight-laser,handgun,equipment,handgun flashlight laser,handgun flashlight laser,"**5.1.3**, **Appendix D**; Batch_17.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**; Batch_17."
+C393,magazine-as-support,rifle,equipment,magazine as support,magazine as support,**5.1.3**; Batch_17.,XI; verify FPSU docs,reviewed,reviewed,**5.1.3**; Batch_17.
+C394,loaded-gun-in-sa,handgun,safety,loaded gun in sa,loaded gun in sa,**10.5.12**; Batch_18 Safety SA.,XI; verify FPSU docs,reviewed,reviewed,**10.5.12**; Batch_18 Safety SA.
+C395,loaded-gun-in-sa-rifle,rifle,safety,loaded gun in sa rifle,loaded gun in sa rifle,**10.5.12**; Batch_18.,XI; verify FPSU docs,reviewed,reviewed,**10.5.12**; Batch_18.
+C396,loaded-gun-sa-pcc,pcc,safety,loaded gun sa pcc,loaded gun sa pcc,**10.5.12**; Batch_18.,XI; verify FPSU docs,reviewed,reviewed,**10.5.12**; Batch_18.
+C397,muzzle-beyond-1m,handgun,safety,muzzle beyond 1m,muzzle beyond 1m,**10.5.2**; Batch_18.,XI; verify FPSU docs,reviewed,reviewed,**10.5.2**; Batch_18.
+C399,gun-not-clear,handgun,safety,gun not clear,gun not clear,**10.5.1**; Batch_18.,XI; verify FPSU docs,reviewed,reviewed,**10.5.1**; Batch_18.
+C400,unsafe-holster-state,handgun,safety,unsafe holster state,unsafe holster state,"**10.5.1**, **10.5.2**; Batch_18.",XI; verify FPSU docs,reviewed,reviewed,"**10.5.1**, **10.5.2**; Batch_18."
+C401,unauthorized-gun-handling,handgun,safety,unauthorized gun handling,unauthorized gun handling,**10.5.1**; Batch_18.,XI; verify FPSU docs,reviewed,reviewed,**10.5.1**; Batch_18.
+C402,improper-use-of-cover,handgun,penalties,improper use of cover,improper use of cover,**10.2.8**; Batch_19 Procedures REF.,XI; verify FPSU docs,reviewed,reviewed,**10.2.8**; Batch_19 Procedures REF.
+C403,improper-use-of-cover,rifle,penalties,improper use of cover,improper use of cover,**10.2.8**; Batch_19.,XI; verify FPSU docs,reviewed,reviewed,**10.2.8**; Batch_19.
+C404,wrong-sequence-of-fire,handgun,penalties,wrong sequence of fire,wrong sequence of fire,**10.2.2**; Batch_19.,XI; verify FPSU docs,reviewed,reviewed,**10.2.2**; Batch_19.
+C405,wrong-sequence-of-fire,rifle,penalties,wrong sequence of fire,wrong sequence of fire,**10.2.2**; Batch_19.,XI; verify FPSU docs,reviewed,reviewed,**10.2.2**; Batch_19.
+C406,range-equipment-failure-ref,handgun,penalties,range equipment failure ref,range equipment failure ref,**4.6.1**; Batch_19.,XI; verify FPSU docs,reviewed,reviewed,**4.6.1**; Batch_19.
+C407,range-equipment-failure-ref,rifle,penalties,range equipment failure ref,range equipment failure ref,**4.6.1**; Batch_19.,XI; verify FPSU docs,reviewed,reviewed,**4.6.1**; Batch_19.
+C408,range-equipment-failure-ref,pcc,penalties,range equipment failure ref,range equipment failure ref,**4.6.1**; Batch_19.,XI; verify FPSU docs,reviewed,reviewed,**4.6.1**; Batch_19.
+C409,range-equipment-failure-ref,shotgun,penalties,range equipment failure ref,range equipment failure ref,**4.6.1**; Batch_19.,XI; verify FPSU docs,reviewed,reviewed,**4.6.1**; Batch_19.
+C410,standard-manual-specs,shotgun,equipment,standard manual specs,standard manual specs,"**Appendix D2**, **8.1.5**; Batch_20 Shotgun Divisions.",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D2**, **8.1.5**; Batch_20 Shotgun Divisions."
+C411,standard-shotgun-specs,shotgun,equipment,standard shotgun specs,standard shotgun specs,"**Appendix D1**, **8.1.5**; Batch_20.",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D1**, **8.1.5**; Batch_20."
+C412,open-shotgun-specs,shotgun,equipment,open shotgun specs,open shotgun specs,"**Appendix D4**, **8.1.5**; Batch_20.",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D4**, **8.1.5**; Batch_20."
+C413,modified-shotgun-deep,shotgun,equipment,modified shotgun deep,modified shotgun deep,"**Appendix D3**, **8.1.5**; Batch_20.",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D3**, **8.1.5**; Batch_20."
+C414,magazine-tube-constraints,shotgun,equipment,magazine tube constraints,magazine tube constraints,"**8.1.5**, **10.2.2**; Batch_20.",XI; verify FPSU docs,reviewed,reviewed,"**8.1.5**, **10.2.2**; Batch_20."
+C415,detachable-magazines-shotgun,shotgun,equipment,detachable magazines shotgun,detachable magazines shotgun,"**Appendix D4**, **5.2.3**, **8.1.5**; Batch_20.",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D4**, **5.2.3**, **8.1.5**; Batch_20."
+C416,unauthorized-loading-shotgun,shotgun,safety,unauthorized loading shotgun,unauthorized loading shotgun,**10.5.11**; Batch_20.,XI; verify FPSU docs,reviewed,reviewed,**10.5.11**; Batch_20.
+C417,ammunition-compliance,shotgun,match-admin,ammunition compliance,ammunition compliance,"**5.5**, **10.5.16**; Batch_20.",XI; verify FPSU docs,reviewed,reviewed,"**5.5**, **10.5.16**; Batch_20."
+C418,pcc-electronic-sights,pcc,equipment,pcc electronic sights,pcc electronic sights,"**5.1.10**, **Appendix D**; Batch_21 Rifle Specs.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.10**, **Appendix D**; Batch_21 Rifle Specs."
+C419,muzzle-devices-rifle,rifle,equipment,muzzle devices rifle,muzzle devices rifle,"**5.1.3**, **Appendix D**; Batch_21.",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**; Batch_21."
+C420,rifle-magazine-standard,rifle,equipment,rifle magazine standard,rifle magazine standard,**Appendix D**; Batch_21.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D**; Batch_21.
+C421,mini-rifle-equipment,mini_rifle,equipment,mini rifle equipment,mini rifle equipment,**Appendix D**; Batch_21.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D**; Batch_21.
+C422,manual-action-rifle-specs,rifle,equipment,manual action rifle specs,manual action rifle specs,**Appendix D**; Batch_21.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D**; Batch_21.
+C423,rifle-open-specs,rifle,equipment,rifle open specs,rifle open specs,"**Appendix D**, **5.1.3**, **5.1.10**; Batch_21.",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **5.1.3**, **5.1.10**; Batch_21."
+C424,rifle-standard-specs,rifle,equipment,rifle standard specs,rifle standard specs,"**Appendix D**, **5.1.3**, **5.1.10**; Batch_21.",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **5.1.3**, **5.1.10**; Batch_21."
+C425,pcc-ready-position-specifics,pcc,equipment,pcc ready position specifics,pcc ready position specifics,**Appendix D**; Batch_21.,XI; verify FPSU docs,reviewed,reviewed,**Appendix D**; Batch_21.
+C426,stage-equipment-abuse,handgun,penalties,stage equipment abuse,stage equipment abuse,**10.6.1**; Batch_22 Stop Protocol.,XI; verify FPSU docs,reviewed,reviewed,**10.6.1**; Batch_22 Stop Protocol.
+C427,unsafe-movement-dynamic,handgun,safety,unsafe movement dynamic,unsafe movement dynamic,"**8.3.2**, **8.6.4**; Batch_22.",XI; verify FPSU docs,reviewed,reviewed,"**8.3.2**, **8.6.4**; Batch_22."
+C428,stage-interference-reshoot,handgun,match-admin,stage interference reshoot,stage interference reshoot,**8.6.4**; Batch_22.,XI; verify FPSU docs,reviewed,reviewed,**8.6.4**; Batch_22.
+C429,stopping-competitor-protocol,handgun,match-admin,stopping competitor protocol,stopping competitor protocol,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22.",XI; verify FPSU docs,reviewed,reviewed,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22."
+C430,stop-command-handgun,handgun,match-admin,stop command handgun,stop command handgun,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22.",XI; verify FPSU docs,reviewed,reviewed,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22."
+C431,stop-command-rifle,rifle,match-admin,stop command rifle,stop command rifle,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22.",XI; verify FPSU docs,reviewed,reviewed,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22."
+C432,stop-command-pcc,pcc,match-admin,stop command pcc,stop command pcc,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22.",XI; verify FPSU docs,reviewed,reviewed,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22."
+C433,stop-command-shotgun,shotgun,match-admin,stop command shotgun,stop command shotgun,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22.",XI; verify FPSU docs,reviewed,reviewed,"**8.3.2**, **8.6.4**, **10.6.1**; Batch_22."
+C434,extra-shots-fixed-time,handgun,penalties,extra shots fixed time,extra shots fixed time,**9.4.5**; Batch_23 Penalties Complex.,XI; verify FPSU docs,reviewed,reviewed,**9.4.5**; Batch_23 Penalties Complex.
+C435,extra-shots-fixed-time,rifle,penalties,extra shots fixed time,extra shots fixed time,**9.4.5**; Batch_23.,XI; verify FPSU docs,reviewed,reviewed,**9.4.5**; Batch_23.
+C436,extra-shots-fixed-time,pcc,penalties,extra shots fixed time,extra shots fixed time,**9.4.5**; Batch_23.,XI; verify FPSU docs,reviewed,reviewed,**9.4.5**; Batch_23.
+C437,extra-hits-fixed-time,handgun,penalties,extra hits fixed time,extra hits fixed time,**9.4.5**; Batch_23.,XI; verify FPSU docs,reviewed,reviewed,**9.4.5**; Batch_23.
+C438,extra-hits-fixed-time,rifle,penalties,extra hits fixed time,extra hits fixed time,**9.4.5**; Batch_23.,XI; verify FPSU docs,reviewed,reviewed,**9.4.5**; Batch_23.
+C439,metal-procedure-violation,handgun,penalties,metal procedure violation,metal procedure violation,**10.2.2**; Batch_23.,XI; verify FPSU docs,reviewed,reviewed,**10.2.2**; Batch_23.
+C440,metal-procedure-violation,rifle,penalties,metal procedure violation,metal procedure violation,**10.2.2**; Batch_23.,XI; verify FPSU docs,reviewed,reviewed,**10.2.2**; Batch_23.
+C441,procedural-no-shoot,handgun,penalties,procedural no shoot,procedural no shoot,**9.4.4**; Batch_23.,XI; verify FPSU docs,reviewed,reviewed,**9.4.4**; Batch_23.
+C442,paper-target-specs,handgun,scoring,paper target specs,paper target specs,"**4.1**, **4.2**; Batch_25 Targets Restoration.",XI; verify FPSU docs,reviewed,reviewed,"**4.1**, **4.2**; Batch_25 Targets Restoration."
+C443,steel-target-specs,handgun,scoring,steel target specs,steel target specs,"**4.1**, **4.2**; Batch_25.",XI; verify FPSU docs,reviewed,reviewed,"**4.1**, **4.2**; Batch_25."
+C444,fragile-target-specs,shotgun,scoring,fragile target specs,fragile target specs,"**4.1**, **4.2**; Batch_25.",XI; verify FPSU docs,reviewed,reviewed,"**4.1**, **4.2**; Batch_25."
+C445,target-presentation-mini-rifle,mini_rifle,scoring,target presentation mini rifle,target presentation mini rifle,"**4.1**, **4.2**; Batch_25.",XI; verify FPSU docs,reviewed,reviewed,"**4.1**, **4.2**; Batch_25."
+C446,prematurely-patched-targets,handgun,scoring,prematurely patched targets,prematurely patched targets,**9.1.3**; Batch_25.,XI; verify FPSU docs,reviewed,reviewed,**9.1.3**; Batch_25.
+C447,unpatched-targets-previous-shooter,rifle,scoring,unpatched targets previous shooter,unpatched targets previous shooter,**9.1.4**; Batch_25.,XI; verify FPSU docs,reviewed,reviewed,**9.1.4**; Batch_25.
+C448,target-restoration-failure,handgun,penalties,target restoration failure,target restoration failure,"**9.1.3**, **9.1.4**; Batch_25.",XI; verify FPSU docs,reviewed,reviewed,"**9.1.3**, **9.1.4**; Batch_25."
+C449,scoring-policy-summary,handgun,scoring,scoring policy summary,scoring policy summary,"**4.1**, **4.2**, **9.1.3**, **9.1.4**; Batch_25.",XI; verify FPSU docs,reviewed,reviewed,"**4.1**, **4.2**, **9.1.3**, **9.1.4**; Batch_25."
+C450,ad-loading-unloading,handgun,safety,ad loading unloading,ad loading unloading,**10.4.3**; Batch_26 AD Safety.,XI; verify FPSU docs,reviewed,reviewed,**10.4.3**; Batch_26 AD Safety.
+C451,ad-movement,handgun,safety,ad movement,ad movement,**10.4.4**; Batch_26.,XI; verify FPSU docs,reviewed,reviewed,**10.4.4**; Batch_26.
+C452,ad-malfunction-clearing,handgun,safety,ad malfunction clearing,ad malfunction clearing,**10.4.5**; Batch_26.,XI; verify FPSU docs,reviewed,reviewed,**10.4.5**; Batch_26.
+C453,ad-short-distance,handgun,safety,ad short distance,ad short distance,**10.4.2**; Batch_26.,XI; verify FPSU docs,reviewed,reviewed,**10.4.2**; Batch_26.
+C454,ad-over-backstop,handgun,safety,ad over backstop,ad over backstop,**10.4.1**; Batch_26.,XI; verify FPSU docs,reviewed,reviewed,**10.4.1**; Batch_26.
+C455,ad-holstering-drawing,handgun,safety,ad holstering drawing,ad holstering drawing,**10.4.6**; Batch_26.,XI; verify FPSU docs,reviewed,reviewed,**10.4.6**; Batch_26.
+C456,ad-no-command,handgun,safety,ad no command,ad no command,**10.4.7**; Batch_26.,XI; verify FPSU docs,reviewed,reviewed,**10.4.7**; Batch_26.
+C457,ad-transfer-transition,handgun,safety,ad transfer transition,ad transfer transition,**10.4.8**; Batch_26.,XI; verify FPSU docs,reviewed,reviewed,**10.4.8**; Batch_26.
+C458,drawing-while-moving,handgun,safety,drawing while moving,drawing while moving,**10.5.11**; Batch_27 (manifest C114).,XI; verify FPSU docs,reviewed,reviewed,**10.5.11**; Batch_27 (manifest C114).
+C459,holstering-moving,handgun,safety,holstering moving,holstering moving,**10.5.11**; Batch_27 (manifest C123).,XI; verify FPSU docs,reviewed,reviewed,**10.5.11**; Batch_27 (manifest C123).
+C460,draw-facing-uprange,handgun,safety,draw facing uprange,draw facing uprange,**10.5.2**; Batch_27 (manifest C124).,XI; verify FPSU docs,reviewed,reviewed,**10.5.2**; Batch_27 (manifest C124).
+C461,start-position-handgun,handgun,penalties,start position handgun,start position handgun,**8.2.2**; Batch_28 Start & Commands (manifest C68).,XI; verify FPSU docs,reviewed,reviewed,**8.2.2**; Batch_28 Start & Commands (manifest C68).
+C462,start-position-rifle,rifle,penalties,start position rifle,start position rifle,**8.2.2**; Batch_28 (manifest C69).,XI; verify FPSU docs,reviewed,reviewed,**8.2.2**; Batch_28 (manifest C69).
+C463,start-position-pcc,pcc,penalties,start position pcc,start position pcc,**8.2.2**; Batch_28 (manifest C70).,XI; verify FPSU docs,reviewed,reviewed,**8.2.2**; Batch_28 (manifest C70).
+C464,multiple-loading-shotgun,shotgun,penalties,multiple loading shotgun,multiple loading shotgun,**10.2.13**; Batch_28 (manifest C101).,XI; verify FPSU docs,reviewed,reviewed,**10.2.13**; Batch_28 (manifest C101).
+C465,ignoring-ro-instructions,handgun,match-admin,ignoring ro instructions,ignoring ro instructions,**10.6.1**; Batch_28 (manifest C95).,XI; verify FPSU docs,reviewed,reviewed,**10.6.1**; Batch_28 (manifest C95).
+C466,premature-handling-loading,handgun,safety,premature handling loading,premature handling loading,**10.5.1**; Batch_28 (manifest C96).,XI; verify FPSU docs,reviewed,reviewed,**10.5.1**; Batch_28 (manifest C96).
+C467,unauthorized-unloading,handgun,safety,unauthorized unloading,unauthorized unloading,**10.5.1**; Batch_28 (manifest C97).,XI; verify FPSU docs,reviewed,reviewed,**10.5.1**; Batch_28 (manifest C97).
+C468,failure-to-clear-malfunction,handgun,safety,failure to clear malfunction,failure to clear malfunction,**10.5.1**; Batch_28 (manifest C98).,XI; verify FPSU docs,reviewed,reviewed,**10.5.1**; Batch_28 (manifest C98).
+C469,lighting-changes,handgun,match-admin,lighting changes,lighting changes,"**2.1.1**; Batch_29 Environment (manifest C295, was 2.1.2).",XI; verify FPSU docs,reviewed,reviewed,"**2.1.1**; Batch_29 Environment (manifest C295, was 2.1.2)."
+C470,weather-conditions-impact,handgun,match-admin,weather conditions impact,weather conditions impact,**2.1.1**; Batch_29 (manifest C296).,XI; verify FPSU docs,reviewed,reviewed,**2.1.1**; Batch_29 (manifest C296).
+C471,loss-of-eye-protection,handgun,safety,loss of eye protection,loss of eye protection,**5.4.4**; Batch_29 (manifest C297).,XI; verify FPSU docs,reviewed,reviewed,**5.4.4**; Batch_29 (manifest C297).
+C472,loss-of-ear-protection,handgun,safety,loss of ear protection,loss of ear protection,**5.4.4**; Batch_29 (manifest C298).,XI; verify FPSU docs,reviewed,reviewed,**5.4.4**; Batch_29 (manifest C298).
+C473,working-with-helpers,handgun,match-admin,working with helpers,working with helpers,**7.1.9**; Batch_29 (manifest C299).,XI; verify FPSU docs,reviewed,reviewed,**7.1.9**; Batch_29 (manifest C299).
+C474,stage-surface-maintenance,handgun,match-admin,stage surface maintenance,stage surface maintenance,**2.1.5**; Batch_29 (manifest C300).,XI; verify FPSU docs,reviewed,reviewed,**2.1.5**; Batch_29 (manifest C300).
+C475,ro-personal-safety,handgun,match-admin,ro personal safety,ro personal safety,"**2.1.5**; Batch_29 (manifest C301, was 7.1.1).",XI; verify FPSU docs,reviewed,reviewed,"**2.1.5**; Batch_29 (manifest C301, was 7.1.1)."
+C476,spectator-crowd-control,handgun,match-admin,spectator crowd control,spectator crowd control,"**2.1.1**; Batch_29 (manifest C302, was 2.1.9).",XI; verify FPSU docs,reviewed,reviewed,"**2.1.1**; Batch_29 (manifest C302, was 2.1.9)."
+C477,magazine-couplers-extensions,shotgun,equipment,magazine couplers extensions,magazine couplers extensions,"**Appendix D**, **8.1.5**; Batch_30 Shotgun Deep (manifest C214).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **8.1.5**; Batch_30 Shotgun Deep (manifest C214)."
+C478,chokes-muzzle-devices,shotgun,equipment,chokes muzzle devices,chokes muzzle devices,"**5.1.4**, **Appendix D**; Batch_30 (manifest C253).",XI; verify FPSU docs,reviewed,reviewed,"**5.1.4**, **Appendix D**; Batch_30 (manifest C253)."
+C479,shotgun-ergonomics-stocks,shotgun,equipment,shotgun ergonomics stocks,shotgun ergonomics stocks,"**Appendix D**, **8.1.5**; Batch_30 (manifest C254).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **8.1.5**; Batch_30 (manifest C254)."
+C480,standard-division-deep,shotgun,equipment,standard division deep,standard division deep,"**Appendix D**, **8.1.5**; Batch_30 (manifest C256).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **8.1.5**; Batch_30 (manifest C256)."
+C481,standard-manual-deep,shotgun,equipment,standard manual deep,standard manual deep,"**Appendix D**, **8.1.5**; Batch_30 (manifest C257).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **8.1.5**; Batch_30 (manifest C257)."
+C482,modified-division-deep,shotgun,equipment,modified division deep,modified division deep,"**Appendix D**, **8.1.5**; Batch_30 (manifest C258).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **8.1.5**; Batch_30 (manifest C258)."
+C483,open-division-deep,shotgun,equipment,open division deep,open division deep,"**Appendix D**, **8.1.5**; Batch_30 (manifest C259).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **8.1.5**; Batch_30 (manifest C259)."
+C484,shotgun-speed-loaders,shotgun,equipment,shotgun speed loaders,shotgun speed loaders,"**Appendix D**, **8.1.5**; Batch_30 (manifest C261).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **8.1.5**; Batch_30 (manifest C261)."
+C485,bipods-usage-penalties,rifle,equipment,bipods usage penalties,bipods usage penalties,"**5.1.3**, **Appendix D**, **10.2.2**; Batch_31 Rifle/PCC (manifest C262).",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**, **10.2.2**; Batch_31 Rifle/PCC (manifest C262)."
+C486,optics-magnification-limit,rifle,equipment,optics magnification limit,optics magnification limit,"**Appendix D**, **10.2.2**; Batch_31 (manifest C263).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **10.2.2**; Batch_31 (manifest C263)."
+C487,hard-cover-rifle-scoring,rifle,scoring,hard cover rifle scoring,hard cover rifle scoring,**9.1.5**; Batch_31 (manifest C264).,XI; verify FPSU docs,reviewed,reviewed,**9.1.5**; Batch_31 (manifest C264).
+C488,environmental-supports-rifle,rifle,penalties,environmental supports rifle,environmental supports rifle,**10.2.2**; Batch_31 (manifest C265).,XI; verify FPSU docs,reviewed,reviewed,**10.2.2**; Batch_31 (manifest C265).
+C489,sling-usage-engagement,pcc,equipment,sling usage engagement,sling usage engagement,"**5.1.3**, **Appendix D**, **10.2.2**; Batch_31 (manifest C266).",XI; verify FPSU docs,reviewed,reviewed,"**5.1.3**, **Appendix D**, **10.2.2**; Batch_31 (manifest C266)."
+C490,standard-muzzle-brake-limit,rifle,equipment,standard muzzle brake limit,standard muzzle brake limit,"**Appendix D**, **10.2.2**; Batch_31 (manifest C267).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **10.2.2**; Batch_31 (manifest C267)."
+C491,pcc-stock-configuration,pcc,equipment,pcc stock configuration,pcc stock configuration,"**Appendix D**, **5.1.3**, **10.2.2**; Batch_31 (manifest C268).",XI; verify FPSU docs,reviewed,reviewed,"**Appendix D**, **5.1.3**, **10.2.2**; Batch_31 (manifest C268)."
+C492,long-range-scoring-aids,rifle,scoring,long range scoring aids,long range scoring aids,"**9.1.5**, **10.2.2**; Batch_31 (manifest C269).",XI; verify FPSU docs,reviewed,reviewed,"**9.1.5**, **10.2.2**; Batch_31 (manifest C269)."
+C493,level-1-2-flexibility,handgun,match-admin,level 1 2 flexibility,level 1 2 flexibility,"**1.1.5**, **6.1.1**; Batch_33 Level I–II Final (manifest C305).",XI; verify FPSU docs,reviewed,reviewed,"**1.1.5**, **6.1.1**; Batch_33 Level I–II Final (manifest C305)."
+C494,simplified-club-scoring,handgun,scoring,simplified club scoring,simplified club scoring,"**9.7**, **9.11**; Batch_33 (manifest C306).",XI; verify FPSU docs,reviewed,reviewed,"**9.7**, **9.11**; Batch_33 (manifest C306)."
+C495,mentoring-new-shooters,handgun,match-admin,mentoring new shooters,mentoring new shooters,"**7.1.1**, **8.6.1**; Batch_33 (manifest C307).",XI; verify FPSU docs,reviewed,reviewed,"**7.1.1**, **8.6.1**; Batch_33 (manifest C307)."
+C496,club-match-community-ethics,handgun,match-admin,club match community ethics,club match community ethics,**10.6.1**; Batch_33 (manifest C308).,XI; verify FPSU docs,reviewed,reviewed,**10.6.1**; Batch_33 (manifest C308).
+C497,shoot-off-rifle-specifics,rifle,match-admin,shoot off rifle specifics,shoot off rifle specifics,**1.2.2**; Batch_34 Advanced Admin (manifest C283).,XI; verify FPSU docs,reviewed,reviewed,**1.2.2**; Batch_34 Advanced Admin (manifest C283).
+C498,shoot-off-shotgun-specifics,shotgun,match-admin,shoot off shotgun specifics,shoot off shotgun specifics,**1.2.2**; Batch_34 (manifest C284).,XI; verify FPSU docs,reviewed,reviewed,**1.2.2**; Batch_34 (manifest C284).
+C499,multigun-transition-area-design,multigun,match-admin,multigun transition area design,multigun transition area design,"**11.1**; Batch_34 (manifest C288, was Appendix G).",XI; verify FPSU docs,reviewed,reviewed,"**11.1**; Batch_34 (manifest C288, was Appendix G)."
+C500,multigun-safe-abandonment,multigun,safety,multigun safe abandonment,multigun safe abandonment,"**11.1**, **11.6**; Batch_34 (manifest C289).",XI; verify FPSU docs,reviewed,reviewed,"**11.1**, **11.6**; Batch_34 (manifest C289)."
+C501,arbitration-evidence-handling,handgun,match-admin,arbitration evidence handling,arbitration evidence handling,"**11.1**, **11.6**; Batch_34 (manifest C292).",XI; verify FPSU docs,reviewed,reviewed,"**11.1**, **11.6**; Batch_34 (manifest C292)."
+C502,arbitration-committee-composition,handgun,match-admin,arbitration committee composition,arbitration committee composition,**11.2**; Batch_34 (manifest C293).,XI; verify FPSU docs,reviewed,reviewed,**11.2**; Batch_34 (manifest C293).
+C503,stats-error-correction,handgun,match-admin,stats error correction,stats error correction,"**9.10**, **11.3**; Batch_34 (manifest C294).",XI; verify FPSU docs,reviewed,reviewed,"**9.10**, **11.3**; Batch_34 (manifest C294)."
+C504,gun-handling-briefing-safety,handgun,safety,gun handling briefing safety,gun handling briefing safety,"**11.1**; Batch_34 (manifest C134, was 10.5.1).",XI; verify FPSU docs,reviewed,reviewed,"**11.1**; Batch_34 (manifest C134, was 10.5.1)."
+C505,dropped-gun-during-loading,handgun,safety,dropped gun during loading,dropped gun during loading,**10.5.3**; Batch_35 Dropped Gun (manifest C115).,XI; verify FPSU docs,reviewed,reviewed,**10.5.3**; Batch_35 Dropped Gun (manifest C115).
+C506,dropped-gun-during-movement,handgun,safety,dropped gun during movement,dropped gun during movement,**10.5.3**; Batch_35 (manifest C116).,XI; verify FPSU docs,reviewed,reviewed,**10.5.3**; Batch_35 (manifest C116).
+C507,dropped-gun-holstered,handgun,safety,dropped gun holstered,dropped gun holstered,**10.5.3**; Batch_35 (manifest C117).,XI; verify FPSU docs,reviewed,reviewed,**10.5.3**; Batch_35 (manifest C117).
+C508,dropped-gun-outside-cof,handgun,safety,dropped gun outside cof,dropped gun outside cof,**10.5.14**; Batch_35 (manifest C118).,XI; verify FPSU docs,reviewed,reviewed,**10.5.14**; Batch_35 (manifest C118).
+C509,retrieval-protocol-dropped-gun,handgun,match-admin,retrieval protocol dropped gun,retrieval protocol dropped gun,"**10.5.3**, **10.5.14**; Batch_35 (manifest C119).",XI; verify FPSU docs,reviewed,reviewed,"**10.5.3**, **10.5.14**; Batch_35 (manifest C119)."
+C510,dropped-long-gun-protocol,rifle,safety,dropped long gun protocol,dropped long gun protocol,**10.5.3**; Batch_35 (manifest C120).,XI; verify FPSU docs,reviewed,reviewed,**10.5.3**; Batch_35 (manifest C120).
+C511,dropped-gun-multigun-transition,multigun,safety,dropped gun multigun transition,dropped gun multigun transition,**10.5.3**; Batch_35 (manifest C121).,XI; verify FPSU docs,reviewed,reviewed,**10.5.3**; Batch_35 (manifest C121).
+C512,dropped-gun-unloaded-exception,handgun,safety,dropped gun unloaded exception,dropped gun unloaded exception,"**10.5.3**, **10.5.14**; Batch_35 (manifest C122).",XI; verify FPSU docs,reviewed,reviewed,"**10.5.3**, **10.5.14**; Batch_35 (manifest C122)."
+C513,mini-rifle-paper-scoring,mini_rifle,scoring,mini rifle paper scoring,mini rifle paper scoring,"**9.5.1**, **Appendix B**, **Appendix D**; Batch_36 Scoring Detail Strict v1.3 (manifest C180).",XI; verify FPSU docs,reviewed,draft,"**9.5.1**, **Appendix B**, **Appendix D**; Batch_36 Scoring Detail Strict v1.3 (manifest C180)."
+C514,mini-rifle-steel-scoring,mini_rifle,scoring,mini rifle steel scoring,mini rifle steel scoring,"**9.1**, **Appendix B**, **Appendix D**; Batch_36 (manifest C181).",XI; verify FPSU docs,reviewed,draft,"**9.1**, **Appendix B**, **Appendix D**; Batch_36 (manifest C181)."
+C515,radial-tears-scoring,handgun,scoring,radial tears scoring,radial tears scoring,"**9.5.4**, **Appendix B**; Batch_36 (manifest C182).",XI; verify FPSU docs,reviewed,draft,"**9.5.4**, **Appendix B**; Batch_36 (manifest C182)."
+C517,target-accessibility-visibility,handgun,match-admin,target accessibility visibility,target accessibility visibility,"**9.1**, **Appendix B**; Batch_36 (manifest C185).",XI; verify FPSU docs,reviewed,draft,"**9.1**, **Appendix B**; Batch_36 (manifest C185)."
+C518,rifle-major-minor-comparison,rifle,scoring,rifle major minor comparison,rifle major minor comparison,"**9.1**, **Appendix B**; Batch_36 (manifest C230).",XI; verify FPSU docs,reviewed,draft,"**9.1**, **Appendix B**; Batch_36 (manifest C230)."
+C519,pcc-minor-threshold-scoring,pcc,scoring,pcc minor threshold scoring,pcc minor threshold scoring,"**9.1**, **Appendix B**; Batch_36 (manifest C231).",XI; verify FPSU docs,reviewed,draft,"**9.1**, **Appendix B**; Batch_36 (manifest C231)."
+C520,restoration-moving-targets,handgun,match-admin,restoration moving targets,restoration moving targets,"**9.1.3**, **Appendix B**; Batch_36 (manifest C183.1).",XI; verify FPSU docs,reviewed,draft,"**9.1.3**, **Appendix B**; Batch_36 (manifest C183.1)."
+C521,coaching-outside-assistance,handgun,penalties,coaching outside assistance,coaching outside assistance,"**8.6.1**, **8.6.2**, **10.6**, **10.3**; Batch_37 Ethics Safety Strict v1.3 (manifest C129).",XI; verify FPSU docs,reviewed,draft,"**8.6.1**, **8.6.2**, **10.6**, **10.3**; Batch_37 Ethics Safety Strict v1.3 (manifest C129)."
+C522,unsportsmanlike-conduct,handgun,penalties,unsportsmanlike conduct,unsportsmanlike conduct,"**10.6**, **10.6.1**, **10.3**; Batch_37 (manifest C130).",XI; verify FPSU docs,reviewed,draft,"**10.6**, **10.6.1**, **10.3**; Batch_37 (manifest C130)."
+C523,forbidden-substances-policy,handgun,safety,forbidden substances policy,forbidden substances policy,"**10.6.3**, **10.3**, **10.6**; Batch_37 (manifest C131).",XI; verify FPSU docs,reviewed,draft,"**10.6.3**, **10.3**, **10.6**; Batch_37 (manifest C131)."
+C524,expulsion-from-match,handgun,match-admin,expulsion from match,expulsion from match,"**10.6.2**, **10.6**, **10.3**; Batch_37 (manifest C132).",XI; verify FPSU docs,reviewed,draft,"**10.6.2**, **10.6**, **10.3**; Batch_37 (manifest C132)."
+C525,verbal-abuse-dq,handgun,penalties,verbal abuse dq,verbal abuse dq,"**10.6.1**, **10.6**, **10.3**; Batch_37 (manifest C133).",XI; verify FPSU docs,reviewed,draft,"**10.6.1**, **10.6**, **10.3**; Batch_37 (manifest C133)."
+C526,third-party-interference,handgun,match-admin,third party interference,third party interference,"**8.6.2**, **8.6.4**, **10.6**, **10.3**; Batch_37 (manifest C303).",XI; verify FPSU docs,reviewed,draft,"**8.6.2**, **8.6.4**, **10.6**, **10.3**; Batch_37 (manifest C303)."
+C527,dq-official-procedure,handgun,match-admin,dq official procedure,dq official procedure,"**10.3**, **10.6**; Batch_37 (manifest C304).",XI; verify FPSU docs,reviewed,draft,"**10.3**, **10.6**; Batch_37 (manifest C304)."
+C528,self-inflicted-injury,handgun,safety,self inflicted injury,self inflicted injury,"**10.3.3**, **10.3**, **10.6**; Batch_37 (manifest C127).",XI; verify FPSU docs,reviewed,draft,"**10.3.3**, **10.3**, **10.6**; Batch_37 (manifest C127)."
+C529,level-4-5-protocols,handgun,match-admin,level 4 5 protocols,level 4 5 protocols,"**6.1.2**, **7.1**, **9.10**; Batch_38 Professional Procedures Strict v1.3 + IROA (manifest C309).",XI; verify FPSU docs,reviewed,draft,"**6.1.2**, **7.1**, **9.10**; Batch_38 Professional Procedures Strict v1.3 + IROA (manifest C309)."
+C530,iroa-official-conduct,handgun,match-admin,iroa official conduct,iroa official conduct,"**7.1**, **6.1.2**, **9.10**; Batch_38 + IROA (manifest C310).",XI; verify FPSU docs,reviewed,draft,"**7.1**, **6.1.2**, **9.10**; Batch_38 + IROA (manifest C310)."
+C531,media-press-safety-protocol,handgun,match-admin,media press safety protocol,media press safety protocol,"**7.1**, **6.1.2**, **9.10**; Batch_38 (manifest C311).",XI; verify FPSU docs,reviewed,draft,"**7.1**, **6.1.2**, **9.10**; Batch_38 (manifest C311)."
+C532,vip-guest-management,handgun,match-admin,vip guest management,vip guest management,"**7.1**, **6.1.2**, **9.10**; Batch_38 (manifest C312).",XI; verify FPSU docs,reviewed,draft,"**7.1**, **6.1.2**, **9.10**; Batch_38 (manifest C312)."
+C533,final-results-verification,handgun,match-admin,final results verification,final results verification,"**9.10**, **7.1**; Batch_38 (manifest C313).",XI; verify FPSU docs,reviewed,draft,"**9.10**, **7.1**; Batch_38 (manifest C313)."
+C534,stats-office-closing,handgun,match-admin,stats office closing,stats office closing,"**9.10**, **7.1**; Batch_38 Zero Error (manifest C314).",XI; verify FPSU docs,reviewed,draft,"**9.10**, **7.1**; Batch_38 Zero Error (manifest C314)."
+C535,match-disassembly-safety,handgun,match-admin,match disassembly safety,match disassembly safety,"**7.1**, **9.10**; Batch_38 (manifest C315).",XI; verify FPSU docs,reviewed,draft,"**7.1**, **9.10**; Batch_38 (manifest C315)."
+C536,ro-self-audit-end-of-match,handgun,match-admin,ro self audit end of match,ro self audit end of match,"**7.1**, **6.1.2**, **9.10**; Batch_38 + IROA (manifest C316).",XI; verify FPSU docs,reviewed,draft,"**7.1**, **6.1.2**, **9.10**; Batch_38 + IROA (manifest C316)."
+C537,stage-ready-checklist-30s,handgun,match-admin,stage ready checklist 30s,stage ready checklist 30s,"**8.3.1**, **10.5**; Batch_39 Final Matrix (manifest C317).",XI; verify FPSU docs,reviewed,draft,"**8.3.1**, **10.5**; Batch_39 Final Matrix (manifest C317)."
+C538,timer-echo-handling,handgun,match-admin,timer echo handling,timer echo handling,"**9.10**, **8.3.1**; Batch_39 (manifest C318).",XI; verify FPSU docs,reviewed,draft,"**9.10**, **8.3.1**; Batch_39 (manifest C318)."
+C539,mini-rifle-bolt-safety,mini_rifle,safety,mini rifle bolt safety,mini rifle bolt safety,"**10.5**, **10.5.1**, **8.3.1**; Batch_39 (manifest C319).",XI; verify FPSU docs,reviewed,draft,"**10.5**, **10.5.1**, **8.3.1**; Batch_39 (manifest C319)."
+C540,shotgun-loading-volume-penalty,shotgun,penalties,shotgun loading volume penalty,shotgun loading volume penalty,"**10.5**, **8.3.1**, **9.10**; Batch_39 (manifest C320).",XI; verify FPSU docs,reviewed,draft,"**10.5**, **8.3.1**, **9.10**; Batch_39 (manifest C320)."
+C541,managing-restoration-errors,handgun,match-admin,managing restoration errors,managing restoration errors,"**8.3.1**, **10.5**, **9.10**; Batch_39 (manifest C321).",XI; verify FPSU docs,reviewed,draft,"**8.3.1**, **10.5**, **9.10**; Batch_39 (manifest C321)."
+C542,final-division-verification-closing,handgun,match-admin,final division verification closing,final division verification closing,"**9.10**, **10.5**; Batch_39 (manifest C322).",XI; verify FPSU docs,reviewed,draft,"**9.10**, **10.5**; Batch_39 (manifest C322)."
+C543,ro-debrief-post-match,handgun,match-admin,ro debrief post match,ro debrief post match,"**9.10**, **8.3.1**, **10.5**; Batch_39 + IROA Ethics (manifest C323).",XI; verify FPSU docs,reviewed,draft,"**9.10**, **8.3.1**, **10.5**; Batch_39 + IROA Ethics (manifest C323)."
+C544,emergency-stage-modification-protocol,handgun,match-admin,emergency stage modification protocol,emergency stage modification protocol,"**10.5**, **8.3.1**, **9.10**; Batch_39 (manifest C324).",XI; verify FPSU docs,reviewed,draft,"**10.5**, **8.3.1**, **9.10**; Batch_39 (manifest C324)."
+C545,final-ro-ethics-summary,handgun,match-admin,final ro ethics summary,final ro ethics summary,"**10.5**, **8.3.1**, **9.10**; Batch_39 closing + IROA Ethics (manifest C325).",XI; verify FPSU docs,reviewed,draft,"**10.5**, **8.3.1**, **9.10**; Batch_39 closing + IROA Ethics (manifest C325)."
+C546,shortcut-short-circuiting,handgun,penalties,shortcut short circuiting,shortcut short circuiting,**10.2.2**; статья в repo — звірити з PDF.,XI; verify FPSU docs,reviewed,draft,**10.2.2**; статья в repo — звірити з PDF.
+C547,shortcut-short-circuiting,rifle,penalties,shortcut short circuiting,shortcut short circuiting,**10.2.2** (Rifle); звірити з PDF.,XI; verify FPSU docs,reviewed,draft,**10.2.2** (Rifle); звірити з PDF.
+C548,wrong-location,handgun,penalties,wrong location,wrong location,**10.2.2**; стрільба не з WSB-позиції.,XI; verify FPSU docs,reviewed,draft,**10.2.2**; стрільба не з WSB-позиції.
+C549,wrong-location,pcc,penalties,wrong location,wrong location,**10.2.2** (PCC).,XI; verify FPSU docs,reviewed,draft,**10.2.2** (PCC).
+C550,wrong-location,rifle,penalties,wrong location,wrong location,**10.2.2** (Rifle).,XI; verify FPSU docs,reviewed,draft,**10.2.2** (Rifle).
+C551,metal-target-not-falling,handgun,scoring,metal target not falling,metal target not falling,Метал / поппер; звірити з **Appendix C1** та PDF.,XI; verify FPSU docs,reviewed,draft,Метал / поппер; звірити з **Appendix C1** та PDF.
+C552,metal-target-not-falling,pcc,scoring,metal target not falling,metal target not falling,PCC метал; PDF.,XI; verify FPSU docs,reviewed,draft,PCC метал; PDF.
+C553,metal-target-not-falling,rifle,scoring,metal target not falling,metal target not falling,Rifle метал; PDF.,XI; verify FPSU docs,reviewed,draft,Rifle метал; PDF.
+C554,metal-target-not-falling,shotgun,scoring,metal target not falling,metal target not falling,Shotgun метал; PDF.,XI; verify FPSU docs,reviewed,draft,Shotgun метал; PDF.
+C555,movement-safety-off,pcc,safety,movement safety off,movement safety off,Рух з безпечним затвором; звірити HG/PCC PDF.,XI; verify FPSU docs,reviewed,draft,Рух з безпечним затвором; звірити HG/PCC PDF.

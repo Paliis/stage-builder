@@ -1,5 +1,5 @@
 ---
-card_id: C127
+card_id: C336
 slug: sweeping
 discipline: rifle
 locale: uk

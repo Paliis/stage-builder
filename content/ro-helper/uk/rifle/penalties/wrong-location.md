@@ -1,5 +1,5 @@
 ---
-card_id: C59
+card_id: C550
 slug: wrong-location
 discipline: rifle
 locale: uk

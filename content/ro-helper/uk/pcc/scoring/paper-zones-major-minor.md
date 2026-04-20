@@ -1,5 +1,5 @@
 ---
-card_id: C167
+card_id: C181
 slug: paper-zones-major-minor
 discipline: pcc
 locale: uk

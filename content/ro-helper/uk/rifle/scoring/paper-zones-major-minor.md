@@ -1,5 +1,5 @@
 ---
-card_id: C166
+card_id: C182
 slug: paper-zones-major-minor
 discipline: rifle
 locale: uk

@@ -1,5 +1,5 @@
 ---
-card_id: C199
+card_id: C554
 slug: metal-target-not-falling
 discipline: shotgun
 locale: uk

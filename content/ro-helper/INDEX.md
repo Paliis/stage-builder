@@ -188,7 +188,7 @@
 | C207 | provisional-results-stats-appeal | rifle | scoring | draft | draft | false | — | **9.8**; чернетка — рев’ю з PDF. |
 | C208 | provisional-results-stats-appeal | mini_rifle | scoring | draft | draft | false | — | **9.8**; чернетка — рев’ю з PDF. |
 | C209 | provisional-results-stats-appeal | shotgun | scoring | draft | draft | false | — | **9.8**; чернетка — рев’ю з PDF. |
-| C210 | disappearing-targets-scoring | handgun | scoring | draft | draft | false | — | **9.9** (9.9.2 vs активатор); чернетка — рев’ю з PDF. |
+| C210 | disappearing-targets-scoring | handgun | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**; Batch_36 (manifest C184). |
 | C211 | disappearing-targets-scoring | pcc | scoring | draft | draft | false | — | **9.9**; чернетка — рев’ю з PDF. |
 | C212 | disappearing-targets-scoring | rifle | scoring | draft | draft | false | — | **9.9**; чернетка — рев’ю з PDF. |
 | C213 | disappearing-targets-scoring | mini_rifle | scoring | draft | draft | false | — | **9.9**; чернетка — рев’ю з PDF. |
@@ -489,7 +489,6 @@
 | C513 | mini-rifle-paper-scoring | mini_rifle | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.5.1**, **Appendix B**, **Appendix D**; Batch_36 Scoring Detail Strict v1.3 (manifest C180). |
 | C514 | mini-rifle-steel-scoring | mini_rifle | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**, **Appendix D**; Batch_36 (manifest C181). |
 | C515 | radial-tears-scoring | handgun | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.5.4**, **Appendix B**; Batch_36 (manifest C182). |
-| C516 | disappearing-targets-scoring | handgun | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**; Batch_36 (manifest C184). |
 | C517 | target-accessibility-visibility | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**; Batch_36 (manifest C185). |
 | C518 | rifle-major-minor-comparison | rifle | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**; Batch_36 (manifest C230). |
 | C519 | pcc-minor-threshold-scoring | pcc | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**; Batch_36 (manifest C231). |
@@ -519,3 +518,13 @@
 | C543 | ro-debrief-post-match | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.10**, **8.3.1**, **10.5**; Batch_39 + IROA Ethics (manifest C323). |
 | C544 | emergency-stage-modification-protocol | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **10.5**, **8.3.1**, **9.10**; Batch_39 (manifest C324). |
 | C545 | final-ro-ethics-summary | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **10.5**, **8.3.1**, **9.10**; Batch_39 closing + IROA Ethics (manifest C325). |
+| C546 | shortcut-short-circuiting | handgun | penalties | reviewed | draft | true | Gemini-Rules-2026 | **10.2.2**; статья в repo — звірити з PDF. |
+| C547 | shortcut-short-circuiting | rifle | penalties | reviewed | draft | true | Gemini-Rules-2026 | **10.2.2** (Rifle); звірити з PDF. |
+| C548 | wrong-location | handgun | penalties | reviewed | draft | true | Gemini-Rules-2026 | **10.2.2**; стрільба не з WSB-позиції. |
+| C549 | wrong-location | pcc | penalties | reviewed | draft | true | Gemini-Rules-2026 | **10.2.2** (PCC). |
+| C550 | wrong-location | rifle | penalties | reviewed | draft | true | Gemini-Rules-2026 | **10.2.2** (Rifle). |
+| C551 | metal-target-not-falling | handgun | scoring | reviewed | draft | true | Gemini-Rules-2026 | Метал / поппер; звірити з **Appendix C1** та PDF. |
+| C552 | metal-target-not-falling | pcc | scoring | reviewed | draft | true | Gemini-Rules-2026 | PCC метал; PDF. |
+| C553 | metal-target-not-falling | rifle | scoring | reviewed | draft | true | Gemini-Rules-2026 | Rifle метал; PDF. |
+| C554 | metal-target-not-falling | shotgun | scoring | reviewed | draft | true | Gemini-Rules-2026 | Shotgun метал; PDF. |
+| C555 | movement-safety-off | pcc | safety | reviewed | draft | true | Gemini-Rules-2026 | Рух з безпечним затвором; звірити HG/PCC PDF. |

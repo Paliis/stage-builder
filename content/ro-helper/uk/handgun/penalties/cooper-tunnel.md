@@ -1,5 +1,5 @@
 ---
-card_id: C57
+card_id: C82
 slug: cooper-tunnel
 discipline: handgun
 locale: uk
