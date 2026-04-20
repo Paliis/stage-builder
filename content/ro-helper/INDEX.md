@@ -423,3 +423,11 @@
 | C447 | unpatched-targets-previous-shooter | rifle | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.1.4**; Batch_25. |
 | C448 | target-restoration-failure | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.1.3**, **9.1.4**; Batch_25. |
 | C449 | scoring-policy-summary | handgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **4.1**, **4.2**, **9.1.3**, **9.1.4**; Batch_25. |
+| C450 | ad-loading-unloading | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.3**; Batch_26 AD Safety. |
+| C451 | ad-movement | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.4**; Batch_26. |
+| C452 | ad-malfunction-clearing | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.5**; Batch_26. |
+| C453 | ad-short-distance | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.2**; Batch_26. |
+| C454 | ad-over-backstop | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.1**; Batch_26. |
+| C455 | ad-holstering-drawing | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.6**; Batch_26. |
+| C456 | ad-no-command | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.7**; Batch_26. |
+| C457 | ad-transfer-transition | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.8**; Batch_26. |
