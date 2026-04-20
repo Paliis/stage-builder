@@ -478,3 +478,11 @@
 | C502 | arbitration-committee-composition | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **11.2**; Batch_34 (manifest C293). |
 | C503 | stats-error-correction | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **9.10**, **11.3**; Batch_34 (manifest C294). |
 | C504 | gun-handling-briefing-safety | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **11.1**; Batch_34 (manifest C134, was 10.5.1). |
+| C505 | dropped-gun-during-loading | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**; Batch_35 Dropped Gun (manifest C115). |
+| C506 | dropped-gun-during-movement | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**; Batch_35 (manifest C116). |
+| C507 | dropped-gun-holstered | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**; Batch_35 (manifest C117). |
+| C508 | dropped-gun-outside-cof | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.14**; Batch_35 (manifest C118). |
+| C509 | retrieval-protocol-dropped-gun | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**, **10.5.14**; Batch_35 (manifest C119). |
+| C510 | dropped-long-gun-protocol | rifle | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**; Batch_35 (manifest C120). |
+| C511 | dropped-gun-multigun-transition | multigun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**; Batch_35 (manifest C121). |
+| C512 | dropped-gun-unloaded-exception | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**, **10.5.14**; Batch_35 (manifest C122). |
