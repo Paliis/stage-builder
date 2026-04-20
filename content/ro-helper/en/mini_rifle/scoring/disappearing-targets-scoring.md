@@ -8,6 +8,12 @@ discipline: mini_rifle
 control_values: "Verify Mini Rifle Jan 2026 PDF — 9.9 (moving / disappearing / special)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "4.6.1"
+    note: ""
+  - rule: "9.9.3"
+    note: ""
+  - rule: "9.9.2"
+    note: ""
   - rule: "9.9"
     note: "Disappearing / special target scoring — Mini Rifle; sub-rules in PDF"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Mini%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -33,6 +39,13 @@ status: draft
 3. **Hardware** issues — **RM** before more juniors shoot a broken stage.
 
 ## IPSC (Jan 2026)
+
+
+### 9.9.2–9.9.3 — disappearing vs moving, and equipment malfunction
+
+- **Disappearing target**: if a target is legally defined as “disappearing”, **not engaging / not hitting** it does **not** incur **Miss/FTE** (see **9.9.2–9.9.3** logic).
+- If the mechanism **malfunctions** and the target **fails to disappear** (remains partially visible / hangs up), treat it as **range equipment failure** → **Reshoot per 4.6.1**.
+- Note: “moving but still visible” ≠ “disappearing”. Classify via **WSB** + **9.9.2–9.9.3**.
 
 - **9.9 Mini Rifle**; verify sub-clauses against **full Rifle** **9.9** if **MD** uses shared props.
 

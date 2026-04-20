@@ -8,6 +8,8 @@ discipline: handgun
 control_values: "Verify Handgun Jan 2026 PDF — Appendix C1 (who may challenge, timing, RM, evidence)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "4.6.1"
+    note: ""
   - rule: "Appendix C1"
     note: "Popper calibration challenge — Handgun Jan 2026"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -38,6 +40,15 @@ status: draft
 5. **Know** that **PCC / Rifle / Mini Rifle / Shotgun** may use a **different appendix letter** for the same idea — always open the PDF for the match discipline.
 
 ## IPSC (Jan 2026)
+
+
+### RO algorithm: popper calibration challenge
+
+- **Do not touch the popper before calibration.** No adjustments, no “hand tests”.
+- Record **facts** (string, target state, conditions), stop arguments on the line, and escalate to **RM/CRO** per **Appendix C1**.
+- Use the **calibration gun** / calibration shot procedure per **Appendix C1**.
+- If the popper **falls** with the calibration shot — the competitor’s hits on it score **0** (i.e. **Miss**).
+- If the popper **does not fall** with the calibration shot — a **Reshoot** is mandatory (range equipment failure; see **4.6.1**).
 
 - Anchor: **Appendix C1** (Handgun); cross-link to **Chapter 9** (scoring) and **Chapter 4** (range equipment) where the PDF ties them.
 

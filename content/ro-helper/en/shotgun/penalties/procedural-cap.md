@@ -36,6 +36,14 @@ status: draft
 
 ## IPSC (Jan 2026)
 
+
+### 10.2.3 — cap: per occurrence vs per shot
+
+- **10.2.3** caps procedural penalties within the specific “container” defined by the rule (per **occurrence**, per **shot**, per **target**, etc.).
+- Typical case: **both feet** out at the same moment is a **single occurrence** → maximum **one** procedural, unless the rule explicitly states otherwise.
+- If the violation created a **significant advantage**, a different rule path may apply (see `significant-advantage`).
+- Keep the distinction clear: **one penalty per occurrence** vs **one penalty per shot** are different counting modes.
+
 - Anchor: **10.2.3** in **Shotgun**; read together with the sub-rules the cap references.
 - Match **chief scoring** / **RM** may issue uniform interpretation — follow match briefings.
 

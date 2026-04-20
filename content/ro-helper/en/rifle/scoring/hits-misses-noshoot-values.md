@@ -8,6 +8,10 @@ discipline: rifle
 control_values: "Verify Rifle Jan 2026 PDF — 9.4 (points for hits, misses, no-shoot; steel)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "9.4.2"
+    note: ""
+  - rule: "9.4.1"
+    note: ""
   - rule: "9.4"
     note: "Hits, misses, no-shoot values — Rifle; tables in PDF and appendices"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -35,6 +39,16 @@ status: draft
 5. **Disputes:** escalate per **9.6**, don’t re-invent **9.4** on the spot.
 
 ## IPSC (Jan 2026)
+
+
+### 9.4.1–9.4.2 — point table (Major/Minor)
+
+Verify the numbers in your discipline PDF; for **Jan 2026** (IPSC) the typical table is:
+
+| | A | C | D | Miss | No-Shoot |
+|---|---:|---:|---:|---:|---:|
+| **Major** | 5 | 4 | 2 | -10 | -10 |
+| **Minor** | 5 | 3 | 1 | -10 | -10 |
 
 - **9.4 Rifle** + **9.5** / **9.9** as referenced in your match book.
 

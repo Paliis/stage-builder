@@ -8,6 +8,10 @@ discipline: shotgun
 control_values: "Перевірити PDF Shotgun Jan 2026 — 9.4 (бали за влучання, miss, no-shoot; сталь)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "9.4.2"
+    note: ""
+  - rule: "9.4.1"
+    note: ""
   - rule: "9.4"
     note: "Hits, misses, no-shoot values — Shotgun; таблиці в PDF і додатках"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Shotgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -34,6 +38,16 @@ status: draft
 4. **Потік скводів:** однакові правила запису, щоб **скоринг** застосував **9.4** на багатьох етапах.
 
 ## IPSC (Jan 2026)
+
+
+### 9.4.1–9.4.2 — таблиця вартості (Major/Minor)
+
+Перевіряйте числа за PDF вашої дисципліни; для **Jan 2026** (IPSC) типова таблиця:
+
+| | A | C | D | Miss | Штрафна мішень (No-Shoot) |
+|---|---:|---:|---:|---:|---:|
+| **Major** | 5 | 4 | 2 | -10 | -10 |
+| **Minor** | 5 | 3 | 1 | -10 | -10 |
 
 - **9.4 Shotgun** разом із **9.5** та іншими посиланнями **розд. 9** у книзі Shotgun.
 

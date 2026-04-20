@@ -8,6 +8,8 @@ discipline: pcc
 control_values: "Verify PCC Jan 2026 PDF — popper calibration appendix (matrix cites HG Appendix C1 as hint; confirm letter/title in PCC PDF)"
 ipsc_edition: "Jan 2026"
 ipsc_refs:
+  - rule: "4.6.1"
+    note: ""
   - rule: "Appendix C1"
     note: "Popper calibration — verify appendix ID and text in PCC Jan 2026 PDF (may differ from Handgun C1 label)"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
@@ -38,6 +40,15 @@ The **PCC Jan 2026** rulebook contains a **popper calibration challenge** proced
 5. **On multi-gun ranges**, double-check you opened **PCC**, not **Handgun** or **Rifle**.
 
 ## IPSC (Jan 2026)
+
+
+### RO algorithm: popper calibration challenge
+
+- **Do not touch the popper before calibration.** No adjustments, no “hand tests”.
+- Record **facts** (string, target state, conditions), stop arguments on the line, and escalate to **RM/CRO** per **Appendix C1**.
+- Use the **calibration gun** / calibration shot procedure per **Appendix C1**.
+- If the popper **falls** with the calibration shot — the competitor’s hits on it score **0** (i.e. **Miss**).
+- If the popper **does not fall** with the calibration shot — a **Reshoot** is mandatory (range equipment failure; see **4.6.1**).
 
 - Find the **popper calibration** appendix in **PCC**; cross-link to **Chapter 9** and **Chapter 4** where your PDF ties them.
 
