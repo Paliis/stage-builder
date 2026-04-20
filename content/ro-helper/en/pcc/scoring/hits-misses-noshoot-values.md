@@ -20,10 +20,10 @@ fpsu_refs:
     note: "Hits and penalties"
     url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#4-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D0%BE%D1%87%D0%BE%D0%BA-%D1%82%D0%B0-%D1%88%D1%82%D1%80%D0%B0%D1%84%D1%96%D0%B2"
 fpsu_delta_verified: false
-reviewer: ""
-review_date: ""
+reviewer: "Gemini-Rules-2026"
+review_date: "2026-04-20"
 draft_source: llm
-status: draft
+status: reviewed
 ---
 
 ## What this is

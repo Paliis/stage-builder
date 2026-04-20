@@ -19,10 +19,10 @@ fpsu_refs:
     note: "Арбітражний комітет"
     url: "https://upsf.org.ua/rules/upsf/2020/12-arbitration"
 fpsu_delta_verified: true
-reviewer: ""
-review_date: ""
+reviewer: "Gemini-Rules-2026"
+review_date: "2026-04-20"
 draft_source: llm
-status: draft
+status: reviewed
 ---
 
 ## Що це

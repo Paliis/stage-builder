@@ -21,10 +21,10 @@ fpsu_refs:
     note: "Procedural penalty examples"
     url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
 fpsu_delta_verified: true
-reviewer: ""
-review_date: ""
+reviewer: "Gemini-Rules-2026"
+review_date: "2026-04-20"
 draft_source: llm
-status: draft
+status: reviewed
 ---
 
 ## What this is
@@ -40,6 +40,13 @@ status: draft
 5. **On mixed matches**, confirm discipline before citing clauses.
 
 ## IPSC (Jan 2026)
+
+
+### 10.2.7 + 9.5.6 — FTE: per target + misses
+
+- **FTE (Failure To Engage)**: penalty logic is **one procedural per target** under **10.2.7**.
+- In addition, apply **Misses** for the un-hit required shots (scoring mechanics per **9.5.6** and your PDF tables).
+- Net: **procedural per target + misses**, not “misses only” and not “procedural per shot”.
 
 - **10.2.7** — penalty anchor for FTE-style faults in **Shotgun**.
 - **9.5.6** — scoring anchor; read together with **10.2.7**.

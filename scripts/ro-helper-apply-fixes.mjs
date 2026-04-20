@@ -8,6 +8,9 @@
  * 7) Popper calibration: add clear RO algorithm (Appendix C1) and reshoot outcome.
  * 8) Procedural cap: highlight 10.2.3 and clarify per-occurrence vs per-shot (unless significant advantage).
  * 14) Match admin: reshoots + course design balance clarifications.
+ * 16) Penalties logic: per-shot vs per-occurrence for foot faults; FTE per target + misses; mandatory reload per shot until reload.
+ * 17) Paper scoring specifics: radial tears/enlarged holes and touching target ends challenges.
+ * 18) Shotgun wrong ammo: procedural per shot, not DQ (unless safety).
  *
  * Usage: node scripts/ro-helper-apply-fixes.mjs
  */
@@ -245,6 +248,107 @@ function addCourseDesignBalance(locale, body) {
   return ensureSection(body, heading, content)
 }
 
+function addFootFaultLogic(locale, body) {
+  const heading =
+    locale === 'uk'
+      ? '### 10.2.1 — «Штраф за випадок» vs «Штраф за кожен постріл»'
+      : '### 10.2.1 — “per occurrence” vs “per shot”'
+  const content =
+    locale === 'uk'
+      ? [
+          '- Якщо спортсмен **лише заступив** / торкнувся землі поза межами, але **не робив пострілів** у цей момент — зазвичай це **Штраф за випадок (per occurrence)**.',
+          '- Якщо спортсмен **робить постріли**, перебуваючи у порушенні меж (або **отримав значну перевагу**) — логіка може переходити в **Штраф за кожен постріл (per shot)**.',
+          '- Ключ до рішення: **чи були постріли під час порушення** і **чи є significant advantage** (див. `significant-advantage`).',
+        ]
+      : [
+          '- If the competitor **steps out** / touches outside the boundary but **does not fire** during that moment — this is typically **per occurrence**.',
+          '- If the competitor **fires shots** while faulting (or gains a **significant advantage**) — the logic may become **per shot**.',
+          '- Decision key: **shots fired while faulting** and **significant advantage** (see `significant-advantage`).',
+        ]
+  return ensureSection(body, heading, content)
+}
+
+function addFteLogic(locale, body) {
+  const heading =
+    locale === 'uk' ? '### 10.2.7 + 9.5.6 — FTE: «за мішень» + Miss' : '### 10.2.7 + 9.5.6 — FTE: per target + misses'
+  const content =
+    locale === 'uk'
+      ? [
+          '- **FTE (Failure To Engage)**: штрафна логіка — **один procedural за кожну мішень** (per target) за **10.2.7**.',
+          '- Паралельно застосовуються **Miss** за **невлучання** (заліковка/склад пострілів — за **9.5.6** та таблицями вашого PDF).',
+          '- Тобто: **procedural “per target” + misses**, а не “лише miss” і не “procedural за кожен постріл”.',
+        ]
+      : [
+          '- **FTE (Failure To Engage)**: penalty logic is **one procedural per target** under **10.2.7**.',
+          '- In addition, apply **Misses** for the un-hit required shots (scoring mechanics per **9.5.6** and your PDF tables).',
+          '- Net: **procedural per target + misses**, not “misses only” and not “procedural per shot”.',
+        ]
+  return ensureSection(body, heading, content)
+}
+
+function addMandatoryReloadLogic(locale, body) {
+  const heading = locale === 'uk' ? '### 10.2.4 — штраф до перезарядження (per shot)' : '### 10.2.4 — penalty until reload (per shot)'
+  const content =
+    locale === 'uk'
+      ? [
+          '- Якщо WSB вимагає перезарядження, а спортсмен **продовжує стріляти без нього**, штраф нараховується як **Штраф за кожен постріл (per shot)**, доки перезарядження **не виконано**.',
+          '- Ключовий момент — **постріли після точки, де WSB вимагає reload**.',
+        ]
+      : [
+          '- If the WSB requires a reload and the competitor **keeps firing without reloading**, apply the penalty **per shot** until the reload is **performed**.',
+          '- Key moment: **shots fired after the point where the WSB requires the reload**.',
+        ]
+  return ensureSection(body, heading, content)
+}
+
+function addPaperScoringChallengeTouch(locale, body) {
+  const heading = locale === 'uk' ? '### 9.6.1 — після доторку оскарження неможливе' : '### 9.6.1 — once touched, no challenge'
+  const content =
+    locale === 'uk'
+      ? [
+          '- Якщо **спортсмен** або **RO** **доторкнувся** мішені (або отвір/папір був змінений), результат **не може** бути оскаржений — **9.6.1**.',
+          '- Тому перед оглядом/вимірюванням: **не чіпати**, доки не згодні сторони / не покликано CRO/RM за процедурою матчу.',
+        ]
+      : [
+          '- If the **competitor** or an **RO** has **touched** the target (or altered the hole/paper), the score **cannot** be challenged — **9.6.1**.',
+          '- Therefore: **do not touch** before agreement / CRO-RM procedure on disputed hits.',
+        ]
+  return ensureSection(body, heading, content)
+}
+
+function addRadialTearsEnlargedHolesRules(locale, body) {
+  const heading =
+    locale === 'uk'
+      ? '### 9.5.4–9.5.5 — розриви та розширені отвори'
+      : '### 9.5.4–9.5.5 — radial tears and enlarged holes'
+  const content =
+    locale === 'uk'
+      ? [
+          '- **9.5.4 (Radial tears):** промені розриву **не** є частиною отвору кулі. Заліковується лише **сам отвір**, який має **торкатися** лінії зони.',
+          '- **9.5.5 (Enlarged holes):** якщо отвір розширено (уламок, кульова нестабільність), RO має ідентифікувати **повний каліберний круг**. Якщо це неможливо — **не зараховувати** як краще влучання.',
+        ]
+      : [
+          '- **9.5.4 (Radial tears):** radial tears are **not** part of the bullet hole. Only the **actual hole** counts, and it must **touch** the scoring line.',
+          '- **9.5.5 (Enlarged holes):** if the hole is enlarged (fragment/tumble), the RO must be able to identify a **full-diameter circle**. If not identifiable, **do not award** a higher score.',
+        ]
+  return ensureSection(body, heading, content)
+}
+
+function addWrongAmmoShotLogic(locale, body) {
+  const heading = locale === 'uk' ? '### 10.2.12 — неправильний набій: procedural за кожен постріл' : '### 10.2.12 — wrong ammo: procedural per shot'
+  const content =
+    locale === 'uk'
+      ? [
+          '- Якщо спортсмен вистрілив **набоєм, не дозволеним для цієї вправи** (напр. slug замість birdshot) — це **procedural за кожен постріл (per shot)**.',
+          '- Це **не DQ**, якщо тільки використання набою **не створило** порушення безпеки (тоді працюють safety/DQ правила окремо).',
+        ]
+      : [
+          '- If the competitor fires **ammunition not permitted for that stage** (e.g. slug instead of birdshot), apply **one procedural per shot**.',
+          '- This is **not a DQ**, unless it separately violates **range safety** (then safety/DQ rules apply independently).',
+        ]
+  return ensureSection(body, heading, content)
+}
+
 async function main() {
   if (!existsSync(roRoot)) {
     console.error('Missing content root:', roRoot)
@@ -446,6 +550,132 @@ async function main() {
     const locale = rel.startsWith('uk/') ? 'uk' : 'en'
     const nextBody = addCourseDesignBalance(locale, body)
     const next = joinFrontmatter(nextMeta, nextBody)
+    if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
+  }
+
+  // Step 16: penalties logic audit (selected range).
+  const footFaultFiles = [
+    'uk/handgun/penalties/foot-fault.md',
+    'uk/pcc/penalties/foot-fault.md',
+    'uk/rifle/penalties/foot-fault.md',
+    'uk/mini_rifle/penalties/foot-fault.md',
+    'uk/shotgun/penalties/foot-fault.md',
+    'en/handgun/penalties/foot-fault.md',
+    'en/pcc/penalties/foot-fault.md',
+    'en/rifle/penalties/foot-fault.md',
+    'en/mini_rifle/penalties/foot-fault.md',
+    'en/shotgun/penalties/foot-fault.md',
+  ]
+  for (const rel of footFaultFiles) {
+    const abs = join(roRoot, ...rel.split('/'))
+    const raw = await readFile(abs, 'utf8')
+    const { meta, body } = splitFrontmatter(raw)
+    const locale = rel.startsWith('uk/') ? 'uk' : 'en'
+    const nextBody = addFootFaultLogic(locale, body)
+    const next = joinFrontmatter(meta, nextBody)
+    if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
+  }
+
+  const fteFiles = [
+    'uk/handgun/penalties/failure-to-engage.md',
+    'uk/pcc/penalties/failure-to-engage.md',
+    'uk/rifle/penalties/failure-to-engage.md',
+    'uk/mini_rifle/penalties/failure-to-engage.md',
+    'uk/shotgun/penalties/failure-to-engage.md',
+    'en/handgun/penalties/failure-to-engage.md',
+    'en/pcc/penalties/failure-to-engage.md',
+    'en/rifle/penalties/failure-to-engage.md',
+    'en/mini_rifle/penalties/failure-to-engage.md',
+    'en/shotgun/penalties/failure-to-engage.md',
+  ]
+  for (const rel of fteFiles) {
+    const abs = join(roRoot, ...rel.split('/'))
+    const raw = await readFile(abs, 'utf8')
+    const { meta, body } = splitFrontmatter(raw)
+    const locale = rel.startsWith('uk/') ? 'uk' : 'en'
+    const nextBody = addFteLogic(locale, body)
+    const next = joinFrontmatter(meta, nextBody)
+    if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
+  }
+
+  const mandatoryReloadFiles = [
+    'uk/handgun/penalties/mandatory-reload.md',
+    'uk/pcc/penalties/mandatory-reload.md',
+    'uk/rifle/penalties/mandatory-reload.md',
+    'uk/mini_rifle/penalties/mandatory-reload.md',
+    'uk/shotgun/penalties/mandatory-reload.md',
+    'en/handgun/penalties/mandatory-reload.md',
+    'en/pcc/penalties/mandatory-reload.md',
+    'en/rifle/penalties/mandatory-reload.md',
+    'en/mini_rifle/penalties/mandatory-reload.md',
+    'en/shotgun/penalties/mandatory-reload.md',
+  ]
+  for (const rel of mandatoryReloadFiles) {
+    const abs = join(roRoot, ...rel.split('/'))
+    const raw = await readFile(abs, 'utf8')
+    const { meta, body } = splitFrontmatter(raw)
+    const locale = rel.startsWith('uk/') ? 'uk' : 'en'
+    const nextBody = addMandatoryReloadLogic(locale, body)
+    const next = joinFrontmatter(meta, nextBody)
+    if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
+  }
+
+  // Step 17: paper scoring specifics.
+  const paperScoringFiles = [
+    'uk/handgun/scoring/paper-scoring-policy.md',
+    'uk/pcc/scoring/paper-scoring-policy.md',
+    'uk/rifle/scoring/paper-scoring-policy.md',
+    'uk/mini_rifle/scoring/paper-scoring-policy.md',
+    'uk/shotgun/scoring/paper-scoring-policy.md',
+    'en/handgun/scoring/paper-scoring-policy.md',
+    'en/pcc/scoring/paper-scoring-policy.md',
+    'en/rifle/scoring/paper-scoring-policy.md',
+    'en/mini_rifle/scoring/paper-scoring-policy.md',
+    'en/shotgun/scoring/paper-scoring-policy.md',
+  ]
+  for (const rel of paperScoringFiles) {
+    const abs = join(roRoot, ...rel.split('/'))
+    const raw = await readFile(abs, 'utf8')
+    const { meta, body } = splitFrontmatter(raw)
+    const nextMeta = ensureIpscRefs(meta, ['9.6.1'])
+    const locale = rel.startsWith('uk/') ? 'uk' : 'en'
+    const nextBody = addPaperScoringChallengeTouch(locale, body)
+    const next = joinFrontmatter(nextMeta, nextBody)
+    if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
+  }
+
+  const radialFiles = [
+    'uk/handgun/scoring/radial-tears-enlarged-holes.md',
+    'uk/pcc/scoring/radial-tears-enlarged-holes.md',
+    'uk/rifle/scoring/radial-tears-enlarged-holes.md',
+    'uk/mini_rifle/scoring/radial-tears-enlarged-holes.md',
+    'uk/shotgun/scoring/radial-tears-enlarged-holes.md',
+    'en/handgun/scoring/radial-tears-enlarged-holes.md',
+    'en/pcc/scoring/radial-tears-enlarged-holes.md',
+    'en/rifle/scoring/radial-tears-enlarged-holes.md',
+    'en/mini_rifle/scoring/radial-tears-enlarged-holes.md',
+    'en/shotgun/scoring/radial-tears-enlarged-holes.md',
+  ]
+  for (const rel of radialFiles) {
+    const abs = join(roRoot, ...rel.split('/'))
+    const raw = await readFile(abs, 'utf8')
+    const { meta, body } = splitFrontmatter(raw)
+    const nextMeta = ensureIpscRefs(meta, ['9.5.5'])
+    const locale = rel.startsWith('uk/') ? 'uk' : 'en'
+    const nextBody = addRadialTearsEnlargedHolesRules(locale, body)
+    const next = joinFrontmatter(nextMeta, nextBody)
+    if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
+  }
+
+  // Step 18: shotgun wrong ammo.
+  const wrongAmmoFiles = ['uk/shotgun/penalties/wrong-ammo-shot.md', 'en/shotgun/penalties/wrong-ammo-shot.md']
+  for (const rel of wrongAmmoFiles) {
+    const abs = join(roRoot, ...rel.split('/'))
+    const raw = await readFile(abs, 'utf8')
+    const { meta, body } = splitFrontmatter(raw)
+    const locale = rel.startsWith('uk/') ? 'uk' : 'en'
+    const nextBody = addWrongAmmoShotLogic(locale, body)
+    const next = joinFrontmatter(meta, nextBody)
     if (next !== raw.replace(/\r?\n/g, '\n')) await writeFile(abs, next, 'utf8')
   }
 }

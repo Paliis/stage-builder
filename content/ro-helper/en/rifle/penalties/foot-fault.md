@@ -19,10 +19,10 @@ fpsu_refs:
     note: "Movement during the course of fire"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#5-%D1%80%D1%83%D1%85"
 fpsu_delta_verified: true
-reviewer: ""
-review_date: ""
+reviewer: "Gemini-Rules-2026"
+review_date: "2026-04-20"
 draft_source: llm
-status: draft
+status: reviewed
 ---
 
 ## What this is
@@ -38,6 +38,13 @@ A **foot fault** occurs when the competitor, during the **COF**, contacts the gr
 5. **If visibility is poor**, involve **CRO** / **RM** rather than guessing.
 
 ## IPSC (Jan 2026)
+
+
+### 10.2.1 — “per occurrence” vs “per shot”
+
+- If the competitor **steps out** / touches outside the boundary but **does not fire** during that moment — this is typically **per occurrence**.
+- If the competitor **fires shots** while faulting (or gains a **significant advantage**) — the logic may become **per shot**.
+- Decision key: **shots fired while faulting** and **significant advantage** (see `significant-advantage`).
 
 - Primary anchor: **10.2.1** in **Rifle**; details including **10.2.1.1** — **only** from the official **Rifle** PDF.
 

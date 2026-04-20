@@ -21,10 +21,10 @@ fpsu_refs:
     note: "Положення готовності спортсмена"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#2-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0"
 fpsu_delta_verified: true
-reviewer: ""
-review_date: ""
+reviewer: "Gemini-Rules-2026"
+review_date: "2026-04-20"
 draft_source: llm
-status: draft
+status: reviewed
 ---
 
 ## Що це

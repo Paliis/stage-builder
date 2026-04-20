@@ -19,10 +19,10 @@ fpsu_refs:
     note: "Критерії побудови вправ"
     url: "https://upsf.org.ua/rules/upsf/2020/04-stage-safety-and-zones#2-%D0%BA%D1%80%D0%B8%D1%82%D0%B5%D1%80%D1%96%D1%97-%D0%BF%D0%BE%D0%B1%D1%83%D0%B4%D0%BE%D0%B2%D0%B8-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2"
 fpsu_delta_verified: true
-reviewer: ""
-review_date: ""
+reviewer: "Gemini-Rules-2026"
+review_date: "2026-04-20"
 draft_source: llm
-status: draft
+status: reviewed
 ---
 
 ## Що це

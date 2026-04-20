@@ -19,10 +19,10 @@ fpsu_refs:
     note: "Loading / reloading"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#4-%D0%B7%D0%B0%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F-%D0%BF%D0%B5%D1%80%D0%B5%D0%B7%D0%B0%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B0%D0%B1%D0%BE-%D1%80%D0%BE%D0%B7%D1%80%D1%8F%D0%B4%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F"
 fpsu_delta_verified: true
-reviewer: ""
-review_date: ""
+reviewer: "Gemini-Rules-2026"
+review_date: "2026-04-20"
 draft_source: llm
-status: draft
+status: reviewed
 ---
 
 ## What this is
@@ -38,6 +38,12 @@ A **mandatory reload** in the **WSB** means the competitor **must** perform a re
 5. **Document:** WSB clause + moment in **COF** (including which array or position).
 
 ## IPSC (Jan 2026)
+
+
+### 10.2.4 — penalty until reload (per shot)
+
+- If the WSB requires a reload and the competitor **keeps firing without reloading**, apply the penalty **per shot** until the reload is **performed**.
+- Key moment: **shots fired after the point where the WSB requires the reload**.
 
 - Primary anchor: **10.2.4** — **IPSC Shotgun Competition Rules** PDF, **Chapter 10**.
 - If another clause fits better — use **that** clause after reading the rulebook.
