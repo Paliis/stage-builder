@@ -360,3 +360,11 @@
 | C383 | multigun-penalties | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix G**; Batch_16. |
 | C384 | electronic-scoring-ess | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **9.11**; Batch_16. |
 | C385 | results-verification-display | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **9.11**, **11.1**; Batch_16. |
+| C386 | classic-holster-rules | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.2.7**, **Appendix D**; Batch_17 Equipment Detail. |
+| C387 | revolver-equipment-position | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.2.7**, **Appendix D**; Batch_17. |
+| C388 | weapon-slings-rules | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**; Batch_17. |
+| C389 | pcc-stock-requirements | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_17. |
+| C390 | pcc-magazine-length | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_17. |
+| C391 | shotgun-modified-specs | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_17. |
+| C392 | handgun-flashlight-laser | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_17. |
+| C393 | magazine-as-support | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**; Batch_17. |
