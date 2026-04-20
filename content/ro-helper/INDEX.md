@@ -328,3 +328,11 @@
 | C347 | unauthorized-loading | mini_rifle | safety | draft | draft | false | — | **10.5.12** (Mini Rifle); підтвердити в PDF Jan 2026 (якір HG). |
 | C348 | unauthorized-loading | shotgun | safety | draft | draft | false | — | **10.5.12** (Shotgun); підтвердити в PDF Jan 2026 (якір HG). |
 | C353 | stage-modification | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.3**; Batch_12 Admin Strict v1.3. |
+| C354 | short-distance-metal | shotgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.15**; Batch_13 Shotgun Spec. |
+| C355 | unauthorized-ammo | shotgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.16**; Batch_13 Shotgun Spec. |
+| C356 | buckshot-scoring | shotgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4**; Batch_13 Shotgun Spec. |
+| C357 | slug-scoring | shotgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4**, **9.5.4**; Batch_13 Shotgun Spec. |
+| C358 | birdshot-scoring | shotgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4**, **9.5**; Batch_13 Shotgun Spec. |
+| C359 | shotgun-divisions | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_13 Shotgun Spec. |
+| C360 | loading-devices-shotgun | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.2**; Batch_13 Shotgun Spec. |
+| C361 | shotgun-chamber-safety | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3**; Batch_13 Shotgun Spec. |
