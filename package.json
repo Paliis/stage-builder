@@ -14,6 +14,7 @@
     "icons:st": "node scripts/apply-st-to-icon-preview.mjs && node scripts/generate-icons-from-preview.mjs",
     "ro-helper:export-review": "node scripts/export-ro-helper-review-pack.mjs",
     "ro-helper:export-relevance": "node scripts/export-ro-helper-relevance-review.mjs",
+    "ro-helper:export-single": "node scripts/export-ro-helper-single-file.mjs",
     "ro-helper:inject-fpsu-refs": "node scripts/inject-ro-helper-fpsu-refs.mjs",
     "ro-helper:validate": "node scripts/validate-ro-helper-content.mjs",
     "sitemap:generate": "node scripts/generate-sitemap.mjs"
