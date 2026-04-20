@@ -383,3 +383,11 @@
 | C407 | range-equipment-failure-ref | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **4.6.1**; Batch_19. |
 | C408 | range-equipment-failure-ref | pcc | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **4.6.1**; Batch_19. |
 | C409 | range-equipment-failure-ref | shotgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **4.6.1**; Batch_19. |
+| C410 | standard-manual-specs | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D2**, **8.1.5**; Batch_20 Shotgun Divisions. |
+| C411 | standard-shotgun-specs | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D1**, **8.1.5**; Batch_20. |
+| C412 | open-shotgun-specs | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D4**, **8.1.5**; Batch_20. |
+| C413 | modified-shotgun-deep | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D3**, **8.1.5**; Batch_20. |
+| C414 | magazine-tube-constraints | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.1.5**, **10.2.2**; Batch_20. |
+| C415 | detachable-magazines-shotgun | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D4**, **5.2.3**, **8.1.5**; Batch_20. |
+| C416 | unauthorized-loading-shotgun | shotgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.11**; Batch_20. |
+| C417 | ammunition-compliance | shotgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **5.5**, **10.5.16**; Batch_20. |
