@@ -407,3 +407,11 @@
 | C431 | stop-command-rifle | rifle | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**, **10.6.1**; Batch_22. |
 | C432 | stop-command-pcc | pcc | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**, **10.6.1**; Batch_22. |
 | C433 | stop-command-shotgun | shotgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**, **10.6.1**; Batch_22. |
+| C434 | extra-shots-fixed-time | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4.5**; Batch_23 Penalties Complex. |
+| C435 | extra-shots-fixed-time | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4.5**; Batch_23. |
+| C436 | extra-shots-fixed-time | pcc | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4.5**; Batch_23. |
+| C437 | extra-hits-fixed-time | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4.5**; Batch_23. |
+| C438 | extra-hits-fixed-time | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4.5**; Batch_23. |
+| C439 | metal-procedure-violation | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.2**; Batch_23. |
+| C440 | metal-procedure-violation | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.2**; Batch_23. |
+| C441 | procedural-no-shoot | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **9.4.4**; Batch_23. |
