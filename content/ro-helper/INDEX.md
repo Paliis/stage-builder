@@ -336,3 +336,11 @@
 | C359 | shotgun-divisions | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_13 Shotgun Spec. |
 | C360 | loading-devices-shotgun | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.2**; Batch_13 Shotgun Spec. |
 | C361 | shotgun-chamber-safety | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3**; Batch_13 Shotgun Spec. |
+| C362 | bipods-supports-rifle | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_14 Rifle/PCC. |
+| C363 | bipods-supports-pcc | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_14 Rifle/PCC. |
+| C364 | optics-sights-rifle | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.10**, **Appendix D**; Batch_14 Rifle/PCC. |
+| C365 | optics-sights-pcc | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.10**, **Appendix D**; Batch_14 Rifle/PCC. |
+| C366 | handguards-grips-rifle | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_14 Rifle/PCC. |
+| C367 | handguards-grips-pcc | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**; Batch_14 Rifle/PCC. |
+| C368 | manual-rifle-ready-conditions | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.1.1**; Batch_14 Rifle/PCC. |
+| C369 | semi-auto-rifle-ready-conditions | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.1.1**; Batch_14 Rifle/PCC. |
