@@ -27,7 +27,7 @@ status: draft
 
 ## What this is
 
-**Chapter 5** **IPSC Mini Rifle** defines **junior** divisions and **equipment** caps suited to **Mini Rifle** competition. **Age** / **class** flags interact with **Ch.5** — follow **Mini Rifle** PDF, not **full Rifle** assumptions without checking. **C225** handgun.
+**Chapter 5** **IPSC Mini Rifle** defines **junior** divisions and **equipment** caps suited to **Mini Rifle** competition. **Age** / **class** flags interact with **Ch.5** — follow **Mini Rifle** PDF, not **full Rifle** assumptions without checking. **C255** handgun.
 
 ## What the Range Officer (RO) does
 

@@ -1,6 +1,6 @@
 ---
 title: "Захист очей і вух"
-card_id: "C255"
+card_id: "C351"
 slug: "eye-and-ear-protection"
 category: equipment
 locale: uk

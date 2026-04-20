@@ -24,7 +24,7 @@ status: draft
 
 ## What this is
 
-**Shotgun** **carry** between **props** and **stages** is covered in **Chapter 5 Shotgun** and **appendices**: **open** vs **empty** rules in **transit**, **carts** / **racks** if used, **muzzle** discipline in **squads**. **C235** handgun; **slings** are uncommon — follow **Shotgun** text.
+**Shotgun** **carry** between **props** and **stages** is covered in **Chapter 5 Shotgun** and **appendices**: **open** vs **empty** rules in **transit**, **carts** / **racks** if used, **muzzle** discipline in **squads**. **C240** handgun; **slings** are uncommon — follow **Shotgun** text.
 
 ## What the Range Officer (RO) does
 

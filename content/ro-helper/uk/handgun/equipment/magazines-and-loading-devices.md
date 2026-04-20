@@ -1,6 +1,6 @@
 ---
 title: "Магазини та заряджання"
-card_id: "C250"
+card_id: "C350"
 slug: "magazines-and-loading-devices"
 category: equipment
 locale: uk

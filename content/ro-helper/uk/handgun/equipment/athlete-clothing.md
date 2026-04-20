@@ -1,6 +1,6 @@
 ---
 title: "Одяг спортсмена"
-card_id: "C260"
+card_id: "C352"
 slug: "athlete-clothing"
 category: equipment
 locale: uk

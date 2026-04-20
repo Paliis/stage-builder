@@ -24,7 +24,7 @@ status: draft
 
 ## What this is
 
-**Rifle** **slings** and **carry** methods are defined in **Chapter 5 Rifle** and **appendices**: allowed **sling** hardware, **muzzle** control when **slung**, and **transition** to **shoulder** / **low ready**. **C235** = handgun **holster** only.
+**Rifle** **slings** and **carry** methods are defined in **Chapter 5 Rifle** and **appendices**: allowed **sling** hardware, **muzzle** control when **slung**, and **transition** to **shoulder** / **low ready**. **C240** = handgun **holster** only.
 
 ## What the Range Officer (RO) does
 

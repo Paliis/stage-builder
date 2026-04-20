@@ -1,6 +1,6 @@
 ---
 title: "Divisions and equipment classes"
-card_id: "C225"
+card_id: "C255"
 slug: "division-overview"
 category: equipment
 locale: en

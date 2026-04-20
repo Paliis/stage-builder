@@ -203,47 +203,47 @@
 | C222 | scoring-programs | rifle | scoring | draft | draft | false | — | **9.11**; чернетка — рев’ю з PDF. |
 | C223 | scoring-programs | mini_rifle | scoring | draft | draft | false | — | **9.11**; чернетка — рев’ю з PDF. |
 | C224 | scoring-programs | shotgun | scoring | draft | draft | false | — | **9.11**; чернетка — рев’ю з PDF. |
-| C225 | division-overview | handgun | equipment | draft | draft | false | — | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
+| C255 | division-overview | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_11 Equipment Strict v1.2. |
 | C226 | division-overview | pcc | equipment | draft | draft | false | — | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
 | C227 | division-overview | rifle | equipment | draft | draft | false | — | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
 | C228 | division-overview | mini_rifle | equipment | draft | draft | false | — | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
 | C229 | division-overview | shotgun | equipment | draft | draft | false | — | **Ch.5** + Appendix; чернетка — рев’ю з PDF. |
-| C230 | ready-conditions | handgun | equipment | draft | draft | false | — | **8.1–8.3**; чернетка — рев’ю з PDF. |
-| C231 | ready-conditions | pcc | equipment | draft | draft | false | — | **8.1–8.3**; чернетка — рев’ю з PDF. |
+| C230 | ready-conditions | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.1**; Batch_11 Equipment Strict v1.2. |
+| C231 | ready-conditions | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **8.1**; Batch_11 Equipment Strict v1.2. |
 | C232 | ready-conditions | rifle | equipment | draft | draft | false | — | **8.1–8.3**; чернетка — рев’ю з PDF. |
 | C233 | ready-conditions | mini_rifle | equipment | draft | draft | false | — | **8.1–8.3**; чернетка — рев’ю з PDF. |
 | C234 | ready-conditions | shotgun | equipment | draft | draft | false | — | **8.1–8.3**; чернетка — рев’ю з PDF. |
-| C235 | holster-or-carry-long-gun | handgun | equipment | draft | draft | false | — | **Ch.5** (кобура handgun); чернетка — рев’ю з PDF. |
+| C240 | holster-or-carry-long-gun | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.2.5**; Batch_11 Equipment Strict v1.2. |
 | C236 | holster-or-carry-long-gun | pcc | equipment | draft | draft | false | — | **Ch.5** (ремень / носіння); чернетка — рев’ю з PDF. |
 | C237 | holster-or-carry-long-gun | rifle | equipment | draft | draft | false | — | **Ch.5** (ремень / носіння); чернетка — рев’ю з PDF. |
 | C238 | holster-or-carry-long-gun | mini_rifle | equipment | draft | draft | false | — | **Ch.5** (ремень / носіння); чернетка — рев’ю з PDF. |
 | C239 | holster-or-carry-long-gun | shotgun | equipment | draft | draft | false | — | **Ch.5** (носіння / постановка); чернетка — рев’ю з PDF. |
-| C240 | firearms-and-ammunition-rules | handgun | equipment | draft | draft | false | — | **5.1–5.8**; чернетка — рев’ю з PDF. |
+| C349 | firearms-and-ammunition-rules | handgun | equipment | draft | draft | false | — | **5.1–5.8**; ID зміщено через Batch_11 (C240 → holster HG). |
 | C241 | firearms-and-ammunition-rules | pcc | equipment | draft | draft | false | — | **5.1–5.8**; чернетка — рев’ю з PDF. |
 | C242 | firearms-and-ammunition-rules | rifle | equipment | draft | draft | false | — | **5.1–5.8**; чернетка — рев’ю з PDF. |
 | C243 | firearms-and-ammunition-rules | mini_rifle | equipment | draft | draft | false | — | **5.1–5.8**; чернетка — рев’ю з PDF. |
 | C244 | firearms-and-ammunition-rules | shotgun | equipment | draft | draft | false | — | **5.1–5.8**; чернетка — рев’ю з PDF. |
-| C245 | chronograph-and-power-factor | handgun | equipment | draft | draft | false | — | **5.6–5.7**; чернетка — рев’ю з PDF. |
+| C260 | chronograph-and-power-factor | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix C2**; Batch_11 Equipment Strict v1.2. |
 | C246 | chronograph-and-power-factor | pcc | equipment | draft | draft | false | — | **5.6–5.7**; чернетка — рев’ю з PDF. |
 | C247 | chronograph-and-power-factor | rifle | equipment | draft | draft | false | — | **5.6–5.7**; чернетка — рев’ю з PDF. |
 | C248 | chronograph-and-power-factor | mini_rifle | equipment | draft | draft | false | — | **5.6–5.7**; чернетка — рев’ю з PDF. |
 | C249 | chronograph-and-power-factor | shotgun | equipment | draft | draft | false | — | **5.6–5.7**; чернетка — рев’ю з PDF. |
-| C250 | magazines-and-loading-devices | handgun | equipment | draft | draft | false | — | **Ch.5**; чернетка — рев’ю з PDF. |
-| C251 | magazines-and-loading-devices | pcc | equipment | draft | draft | false | — | **Ch.5**; чернетка — рев’ю з PDF. |
+| C350 | magazines-and-loading-devices | handgun | equipment | draft | draft | false | — | **Ch.5**; ID зміщено через Batch_11 (C250 → trigger HG). |
+| C245 | magazines-and-loading-devices | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.2**; Batch_11 Equipment Strict v1.2. |
 | C252 | magazines-and-loading-devices | rifle | equipment | draft | draft | false | — | **Ch.5**; чернетка — рев’ю з PDF. |
 | C253 | magazines-and-loading-devices | mini_rifle | equipment | draft | draft | false | — | **Ch.5**; чернетка — рев’ю з PDF. |
 | C254 | magazines-and-loading-devices | shotgun | equipment | draft | draft | false | — | **Ch.5**; чернетка — рев’ю з PDF. |
-| C255 | eye-and-ear-protection | handgun | equipment | draft | draft | false | — | **5.4**; чернетка — рев’ю з PDF. |
+| C351 | eye-and-ear-protection | handgun | equipment | draft | draft | false | — | **5.4**; ID зміщено через Batch_11 (C255 → division HG). |
 | C256 | eye-and-ear-protection | pcc | equipment | draft | draft | false | — | **5.4**; чернетка — рев’ю з PDF. |
 | C257 | eye-and-ear-protection | rifle | equipment | draft | draft | false | — | **5.4**; чернетка — рев’ю з PDF. |
 | C258 | eye-and-ear-protection | mini_rifle | equipment | draft | draft | false | — | **5.4**; чернетка — рев’ю з PDF. |
 | C259 | eye-and-ear-protection | shotgun | equipment | draft | draft | false | — | **5.4**; чернетка — рев’ю з PDF. |
-| C260 | athlete-clothing | handgun | equipment | draft | draft | false | — | **5.3**; чернетка — рев’ю з PDF. |
+| C352 | athlete-clothing | handgun | equipment | draft | draft | false | — | **5.3**; ID зміщено через Batch_11 (C260 → chrono HG). |
 | C261 | athlete-clothing | pcc | equipment | draft | draft | false | — | **5.3**; чернетка — рев’ю з PDF. |
 | C262 | athlete-clothing | rifle | equipment | draft | draft | false | — | **5.3**; чернетка — рев’ю з PDF. |
 | C263 | athlete-clothing | mini_rifle | equipment | draft | draft | false | — | **5.3**; чернетка — рев’ю з PDF. |
 | C264 | athlete-clothing | shotgun | equipment | draft | draft | false | — | **5.3**; чернетка — рев’ю з PDF. |
-| C265 | equipment-malfunction | handgun | equipment | draft | draft | false | — | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
+| C265 | equipment-malfunction | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.7**; Batch_11 Equipment Strict v1.2. |
 | C266 | equipment-malfunction | pcc | equipment | draft | draft | false | — | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C267 | equipment-malfunction | rifle | equipment | draft | draft | false | — | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C268 | equipment-malfunction | mini_rifle | equipment | draft | draft | false | — | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
@@ -307,7 +307,7 @@
 | C326 | popper-calibration | rifle | scoring | draft | draft | false | — | Додаток popper calibration (Rifle); звірити букву в PDF. |
 | C327 | popper-calibration | mini_rifle | scoring | draft | draft | false | — | Додаток popper calibration (Mini Rifle); звірити букву в PDF. |
 | C328 | popper-calibration | shotgun | scoring | draft | draft | false | — | Додаток popper calibration (Shotgun); звірити букву в PDF. |
-| C329 | trigger-pull-check | handgun | equipment | draft | draft | false | — | **Appendix D** Production; чернетка — рев’ю з PDF. |
+| C250 | trigger-pull-check | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D4**; Batch_11 Equipment Strict v1.2. |
 | C330 | trigger-pull-check | pcc | equipment | draft | draft | false | — | Додаток зусилля спуску (PCC); звірити з PDF Jan 2026. |
 | C331 | trigger-pull-check | rifle | equipment | draft | draft | false | — | Додаток зусилля спуску (Rifle); звірити з PDF Jan 2026. |
 | C332 | trigger-pull-check | mini_rifle | equipment | draft | draft | false | — | Додаток зусилля спуску (Mini Rifle); звірити з PDF Jan 2026. |

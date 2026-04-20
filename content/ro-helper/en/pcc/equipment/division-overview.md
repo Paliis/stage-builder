@@ -27,7 +27,7 @@ status: draft
 
 ## What this is
 
-**Chapter 5** **IPSC PCC** plus **appendices** lists **PCC** **divisions** and **equipment** rules (stocks, optics, magazine limits, etc. — **exact** names and limits in **PCC Jan 2026**). **C225** = **Handgun**; **PCC** divisions are **not** handgun divisions. On **mixed** ranges, keep rulebooks separate.
+**Chapter 5** **IPSC PCC** plus **appendices** lists **PCC** **divisions** and **equipment** rules (stocks, optics, magazine limits, etc. — **exact** names and limits in **PCC Jan 2026**). **C255** = **Handgun**; **PCC** divisions are **not** handgun divisions. On **mixed** ranges, keep rulebooks separate.
 
 ## What the Range Officer (RO) does
 

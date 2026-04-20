@@ -1,6 +1,6 @@
 ---
 title: "Зброя та набої"
-card_id: "C240"
+card_id: "C349"
 slug: "firearms-and-ammunition-rules"
 category: equipment
 locale: uk

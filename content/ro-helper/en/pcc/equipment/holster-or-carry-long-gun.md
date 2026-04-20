@@ -24,7 +24,7 @@ status: draft
 
 ## What this is
 
-**PCC** carry rules live in **Chapter 5 PCC** and division **appendices**: **sling** types, **muzzle** orientation when slung, **retention**, and transitions to **ready** — **not** handgun **holster** rules. **C235** covers **handgun** holsters only.
+**PCC** carry rules live in **Chapter 5 PCC** and division **appendices**: **sling** types, **muzzle** orientation when slung, **retention**, and transitions to **ready** — **not** handgun **holster** rules. **C240** covers **handgun** holsters only.
 
 ## What the Range Officer (RO) does
 

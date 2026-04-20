@@ -24,7 +24,7 @@ status: draft
 
 ## What this is
 
-**Mini Rifle** **Ch.5** sets **sling** and **carry** rules sized for **junior** athletes — same **safety** bar as adults. **Parents** may not “hold” the rifle for the competitor during **COF** unless **MD** allows a **coach** role. **C235** handgun.
+**Mini Rifle** **Ch.5** sets **sling** and **carry** rules sized for **junior** athletes — same **safety** bar as adults. **Parents** may not “hold” the rifle for the competitor during **COF** unless **MD** allows a **coach** role. **C240** handgun.
 
 ## What the Range Officer (RO) does
 

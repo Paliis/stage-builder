@@ -1,6 +1,6 @@
 ---
 title: "Chronograph and power factor (PF)"
-card_id: "C245"
+card_id: "C260"
 slug: "chronograph-and-power-factor"
 category: equipment
 locale: en

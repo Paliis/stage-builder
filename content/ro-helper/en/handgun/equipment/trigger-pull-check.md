@@ -1,6 +1,6 @@
 ---
 title: "Trigger pull weight check (Production and related)"
-card_id: "C329"
+card_id: "C250"
 slug: "trigger-pull-check"
 category: equipment
 locale: en

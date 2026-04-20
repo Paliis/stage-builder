@@ -1,6 +1,6 @@
 ---
 title: "Magazines and loading devices"
-card_id: "C251"
+card_id: "C245"
 slug: "magazines-and-loading-devices"
 category: equipment
 locale: en

@@ -27,7 +27,7 @@ status: draft
 
 ## What this is
 
-**Chapter 5** **IPSC Shotgun** defines **Shotgun** **divisions** and **equipment** (gauge, mag tube, optic classes, etc. — **Shotgun Jan 2026**). **RO** handles **visible** compliance; **MD** may add local division availability. **C225** handgun.
+**Chapter 5** **IPSC Shotgun** defines **Shotgun** **divisions** and **equipment** (gauge, mag tube, optic classes, etc. — **Shotgun Jan 2026**). **RO** handles **visible** compliance; **MD** may add local division availability. **C255** handgun.
 
 ## What the Range Officer (RO) does
 

@@ -1,6 +1,6 @@
 ---
 title: "Holster and handgun carry"
-card_id: "C235"
+card_id: "C240"
 slug: "holster-or-carry-long-gun"
 category: equipment
 locale: en

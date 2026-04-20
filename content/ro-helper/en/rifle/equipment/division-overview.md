@@ -27,7 +27,7 @@ status: draft
 
 ## What this is
 
-**Chapter 5** **IPSC Rifle** defines **Rifle** **divisions** and **equipment** (barrel / chassis / optic classes, bipod rules, etc. — **per** **Rifle Jan 2026**). **RO** does **visible** screening; **chrono** and **appendix** checks settle doubts. **C225** handgun.
+**Chapter 5** **IPSC Rifle** defines **Rifle** **divisions** and **equipment** (barrel / chassis / optic classes, bipod rules, etc. — **per** **Rifle Jan 2026**). **RO** does **visible** screening; **chrono** and **appendix** checks settle doubts. **C255** handgun.
 
 ## What the Range Officer (RO) does
 
