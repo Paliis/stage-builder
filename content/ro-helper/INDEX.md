@@ -458,3 +458,11 @@
 | C482 | modified-division-deep | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C258). |
 | C483 | open-division-deep | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C259). |
 | C484 | shotgun-speed-loaders | shotgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **8.1.5**; Batch_30 (manifest C261). |
+| C485 | bipods-usage-penalties | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**, **10.2.2**; Batch_31 Rifle/PCC (manifest C262). |
+| C486 | optics-magnification-limit | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **10.2.2**; Batch_31 (manifest C263). |
+| C487 | hard-cover-rifle-scoring | rifle | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.1.5**; Batch_31 (manifest C264). |
+| C488 | environmental-supports-rifle | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.2**; Batch_31 (manifest C265). |
+| C489 | sling-usage-engagement | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.1.3**, **Appendix D**, **10.2.2**; Batch_31 (manifest C266). |
+| C490 | standard-muzzle-brake-limit | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **10.2.2**; Batch_31 (manifest C267). |
+| C491 | pcc-stock-configuration | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **5.1.3**, **10.2.2**; Batch_31 (manifest C268). |
+| C492 | long-range-scoring-aids | rifle | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.1.5**, **10.2.2**; Batch_31 (manifest C269). |
