@@ -399,3 +399,11 @@
 | C423 | rifle-open-specs | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **5.1.3**, **5.1.10**; Batch_21. |
 | C424 | rifle-standard-specs | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **5.1.3**, **5.1.10**; Batch_21. |
 | C425 | pcc-ready-position-specifics | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**; Batch_21. |
+| C426 | stage-equipment-abuse | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.6.1**; Batch_22 Stop Protocol. |
+| C427 | unsafe-movement-dynamic | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**; Batch_22. |
+| C428 | stage-interference-reshoot | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.6.4**; Batch_22. |
+| C429 | stopping-competitor-protocol | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**, **10.6.1**; Batch_22. |
+| C430 | stop-command-handgun | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**, **10.6.1**; Batch_22. |
+| C431 | stop-command-rifle | rifle | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**, **10.6.1**; Batch_22. |
+| C432 | stop-command-pcc | pcc | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**, **10.6.1**; Batch_22. |
+| C433 | stop-command-shotgun | shotgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **8.3.2**, **8.6.4**, **10.6.1**; Batch_22. |
