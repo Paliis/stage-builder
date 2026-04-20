@@ -375,3 +375,11 @@
 | C399 | gun-not-clear | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_18. |
 | C400 | unsafe-holster-state | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**, **10.5.2**; Batch_18. |
 | C401 | unauthorized-gun-handling | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_18. |
+| C402 | improper-use-of-cover | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.8**; Batch_19 Procedures REF. |
+| C403 | improper-use-of-cover | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.8**; Batch_19. |
+| C404 | wrong-sequence-of-fire | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.2**; Batch_19. |
+| C405 | wrong-sequence-of-fire | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.2**; Batch_19. |
+| C406 | range-equipment-failure-ref | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **4.6.1**; Batch_19. |
+| C407 | range-equipment-failure-ref | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **4.6.1**; Batch_19. |
+| C408 | range-equipment-failure-ref | pcc | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **4.6.1**; Batch_19. |
+| C409 | range-equipment-failure-ref | shotgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **4.6.1**; Batch_19. |
