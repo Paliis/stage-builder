@@ -470,3 +470,11 @@
 | C494 | simplified-club-scoring | handgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.7**, **9.11**; Batch_33 (manifest C306). |
 | C495 | mentoring-new-shooters | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **7.1.1**, **8.6.1**; Batch_33 (manifest C307). |
 | C496 | club-match-community-ethics | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **10.6.1**; Batch_33 (manifest C308). |
+| C497 | shoot-off-rifle-specifics | rifle | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **1.2.2**; Batch_34 Advanced Admin (manifest C283). |
+| C498 | shoot-off-shotgun-specifics | shotgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **1.2.2**; Batch_34 (manifest C284). |
+| C499 | multigun-transition-area-design | multigun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **11.1**; Batch_34 (manifest C288, was Appendix G). |
+| C500 | multigun-safe-abandonment | multigun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **11.1**, **11.6**; Batch_34 (manifest C289). |
+| C501 | arbitration-evidence-handling | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **11.1**, **11.6**; Batch_34 (manifest C292). |
+| C502 | arbitration-committee-composition | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **11.2**; Batch_34 (manifest C293). |
+| C503 | stats-error-correction | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **9.10**, **11.3**; Batch_34 (manifest C294). |
+| C504 | gun-handling-briefing-safety | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **11.1**; Batch_34 (manifest C134, was 10.5.1). |
