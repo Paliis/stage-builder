@@ -83,11 +83,11 @@
 | C102 | burst-or-automatic-fire | pcc | penalties | draft | draft | true | — | **10.2.12** (PCC); чернетка — рев’ю з PDF Jan 2026. |
 | C103 | burst-or-automatic-fire | rifle | penalties | draft | draft | true | — | **10.2.12** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C104 | burst-or-automatic-fire | mini_rifle | penalties | draft | draft | true | — | **10.2.12** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
-| C105 | break-180 | handgun | safety | draft | draft | false | — | **10.5.2** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
-| C106 | break-180 | pcc | safety | draft | draft | false | — | **10.5.2** (PCC); чернетка — рев’ю з PDF Jan 2026. |
-| C107 | break-180 | rifle | safety | draft | draft | false | — | **10.5.2** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
+| C105 | break-180 | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.2**; Batch_27 Safety Movement Strict v1.3. |
+| C106 | break-180 | pcc | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.2**; Batch_27. |
+| C107 | break-180 | rifle | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.2**; Batch_27. |
 | C108 | break-180 | mini_rifle | safety | draft | draft | false | — | **10.5.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
-| C109 | break-180 | shotgun | safety | draft | draft | false | — | **10.5.2** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
+| C109 | break-180 | shotgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.2**; Batch_27. |
 | C110 | accidental-discharge | handgun | safety | draft | draft | true | — | **10.4** (Handgun AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
 | C111 | accidental-discharge | pcc | safety | draft | draft | true | — | **10.4** (PCC AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
 | C112 | accidental-discharge | rifle | safety | draft | draft | true | — | **10.4** (Rifle AD / DQ); чернетка — рев’ю з PDF Jan 2026. |
@@ -315,7 +315,7 @@
 | C334 | sweeping | handgun | safety | draft | draft | false | — | **10.5.5** + **10.5.5.1** (виняток кобури HG); чернетка — рев’ю з PDF Jan 2026. |
 | C335 | sweeping | pcc | safety | draft | draft | false | — | **10.5.5** (PCC); підтвердити номер у PDF Jan 2026 (якір HG). |
 | C336 | sweeping | rifle | safety | draft | draft | false | — | **10.5.5** (Rifle); підтвердити номер у PDF Jan 2026 (якір HG). |
-| C337 | sweeping | mini_rifle | safety | draft | draft | false | — | **10.5.5** (Mini Rifle); підтвердити номер у PDF Jan 2026 (якір HG). |
+| C337 | sweeping | mini_rifle | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.5**; Batch_27. |
 | C338 | sweeping | shotgun | safety | draft | draft | false | — | **10.5.5** (Shotgun); підтвердити номер у PDF Jan 2026 (якір HG). |
 | C398 | muzzle-at-person | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_18 Safety SA Strict v1.3. |
 | C340 | muzzle-at-person | pcc | safety | draft | draft | false | — | **10.5.6** (PCC); підтвердити в PDF Jan 2026 (якір HG). |
@@ -431,3 +431,6 @@
 | C455 | ad-holstering-drawing | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.6**; Batch_26. |
 | C456 | ad-no-command | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.7**; Batch_26. |
 | C457 | ad-transfer-transition | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.4.8**; Batch_26. |
+| C458 | drawing-while-moving | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.11**; Batch_27 (manifest C114). |
+| C459 | holstering-moving | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.11**; Batch_27 (manifest C123). |
+| C460 | draw-facing-uprange | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.2**; Batch_27 (manifest C124). |
