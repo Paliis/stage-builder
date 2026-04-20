@@ -123,7 +123,7 @@
 | C142 | unsportsmanlike-conduct | rifle | safety | draft | draft | false | — | **10.6** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C143 | unsportsmanlike-conduct | mini_rifle | safety | draft | draft | false | — | **10.6** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C144 | unsportsmanlike-conduct | shotgun | safety | draft | draft | false | — | **10.6** (Shotgun); чернетка — рев’ю з PDF Jan 2026. |
-| C145 | range-safety-zones | handgun | safety | draft | draft | false | — | **Ch.2** (Handgun); чернетка — рев’ю з PDF Jan 2026. |
+| C145 | range-safety-zones | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **2.4**; Batch_12 Admin Strict v1.3. |
 | C146 | range-safety-zones | pcc | safety | draft | draft | false | — | **Ch.2** (PCC); чернетка — рев’ю з PDF Jan 2026. |
 | C147 | range-safety-zones | rifle | safety | draft | draft | false | — | **Ch.2** (Rifle); чернетка — рев’ю з PDF Jan 2026. |
 | C148 | range-safety-zones | mini_rifle | safety | draft | draft | false | — | **Ch.2** (Mini Rifle); чернетка — рев’ю з PDF Jan 2026. |
@@ -248,27 +248,27 @@
 | C267 | equipment-malfunction | rifle | equipment | draft | draft | false | — | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C268 | equipment-malfunction | mini_rifle | equipment | draft | draft | false | — | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
 | C269 | equipment-malfunction | shotgun | equipment | draft | draft | false | — | **5.7** (звірити з PDF); чернетка — рев’ю з PDF. |
-| C270 | written-stage-briefing | handgun | match-admin | draft | draft | false | — | **3.2** (WSB); чернетка — рев’ю з PDF. |
+| C270 | written-stage-briefing | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **3.2** (WSB); Batch_12 Admin Strict v1.3. |
 | C271 | written-stage-briefing | pcc | match-admin | draft | draft | false | — | **3.2** (WSB); чернетка — рев’ю з PDF. |
 | C272 | written-stage-briefing | rifle | match-admin | draft | draft | false | — | **3.2** (WSB); чернетка — рев’ю з PDF. |
 | C273 | written-stage-briefing | mini_rifle | match-admin | draft | draft | false | — | **3.2** (WSB); чернетка — рев’ю з PDF. |
 | C274 | written-stage-briefing | shotgun | match-admin | draft | draft | false | — | **3.2** (WSB); чернетка — рев’ю з PDF. |
-| C275 | local-regional-rules | handgun | match-admin | draft | draft | false | — | **3.3**; чернетка — рев’ю з PDF. |
+| C275 | local-regional-rules | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **3.3**; Batch_12 Admin Strict v1.3. |
 | C276 | local-regional-rules | pcc | match-admin | draft | draft | false | — | **3.3**; чернетка — рев’ю з PDF. |
 | C277 | local-regional-rules | rifle | match-admin | draft | draft | false | — | **3.3**; чернетка — рев’ю з PDF. |
 | C278 | local-regional-rules | mini_rifle | match-admin | draft | draft | false | — | **3.3**; чернетка — рев’ю з PDF. |
 | C279 | local-regional-rules | shotgun | match-admin | draft | draft | false | — | **3.3**; чернетка — рев’ю з PDF. |
-| C280 | match-structure-and-categories | handgun | match-admin | draft | draft | false | — | **Ch.6**; чернетка — рев’ю з PDF. |
+| C280 | match-structure-and-categories | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **6.1**; Batch_12 Admin Strict v1.3. |
 | C281 | match-structure-and-categories | pcc | match-admin | draft | draft | false | — | **Ch.6**; чернетка — рев’ю з PDF. |
 | C282 | match-structure-and-categories | rifle | match-admin | draft | draft | false | — | **Ch.6**; чернетка — рев’ю з PDF. |
 | C283 | match-structure-and-categories | mini_rifle | match-admin | draft | draft | false | — | **Ch.6**; чернетка — рев’ю з PDF. |
 | C284 | match-structure-and-categories | shotgun | match-admin | draft | draft | false | — | **Ch.6**; чернетка — рев’ю з PDF. |
-| C285 | md-ro-roles | handgun | match-admin | draft | draft | false | — | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
+| C285 | md-ro-roles | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **7.1**; Batch_12 Admin Strict v1.3. |
 | C286 | md-ro-roles | pcc | match-admin | draft | draft | false | — | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
 | C287 | md-ro-roles | rifle | match-admin | draft | draft | false | — | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
 | C288 | md-ro-roles | mini_rifle | match-admin | draft | draft | false | — | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
 | C289 | md-ro-roles | shotgun | match-admin | draft | draft | false | — | **Ch.7** (MD/RM); чернетка — рев’ю з PDF. |
-| C290 | protests-arbitration | handgun | match-admin | draft | draft | false | — | **Ch.11**; чернетка — рев’ю з PDF. |
+| C290 | protests-arbitration | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **11.1**; Batch_12 Admin Strict v1.3. |
 | C291 | protests-arbitration | pcc | match-admin | draft | draft | false | — | **Ch.11**; чернетка — рев’ю з PDF. |
 | C292 | protests-arbitration | rifle | match-admin | draft | draft | false | — | **Ch.11**; чернетка — рев’ю з PDF. |
 | C293 | protests-arbitration | mini_rifle | match-admin | draft | draft | false | — | **Ch.11**; чернетка — рев’ю з PDF. |
@@ -283,7 +283,7 @@
 | C302 | reshoots | rifle | match-admin | draft | draft | false | — | **4.7**; чернетка — рев’ю з PDF. |
 | C303 | reshoots | mini_rifle | match-admin | draft | draft | false | — | **4.7**; чернетка — рев’ю з PDF. |
 | C304 | reshoots | shotgun | match-admin | draft | draft | false | — | **4.7**; чернетка — рев’ю з PDF. |
-| C305 | course-design-safety-balance | handgun | match-admin | draft | draft | false | — | **1.1**; чернетка — рев’ю з PDF. |
+| C305 | course-design-safety-balance | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **1.1**; Batch_12 Admin Strict v1.3. |
 | C306 | course-design-safety-balance | pcc | match-admin | draft | draft | false | — | **1.1**; чернетка — рев’ю з PDF. |
 | C307 | course-design-safety-balance | rifle | match-admin | draft | draft | false | — | **1.1**; чернетка — рев’ю з PDF. |
 | C308 | course-design-safety-balance | mini_rifle | match-admin | draft | draft | false | — | **1.1**; чернетка — рев’ю з PDF. |
@@ -327,3 +327,4 @@
 | C346 | unauthorized-loading | rifle | safety | draft | draft | false | — | **10.5.12** (Rifle); підтвердити в PDF Jan 2026 (якір HG). |
 | C347 | unauthorized-loading | mini_rifle | safety | draft | draft | false | — | **10.5.12** (Mini Rifle); підтвердити в PDF Jan 2026 (якір HG). |
 | C348 | unauthorized-loading | shotgun | safety | draft | draft | false | — | **10.5.12** (Shotgun); підтвердити в PDF Jan 2026 (якір HG). |
+| C353 | stage-modification | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **2.3**; Batch_12 Admin Strict v1.3. |
