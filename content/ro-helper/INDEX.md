@@ -466,3 +466,7 @@
 | C490 | standard-muzzle-brake-limit | rifle | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **10.2.2**; Batch_31 (manifest C267). |
 | C491 | pcc-stock-configuration | pcc | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D**, **5.1.3**, **10.2.2**; Batch_31 (manifest C268). |
 | C492 | long-range-scoring-aids | rifle | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.1.5**, **10.2.2**; Batch_31 (manifest C269). |
+| C493 | level-1-2-flexibility | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **1.1.5**, **6.1.1**; Batch_33 Level I–II Final (manifest C305). |
+| C494 | simplified-club-scoring | handgun | scoring | reviewed | reviewed | true | Gemini-Rules-2026 | **9.7**, **9.11**; Batch_33 (manifest C306). |
+| C495 | mentoring-new-shooters | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **7.1.1**, **8.6.1**; Batch_33 (manifest C307). |
+| C496 | club-match-community-ethics | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **10.6.1**; Batch_33 (manifest C308). |
