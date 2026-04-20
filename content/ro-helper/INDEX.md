@@ -486,3 +486,11 @@
 | C510 | dropped-long-gun-protocol | rifle | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**; Batch_35 (manifest C120). |
 | C511 | dropped-gun-multigun-transition | multigun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**; Batch_35 (manifest C121). |
 | C512 | dropped-gun-unloaded-exception | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.3**, **10.5.14**; Batch_35 (manifest C122). |
+| C513 | mini-rifle-paper-scoring | mini_rifle | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.5.1**, **Appendix B**, **Appendix D**; Batch_36 Scoring Detail Strict v1.3 (manifest C180). |
+| C514 | mini-rifle-steel-scoring | mini_rifle | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**, **Appendix D**; Batch_36 (manifest C181). |
+| C515 | radial-tears-scoring | handgun | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.5.4**, **Appendix B**; Batch_36 (manifest C182). |
+| C516 | disappearing-targets-scoring | handgun | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**; Batch_36 (manifest C184). |
+| C517 | target-accessibility-visibility | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**; Batch_36 (manifest C185). |
+| C518 | rifle-major-minor-comparison | rifle | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**; Batch_36 (manifest C230). |
+| C519 | pcc-minor-threshold-scoring | pcc | scoring | reviewed | draft | true | Gemini-Rules-2026 | **9.1**, **Appendix B**; Batch_36 (manifest C231). |
+| C520 | restoration-moving-targets | handgun | match-admin | reviewed | draft | true | Gemini-Rules-2026 | **9.1.3**, **Appendix B**; Batch_36 (manifest C183.1). |
