@@ -22,6 +22,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/hit-factor",
+      "destination": "/index.html"
+    },
+    {
       "source": "/v/:path*",
       "destination": "/index.html"
     },

@@ -21,6 +21,11 @@ export function PortalHome() {
         <p className="portal-home__card-desc">{p.stageBuilderDesc}</p>
         <p className="portal-home__card-cta">{p.openStageBuilder} →</p>
       </Link>
+      <Link to="/hit-factor" className="portal-home__card portal-home__card--secondary">
+        <h2 className="portal-home__card-title">{p.hitFactorTitle}</h2>
+        <p className="portal-home__card-desc">{p.hitFactorDesc}</p>
+        <p className="portal-home__card-cta">{p.openHitFactor} →</p>
+      </Link>
       <Link to="/ro-helper" className="portal-home__card portal-home__card--secondary">
         <h2 className="portal-home__card-title">{p.roHelperTitle}</h2>
         <p className="portal-home__card-desc">{p.roHelperDesc}</p>

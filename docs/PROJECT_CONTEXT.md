@@ -83,6 +83,7 @@
 |------|-------------|
 | `/`, `/publish-policy`, `/ro-helper/*` | Обгортка **`PortalShell`**: шапка (бренд + мова), контент, **`SiteFooter`** |
 | `/` | Головна порталу (`PortalHome`) |
+| `/hit-factor` | Hit Factor calculator (MVP) |
 | `/ro-helper` | **RO Helper** — довідник з markdown у `content/ro-helper/`, SOS, преф шару ФПСУ |
 | `/ro-helper/demo` | Демо-картки RO Helper (прототип UI) |
 | `/ro-helper/topics/:category` | Усі статті категорії (усі дисципліни) |

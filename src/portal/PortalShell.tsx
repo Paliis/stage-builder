@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { SiteFooter } from './SiteFooter'
 import './PortalShell.css'
@@ -14,6 +14,17 @@ export function PortalShell() {
         <Link to="/" className="portal-shell__brand">
           {p.title}
         </Link>
+        <nav className="portal-shell__nav" aria-label="Primary">
+          <NavLink to="/stage-builder" className={({ isActive }) => (isActive ? 'is-active' : '')}>
+            {p.navStageBuilder}
+          </NavLink>
+          <NavLink to="/hit-factor" className={({ isActive }) => (isActive ? 'is-active' : '')}>
+            {p.navHitFactor}
+          </NavLink>
+          <NavLink to="/ro-helper" className={({ isActive }) => (isActive ? 'is-active' : '')}>
+            {p.navRoHelper}
+          </NavLink>
+        </nav>
         <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
           <button
             type="button"

@@ -73,6 +73,7 @@ async function main() {
   const urls = new Set()
   urls.add(`${ORIGIN}/`)
   urls.add(`${ORIGIN}/stage-builder`)
+  urls.add(`${ORIGIN}/hit-factor`)
   urls.add(`${ORIGIN}/publish-policy`)
   urls.add(`${ORIGIN}/ro-helper`)
   urls.add(`${ORIGIN}/ro-helper/demo`)

@@ -327,14 +327,28 @@ export type MessageTree = {
     /** Short meta description for `/` (Helmet). */
     metaDescription: string
     lead: string
+    navStageBuilder: string
+    navHitFactor: string
+    navRoHelper: string
     stageBuilderTitle: string
     stageBuilderDesc: string
     openStageBuilder: string
+    hitFactorTitle: string
+    hitFactorDesc: string
+    openHitFactor: string
     roHelperTitle: string
     roHelperDesc: string
     openRoHelper: string
     roHelperDemoCta: string
     roHelperDemoLead: string
+  }
+  hitFactor: {
+    pageTitle: string
+    pageLead: string
+    pointsLabel: string
+    timeLabel: string
+    hfLabel: string
+    reset: string
   }
   /** `/ro-helper/demo` — UI prototype for one RO Helper article */
   roHelperDemo: {
@@ -797,10 +811,17 @@ export const ukMessages: MessageTree = {
     metaDescription:
       '\u0406\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438 \u0434\u043b\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u043e\u0457 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 \u0442\u0430 IPSC: Stage Builder (\u043f\u043b\u0430\u043d, 3D, PDF), RO Helper (\u0434\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u0430\u0432\u0438\u043b).',
     lead: '\u0406\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438 \u0434\u043b\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u043e\u0457 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 \u0442\u0430 IPSC. \u041d\u043e\u0432\u0456 \u043c\u043e\u0434\u0443\u043b\u0456 \u0434\u043e\u0434\u0430\u0432\u0430\u0442\u0438\u043c\u0443\u0442\u044c\u0441\u044f \u043f\u043e\u0441\u0442\u0443\u043f\u043e\u0432\u043e.',
+    navStageBuilder: 'Stage Builder',
+    navHitFactor: 'Hit Factor',
+    navRoHelper: 'RO Helper',
     stageBuilderTitle: 'Stage Builder',
     stageBuilderDesc:
       '\u041c\u0435\u0442\u0440\u0438\u0447\u043d\u0438\u0439 \u043f\u043b\u0430\u043d, 3D, \u0431\u0440\u0438\u0444\u0456\u043d\u0433, PDF, \u0444\u0430\u0439\u043b\u0438 \u0432\u043f\u0440\u0430\u0432.',
     openStageBuilder: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Stage Builder',
+    hitFactorTitle: 'Hit Factor',
+    hitFactorDesc:
+      '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u043a\u0430\u043b\u044c\u043a\u0443\u043b\u044f\u0442\u043e\u0440: \u043e\u0447\u043a\u0438 / \u0447\u0430\u0441 = hit factor. \u0417\u0440\u0443\u0447\u043d\u043e \u043d\u0430 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438\u0449\u0456 \u0442\u0430 \u043d\u0430 \u043c\u0430\u0442\u0447\u0456.',
+    openHitFactor: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Hit Factor',
     roHelperTitle: 'RO Helper',
     roHelperDesc:
       '\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u0430\u0432\u0438\u043b \u0442\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440 \u0434\u043b\u044f IPSC-\u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 (\u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438 \u2014 \u0437\u0430\u0432\u0436\u0434\u0438 \u0437\u0432\u0456\u0440\u044f\u0439\u0442\u0435 \u0437 PDF).',
@@ -808,6 +829,15 @@ export const ukMessages: MessageTree = {
     roHelperDemoCta: 'RO Helper: \u043f\u0440\u0438\u043a\u043b\u0430\u0434 \u043a\u0430\u0440\u0442\u043a\u0438 (\u0434\u0435\u043c\u043e)',
     roHelperDemoLead:
       '\u041c\u0430\u043a\u0435\u0442 \u043a\u0430\u0440\u0442\u043a\u0438 RO Helper \u2014 SOS, \u043c\u0435\u0442\u0430, \u0434\u0438\u0441\u043a\u043b\u0435\u0439\u043c\u0435\u0440, \u0448\u0430\u0440 \u0424\u041f\u0421\u0423. \u041d\u043e\u043c\u0435\u0440 \u043a\u0430\u0440\u0442\u043a\u0438: \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440 URL \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u2026\u0060 (\u043d\u0430\u043f\u0440\u0438\u043a\u043b\u0430\u0434 \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u0043\u0032\u0036\u0060).',
+  },
+  hitFactor: {
+    pageTitle: 'Hit Factor \u2014 \u043a\u0430\u043b\u044c\u043a\u0443\u043b\u044f\u0442\u043e\u0440',
+    pageLead:
+      '\u0412\u0432\u0435\u0434\u0456\u0442\u044c \u043e\u0447\u043a\u0438 \u0442\u0430 \u0447\u0430\u0441. \u0424\u043e\u0440\u043c\u0443\u043b\u0430: \u043e\u0447\u043a\u0438 / \u0447\u0430\u0441.',
+    pointsLabel: '\u041e\u0447\u043a\u0438 (points)',
+    timeLabel: '\u0427\u0430\u0441 (\u0441\u0435\u043a)',
+    hfLabel: 'Hit factor',
+    reset: '\u0421\u043a\u0438\u043d\u0443\u0442\u0438',
   },
   roHelperDemo: {
     pageTitle: 'RO Helper \u2014 \u0434\u0435\u043c\u043e \u043a\u0430\u0440\u0442\u043a\u0438',
@@ -1262,9 +1292,15 @@ export const enMessages: MessageTree = {
     metaDescription:
       'Practical shooting and IPSC tools: Stage Builder (2D plan, 3D, PDF briefing), RO Helper (rules reference).',
     lead: 'Tools for practical shooting and IPSC. More modules will roll out over time.',
+    navStageBuilder: 'Stage Builder',
+    navHitFactor: 'Hit Factor',
+    navRoHelper: 'RO Helper',
     stageBuilderTitle: 'Stage Builder',
     stageBuilderDesc: 'Metric plan, 3D, briefing, PDF, stage files.',
     openStageBuilder: 'Open Stage Builder',
+    hitFactorTitle: 'Hit Factor',
+    hitFactorDesc: 'Quick calculator: points / time = hit factor. Handy at the range and at matches.',
+    openHitFactor: 'Open Hit Factor',
     roHelperTitle: 'RO Helper',
     roHelperDesc:
       'Rules and procedures reference for IPSC-style shooting (draft articles — always verify against your official PDF).',
@@ -1272,6 +1308,14 @@ export const enMessages: MessageTree = {
     roHelperDemoCta: 'RO Helper: article preview (demo)',
     roHelperDemoLead:
       'RO Helper card UX mock — SOS colours, meta, disclaimer, FPSU layer. Pick a card with the URL query `?card=…` (for example `?card=C26`).',
+  },
+  hitFactor: {
+    pageTitle: 'Hit Factor — calculator',
+    pageLead: 'Enter points and time. Formula: points / time.',
+    pointsLabel: 'Points',
+    timeLabel: 'Time (sec)',
+    hfLabel: 'Hit factor',
+    reset: 'Reset',
   },
   roHelperDemo: {
     pageTitle: 'RO Helper — card demo',

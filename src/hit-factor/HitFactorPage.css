@@ -1,0 +1,122 @@
+.hit-factor {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2.5rem;
+}
+
+.hit-factor__head {
+  margin-bottom: 1.25rem;
+}
+
+.hit-factor__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+}
+
+.hit-factor__lead {
+  margin: 0.5rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.hit-factor__card {
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--btn-bg);
+  padding: 1.1rem 1.1rem 1rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hit-factor__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+@media (max-width: 520px) {
+  .hit-factor__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hit-factor__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.hit-factor__label {
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--text-h);
+}
+
+.hit-factor__input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font: inherit;
+  color: var(--text-h);
+}
+
+.hit-factor__input:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.hit-factor__result {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.hit-factor__result-label {
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+.hit-factor__result-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+}
+
+.hit-factor__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.9rem;
+}
+
+.hit-factor__reset {
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  background: var(--surface);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.hit-factor__reset:hover {
+  border-color: var(--accent-border);
+}
+

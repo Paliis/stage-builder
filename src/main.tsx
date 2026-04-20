@@ -15,6 +15,7 @@ import './index.css'
 import App from './App.tsx'
 import { PortalHome } from './portal/PortalHome'
 import { PortalShell } from './portal/PortalShell'
+import { HitFactorRoute } from './portal/HitFactorRoute'
 import { RoHelperRouteSuspenseFallback } from './portal/RoHelperRouteSuspenseFallback'
 import {
   RoHelperArticlePage,
@@ -45,6 +46,7 @@ createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route element={<PortalShell />}>
               <Route path="/" element={<PortalHome />} />
+              <Route path="/hit-factor" element={<HitFactorRoute />} />
               <Route path="/publish-policy" element={<PublishPolicyRoute />} />
               <Route
                 path="/ro-helper"

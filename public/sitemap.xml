@@ -7,6 +7,12 @@
     <priority>1.00</priority>
   </url>
   <url>
+    <loc>https://shooters-tools.com/hit-factor</loc>
+    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.50</priority>
+  </url>
+  <url>
     <loc>https://shooters-tools.com/publish-policy</loc>
     <lastmod>2026-04-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
