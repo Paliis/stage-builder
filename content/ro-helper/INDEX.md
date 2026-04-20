@@ -352,3 +352,11 @@
 | C375 | production-optics-specs | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D4a**; Batch_15. |
 | C376 | classic-magazine-constraints | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix D3**; Batch_15. |
 | C377 | equipment-position-check | handgun | equipment | reviewed | reviewed | true | Gemini-Rules-2026 | **5.2.7**; Batch_15. |
+| C378 | shoot-off-general | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **1.2.2**; Batch_16 Special Procedures. |
+| C379 | shoot-off-safety | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **1.2.2**; Batch_16. |
+| C380 | shoot-off-scoring | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **1.2.2**; Batch_16. |
+| C381 | multigun-mixed-stages | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix G**; Batch_16. |
+| C382 | multigun-transition-safety | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix G**; Batch_16. |
+| C383 | multigun-penalties | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **Appendix G**; Batch_16. |
+| C384 | electronic-scoring-ess | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **9.11**; Batch_16. |
+| C385 | results-verification-display | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **9.11**, **11.1**; Batch_16. |
