@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 /**
  * Loads GA4 only when `VITE_GA_MEASUREMENT_ID` is set (e.g. in Vercel env) and not in dev.
- * SPA has a single URL; no router-based page_view events needed.
+ * SPA uses manual router-based `page_view` events (see `RoutePageViewAnalytics`).
  */
 export function GoogleAnalytics() {
   useEffect(() => {
@@ -20,7 +20,7 @@ export function GoogleAnalytics() {
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', '${id}');
+      gtag('config', '${id}', { send_page_view: false });
     `
     document.head.appendChild(inline)
   }, [])

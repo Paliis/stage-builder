@@ -8,6 +8,7 @@ import { hydrateSessionDraft } from './application/sessionDraft'
 import { notifyPwaUpdateAvailable, setPwaApplyUpdate } from './application/pwaUpdateGate'
 import { I18nProvider } from './i18n/I18nProvider'
 import { GoogleAnalytics } from './presentation/components/GoogleAnalytics'
+import { RoutePageViewAnalytics } from './presentation/components/RoutePageViewAnalytics'
 import { PublishPolicyRoute } from './presentation/components/PublishPolicyRoute'
 import { ShareStageRoute } from './share/ShareStageRoute'
 import './index.css'
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')!).render(
     <I18nProvider>
       <HelmetProvider>
         <BrowserRouter>
+          <RoutePageViewAnalytics />
           <Routes>
             <Route element={<PortalShell />}>
               <Route path="/" element={<PortalHome />} />

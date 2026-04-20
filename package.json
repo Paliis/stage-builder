@@ -15,7 +15,8 @@
     "ro-helper:export-review": "node scripts/export-ro-helper-review-pack.mjs",
     "ro-helper:export-relevance": "node scripts/export-ro-helper-relevance-review.mjs",
     "ro-helper:inject-fpsu-refs": "node scripts/inject-ro-helper-fpsu-refs.mjs",
-    "ro-helper:validate": "node scripts/validate-ro-helper-content.mjs"
+    "ro-helper:validate": "node scripts/validate-ro-helper-content.mjs",
+    "sitemap:generate": "node scripts/generate-sitemap.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

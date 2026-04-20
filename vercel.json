@@ -6,18 +6,48 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "stage-builder.vercel.app" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "stage-builder.vercel.app"
+        }
+      ],
       "destination": "https://shooters-tools.com/$1",
       "permanent": true
     }
   ],
   "rewrites": [
-    { "source": "/v/:path*", "destination": "/index.html" },
-    { "source": "/e/:path*", "destination": "/index.html" },
-    { "source": "/stage-builder", "destination": "/index.html" },
-    { "source": "/publish-policy", "destination": "/index.html" }
+    {
+      "source": "/ro-helper/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/v/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/e/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-builder",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/publish-policy",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
+    {
+      "source": "/ro-helper/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
     {
       "source": "/sitemap.xml",
       "headers": [

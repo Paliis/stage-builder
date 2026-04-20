@@ -186,6 +186,8 @@ npm run icons:st  # ST на SB-only master з git (за замовч. b2b5854:pu
 
 Компонент `GoogleAnalytics` (`src/presentation/components/GoogleAnalytics.tsx`) підвантажує `gtag.js` **тільки** якщо задано **`VITE_GA_MEASUREMENT_ID`** і зібрано **production**-бандл (`import.meta.env.PROD`). У `npm run dev` GA не викликається.
 
+SPA-роутінг: автоматичний `page_view` вимкнено (`send_page_view: false`) і відправляється вручну на кожну зміну маршруту (`page_view` з `page_location`/`page_title`). Якщо у GA4 увімкнено Enhanced Measurement → **Page changes based on browser history events**, це може дублювати `page_view` (вимкніть цю опцію або залиште автоматичні перегляди).
+
 1. **Створити ресурс GA4** — [Google Analytics](https://analytics.google.com) → Admin → **Create Property**.
 2. **Потік Web** — URL сайту (наприклад `https://shooters-tools.com`).
 3. **Measurement ID** — формат `G-XXXXXXXXXX`.
