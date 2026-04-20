@@ -434,3 +434,11 @@
 | C458 | drawing-while-moving | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.11**; Batch_27 (manifest C114). |
 | C459 | holstering-moving | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.11**; Batch_27 (manifest C123). |
 | C460 | draw-facing-uprange | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.2**; Batch_27 (manifest C124). |
+| C461 | start-position-handgun | handgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **8.2.2**; Batch_28 Start & Commands (manifest C68). |
+| C462 | start-position-rifle | rifle | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **8.2.2**; Batch_28 (manifest C69). |
+| C463 | start-position-pcc | pcc | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **8.2.2**; Batch_28 (manifest C70). |
+| C464 | multiple-loading-shotgun | shotgun | penalties | reviewed | reviewed | true | Gemini-Rules-2026 | **10.2.13**; Batch_28 (manifest C101). |
+| C465 | ignoring-ro-instructions | handgun | match-admin | reviewed | reviewed | true | Gemini-Rules-2026 | **10.6.1**; Batch_28 (manifest C95). |
+| C466 | premature-handling-loading | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_28 (manifest C96). |
+| C467 | unauthorized-unloading | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_28 (manifest C97). |
+| C468 | failure-to-clear-malfunction | handgun | safety | reviewed | reviewed | true | Gemini-Rules-2026 | **10.5.1**; Batch_28 (manifest C98). |
