@@ -5,13 +5,29 @@ discipline: rifle
 locale: uk
 title: "Обмеження кількості штрафів (Penalty Cap — Карабін)"
 category: penalties
-ipsc_refs: ["10.2.3"]
+ipsc_refs:
+  - rule: "10.2.3"
+    note: ""
+fpsu_refs:
+  - rule: "XI §1"
+    note: "Процедурні штрафи — загальні положення"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#1-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%B7%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
+
+### 10.2.3 — стеля: «за епізод» vs «за постріл»
+
+- **10.2.3** обмежує кількість procedural **у конкретному контейнері**, який описано в правилі (за **епізод**, за **постріл**, за **мішень**, тощо).
+- Типовий кейс: **обидві ноги** поза fault line в одному моменті — це **один епізод** → максимум **один** procedural, **якщо** правило не вимагає інакше.
+- Якщо через порушення отримано **значну перевагу** — може застосовуватись інша логіка (див. `significant-advantage`).
+- Важливо розрізняти: **“one penalty per occurrence”** vs **“one penalty per shot”** — це різні режими нарахування.
+
 
 Правило лімітування штрафів при тривалому порушенні процедури з карабіном.
 
@@ -27,5 +43,9 @@ reviewer: "Gemini-Rules-2026"
 * **Дальні мішені:** Якщо через порушення процедури стрілець суттєво спростив собі обстріл дальніх мішеней — ліміт може бути переглянутий за процедурою матчу.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XI §1 — Процедурні штрафи — загальні положення](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#1-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%B7%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0)
+
 
 Розділ XI §2. У ФПСУ суддям рекомендується звіряти підсумкову суму штрафів із RM у разі застосування Penalty Cap.

@@ -5,13 +5,33 @@ discipline: handgun
 locale: uk
 title: "Вартість влучань та штрафів"
 category: scoring
-ipsc_refs: ["9.4", "9.5"]
+ipsc_refs:
+  - rule: "9.4"
+    note: ""
+  - rule: "9.5"
+    note: ""
+fpsu_refs:
+  - rule: "X §4"
+    note: "Підрахунок очок та штрафів"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#4-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D0%BE%D1%87%D0%BE%D0%BA-%D1%82%D0%B0-%D1%88%D1%82%D1%80%D0%B0%D1%84%D1%96%D0%B2"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
+
+### 9.4.1–9.4.2 — таблиця вартості (Major/Minor)
+
+Перевіряйте числа за PDF вашої дисципліни; для **Jan 2026** (IPSC) типова таблиця:
+
+| | A | C | D | Miss | Штрафна мішень (No-Shoot) |
+|---|---:|---:|---:|---:|---:|
+| **Major** | 5 | 4 | 2 | -10 | -10 |
+| **Minor** | 5 | 3 | 1 | -10 | -10 |
+
 
 Правила нарахування балів за влучні постріли та віднімання за промахи (Miss) чи влучання в штрафні мішені (No-Shoot).
 
@@ -28,6 +48,10 @@ reviewer: "Gemini-Rules-2026"
 * **Лінії зон:** Для паперу застосовуються правила визначення залікової зони з розділу 9.5; для спірних країв використовувати інструмент/процедуру матчу.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [X §4 — Підрахунок очок та штрафів](https://upsf.org.ua/rules/upsf/2020/10-scoring#4-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D0%BE%D1%87%D0%BE%D0%BA-%D1%82%D0%B0-%D1%88%D1%82%D1%80%D0%B0%D1%84%D1%96%D0%B2)
+
 
 Розділ XI §2. У ФПСУ акцентується увага: No-Shoot штрафується незалежно від “подвійного” проходження кулі.
 

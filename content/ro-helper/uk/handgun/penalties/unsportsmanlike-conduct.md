@@ -5,10 +5,22 @@ discipline: handgun
 locale: uk
 title: "Неспортивна поведінка"
 category: penalties
-ipsc_refs: ["10.6", "10.6.1", "10.3"]
+ipsc_refs:
+  - rule: "10.6"
+    note: ""
+  - rule: "10.6.1"
+    note: ""
+  - rule: "10.3"
+    note: ""
+fpsu_refs:
+  - rule: "XI §6"
+    note: "Дискваліфікація — неспортивна поведінка"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#6-%D0%B4%D0%B8%D1%81%D0%BA%D0%B2%D0%B0%D0%BB%D1%96%D1%84%D1%96%D0%BA%D0%B0%D1%86%D1%96%D1%8F-%D0%B7%D0%B0-%D0%BD%D0%B5%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D1%83-%D0%BF%D0%BE%D0%B2%D0%B5%D0%B4%D1%96%D0%BD%D0%BA%D1%83"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
@@ -28,5 +40,9 @@ reviewer: "Gemini-Rules-2026"
 * **DQ** за **10.6.1** зазвичай не «повертає» у матч; оскаржується лише фактична підстава за процедурою матчу.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XI §6 — Дискваліфікація — неспортивна поведінка](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#6-%D0%B4%D0%B8%D1%81%D0%BA%D0%B2%D0%B0%D0%BB%D1%96%D1%84%D1%96%D0%BA%D0%B0%D1%86%D1%96%D1%8F-%D0%B7%D0%B0-%D0%BD%D0%B5%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D1%83-%D0%BF%D0%BE%D0%B2%D0%B5%D0%B4%D1%96%D0%BD%D0%BA%D1%83)
+
 
 Розділ XI. Додаткові вимоги до поваги до офіційних осіб федерації та символіки — узгоджувати з **MD**.

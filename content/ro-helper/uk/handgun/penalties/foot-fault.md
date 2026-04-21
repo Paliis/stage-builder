@@ -5,13 +5,31 @@ discipline: handgun
 locale: uk
 title: "Заступ (Foot Fault)"
 category: penalties
-ipsc_refs: ["10.2.1"]
+ipsc_refs:
+  - rule: "10.2.1"
+    note: ""
+fpsu_refs:
+  - rule: "XI §2"
+    note: "Окремі приклади процедурних штрафів"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
+  - rule: "IX §5"
+    note: "Рух під час вправи"
+    url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#5-%D1%80%D1%83%D1%85"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
+
+### 10.2.1 — «Штраф за випадок» vs «Штраф за кожен постріл»
+
+- Якщо спортсмен **лише заступив** / торкнувся землі поза межами, але **не робив пострілів** у цей момент — зазвичай це **Штраф за випадок (per occurrence)**.
+- Якщо спортсмен **робить постріли**, перебуваючи у порушенні меж (або **отримав значну перевагу**) — логіка може переходити в **Штраф за кожен постріл (per shot)**.
+- Ключ до рішення: **чи були постріли під час порушення** і **чи є significant advantage** (див. `significant-advantage`).
+
 
 Торкання стрільцем землі або обладнання за межами вправи під час обстрілу мішеней. Санкція — процедурний штраф.
 
@@ -28,6 +46,11 @@ reviewer: "Gemini-Rules-2026"
 * **Сумніви:** Контакт підошви з лінією (зверху) не є порушенням; порушення — це торкання землі за лінією.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XI §2 — Окремі приклади процедурних штрафів](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8)
+- [IX §5 — Рух під час вправи](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#5-%D1%80%D1%83%D1%85)
+
 
 Згідно з Розділом XI §2. У ФПСУ акцентується увага на «нестабільних» заступах (торкання на мить без стрільби), які зазвичай караються одним штрафом за випадок.
 

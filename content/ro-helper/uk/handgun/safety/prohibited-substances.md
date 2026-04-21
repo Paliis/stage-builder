@@ -5,10 +5,18 @@ discipline: handgun
 locale: uk
 title: "Заборонені речовини"
 category: safety
-ipsc_refs: ["10.7.1"]
+ipsc_refs:
+  - rule: "10.7.1"
+    note: ""
+fpsu_refs:
+  - rule: "XI §7"
+    note: "Дискваліфікація — заборонені речовини"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#7-%D0%B4%D0%B8%D1%81%D0%BA%D0%B2%D0%B0%D0%BB%D1%96%D1%84%D1%96%D0%BA%D0%B0%D1%86%D1%96%D1%8F-%D0%B7%D0%B0-%D0%B2%D0%B6%D0%B8%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B7%D0%B0%D0%B1%D0%BE%D1%80%D0%BE%D0%BD%D0%B5%D0%BD%D0%B8%D1%85-%D1%80%D0%B5%D1%87%D0%BE%D0%B2%D0%B8%D0%BD"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
@@ -28,6 +36,10 @@ reviewer: "Gemini-Rules-2026"
 * **Безпека людей:** Якщо є ризик агресії/неадекватної поведінки — діяти командно, залучати керівництво матчу й охорону/адміністрацію полігону за потреби.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XI §7 — Дискваліфікація — заборонені речовини](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#7-%D0%B4%D0%B8%D1%81%D0%BA%D0%B2%D0%B0%D0%BB%D1%96%D1%84%D1%96%D0%BA%D0%B0%D1%86%D1%96%D1%8F-%D0%B7%D0%B0-%D0%B2%D0%B6%D0%B8%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B7%D0%B0%D0%B1%D0%BE%D1%80%D0%BE%D0%BD%D0%B5%D0%BD%D0%B8%D1%85-%D1%80%D0%B5%D1%87%D0%BE%D0%B2%D0%B8%D0%BD)
+
 
 Згідно з Розділом XI правил ФПСУ 2020: підозра на заборонені речовини є підставою для негайного виклику RM і застосування локального регламенту полігону/матчу.
 

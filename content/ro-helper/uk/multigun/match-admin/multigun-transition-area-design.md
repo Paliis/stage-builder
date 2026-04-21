@@ -5,10 +5,15 @@ discipline: multigun
 locale: uk
 title: "Зона зміни зброї (Transition Area, Multigun)"
 category: match-admin
-ipsc_refs: ["11.1"]
-fpsu_delta_verified: true
+ipsc_refs:
+  - rule: "11.1"
+    note: ""
+primary_url: "https://www.ipsc.org/ipsc-rules/rule-books/"
+fpsu_refs: []
+fpsu_delta_verified: false
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
 ---
 
 ## Суть процедури

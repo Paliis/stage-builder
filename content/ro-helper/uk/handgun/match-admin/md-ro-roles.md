@@ -5,10 +5,21 @@ discipline: handgun
 locale: uk
 title: "Ролі офіційних осіб (MD, RM, RO)"
 category: match-admin
-ipsc_refs: ["7.1"]
+ipsc_refs:
+  - rule: "7.1"
+    note: ""
+fpsu_refs:
+  - rule: "II §3"
+    note: "Судді змагань"
+    url: "https://upsf.org.ua/rules/upsf/2020/02-general-conditions#3-%D1%81%D1%83%D0%B4%D0%B4%D1%96-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D1%8C"
+  - rule: "II §4"
+    note: "Інші офіційні особи"
+    url: "https://upsf.org.ua/rules/upsf/2020/02-general-conditions#4-%D1%96%D0%BD%D1%88%D1%96-%D0%BE%D1%84%D1%96%D1%86%D1%96%D0%B9%D0%BD%D1%96-%D0%BE%D1%81%D0%BE%D0%B1%D0%B8"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
@@ -28,6 +39,11 @@ reviewer: "Gemini-Rules-2026"
 * **MD:** Загальне адміністрування та логістика; рішення RM у межах компетенції правил і безпеки не скасовуються MD.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [II §3 — Судді змагань](https://upsf.org.ua/rules/upsf/2020/02-general-conditions#3-%D1%81%D1%83%D0%B4%D0%B4%D1%96-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D1%8C)
+- [II §4 — Інші офіційні особи](https://upsf.org.ua/rules/upsf/2020/02-general-conditions#4-%D1%96%D0%BD%D1%88%D1%96-%D0%BE%D1%84%D1%96%D1%86%D1%96%D0%B9%D0%BD%D1%96-%D0%BE%D1%81%D0%BE%D0%B1%D0%B8)
+
 
 Згідно зі структурою змагань ФПСУ та брифінгом MD. Розподіл обов’язків на майданчику фіксується регламентом матчу.
 

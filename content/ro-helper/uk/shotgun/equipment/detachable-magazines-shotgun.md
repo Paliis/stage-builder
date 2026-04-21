@@ -5,10 +5,19 @@ discipline: shotgun
 locale: uk
 title: "Знімні (коробчаті) магазини"
 category: equipment
-ipsc_refs: ["Appendix D4", "5.2.3", "8.1.5"]
-fpsu_delta_verified: true
+ipsc_refs:
+  - rule: "Appendix D4"
+    note: ""
+  - rule: "5.2.3"
+    note: ""
+  - rule: "8.1.5"
+    note: ""
+fpsu_refs: []
+fpsu_delta_verified: false
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Shotgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення

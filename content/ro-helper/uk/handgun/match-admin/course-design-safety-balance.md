@@ -5,13 +5,31 @@ discipline: handgun
 locale: uk
 title: "Дизайн вправ: баланс та безпека"
 category: match-admin
-ipsc_refs: ["1.1"]
+ipsc_refs:
+  - rule: "1.1"
+    note: ""
+fpsu_refs:
+  - rule: "III §1"
+    note: "Основні принципи проектування"
+    url: "https://upsf.org.ua/rules/upsf/2020/03-stage-design#1-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%96-%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF%D0%B8"
+  - rule: "IV §2"
+    note: "Критерії побудови вправ"
+    url: "https://upsf.org.ua/rules/upsf/2020/04-stage-safety-and-zones#2-%D0%BA%D1%80%D0%B8%D1%82%D0%B5%D1%80%D1%96%D1%97-%D0%BF%D0%BE%D0%B1%D1%83%D0%B4%D0%BE%D0%B2%D0%B8-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
+
+### Баланс: Точність, Швидкість, Потужність
+
+- **1.1** задає принципи побудови вправ: перш за все **безпека**, далі **справедливість** і **баланс**.
+- **1.1.5 (Freestyle):** у більшості випадків спортсмен має право вирішувати **як** виконувати вправу, якщо це не суперечить WSB і правилам.
+- Практичний тест балансу: вправа має оцінювати комбінацію **Точності, Швидкості, Потужності** (а не лише один параметр).
+
 
 Побудова вправи, яка створює невиправданий ризик для учасників або порушує принципи спортивної справедливості.
 
@@ -28,6 +46,11 @@ reviewer: "Gemini-Rules-2026"
 * **Фізична складність:** Вправа не повинна зводитися до тесту витривалості на шкоду безпечному обстрілу.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [III §1 — Основні принципи проектування](https://upsf.org.ua/rules/upsf/2020/03-stage-design#1-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%96-%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF%D0%B8)
+- [IV §2 — Критерії побудови вправ](https://upsf.org.ua/rules/upsf/2020/04-stage-safety-and-zones#2-%D0%BA%D1%80%D0%B8%D1%82%D0%B5%D1%80%D1%96%D1%97-%D0%BF%D0%BE%D0%B1%D1%83%D0%B4%D0%BE%D0%B2%D0%B8-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2)
+
 
 Перевірка майданчика та погодження змін — за процедурою ФПСУ та брифінгом MD.
 

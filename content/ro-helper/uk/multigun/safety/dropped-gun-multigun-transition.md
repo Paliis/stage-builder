@@ -5,10 +5,15 @@ discipline: multigun
 locale: uk
 title: "Впущена зброя при зміні (Multigun)"
 category: safety
-ipsc_refs: ["10.5.3"]
-fpsu_delta_verified: true
+ipsc_refs:
+  - rule: "10.5.3"
+    note: ""
+primary_url: "https://www.ipsc.org/ipsc-rules/rule-books/"
+fpsu_refs: []
+fpsu_delta_verified: false
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
 ---
 
 ## Суть порушення

@@ -5,10 +5,19 @@ discipline: rifle
 locale: uk
 title: "STOP: специфіка карабіна"
 category: match-admin
-ipsc_refs: ["8.3.2", "8.6.4", "10.6.1"]
-fpsu_delta_verified: true
+ipsc_refs:
+  - rule: "8.3.2"
+    note: ""
+  - rule: "8.6.4"
+    note: ""
+  - rule: "10.6.1"
+    note: ""
+fpsu_refs: []
+fpsu_delta_verified: false
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Rifle%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть процедури

@@ -5,10 +5,21 @@ discipline: handgun
 locale: uk
 title: "Вимоги до письмового брифінгу (WSB)"
 category: match-admin
-ipsc_refs: ["3.2"]
+ipsc_refs:
+  - rule: "3.2"
+    note: ""
+fpsu_refs:
+  - rule: "V §2"
+    note: "Письмові брифінги до вправ"
+    url: "https://upsf.org.ua/rules/upsf/2020/05-stage-information#2-%D0%BF%D0%B8%D1%81%D1%8C%D0%BC%D0%BE%D0%B2%D1%96-%D0%B1%D1%80%D0%B8%D1%84%D1%96%D0%BD%D0%B3%D0%B8-%D0%B4%D0%BE-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2"
+  - rule: "V"
+    note: "Інформація про вправи"
+    url: "https://upsf.org.ua/rules/upsf/2020/05-stage-information"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
@@ -28,6 +39,11 @@ reviewer: "Gemini-Rules-2026"
 * **Зміни:** Будь-які зміни в WSB після початку матчу — лише письмово та зі схвалення Головного судді матчу (RM).
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [V §2 — Письмові брифінги до вправ](https://upsf.org.ua/rules/upsf/2020/05-stage-information#2-%D0%BF%D0%B8%D1%81%D1%8C%D0%BC%D0%BE%D0%B2%D1%96-%D0%B1%D1%80%D0%B8%D1%84%D1%96%D0%BD%D0%B3%D0%B8-%D0%B4%D0%BE-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2)
+- [V — Інформація про вправи](https://upsf.org.ua/rules/upsf/2020/05-stage-information)
+
 
 Згідно з Розділом V правил ФПСУ 2020. У ФПСУ наголошується на обов’язковості наявності друкованої копії WSB на кожному стейджі.
 

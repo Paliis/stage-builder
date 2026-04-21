@@ -5,13 +5,30 @@ discipline: pcc
 locale: uk
 title: "Зникаючі мішені (PCC)"
 category: scoring
-ipsc_refs: ["9.9.2", "9.9.3"]
+ipsc_refs:
+  - rule: "9.9.2"
+    note: ""
+  - rule: "9.9.3"
+    note: ""
+fpsu_refs:
+  - rule: "X §9"
+    note: "Зникаючі мішені"
+    url: "https://upsf.org.ua/rules/upsf/2020/10-scoring#9-%D0%BF%D1%96%D0%B4%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BE%D0%BA-%D0%BE%D1%87%D0%BE%D0%BA-%D0%BD%D0%B0-%D0%B7%D0%BD%D0%B8%D0%BA%D0%B0%D1%8E%D1%87%D0%B8%D1%85-%D0%BC%D1%96%D1%88%D0%B5%D0%BD%D1%8F%D1%85"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
+
+### 9.9.2–9.9.3 — «зникаюча» vs рухома, та збій механіки
+
+- **Зникаюча мішень**: якщо мішень у правилах визначена як «зникаюча», то **відсутність пострілу/влучання** по ній **не тягне** штрафу **Miss/FTE** (логіка **9.9.2–9.9.3**).
+- Якщо механізм **зламався** і мішень **не зникла** (залишилась частково видимою / «зависла») — це **збій обладнання** і вирішується як **перестріл (Reshoot) за 4.6.1**.
+- Примітка: «рухома, але видима» мішень ≠ «зникаюча». Класифікація — з **WSB** + **9.9.2–9.9.3**.
+
 
 Правила підрахунку для рухомих зникаючих мішеней у дисципліні PCC.
 

@@ -5,10 +5,18 @@ discipline: handgun
 locale: uk
 title: "Процедура арбітражу"
 category: match-admin
-ipsc_refs: ["11.1"]
+ipsc_refs:
+  - rule: "11.1"
+    note: ""
+fpsu_refs:
+  - rule: "XII"
+    note: "Арбітражний комітет"
+    url: "https://upsf.org.ua/rules/upsf/2020/12-arbitration"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
@@ -28,6 +36,10 @@ reviewer: "Gemini-Rules-2026"
 * **Внесок:** Наявність/розмір грошового внеску для розгляду — лише якщо це передбачено регламентом матчу та не суперечить п. 11.1.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XII — Арбітражний комітет](https://upsf.org.ua/rules/upsf/2020/12-arbitration)
+
 
 Згідно з процедурами ФПСУ для змагань відповідного рівня; первинне звернення до RM обов’язкове.
 

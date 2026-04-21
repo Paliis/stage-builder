@@ -78,6 +78,11 @@ function listHasRule(raw) {
   return /rule:\s*"/.test(block) || /rule:\s*[\d.]/.test(block);
 }
 
+function listNonEmpty(raw, fieldName, nextKeys) {
+  const block = blockUntilNextTopKey(raw, fieldName, nextKeys);
+  return block.includes("\n  - ");
+}
+
 async function walkArticleMd(localeDir) {
   /** @type {string[]} */
   const rel = [];
@@ -158,11 +163,19 @@ async function main() {
         errors.push(`${rel}: card_id "${scalar.card_id}" != matrix "${row.card_id}"`);
 
       if (!scalar.primary_url?.startsWith("http")) errors.push(`${rel}: missing or invalid primary_url`);
+
+      // V0: ipsc_refs is required and must list rule anchors (rule: ...)
       if (!hasListField(raw, "ipsc_refs", ["primary_url"])) errors.push(`${rel}: ipsc_refs must be a non-empty list`);
       else if (!listHasRule(raw)) errors.push(`${rel}: ipsc_refs entries need rule:`);
 
-      if (!hasListField(raw, "fpsu_refs", ["fpsu_delta_verified"])) errors.push(`${rel}: fpsu_refs must be a non-empty list`);
-      else if (!listHasUrl(raw)) errors.push(`${rel}: fpsu_refs entries need upsf.org.ua url`);
+      // V0: fpsu_refs is optional unless fpsu_delta_verified=true
+      const fpsuVerified = scalar.fpsu_delta_verified === "true";
+      const hasFpsuRefsField = raw.includes("fpsu_refs:");
+      if (fpsuVerified) {
+        if (!hasFpsuRefsField) errors.push(`${rel}: fpsu_delta_verified=true but fpsu_refs is missing`);
+        else if (!listNonEmpty(raw, "fpsu_refs", ["fpsu_delta_verified"])) errors.push(`${rel}: fpsu_refs must be non-empty when fpsu_delta_verified=true`);
+        else if (!listHasUrl(raw)) errors.push(`${rel}: fpsu_refs entries need upsf.org.ua url`);
+      }
 
       if (scalar.fpsu_delta_verified !== "false" && scalar.fpsu_delta_verified !== "true")
         warnings.push(`${rel}: fpsu_delta_verified not boolean-like: ${scalar.fpsu_delta_verified}`);
@@ -172,17 +185,18 @@ async function main() {
       const hasIpsc = /##\s+IPSC\b/i.test(body);
       if (!hasIpsc) warnings.push(`${rel}: no "## IPSC" section heading`);
 
+      // V0: Local (FPSU) section is only present when FPSU deltas are published.
       const hasLocal =
         loc === "uk" ? /##\s+Локально\s*\(ФПСУ\)/.test(body) : /##\s+Local\s*\(FPSU\)/i.test(body);
-      if (!hasLocal) warnings.push(`${rel}: missing Local (FPSU) section for locale ${loc}`);
+      if (fpsuVerified && !hasLocal) warnings.push(`${rel}: fpsu_delta_verified=true but Local (FPSU) section is missing`);
 
       if (loc === "uk" && /\bдуло\b/i.test(body))
         warnings.push(`${rel}: UK text contains colloquial "дуло" (TZ §1.1 — prefer ствол / дульний зріз)`);
 
-      if (loc === "uk" && body.includes("upsf.org.ua") === false)
-        warnings.push(`${rel}: UK body has no upsf.org.ua link (expected in Local block)`);
-      if (loc === "en" && body.includes("upsf.org.ua") === false)
-        warnings.push(`${rel}: EN body has no upsf.org.ua link`);
+      if (fpsuVerified && loc === "uk" && body.includes("upsf.org.ua") === false)
+        warnings.push(`${rel}: fpsu_delta_verified=true but UK body has no upsf.org.ua link`);
+      if (fpsuVerified && loc === "en" && body.includes("upsf.org.ua") === false)
+        warnings.push(`${rel}: fpsu_delta_verified=true but EN body has no upsf.org.ua link`);
     }
   }
 

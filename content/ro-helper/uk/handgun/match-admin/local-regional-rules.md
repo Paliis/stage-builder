@@ -5,10 +5,21 @@ discipline: handgun
 locale: uk
 title: "Локальні та регіональні правила"
 category: match-admin
-ipsc_refs: ["3.3"]
+ipsc_refs:
+  - rule: "3.3"
+    note: ""
+fpsu_refs:
+  - rule: "I"
+    note: "Загальні положення"
+    url: "https://upsf.org.ua/rules/upsf/2020/01-general-provisions"
+  - rule: "II"
+    note: "Загальні умови та учасники"
+    url: "https://upsf.org.ua/rules/upsf/2020/02-general-conditions"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
@@ -28,6 +39,11 @@ reviewer: "Gemini-Rules-2026"
 * **Екологія:** Часто стосуються збору гільз або використання біорозкладних матеріалів.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [I — Загальні положення](https://upsf.org.ua/rules/upsf/2020/01-general-provisions)
+- [II — Загальні умови та учасники](https://upsf.org.ua/rules/upsf/2020/02-general-conditions)
+
 
 Розділ XIV. У ФПСУ локальні правила часто стосуються специфіки закритих тирів (обмеження по кутах через антирикошетне покриття).
 

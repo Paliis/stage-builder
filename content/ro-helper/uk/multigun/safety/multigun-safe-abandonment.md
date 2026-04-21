@@ -5,10 +5,17 @@ discipline: multigun
 locale: uk
 title: "Залишення зброї в зоні зміни (Multigun)"
 category: safety
-ipsc_refs: ["11.1", "11.6"]
-fpsu_delta_verified: true
+ipsc_refs:
+  - rule: "11.1"
+    note: ""
+  - rule: "11.6"
+    note: ""
+primary_url: "https://www.ipsc.org/ipsc-rules/rule-books/"
+fpsu_refs: []
+fpsu_delta_verified: false
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
 ---
 
 ## Суть процедури

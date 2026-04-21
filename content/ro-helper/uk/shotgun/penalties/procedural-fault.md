@@ -5,10 +5,23 @@ discipline: shotgun
 locale: uk
 title: "Процедурні штрафи (Рушниця)"
 category: penalties
-ipsc_refs: ["10.1", "10.2"]
+ipsc_refs:
+  - rule: "10.1"
+    note: ""
+  - rule: "10.2"
+    note: ""
+fpsu_refs:
+  - rule: "XI §1"
+    note: "Процедурні штрафи — загальні положення"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#1-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%B7%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0"
+  - rule: "XI §2"
+    note: "Процедурні штрафи — окремі приклади"
+    url: "https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8"
 fpsu_delta_verified: true
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Shotgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
@@ -28,6 +41,11 @@ reviewer: "Gemini-Rules-2026"
 * **Боєприпаси:** Використання невідповідного типу боєприпасів (якщо це не порушує безпеку) веде до процедурних штрафів.
 
 ## Локально (ФПСУ)
+**Первинник — Правила ФПСУ 2020 (офіційний зміст на upsf.org.ua):**
+
+- [XI §1 — Процедурні штрафи — загальні положення](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#1-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%B7%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0)
+- [XI §2 — Процедурні штрафи — окремі приклади](https://upsf.org.ua/rules/upsf/2020/11-penalties-and-disqualifications#2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D0%B4%D1%83%D1%80%D0%BD%D1%96-%D1%88%D1%82%D1%80%D0%B0%D1%84%D0%B8-%D0%BE%D0%BA%D1%80%D0%B5%D0%BC%D1%96-%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8)
+
 
 Розділ XI §2. У ФПСУ особлива увага приділяється штрафам за порушення черговості обстрілу, якщо вона була жорстко вказана в брифінгу.
 

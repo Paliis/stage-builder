@@ -5,10 +5,15 @@ discipline: handgun
 locale: uk
 title: "Витягання обличчям у тил (Facing Uprange)"
 category: safety
-ipsc_refs: ["10.5.2"]
-fpsu_delta_verified: true
+ipsc_refs:
+  - rule: "10.5.2"
+    note: ""
+fpsu_refs: []
+fpsu_delta_verified: false
 status: reviewed
 reviewer: "Gemini-Rules-2026"
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
 ---
 
 ## Суть порушення
@@ -24,7 +29,7 @@ reviewer: "Gemini-Rules-2026"
 
 ## Важливі нюанси (Jan 2026)
 
-* **Поріг:** Спочатку розвернути корпус так, щоб **ствол** при **витяганні** одразу був униз дулом у дозволений сектор, а не в тил.
+* **Поріг:** Спочатку розвернути корпус так, щоб **ствол** при **витяганні** одразу був униз стволом у дозволений сектор, а не в тил.
 * **Критерій:** Часткове підняття пістолета з кобури в бік тилу до проходу **лінії 90 градусів** — порушення **кутів безпеки**.
 
 ## Типові помилки RO
