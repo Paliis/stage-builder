@@ -5,6 +5,17 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "stage-builder.vercel.app"
+        }
+      ],
+      "destination": "https://shooters-tools.com/stage-builder",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "has": [
         {
@@ -19,6 +30,10 @@
   "rewrites": [
     {
       "source": "/ro-helper/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools/ro-helper/:path*",
       "destination": "/index.html"
     },
     {
@@ -45,6 +60,15 @@
   "headers": [
     {
       "source": "/ro-helper/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/tools/ro-helper/:path*",
       "headers": [
         {
           "key": "Cache-Control",
