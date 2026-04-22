@@ -17,6 +17,7 @@ import { PortalHome } from './portal/PortalHome'
 import { PortalShell } from './portal/PortalShell'
 import { HitFactorRoute } from './portal/HitFactorRoute'
 import { RoHelperRouteSuspenseFallback } from './portal/RoHelperRouteSuspenseFallback'
+import { isRoHelperEnabled } from './portal/featureFlags'
 import {
   RoHelperArticlePage,
   RoHelperCardDemo,
@@ -48,21 +49,23 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/" element={<PortalHome />} />
               <Route path="/hit-factor" element={<HitFactorRoute />} />
               <Route path="/publish-policy" element={<PublishPolicyRoute />} />
-              <Route
-                path="/ro-helper"
-                element={
-                  <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
-                    <RoHelperLayout />
-                  </Suspense>
-                }
-              >
-                <Route index element={<RoHelperHome />} />
-                <Route path="demo" element={<RoHelperCardDemo />} />
-                <Route path="topics/:category" element={<RoHelperTopicsPage />} />
-                <Route path=":discipline/:category/:slug" element={<RoHelperArticlePage />} />
-                <Route path=":discipline/:category" element={<RoHelperCategoryPage />} />
-                <Route path=":discipline" element={<RoHelperDisciplinePage />} />
-              </Route>
+              {isRoHelperEnabled() ? (
+                <Route
+                  path="/ro-helper"
+                  element={
+                    <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                      <RoHelperLayout />
+                    </Suspense>
+                  }
+                >
+                  <Route index element={<RoHelperHome />} />
+                  <Route path="demo" element={<RoHelperCardDemo />} />
+                  <Route path="topics/:category" element={<RoHelperTopicsPage />} />
+                  <Route path=":discipline/:category/:slug" element={<RoHelperArticlePage />} />
+                  <Route path=":discipline/:category" element={<RoHelperCategoryPage />} />
+                  <Route path=":discipline" element={<RoHelperDisciplinePage />} />
+                </Route>
+              ) : null}
             </Route>
             <Route path="/stage-builder" element={<App />} />
             <Route path="/v/:shareId" element={<ShareStageRoute mode="view" />} />

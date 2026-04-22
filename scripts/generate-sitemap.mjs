@@ -64,6 +64,7 @@ function urlEntry(loc, lastmod, changefreq, priority) {
 
 async function main() {
   const lastmod = todayLastmodUtc()
+  const enableRoHelper = process.env.ENABLE_RO_HELPER_SITEMAP === '1' || process.env.ENABLE_RO_HELPER_SITEMAP === 'true'
 
   const csv = await readFile(matrixPath, 'utf8')
   const lines = csv.trim().split(/\r?\n/)
@@ -75,8 +76,10 @@ async function main() {
   urls.add(`${ORIGIN}/stage-builder`)
   urls.add(`${ORIGIN}/hit-factor`)
   urls.add(`${ORIGIN}/publish-policy`)
-  urls.add(`${ORIGIN}/ro-helper`)
-  urls.add(`${ORIGIN}/ro-helper/demo`)
+  if (enableRoHelper) {
+    urls.add(`${ORIGIN}/ro-helper`)
+    urls.add(`${ORIGIN}/ro-helper/demo`)
+  }
 
   for (const line of dataRows) {
     const cols = parseCsvLine(line)
@@ -84,10 +87,12 @@ async function main() {
     const discipline = (cols[2] ?? '').trim()
     const category = (cols[3] ?? '').trim()
     if (!slug || !discipline || !category) continue
-    urls.add(`${ORIGIN}/ro-helper/topics/${category}`)
-    urls.add(`${ORIGIN}/ro-helper/${discipline}`)
-    urls.add(`${ORIGIN}/ro-helper/${discipline}/${category}`)
-    urls.add(`${ORIGIN}/ro-helper/${discipline}/${category}/${slug}`)
+    if (enableRoHelper) {
+      urls.add(`${ORIGIN}/ro-helper/topics/${category}`)
+      urls.add(`${ORIGIN}/ro-helper/${discipline}`)
+      urls.add(`${ORIGIN}/ro-helper/${discipline}/${category}`)
+      urls.add(`${ORIGIN}/ro-helper/${discipline}/${category}/${slug}`)
+    }
   }
 
   const sorted = [...urls].sort()

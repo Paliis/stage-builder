@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
+import { isRoHelperEnabled } from './featureFlags'
 import './PortalHome.css'
 
 /** Launcher at `/` — entry to Stage Builder and future portal modules. */
@@ -26,17 +27,21 @@ export function PortalHome() {
         <p className="portal-home__card-desc">{p.hitFactorDesc}</p>
         <p className="portal-home__card-cta">{p.openHitFactor} →</p>
       </Link>
-      <Link to="/ro-helper" className="portal-home__card portal-home__card--secondary">
-        <h2 className="portal-home__card-title">{p.roHelperTitle}</h2>
-        <p className="portal-home__card-desc">{p.roHelperDesc}</p>
-        <p className="portal-home__card-cta">{p.openRoHelper} →</p>
-      </Link>
-      <div className="portal-home__demo">
-        <Link to="/ro-helper/demo" className="portal-home__demo-link">
-          {p.roHelperDemoCta} →
-        </Link>
-        <p className="portal-home__demo-desc">{p.roHelperDemoLead}</p>
-      </div>
+      {isRoHelperEnabled() ? (
+        <>
+          <Link to="/ro-helper" className="portal-home__card portal-home__card--secondary">
+            <h2 className="portal-home__card-title">{p.roHelperTitle}</h2>
+            <p className="portal-home__card-desc">{p.roHelperDesc}</p>
+            <p className="portal-home__card-cta">{p.openRoHelper} →</p>
+          </Link>
+          <div className="portal-home__demo">
+            <Link to="/ro-helper/demo" className="portal-home__demo-link">
+              {p.roHelperDemoCta} →
+            </Link>
+            <p className="portal-home__demo-desc">{p.roHelperDemoLead}</p>
+          </div>
+        </>
+      ) : null}
     </div>
   )
 }
