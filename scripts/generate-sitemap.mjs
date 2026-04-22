@@ -12,6 +12,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 
 const ORIGIN = 'https://shooters-tools.com'
+const RO_HELPER_BASE = `${ORIGIN}/tools/ro-helper`
 const matrixPath = join(root, 'docs', 'RO_HELPER_CARD_MATRIX.csv')
 const outSitemap0 = join(root, 'public', 'sitemap-0.xml')
 const outSitemap = join(root, 'public', 'sitemap.xml')
@@ -77,8 +78,8 @@ async function main() {
   urls.add(`${ORIGIN}/hit-factor`)
   urls.add(`${ORIGIN}/publish-policy`)
   if (enableRoHelper) {
-    urls.add(`${ORIGIN}/ro-helper`)
-    urls.add(`${ORIGIN}/ro-helper/demo`)
+    urls.add(RO_HELPER_BASE)
+    urls.add(`${RO_HELPER_BASE}/demo`)
   }
 
   for (const line of dataRows) {
@@ -88,10 +89,10 @@ async function main() {
     const category = (cols[3] ?? '').trim()
     if (!slug || !discipline || !category) continue
     if (enableRoHelper) {
-      urls.add(`${ORIGIN}/ro-helper/topics/${category}`)
-      urls.add(`${ORIGIN}/ro-helper/${discipline}`)
-      urls.add(`${ORIGIN}/ro-helper/${discipline}/${category}`)
-      urls.add(`${ORIGIN}/ro-helper/${discipline}/${category}/${slug}`)
+      urls.add(`${RO_HELPER_BASE}/topics/${category}`)
+      urls.add(`${RO_HELPER_BASE}/${discipline}`)
+      urls.add(`${RO_HELPER_BASE}/${discipline}/${category}`)
+      urls.add(`${RO_HELPER_BASE}/${discipline}/${category}/${slug}`)
     }
   }
 
@@ -105,9 +106,9 @@ async function main() {
       priority = 1.0
     } else if (loc === `${ORIGIN}/stage-builder`) {
       priority = 0.95
-    } else if (loc === `${ORIGIN}/ro-helper`) {
+    } else if (loc === RO_HELPER_BASE) {
       priority = 0.9
-    } else if (loc.startsWith(`${ORIGIN}/ro-helper/`)) {
+    } else if (loc.startsWith(`${RO_HELPER_BASE}/`)) {
       priority = 0.75
       changefreq = 'monthly'
     }

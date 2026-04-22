@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { formatTemplate } from '../i18n/format'
 import { DEMO_CARD_IDS, resolveDemoCard, type DemoSection } from './roHelperCardDemoModel'
+import { roHelperPath } from '../ro-helper/paths'
 import './RoHelperCardDemo.css'
 
 function renderBoldSegments(line: string): ReactNode[] {
@@ -107,7 +108,7 @@ export function RoHelperCardDemo() {
     <div className="ro-helper-demo">
       <header className="ro-helper-demo__top">
         <div className="ro-helper-demo__top-row">
-          <Link to="/ro-helper" className="ro-helper-demo__back">
+          <Link to={roHelperPath()} className="ro-helper-demo__back">
             ← {rh.breadcrumbRo}
           </Link>
         </div>
@@ -126,7 +127,7 @@ export function RoHelperCardDemo() {
               {DEMO_CARD_IDS.map((id, i) => (
                 <Fragment key={id}>
                   {i > 0 ? <span className="ro-helper-demo__invalid-sep"> · </span> : null}
-                  <Link to={`/ro-helper/demo?card=${id}`} className="ro-helper-demo__invalid-link">
+                  <Link to={`${roHelperPath('demo')}?card=${id}`} className="ro-helper-demo__invalid-link">
                     {id}
                   </Link>
                 </Fragment>

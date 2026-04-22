@@ -11,6 +11,7 @@ import { plainSummaryFromMd } from './plainSummaryFromMd'
 import { splitFpsuMarkdownBody } from './splitFpsuSection'
 import { isRoHelperCategory, isRoHelperDiscipline } from './constants'
 import { categoryLabel, disciplineLabel } from './labels'
+import { roHelperPath } from './paths'
 import { useRoHelperFpsuPrefs } from './useRoHelperFpsuPrefs'
 import { trackRoHelperEvent } from './roHelperAnalytics'
 import './RoHelperArticlePage.css'
@@ -121,7 +122,7 @@ export function RoHelperArticlePage() {
   }
 
   if (!valid) {
-    return <Navigate to="/ro-helper" replace />
+    return <Navigate to={roHelperPath()} replace />
   }
 
   if (phase === 'loading') {
@@ -145,7 +146,7 @@ export function RoHelperArticlePage() {
         </Helmet>
         <p className="ro-helper-article__missing">{rh.articleNotFound}</p>
         <p>
-          <Link to="/ro-helper">{rh.breadcrumbRo}</Link>
+          <Link to={roHelperPath()}>{rh.breadcrumbRo}</Link>
         </p>
       </div>
     )
@@ -158,11 +159,11 @@ export function RoHelperArticlePage() {
         <meta name="description" content={metaDescription} />
       </Helmet>
       <nav className="ro-helper-article__crumb" aria-label="Breadcrumb">
-        <Link to="/ro-helper">{rh.breadcrumbRo}</Link>
+        <Link to={roHelperPath()}>{rh.breadcrumbRo}</Link>
         <span aria-hidden="true"> / </span>
-        <Link to={`/ro-helper/${discipline}`}>{disciplineLabel(discipline!, rh)}</Link>
+        <Link to={roHelperPath(discipline!)}>{disciplineLabel(discipline!, rh)}</Link>
         <span aria-hidden="true"> / </span>
-        <Link to={`/ro-helper/${discipline}/${category}`}>{categoryLabel(category!, rh)}</Link>
+        <Link to={roHelperPath(discipline!, category!)}>{categoryLabel(category!, rh)}</Link>
         <span aria-hidden="true"> / </span>
         <span>{slug}</span>
       </nav>

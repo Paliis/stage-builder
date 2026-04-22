@@ -18,6 +18,7 @@ import { PortalShell } from './portal/PortalShell'
 import { HitFactorRoute } from './portal/HitFactorRoute'
 import { RoHelperRouteSuspenseFallback } from './portal/RoHelperRouteSuspenseFallback'
 import { isRoHelperEnabled } from './portal/featureFlags'
+import { RO_HELPER_BASE } from './ro-helper/paths'
 import {
   RoHelperArticlePage,
   RoHelperCardDemo,
@@ -50,8 +51,10 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/hit-factor" element={<HitFactorRoute />} />
               <Route path="/publish-policy" element={<PublishPolicyRoute />} />
               {isRoHelperEnabled() ? (
-                <Route
-                  path="/ro-helper"
+                <>
+                  <Route path="/ro-helper/*" element={<Navigate to={RO_HELPER_BASE} replace />} />
+                  <Route
+                  path={RO_HELPER_BASE}
                   element={
                     <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
                       <RoHelperLayout />
@@ -65,6 +68,7 @@ createRoot(document.getElementById('root')!).render(
                   <Route path=":discipline/:category" element={<RoHelperCategoryPage />} />
                   <Route path=":discipline" element={<RoHelperDisciplinePage />} />
                 </Route>
+                </>
               ) : null}
             </Route>
             <Route path="/stage-builder" element={<App />} />

@@ -5,6 +5,7 @@ import type { MessageTree } from '../i18n/messages'
 import { useI18n } from '../i18n/useI18n'
 import { RO_HELPER_DISCIPLINES, type RoHelperCategory } from './constants'
 import { disciplineLabel } from './labels'
+import { roHelperPath } from './paths'
 import { trackRoHelperEvent } from './roHelperAnalytics'
 import './RoHelperHome.css'
 
@@ -69,7 +70,7 @@ export function RoHelperHome() {
             <li key={category}>
               <Link
                 className={`ro-helper-sos-tile ro-helper-sos-tile--${tone}`}
-                to={`/ro-helper/topics/${category}`}
+                to={roHelperPath('topics', category)}
               >
                 <span className="ro-helper-sos-tile__name">{sosTitle(category, rh)}</span>
                 <span className="ro-helper-sos-tile__cta">→</span>
@@ -86,7 +87,7 @@ export function RoHelperHome() {
         <ul className="ro-helper-home__disc-list">
           {RO_HELPER_DISCIPLINES.map((d) => (
             <li key={d}>
-              <Link className="ro-helper-home__disc-link" to={`/ro-helper/${d}`}>
+              <Link className="ro-helper-home__disc-link" to={roHelperPath(d)}>
                 {disciplineLabel(d, rh)}
               </Link>
             </li>
@@ -95,7 +96,7 @@ export function RoHelperHome() {
       </section>
 
       <p className="ro-helper-home__demo">
-        <Link to="/ro-helper/demo">{rh.demoLink} →</Link>
+        <Link to={roHelperPath('demo')}>{rh.demoLink} →</Link>
       </p>
     </div>
   )

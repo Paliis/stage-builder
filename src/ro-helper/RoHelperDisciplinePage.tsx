@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { RO_HELPER_CATEGORIES, isRoHelperDiscipline } from './constants'
 import { categoryLabel, disciplineLabel } from './labels'
+import { roHelperPath } from './paths'
 import './RoHelperListPages.css'
 
 export function RoHelperDisciplinePage() {
@@ -11,7 +12,7 @@ export function RoHelperDisciplinePage() {
   const rh = tree.roHelper
 
   if (!discipline || !isRoHelperDiscipline(discipline)) {
-    return <Navigate to="/ro-helper" replace />
+    return <Navigate to={roHelperPath()} replace />
   }
 
   const dLabel = disciplineLabel(discipline, rh)
@@ -28,7 +29,7 @@ export function RoHelperDisciplinePage() {
       <ul className="ro-helper-list__tiles">
         {RO_HELPER_CATEGORIES.map((c) => (
           <li key={c}>
-            <Link className="ro-helper-list__tile-link" to={`/ro-helper/${discipline}/${c}`}>
+            <Link className="ro-helper-list__tile-link" to={roHelperPath(discipline, c)}>
               {categoryLabel(c, rh)}
             </Link>
           </li>

@@ -2,6 +2,7 @@ import { Link, Outlet } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { RoHelperFpsuPrefsProvider } from './RoHelperFpsuPrefs'
 import { useRoHelperFpsuPrefs } from './useRoHelperFpsuPrefs'
+import { roHelperPath } from './paths'
 import './RoHelperLayout.css'
 
 function RoHelperLayoutInner() {
@@ -17,7 +18,7 @@ function RoHelperLayoutInner() {
           <span className="ro-helper-layout__crumb-sep" aria-hidden="true">
             /
           </span>
-          <Link to="/ro-helper">{rh.breadcrumbRo}</Link>
+          <Link to={roHelperPath()}>{rh.breadcrumbRo}</Link>
         </nav>
         <div className="ro-helper-layout__fpsu">
           <label className="ro-helper-layout__fpsu-label">

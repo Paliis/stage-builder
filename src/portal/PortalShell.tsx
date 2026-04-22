@@ -1,6 +1,8 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { SiteFooter } from './SiteFooter'
+import { isRoHelperEnabled } from './featureFlags'
+import { roHelperPath } from '../ro-helper/paths'
 import './PortalShell.css'
 
 /** Shared shell: header (title + language) + main + sitewide footer — for portal routes only. */
@@ -21,9 +23,11 @@ export function PortalShell() {
           <NavLink to="/hit-factor" className={({ isActive }) => (isActive ? 'is-active' : '')}>
             {p.navHitFactor}
           </NavLink>
-          <NavLink to="/ro-helper" className={({ isActive }) => (isActive ? 'is-active' : '')}>
-            {p.navRoHelper}
-          </NavLink>
+          {isRoHelperEnabled() ? (
+            <NavLink to={roHelperPath()} className={({ isActive }) => (isActive ? 'is-active' : '')}>
+              {p.navRoHelper}
+            </NavLink>
+          ) : null}
         </nav>
         <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
           <button

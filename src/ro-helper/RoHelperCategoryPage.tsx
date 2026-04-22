@@ -6,6 +6,7 @@ import { loadArticleRaw, listSlugsFor } from './articleGlob'
 import { extractTitleFromMeta, splitFrontmatter } from './parseArticleMd'
 import { isRoHelperCategory, isRoHelperDiscipline } from './constants'
 import { categoryLabel, disciplineLabel } from './labels'
+import { roHelperPath } from './paths'
 import './RoHelperListPages.css'
 
 type Row = { slug: string; title: string }
@@ -45,7 +46,7 @@ export function RoHelperCategoryPage() {
   }, [valid, locale, discipline, category])
 
   if (!valid) {
-    return <Navigate to="/ro-helper" replace />
+    return <Navigate to={roHelperPath()} replace />
   }
 
   const pageTitle = `${disciplineLabel(discipline, rh)} · ${categoryLabel(category, rh)}`
@@ -66,7 +67,7 @@ export function RoHelperCategoryPage() {
         <ul className="ro-helper-list__ul">
           {rows.map((r) => (
             <li key={r.slug}>
-              <Link to={`/ro-helper/${discipline}/${category}/${r.slug}`}>{r.title}</Link>
+              <Link to={roHelperPath(discipline, category, r.slug)}>{r.title}</Link>
             </li>
           ))}
         </ul>

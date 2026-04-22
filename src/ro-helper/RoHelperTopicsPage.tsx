@@ -6,6 +6,7 @@ import { listRefsForTopic } from './articleGlob'
 import { type RoHelperDiscipline, isRoHelperCategory } from './constants'
 import type { ArticleGlobRef } from './articleGlob'
 import { categoryLabel, disciplineLabel } from './labels'
+import { roHelperPath } from './paths'
 import './RoHelperListPages.css'
 
 export function RoHelperTopicsPage() {
@@ -31,7 +32,7 @@ export function RoHelperTopicsPage() {
   }, [refs])
 
   if (!categoryOk) {
-    return <Navigate to="/ro-helper" replace />
+    return <Navigate to={roHelperPath()} replace />
   }
 
   const catLab = categoryLabel(categoryOk, rh)
@@ -54,7 +55,7 @@ export function RoHelperTopicsPage() {
             <ul className="ro-helper-list__ul">
               {rows.map((r) => (
                 <li key={`${r.discipline}-${r.slug}`}>
-                  <Link to={`/ro-helper/${r.discipline}/${r.category}/${r.slug}`}>{r.slug}</Link>
+                  <Link to={roHelperPath(r.discipline, r.category, r.slug)}>{r.slug}</Link>
                 </li>
               ))}
             </ul>
