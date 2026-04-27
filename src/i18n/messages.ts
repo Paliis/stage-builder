@@ -369,6 +369,13 @@ export type MessageTree = {
     plusOneSecondLabel: string
     minusOneSecondLabel: string
     secondsUnit: string
+    focusTitle: string
+    focusAccuracyTitle: string
+    focusAccuracyText: string
+    focusSpeedTitle: string
+    focusSpeedText: string
+    focusBalancedTitle: string
+    focusBalancedText: string
     reset: string
   }
   /** `/ro-helper/demo` — UI prototype for one RO Helper article */
@@ -881,6 +888,16 @@ export const ukMessages: MessageTree = {
     plusOneSecondLabel: '+1 \u0441\u0435\u043a\u0443\u043d\u0434\u0430',
     minusOneSecondLabel: '\u22121 \u0441\u0435\u043a\u0443\u043d\u0434\u0430',
     secondsUnit: '\u0441\u0435\u043a',
+    focusTitle: '\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0430\u0446\u0456\u044f',
+    focusAccuracyTitle: '\u0424\u043e\u043a\u0443\u0441 \u2014 \u0442\u043e\u0447\u043d\u0456\u0441\u0442\u044c',
+    focusAccuracyText:
+      '\u041e\u0434\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0430 \u00ab{{err}}\u00bb \u043a\u043e\u0448\u0442\u0443\u0454 \u043f\u0440\u0438\u0431\u043b\u0438\u0437\u043d\u043e {{sec}} \u0441\u0435\u043a \u2014 \u0446\u0435 \u044f\u043a {{x}}\u00d7 \u043f\u0440\u043e\u0433\u0440\u0430\u0442\u0438 {{step}} \u0441\u0435\u043a.',
+    focusSpeedTitle: '\u0424\u043e\u043a\u0443\u0441 \u2014 \u0448\u0432\u0438\u0434\u043a\u0456\u0441\u0442\u044c',
+    focusSpeedText:
+      '+{{step}} \u0441\u0435\u043a \u0434\u043e \u0447\u0430\u0441\u0443 \u0437\u0430\u0431\u0438\u0440\u0430\u0454 \u043f\u0440\u0438\u0431\u043b\u0438\u0437\u043d\u043e {{pct}}% HF \u043d\u0430 \u0446\u044c\u043e\u043c\u0443 \u0442\u0435\u043c\u043f\u0456.',
+    focusBalancedTitle: '\u0424\u043e\u043a\u0443\u0441 \u2014 \u0431\u0430\u043b\u0430\u043d\u0441',
+    focusBalancedText:
+      '\u041d\u0430 \u0446\u044c\u043e\u043c\u0443 \u0442\u0435\u043c\u043f\u0456 \u043d\u0430\u0439\u0434\u043e\u0440\u043e\u0436\u0447\u0430 \u043e\u0434\u0438\u043d\u0438\u0447\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0430 \u00ab{{err}}\u00bb (\u2248{{sec}} \u0441\u0435\u043a). \u041c\u043e\u0436\u043d\u0430 \u0439\u0442\u0438 \u0440\u0456\u0432\u043d\u043e, \u0431\u0435\u0437 \u0440\u0438\u0437\u0438\u043a\u043e\u0432\u0438\u0445 \u0441\u0442\u0440\u0438\u0431\u043a\u0456\u0432 \u0442\u0435\u043c\u043f\u0443.',
     reset: '\u0421\u043a\u0438\u043d\u0443\u0442\u0438',
   },
   roHelperDemo: {
@@ -1381,6 +1398,16 @@ export const enMessages: MessageTree = {
     plusOneSecondLabel: '+1 second',
     minusOneSecondLabel: '−1 second',
     secondsUnit: 'sec',
+    focusTitle: 'Recommendation',
+    focusAccuracyTitle: 'Focus: accuracy',
+    focusAccuracyText:
+      'One “{{err}}” costs about {{sec}} sec — roughly {{x}}× losing {{step}} sec.',
+    focusSpeedTitle: 'Focus: speed',
+    focusSpeedText:
+      'Adding +{{step}} sec costs about {{pct}}% HF at this pace.',
+    focusBalancedTitle: 'Focus: balance',
+    focusBalancedText:
+      'At this pace, the priciest single error is “{{err}}” (≈{{sec}} sec). Stay smooth and avoid risky pace spikes.',
     reset: 'Reset',
   },
   roHelperDemo: {

@@ -42,6 +42,7 @@
   grid-template-areas:
     'topLeft topRight'
     'deviations deviations'
+    'focus focus'
     'footer footer';
 }
 
@@ -52,6 +53,7 @@
       'topLeft'
       'topRight'
       'deviations'
+      'focus'
       'footer';
   }
 }
@@ -113,6 +115,47 @@
 
 .hit-factor__deviationsFull {
   grid-area: deviations;
+}
+
+.hit-factor__focus {
+  grid-area: focus;
+  margin-top: 0.9rem;
+}
+
+.hit-factor__focusCard {
+  margin-top: 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+  padding: 0.9rem 0.95rem;
+}
+
+.hit-factor__focusCard--accuracy {
+  border-color: color-mix(in srgb, #ef4444 30%, var(--border));
+  background: color-mix(in srgb, #ef4444 6%, var(--surface));
+}
+
+.hit-factor__focusCard--speed {
+  border-color: color-mix(in srgb, #22c55e 30%, var(--border));
+  background: color-mix(in srgb, #22c55e 6%, var(--surface));
+}
+
+.hit-factor__focusCard--balanced {
+  border-color: color-mix(in srgb, var(--accent, #6366f1) 28%, var(--border));
+  background: color-mix(in srgb, var(--accent, #6366f1) 6%, var(--surface));
+}
+
+.hit-factor__focusHeading {
+  margin: 0;
+  font-weight: 850;
+  color: var(--text-h);
+}
+
+.hit-factor__focusText {
+  margin: 0.35rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--text);
 }
 
 .hit-factor__footerBar {

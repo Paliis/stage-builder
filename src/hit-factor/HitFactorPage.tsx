@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useI18n } from '../i18n/useI18n'
+import { formatTemplate } from '../i18n/format'
 import { computeHitFactorAnalysis, type PowerFactor } from './computeHitFactorAnalysis'
 import './HitFactorPage.css'
 
@@ -95,6 +96,73 @@ export function HitFactorPage() {
     deltaMiss,
     deltaNoShoot,
     deltaProcedural,
+  ])
+
+  const focus = useMemo(() => {
+    if (!analysis) return null
+    if (timeSec === null || timeSec <= 0) return null
+    if (analysis.hfActual === null || analysis.hfActual <= 0) return null
+
+    const secMiss = analysis.perError.miss.seconds
+    const secNs = analysis.perError.noShoot.seconds
+    const secProc = analysis.perError.procedural.seconds
+    const worst = Math.max(secMiss ?? 0, secNs ?? 0, secProc ?? 0)
+    const worstLabel =
+      worst === (secMiss ?? -1)
+        ? hf.missLabel
+        : worst === (secNs ?? -1)
+          ? hf.noShootLabel
+          : hf.proceduralLabel
+
+    const timeStep = 0.2
+    const hfPlusTime = analysis.actualPoints / (timeSec + timeStep)
+    const lossPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
+    const worstVsStep = worst > 0 ? worst / timeStep : 0
+
+    if (worst >= 0.6) {
+      return {
+        kind: 'accuracy' as const,
+        title: hf.focusAccuracyTitle,
+        text: formatTemplate(hf.focusAccuracyText, {
+          err: worstLabel,
+          sec: worst.toFixed(2),
+          step: timeStep.toFixed(1),
+          x: worstVsStep.toFixed(1),
+        }),
+      }
+    }
+
+    if (lossPct >= 2.0) {
+      return {
+        kind: 'speed' as const,
+        title: hf.focusSpeedTitle,
+        text: formatTemplate(hf.focusSpeedText, {
+          step: timeStep.toFixed(1),
+          pct: lossPct.toFixed(1),
+        }),
+      }
+    }
+
+    return {
+      kind: 'balanced' as const,
+      title: hf.focusBalancedTitle,
+      text: formatTemplate(hf.focusBalancedText, {
+        err: worstLabel,
+        sec: worst.toFixed(2),
+      }),
+    }
+  }, [
+    analysis,
+    timeSec,
+    hf.focusAccuracyText,
+    hf.focusAccuracyTitle,
+    hf.focusBalancedText,
+    hf.focusBalancedTitle,
+    hf.focusSpeedText,
+    hf.focusSpeedTitle,
+    hf.missLabel,
+    hf.noShootLabel,
+    hf.proceduralLabel,
   ])
 
   const helmetTitle = `${hf.pageTitle} — ${p.title}`
@@ -253,6 +321,16 @@ export function HitFactorPage() {
               </div>
             </div>
           </div>
+
+          {focus ? (
+            <div className="hit-factor__focus" role="status" aria-live="polite">
+              <h2 className="hit-factor__h2">{hf.focusTitle}</h2>
+              <div className={`hit-factor__focusCard hit-factor__focusCard--${focus.kind}`}>
+                <p className="hit-factor__focusHeading">{focus.title}</p>
+                <p className="hit-factor__focusText">{focus.text}</p>
+              </div>
+            </div>
+          ) : null}
 
           <div className="hit-factor__footerBar">
             <div className="hit-factor__pfInline">
