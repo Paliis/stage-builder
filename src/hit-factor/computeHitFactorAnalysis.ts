@@ -3,8 +3,16 @@ export type PowerFactor = 'minor' | 'major'
 export type HitFactorAnalysisInput = {
   /** Total required scoring hits (minimum scoring hits). */
   requiredHits: number
-  /** Elapsed time (seconds). */
-  timeSec: number
+  /**
+   * Baseline elapsed time (seconds) without any add-ons like make-up shots.
+   * Used for max HF (all-alpha at the planned pace).
+   */
+  timeBaseSec: number
+  /**
+   * Actual elapsed time (seconds) including any add-ons like make-up shots.
+   * Used for actual HF and all "seconds equivalent" values.
+   */
+  timeActualSec: number
   powerFactor: PowerFactor
 
   /** Deviations from an "all alpha" baseline (count of occurrences). */
@@ -53,7 +61,8 @@ function clampPositiveTime(v: number): number | null {
 
 export function computeHitFactorAnalysis(raw: HitFactorAnalysisInput): HitFactorAnalysisOutput {
   const requiredHits = clampIntNonNegative(raw.requiredHits)
-  const timeSec = clampPositiveTime(raw.timeSec)
+  const timeBaseSec = clampPositiveTime(raw.timeBaseSec)
+  const timeActualSec = clampPositiveTime(raw.timeActualSec)
 
   const pointsA = 5
   const pointsC = raw.powerFactor === 'major' ? 4 : 3
@@ -82,8 +91,8 @@ export function computeHitFactorAnalysis(raw: HitFactorAnalysisInput): HitFactor
 
   const actualPoints = maxPoints + pointsDelta
 
-  const hfMax = timeSec ? maxPoints / timeSec : null
-  const hfActual = timeSec ? actualPoints / timeSec : null
+  const hfMax = timeBaseSec ? maxPoints / timeBaseSec : null
+  const hfActual = timeActualSec ? actualPoints / timeActualSec : null
 
   const hfLossPct =
     hfMax !== null && hfActual !== null && hfMax > 0 ? ((hfMax - hfActual) / hfMax) * 100 : null
@@ -102,8 +111,14 @@ export function computeHitFactorAnalysis(raw: HitFactorAnalysisInput): HitFactor
     miss: { points: dMiss, seconds: secondsToOffsetPoints(Math.abs(dMiss)) },
     procedural: { points: dProc, seconds: secondsToOffsetPoints(Math.abs(dProc)) },
     noShoot: { points: dNS, seconds: secondsToOffsetPoints(Math.abs(dNS)) },
-    plus1s: { seconds: timeSec ? 1 : null, hf: timeSec ? actualPoints / (timeSec + 1) : null },
-    minus1s: { seconds: timeSec && timeSec > 1 ? -1 : null, hf: timeSec && timeSec > 1 ? actualPoints / (timeSec - 1) : null },
+    plus1s: {
+      seconds: timeActualSec ? 1 : null,
+      hf: timeActualSec ? actualPoints / (timeActualSec + 1) : null,
+    },
+    minus1s: {
+      seconds: timeActualSec && timeActualSec > 1 ? -1 : null,
+      hf: timeActualSec && timeActualSec > 1 ? actualPoints / (timeActualSec - 1) : null,
+    },
   }
 
   return {

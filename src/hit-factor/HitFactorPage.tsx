@@ -113,9 +113,11 @@ export function HitFactorPage() {
     ) {
       return null
     }
+    if (timeSec === null) return null
     return computeHitFactorAnalysis({
       requiredHits,
-      timeSec: totalTimeSec,
+      timeBaseSec: timeSec,
+      timeActualSec: totalTimeSec,
       powerFactor,
       deltaCharlie,
       deltaDelta,
@@ -126,6 +128,7 @@ export function HitFactorPage() {
   }, [
     requiredHits,
     totalTimeSec,
+    timeSec,
     powerFactor,
     deltaCharlie,
     deltaDelta,

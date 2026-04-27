@@ -5,7 +5,8 @@ describe('computeHitFactorAnalysis', () => {
   it('computes max points and max HF for all-alpha baseline', () => {
     const r = computeHitFactorAnalysis({
       requiredHits: 20,
-      timeSec: 10,
+      timeBaseSec: 10,
+      timeActualSec: 10,
       powerFactor: 'minor',
       deltaCharlie: 0,
       deltaDelta: 0,
@@ -24,7 +25,8 @@ describe('computeHitFactorAnalysis', () => {
   it('treats a miss as -15 by default (penalty + lost alpha)', () => {
     const r = computeHitFactorAnalysis({
       requiredHits: 20,
-      timeSec: 10,
+      timeBaseSec: 10,
+      timeActualSec: 10,
       powerFactor: 'minor',
       deltaCharlie: 0,
       deltaDelta: 0,
@@ -40,7 +42,8 @@ describe('computeHitFactorAnalysis', () => {
   it('uses PF-specific deltas for C/D', () => {
     const minor = computeHitFactorAnalysis({
       requiredHits: 10,
-      timeSec: 5,
+      timeBaseSec: 5,
+      timeActualSec: 5,
       powerFactor: 'minor',
       deltaCharlie: 1,
       deltaDelta: 1,
@@ -53,7 +56,8 @@ describe('computeHitFactorAnalysis', () => {
 
     const major = computeHitFactorAnalysis({
       requiredHits: 10,
-      timeSec: 5,
+      timeBaseSec: 5,
+      timeActualSec: 5,
       powerFactor: 'major',
       deltaCharlie: 1,
       deltaDelta: 1,
