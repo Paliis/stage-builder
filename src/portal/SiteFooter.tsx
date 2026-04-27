@@ -43,7 +43,6 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="site-footer__bottom">
-        <p className="site-footer__disclaimer">{f.portalDisclaimer}</p>
         <nav className="site-footer__nav" aria-label="Footer">
           <Link to="/publish-policy">{f.publishPolicy}</Link>
         </nav>
