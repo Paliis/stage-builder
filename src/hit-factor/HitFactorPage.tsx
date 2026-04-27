@@ -125,7 +125,6 @@ export function HitFactorPage() {
         text: formatTemplate(hf.focusAccuracyText, {
           err: worstLabel,
           sec: worst.toFixed(2),
-          step: timeStep.toFixed(1),
         }),
       }
     }
