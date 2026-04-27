@@ -35,12 +35,6 @@ export function PortalHome() {
             <p className="portal-home__card-desc">{p.roHelperDesc}</p>
             <p className="portal-home__card-cta">{p.openRoHelper} →</p>
           </Link>
-          <div className="portal-home__demo">
-            <Link to={roHelperPath('demo')} className="portal-home__demo-link">
-              {p.roHelperDemoCta} →
-            </Link>
-            <p className="portal-home__demo-desc">{p.roHelperDemoLead}</p>
-          </div>
         </>
       ) : null}
     </div>
