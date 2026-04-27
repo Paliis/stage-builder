@@ -46,6 +46,7 @@ export function HitFactorPage() {
   const [deltaNoShootRaw, setDeltaNoShootRaw] = useState('0')
   const [deltaProceduralRaw, setDeltaProceduralRaw] = useState('0')
 
+  const [makeupCountRaw, setMakeupCountRaw] = useState('1')
   const [makeupSplitRaw, setMakeupSplitRaw] = useState('')
   const [makeupSplitManual, setMakeupSplitManual] = useState(false)
 
@@ -58,6 +59,7 @@ export function HitFactorPage() {
   const deltaMiss = useMemo(() => parseIntOrNull(deltaMissRaw), [deltaMissRaw])
   const deltaNoShoot = useMemo(() => parseIntOrNull(deltaNoShootRaw), [deltaNoShootRaw])
   const deltaProcedural = useMemo(() => parseIntOrNull(deltaProceduralRaw), [deltaProceduralRaw])
+  const makeupCount = useMemo(() => parseIntOrNull(makeupCountRaw), [makeupCountRaw])
 
   const defaultMakeupSplitSec = useMemo(() => {
     if (timeSec === null || timeSec <= 0) return null
@@ -72,6 +74,12 @@ export function HitFactorPage() {
     if (defaultMakeupSplitSec !== null && defaultMakeupSplitSec > 0) return defaultMakeupSplitSec
     return 0.25
   }, [defaultMakeupSplitSec, makeupSplitRaw])
+
+  const makeupTimeSec = useMemo(() => {
+    const c = clampNonNegInt(makeupCount ?? 0)
+    if (c === 0) return 0
+    return c * makeupSplitSec
+  }, [makeupCount, makeupSplitSec])
 
   useEffect(() => {
     if (makeupSplitManual) return
@@ -138,7 +146,7 @@ export function HitFactorPage() {
         kind: 'accuracy' as const,
         title: hf.focusAccuracyTitle,
         text: formatTemplate(hf.focusAccuracyText, {
-          sec: makeupSplitSec.toFixed(2),
+          sec: makeupTimeSec.toFixed(2),
         }),
       }
     }
@@ -160,6 +168,7 @@ export function HitFactorPage() {
     }
   }, [
     analysis,
+    makeupTimeSec,
     makeupSplitSec,
     timeSec,
     hf.focusAccuracyText,
@@ -326,6 +335,26 @@ export function HitFactorPage() {
 
                 <div className="hit-factor__deviationRow">
                   <span className="hit-factor__deviationKey">{hf.makeupShotLabel}</span>
+                  <div className="hit-factor__stepper" role="group" aria-label={hf.makeupShotCountLabel}>
+                    <button
+                      type="button"
+                      className="hit-factor__stepperBtn"
+                      onClick={() => setMakeupCountRaw((v) => bump(v, -1))}
+                      aria-label={`-1 ${hf.makeupShotCountLabel}`}
+                      disabled={clampNonNegInt(parseIntOrNull(makeupCountRaw) ?? 0) === 0}
+                    >
+                      −
+                    </button>
+                    <output className="hit-factor__stepperValue">{makeupCountRaw}</output>
+                    <button
+                      type="button"
+                      className="hit-factor__stepperBtn"
+                      onClick={() => setMakeupCountRaw((v) => bump(v, +1))}
+                      aria-label={`+1 ${hf.makeupShotCountLabel}`}
+                    >
+                      +
+                    </button>
+                  </div>
                   <div className="hit-factor__stepper" role="group" aria-label={hf.makeupShotLabel}>
                     <input
                       inputMode="decimal"
@@ -339,9 +368,8 @@ export function HitFactorPage() {
                       aria-label={hf.makeupShotSplitLabel}
                     />
                   </div>
-                  <span className="hit-factor__deviationPts">0</span>
                   <span className="hit-factor__deviationSec">
-                    {`${makeupSplitSec.toFixed(2)} ${hf.secondsUnit}`}
+                    {`${makeupTimeSec.toFixed(2)} ${hf.secondsUnit}`}
                   </span>
                 </div>
               </div>
@@ -398,6 +426,7 @@ export function HitFactorPage() {
                 setDeltaMissRaw('0')
                 setDeltaProceduralRaw('0')
                 setDeltaNoShootRaw('0')
+                setMakeupCountRaw('1')
                 setMakeupSplitRaw('')
                 setMakeupSplitManual(false)
               }}

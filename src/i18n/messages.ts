@@ -377,6 +377,7 @@ export type MessageTree = {
     focusBalancedTitle: string
     focusBalancedText: string
     makeupShotLabel: string
+    makeupShotCountLabel: string
     makeupShotSplitLabel: string
     reset: string
   }
@@ -901,6 +902,7 @@ export const ukMessages: MessageTree = {
     focusBalancedText:
       '\u041f\u043e\u0442\u043e\u0447\u043d\u0438\u0439 \u0442\u0435\u043c\u043f \u0437\u0431\u0430\u043b\u0430\u043d\u0441\u043e\u0432\u0430\u043d\u0438\u0439. \u0422\u0440\u0438\u043c\u0430\u0439 \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044c \u0456 \u0443\u043d\u0438\u043a\u0430\u0439 \u043f\u0440\u043e\u043c\u0430\u0445\u0456\u0432.',
     makeupShotLabel: '\u0414\u043e\u0441\u0442\u0440\u0456\u043b (\u0447\u0430\u0441)',
+    makeupShotCountLabel: '\u0414\u043e\u0441\u0442\u0440\u0456\u043b\u0438',
     makeupShotSplitLabel: '\u0427\u0430\u0441 \u043e\u0434\u043d\u043e\u0433\u043e \u0434\u043e\u0441\u0442\u0440\u0456\u043b\u0443',
     reset: '\u0421\u043a\u0438\u043d\u0443\u0442\u0438',
   },
@@ -1413,6 +1415,7 @@ export const enMessages: MessageTree = {
     focusBalancedText:
       'Your pace looks balanced. Stay in control and avoid misses.',
     makeupShotLabel: 'Make-up shot (time)',
+    makeupShotCountLabel: 'Make-up shots',
     makeupShotSplitLabel: 'Time for one make-up shot',
     reset: 'Reset',
   },
