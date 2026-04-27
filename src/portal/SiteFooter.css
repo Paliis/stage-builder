@@ -110,7 +110,3 @@
 .site-footer__nav a:hover {
   text-decoration: underline;
 }
-
-.site-footer__sep {
-  color: var(--text-muted);
-}

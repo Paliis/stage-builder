@@ -2,8 +2,6 @@ import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import './SiteFooter.css'
 
-const GITHUB_REPO = 'https://github.com/Paliis/stage-builder'
-
 /** Sitewide footer for portal shell (Stage Builder route uses its own footer with PWA install). */
 export function SiteFooter() {
   const { tree } = useI18n()
@@ -48,12 +46,6 @@ export function SiteFooter() {
         <p className="site-footer__disclaimer">{f.portalDisclaimer}</p>
         <nav className="site-footer__nav" aria-label="Footer">
           <Link to="/publish-policy">{f.publishPolicy}</Link>
-          <span className="site-footer__sep" aria-hidden="true">
-            ·
-          </span>
-          <a href={GITHUB_REPO} target="_blank" rel="noopener noreferrer">
-            {f.github}
-          </a>
         </nav>
       </div>
     </footer>

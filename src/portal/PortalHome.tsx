@@ -5,9 +5,6 @@ import { isRoHelperEnabled } from './featureFlags'
 import { roHelperPath } from '../ro-helper/paths'
 import './PortalHome.css'
 
-const FEEDBACK_EMAIL = 'mailto:parshencevdenis@gmail.com'
-const FEEDBACK_TELEGRAM = 'https://t.me/denysparshentsev'
-
 type CardBadgeKind = 'live' | 'new' | 'beta'
 
 interface ProductCardProps {
@@ -58,7 +55,6 @@ function ProductCard(props: ProductCardProps) {
 export function PortalHome() {
   const { tree } = useI18n()
   const p = tree.portal
-  const f = tree.footer
 
   return (
     <div className="portal-home">
@@ -117,26 +113,6 @@ export function PortalHome() {
             badgeLabel={p.badgeBeta}
           />
         ) : null}
-      </section>
-
-      <section className="portal-home__contact" aria-labelledby="portal-contact-heading">
-        <h2 id="portal-contact-heading" className="portal-home__contact-heading">
-          {f.feedbackHeading}
-        </h2>
-        <p className="portal-home__contact-text">{f.feedbackText}</p>
-        <div className="portal-home__contact-actions">
-          <a className="portal-home__contact-btn" href={FEEDBACK_EMAIL}>
-            {f.feedbackEmail}
-          </a>
-          <a
-            className="portal-home__contact-btn portal-home__contact-btn--telegram"
-            href={FEEDBACK_TELEGRAM}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {f.feedbackTelegram}
-          </a>
-        </div>
       </section>
     </div>
   )

@@ -487,7 +487,6 @@ export type MessageTree = {
     /** Short disclaimer under portal footer links */
     portalDisclaimer: string
     publishPolicy: string
-    github: string
   }
   pwa: {
     installButton: string
@@ -1046,7 +1045,6 @@ export const ukMessages: MessageTree = {
     portalDisclaimer:
       'Shooters Tools / RO Helper \u2014 \u0434\u043e\u0432\u0456\u0434\u043a\u043e\u0432\u0438\u0439 \u043c\u0430\u0442\u0435\u0440\u0456\u0430\u043b; \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u044e\u0454 \u043e\u0444\u0456\u0446\u0456\u0439\u043d\u0456 PDF IPSC \u0447\u0438 \u0440\u0456\u0448\u0435\u043d\u043d\u044f RM.',
     publishPolicy: '\u041f\u043e\u043b\u0456\u0442\u0438\u043a\u0430 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0457',
-    github: 'GitHub',
   },
   pwa: {
     installButton: '\u0412\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0438 \u0434\u043e\u0434\u0430\u0442\u043e\u043a',
@@ -1581,7 +1579,6 @@ export const enMessages: MessageTree = {
     portalDisclaimer:
       'Shooters Tools / RO Helper is reference material only; it does not replace official IPSC PDFs or Range Master decisions.',
     publishPolicy: 'Publish policy',
-    github: 'GitHub',
   },
   pwa: {
     installButton: 'Install app',
