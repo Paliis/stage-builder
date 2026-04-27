@@ -507,6 +507,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text);
+  white-space: nowrap;
 }
 
 .hit-factor__scoreValue {
