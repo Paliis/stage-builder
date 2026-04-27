@@ -15,7 +15,7 @@ function escapeHtml(s: string): string {
 }
 
 export const config = {
-  matcher: ['/v/:path*', '/e/:path*'],
+  matcher: ['/v/:path*', '/e/:path*', '/hit-factor'],
 }
 
 export default async function middleware(request: Request): Promise<Response> {
@@ -25,6 +25,50 @@ export default async function middleware(request: Request): Promise<Response> {
   }
 
   const url = new URL(request.url)
+
+  // Static public routes that need correct OG preview (Telegram, Slack, etc).
+  if (url.pathname === '/hit-factor') {
+    const pageUrl = escapeHtml(url.href.split('#')[0])
+    const assetOrigin = resolvePublicOriginFromEnv(url.origin)
+    const ogImage = escapeHtml(`${assetOrigin}/og-image.png${OG_IMAGE_ASSET_QUERY}`)
+    const siteName = escapeHtml('Shooters Tools')
+
+    const title = escapeHtml('Hit Factor calculator — Shooters Tools')
+    const ogDesc = escapeHtml(
+      'Hit Factor calculator for IPSC / practical shooting: time, hits, penalties and a quick focus hint (speed vs accuracy).',
+    )
+    const ogImageAlt = escapeHtml('Shooters Tools — Hit Factor calculator')
+
+    const html = `<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8"/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<title>${title}</title>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="${siteName}"/>
+<meta property="og:title" content="${title}"/>
+<meta property="og:description" content="${ogDesc}"/>
+<meta property="og:url" content="${pageUrl}"/>
+<meta property="og:image" content="${ogImage}"/>
+<meta property="og:image:alt" content="${ogImageAlt}"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="${title}"/>
+<meta name="twitter:description" content="${ogDesc}"/>
+<meta name="twitter:image" content="${ogImage}"/>
+</head>
+<body></body>
+</html>`
+
+    return new Response(html, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+      },
+    })
+  }
+
   const m = url.pathname.match(/^\/(v|e)\/([^/]+)/)
   if (!m) return next()
 
