@@ -143,7 +143,7 @@ export function HitFactorPage() {
     if (analysis.hfActual === null || analysis.hfActual <= 0) return null
 
     const clamp = (x: number, min: number, max: number) => Math.min(max, Math.max(min, x))
-    const deltaTime = clamp(totalTimeSec * 0.05, 0.1, 2.0)
+    const deltaTime = Math.max(1.0, clamp(totalTimeSec * 0.05, 0.1, 2.0))
     const hfPlusTime = analysis.actualPoints / (totalTimeSec + deltaTime)
     const timeSensitivityPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
 
