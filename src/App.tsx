@@ -342,7 +342,11 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     ) {
       return prod
     }
-    if (typeof window !== 'undefined') return window.location.origin
+    if (typeof window !== 'undefined') {
+      const origin = window.location.origin.replace(/\/$/, '')
+      if (origin === 'https://stage-builder.vercel.app') return CANONICAL_PRODUCTION_ORIGIN
+      return origin
+    }
     return CANONICAL_PRODUCTION_ORIGIN
   }, [])
 
