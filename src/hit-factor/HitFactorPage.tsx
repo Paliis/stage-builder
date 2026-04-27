@@ -46,7 +46,7 @@ export function HitFactorPage() {
   const [deltaNoShootRaw, setDeltaNoShootRaw] = useState('0')
   const [deltaProceduralRaw, setDeltaProceduralRaw] = useState('0')
 
-  const [makeupCountRaw, setMakeupCountRaw] = useState('1')
+  const [makeupCountRaw, setMakeupCountRaw] = useState('0')
   const [makeupSplitRaw, setMakeupSplitRaw] = useState('')
   const [makeupSplitManual, setMakeupSplitManual] = useState(false)
 
@@ -431,7 +431,7 @@ export function HitFactorPage() {
                 setDeltaMissRaw('0')
                 setDeltaProceduralRaw('0')
                 setDeltaNoShootRaw('0')
-                setMakeupCountRaw('1')
+                setMakeupCountRaw('0')
                 setMakeupSplitRaw('')
                 setMakeupSplitManual(false)
               }}
