@@ -335,27 +335,27 @@ export function HitFactorPage() {
 
                 <div className="hit-factor__deviationRow">
                   <span className="hit-factor__deviationKey">{hf.makeupShotLabel}</span>
-                  <div className="hit-factor__stepper" role="group" aria-label={hf.makeupShotCountLabel}>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setMakeupCountRaw((v) => bump(v, -1))}
-                      aria-label={`-1 ${hf.makeupShotCountLabel}`}
-                      disabled={clampNonNegInt(parseIntOrNull(makeupCountRaw) ?? 0) === 0}
-                    >
-                      −
-                    </button>
-                    <output className="hit-factor__stepperValue">{makeupCountRaw}</output>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setMakeupCountRaw((v) => bump(v, +1))}
-                      aria-label={`+1 ${hf.makeupShotCountLabel}`}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <div className="hit-factor__stepper" role="group" aria-label={hf.makeupShotLabel}>
+                  <div className="hit-factor__deviationControl">
+                    <div className="hit-factor__stepper" role="group" aria-label={hf.makeupShotCountLabel}>
+                      <button
+                        type="button"
+                        className="hit-factor__stepperBtn"
+                        onClick={() => setMakeupCountRaw((v) => bump(v, -1))}
+                        aria-label={`-1 ${hf.makeupShotCountLabel}`}
+                        disabled={clampNonNegInt(parseIntOrNull(makeupCountRaw) ?? 0) === 0}
+                      >
+                        −
+                      </button>
+                      <output className="hit-factor__stepperValue">{makeupCountRaw}</output>
+                      <button
+                        type="button"
+                        className="hit-factor__stepperBtn"
+                        onClick={() => setMakeupCountRaw((v) => bump(v, +1))}
+                        aria-label={`+1 ${hf.makeupShotCountLabel}`}
+                      >
+                        +
+                      </button>
+                    </div>
                     <input
                       inputMode="decimal"
                       className="hit-factor__stepperInput"
@@ -368,6 +368,7 @@ export function HitFactorPage() {
                       aria-label={hf.makeupShotSplitLabel}
                     />
                   </div>
+                  <span className="hit-factor__deviationPts">0</span>
                   <span className="hit-factor__deviationSec">
                     {`${makeupTimeSec.toFixed(2)} ${hf.secondsUnit}`}
                   </span>

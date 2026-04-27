@@ -459,7 +459,7 @@
   height: 2.25rem;
   padding: 0 0.75rem;
   border: 0;
-  background: transparent;
+  background: var(--surface);
   font: inherit;
   font-size: 0.95rem;
   font-weight: 850;
@@ -467,10 +467,19 @@
   text-align: center;
   font-variant-numeric: tabular-nums;
   outline: none;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
 }
 
 .hit-factor__stepperInput:focus {
   outline: none;
+}
+
+.hit-factor__deviationControl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
 }
 
 .hit-factor__stepperBtn {
