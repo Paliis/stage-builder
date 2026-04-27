@@ -25,7 +25,7 @@ export function HitFactorPage() {
 
   const [requiredHitsRaw, setRequiredHitsRaw] = useState('20')
   const [timeRaw, setTimeRaw] = useState('10.00')
-  const [powerFactor, setPowerFactor] = useState<PowerFactor>('minor')
+  const [powerFactor, setPowerFactor] = useState<PowerFactor>('major')
 
   const [deltaCharlieRaw, setDeltaCharlieRaw] = useState('0')
   const [deltaDeltaRaw, setDeltaDeltaRaw] = useState('0')
@@ -113,20 +113,6 @@ export function HitFactorPage() {
               </label>
             </div>
 
-            <div className="hit-factor__grid hit-factor__grid--1">
-              <label className="hit-factor__field">
-                <span className="hit-factor__label">{hf.powerFactorLabel}</span>
-                <select
-                  className="hit-factor__select"
-                  value={powerFactor}
-                  onChange={(e) => setPowerFactor(e.target.value as PowerFactor)}
-                >
-                  <option value="minor">{hf.powerFactorMinor}</option>
-                  <option value="major">{hf.powerFactorMajor}</option>
-                </select>
-              </label>
-            </div>
-
             <div className="hit-factor__penalties">
               <div className="hit-factor__penalties-head">
                 <h2 className="hit-factor__h2">{hf.deviationsTitle}</h2>
@@ -179,6 +165,30 @@ export function HitFactorPage() {
                     onChange={(e) => setDeltaNoShootRaw(e.target.value)}
                   />
                 </label>
+              </div>
+            </div>
+
+            <div className="hit-factor__controlsBottom">
+              <div className="hit-factor__pf">
+                <span className="hit-factor__label">{hf.powerFactorLabel}</span>
+                <div className="hit-factor__pfSeg" role="group" aria-label={hf.powerFactorLabel}>
+                  <button
+                    type="button"
+                    className={powerFactor === 'minor' ? 'is-active' : ''}
+                    aria-pressed={powerFactor === 'minor'}
+                    onClick={() => setPowerFactor('minor')}
+                  >
+                    {hf.powerFactorMinor}
+                  </button>
+                  <button
+                    type="button"
+                    className={powerFactor === 'major' ? 'is-active' : ''}
+                    aria-pressed={powerFactor === 'major'}
+                    onClick={() => setPowerFactor('major')}
+                  >
+                    {hf.powerFactorMajor}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -282,7 +292,7 @@ export function HitFactorPage() {
                 onClick={() => {
                   setRequiredHitsRaw('20')
                   setTimeRaw('10.00')
-                  setPowerFactor('minor')
+                  setPowerFactor('major')
                   setDeltaCharlieRaw('0')
                   setDeltaDeltaRaw('0')
                   setDeltaMissRaw('0')
