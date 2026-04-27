@@ -147,20 +147,24 @@ export function HitFactorPage() {
     const timeSensitivityPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
 
     const pointsLossPct = analysis.pointsLossPct ?? 0
-    const timeLossPct = analysis.timeLossPct ?? 0
 
-    if (pointsLossPct >= 5.0) {
+    const baseTime = totalTimeSec - makeupTimeSec
+    const makeupSharePct = baseTime > 0 ? (makeupTimeSec / baseTime) * 100 : 0
+
+    if (pointsLossPct >= 5.0 || makeupSharePct >= 5.0) {
       return {
         kind: 'accuracy' as const,
         title: hf.focusAccuracyTitle,
         text: formatTemplate(hf.focusAccuracyText, {
           loss: pointsLossPct.toFixed(1),
+          time: makeupSharePct.toFixed(1),
         }),
       }
     }
 
-    const speedPct = Math.max(timeLossPct, timeSensitivityPct)
-    if (pointsLossPct <= 2.0 && speedPct >= 5.0 && speedPct >= pointsLossPct + 2.0) {
+    // Speed focus is only meaningful when extra time is not coming from make-ups.
+    const speedPct = timeSensitivityPct
+    if (pointsLossPct <= 2.0 && makeupTimeSec <= 0 && speedPct >= 5.0 && speedPct >= pointsLossPct + 2.0) {
       return {
         kind: 'speed' as const,
         title: hf.focusSpeedTitle,
