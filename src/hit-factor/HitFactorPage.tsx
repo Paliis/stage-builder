@@ -39,6 +39,7 @@ export function HitFactorPage() {
   const [requiredHitsRaw, setRequiredHitsRaw] = useState('20')
   const [timeRaw, setTimeRaw] = useState('10.00')
   const [powerFactor, setPowerFactor] = useState<PowerFactor>('major')
+  const [weaponClass, setWeaponClass] = useState<'pistol' | 'rifle' | 'pcc' | 'shotgun'>('pistol')
 
   const [deltaCharlieRaw, setDeltaCharlieRaw] = useState('0')
   const [deltaDeltaRaw, setDeltaDeltaRaw] = useState('0')
@@ -434,6 +435,44 @@ export function HitFactorPage() {
               </div>
             </div>
 
+              <div className="hit-factor__pfInline">
+                <span className="hit-factor__label">{hf.weaponClassLabel}</span>
+                <div className="hit-factor__pfSeg" role="group" aria-label={hf.weaponClassLabel}>
+                  <button
+                    type="button"
+                    className={weaponClass === 'pistol' ? 'is-active' : ''}
+                    aria-pressed={weaponClass === 'pistol'}
+                    onClick={() => setWeaponClass('pistol')}
+                  >
+                    {hf.weaponClassPistol}
+                  </button>
+                  <button
+                    type="button"
+                    className={weaponClass === 'rifle' ? 'is-active' : ''}
+                    aria-pressed={weaponClass === 'rifle'}
+                    onClick={() => setWeaponClass('rifle')}
+                  >
+                    {hf.weaponClassRifle}
+                  </button>
+                  <button
+                    type="button"
+                    className={weaponClass === 'pcc' ? 'is-active' : ''}
+                    aria-pressed={weaponClass === 'pcc'}
+                    onClick={() => setWeaponClass('pcc')}
+                  >
+                    {hf.weaponClassPcc}
+                  </button>
+                  <button
+                    type="button"
+                    className={weaponClass === 'shotgun' ? 'is-active' : ''}
+                    aria-pressed={weaponClass === 'shotgun'}
+                    onClick={() => setWeaponClass('shotgun')}
+                  >
+                    {hf.weaponClassShotgun}
+                  </button>
+                </div>
+              </div>
+
             <details className="hit-factor__modelNote hit-factor__modelNote--inline">
               <summary className="hit-factor__modelNoteSummary">{hf.modelNoteLabel}</summary>
               <p className="hit-factor__modelNoteBody">{hf.modelNote}</p>
@@ -451,6 +490,7 @@ export function HitFactorPage() {
                 setDeltaMissRaw('0')
                 setDeltaProceduralRaw('0')
                 setDeltaNoShootRaw('0')
+                setWeaponClass('pistol')
                 setMakeupCountRaw('0')
                 setMakeupSplitRaw('')
                 setMakeupSplitManual(false)

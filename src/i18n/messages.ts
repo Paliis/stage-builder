@@ -378,6 +378,11 @@ export type MessageTree = {
     focusBalancedText: string
     focusMakeupsTitle: string
     focusMakeupsText: string
+    weaponClassLabel: string
+    weaponClassPistol: string
+    weaponClassRifle: string
+    weaponClassPcc: string
+    weaponClassShotgun: string
     makeupShotLabel: string
     makeupShotCountLabel: string
     makeupShotSplitLabel: string
@@ -906,6 +911,11 @@ export const ukMessages: MessageTree = {
     focusMakeupsTitle: '\u0424\u043e\u043a\u0443\u0441 \u2014 \u0434\u043e\u0441\u0442\u0440\u0456\u043b\u0438',
     focusMakeupsText:
       '\u0414\u043e\u0441\u0442\u0440\u0456\u043b\u0438 \u0437\u0430\u0431\u0438\u0440\u0430\u044e\u0442\u044c \u0431\u0430\u0433\u0430\u0442\u043e \u0447\u0430\u0441\u0443 (\u2248{{time}}% \u0432\u0456\u0434 \u0431\u0430\u0437\u043e\u0432\u043e\u0433\u043e). \u041a\u0440\u0430\u0449\u0435 \u0442\u0440\u043e\u0445\u0438 \u043f\u0440\u0438\u0433\u0430\u043b\u044c\u043c\u0443\u0432\u0430\u0442\u0438, \u0449\u043e\u0431 \u0437\u043c\u0435\u043d\u0448\u0438\u0442\u0438 \u0457\u0445 \u043a\u0456\u043b\u044c\u043a\u0456\u0441\u0442\u044c.',
+    weaponClassLabel: '\u041a\u043b\u0430\u0441 \u0437\u0431\u0440\u043e\u0457',
+    weaponClassPistol: '\u041f\u0456\u0441\u0442\u043e\u043b\u0435\u0442',
+    weaponClassRifle: '\u041a\u0430\u0440\u0430\u0431\u0456\u043d',
+    weaponClassPcc: '\u041a\u041f\u041a (PCC)',
+    weaponClassShotgun: '\u0420\u0443\u0448\u043d\u0438\u0446\u044f',
     makeupShotLabel: '\u0414\u043e\u0441\u0442\u0440\u0456\u043b (\u0447\u0430\u0441)',
     makeupShotCountLabel: '\u0414\u043e\u0441\u0442\u0440\u0456\u043b\u0438',
     makeupShotSplitLabel: '\u0427\u0430\u0441 \u043e\u0434\u043d\u043e\u0433\u043e \u0434\u043e\u0441\u0442\u0440\u0456\u043b\u0443',
@@ -1422,6 +1432,11 @@ export const enMessages: MessageTree = {
     focusMakeupsTitle: 'Focus: make-up shots',
     focusMakeupsText:
       'Make-up shots take a lot of time (≈{{time}}% of baseline). Slow down slightly to reduce them.',
+    weaponClassLabel: 'Weapon class',
+    weaponClassPistol: 'Pistol',
+    weaponClassRifle: 'Rifle',
+    weaponClassPcc: 'PCC',
+    weaponClassShotgun: 'Shotgun',
     makeupShotLabel: 'Make-up shot (time)',
     makeupShotCountLabel: 'Make-up shots',
     makeupShotSplitLabel: 'Time for one make-up shot',
