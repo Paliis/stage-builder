@@ -442,6 +442,13 @@ export type MessageTree = {
     catMatchAdminDesc: string
     /** Default `<meta name="description">` for RO Helper list pages (not article body). */
     seoModuleDescription: string
+    /** Search bar shown on every RO Helper page. */
+    searchPlaceholder: string
+    searchAriaLabel: string
+    searchEmpty: string
+    searchHint: string
+    searchClear: string
+    searchLoading: string
     quickCiteButton: string
     quickCiteAria: string
     quickCiteCopied: string
@@ -974,6 +981,12 @@ export const ukMessages: MessageTree = {
     catMatchAdminDesc: '\u0410\u0434\u043c\u0456\u043d\u0456\u0441\u0442\u0440\u0430\u0446\u0456\u044f \u043c\u0430\u0442\u0447\u0443, \u0440\u043e\u043b\u0456, \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0438',
     seoModuleDescription:
       'RO Helper \u2014 \u0434\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440 \u0442\u0430 \u043f\u0440\u0430\u0432\u0438\u043b IPSC-\u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 (\u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438; \u0437\u0430\u0432\u0436\u0434\u0438 PDF).',
+    searchPlaceholder: '\u041f\u043e\u0448\u0443\u043a \u043f\u043e \u0441\u0442\u0430\u0442\u0442\u044f\u0445\u2026',
+    searchAriaLabel: '\u041f\u043e\u0448\u0443\u043a \u043f\u043e RO Helper',
+    searchEmpty: '\u041d\u0456\u0447\u043e\u0433\u043e \u043d\u0435 \u0437\u043d\u0430\u0439\u0434\u0435\u043d\u043e',
+    searchHint: '\u0428\u0443\u043a\u0430\u0454 \u0437\u0430 \u043d\u0430\u0437\u0432\u043e\u044e \u0441\u0442\u0430\u0442\u0442\u0456 \u0442\u0430 slug. \u041f\u0456\u0434\u043a\u0430\u0437\u043a\u0430: \u0432\u0432\u0435\u0434\u0456\u0442\u044c \u043a\u0456\u043b\u044c\u043a\u0430 \u0441\u0438\u043c\u0432\u043e\u043b\u0456\u0432.',
+    searchClear: '\u041e\u0447\u0438\u0441\u0442\u0438\u0442\u0438',
+    searchLoading: '\u0417\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f \u0456\u043d\u0434\u0435\u043a\u0441\u0443\u2026',
     quickCiteButton: '\u0428\u0432\u0438\u0434\u043a\u0435 \u0434\u043b\u044f \u0437\u0432\u0456\u0442\u0443',
     quickCiteAria: '\u0421\u043a\u043e\u043f\u0456\u044e\u0432\u0430\u0442\u0438 \u043a\u043e\u0440\u043e\u0442\u043a\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0434\u043b\u044f \u0437\u0432\u0456\u0442\u0443',
     quickCiteCopied: '\u0421\u043a\u043e\u043f\u0456\u0439\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440',
@@ -1488,6 +1501,12 @@ export const enMessages: MessageTree = {
     catMatchAdminDesc: 'Match administration, roles, documents',
     seoModuleDescription:
       'RO Helper — IPSC-style match rules and procedures reference (draft articles; always verify with your official PDF).',
+    searchPlaceholder: 'Search articles…',
+    searchAriaLabel: 'Search RO Helper',
+    searchEmpty: 'No matches',
+    searchHint: 'Searches article titles and slugs. Tip: type a few characters.',
+    searchClear: 'Clear',
+    searchLoading: 'Loading index…',
     quickCiteButton: 'Quick Cite',
     quickCiteAria: 'Copy a short citation for reports or messages',
     quickCiteCopied: 'Copied to clipboard',

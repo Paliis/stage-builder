@@ -3,6 +3,7 @@ import { useI18n } from '../i18n/useI18n'
 import { RoHelperFpsuPrefsProvider } from './RoHelperFpsuPrefs'
 import { useRoHelperFpsuPrefs } from './useRoHelperFpsuPrefs'
 import { RO_HELPER_BASE } from './paths'
+import { RoHelperSearchBar } from './RoHelperSearchBar'
 import './RoHelperLayout.css'
 
 function RoHelperLayoutInner() {
@@ -12,25 +13,28 @@ function RoHelperLayoutInner() {
   const isArticleRoute = useMatch(`${RO_HELPER_BASE}/:discipline/:category/:slug`)
 
   return (
-    <div className="ro-helper-layout">
-      {isArticleRoute ? (
-        <div className="ro-helper-layout__subbar" role="region" aria-label={rh.fpsuLayerLabel}>
-          <div className="ro-helper-layout__fpsu">
-            <label className="ro-helper-layout__fpsu-label">
-              <input
-                type="checkbox"
-                className="ro-helper-layout__fpsu-input"
-                checked={showFpsuLayer}
-                onChange={(e) => setShowFpsuLayer(e.target.checked)}
-              />
-              <span>{rh.fpsuLayerLabel}</span>
-            </label>
-            <p className="ro-helper-layout__fpsu-hint">{rh.fpsuLayerHint}</p>
+    <>
+      <RoHelperSearchBar />
+      <div className="ro-helper-layout">
+        {isArticleRoute ? (
+          <div className="ro-helper-layout__subbar" role="region" aria-label={rh.fpsuLayerLabel}>
+            <div className="ro-helper-layout__fpsu">
+              <label className="ro-helper-layout__fpsu-label">
+                <input
+                  type="checkbox"
+                  className="ro-helper-layout__fpsu-input"
+                  checked={showFpsuLayer}
+                  onChange={(e) => setShowFpsuLayer(e.target.checked)}
+                />
+                <span>{rh.fpsuLayerLabel}</span>
+              </label>
+              <p className="ro-helper-layout__fpsu-hint">{rh.fpsuLayerHint}</p>
+            </div>
           </div>
-        </div>
-      ) : null}
-      <Outlet />
-    </div>
+        ) : null}
+        <Outlet />
+      </div>
+    </>
   )
 }
 

@@ -231,6 +231,7 @@ status: draft|reviewed|published
 - **Контент:** Markdown; для **офлайн PWA** бажано **імпорт у бандл** (або згенерований індекс при збірці). Файли лише в `public/*.md` з `fetch` **можуть** не потрапити в Workbox precache — див. [TECH.md](./TECH.md) та `vite.config.ts` (`globPatterns`).
 - **Рендер:** легкий MD → HTML (бібліотека на вибір на етапі імплементації).
 - **UI-флоу:** головна `/ro-helper` — лише вибір **дисципліни** (5 карток); далі `/:discipline` — 5 карток-категорій (Safety / Penalties / Scoring / Equipment / Match admin); `/:discipline/:category` — перелік статей; `/:discipline/:category/:slug` — стаття. Прототипний роут `/ro-helper/demo` та зведений `/ro-helper/topics/:category` **прибрані** разом із cleanup-ом v0 (`feat: ro-helper discipline-first UX`). Каталог усіх PDF: **https://www.ipsc.org/ipsc-rules/rule-books/** — лише для документації / ручного оновлення лінків.
+- **Пошук по статтях:** sticky-бар у верхній частині модуля (`RoHelperSearchBar` у `RoHelperLayout`) — доступний з усіх сторінок RO Helper. Працює клієнтсько по лінивозавантажуваному JSON-індексу (`src/ro-helper/data/searchIndex.<locale>.json`), який генерується скриптом `scripts/build-ro-helper-search-index.mjs` (npm-команда `ro-helper:build-search-index`; запускається автоматично через `predev`/`prebuild`). Індекс містить лише **title + slug + discipline + category** для швидкого матчу; тіло статей не індексується. Скоринг — у `roHelperSearch.ts` (точна назва > префікс > word-prefix > substring > slug > контекст).
 
 ---
 
