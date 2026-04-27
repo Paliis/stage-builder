@@ -123,6 +123,15 @@
   line-height: 1.15;
 }
 
+.app__title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app__title-link:hover {
+  text-decoration: underline;
+}
+
 .app__header-actions {
   display: flex;
   flex-wrap: wrap;

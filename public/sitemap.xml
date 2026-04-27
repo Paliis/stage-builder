@@ -2,2186 +2,3410 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://shooters-tools.com/</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
   <url>
     <loc>https://shooters-tools.com/hit-factor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
     <loc>https://shooters-tools.com/publish-policy</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/stage-builder</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/demo</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/demo</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/athlete-clothing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/athlete-clothing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/chronograph-and-power-factor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/chronograph-and-power-factor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/division-overview</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/classic-division-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/equipment-malfunction</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/classic-holster-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/eye-and-ear-protection</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/classic-magazine-constraints</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/firearms-and-ammunition-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/division-overview</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/holster-or-carry-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/equipment-malfunction</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/magazines-and-loading-devices</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/equipment-position-check</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/ready-conditions</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/eye-and-ear-protection</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/equipment/trigger-pull-check</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/firearms-and-ammunition-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/handgun-flashlight-laser</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin/course-design-safety-balance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/holster-or-carry-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin/local-regional-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/magazines-and-loading-devices</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin/match-structure-and-categories</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/open-division-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin/md-ro-roles</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/production-division-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin/miscellaneous-matters</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/production-optics-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin/protests-arbitration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/ready-conditions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin/reshoots</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/revolver-division-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/match-admin/written-stage-briefing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/revolver-equipment-position</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/standard-division-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/cooper-tunnel</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/equipment/trigger-pull-check</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/creeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/failure-to-engage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/arbitration-committee-composition</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/foot-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/arbitration-evidence-handling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/forbidden-action</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/club-match-community-ethics</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/mandatory-position</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/course-design-safety-balance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/mandatory-reload</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/dq-official-procedure</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/penalty-in-lieu</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/electronic-scoring-ess</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/procedural-cap</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/emergency-stage-modification-protocol</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/procedural-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/expulsion-from-match</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/re-engage-same-location</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/final-division-verification-closing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/sight-picture-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/final-results-verification</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/significant-advantage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/final-ro-ethics-summary</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/unauthorized-assistance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/ignoring-ro-instructions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/penalties/walkthrough-interference</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/iroa-official-conduct</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/level-1-2-flexibility</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/accidental-discharge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/level-4-5-protocols</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/ammo-in-safety-area</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/lighting-changes</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/break-180</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/local-regional-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/dq-general</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/managing-restoration-errors</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/dropped-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/match-disassembly-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/metal-target-min-distance-dq</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/match-structure-and-categories</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/movement-and-trigger-safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/md-ro-roles</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/muzzle-at-person</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/media-press-safety-protocol</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/prohibited-substances</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/mentoring-new-shooters</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/range-safety-zones</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/miscellaneous-matters</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/sweeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/multigun-mixed-stages</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/trigger-finger</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/multigun-penalties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/unauthorized-loading</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/multigun-transition-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/unsafe-gun-handling</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/protests-arbitration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/safety/unsportsmanlike-conduct</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/reshoots</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/restoration-moving-targets</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/approaching-touching-targets</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/results-verification-display</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/disappearing-targets-scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/retrieval-protocol-dropped-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/fte-scoring-side</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/ro-debrief-post-match</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/hits-misses-noshoot-values</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/ro-personal-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/official-time</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/ro-self-audit-end-of-match</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/paper-scoring-policy</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/shoot-off-general</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/paper-zones-major-minor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/shoot-off-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/popper-calibration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/shoot-off-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/provisional-results-stats-appeal</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/spectator-crowd-control</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/radial-tears-enlarged-holes</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/stage-interference-reshoot</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/score-sheets-corrections</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/stage-modification</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/score-verification-challenge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/stage-ready-checklist-30s</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/scoring-methods</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/stage-surface-maintenance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/scoring-programs</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/stats-error-correction</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/handgun/scoring/scoring-ties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/stats-office-closing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/stop-command-handgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/stopping-competitor-protocol</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/athlete-clothing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/target-accessibility-visibility</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/chronograph-and-power-factor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/third-party-interference</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/division-overview</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/timer-echo-handling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/equipment-malfunction</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/vip-guest-management</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/eye-and-ear-protection</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/weather-conditions-impact</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/firearms-and-ammunition-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/working-with-helpers</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/holster-or-carry-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/match-admin/written-stage-briefing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/magazines-and-loading-devices</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/ready-conditions</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/coaching-outside-assistance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/equipment/trigger-pull-check</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/cooper-tunnel</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/creeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin/course-design-safety-balance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/extra-hits-fixed-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin/local-regional-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/extra-shots-fixed-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin/match-structure-and-categories</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/failure-to-engage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin/md-ro-roles</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/foot-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin/miscellaneous-matters</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/forbidden-action</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin/protests-arbitration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/improper-use-of-cover</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin/reshoots</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/mandatory-position</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/match-admin/written-stage-briefing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/mandatory-reload</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/metal-procedure-violation</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/burst-or-automatic-fire</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/penalty-in-lieu</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/cooper-tunnel</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/procedural-cap</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/creeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/procedural-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/failure-to-engage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/procedural-no-shoot</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/foot-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/range-equipment-failure-ref</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/forbidden-action</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/re-engage-same-location</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/mandatory-position</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/shortcut-short-circuiting</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/mandatory-reload</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/sight-picture-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/penalty-in-lieu</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/significant-advantage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/procedural-cap</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/stage-equipment-abuse</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/procedural-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/start-position-handgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/re-engage-same-location</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/target-restoration-failure</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/sight-picture-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/unauthorized-assistance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/significant-advantage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/unsportsmanlike-conduct</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/unauthorized-assistance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/verbal-abuse-dq</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/penalties/walkthrough-interference</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/walkthrough-interference</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/wrong-location</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/accidental-discharge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/penalties/wrong-sequence-of-fire</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/ammo-in-safety-area</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/break-180</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/accidental-discharge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/dq-general</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ad-holstering-drawing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/dropped-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ad-loading-unloading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/external-safety-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ad-malfunction-clearing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/metal-target-min-distance-dq</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ad-movement</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/movement-and-trigger-safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ad-no-command</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/muzzle-at-person</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ad-over-backstop</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/prohibited-substances</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ad-short-distance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/range-safety-zones</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ad-transfer-transition</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/sweeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/ammo-in-safety-area</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/trigger-finger</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/break-180</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/unauthorized-loading</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/dq-general</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/unsafe-gun-handling</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/draw-facing-uprange</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/safety/unsportsmanlike-conduct</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/drawing-while-moving</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/dropped-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/approaching-touching-targets</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/dropped-gun-during-loading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/disappearing-targets-scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/dropped-gun-during-movement</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/fte-scoring-side</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/dropped-gun-holstered</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/hits-misses-noshoot-values</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/dropped-gun-outside-cof</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/official-time</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/dropped-gun-unloaded-exception</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/paper-scoring-policy</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/failure-to-clear-malfunction</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/paper-zones-major-minor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/forbidden-substances-policy</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/popper-calibration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/gun-handling-briefing-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/provisional-results-stats-appeal</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/gun-not-clear</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/radial-tears-enlarged-holes</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/holstering-moving</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/score-sheets-corrections</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/loaded-gun-in-sa</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/score-verification-challenge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/loss-of-ear-protection</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/scoring-methods</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/loss-of-eye-protection</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/scoring-programs</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/metal-target-min-distance-dq</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/mini_rifle/scoring/scoring-ties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/movement-and-trigger-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/muzzle-at-person</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/muzzle-beyond-1m</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/athlete-clothing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/premature-handling-loading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/chronograph-and-power-factor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/prohibited-substances</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/division-overview</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/range-safety-zones</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/equipment-malfunction</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/self-inflicted-injury</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/eye-and-ear-protection</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/sweeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/firearms-and-ammunition-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/trigger-finger</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/holster-or-carry-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/unauthorized-gun-handling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/magazines-and-loading-devices</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/unauthorized-loading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/ready-conditions</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/unauthorized-unloading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/equipment/trigger-pull-check</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/unsafe-gun-handling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/unsafe-holster-state</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin/course-design-safety-balance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/unsafe-movement-dynamic</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin/local-regional-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/safety/unsportsmanlike-conduct</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin/match-structure-and-categories</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin/md-ro-roles</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/approaching-touching-targets</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin/miscellaneous-matters</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/disappearing-targets-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin/protests-arbitration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/fte-scoring-side</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin/reshoots</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/hits-misses-noshoot-values</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/match-admin/written-stage-briefing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/metal-target-not-falling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/official-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/burst-or-automatic-fire</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/paper-scoring-policy</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/cooper-tunnel</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/paper-target-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/creeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/paper-zones-major-minor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/failure-to-engage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/popper-calibration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/foot-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/prematurely-patched-targets</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/forbidden-action</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/provisional-results-stats-appeal</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/mandatory-position</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/radial-tears-enlarged-holes</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/mandatory-reload</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/radial-tears-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/penalty-in-lieu</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/score-sheets-corrections</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/procedural-cap</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/score-verification-challenge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/procedural-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/scoring-methods</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/re-engage-same-location</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/scoring-policy-summary</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/sight-picture-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/scoring-programs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/significant-advantage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/scoring-ties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/unauthorized-assistance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/simplified-club-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/penalties/walkthrough-interference</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/handgun/scoring/steel-target-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/accidental-discharge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/ammo-in-safety-area</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/athlete-clothing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/break-180</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/chronograph-and-power-factor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/dq-general</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/division-overview</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/dropped-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/equipment-malfunction</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/external-safety-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/eye-and-ear-protection</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/metal-target-min-distance-dq</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/firearms-and-ammunition-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/movement-and-trigger-safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/holster-or-carry-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/muzzle-at-person</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/magazines-and-loading-devices</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/prohibited-substances</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/mini-rifle-equipment</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/range-safety-zones</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/ready-conditions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/sweeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/equipment/trigger-pull-check</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/trigger-finger</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/unauthorized-loading</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin/course-design-safety-balance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/unsafe-gun-handling</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin/local-regional-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/safety/unsportsmanlike-conduct</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin/match-structure-and-categories</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin/md-ro-roles</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/approaching-touching-targets</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin/miscellaneous-matters</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/disappearing-targets-scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin/protests-arbitration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/fte-scoring-side</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin/reshoots</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/hits-misses-noshoot-values</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/match-admin/written-stage-briefing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/official-time</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/paper-scoring-policy</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/burst-or-automatic-fire</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/paper-zones-major-minor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/cooper-tunnel</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/popper-calibration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/creeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/provisional-results-stats-appeal</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/failure-to-engage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/radial-tears-enlarged-holes</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/foot-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/score-sheets-corrections</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/forbidden-action</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/score-verification-challenge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/mandatory-position</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/scoring-methods</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/mandatory-reload</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/scoring-programs</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/penalty-in-lieu</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/pcc/scoring/scoring-ties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/procedural-cap</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/procedural-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/re-engage-same-location</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/athlete-clothing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/sight-picture-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/chronograph-and-power-factor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/significant-advantage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/division-overview</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/unauthorized-assistance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/equipment-malfunction</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/penalties/walkthrough-interference</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/eye-and-ear-protection</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/firearms-and-ammunition-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/accidental-discharge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/holster-or-carry-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/ammo-in-safety-area</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/magazines-and-loading-devices</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/break-180</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/ready-conditions</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/dq-general</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/equipment/trigger-pull-check</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/dropped-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/external-safety-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin/course-design-safety-balance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/metal-target-min-distance-dq</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin/local-regional-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/mini-rifle-bolt-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin/match-structure-and-categories</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/movement-and-trigger-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin/md-ro-roles</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/muzzle-at-person</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin/miscellaneous-matters</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/prohibited-substances</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin/protests-arbitration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/range-safety-zones</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin/reshoots</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/sweeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/match-admin/written-stage-briefing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/trigger-finger</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/unauthorized-loading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/burst-or-automatic-fire</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/unsafe-gun-handling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/cooper-tunnel</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/safety/unsportsmanlike-conduct</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/creeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/failure-to-engage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/approaching-touching-targets</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/foot-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/disappearing-targets-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/forbidden-action</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/fte-scoring-side</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/mandatory-position</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/hits-misses-noshoot-values</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/mandatory-reload</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/mini-rifle-paper-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/penalty-in-lieu</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/mini-rifle-steel-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/procedural-cap</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/official-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/procedural-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/paper-scoring-policy</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/re-engage-same-location</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/paper-zones-major-minor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/sight-picture-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/popper-calibration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/significant-advantage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/provisional-results-stats-appeal</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/unauthorized-assistance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/radial-tears-enlarged-holes</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/penalties/walkthrough-interference</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/score-sheets-corrections</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/score-verification-challenge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/accidental-discharge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/scoring-methods</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/ammo-in-safety-area</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/scoring-programs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/break-180</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/scoring-ties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/dq-general</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/mini_rifle/scoring/target-presentation-mini-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/dropped-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/multigun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/external-safety-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/multigun/match-admin</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/metal-target-min-distance-dq</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/multigun/match-admin/multigun-transition-area-design</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/movement-and-trigger-safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/multigun/safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/muzzle-at-person</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/multigun/safety/dropped-gun-multigun-transition</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/prohibited-substances</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/multigun/safety/multigun-safe-abandonment</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/range-safety-zones</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/sweeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/trigger-finger</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/athlete-clothing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/unauthorized-loading</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/bipods-supports-pcc</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/unsafe-gun-handling</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/chronograph-and-power-factor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/safety/unsportsmanlike-conduct</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/division-overview</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/equipment-malfunction</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/approaching-touching-targets</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/eye-and-ear-protection</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/disappearing-targets-scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/firearms-and-ammunition-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/fte-scoring-side</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/handguards-grips-pcc</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/hits-misses-noshoot-values</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/holster-or-carry-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/official-time</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/magazines-and-loading-devices</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/paper-scoring-policy</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/optics-sights-pcc</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/paper-zones-major-minor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/pcc-electronic-sights</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/popper-calibration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/pcc-magazine-length</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/provisional-results-stats-appeal</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/pcc-ready-position-specifics</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/radial-tears-enlarged-holes</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/pcc-stock-configuration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/score-sheets-corrections</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/pcc-stock-requirements</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/score-verification-challenge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/ready-conditions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/scoring-methods</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/sling-usage-engagement</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/scoring-programs</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/equipment/trigger-pull-check</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/rifle/scoring/scoring-ties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/course-design-safety-balance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/local-regional-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/athlete-clothing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/match-structure-and-categories</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/chronograph-and-power-factor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/md-ro-roles</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/division-overview</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/miscellaneous-matters</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/equipment-malfunction</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/protests-arbitration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/eye-and-ear-protection</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/reshoots</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/firearms-and-ammunition-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/stop-command-pcc</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/holster-or-carry-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/match-admin/written-stage-briefing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/magazines-and-loading-devices</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/ready-conditions</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/burst-or-automatic-fire</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/equipment/trigger-pull-check</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/cooper-tunnel</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/creeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin/course-design-safety-balance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/extra-shots-fixed-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin/local-regional-rules</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/failure-to-engage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin/match-structure-and-categories</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/foot-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin/md-ro-roles</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/forbidden-action</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin/miscellaneous-matters</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/mandatory-position</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin/protests-arbitration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/mandatory-reload</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin/reshoots</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/penalty-in-lieu</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/match-admin/written-stage-briefing</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/procedural-cap</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/procedural-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/cooper-tunnel</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/range-equipment-failure-ref</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/creeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/re-engage-same-location</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/failure-to-engage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/sight-picture-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/foot-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/significant-advantage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/forbidden-action</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/start-position-pcc</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/mandatory-position</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/unauthorized-assistance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/mandatory-reload</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/walkthrough-interference</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/penalty-in-lieu</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/penalties/wrong-location</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/procedural-cap</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/procedural-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/accidental-discharge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/re-engage-same-location</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/ammo-in-safety-area</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/sight-picture-fault</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/break-180</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/significant-advantage</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/dq-general</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/unauthorized-assistance</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/dropped-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/walkthrough-interference</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/external-safety-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/penalties/wrong-ammo-shot</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/loaded-gun-sa-pcc</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/metal-target-min-distance-dq</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/accidental-discharge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/movement-and-trigger-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/ammo-in-safety-area</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/movement-safety-off</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/break-180</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/muzzle-at-person</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/dq-general</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/prohibited-substances</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/dropped-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/range-safety-zones</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/external-safety-long-gun</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/sweeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/metal-target-min-distance-dq</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/trigger-finger</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/movement-and-trigger-safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/unauthorized-loading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/muzzle-at-person</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/unsafe-gun-handling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/prohibited-substances</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/safety/unsportsmanlike-conduct</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/range-safety-zones</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/sweeping</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/approaching-touching-targets</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/trigger-finger</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/disappearing-targets-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/unauthorized-loading</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/fte-scoring-side</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/unsafe-gun-handling</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/hits-misses-noshoot-values</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/safety/unsportsmanlike-conduct</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/metal-target-not-falling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/official-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/approaching-touching-targets</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/paper-scoring-policy</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/disappearing-targets-scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/paper-zones-major-minor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/fte-scoring-side</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/pcc-minor-threshold-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/hits-misses-noshoot-values</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/popper-calibration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/official-time</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/provisional-results-stats-appeal</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/paper-scoring-policy</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/radial-tears-enlarged-holes</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/paper-zones-major-minor</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/score-sheets-corrections</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/popper-calibration</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/score-verification-challenge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/provisional-results-stats-appeal</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/scoring-methods</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/radial-tears-enlarged-holes</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/scoring-programs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/score-sheets-corrections</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/pcc/scoring/scoring-ties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/score-verification-challenge</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/scoring-methods</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/scoring-programs</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/athlete-clothing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/shotgun/scoring/scoring-ties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/bipods-supports-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/topics/equipment</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/bipods-usage-penalties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/topics/match-admin</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/chronograph-and-power-factor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/topics/penalties</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/division-overview</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/topics/safety</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/equipment-malfunction</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/ro-helper/topics/scoring</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/eye-and-ear-protection</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/stage-builder</loc>
-    <lastmod>2026-04-20T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/firearms-and-ammunition-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/handguards-grips-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/holster-or-carry-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/magazine-as-support</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/magazines-and-loading-devices</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/manual-action-rifle-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/manual-rifle-ready-conditions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/muzzle-devices-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/optics-magnification-limit</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/optics-sights-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/ready-conditions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/rifle-magazine-standard</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/rifle-open-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/rifle-standard-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/semi-auto-rifle-ready-conditions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/standard-muzzle-brake-limit</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/trigger-pull-check</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/equipment/weapon-slings-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/course-design-safety-balance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/local-regional-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/match-structure-and-categories</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/md-ro-roles</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/miscellaneous-matters</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/protests-arbitration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/reshoots</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/shoot-off-rifle-specifics</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/stop-command-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/match-admin/written-stage-briefing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/burst-or-automatic-fire</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/cooper-tunnel</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/creeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/environmental-supports-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/extra-hits-fixed-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/extra-shots-fixed-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/failure-to-engage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/foot-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/forbidden-action</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/improper-use-of-cover</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/mandatory-position</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/mandatory-reload</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/metal-procedure-violation</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/penalty-in-lieu</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/procedural-cap</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/procedural-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/range-equipment-failure-ref</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/re-engage-same-location</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/shortcut-short-circuiting</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/sight-picture-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/significant-advantage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/start-position-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/unauthorized-assistance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/walkthrough-interference</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/wrong-location</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/penalties/wrong-sequence-of-fire</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/accidental-discharge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/ammo-in-safety-area</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/break-180</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/dq-general</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/dropped-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/dropped-long-gun-protocol</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/external-safety-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/loaded-gun-in-sa-rifle</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/metal-target-min-distance-dq</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/movement-and-trigger-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/muzzle-at-person</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/prohibited-substances</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/range-safety-zones</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/sweeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/trigger-finger</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/unauthorized-loading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/unsafe-gun-handling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/safety/unsportsmanlike-conduct</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/approaching-touching-targets</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/disappearing-targets-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/fte-scoring-side</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/hard-cover-rifle-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/hits-misses-noshoot-values</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/long-range-scoring-aids</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/metal-target-not-falling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/official-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/paper-scoring-policy</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/paper-zones-major-minor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/popper-calibration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/provisional-results-stats-appeal</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/radial-tears-enlarged-holes</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/rifle-major-minor-comparison</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/score-sheets-corrections</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/score-verification-challenge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/scoring-methods</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/scoring-programs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/scoring-ties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/rifle/scoring/unpatched-targets-previous-shooter</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/athlete-clothing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/chokes-muzzle-devices</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/chronograph-and-power-factor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/detachable-magazines-shotgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/division-overview</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/equipment-malfunction</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/eye-and-ear-protection</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/firearms-and-ammunition-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/holster-or-carry-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/loading-devices-shotgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/magazine-couplers-extensions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/magazine-tube-constraints</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/magazines-and-loading-devices</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/modified-division-deep</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/modified-shotgun-deep</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/open-division-deep</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/open-shotgun-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/ready-conditions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/shotgun-chamber-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/shotgun-divisions</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/shotgun-ergonomics-stocks</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/shotgun-modified-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/shotgun-speed-loaders</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/standard-division-deep</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/standard-manual-deep</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/standard-manual-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/standard-shotgun-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/equipment/trigger-pull-check</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/ammunition-compliance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/course-design-safety-balance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/local-regional-rules</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/match-structure-and-categories</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/md-ro-roles</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/miscellaneous-matters</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/protests-arbitration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/reshoots</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/shoot-off-shotgun-specifics</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/stop-command-shotgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/match-admin/written-stage-briefing</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/cooper-tunnel</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/creeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/failure-to-engage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/foot-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/forbidden-action</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/mandatory-position</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/mandatory-reload</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/multiple-loading-shotgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/penalty-in-lieu</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/procedural-cap</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/procedural-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/range-equipment-failure-ref</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/re-engage-same-location</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/shotgun-loading-volume-penalty</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/sight-picture-fault</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/significant-advantage</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/unauthorized-assistance</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/walkthrough-interference</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/penalties/wrong-ammo-shot</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/accidental-discharge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/ammo-in-safety-area</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/break-180</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/dq-general</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/dropped-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/external-safety-long-gun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/metal-target-min-distance-dq</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/movement-and-trigger-safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/muzzle-at-person</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/prohibited-substances</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/range-safety-zones</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/short-distance-metal</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/sweeping</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/trigger-finger</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/unauthorized-ammo</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/unauthorized-loading</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/unauthorized-loading-shotgun</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/unsafe-gun-handling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/safety/unsportsmanlike-conduct</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/approaching-touching-targets</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/birdshot-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/buckshot-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/disappearing-targets-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/fragile-target-specs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/fte-scoring-side</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/hits-misses-noshoot-values</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/metal-target-not-falling</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/official-time</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/paper-scoring-policy</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/paper-zones-major-minor</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/popper-calibration</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/provisional-results-stats-appeal</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/radial-tears-enlarged-holes</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/score-sheets-corrections</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/score-verification-challenge</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/scoring-methods</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/scoring-programs</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/scoring-ties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/slug-scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/topics/equipment</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/topics/match-admin</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/topics/penalties</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/topics/safety</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://shooters-tools.com/tools/ro-helper/topics/scoring</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 </urlset>

@@ -9,6 +9,7 @@ import {
   type ChangeEvent,
   type CSSProperties,
 } from 'react'
+import { Link } from 'react-router-dom'
 import { useStore } from 'zustand/react'
 import { useShallow } from 'zustand/react/shallow'
 import { SessionDraftPersist } from './application/SessionDraftPersist'
@@ -964,7 +965,11 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       <header className="app__header">
         <div className="app__header-inner">
           <div className="app__header-top-row">
-            <h1 className="app__title-heading">{tree.app.title}</h1>
+            <h1 className="app__title-heading">
+              <Link to="/" className="app__title-link">
+                {tree.app.title}
+              </Link>
+            </h1>
             <div className="app__header-actions">
               <div className="app__lang" role="group" aria-label={tree.common.langSwitcher}>
                 <button

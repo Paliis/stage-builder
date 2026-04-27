@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
 import { PublishPolicyPanel } from './PublishPolicyPanel'
@@ -6,8 +7,14 @@ import { PublishPolicyPanel } from './PublishPolicyPanel'
 export function PublishPolicyRoute() {
   const { tree } = useI18n()
   const sp = tree.share
+  const p = tree.portal
+  const helmetTitle = `${tree.footer.publishPolicy} — ${p.title}`
   return (
     <div className="app__publish-policy-page">
+      <Helmet>
+        <title>{helmetTitle}</title>
+        <meta name="description" content={sp.publishPolicyTitle} />
+      </Helmet>
       <header className="app__publish-policy-page-header">
         <Link to="/" className="app__publish-policy-back">
           {sp.backHome}
