@@ -1433,7 +1433,7 @@ export const enMessages: MessageTree = {
     focusMakeupsText:
       'Make-up shots take a lot of time (≈{{time}}% of baseline). Slow down slightly to reduce them.',
     weaponClassLabel: 'Weapon class',
-    weaponClassPistol: 'Pistol',
+    weaponClassPistol: 'Handgun',
     weaponClassRifle: 'Rifle',
     weaponClassPcc: 'PCC',
     weaponClassShotgun: 'Shotgun',
