@@ -337,8 +337,25 @@ export function HitFactorPage() {
           <div className="hit-factor__deviationsFull">
             <div className="hit-factor__penalties">
               <div className="hit-factor__penalties-head">
-                <h2 className="hit-factor__h2">{hf.deviationsTitle}</h2>
-                <p className="hit-factor__hint">{hf.deviationsLead}</p>
+                <div className="hit-factor__penaltiesHeadMain">
+                  <h2 className="hit-factor__h2">{hf.deviationsTitle}</h2>
+                  <p className="hit-factor__hint">{hf.deviationsLead}</p>
+                </div>
+
+                <label className="hit-factor__penaltiesHeadSide">
+                  <span className="hit-factor__label">{hf.weaponClassLabel}</span>
+                  <select
+                    className="hit-factor__select"
+                    value={weaponClass}
+                    onChange={(e) => setWeaponClass(e.target.value as typeof weaponClass)}
+                    aria-label={hf.weaponClassLabel}
+                  >
+                    <option value="pistol">{hf.weaponClassPistol}</option>
+                    <option value="rifle">{hf.weaponClassRifle}</option>
+                    <option value="pcc">{hf.weaponClassPcc}</option>
+                    <option value="shotgun">{hf.weaponClassShotgun}</option>
+                  </select>
+                </label>
               </div>
 
               <div className="hit-factor__deviationList" role="group" aria-label={hf.deviationsTitle}>
@@ -464,44 +481,6 @@ export function HitFactorPage() {
                 </button>
               </div>
             </div>
-
-              <div className="hit-factor__pfInline">
-                <span className="hit-factor__label">{hf.weaponClassLabel}</span>
-                <div className="hit-factor__pfSeg" role="group" aria-label={hf.weaponClassLabel}>
-                  <button
-                    type="button"
-                    className={weaponClass === 'pistol' ? 'is-active' : ''}
-                    aria-pressed={weaponClass === 'pistol'}
-                    onClick={() => setWeaponClass('pistol')}
-                  >
-                    {hf.weaponClassPistol}
-                  </button>
-                  <button
-                    type="button"
-                    className={weaponClass === 'rifle' ? 'is-active' : ''}
-                    aria-pressed={weaponClass === 'rifle'}
-                    onClick={() => setWeaponClass('rifle')}
-                  >
-                    {hf.weaponClassRifle}
-                  </button>
-                  <button
-                    type="button"
-                    className={weaponClass === 'pcc' ? 'is-active' : ''}
-                    aria-pressed={weaponClass === 'pcc'}
-                    onClick={() => setWeaponClass('pcc')}
-                  >
-                    {hf.weaponClassPcc}
-                  </button>
-                  <button
-                    type="button"
-                    className={weaponClass === 'shotgun' ? 'is-active' : ''}
-                    aria-pressed={weaponClass === 'shotgun'}
-                    onClick={() => setWeaponClass('shotgun')}
-                  >
-                    {hf.weaponClassShotgun}
-                  </button>
-                </div>
-              </div>
 
             <details className="hit-factor__modelNote hit-factor__modelNote--inline">
               <summary className="hit-factor__modelNoteSummary">{hf.modelNoteLabel}</summary>

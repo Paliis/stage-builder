@@ -404,6 +404,28 @@
   border-top: 1px solid var(--border);
 }
 
+.hit-factor__penalties-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hit-factor__penaltiesHeadMain {
+  min-width: 0;
+}
+
+.hit-factor__penaltiesHeadSide {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: end;
+}
+
+.hit-factor__penaltiesHeadSide .hit-factor__select {
+  width: 12.5rem;
+  max-width: 100%;
+}
+
 .hit-factor__deviationsFull .hit-factor__penalties {
   margin-top: 0;
   padding-top: 0;
