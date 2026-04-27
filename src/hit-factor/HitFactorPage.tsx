@@ -5,6 +5,32 @@ import { formatTemplate } from '../i18n/format'
 import { computeHitFactorAnalysis, type PowerFactor } from './computeHitFactorAnalysis'
 import './HitFactorPage.css'
 
+type ExerciseType = 'short' | 'medium' | 'long'
+
+function getExerciseType(weaponClass: 'pistol' | 'rifle' | 'pcc' | 'shotgun', requiredHits: number): ExerciseType {
+  const shots = clampNonNegInt(requiredHits)
+  if (weaponClass === 'shotgun') {
+    if (shots <= 8) return 'short'
+    if (shots <= 16) return 'medium'
+    return 'long' // 17–28+
+  }
+  if (weaponClass === 'rifle') {
+    if (shots <= 10) return 'short'
+    if (shots <= 20) return 'medium'
+    return 'long' // 21–40+
+  }
+  // pistol + PCC
+  if (shots <= 12) return 'short'
+  if (shots <= 24) return 'medium'
+  return 'long' // 25–32+
+}
+
+function getSpeedStepSec(exerciseType: ExerciseType): number {
+  if (exerciseType === 'short') return 0.5
+  if (exerciseType === 'medium') return 0.75
+  return 1.0
+}
+
 function parseNum(v: string): number | null {
   const n = Number(v.replace(',', '.'))
   if (!Number.isFinite(n)) return null
@@ -143,7 +169,8 @@ export function HitFactorPage() {
     if (totalTimeSec === null || totalTimeSec <= 0) return null
     if (analysis.hfActual === null || analysis.hfActual <= 0) return null
 
-    const deltaTime = 1.0
+    const exerciseType = getExerciseType(weaponClass, requiredHits ?? 0)
+    const deltaTime = getSpeedStepSec(exerciseType)
     const hfPlusTime = analysis.actualPoints / (totalTimeSec + deltaTime)
     const timeSensitivityPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
 
@@ -179,6 +206,7 @@ export function HitFactorPage() {
         kind: 'speed' as const,
         title: hf.focusSpeedTitle,
         text: formatTemplate(hf.focusSpeedText, {
+          step: deltaTime.toFixed(2),
           pct: speedPct.toFixed(1),
         }),
       }
@@ -194,6 +222,8 @@ export function HitFactorPage() {
     makeupTimeSec,
     makeupSplitSec,
     totalTimeSec,
+    weaponClass,
+    requiredHits,
     hf.focusAccuracyText,
     hf.focusAccuracyTitle,
     hf.focusBalancedText,
