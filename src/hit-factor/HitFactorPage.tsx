@@ -329,7 +329,7 @@ export function HitFactorPage() {
                   <div className="hit-factor__stepper" role="group" aria-label={hf.makeupShotLabel}>
                     <input
                       inputMode="decimal"
-                      className="hit-factor__input"
+                      className="hit-factor__stepperInput"
                       value={makeupSplitRaw}
                       onChange={(e) => {
                         setMakeupSplitManual(true)
