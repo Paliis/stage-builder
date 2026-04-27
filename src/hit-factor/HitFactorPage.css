@@ -284,9 +284,10 @@
   padding: 0.6rem 0.7rem;
   border-radius: 0.65rem;
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--btn-bg);
   font: inherit;
   color: var(--text-h);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .hit-factor__input:focus {

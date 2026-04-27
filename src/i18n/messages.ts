@@ -855,7 +855,7 @@ export const ukMessages: MessageTree = {
     pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
     pageLead:
       '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u0430\u043d\u0430\u043b\u0456\u0437 \u0432\u043f\u0440\u0430\u0432\u0438: \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0438\u0439 HF, \u0444\u0430\u043a\u0442\u0438\u0447\u043d\u0438\u0439 HF \u0442\u0430 \u00ab\u0432\u0430\u0440\u0442\u0456\u0441\u0442\u044c\u00bb \u043f\u043e\u043c\u0438\u043b\u043e\u043a \u0443 \u0441\u0435\u043a\u0443\u043d\u0434\u0430\u0445.',
-    requiredHitsLabel: '\u0417\u0430\u043b\u0456\u043a\u043e\u0432\u0456 \u0432\u043b\u0443\u0447\u0430\u043d\u043d\u044f (min hits)',
+    requiredHitsLabel: '\u0417\u0430\u043b\u0456\u043a\u043e\u0432\u0456 \u0432\u043b\u0443\u0447\u0430\u043d\u043d\u044f',
     timeLabel: '\u0427\u0430\u0441 (\u0441\u0435\u043a)',
     powerFactorLabel: '\u0424\u0430\u043a\u0442\u043e\u0440 (PF)',
     powerFactorMinor: 'Minor',
@@ -1356,7 +1356,7 @@ export const enMessages: MessageTree = {
   hitFactor: {
     pageTitle: 'Hit Factor — price of mistakes',
     pageLead: 'Quick stage analysis: max HF, actual HF, and “cost” of errors in seconds.',
-    requiredHitsLabel: 'Required scoring hits (min)',
+    requiredHitsLabel: 'Required hits',
     timeLabel: 'Time (sec)',
     powerFactorLabel: 'Power factor (PF)',
     powerFactorMinor: 'Minor',
