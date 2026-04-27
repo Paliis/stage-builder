@@ -56,6 +56,11 @@
   }
 }
 
+.hit-factor__topLeft,
+.hit-factor__topRight {
+  align-self: stretch;
+}
+
 .hit-factor__topLeft {
   grid-area: topLeft;
   display: flex;
@@ -288,6 +293,7 @@
   font: inherit;
   color: var(--text-h);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  font-size: 1.02rem;
 }
 
 .hit-factor__input:focus {
@@ -505,7 +511,7 @@
 
 .hit-factor__scoreValue {
   font-variant-numeric: tabular-nums;
-  font-size: 1.55rem;
+  font-size: 1.65rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-h);

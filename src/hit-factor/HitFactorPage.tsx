@@ -51,10 +51,10 @@ export function HitFactorPage() {
   const timeSlider = useMemo(() => {
     const t = parseNum(timeRaw)
     if (t === null) return { min: 1, max: 60, value: 10 }
-    const v = Math.min(300, Math.max(0.1, t))
+    const v = Math.min(60, Math.max(0.1, t))
     const min = Math.max(0.1, Math.floor(v - 10))
-    const max = Math.max(min + 1, Math.ceil(v + 10))
-    return { min, max: Math.min(300, max), value: v }
+    const max = Math.min(60, Math.max(min + 1, Math.ceil(v + 10)))
+    return { min, max, value: v }
   }, [timeRaw])
 
   const analysis = useMemo(() => {
