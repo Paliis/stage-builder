@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { isRoHelperEnabled } from './featureFlags'
 import { roHelperPath } from '../ro-helper/paths'
-import { HIT_FACTOR_PREVIEW_SVG, RO_HELPER_PREVIEW_SVG } from './previewSvgs'
+import { RO_HELPER_PREVIEW_SVG } from './previewSvgs'
 import './PortalHome.css'
 
 type CardBadgeKind = 'live' | 'new' | 'beta'
@@ -138,7 +138,7 @@ export function PortalHome() {
         />
         <ProductCard
           to="/hit-factor"
-          previewSvg={HIT_FACTOR_PREVIEW_SVG}
+          preview="/portal-previews/hit-factor.webp"
           previewAlt={`${p.hitFactorTitle} — ${p.hitFactorDesc}`}
           title={p.hitFactorTitle}
           description={p.hitFactorDesc}
