@@ -96,7 +96,7 @@ export function HitFactorPage() {
 
       <section className="hit-factor__card" aria-label={hf.pageTitle}>
         <div className="hit-factor__layout">
-          <div className="hit-factor__inputs">
+          <div className="hit-factor__topLeft">
             <div className="hit-factor__grid">
               <label className="hit-factor__field">
                 <span className="hit-factor__label">{hf.requiredHitsLabel}</span>
@@ -119,7 +119,45 @@ export function HitFactorPage() {
                 />
               </label>
             </div>
+          </div>
 
+          <div className="hit-factor__topRight" aria-live="polite">
+            <div className="hit-factor__scoreCard">
+              <div className="hit-factor__scoreTop">
+                <div className="hit-factor__scoreMeta">
+                  <span className="hit-factor__scoreLabel">{hf.hfActualLabel}</span>
+                  <strong className="hit-factor__scoreValue">
+                    {analysis?.hfActual !== null && analysis ? analysis.hfActual.toFixed(4) : '—'}
+                  </strong>
+                </div>
+                <div className="hit-factor__scoreMeta hit-factor__scoreMeta--muted">
+                  <span className="hit-factor__scoreLabel">{hf.hfMaxLabel}</span>
+                  <strong className="hit-factor__scoreValue">
+                    {analysis?.hfMax !== null && analysis ? analysis.hfMax.toFixed(4) : '—'}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="hit-factor__scoreBottom">
+                <div className="hit-factor__kv">
+                  <span>{hf.maxPointsLabel}</span>
+                  <strong>{analysis ? String(analysis.maxPoints) : '—'}</strong>
+                </div>
+                <div className="hit-factor__kv">
+                  <span>{hf.actualPointsLabel}</span>
+                  <strong>{analysis ? String(analysis.actualPoints) : '—'}</strong>
+                </div>
+                <div className="hit-factor__kv">
+                  <span>{hf.hfLossLabel}</span>
+                  <strong>
+                    {analysis?.hfLossPct !== null && analysis ? `${analysis.hfLossPct.toFixed(1)}%` : '—'}
+                  </strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="hit-factor__deviationsFull">
             <div className="hit-factor__penalties">
               <div className="hit-factor__penalties-head">
                 <h2 className="hit-factor__h2">{hf.deviationsTitle}</h2>
@@ -174,90 +212,52 @@ export function HitFactorPage() {
                 })}
               </div>
             </div>
+          </div>
 
-            <div className="hit-factor__controlsBottom">
-              <div className="hit-factor__pf">
-                <span className="hit-factor__label">{hf.powerFactorLabel}</span>
-                <div className="hit-factor__pfSeg" role="group" aria-label={hf.powerFactorLabel}>
-                  <button
-                    type="button"
-                    className={powerFactor === 'minor' ? 'is-active' : ''}
-                    aria-pressed={powerFactor === 'minor'}
-                    onClick={() => setPowerFactor('minor')}
-                  >
-                    {hf.powerFactorMinor}
-                  </button>
-                  <button
-                    type="button"
-                    className={powerFactor === 'major' ? 'is-active' : ''}
-                    aria-pressed={powerFactor === 'major'}
-                    onClick={() => setPowerFactor('major')}
-                  >
-                    {hf.powerFactorMajor}
-                  </button>
-                </div>
+          <div className="hit-factor__footerBar">
+            <div className="hit-factor__pfInline">
+              <span className="hit-factor__label">{hf.powerFactorLabel}</span>
+              <div className="hit-factor__pfSeg" role="group" aria-label={hf.powerFactorLabel}>
+                <button
+                  type="button"
+                  className={powerFactor === 'minor' ? 'is-active' : ''}
+                  aria-pressed={powerFactor === 'minor'}
+                  onClick={() => setPowerFactor('minor')}
+                >
+                  {hf.powerFactorMinor}
+                </button>
+                <button
+                  type="button"
+                  className={powerFactor === 'major' ? 'is-active' : ''}
+                  aria-pressed={powerFactor === 'major'}
+                  onClick={() => setPowerFactor('major')}
+                >
+                  {hf.powerFactorMajor}
+                </button>
               </div>
             </div>
 
-            <details className="hit-factor__modelNote">
+            <details className="hit-factor__modelNote hit-factor__modelNote--inline">
               <summary className="hit-factor__modelNoteSummary">{hf.modelNoteLabel}</summary>
               <p className="hit-factor__modelNoteBody">{hf.modelNote}</p>
             </details>
-          </div>
 
-          <div className="hit-factor__resultCol" aria-live="polite">
-            <div className="hit-factor__scoreCard">
-              <div className="hit-factor__scoreTop">
-                <div className="hit-factor__scoreMeta">
-                  <span className="hit-factor__scoreLabel">{hf.hfActualLabel}</span>
-                  <strong className="hit-factor__scoreValue">
-                    {analysis?.hfActual !== null && analysis ? analysis.hfActual.toFixed(4) : '—'}
-                  </strong>
-                </div>
-                <div className="hit-factor__scoreMeta hit-factor__scoreMeta--muted">
-                  <span className="hit-factor__scoreLabel">{hf.hfMaxLabel}</span>
-                  <strong className="hit-factor__scoreValue">
-                    {analysis?.hfMax !== null && analysis ? analysis.hfMax.toFixed(4) : '—'}
-                  </strong>
-                </div>
-              </div>
-
-              <div className="hit-factor__scoreBottom">
-                <div className="hit-factor__kv">
-                  <span>{hf.maxPointsLabel}</span>
-                  <strong>{analysis ? String(analysis.maxPoints) : '—'}</strong>
-                </div>
-                <div className="hit-factor__kv">
-                  <span>{hf.actualPointsLabel}</span>
-                  <strong>{analysis ? String(analysis.actualPoints) : '—'}</strong>
-                </div>
-                <div className="hit-factor__kv">
-                  <span>{hf.hfLossLabel}</span>
-                  <strong>
-                    {analysis?.hfLossPct !== null && analysis ? `${analysis.hfLossPct.toFixed(1)}%` : '—'}
-                  </strong>
-                </div>
-              </div>
-            </div>
-
-            <div className="hit-factor__actions">
-              <button
-                type="button"
-                className="hit-factor__reset"
-                onClick={() => {
-                  setRequiredHitsRaw('20')
-                  setTimeRaw('10.00')
-                  setPowerFactor('major')
-                  setDeltaCharlieRaw('0')
-                  setDeltaDeltaRaw('0')
-                  setDeltaMissRaw('0')
-                  setDeltaProceduralRaw('0')
-                  setDeltaNoShootRaw('0')
-                }}
-              >
-                {hf.reset}
-              </button>
-            </div>
+            <button
+              type="button"
+              className="hit-factor__reset"
+              onClick={() => {
+                setRequiredHitsRaw('20')
+                setTimeRaw('10.00')
+                setPowerFactor('major')
+                setDeltaCharlieRaw('0')
+                setDeltaDeltaRaw('0')
+                setDeltaMissRaw('0')
+                setDeltaProceduralRaw('0')
+                setDeltaNoShootRaw('0')
+              }}
+            >
+              {hf.reset}
+            </button>
           </div>
         </div>
       </section>

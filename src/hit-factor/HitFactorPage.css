@@ -39,12 +39,51 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: 1rem;
   align-items: start;
+  grid-template-areas:
+    'topLeft topRight'
+    'deviations deviations'
+    'footer footer';
 }
 
 @media (max-width: 820px) {
   .hit-factor__layout {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'topLeft'
+      'topRight'
+      'deviations'
+      'footer';
   }
+}
+
+.hit-factor__topLeft {
+  grid-area: topLeft;
+}
+
+.hit-factor__topRight {
+  grid-area: topRight;
+}
+
+.hit-factor__deviationsFull {
+  grid-area: deviations;
+}
+
+.hit-factor__footerBar {
+  grid-area: footer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.hit-factor__pfInline {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
 }
 
 .hit-factor__grid {
@@ -105,17 +144,6 @@
   grid-column: span 1;
 }
 
-.hit-factor__controlsBottom {
-  margin-top: 0.85rem;
-  display: grid;
-  gap: 0.75rem;
-}
-
-.hit-factor__pf {
-  display: grid;
-  gap: 0.35rem;
-}
-
 .hit-factor__pfSeg {
   display: inline-flex;
   width: fit-content;
@@ -159,6 +187,30 @@
   margin-top: 0.85rem;
   padding-top: 0.85rem;
   border-top: 1px dashed var(--border);
+}
+
+.hit-factor__modelNote--inline {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.hit-factor__modelNote--inline .hit-factor__modelNoteSummary {
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.65rem;
+  border: 1px dashed var(--border);
+  background: rgba(2, 6, 23, 0.04);
+}
+
+.hit-factor__modelNote--inline[open] .hit-factor__modelNoteSummary {
+  border-color: var(--accent-border);
+}
+
+.hit-factor__modelNote--inline .hit-factor__modelNoteBody {
+  position: absolute;
+  z-index: 10;
+  max-width: min(28rem, calc(100vw - 3rem));
+  margin-top: 0.55rem;
 }
 
 .hit-factor__modelNoteSummary {
@@ -253,6 +305,12 @@
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border);
+}
+
+.hit-factor__deviationsFull .hit-factor__penalties {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .hit-factor__deviationList {
