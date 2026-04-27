@@ -117,7 +117,7 @@ export function HitFactorPage() {
     const timeStep = 0.2
     const hfPlusTime = analysis.actualPoints / (timeSec + timeStep)
     const lossPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
-    const worstVsStep = worst > 0 ? worst / timeStep : 0
+    const steps = worst > 0 ? Math.max(1, Math.round(worst / timeStep)) : 0
 
     if (worst >= 0.6) {
       return {
@@ -127,7 +127,7 @@ export function HitFactorPage() {
           err: worstLabel,
           sec: worst.toFixed(2),
           step: timeStep.toFixed(1),
-          x: worstVsStep.toFixed(1),
+          steps,
         }),
       }
     }

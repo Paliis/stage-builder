@@ -891,7 +891,7 @@ export const ukMessages: MessageTree = {
     focusTitle: '\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0430\u0446\u0456\u044f',
     focusAccuracyTitle: '\u0424\u043e\u043a\u0443\u0441 \u2014 \u0442\u043e\u0447\u043d\u0456\u0441\u0442\u044c',
     focusAccuracyText:
-      '\u041e\u0434\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0430 \u00ab{{err}}\u00bb \u043a\u043e\u0448\u0442\u0443\u0454 \u043f\u0440\u0438\u0431\u043b\u0438\u0437\u043d\u043e {{sec}} \u0441\u0435\u043a \u2014 \u0446\u0435 \u044f\u043a {{x}}\u00d7 \u043f\u0440\u043e\u0433\u0440\u0430\u0442\u0438 {{step}} \u0441\u0435\u043a.',
+      '\u041e\u0434\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0430 \u00ab{{err}}\u00bb \u043a\u043e\u0448\u0442\u0443\u0454 \u043f\u0440\u0438\u0431\u043b\u0438\u0437\u043d\u043e {{sec}} \u0441\u0435\u043a \u2014 \u0446\u0435 \u044f\u043a \u043f\u0440\u043e\u0433\u0440\u0430\u0442\u0438 {{sec}} \u0441\u0435\u043a \u0447\u0430\u0441\u0443. \u0410\u0431\u043e \u043f\u0440\u0438\u0431\u043b\u0438\u0437\u043d\u043e {{steps}} \u043a\u0440\u043e\u043a\u0456\u0432 \u043f\u043e {{step}} \u0441\u0435\u043a.',
     focusSpeedTitle: '\u0424\u043e\u043a\u0443\u0441 \u2014 \u0448\u0432\u0438\u0434\u043a\u0456\u0441\u0442\u044c',
     focusSpeedText:
       '+{{step}} \u0441\u0435\u043a \u0434\u043e \u0447\u0430\u0441\u0443 \u0437\u0430\u0431\u0438\u0440\u0430\u0454 \u043f\u0440\u0438\u0431\u043b\u0438\u0437\u043d\u043e {{pct}}% HF \u043d\u0430 \u0446\u044c\u043e\u043c\u0443 \u0442\u0435\u043c\u043f\u0456.',
@@ -1401,7 +1401,7 @@ export const enMessages: MessageTree = {
     focusTitle: 'Recommendation',
     focusAccuracyTitle: 'Focus: accuracy',
     focusAccuracyText:
-      'One “{{err}}” costs about {{sec}} sec — roughly {{x}}× losing {{step}} sec.',
+      'One “{{err}}” costs about {{sec}} sec — roughly the same as losing {{sec}} sec. Or about {{steps}} steps of {{step}} sec.',
     focusSpeedTitle: 'Focus: speed',
     focusSpeedText:
       'Adding +{{step}} sec costs about {{pct}}% HF at this pace.',
