@@ -114,11 +114,14 @@ export function HitFactorPage() {
           ? hf.noShootLabel
           : hf.proceduralLabel
 
-    const timeStep = 0.2
-    const hfPlusTime = analysis.actualPoints / (timeSec + timeStep)
-    const lossPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
+    const clamp = (x: number, min: number, max: number) => Math.min(max, Math.max(min, x))
+    const deltaTime = clamp(timeSec * 0.05, 0.1, 2.0)
+    const hfPlusTime = analysis.actualPoints / (timeSec + deltaTime)
+    const timeSensitivityPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
 
-    if (worst >= 0.6) {
+    const pointsLossPct = analysis.hfLossPct ?? 0
+
+    if (pointsLossPct >= 5.0) {
       return {
         kind: 'accuracy' as const,
         title: hf.focusAccuracyTitle,
@@ -129,13 +132,12 @@ export function HitFactorPage() {
       }
     }
 
-    if (lossPct >= 2.0) {
+    if (pointsLossPct <= 2.0 && timeSensitivityPct >= 5.0) {
       return {
         kind: 'speed' as const,
         title: hf.focusSpeedTitle,
         text: formatTemplate(hf.focusSpeedText, {
-          step: timeStep.toFixed(1),
-          pct: lossPct.toFixed(1),
+          pct: timeSensitivityPct.toFixed(1),
         }),
       }
     }
