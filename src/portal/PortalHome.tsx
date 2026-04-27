@@ -5,10 +5,60 @@ import { isRoHelperEnabled } from './featureFlags'
 import { roHelperPath } from '../ro-helper/paths'
 import './PortalHome.css'
 
-/** Launcher at `/` — entry to Stage Builder and future portal modules. */
+const FEEDBACK_EMAIL = 'mailto:parshencevdenis@gmail.com'
+const FEEDBACK_TELEGRAM = 'https://t.me/denysparshentsev'
+
+type CardBadgeKind = 'live' | 'new' | 'beta'
+
+interface ProductCardProps {
+  to: string
+  preview: string
+  previewAlt: string
+  title: string
+  description: string
+  features: string[]
+  cta: string
+  badgeKind: CardBadgeKind
+  badgeLabel: string
+}
+
+function ProductCard(props: ProductCardProps) {
+  const { to, preview, previewAlt, title, description, features, cta, badgeKind, badgeLabel } = props
+  return (
+    <article className={`portal-home__product portal-home__product--${badgeKind}`}>
+      <div className="portal-home__product-preview" aria-hidden="true">
+        <img src={preview} alt={previewAlt} loading="lazy" width={640} height={400} />
+      </div>
+      <div className="portal-home__product-body">
+        <header className="portal-home__product-head">
+          <h2 className="portal-home__product-title">
+            <Link to={to} className="portal-home__product-link">
+              {title}
+            </Link>
+          </h2>
+          <span className={`portal-home__product-badge portal-home__product-badge--${badgeKind}`}>
+            {badgeLabel}
+          </span>
+        </header>
+        <p className="portal-home__product-desc">{description}</p>
+        <ul className="portal-home__product-features">
+          {features.map((feature) => (
+            <li key={feature}>{feature}</li>
+          ))}
+        </ul>
+        <p className="portal-home__product-cta" aria-hidden="true">
+          {cta} <span aria-hidden="true">→</span>
+        </p>
+      </div>
+    </article>
+  )
+}
+
+/** Launcher at `/` — entry to Stage Builder, Hit Factor and RO Helper. */
 export function PortalHome() {
   const { tree } = useI18n()
   const p = tree.portal
+  const f = tree.footer
 
   return (
     <div className="portal-home">
@@ -16,27 +66,78 @@ export function PortalHome() {
         <title>{p.helmetTitle}</title>
         <meta name="description" content={p.metaDescription} />
       </Helmet>
-      <h1 className="portal-home__sr-only">{p.title}</h1>
-      <p className="portal-home__lead">{p.lead}</p>
-      <Link to="/stage-builder" className="portal-home__card">
-        <h2 className="portal-home__card-title">{p.stageBuilderTitle}</h2>
-        <p className="portal-home__card-desc">{p.stageBuilderDesc}</p>
-        <p className="portal-home__card-cta">{p.openStageBuilder} →</p>
-      </Link>
-      <Link to="/hit-factor" className="portal-home__card portal-home__card--secondary">
-        <h2 className="portal-home__card-title">{p.hitFactorTitle}</h2>
-        <p className="portal-home__card-desc">{p.hitFactorDesc}</p>
-        <p className="portal-home__card-cta">{p.openHitFactor} →</p>
-      </Link>
-      {isRoHelperEnabled() ? (
-        <>
-          <Link to={roHelperPath()} className="portal-home__card portal-home__card--secondary">
-            <h2 className="portal-home__card-title">{p.roHelperTitle}</h2>
-            <p className="portal-home__card-desc">{p.roHelperDesc}</p>
-            <p className="portal-home__card-cta">{p.openRoHelper} →</p>
-          </Link>
-        </>
-      ) : null}
+
+      <section className="portal-home__hero" aria-labelledby="portal-hero-title">
+        <h1 id="portal-hero-title" className="portal-home__hero-title">
+          {p.title}
+        </h1>
+        <p className="portal-home__hero-lead">{p.lead}</p>
+        <ul className="portal-home__pills" aria-label={p.pillsAriaLabel}>
+          {p.heroPills.map((pill) => (
+            <li key={pill} className="portal-home__pill">
+              {pill}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="portal-home__grid" aria-label={p.gridAriaLabel}>
+        <ProductCard
+          to="/stage-builder"
+          preview="/portal-previews/stage-builder.svg"
+          previewAlt={`${p.stageBuilderTitle} — ${p.stageBuilderDesc}`}
+          title={p.stageBuilderTitle}
+          description={p.stageBuilderDesc}
+          features={p.stageBuilderFeatures}
+          cta={p.openStageBuilder}
+          badgeKind="live"
+          badgeLabel={p.badgeLive}
+        />
+        <ProductCard
+          to="/hit-factor"
+          preview="/portal-previews/hit-factor.svg"
+          previewAlt={`${p.hitFactorTitle} — ${p.hitFactorDesc}`}
+          title={p.hitFactorTitle}
+          description={p.hitFactorDesc}
+          features={p.hitFactorFeatures}
+          cta={p.openHitFactor}
+          badgeKind="new"
+          badgeLabel={p.badgeNew}
+        />
+        {isRoHelperEnabled() ? (
+          <ProductCard
+            to={roHelperPath()}
+            preview="/portal-previews/ro-helper.svg"
+            previewAlt={`${p.roHelperTitle} — ${p.roHelperDesc}`}
+            title={p.roHelperTitle}
+            description={p.roHelperDesc}
+            features={p.roHelperFeatures}
+            cta={p.openRoHelper}
+            badgeKind="beta"
+            badgeLabel={p.badgeBeta}
+          />
+        ) : null}
+      </section>
+
+      <section className="portal-home__contact" aria-labelledby="portal-contact-heading">
+        <h2 id="portal-contact-heading" className="portal-home__contact-heading">
+          {f.feedbackHeading}
+        </h2>
+        <p className="portal-home__contact-text">{f.feedbackText}</p>
+        <div className="portal-home__contact-actions">
+          <a className="portal-home__contact-btn" href={FEEDBACK_EMAIL}>
+            {f.feedbackEmail}
+          </a>
+          <a
+            className="portal-home__contact-btn portal-home__contact-btn--telegram"
+            href={FEEDBACK_TELEGRAM}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {f.feedbackTelegram}
+          </a>
+        </div>
+      </section>
     </div>
   )
 }

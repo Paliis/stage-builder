@@ -332,15 +332,31 @@ export type MessageTree = {
     navRoHelper: string
     stageBuilderTitle: string
     stageBuilderDesc: string
+    /** 2-3 ultra-short feature bullets shown on the Stage Builder card. */
+    stageBuilderFeatures: string[]
     openStageBuilder: string
     hitFactorTitle: string
     hitFactorDesc: string
+    /** 2-3 ultra-short feature bullets shown on the Hit Factor card. */
+    hitFactorFeatures: string[]
     openHitFactor: string
     roHelperTitle: string
     roHelperDesc: string
+    /** 2-3 ultra-short feature bullets shown on the RO Helper card. */
+    roHelperFeatures: string[]
     openRoHelper: string
-    roHelperDemoCta: string
-    roHelperDemoLead: string
+    /** Hero "value pills" on the portal home (3 short highlights). */
+    heroPills: string[]
+    /** ARIA label for the pills group. */
+    pillsAriaLabel: string
+    /** ARIA label for the cards grid section. */
+    gridAriaLabel: string
+    /** Status badge label — stable / generally available product. */
+    badgeLive: string
+    /** Status badge label — new / recently launched product. */
+    badgeNew: string
+    /** Status badge label — beta / under active development. */
+    badgeBeta: string
   }
   hitFactor: {
     pageTitle: string
@@ -857,18 +873,36 @@ export const ukMessages: MessageTree = {
     stageBuilderTitle: 'Stage Builder',
     stageBuilderDesc:
       '\u041c\u0435\u0442\u0440\u0438\u0447\u043d\u0438\u0439 \u043f\u043b\u0430\u043d, 3D, \u0431\u0440\u0438\u0444\u0456\u043d\u0433, PDF, \u0444\u0430\u0439\u043b\u0438 \u0432\u043f\u0440\u0430\u0432.',
+    stageBuilderFeatures: [
+      '\u041c\u0435\u0442\u0440\u0438\u0447\u043d\u0438\u0439 \u043f\u043b\u0430\u043d \u0437\u0456 \u0441\u0456\u0442\u043a\u043e\u044e \u0442\u0430 \u043b\u0456\u043d\u0456\u0439\u043a\u043e\u044e',
+      '3D \u0437 \u0437\u043e\u043d\u0438 \u0441\u0442\u0440\u0456\u043b\u044c\u0446\u044f \u0442\u0430 \u043f\u0435\u0440\u0435\u0432\u0456\u0440\u043a\u0430 \u0432\u0438\u0434\u0438\u043c\u043e\u0441\u0442\u0456',
+      '\u0411\u0440\u0438\u0444\u0456\u043d\u0433 + PDF \u0434\u043b\u044f \u0434\u0440\u0443\u043a\u0443 \u0442\u0430 \u0444\u0430\u0439\u043b\u0438 .stage.json',
+    ],
     openStageBuilder: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Stage Builder',
     hitFactorTitle: 'Hit Factor',
     hitFactorDesc:
       '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u043a\u0430\u043b\u044c\u043a\u0443\u043b\u044f\u0442\u043e\u0440: \u043e\u0447\u043a\u0438 / \u0447\u0430\u0441 = hit factor. \u0417\u0440\u0443\u0447\u043d\u043e \u043d\u0430 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438\u0449\u0456 \u0442\u0430 \u043d\u0430 \u043c\u0430\u0442\u0447\u0456.',
+    hitFactorFeatures: [
+      '\u041e\u0447\u043a\u0438 / \u0447\u0430\u0441 = HF, Major / Minor',
+      '\u0426\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043e\u043a \u0443 \u0441\u0435\u043a\u0443\u043d\u0434\u0430\u0445',
+      '\u041f\u0456\u0434\u043a\u0430\u0437\u043a\u0430 \u0444\u043e\u043a\u0443\u0441\u0443: \u0448\u0432\u0438\u0434\u043a\u0456\u0441\u0442\u044c \u0447\u0438 \u0442\u043e\u0447\u043d\u0456\u0441\u0442\u044c',
+    ],
     openHitFactor: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Hit Factor',
     roHelperTitle: 'RO Helper',
     roHelperDesc:
       '\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u0430\u0432\u0438\u043b \u0442\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440 \u0434\u043b\u044f IPSC-\u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 (\u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438 \u2014 \u0437\u0430\u0432\u0436\u0434\u0438 \u0437\u0432\u0456\u0440\u044f\u0439\u0442\u0435 \u0437 PDF).',
+    roHelperFeatures: [
+      '\u041f\u0435\u043d\u0430\u043b\u044c\u0442\u0456, \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0438, \u0441\u043a\u043e\u0440\u0438\u043d\u0433',
+      '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u043f\u043e\u0448\u0443\u043a \u0456 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u0457',
+      'Quick cite \u043d\u0430 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438\u0449\u0456',
+    ],
     openRoHelper: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 RO Helper',
-    roHelperDemoCta: 'RO Helper: \u043f\u0440\u0438\u043a\u043b\u0430\u0434 \u043a\u0430\u0440\u0442\u043a\u0438 (\u0434\u0435\u043c\u043e)',
-    roHelperDemoLead:
-      '\u041c\u0430\u043a\u0435\u0442 \u043a\u0430\u0440\u0442\u043a\u0438 RO Helper \u2014 SOS, \u043c\u0435\u0442\u0430, \u0434\u0438\u0441\u043a\u043b\u0435\u0439\u043c\u0435\u0440, \u0448\u0430\u0440 \u0424\u041f\u0421\u0423. \u041d\u043e\u043c\u0435\u0440 \u043a\u0430\u0440\u0442\u043a\u0438: \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440 URL \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u2026\u0060 (\u043d\u0430\u043f\u0440\u0438\u043a\u043b\u0430\u0434 \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u0043\u0032\u0036\u0060).',
+    heroPills: ['2D + 3D', 'PDF \u0431\u0440\u0438\u0444\u0456\u043d\u0433', 'IPSC \u00b7 RO Helper'],
+    pillsAriaLabel: '\u041a\u043b\u044e\u0447\u043e\u0432\u0456 \u043c\u043e\u0436\u043b\u0438\u0432\u043e\u0441\u0442\u0456',
+    gridAriaLabel: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u0456 \u0456\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438',
+    badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
+    badgeNew: '\u041d\u043e\u0432\u0435',
+    badgeBeta: 'Beta',
   },
   hitFactor: {
     pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
@@ -1383,17 +1417,35 @@ export const enMessages: MessageTree = {
     navRoHelper: 'RO Helper',
     stageBuilderTitle: 'Stage Builder',
     stageBuilderDesc: 'Metric plan, 3D, briefing, PDF, stage files.',
+    stageBuilderFeatures: [
+      'Metric plan with grid and ruler',
+      '3D from the shooter\u2019s view, visibility checks',
+      'Printable PDF briefing and .stage.json files',
+    ],
     openStageBuilder: 'Open Stage Builder',
     hitFactorTitle: 'Hit Factor',
     hitFactorDesc: 'Quick calculator: points / time = hit factor. Handy at the range and at matches.',
+    hitFactorFeatures: [
+      'Points / time = HF, Major / Minor',
+      'Cost of mistakes in seconds',
+      'Focus hint: speed vs accuracy',
+    ],
     openHitFactor: 'Open Hit Factor',
     roHelperTitle: 'RO Helper',
     roHelperDesc:
       'Rules and procedures reference for IPSC-style shooting (draft articles — always verify against your official PDF).',
+    roHelperFeatures: [
+      'Penalties, procedures, scoring',
+      'Fast search and categories',
+      'Quick cite at the range',
+    ],
     openRoHelper: 'Open RO Helper',
-    roHelperDemoCta: 'RO Helper: article preview (demo)',
-    roHelperDemoLead:
-      'RO Helper card UX mock — SOS colours, meta, disclaimer, FPSU layer. Pick a card with the URL query `?card=…` (for example `?card=C26`).',
+    heroPills: ['2D + 3D', 'PDF briefing', 'IPSC \u00b7 RO Helper'],
+    pillsAriaLabel: 'Key highlights',
+    gridAriaLabel: 'Available tools',
+    badgeLive: 'Live',
+    badgeNew: 'New',
+    badgeBeta: 'Beta',
   },
   hitFactor: {
     pageTitle: 'Hit Factor — price of mistakes',
