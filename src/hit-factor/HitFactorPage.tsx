@@ -201,7 +201,7 @@ export function HitFactorPage() {
 
     // Speed focus is only meaningful when extra time is not coming from make-ups.
     const speedPct = timeSensitivityPct
-    if (pointsLossPct <= 2.0 && makeupTimeSec <= 0 && speedPct >= 5.0 && speedPct >= pointsLossPct + 2.0) {
+    if (pointsLossPct <= 2.0 && makeupTimeSec <= 0 && speedPct >= 4.5 && speedPct >= pointsLossPct + 2.0) {
       return {
         kind: 'speed' as const,
         title: hf.focusSpeedTitle,
