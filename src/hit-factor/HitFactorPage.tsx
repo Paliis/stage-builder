@@ -340,7 +340,22 @@ export function HitFactorPage() {
                 <summary className="hit-factor__deviationsSummary">
                   <span className="hit-factor__deviationsSummaryTitle">{hf.deviationsTitle}</span>
                   <span className="hit-factor__deviationsSummaryMeta">
-                    {makeupCountRaw !== '0' ? `${hf.makeupShotCountLabel}: ${makeupCountRaw}` : ''}
+                    {(() => {
+                      const items: string[] = []
+                      const c = clampNonNegInt(parseIntOrNull(deltaCharlieRaw) ?? 0)
+                      const d = clampNonNegInt(parseIntOrNull(deltaDeltaRaw) ?? 0)
+                      const m = clampNonNegInt(parseIntOrNull(deltaMissRaw) ?? 0)
+                      const p = clampNonNegInt(parseIntOrNull(deltaProceduralRaw) ?? 0)
+                      const ns = clampNonNegInt(parseIntOrNull(deltaNoShootRaw) ?? 0)
+                      const mu = clampNonNegInt(parseIntOrNull(makeupCountRaw) ?? 0)
+                      if (c) items.push(`C:${c}`)
+                      if (d) items.push(`D:${d}`)
+                      if (m) items.push(`M:${m}`)
+                      if (p) items.push(`P:${p}`)
+                      if (ns) items.push(`NS:${ns}`)
+                      if (mu) items.push(`MU:${mu}`)
+                      return items.join(' · ')
+                    })()}
                   </span>
                 </summary>
 
