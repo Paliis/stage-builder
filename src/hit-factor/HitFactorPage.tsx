@@ -179,7 +179,14 @@ export function HitFactorPage() {
     const baseTime = totalTimeSec - makeupTimeSec
     const makeupSharePct = baseTime > 0 ? (makeupTimeSec / baseTime) * 100 : 0
 
-    if (makeupSharePct >= 5.0) {
+    const candidates = [
+      { kind: 'accuracy' as const, pct: pointsLossPct },
+      { kind: 'makeups' as const, pct: makeupSharePct },
+      { kind: 'speed' as const, pct: timeSensitivityPct },
+    ]
+    const best = candidates.reduce((a, b) => (b.pct > a.pct ? b : a), candidates[0])
+
+    if (best.pct >= 5.0 && best.kind === 'makeups') {
       return {
         kind: 'makeups' as const,
         title: hf.focusMakeupsTitle,
@@ -189,7 +196,7 @@ export function HitFactorPage() {
       }
     }
 
-    if (pointsLossPct >= 5.0) {
+    if (best.pct >= 5.0 && best.kind === 'accuracy') {
       return {
         kind: 'accuracy' as const,
         title: hf.focusAccuracyTitle,
@@ -199,15 +206,13 @@ export function HitFactorPage() {
       }
     }
 
-    // Speed focus is only meaningful when extra time is not coming from make-ups.
-    const speedPct = timeSensitivityPct
-    if (pointsLossPct <= 2.0 && makeupTimeSec <= 0 && speedPct >= 4.5 && speedPct >= pointsLossPct + 2.0) {
+    if (best.pct >= 4.5 && best.kind === 'speed') {
       return {
         kind: 'speed' as const,
         title: hf.focusSpeedTitle,
         text: formatTemplate(hf.focusSpeedText, {
           step: deltaTime.toFixed(2),
-          pct: speedPct.toFixed(1),
+          pct: timeSensitivityPct.toFixed(1),
         }),
       }
     }
