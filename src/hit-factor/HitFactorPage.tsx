@@ -127,125 +127,51 @@ export function HitFactorPage() {
               </div>
 
               <div className="hit-factor__deviationList" role="group" aria-label={hf.deviationsTitle}>
-                <div className="hit-factor__deviationRow">
-                  <span className="hit-factor__deviationKey">{hf.charlieLabel}</span>
-                  <div className="hit-factor__stepper" role="group" aria-label={hf.charlieLabel}>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaCharlieRaw((v) => bump(v, -1))}
-                      aria-label={`-1 ${hf.charlieLabel}`}
-                      disabled={clampNonNegInt(parseIntOrNull(deltaCharlieRaw) ?? 0) === 0}
-                    >
-                      −
-                    </button>
-                    <output className="hit-factor__stepperValue">{deltaCharlieRaw}</output>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaCharlieRaw((v) => bump(v, +1))}
-                      aria-label={`+1 ${hf.charlieLabel}`}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="hit-factor__deviationRow">
-                  <span className="hit-factor__deviationKey">{hf.deltaLabel}</span>
-                  <div className="hit-factor__stepper" role="group" aria-label={hf.deltaLabel}>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaDeltaRaw((v) => bump(v, -1))}
-                      aria-label={`-1 ${hf.deltaLabel}`}
-                      disabled={clampNonNegInt(parseIntOrNull(deltaDeltaRaw) ?? 0) === 0}
-                    >
-                      −
-                    </button>
-                    <output className="hit-factor__stepperValue">{deltaDeltaRaw}</output>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaDeltaRaw((v) => bump(v, +1))}
-                      aria-label={`+1 ${hf.deltaLabel}`}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="hit-factor__deviationRow">
-                  <span className="hit-factor__deviationKey">{hf.missLabel}</span>
-                  <div className="hit-factor__stepper" role="group" aria-label={hf.missLabel}>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaMissRaw((v) => bump(v, -1))}
-                      aria-label={`-1 ${hf.missLabel}`}
-                      disabled={clampNonNegInt(parseIntOrNull(deltaMissRaw) ?? 0) === 0}
-                    >
-                      −
-                    </button>
-                    <output className="hit-factor__stepperValue">{deltaMissRaw}</output>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaMissRaw((v) => bump(v, +1))}
-                      aria-label={`+1 ${hf.missLabel}`}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="hit-factor__deviationRow">
-                  <span className="hit-factor__deviationKey">{hf.proceduralLabel}</span>
-                  <div className="hit-factor__stepper" role="group" aria-label={hf.proceduralLabel}>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaProceduralRaw((v) => bump(v, -1))}
-                      aria-label={`-1 ${hf.proceduralLabel}`}
-                      disabled={clampNonNegInt(parseIntOrNull(deltaProceduralRaw) ?? 0) === 0}
-                    >
-                      −
-                    </button>
-                    <output className="hit-factor__stepperValue">{deltaProceduralRaw}</output>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaProceduralRaw((v) => bump(v, +1))}
-                      aria-label={`+1 ${hf.proceduralLabel}`}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="hit-factor__deviationRow">
-                  <span className="hit-factor__deviationKey">{hf.noShootLabel}</span>
-                  <div className="hit-factor__stepper" role="group" aria-label={hf.noShootLabel}>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaNoShootRaw((v) => bump(v, -1))}
-                      aria-label={`-1 ${hf.noShootLabel}`}
-                      disabled={clampNonNegInt(parseIntOrNull(deltaNoShootRaw) ?? 0) === 0}
-                    >
-                      −
-                    </button>
-                    <output className="hit-factor__stepperValue">{deltaNoShootRaw}</output>
-                    <button
-                      type="button"
-                      className="hit-factor__stepperBtn"
-                      onClick={() => setDeltaNoShootRaw((v) => bump(v, +1))}
-                      aria-label={`+1 ${hf.noShootLabel}`}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
+                {(
+                  [
+                    ['charlie', hf.charlieLabel, deltaCharlieRaw, setDeltaCharlieRaw],
+                    ['delta', hf.deltaLabel, deltaDeltaRaw, setDeltaDeltaRaw],
+                    ['miss', hf.missLabel, deltaMissRaw, setDeltaMissRaw],
+                    ['procedural', hf.proceduralLabel, deltaProceduralRaw, setDeltaProceduralRaw],
+                    ['noShoot', hf.noShootLabel, deltaNoShootRaw, setDeltaNoShootRaw],
+                  ] as const
+                ).map(([key, label, raw, setRaw]) => {
+                  const n = clampNonNegInt(parseIntOrNull(raw) ?? 0)
+                  const row = analysis?.perError[key]
+                  const pts = row ? row.points : null
+                  const sec = row ? row.seconds : null
+                  return (
+                    <div key={key} className="hit-factor__deviationRow">
+                      <span className="hit-factor__deviationKey">{label}</span>
+                      <div className="hit-factor__stepper" role="group" aria-label={label}>
+                        <button
+                          type="button"
+                          className="hit-factor__stepperBtn"
+                          onClick={() => setRaw((v) => bump(v, -1))}
+                          aria-label={`-1 ${label}`}
+                          disabled={n === 0}
+                        >
+                          −
+                        </button>
+                        <output className="hit-factor__stepperValue">{raw}</output>
+                        <button
+                          type="button"
+                          className="hit-factor__stepperBtn"
+                          onClick={() => setRaw((v) => bump(v, +1))}
+                          aria-label={`+1 ${label}`}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <span className="hit-factor__deviationPts">
+                        {pts !== null ? (pts > 0 ? `+${pts}` : String(pts)) : '—'}
+                      </span>
+                      <span className="hit-factor__deviationSec">
+                        {sec !== null && sec !== undefined ? `${sec.toFixed(2)} ${hf.secondsUnit}` : '—'}
+                      </span>
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
@@ -310,58 +236,6 @@ export function HitFactorPage() {
                   <strong>
                     {analysis?.hfLossPct !== null && analysis ? `${analysis.hfLossPct.toFixed(1)}%` : '—'}
                   </strong>
-                </div>
-              </div>
-            </div>
-
-            <div className="hit-factor__impact">
-              <h2 className="hit-factor__h2">{hf.impactTitle}</h2>
-              <p className="hit-factor__hint">{hf.impactLead}</p>
-
-              <div className="hit-factor__impactGrid">
-                {(
-                  [
-                    ['charlie', hf.charlieLabel],
-                    ['delta', hf.deltaLabel],
-                    ['miss', hf.missLabel],
-                    ['procedural', hf.proceduralLabel],
-                    ['noShoot', hf.noShootLabel],
-                  ] as const
-                ).map(([key, label]) => {
-                  const row = analysis?.perError[key]
-                  const pts = row ? row.points : null
-                  const sec = row ? row.seconds : null
-                  return (
-                    <div key={key} className="hit-factor__impactRow">
-                      <span className="hit-factor__impactKey">{label}</span>
-                      <span className="hit-factor__impactPts">
-                        {pts !== null ? (pts > 0 ? `+${pts}` : String(pts)) : '—'}
-                      </span>
-                      <span className="hit-factor__impactSec">
-                        {sec !== null && sec !== undefined
-                          ? `${sec.toFixed(2)} ${hf.secondsUnit}`
-                          : '—'}
-                      </span>
-                    </div>
-                  )
-                })}
-                <div className="hit-factor__impactRow hit-factor__impactRow--time">
-                  <span className="hit-factor__impactKey">{hf.plusOneSecondLabel}</span>
-                  <span className="hit-factor__impactPts">—</span>
-                  <span className="hit-factor__impactSec">
-                    {analysis?.perError.plus1s.hf !== null && analysis
-                      ? `${analysis.perError.plus1s.hf!.toFixed(4)} HF`
-                      : '—'}
-                  </span>
-                </div>
-                <div className="hit-factor__impactRow hit-factor__impactRow--time">
-                  <span className="hit-factor__impactKey">{hf.minusOneSecondLabel}</span>
-                  <span className="hit-factor__impactPts">—</span>
-                  <span className="hit-factor__impactSec">
-                    {analysis?.perError.minus1s.hf !== null && analysis
-                      ? `${analysis.perError.minus1s.hf!.toFixed(4)} HF`
-                      : '—'}
-                  </span>
                 </div>
               </div>
             </div>

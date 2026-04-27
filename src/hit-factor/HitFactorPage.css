@@ -263,13 +263,30 @@
 
 .hit-factor__deviationRow {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto auto;
   gap: 0.75rem;
   align-items: center;
   padding: 0.55rem 0.6rem;
   border-radius: 0.65rem;
   border: 1px solid var(--border);
   background: rgba(2, 6, 23, 0.04);
+}
+
+.hit-factor__deviationPts,
+.hit-factor__deviationSec {
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-h);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.hit-factor__deviationSec {
+  min-width: 4.5rem;
+}
+
+.hit-factor__deviationPts {
+  min-width: 2.5rem;
 }
 
 .hit-factor__deviationKey {
@@ -320,6 +337,36 @@
   font-size: 0.95rem;
   font-weight: 850;
   color: var(--text-h);
+}
+
+@media (max-width: 520px) {
+  .hit-factor__deviationRow {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'key stepper'
+      'pts sec';
+    align-items: start;
+    row-gap: 0.45rem;
+  }
+
+  .hit-factor__deviationKey {
+    grid-area: key;
+  }
+
+  .hit-factor__stepper {
+    grid-area: stepper;
+    justify-self: end;
+  }
+
+  .hit-factor__deviationPts {
+    grid-area: pts;
+    text-align: left;
+    opacity: 0.9;
+  }
+
+  .hit-factor__deviationSec {
+    grid-area: sec;
+  }
 }
 
 .hit-factor__scoreCard {
@@ -391,48 +438,6 @@
   font-weight: 850;
   color: var(--text-h);
   font-variant-numeric: tabular-nums;
-}
-
-.hit-factor__impact {
-  margin-top: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 0.85rem;
-  background: var(--surface);
-  padding: 0.95rem;
-}
-
-.hit-factor__impactGrid {
-  margin-top: 0.8rem;
-  display: grid;
-  gap: 0.55rem;
-}
-
-.hit-factor__impactRow {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 0.75rem;
-  align-items: baseline;
-  padding: 0.55rem 0.6rem;
-  border-radius: 0.65rem;
-  border: 1px solid var(--border);
-  background: rgba(2, 6, 23, 0.04);
-}
-
-.hit-factor__impactRow--time {
-  background: rgba(79, 70, 229, 0.06);
-}
-
-.hit-factor__impactKey {
-  font-size: 0.875rem;
-  font-weight: 750;
-  color: var(--text-h);
-}
-
-.hit-factor__impactPts,
-.hit-factor__impactSec {
-  font-size: 0.875rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-h);
 }
 
 .hit-factor__actions {
