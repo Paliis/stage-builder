@@ -345,9 +345,33 @@ export type MessageTree = {
   hitFactor: {
     pageTitle: string
     pageLead: string
-    pointsLabel: string
+    requiredHitsLabel: string
     timeLabel: string
-    hfLabel: string
+    powerFactorLabel: string
+    powerFactorMinor: string
+    powerFactorMajor: string
+    missModelLabel: string
+    missModelPenaltyPlusLost: string
+    missModelPenaltyOnly: string
+    modelNoteLabel: string
+    modelNote: string
+    deviationsTitle: string
+    deviationsLead: string
+    charlieLabel: string
+    deltaLabel: string
+    missLabel: string
+    proceduralLabel: string
+    noShootLabel: string
+    hfActualLabel: string
+    hfMaxLabel: string
+    maxPointsLabel: string
+    actualPointsLabel: string
+    hfLossLabel: string
+    impactTitle: string
+    impactLead: string
+    plusOneSecondLabel: string
+    minusOneSecondLabel: string
+    secondsUnit: string
     reset: string
   }
   /** `/ro-helper/demo` — UI prototype for one RO Helper article */
@@ -831,12 +855,38 @@ export const ukMessages: MessageTree = {
       '\u041c\u0430\u043a\u0435\u0442 \u043a\u0430\u0440\u0442\u043a\u0438 RO Helper \u2014 SOS, \u043c\u0435\u0442\u0430, \u0434\u0438\u0441\u043a\u043b\u0435\u0439\u043c\u0435\u0440, \u0448\u0430\u0440 \u0424\u041f\u0421\u0423. \u041d\u043e\u043c\u0435\u0440 \u043a\u0430\u0440\u0442\u043a\u0438: \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440 URL \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u2026\u0060 (\u043d\u0430\u043f\u0440\u0438\u043a\u043b\u0430\u0434 \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u0043\u0032\u0036\u0060).',
   },
   hitFactor: {
-    pageTitle: 'Hit Factor \u2014 \u043a\u0430\u043b\u044c\u043a\u0443\u043b\u044f\u0442\u043e\u0440',
+    pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
     pageLead:
-      '\u0412\u0432\u0435\u0434\u0456\u0442\u044c \u043e\u0447\u043a\u0438 \u0442\u0430 \u0447\u0430\u0441. \u0424\u043e\u0440\u043c\u0443\u043b\u0430: \u043e\u0447\u043a\u0438 / \u0447\u0430\u0441.',
-    pointsLabel: '\u041e\u0447\u043a\u0438 (points)',
+      '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u0430\u043d\u0430\u043b\u0456\u0437 \u0432\u043f\u0440\u0430\u0432\u0438: \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0438\u0439 HF, \u0444\u0430\u043a\u0442\u0438\u0447\u043d\u0438\u0439 HF \u0442\u0430 \u00ab\u0432\u0430\u0440\u0442\u0456\u0441\u0442\u044c\u00bb \u043f\u043e\u043c\u0438\u043b\u043e\u043a \u0443 \u0441\u0435\u043a\u0443\u043d\u0434\u0430\u0445.',
+    requiredHitsLabel: '\u0417\u0430\u043b\u0456\u043a\u043e\u0432\u0456 \u0432\u043b\u0443\u0447\u0430\u043d\u043d\u044f (min hits)',
     timeLabel: '\u0427\u0430\u0441 (\u0441\u0435\u043a)',
-    hfLabel: 'Hit factor',
+    powerFactorLabel: '\u0424\u0430\u043a\u0442\u043e\u0440 (PF)',
+    powerFactorMinor: 'Minor',
+    powerFactorMajor: 'Major',
+    missModelLabel: '\u041c\u043e\u0434\u0435\u043b\u044c \u201cMiss\u201d',
+    missModelPenaltyPlusLost: '\u221210 \u0448\u0442\u0440\u0430\u0444 + \u0432\u0442\u0440\u0430\u0447\u0435\u043d\u0456 \u043e\u0447\u043a\u0438',
+    missModelPenaltyOnly: '\u043b\u0438\u0448\u0435 \u221210 \u0448\u0442\u0440\u0430\u0444',
+    modelNoteLabel: '\u041d\u043e\u0442\u0430\u0442\u043a\u0430',
+    modelNote:
+      '\u0426\u0435 \u0442\u0440\u0435\u043d\u0443\u0432\u0430\u043b\u044c\u043d\u0430 \u043c\u043e\u0434\u0435\u043b\u044c \u0434\u043b\u044f \u0448\u0432\u0438\u0434\u043a\u043e\u0433\u043e \u201cwhat\u2011if\u201d. \u041e\u0444\u0456\u0446\u0456\u0439\u043d\u0438\u0439 \u0441\u043a\u043e\u0440\u0438\u043d\u0433 \u0437\u0430\u043b\u0435\u0436\u0438\u0442\u044c \u0432\u0456\u0434 \u043c\u0430\u0442\u0447\u0435\u0432\u0438\u0445 \u0443\u043c\u043e\u0432 \u0456 \u0444\u0430\u043a\u0442\u0438\u0447\u043d\u0438\u0445 \u043f\u043e\u043f\u0430\u0434\u0430\u043d\u044c.',
+    deviationsTitle: '\u0412\u0456\u0434\u0445\u0438\u043b\u0435\u043d\u043d\u044f \u0432\u0456\u0434 \u201cAll Alpha\u201d',
+    deviationsLead: '\u0412\u043a\u0430\u0436\u0456\u0442\u044c, \u0449\u043e \u201c\u0437\u02bc\u0457\u043b\u043e\u201d \u043e\u0447\u043a\u0438 \u0443 \u0432\u0430\u0448\u043e\u043c\u0443 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0456.',
+    charlieLabel: 'Charlie',
+    deltaLabel: 'Delta',
+    missLabel: 'Miss',
+    proceduralLabel: 'Procedural',
+    noShootLabel: 'No\u2011Shoot',
+    hfActualLabel: '\u0424\u0430\u043a\u0442\u0438\u0447\u043d\u0438\u0439 HF',
+    hfMaxLabel: '\u041c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0438\u0439 HF',
+    maxPointsLabel: 'Max points',
+    actualPointsLabel: '\u0424\u0430\u043a\u0442\u0438\u0447\u043d\u0456 points',
+    hfLossLabel: '\u0412\u0442\u0440\u0430\u0442\u0430',
+    impactTitle: '\u0426\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438 (\u0435\u043a\u0432\u0456\u0432\u0430\u043b\u0435\u043d\u0442 \u0447\u0430\u0441\u0443)',
+    impactLead:
+      '\u0421\u043a\u0456\u043b\u044c\u043a\u0438 \u0441\u0435\u043a\u0443\u043d\u0434 \u0442\u0440\u0435\u0431\u0430 \u201c\u0432\u0438\u0433\u0440\u0430\u0442\u0438\u201d, \u0449\u043e\u0431 \u043a\u043e\u043c\u043f\u0435\u043d\u0441\u0443\u0432\u0430\u0442\u0438 \u043e\u0434\u043d\u0443 \u043f\u043e\u043c\u0438\u043b\u043a\u0443 \u043f\u0440\u0438 \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u043c\u0443 \u0442\u0435\u043c\u043f\u0456.',
+    plusOneSecondLabel: '+1 \u0441\u0435\u043a\u0443\u043d\u0434\u0430',
+    minusOneSecondLabel: '\u22121 \u0441\u0435\u043a\u0443\u043d\u0434\u0430',
+    secondsUnit: '\u0441\u0435\u043a',
     reset: '\u0421\u043a\u0438\u043d\u0443\u0442\u0438',
   },
   roHelperDemo: {
@@ -1310,11 +1360,36 @@ export const enMessages: MessageTree = {
       'RO Helper card UX mock — SOS colours, meta, disclaimer, FPSU layer. Pick a card with the URL query `?card=…` (for example `?card=C26`).',
   },
   hitFactor: {
-    pageTitle: 'Hit Factor — calculator',
-    pageLead: 'Enter points and time. Formula: points / time.',
-    pointsLabel: 'Points',
+    pageTitle: 'Hit Factor — price of mistakes',
+    pageLead: 'Quick stage analysis: max HF, actual HF, and “cost” of errors in seconds.',
+    requiredHitsLabel: 'Required scoring hits (min)',
     timeLabel: 'Time (sec)',
-    hfLabel: 'Hit factor',
+    powerFactorLabel: 'Power factor (PF)',
+    powerFactorMinor: 'Minor',
+    powerFactorMajor: 'Major',
+    missModelLabel: 'Miss model',
+    missModelPenaltyPlusLost: '−10 penalty + lost points',
+    missModelPenaltyOnly: '−10 penalty only',
+    modelNoteLabel: 'Note',
+    modelNote:
+      'This is a training “what-if” model. Official match scoring depends on match conditions and actual hits.',
+    deviationsTitle: 'Deviations from “All Alpha”',
+    deviationsLead: 'Enter what reduced your points in this run.',
+    charlieLabel: 'Charlie',
+    deltaLabel: 'Delta',
+    missLabel: 'Miss',
+    proceduralLabel: 'Procedural',
+    noShootLabel: 'No‑Shoot',
+    hfActualLabel: 'Actual HF',
+    hfMaxLabel: 'Max HF',
+    maxPointsLabel: 'Max points',
+    actualPointsLabel: 'Actual points',
+    hfLossLabel: 'Loss',
+    impactTitle: 'Cost per error (time equivalent)',
+    impactLead: 'How many seconds you’d need to “gain back” to offset one error at the current pace.',
+    plusOneSecondLabel: '+1 second',
+    minusOneSecondLabel: '−1 second',
+    secondsUnit: 'sec',
     reset: 'Reset',
   },
   roHelperDemo: {
