@@ -521,20 +521,23 @@
 }
 
 .hit-factor__kv {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  display: grid;
+  grid-template-rows: 1rem 1.2rem;
+  align-content: space-between;
   padding: 0.55rem 0.6rem;
   border: 1px solid var(--border);
   border-radius: 0.65rem;
   background: rgba(2, 6, 23, 0.04);
-  min-height: 3.25rem;
-  justify-content: center;
+  min-height: 3.35rem;
 }
 
 .hit-factor__kv > span {
   font-size: 0.75rem;
   color: var(--text);
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .hit-factor__kv > strong {
@@ -544,6 +547,7 @@
   font-variant-numeric: tabular-nums;
   line-height: 1.15;
   white-space: nowrap;
+  align-self: end;
 }
 
 .hit-factor__actions {
