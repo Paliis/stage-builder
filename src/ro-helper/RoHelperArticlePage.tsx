@@ -6,6 +6,7 @@ import { buildQuickCiteText } from './buildQuickCite'
 import { loadArticleRaw } from './articleGlob'
 import { MarkdownBody } from './MarkdownBody'
 import { extractTitleFromMeta, splitFrontmatter } from './parseArticleMd'
+import { humanizeRoHelperSlug } from './humanizeSlug'
 import { parseRoHelperArticleFrontmatter, type RoHelperArticleFrontmatter } from './parseRoHelperFrontmatter'
 import { plainSummaryFromMd } from './plainSummaryFromMd'
 import { splitFpsuMarkdownBody } from './splitFpsuSection'
@@ -164,7 +165,7 @@ export function RoHelperArticlePage() {
         <span aria-hidden="true"> / </span>
         <Link to={roHelperPath(discipline!, category!)}>{categoryLabel(category!, rh)}</Link>
         <span aria-hidden="true"> / </span>
-        <span>{slug}</span>
+        <span>{title || humanizeRoHelperSlug(slug ?? '')}</span>
       </nav>
 
       <aside className="ro-helper-article__banner" role="note">

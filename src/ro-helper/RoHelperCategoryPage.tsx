@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { loadArticleRaw, listSlugsFor } from './articleGlob'
+import { humanizeRoHelperSlug } from './humanizeSlug'
 import { extractTitleFromMeta, splitFrontmatter } from './parseArticleMd'
 import { isRoHelperCategory, isRoHelperDiscipline } from './constants'
 import { categoryLabel, disciplineLabel } from './labels'
@@ -31,10 +32,11 @@ export function RoHelperCategoryPage() {
       const out: Row[] = []
       for (const slug of slugs) {
         const raw = await loadArticleRaw(locale, discipline!, category!, slug)
-        let title = slug
+        const fallback = humanizeRoHelperSlug(slug)
+        let title = fallback
         if (raw) {
           const { metaBlock } = splitFrontmatter(raw)
-          title = extractTitleFromMeta(metaBlock) ?? slug
+          title = extractTitleFromMeta(metaBlock) ?? fallback
         }
         out.push({ slug, title })
       }
