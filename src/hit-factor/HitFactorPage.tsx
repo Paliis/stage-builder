@@ -81,6 +81,11 @@ export function HitFactorPage() {
     return c * makeupSplitSec
   }, [makeupCount, makeupSplitSec])
 
+  const totalTimeSec = useMemo(() => {
+    if (timeSec === null) return null
+    return timeSec + makeupTimeSec
+  }, [makeupTimeSec, timeSec])
+
   useEffect(() => {
     if (makeupSplitManual) return
     if (defaultMakeupSplitSec === null) return
@@ -99,7 +104,7 @@ export function HitFactorPage() {
   const analysis = useMemo(() => {
     if (
       requiredHits === null ||
-      timeSec === null ||
+      totalTimeSec === null ||
       deltaCharlie === null ||
       deltaDelta === null ||
       deltaMiss === null ||
@@ -110,7 +115,7 @@ export function HitFactorPage() {
     }
     return computeHitFactorAnalysis({
       requiredHits,
-      timeSec,
+      timeSec: totalTimeSec,
       powerFactor,
       deltaCharlie,
       deltaDelta,
@@ -120,7 +125,7 @@ export function HitFactorPage() {
     })
   }, [
     requiredHits,
-    timeSec,
+    totalTimeSec,
     powerFactor,
     deltaCharlie,
     deltaDelta,
@@ -131,12 +136,12 @@ export function HitFactorPage() {
 
   const focus = useMemo(() => {
     if (!analysis) return null
-    if (timeSec === null || timeSec <= 0) return null
+    if (totalTimeSec === null || totalTimeSec <= 0) return null
     if (analysis.hfActual === null || analysis.hfActual <= 0) return null
 
     const clamp = (x: number, min: number, max: number) => Math.min(max, Math.max(min, x))
-    const deltaTime = clamp(timeSec * 0.05, 0.1, 2.0)
-    const hfPlusTime = analysis.actualPoints / (timeSec + deltaTime)
+    const deltaTime = clamp(totalTimeSec * 0.05, 0.1, 2.0)
+    const hfPlusTime = analysis.actualPoints / (totalTimeSec + deltaTime)
     const timeSensitivityPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
 
     const pointsLossPct = analysis.hfLossPct ?? 0
@@ -170,7 +175,7 @@ export function HitFactorPage() {
     analysis,
     makeupTimeSec,
     makeupSplitSec,
-    timeSec,
+    totalTimeSec,
     hf.focusAccuracyText,
     hf.focusAccuracyTitle,
     hf.focusBalancedText,
@@ -336,6 +341,17 @@ export function HitFactorPage() {
                 <div className="hit-factor__deviationRow">
                   <span className="hit-factor__deviationKey">{hf.makeupShotLabel}</span>
                   <div className="hit-factor__deviationControl">
+                    <input
+                      inputMode="decimal"
+                      className="hit-factor__stepperInput"
+                      value={makeupSplitRaw}
+                      onChange={(e) => {
+                        setMakeupSplitManual(true)
+                        setMakeupSplitRaw(e.target.value)
+                      }}
+                      placeholder={defaultMakeupSplitSec !== null ? defaultMakeupSplitSec.toFixed(2) : '0.25'}
+                      aria-label={hf.makeupShotSplitLabel}
+                    />
                     <div className="hit-factor__stepper" role="group" aria-label={hf.makeupShotCountLabel}>
                       <button
                         type="button"
@@ -356,17 +372,6 @@ export function HitFactorPage() {
                         +
                       </button>
                     </div>
-                    <input
-                      inputMode="decimal"
-                      className="hit-factor__stepperInput"
-                      value={makeupSplitRaw}
-                      onChange={(e) => {
-                        setMakeupSplitManual(true)
-                        setMakeupSplitRaw(e.target.value)
-                      }}
-                      placeholder={defaultMakeupSplitSec !== null ? defaultMakeupSplitSec.toFixed(2) : '0.25'}
-                      aria-label={hf.makeupShotSplitLabel}
-                    />
                   </div>
                   <span className="hit-factor__deviationPts">0</span>
                   <span className="hit-factor__deviationSec">
