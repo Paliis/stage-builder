@@ -3,15 +3,9 @@
 Як готувати/оновлювати превʼю-зображення для карток продуктів на сторінці порталу
 (`PortalHome.tsx`), щоб результат був чистим, легким, ретина-готовим і не псував CLS.
 
-> **Контекст.** Зараз превʼю готові так:
->
-> - **Stage Builder** — реальний WebP-скрін `public/portal-previews/stage-builder.webp`
->   (з `stage-builder.svg` як `<picture>`-fallback).
-> - **Hit Factor** і **RO Helper** — інлайн SVG-мокапи (`src/portal/previewSvgs.ts`),
->   рендеряться напряму в DOM, без HTTP-запиту.
->
-> Цей документ описує, як замінити мокап на «живий» скрін (WebP/PNG) —
-> повністю або точково.
+> **Контекст.** Усі 3 картки використовують реальні WebP-скріни з
+> `public/portal-previews/`. Stage Builder додатково має SVG-фолбек
+> через `<picture>`. Цей документ — про те, як готувати/оновлювати ці скріни.
 
 ---
 
@@ -84,16 +78,26 @@
 
    #### A. Скрипт у репо (`portal-preview-prepare.mjs`) — рекомендований
 
-   Робить кроп до `16:10` від центру, ресайз до `1280×800` і WebP `q=80`
-   за один виклик; використовує `sharp` (вже у `devDependencies`).
+   Кроп або падінг до `16:10`, ресайз до `1280×800` і WebP `q=80` за один
+   виклик; використовує `sharp` (вже у `devDependencies`).
 
    ```bash
+   # 1) cover — центр-кроп до 16:10 (для скрінів, що ВИЩЕ за 16:10)
    node scripts/portal-preview-prepare.mjs ./screenshot.png stage-builder
+
+   # 2) contain — падінг (letterbox) до 16:10 (для ШИРОКИХ скрінів,
+   #    де нічого не можна обрізати з боків)
+   node scripts/portal-preview-prepare.mjs ./screenshot.png ro-helper contain "#f1f5f9"
    ```
 
-   Першим аргументом — шлях до вихідного PNG/JPG, другим — імʼя без
-   розширення (`stage-builder` / `hit-factor` / `ro-helper`). Файл
-   автоматично кладеться у `public/portal-previews/<name>.webp`.
+   Аргументи:
+   - `<input>` — шлях до вихідного PNG/JPG.
+   - `<output-name>` — імʼя без розширення (`stage-builder` / `hit-factor` /
+     `ro-helper`).
+   - `[cover|contain]` — режим вписування (default `cover`).
+   - `[bg]` — колір падінгу для `contain` (default `#f1f5f9`, slate-100).
+
+   Файл автоматично кладеться у `public/portal-previews/<output-name>.webp`.
 
    #### B. Онлайн / CLI
 
@@ -156,17 +160,14 @@ WebP підтримують усі сучасні браузери (`> 97%` гл
 
 ```
 public/portal-previews/
-  stage-builder.webp      # 1280×800 або 1920×1200, 16:10
-  stage-builder.svg       # fallback / архів мокапа
-  # hit-factor / ro-helper — поки що інлайн SVG у `src/portal/previewSvgs.ts`
-  # після підготовки реальних скрінів — додай сюди .webp і за потреби .svg
+  stage-builder.webp      # 1280×800, 16:10
+  stage-builder.svg       # <picture>-fallback / архів мокапа
+  hit-factor.webp         # 1280×800, 16:10
+  ro-helper.webp          # 1280×800, 16:10
 ```
 
 - Не міняємо імена — інакше `<img src>` у `PortalHome.tsx` потрібно буде
   оновлювати в декількох місцях.
-- Щоб перевести Hit Factor / RO Helper на реальний скрін: у `PortalHome.tsx`
-  замість пропа `previewSvg={…}` передай `preview="…/foo.webp"` (за потреби
-  `previewFallback="…/foo.svg"`) — компонент сам обере правильний рендер.
 - Якщо потрібен мобільний варіант (рідко) — `stage-builder@mobile.webp`
   + `srcSet="… 1x, …@2x 2x"` або `<picture media="(max-width: 600px)">`.
 

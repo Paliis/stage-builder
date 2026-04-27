@@ -3,22 +3,19 @@ import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { isRoHelperEnabled } from './featureFlags'
 import { roHelperPath } from '../ro-helper/paths'
-import { RO_HELPER_PREVIEW_SVG } from './previewSvgs'
 import './PortalHome.css'
 
 type CardBadgeKind = 'live' | 'new' | 'beta'
 
 interface ProductCardProps {
   to: string
-  /**
-   * Inline SVG markup for the preview (string). Used as a self-contained
-   * mockup when there is no real screenshot available.
-   * Mutually exclusive with `preview`.
-   */
-  previewSvg?: string
   /** Primary preview image URL (e.g. `…/foo.webp`). */
-  preview?: string
-  /** Optional secondary `<source>` for `<picture>`; e.g. an SVG fallback. */
+  preview: string
+  /**
+   * Optional secondary fallback for `<picture>`; useful when `preview` is a
+   * modern format (WebP/AVIF) and we want a `<img src>` fallback for
+   * pre-Safari-14 / very old browsers.
+   */
   previewFallback?: string
   previewAlt: string
   title: string
@@ -32,7 +29,6 @@ interface ProductCardProps {
 function ProductCard(props: ProductCardProps) {
   const {
     to,
-    previewSvg,
     preview,
     previewFallback,
     previewAlt,
@@ -43,20 +39,12 @@ function ProductCard(props: ProductCardProps) {
     badgeKind,
     badgeLabel,
   } = props
-  const previewIsWebp = !!preview && preview.toLowerCase().endsWith('.webp')
+  const previewIsWebp = preview.toLowerCase().endsWith('.webp')
 
   return (
     <article className={`portal-home__product portal-home__product--${badgeKind}`}>
       <div className="portal-home__product-preview" aria-hidden="true">
-        {previewSvg ? (
-          // Inline SVG mockup — no network request, immune to PWA / cache issues.
-          <div
-            className="portal-home__product-preview-svg"
-            role="img"
-            aria-label={previewAlt}
-            dangerouslySetInnerHTML={{ __html: previewSvg }}
-          />
-        ) : previewFallback && preview ? (
+        {previewFallback ? (
           <picture>
             {previewIsWebp ? <source srcSet={preview} type="image/webp" /> : null}
             <img
@@ -68,7 +56,7 @@ function ProductCard(props: ProductCardProps) {
               height={400}
             />
           </picture>
-        ) : preview ? (
+        ) : (
           <img
             src={preview}
             alt={previewAlt}
@@ -77,7 +65,7 @@ function ProductCard(props: ProductCardProps) {
             width={640}
             height={400}
           />
-        ) : null}
+        )}
       </div>
       <div className="portal-home__product-body">
         <header className="portal-home__product-head">
@@ -150,7 +138,7 @@ export function PortalHome() {
         {isRoHelperEnabled() ? (
           <ProductCard
             to={roHelperPath()}
-            previewSvg={RO_HELPER_PREVIEW_SVG}
+            preview="/portal-previews/ro-helper.webp"
             previewAlt={`${p.roHelperTitle} — ${p.roHelperDesc}`}
             title={p.roHelperTitle}
             description={p.roHelperDesc}
