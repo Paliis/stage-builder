@@ -255,6 +255,73 @@
   border-top: 1px solid var(--border);
 }
 
+.hit-factor__deviationList {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.hit-factor__deviationRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.55rem 0.6rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: rgba(2, 6, 23, 0.04);
+}
+
+.hit-factor__deviationKey {
+  font-size: 0.875rem;
+  font-weight: 750;
+  color: var(--text-h);
+}
+
+.hit-factor__stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.hit-factor__stepperBtn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.hit-factor__stepperBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.hit-factor__stepperBtn + .hit-factor__stepperValue {
+  border-left: 1px solid var(--border);
+}
+
+.hit-factor__stepperValue + .hit-factor__stepperBtn {
+  border-left: 1px solid var(--border);
+}
+
+.hit-factor__stepperValue {
+  min-width: 2.5rem;
+  padding: 0 0.75rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+  font-weight: 850;
+  color: var(--text-h);
+}
+
 .hit-factor__scoreCard {
   border: 1px solid var(--border);
   border-radius: 0.85rem;
