@@ -354,6 +354,8 @@ export type MessageTree = {
     modelNote: string
     deviationsTitle: string
     deviationsLead: string
+    deviationsExpandCta: string
+    deviationsCollapseCta: string
     charlieLabel: string
     deltaLabel: string
     missLabel: string
@@ -882,6 +884,8 @@ export const ukMessages: MessageTree = {
       '\u0426\u0435 \u0442\u0440\u0435\u043d\u0443\u0432\u0430\u043b\u044c\u043d\u0430 \u043c\u043e\u0434\u0435\u043b\u044c \u0434\u043b\u044f \u0448\u0432\u0438\u0434\u043a\u043e\u0433\u043e \u201cwhat\u2011if\u201d. \u041e\u0444\u0456\u0446\u0456\u0439\u043d\u0438\u0439 \u0441\u043a\u043e\u0440\u0438\u043d\u0433 \u0437\u0430\u043b\u0435\u0436\u0438\u0442\u044c \u0432\u0456\u0434 \u043c\u0430\u0442\u0447\u0435\u0432\u0438\u0445 \u0443\u043c\u043e\u0432 \u0456 \u0444\u0430\u043a\u0442\u0438\u0447\u043d\u0438\u0445 \u043f\u043e\u043f\u0430\u0434\u0430\u043d\u044c.',
     deviationsTitle: '\u0412\u0456\u0434\u0445\u0438\u043b\u0435\u043d\u043d\u044f \u0432\u0456\u0434 \u201cAll Alpha\u201d',
     deviationsLead: '\u0412\u043a\u0430\u0436\u0456\u0442\u044c, \u0449\u043e \u201c\u0437\u02bc\u0457\u043b\u043e\u201d \u043e\u0447\u043a\u0438 \u0443 \u0432\u0430\u0448\u043e\u043c\u0443 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0456.',
+    deviationsExpandCta: '\u0420\u043e\u0437\u0433\u043e\u0440\u043d\u0443\u0442\u0438',
+    deviationsCollapseCta: '\u0417\u0433\u043e\u0440\u043d\u0443\u0442\u0438',
     charlieLabel: 'Charlie',
     deltaLabel: 'Delta',
     missLabel: 'Miss',
@@ -1404,6 +1408,8 @@ export const enMessages: MessageTree = {
       'This is a training “what-if” model. Official match scoring depends on match conditions and actual hits.',
     deviationsTitle: 'Deviations from “All Alpha”',
     deviationsLead: 'Enter what reduced your points in this run.',
+    deviationsExpandCta: 'Expand',
+    deviationsCollapseCta: 'Collapse',
     charlieLabel: 'Charlie',
     deltaLabel: 'Delta',
     missLabel: 'Miss',

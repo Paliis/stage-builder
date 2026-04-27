@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useI18n } from '../i18n/useI18n'
 import { formatTemplate } from '../i18n/format'
@@ -66,6 +66,10 @@ export function HitFactorPage() {
   const [timeRaw, setTimeRaw] = useState('10.00')
   const [powerFactor, setPowerFactor] = useState<PowerFactor>('major')
   const [weaponClass, setWeaponClass] = useState<'pistol' | 'rifle' | 'pcc' | 'shotgun'>('pistol')
+  const [deviationsOpen, setDeviationsOpen] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return !window.matchMedia('(max-width: 520px)').matches
+  })
 
   const [deltaCharlieRaw, setDeltaCharlieRaw] = useState('0')
   const [deltaDeltaRaw, setDeltaDeltaRaw] = useState('0')
@@ -95,12 +99,20 @@ export function HitFactorPage() {
     return timeSec / hits / 2
   }, [requiredHits, timeSec])
 
+  const makeupSplitEffectiveRaw = useMemo(() => {
+    if (makeupSplitManual) return makeupSplitRaw
+    const t = makeupSplitRaw.trim()
+    if (t) return makeupSplitRaw
+    if (defaultMakeupSplitSec !== null && defaultMakeupSplitSec > 0) return defaultMakeupSplitSec.toFixed(2)
+    return ''
+  }, [defaultMakeupSplitSec, makeupSplitManual, makeupSplitRaw])
+
   const makeupSplitSec = useMemo(() => {
-    const n = parseNum(makeupSplitRaw)
+    const n = parseNum(makeupSplitEffectiveRaw)
     if (n !== null && n > 0) return n
     if (defaultMakeupSplitSec !== null && defaultMakeupSplitSec > 0) return defaultMakeupSplitSec
     return 0.25
-  }, [defaultMakeupSplitSec, makeupSplitRaw])
+  }, [makeupSplitEffectiveRaw, defaultMakeupSplitSec])
 
   const makeupTimeSec = useMemo(() => {
     const c = clampNonNegInt(makeupCount ?? 0)
@@ -112,12 +124,6 @@ export function HitFactorPage() {
     if (timeSec === null) return null
     return timeSec + makeupTimeSec
   }, [makeupTimeSec, timeSec])
-
-  useEffect(() => {
-    if (makeupSplitManual) return
-    if (defaultMakeupSplitSec === null) return
-    setMakeupSplitRaw(defaultMakeupSplitSec.toFixed(2))
-  }, [defaultMakeupSplitSec, makeupSplitManual])
 
   const timeSlider = useMemo(() => {
     const t = parseNum(timeRaw)
@@ -225,7 +231,6 @@ export function HitFactorPage() {
   }, [
     analysis,
     makeupTimeSec,
-    makeupSplitSec,
     totalTimeSec,
     weaponClass,
     requiredHits,
@@ -341,26 +346,36 @@ export function HitFactorPage() {
 
           <div className="hit-factor__deviationsFull">
             <div className="hit-factor__penalties">
-              <details className="hit-factor__deviationsDetails" open>
+              <details
+                className="hit-factor__deviationsDetails"
+                open={deviationsOpen}
+                onToggle={(e) => setDeviationsOpen((e.target as HTMLDetailsElement).open)}
+              >
                 <summary className="hit-factor__deviationsSummary">
                   <span className="hit-factor__deviationsSummaryTitle">{hf.deviationsTitle}</span>
-                  <span className="hit-factor__deviationsSummaryMeta">
-                    {(() => {
-                      const items: string[] = []
-                      const c = clampNonNegInt(parseIntOrNull(deltaCharlieRaw) ?? 0)
-                      const d = clampNonNegInt(parseIntOrNull(deltaDeltaRaw) ?? 0)
-                      const m = clampNonNegInt(parseIntOrNull(deltaMissRaw) ?? 0)
-                      const p = clampNonNegInt(parseIntOrNull(deltaProceduralRaw) ?? 0)
-                      const ns = clampNonNegInt(parseIntOrNull(deltaNoShootRaw) ?? 0)
-                      const mu = clampNonNegInt(parseIntOrNull(makeupCountRaw) ?? 0)
-                      if (c) items.push(`C:${c}`)
-                      if (d) items.push(`D:${d}`)
-                      if (m) items.push(`M:${m}`)
-                      if (p) items.push(`P:${p}`)
-                      if (ns) items.push(`NS:${ns}`)
-                      if (mu) items.push(`MU:${mu}`)
-                      return items.join(' · ')
-                    })()}
+                  <span className="hit-factor__deviationsSummaryRight">
+                    <span className="hit-factor__deviationsSummaryMeta">
+                      {(() => {
+                        const items: string[] = []
+                        const c = clampNonNegInt(parseIntOrNull(deltaCharlieRaw) ?? 0)
+                        const d = clampNonNegInt(parseIntOrNull(deltaDeltaRaw) ?? 0)
+                        const m = clampNonNegInt(parseIntOrNull(deltaMissRaw) ?? 0)
+                        const p = clampNonNegInt(parseIntOrNull(deltaProceduralRaw) ?? 0)
+                        const ns = clampNonNegInt(parseIntOrNull(deltaNoShootRaw) ?? 0)
+                        const mu = clampNonNegInt(parseIntOrNull(makeupCountRaw) ?? 0)
+                        if (c) items.push(`C:${c}`)
+                        if (d) items.push(`D:${d}`)
+                        if (m) items.push(`M:${m}`)
+                        if (p) items.push(`P:${p}`)
+                        if (ns) items.push(`NS:${ns}`)
+                        if (mu) items.push(`MU:${mu}`)
+                        return items.join(' · ')
+                      })()}
+                    </span>
+                    <span className="hit-factor__deviationsSummaryCta">
+                      {deviationsOpen ? hf.deviationsCollapseCta : hf.deviationsExpandCta}
+                      <span className="hit-factor__chevron" aria-hidden="true" />
+                    </span>
                   </span>
                 </summary>
 
@@ -438,7 +453,7 @@ export function HitFactorPage() {
                     <input
                       inputMode="decimal"
                       className="hit-factor__stepperInput"
-                      value={makeupSplitRaw}
+                      value={makeupSplitEffectiveRaw}
                       onChange={(e) => {
                         setMakeupSplitManual(true)
                         setMakeupSplitRaw(e.target.value)
