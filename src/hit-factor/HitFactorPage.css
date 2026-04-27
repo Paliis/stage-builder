@@ -60,6 +60,45 @@
   grid-area: topLeft;
 }
 
+.hit-factor__topCard {
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+  padding: 0.95rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hit-factor__timeSlider {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.hit-factor__timeSliderMeta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.hit-factor__timeSliderLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+
+.hit-factor__timeSliderRange {
+  font-size: 0.75rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.hit-factor__range {
+  width: 100%;
+  accent-color: rgba(79, 70, 229, 0.95);
+}
+
 .hit-factor__topRight {
   grid-area: topRight;
 }

@@ -48,6 +48,15 @@ export function HitFactorPage() {
   const deltaNoShoot = useMemo(() => parseIntOrNull(deltaNoShootRaw), [deltaNoShootRaw])
   const deltaProcedural = useMemo(() => parseIntOrNull(deltaProceduralRaw), [deltaProceduralRaw])
 
+  const timeSlider = useMemo(() => {
+    const t = parseNum(timeRaw)
+    if (t === null) return { min: 1, max: 60, value: 10 }
+    const v = Math.min(300, Math.max(0.1, t))
+    const min = Math.max(0.1, Math.floor(v - 10))
+    const max = Math.max(min + 1, Math.ceil(v + 10))
+    return { min, max: Math.min(300, max), value: v }
+  }, [timeRaw])
+
   const analysis = useMemo(() => {
     if (
       requiredHits === null ||
@@ -97,7 +106,8 @@ export function HitFactorPage() {
       <section className="hit-factor__card" aria-label={hf.pageTitle}>
         <div className="hit-factor__layout">
           <div className="hit-factor__topLeft">
-            <div className="hit-factor__grid">
+            <div className="hit-factor__topCard">
+              <div className="hit-factor__grid">
               <label className="hit-factor__field">
                 <span className="hit-factor__label">{hf.requiredHitsLabel}</span>
                 <input
@@ -116,6 +126,29 @@ export function HitFactorPage() {
                   value={timeRaw}
                   onChange={(e) => setTimeRaw(e.target.value)}
                   placeholder="0"
+                />
+              </label>
+              </div>
+
+              <label className="hit-factor__timeSlider">
+                <span className="hit-factor__timeSliderMeta">
+                  <span className="hit-factor__timeSliderLabel">{hf.timeLabel}</span>
+                  <span className="hit-factor__timeSliderRange">
+                    {timeSlider.min.toFixed(0)}–{timeSlider.max.toFixed(0)}
+                  </span>
+                </span>
+                <input
+                  type="range"
+                  className="hit-factor__range"
+                  min={timeSlider.min}
+                  max={timeSlider.max}
+                  step={0.01}
+                  value={timeSlider.value}
+                  onChange={(e) => {
+                    const v = parseFloat(e.target.value)
+                    if (!Number.isFinite(v)) return
+                    setTimeRaw(v.toFixed(2))
+                  }}
                 />
               </label>
             </div>
