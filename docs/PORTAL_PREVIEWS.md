@@ -3,9 +3,15 @@
 Як готувати/оновлювати превʼю-зображення для карток продуктів на сторінці порталу
 (`PortalHome.tsx`), щоб результат був чистим, легким, ретина-готовим і не псував CLS.
 
-> **Контекст.** Зараз у `public/portal-previews/` лежать 3 SVG-мокапи
-> (`stage-builder.svg`, `hit-factor.svg`, `ro-helper.svg`). Цей документ описує,
-> як їх замінити на «живі» скріни (WebP/PNG) — повністю або точково.
+> **Контекст.** Зараз превʼю готові так:
+>
+> - **Stage Builder** — реальний WebP-скрін `public/portal-previews/stage-builder.webp`
+>   (з `stage-builder.svg` як `<picture>`-fallback).
+> - **Hit Factor** і **RO Helper** — інлайн SVG-мокапи (`src/portal/previewSvgs.ts`),
+>   рендеряться напряму в DOM, без HTTP-запиту.
+>
+> Цей документ описує, як замінити мокап на «живий» скрін (WebP/PNG) —
+> повністю або точково.
 
 ---
 
@@ -152,14 +158,15 @@ WebP підтримують усі сучасні браузери (`> 97%` гл
 public/portal-previews/
   stage-builder.webp      # 1280×800 або 1920×1200, 16:10
   stage-builder.svg       # fallback / архів мокапа
-  hit-factor.webp
-  hit-factor.svg
-  ro-helper.webp
-  ro-helper.svg
+  # hit-factor / ro-helper — поки що інлайн SVG у `src/portal/previewSvgs.ts`
+  # після підготовки реальних скрінів — додай сюди .webp і за потреби .svg
 ```
 
 - Не міняємо імена — інакше `<img src>` у `PortalHome.tsx` потрібно буде
   оновлювати в декількох місцях.
+- Щоб перевести Hit Factor / RO Helper на реальний скрін: у `PortalHome.tsx`
+  замість пропа `previewSvg={…}` передай `preview="…/foo.webp"` (за потреби
+  `previewFallback="…/foo.svg"`) — компонент сам обере правильний рендер.
 - Якщо потрібен мобільний варіант (рідко) — `stage-builder@mobile.webp`
   + `srcSet="… 1x, …@2x 2x"` або `<picture media="(max-width: 600px)">`.
 

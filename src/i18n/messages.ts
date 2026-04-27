@@ -345,10 +345,6 @@ export type MessageTree = {
     /** 2-3 ultra-short feature bullets shown on the RO Helper card. */
     roHelperFeatures: string[]
     openRoHelper: string
-    /** Hero "value pills" on the portal home (3 short highlights). */
-    heroPills: string[]
-    /** ARIA label for the pills group. */
-    pillsAriaLabel: string
     /** ARIA label for the cards grid section. */
     gridAriaLabel: string
     /** Status badge label — stable / generally available product. */
@@ -894,8 +890,6 @@ export const ukMessages: MessageTree = {
       'Quick cite \u043d\u0430 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438\u0449\u0456',
     ],
     openRoHelper: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 RO Helper',
-    heroPills: ['2D + 3D', 'PDF \u0431\u0440\u0438\u0444\u0456\u043d\u0433', 'IPSC \u00b7 RO Helper'],
-    pillsAriaLabel: '\u041a\u043b\u044e\u0447\u043e\u0432\u0456 \u043c\u043e\u0436\u043b\u0438\u0432\u043e\u0441\u0442\u0456',
     gridAriaLabel: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u0456 \u0456\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438',
     badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
     badgeNew: '\u041d\u043e\u0432\u0435',
@@ -1434,8 +1428,6 @@ export const enMessages: MessageTree = {
       'Quick cite at the range',
     ],
     openRoHelper: 'Open RO Helper',
-    heroPills: ['2D + 3D', 'PDF briefing', 'IPSC \u00b7 RO Helper'],
-    pillsAriaLabel: 'Key highlights',
     gridAriaLabel: 'Available tools',
     badgeLive: 'Live',
     badgeNew: 'New',
