@@ -336,29 +336,36 @@ export function HitFactorPage() {
 
           <div className="hit-factor__deviationsFull">
             <div className="hit-factor__penalties">
-              <div className="hit-factor__penalties-head">
-                <div className="hit-factor__penaltiesHeadMain">
-                  <h2 className="hit-factor__h2">{hf.deviationsTitle}</h2>
-                  <p className="hit-factor__hint">{hf.deviationsLead}</p>
+              <details className="hit-factor__deviationsDetails" open>
+                <summary className="hit-factor__deviationsSummary">
+                  <span className="hit-factor__deviationsSummaryTitle">{hf.deviationsTitle}</span>
+                  <span className="hit-factor__deviationsSummaryMeta">
+                    {makeupCountRaw !== '0' ? `${hf.makeupShotCountLabel}: ${makeupCountRaw}` : ''}
+                  </span>
+                </summary>
+
+                <div className="hit-factor__penalties-head">
+                  <div className="hit-factor__penaltiesHeadMain">
+                    <p className="hit-factor__hint">{hf.deviationsLead}</p>
+                  </div>
+
+                  <label className="hit-factor__penaltiesHeadSide">
+                    <span className="hit-factor__label">{hf.weaponClassLabel}</span>
+                    <select
+                      className="hit-factor__select"
+                      value={weaponClass}
+                      onChange={(e) => setWeaponClass(e.target.value as typeof weaponClass)}
+                      aria-label={hf.weaponClassLabel}
+                    >
+                      <option value="pistol">{hf.weaponClassPistol}</option>
+                      <option value="rifle">{hf.weaponClassRifle}</option>
+                      <option value="pcc">{hf.weaponClassPcc}</option>
+                      <option value="shotgun">{hf.weaponClassShotgun}</option>
+                    </select>
+                  </label>
                 </div>
 
-                <label className="hit-factor__penaltiesHeadSide">
-                  <span className="hit-factor__label">{hf.weaponClassLabel}</span>
-                  <select
-                    className="hit-factor__select"
-                    value={weaponClass}
-                    onChange={(e) => setWeaponClass(e.target.value as typeof weaponClass)}
-                    aria-label={hf.weaponClassLabel}
-                  >
-                    <option value="pistol">{hf.weaponClassPistol}</option>
-                    <option value="rifle">{hf.weaponClassRifle}</option>
-                    <option value="pcc">{hf.weaponClassPcc}</option>
-                    <option value="shotgun">{hf.weaponClassShotgun}</option>
-                  </select>
-                </label>
-              </div>
-
-              <div className="hit-factor__deviationList" role="group" aria-label={hf.deviationsTitle}>
+                <div className="hit-factor__deviationList" role="group" aria-label={hf.deviationsTitle}>
                 {(
                   [
                     ['charlie', hf.charlieLabel, deltaCharlieRaw, setDeltaCharlieRaw],
@@ -445,7 +452,8 @@ export function HitFactorPage() {
                     {`${makeupTimeSec.toFixed(2)} ${hf.secondsUnit}`}
                   </span>
                 </div>
-              </div>
+                </div>
+              </details>
             </div>
           </div>
 
