@@ -7,14 +7,25 @@
 }
 
 .portal-shell__header {
+  /**
+   * Outer band: full-window background + bottom border.
+   * Constraining the visible content to a 72rem grid is the inner wrapper's job
+   * so that on wide screens the brand/nav/lang line up with the cards below.
+   */
+  border-bottom: 1px solid var(--border);
+  background: var(--btn-bg);
+}
+
+.portal-shell__header-inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--btn-bg);
 }
 
 .portal-shell__brand {
