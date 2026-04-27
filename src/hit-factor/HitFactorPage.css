@@ -63,6 +63,10 @@
   grid-template-columns: 1fr 1fr;
 }
 
+.hit-factor__grid--1 {
+  grid-template-columns: 1fr;
+}
+
 .hit-factor__grid--5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }

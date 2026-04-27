@@ -13,12 +13,6 @@ export type HitFactorAnalysisInput = {
   deltaMiss: number
   deltaNoShoot: number
   deltaProcedural: number
-
-  /**
-   * If true: Miss is treated as "-10 penalty + lost Alpha points" (common training mental model).
-   * If false: Miss is treated as "-10 penalty only".
-   */
-  missIncludesLostAlpha: boolean
 }
 
 export type HitFactorAnalysisOutput = {
@@ -69,7 +63,8 @@ export function computeHitFactorAnalysis(raw: HitFactorAnalysisInput): HitFactor
   const dD = pointsD - pointsA // negative
   const dProc = -10
   const dNS = -10
-  const dMiss = raw.missIncludesLostAlpha ? -(pointsA + 10) : -10
+  // In "deviations from all-alpha" model, a Miss is -10 penalty + lost Alpha points.
+  const dMiss = -(pointsA + 10)
 
   const deltaCharlie = clampIntNonNegative(raw.deltaCharlie)
   const deltaDelta = clampIntNonNegative(raw.deltaDelta)

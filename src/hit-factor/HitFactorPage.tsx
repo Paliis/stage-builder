@@ -26,7 +26,6 @@ export function HitFactorPage() {
   const [requiredHitsRaw, setRequiredHitsRaw] = useState('20')
   const [timeRaw, setTimeRaw] = useState('10.00')
   const [powerFactor, setPowerFactor] = useState<PowerFactor>('minor')
-  const [missIncludesLostAlpha, setMissIncludesLostAlpha] = useState(true)
 
   const [deltaCharlieRaw, setDeltaCharlieRaw] = useState('0')
   const [deltaDeltaRaw, setDeltaDeltaRaw] = useState('0')
@@ -63,7 +62,6 @@ export function HitFactorPage() {
       deltaMiss,
       deltaNoShoot,
       deltaProcedural,
-      missIncludesLostAlpha,
     })
   }, [
     requiredHits,
@@ -74,7 +72,6 @@ export function HitFactorPage() {
     deltaMiss,
     deltaNoShoot,
     deltaProcedural,
-    missIncludesLostAlpha,
   ])
 
   const helmetTitle = `${hf.pageTitle} — ${p.title}`
@@ -116,7 +113,7 @@ export function HitFactorPage() {
               </label>
             </div>
 
-            <div className="hit-factor__grid hit-factor__grid--2">
+            <div className="hit-factor__grid hit-factor__grid--1">
               <label className="hit-factor__field">
                 <span className="hit-factor__label">{hf.powerFactorLabel}</span>
                 <select
@@ -127,20 +124,6 @@ export function HitFactorPage() {
                   <option value="minor">{hf.powerFactorMinor}</option>
                   <option value="major">{hf.powerFactorMajor}</option>
                 </select>
-              </label>
-              <label className="hit-factor__field hit-factor__field--toggle">
-                <span className="hit-factor__label">{hf.missModelLabel}</span>
-                <button
-                  type="button"
-                  className={`hit-factor__toggle${missIncludesLostAlpha ? ' is-on' : ''}`}
-                  aria-pressed={missIncludesLostAlpha}
-                  onClick={() => setMissIncludesLostAlpha((v) => !v)}
-                >
-                  <span className="hit-factor__toggle-dot" aria-hidden="true" />
-                  <span className="hit-factor__toggle-text">
-                    {missIncludesLostAlpha ? hf.missModelPenaltyPlusLost : hf.missModelPenaltyOnly}
-                  </span>
-                </button>
               </label>
             </div>
 
@@ -300,7 +283,6 @@ export function HitFactorPage() {
                   setRequiredHitsRaw('20')
                   setTimeRaw('10.00')
                   setPowerFactor('minor')
-                  setMissIncludesLostAlpha(true)
                   setDeltaCharlieRaw('0')
                   setDeltaDeltaRaw('0')
                   setDeltaMissRaw('0')

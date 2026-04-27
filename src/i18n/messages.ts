@@ -350,9 +350,6 @@ export type MessageTree = {
     powerFactorLabel: string
     powerFactorMinor: string
     powerFactorMajor: string
-    missModelLabel: string
-    missModelPenaltyPlusLost: string
-    missModelPenaltyOnly: string
     modelNoteLabel: string
     modelNote: string
     deviationsTitle: string
@@ -863,9 +860,6 @@ export const ukMessages: MessageTree = {
     powerFactorLabel: '\u0424\u0430\u043a\u0442\u043e\u0440 (PF)',
     powerFactorMinor: 'Minor',
     powerFactorMajor: 'Major',
-    missModelLabel: '\u041c\u043e\u0434\u0435\u043b\u044c \u201cMiss\u201d',
-    missModelPenaltyPlusLost: '\u221210 \u0448\u0442\u0440\u0430\u0444 + \u0432\u0442\u0440\u0430\u0447\u0435\u043d\u0456 \u043e\u0447\u043a\u0438',
-    missModelPenaltyOnly: '\u043b\u0438\u0448\u0435 \u221210 \u0448\u0442\u0440\u0430\u0444',
     modelNoteLabel: '\u041d\u043e\u0442\u0430\u0442\u043a\u0430',
     modelNote:
       '\u0426\u0435 \u0442\u0440\u0435\u043d\u0443\u0432\u0430\u043b\u044c\u043d\u0430 \u043c\u043e\u0434\u0435\u043b\u044c \u0434\u043b\u044f \u0448\u0432\u0438\u0434\u043a\u043e\u0433\u043e \u201cwhat\u2011if\u201d. \u041e\u0444\u0456\u0446\u0456\u0439\u043d\u0438\u0439 \u0441\u043a\u043e\u0440\u0438\u043d\u0433 \u0437\u0430\u043b\u0435\u0436\u0438\u0442\u044c \u0432\u0456\u0434 \u043c\u0430\u0442\u0447\u0435\u0432\u0438\u0445 \u0443\u043c\u043e\u0432 \u0456 \u0444\u0430\u043a\u0442\u0438\u0447\u043d\u0438\u0445 \u043f\u043e\u043f\u0430\u0434\u0430\u043d\u044c.',
@@ -1367,9 +1361,6 @@ export const enMessages: MessageTree = {
     powerFactorLabel: 'Power factor (PF)',
     powerFactorMinor: 'Minor',
     powerFactorMajor: 'Major',
-    missModelLabel: 'Miss model',
-    missModelPenaltyPlusLost: '−10 penalty + lost points',
-    missModelPenaltyOnly: '−10 penalty only',
     modelNoteLabel: 'Note',
     modelNote:
       'This is a training “what-if” model. Official match scoring depends on match conditions and actual hits.',
