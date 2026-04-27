@@ -24,7 +24,6 @@ export function RoHelperArticlePage() {
   }>()
   const { locale, tree } = useI18n()
   const rh = tree.roHelper
-  const demo = tree.roHelperDemo
   const { showFpsuLayer } = useRoHelperFpsuPrefs()
 
   const [phase, setPhase] = useState<'loading' | 'ready' | 'missing'>('loading')
@@ -169,7 +168,7 @@ export function RoHelperArticlePage() {
       </nav>
 
       <aside className="ro-helper-article__banner" role="note">
-        <strong>{demo.disclaimerTitle}:</strong> {demo.disclaimerBody}
+        <strong>{rh.disclaimerTitle}:</strong> {rh.disclaimerBody}
       </aside>
 
       <header className="ro-helper-article__head ro-helper-article__head--with-actions">

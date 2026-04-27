@@ -21,12 +21,10 @@ import { isRoHelperEnabled } from './portal/featureFlags'
 import { RO_HELPER_BASE } from './ro-helper/paths'
 import {
   RoHelperArticlePage,
-  RoHelperCardDemo,
   RoHelperCategoryPage,
   RoHelperDisciplinePage,
   RoHelperHome,
   RoHelperLayout,
-  RoHelperTopicsPage,
 } from './portal/roHelperLazyRoutes'
 
 hydrateSessionDraft()
@@ -62,8 +60,6 @@ createRoot(document.getElementById('root')!).render(
                   }
                 >
                   <Route index element={<RoHelperHome />} />
-                  <Route path="demo" element={<RoHelperCardDemo />} />
-                  <Route path="topics/:category" element={<RoHelperTopicsPage />} />
                   <Route path=":discipline/:category/:slug" element={<RoHelperArticlePage />} />
                   <Route path=":discipline/:category" element={<RoHelperCategoryPage />} />
                   <Route path=":discipline" element={<RoHelperDisciplinePage />} />

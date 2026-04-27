@@ -77,3 +77,113 @@
   border-color: var(--accent-border);
   color: var(--accent);
 }
+
+.ro-helper-list__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.75rem;
+}
+
+.ro-helper-list__card-item {
+  display: flex;
+}
+
+.ro-helper-cat-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.25rem 1fr auto;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  min-height: 5rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--card-bg, #fff);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.12s ease,
+    box-shadow 0.15s ease,
+    transform 0.12s ease;
+}
+
+.ro-helper-cat-card:hover,
+.ro-helper-cat-card:focus-visible {
+  border-color: var(--accent-border);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.ro-helper-cat-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ro-helper-cat-card__accent {
+  align-self: stretch;
+  width: 0.25rem;
+  border-radius: 0.2rem;
+  background: var(--text-muted);
+}
+
+.ro-helper-cat-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.ro-helper-cat-card__name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-h);
+  line-height: 1.25;
+}
+
+.ro-helper-cat-card__sub {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.ro-helper-cat-card__cta {
+  flex-shrink: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition:
+    color 0.12s ease,
+    transform 0.12s ease;
+}
+
+.ro-helper-cat-card:hover .ro-helper-cat-card__cta,
+.ro-helper-cat-card:focus-visible .ro-helper-cat-card__cta {
+  color: var(--accent);
+  transform: translateX(2px);
+}
+
+.ro-helper-cat-card--safety .ro-helper-cat-card__accent {
+  background: #dc2626;
+}
+.ro-helper-cat-card--penalties .ro-helper-cat-card__accent {
+  background: #d97706;
+}
+.ro-helper-cat-card--scoring .ro-helper-cat-card__accent {
+  background: #16a34a;
+}
+.ro-helper-cat-card--equipment .ro-helper-cat-card__accent {
+  background: #7c3aed;
+}
+.ro-helper-cat-card--match-admin .ro-helper-cat-card__accent {
+  background: #2563eb;
+}
+
+@media (max-width: 480px) {
+  .ro-helper-list__cards {
+    grid-template-columns: 1fr;
+  }
+}

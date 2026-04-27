@@ -402,38 +402,17 @@ export type MessageTree = {
     makeupShotSplitLabel: string
     reset: string
   }
-  /** `/ro-helper/demo` — UI prototype for one RO Helper article */
-  roHelperDemo: {
-    pageTitle: string
-    ribbon: string
-    backHome: string
-    categorySafety: string
-    categoryPenalties: string
-    metaTemplate: string
-    /** Main CTA: {{edition}} {{ruleRef}} {{chapter}} */
-    rulesPdfCtaTemplate: string
-    rulesPdfHintTemplate: string
-    draftBadge: string
-    invalidCardBanner: string
-    demoCardExamplesLabel: string
-    disclaimerTitle: string
-    disclaimerBody: string
-    toggleFpsuLabel: string
-    toggleFpsuHint: string
-  }
   /** `/ro-helper` production module (markdown articles). */
   roHelper: {
     moduleTitle: string
     navPortal: string
     lead: string
-    sosHeading: string
-    sosSafety: string
-    sosPenalties: string
-    sosScoring: string
-    sosEquipment: string
-    sosMatchAdmin: string
-    topicsTitle: string
+    /** Title of the discipline-picker section on the RO Helper home. */
     disciplineTitle: string
+    /** Subtitle shown under the home title — guides the user to pick a discipline first. */
+    disciplineLead: string
+    /** Per-card subtitle on home, e.g. "5 категорій правил". */
+    disciplineCardSubtitle: string
     categoryTitle: string
     articlesEmpty: string
     articleNotFound: string
@@ -441,7 +420,9 @@ export type MessageTree = {
     loading: string
     fpsuLayerLabel: string
     fpsuLayerHint: string
-    demoLink: string
+    /** Disclaimer shown at the bottom of every RO Helper article. */
+    disclaimerTitle: string
+    disclaimerBody: string
     breadcrumbRo: string
     discHandgun: string
     discPcc: string
@@ -453,6 +434,12 @@ export type MessageTree = {
     catScoring: string
     catEquipment: string
     catMatchAdmin: string
+    /** Short one-line description shown on the category card on the discipline page. */
+    catSafetyDesc: string
+    catPenaltiesDesc: string
+    catScoringDesc: string
+    catEquipmentDesc: string
+    catMatchAdminDesc: string
     /** Default `<meta name="description">` for RO Helper list pages (not article body). */
     seoModuleDescription: string
     quickCiteButton: string
@@ -950,42 +937,14 @@ export const ukMessages: MessageTree = {
     makeupShotSplitLabel: '\u0427\u0430\u0441 \u043e\u0434\u043d\u043e\u0433\u043e \u0434\u043e\u0441\u0442\u0440\u0456\u043b\u0443',
     reset: '\u0421\u043a\u0438\u043d\u0443\u0442\u0438',
   },
-  roHelperDemo: {
-    pageTitle: 'RO Helper \u2014 \u0434\u0435\u043c\u043e \u043a\u0430\u0440\u0442\u043a\u0438',
-    ribbon:
-      '\u0426\u0435 \u043d\u0435 \u043f\u0440\u043e\u0434\u0430\u043a\u0448\u043d-\u043c\u043e\u0434\u0443\u043b\u044c. \u041e\u0431\u0435\u0440\u0456\u0442\u044c \u043a\u0430\u0440\u0442\u043a\u0443 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u043c \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u0043\u0031\u0030\u0035\u0060 \u0430\u0431\u043e \u0060\u003f\u0063\u0061\u0072\u0064\u003d\u0043\u0032\u0036\u0060 (\u0434\u0438\u0432. RO_HELPER_V0 \u00a79).',
-    backHome: '\u041d\u0430 \u0433\u043e\u043b\u043e\u0432\u043d\u0443',
-    categorySafety: 'Safety / DQ',
-    categoryPenalties: '\u0428\u0442\u0440\u0430\u0444\u0438',
-    metaTemplate:
-      '\u041a\u0430\u0440\u0442\u043a\u0430 {{cardId}} \u00b7 {{discipline}} \u00b7 IPSC {{edition}} \u00b7 \u00a7{{ruleRef}}',
-    rulesPdfCtaTemplate:
-      '\u041e\u0444\u0456\u0446\u0456\u0439\u043d\u0438\u0439 PDF \u043f\u0440\u0430\u0432\u0438\u043b Handgun ({{edition}}) \u2014 \u00a7{{ruleRef}} (\u0440\u043e\u0437\u0434\u0456\u043b {{chapter}})',
-    rulesPdfHintTemplate:
-      '\u0423 PDF \u0432\u0456\u0434\u043a\u0440\u0438\u0439\u0442\u0435 **Chapter {{chapter}}** / \u043f\u0440\u0430\u0432\u0438\u043b\u043e \u00a7{{ruleRef}} (\u0430\u0431\u043e \u043f\u043e\u0448\u0443\u043a \u0443 \u0440\u0438\u0434\u0435\u0440\u0456 \u0437\u0430 \u00ab{{ruleRef}}\u00bb).',
-    draftBadge: 'DRAFT',
-    invalidCardBanner:
-      '\u041d\u0435\u0432\u0456\u0434\u043e\u043c\u0438\u0439 \u043d\u043e\u043c\u0435\u0440 \u0060{{requested}}\u0060. \u041f\u043e\u043a\u0430\u0437\u0430\u043d\u043e \u043a\u0430\u0440\u0442\u043a\u0443 \u0437\u0430 \u0437\u0430\u043c\u043e\u0432\u0447\u0443\u0432\u0430\u043d\u043d\u044f\u043c (C105).',
-    demoCardExamplesLabel: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u0456 \u0434\u0435\u043c\u043e-\u043a\u0430\u0440\u0442\u043a\u0438:',
-    disclaimerTitle: '\u0412\u0430\u0436\u043b\u0438\u0432\u043e',
-    disclaimerBody:
-      'RO Helper / Shooters Tools \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u044e\u0454 \u043e\u0444\u0456\u0446\u0456\u0439\u043d\u0456 \u043f\u0440\u0430\u0432\u0438\u043b\u0430 IPSC \u0447\u0438 \u0440\u0456\u0448\u0435\u043d\u043d\u044f Range Master. \u041f\u0435\u0440\u0435\u0432\u0456\u0440\u044f\u0439\u0442\u0435 \u043f\u0443\u043d\u043a\u0442\u0438 \u0437\u0430 PDF \u0432\u0430\u0448\u043e\u0457 \u0434\u0438\u0441\u0446\u0438\u043f\u043b\u0456\u043d\u0438.',
-    toggleFpsuLabel: '\u041f\u043e\u043a\u0430\u0437\u0443\u0432\u0430\u0442\u0438 \u0448\u0430\u0440 \u00ab\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u043e (\u0424\u041f\u0421\u0423)\u00bb',
-    toggleFpsuHint:
-      '\u0423 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0456 \u0446\u0435 \u043d\u0435\u0437\u0430\u043b\u0435\u0436\u043d\u043e \u0432\u0456\u0434 UI \u043c\u043e\u0432\u0438 (\u0434\u0438\u0432. RO_HELPER_V0 \u00a74).',
-  },
   roHelper: {
     moduleTitle: 'RO Helper',
     navPortal: '\u041f\u043e\u0440\u0442\u0430\u043b',
     lead: '\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u0434\u043b\u044f \u0441\u0443\u0434\u0434\u0456\u0432 \u0442\u0430 \u0441\u043f\u043e\u0440\u0442\u0441\u043c\u0435\u043d\u0456\u0432. \u0422\u0435\u043a\u0441\u0442\u0438 \u2014 \u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438; \u043e\u0444\u0456\u0446\u0456\u0439\u043d\u043e \u0437\u0430\u0442\u0432\u0435\u0440\u0434\u0436\u0443\u0439\u0442\u0435 \u0437 PDF \u0432\u0430\u0448\u043e\u0457 \u0434\u0438\u0441\u0446\u0438\u043f\u043b\u0456\u043d\u0438.',
-    sosHeading: 'SOS \u2014 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u0457',
-    sosSafety: 'Safety / DQ',
-    sosPenalties: '\u0428\u0442\u0440\u0430\u0444\u0438 \u0442\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0438',
-    sosScoring: '\u0417\u0430\u043b\u0456\u043a / \u043c\u0456\u0448\u0435\u043d\u0456',
-    sosEquipment: '\u0417\u0431\u0440\u043e\u044f / \u0434\u0438\u0432\u0456\u0437\u0456\u043e\u043d\u0438',
-    sosMatchAdmin: '\u041c\u0430\u0442\u0447 / \u0430\u0434\u043c\u0456\u043d',
-    topicsTitle: '\u0423\u0441\u0456 \u0441\u0442\u0430\u0442\u0442\u0456 \u0443 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u0457',
     disciplineTitle: '\u041e\u0431\u0435\u0440\u0456\u0442\u044c \u0434\u0438\u0441\u0446\u0438\u043f\u043b\u0456\u043d\u0443',
+    disciplineLead:
+      '\u041f\u043e\u0447\u043d\u0456\u0442\u044c \u0437 \u0432\u0438\u0434\u0443 \u0437\u0431\u0440\u043e\u0457 \u2014 \u0432\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0456 \u0437\u043d\u0430\u0439\u0434\u0435\u0442\u0435 \u043a\u0430\u0440\u0442\u043a\u0438 \u043f\u0440\u0430\u0432\u0438\u043b \u0437\u0430 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u044f\u043c\u0438 (Safety, Penalties, Scoring, Equipment, Match admin).',
+    disciplineCardSubtitle: '5 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u0439 \u043f\u0440\u0430\u0432\u0438\u043b',
     categoryTitle: '\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u044f',
     articlesEmpty: '\u0421\u0442\u0430\u0442\u0435\u0439 \u043d\u0435 \u0437\u043d\u0430\u0439\u0434\u0435\u043d\u043e.',
     articleNotFound: '\u0421\u0442\u0430\u0442\u0442\u044e \u043d\u0435 \u0437\u043d\u0430\u0439\u0434\u0435\u043d\u043e \u0434\u043b\u044f \u043e\u0431\u0440\u0430\u043d\u043e\u0457 \u043c\u043e\u0432\u0438.',
@@ -994,7 +953,9 @@ export const ukMessages: MessageTree = {
     fpsuLayerLabel: '\u0428\u0430\u0440 \u00ab\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u043e (\u0424\u041f\u0421\u0423)\u00bb \u0443 \u0441\u0442\u0430\u0442\u0442\u044f\u0445',
     fpsuLayerHint:
       '\u041d\u0435\u0437\u0430\u043b\u0435\u0436\u043d\u043e \u0432\u0456\u0434 \u043c\u043e\u0432\u0438 \u0456\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0443 (\u0434\u0438\u0432. RO_HELPER_V0 \u00a75.1).',
-    demoLink: '\u0414\u0435\u043c\u043e \u043a\u0430\u0440\u0442\u043a\u0438 (UI \u043f\u0440\u043e\u0442\u043e\u0442\u0438\u043f)',
+    disclaimerTitle: '\u0412\u0430\u0436\u043b\u0438\u0432\u043e',
+    disclaimerBody:
+      'RO Helper / Shooters Tools \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u044e\u0454 \u043e\u0444\u0456\u0446\u0456\u0439\u043d\u0456 \u043f\u0440\u0430\u0432\u0438\u043b\u0430 IPSC \u0447\u0438 \u0440\u0456\u0448\u0435\u043d\u043d\u044f Range Master. \u041f\u0435\u0440\u0435\u0432\u0456\u0440\u044f\u0439\u0442\u0435 \u043f\u0443\u043d\u043a\u0442\u0438 \u0437\u0430 PDF \u0432\u0430\u0448\u043e\u0457 \u0434\u0438\u0441\u0446\u0438\u043f\u043b\u0456\u043d\u0438.',
     breadcrumbRo: 'RO Helper',
     discHandgun: 'Handgun',
     discPcc: 'PCC',
@@ -1006,6 +967,11 @@ export const ukMessages: MessageTree = {
     catScoring: 'Scoring',
     catEquipment: 'Equipment',
     catMatchAdmin: 'Match admin',
+    catSafetyDesc: '\u0411\u0435\u0437\u043f\u0435\u043a\u0430 \u043d\u0430 \u0441\u0442\u0435\u0439\u0434\u0436\u0456, DQ, \u043f\u043e\u043f\u0435\u0440\u0435\u0434\u0436\u0435\u043d\u043d\u044f',
+    catPenaltiesDesc: '\u0428\u0442\u0440\u0430\u0444\u0438, \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0438, \u0441\u043f\u0456\u0440\u043d\u0456 \u0432\u0438\u043f\u0430\u0434\u043a\u0438',
+    catScoringDesc: '\u0417\u0430\u043b\u0456\u043a, \u043c\u0456\u0448\u0435\u043d\u0456, hits/misses',
+    catEquipmentDesc: '\u0414\u0438\u0432\u0456\u0437\u0456\u043e\u043d\u0438, \u0432\u0438\u043c\u043e\u0433\u0438 \u0434\u043e \u043e\u0431\u043b\u0430\u0434\u043d\u0430\u043d\u043d\u044f',
+    catMatchAdminDesc: '\u0410\u0434\u043c\u0456\u043d\u0456\u0441\u0442\u0440\u0430\u0446\u0456\u044f \u043c\u0430\u0442\u0447\u0443, \u0440\u043e\u043b\u0456, \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0438',
     seoModuleDescription:
       'RO Helper \u2014 \u0434\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440 \u0442\u0430 \u043f\u0440\u0430\u0432\u0438\u043b IPSC-\u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 (\u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438; \u0437\u0430\u0432\u0436\u0434\u0438 PDF).',
     quickCiteButton: '\u0428\u0432\u0438\u0434\u043a\u0435 \u0434\u043b\u044f \u0437\u0432\u0456\u0442\u0443',
@@ -1486,38 +1452,14 @@ export const enMessages: MessageTree = {
     makeupShotSplitLabel: 'Time for one make-up shot',
     reset: 'Reset',
   },
-  roHelperDemo: {
-    pageTitle: 'RO Helper — card demo',
-    ribbon:
-      'This is not the production module. Choose a card with `?card=C105` or `?card=C26` (see RO_HELPER_V0 §9).',
-    backHome: 'Home',
-    categorySafety: 'Safety / DQ',
-    categoryPenalties: 'Penalties',
-    metaTemplate: 'Card {{cardId}} · {{discipline}} · IPSC {{edition}} · §{{ruleRef}}',
-    rulesPdfCtaTemplate: 'Official Handgun rules PDF ({{edition}}) — §{{ruleRef}} (Ch. {{chapter}})',
-    rulesPdfHintTemplate:
-      'In the PDF, open **Chapter {{chapter}}** / Rule **{{ruleRef}}** (or use your viewer’s find for “{{ruleRef}}”).',
-    draftBadge: 'DRAFT',
-    invalidCardBanner: 'Unknown card id `{{requested}}`. Showing the default card (C105).',
-    demoCardExamplesLabel: 'Available demo cards:',
-    disclaimerTitle: 'Important',
-    disclaimerBody:
-      'RO Helper / Shooters Tools does not replace official IPSC rules or Range Master decisions. Always verify against the PDF for your discipline and edition.',
-    toggleFpsuLabel: 'Show “Local (FPSU)” layer',
-    toggleFpsuHint: 'In the product this will be independent of article language (see RO_HELPER_V0 §4).',
-  },
   roHelper: {
     moduleTitle: 'RO Helper',
     navPortal: 'Portal',
     lead: 'Reference for match staff and competitors. Content is draft — verify every rule call against your discipline PDF.',
-    sosHeading: 'SOS — categories',
-    sosSafety: 'Safety / DQ',
-    sosPenalties: 'Penalties & procedures',
-    sosScoring: 'Scoring & targets',
-    sosEquipment: 'Equipment & divisions',
-    sosMatchAdmin: 'Match administration',
-    topicsTitle: 'All articles in this category',
     disciplineTitle: 'Choose discipline',
+    disciplineLead:
+      'Start with a firearm type — inside you will find rules grouped into categories (Safety, Penalties, Scoring, Equipment, Match admin).',
+    disciplineCardSubtitle: '5 rule categories',
     categoryTitle: 'Category',
     articlesEmpty: 'No articles found.',
     articleNotFound: 'Article not found for the current language.',
@@ -1525,7 +1467,9 @@ export const enMessages: MessageTree = {
     loading: 'Loading…',
     fpsuLayerLabel: 'Show “Local (FPSU)” blocks in articles',
     fpsuLayerHint: 'Independent of UI language (see RO_HELPER_V0 §5.1).',
-    demoLink: 'Card demo (UI prototype)',
+    disclaimerTitle: 'Important',
+    disclaimerBody:
+      'RO Helper / Shooters Tools does not replace official IPSC rules or Range Master decisions. Always verify against the PDF for your discipline and edition.',
     breadcrumbRo: 'RO Helper',
     discHandgun: 'Handgun',
     discPcc: 'PCC',
@@ -1537,6 +1481,11 @@ export const enMessages: MessageTree = {
     catScoring: 'Scoring',
     catEquipment: 'Equipment',
     catMatchAdmin: 'Match admin',
+    catSafetyDesc: 'Range safety, DQ, warnings',
+    catPenaltiesDesc: 'Penalties, procedures, edge cases',
+    catScoringDesc: 'Scoring, target types, hits/misses',
+    catEquipmentDesc: 'Divisions, equipment requirements',
+    catMatchAdminDesc: 'Match administration, roles, documents',
     seoModuleDescription:
       'RO Helper — IPSC-style match rules and procedures reference (draft articles; always verify with your official PDF).',
     quickCiteButton: 'Quick Cite',

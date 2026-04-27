@@ -79,7 +79,6 @@ async function main() {
   urls.add(`${ORIGIN}/publish-policy`)
   if (enableRoHelper) {
     urls.add(RO_HELPER_BASE)
-    urls.add(`${RO_HELPER_BASE}/demo`)
   }
 
   for (const line of dataRows) {
@@ -89,7 +88,6 @@ async function main() {
     const category = (cols[3] ?? '').trim()
     if (!slug || !discipline || !category) continue
     if (enableRoHelper) {
-      urls.add(`${RO_HELPER_BASE}/topics/${category}`)
       urls.add(`${RO_HELPER_BASE}/${discipline}`)
       urls.add(`${RO_HELPER_BASE}/${discipline}/${category}`)
       urls.add(`${RO_HELPER_BASE}/${discipline}/${category}/${slug}`)

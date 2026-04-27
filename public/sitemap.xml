@@ -31,12 +31,6 @@
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://shooters-tools.com/tools/ro-helper/demo</loc>
-    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
     <loc>https://shooters-tools.com/tools/ro-helper/handgun</loc>
     <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -3374,36 +3368,6 @@
   </url>
   <url>
     <loc>https://shooters-tools.com/tools/ro-helper/shotgun/scoring/slug-scoring</loc>
-    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shooters-tools.com/tools/ro-helper/topics/equipment</loc>
-    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shooters-tools.com/tools/ro-helper/topics/match-admin</loc>
-    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shooters-tools.com/tools/ro-helper/topics/penalties</loc>
-    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shooters-tools.com/tools/ro-helper/topics/safety</loc>
-    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  <url>
-    <loc>https://shooters-tools.com/tools/ro-helper/topics/scoring</loc>
     <lastmod>2026-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>

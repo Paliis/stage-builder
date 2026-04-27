@@ -84,10 +84,8 @@
 | `/`, `/publish-policy`, `/ro-helper/*` | Обгортка **`PortalShell`**: шапка (бренд + мова), контент, **`SiteFooter`** |
 | `/` | Головна порталу (`PortalHome`) |
 | `/hit-factor` | Hit Factor calculator (MVP) |
-| `/ro-helper` | **RO Helper** — довідник з markdown у `content/ro-helper/`, SOS, преф шару ФПСУ |
-| `/ro-helper/demo` | Демо-картки RO Helper (прототип UI) |
-| `/ro-helper/topics/:category` | Усі статті категорії (усі дисципліни) |
-| `/ro-helper/:discipline` | Сторінка дисципліни |
+| `/ro-helper` | **RO Helper** — головна (вибір дисципліни як первинна точка входу) |
+| `/ro-helper/:discipline` | Сторінка дисципліни (картки 5 категорій) |
 | `/ro-helper/:discipline/:category` | Список статей категорії |
 | `/ro-helper/:discipline/:category/:slug` | Стаття |
 | `/stage-builder` | Повний редактор (`App`) — **поза** `PortalShell` |
