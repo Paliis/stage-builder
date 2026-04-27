@@ -74,7 +74,23 @@
 4. **Кропнути** до точного `16:10` (наприклад, `1280 × 800` або `1600 × 1000`).
    Інструменти: вбудований `Photos` у Windows, [Photopea](https://www.photopea.com/),
    Paint.NET, GIMP.
-5. **Стиснути у WebP**, q ≈ 80 (ціль `< 60 KB` на файл):
+5. **Стиснути у WebP**, q ≈ 80 (ціль `< 60 KB` на файл). Доступні шляхи:
+
+   #### A. Скрипт у репо (`portal-preview-prepare.mjs`) — рекомендований
+
+   Робить кроп до `16:10` від центру, ресайз до `1280×800` і WebP `q=80`
+   за один виклик; використовує `sharp` (вже у `devDependencies`).
+
+   ```bash
+   node scripts/portal-preview-prepare.mjs ./screenshot.png stage-builder
+   ```
+
+   Першим аргументом — шлях до вихідного PNG/JPG, другим — імʼя без
+   розширення (`stage-builder` / `hit-factor` / `ro-helper`). Файл
+   автоматично кладеться у `public/portal-previews/<name>.webp`.
+
+   #### B. Онлайн / CLI
+
    - онлайн: [squoosh.app](https://squoosh.app/) → формат `WebP`,
      `effort: 6`, `quality: 78–82`;
    - CLI ([cwebp](https://developers.google.com/speed/webp/download)):

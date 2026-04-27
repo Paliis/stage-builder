@@ -9,7 +9,10 @@ type CardBadgeKind = 'live' | 'new' | 'beta'
 
 interface ProductCardProps {
   to: string
+  /** Primary preview image (e.g. `…/foo.webp` or `…/foo.svg`). */
   preview: string
+  /** Optional secondary `<source>` for `<picture>`; e.g. an SVG fallback. */
+  previewFallback?: string
   previewAlt: string
   title: string
   description: string
@@ -20,11 +23,44 @@ interface ProductCardProps {
 }
 
 function ProductCard(props: ProductCardProps) {
-  const { to, preview, previewAlt, title, description, features, cta, badgeKind, badgeLabel } = props
+  const {
+    to,
+    preview,
+    previewFallback,
+    previewAlt,
+    title,
+    description,
+    features,
+    cta,
+    badgeKind,
+    badgeLabel,
+  } = props
+  const previewIsWebp = preview.toLowerCase().endsWith('.webp')
   return (
     <article className={`portal-home__product portal-home__product--${badgeKind}`}>
       <div className="portal-home__product-preview" aria-hidden="true">
-        <img src={preview} alt={previewAlt} loading="lazy" width={640} height={400} />
+        {previewFallback ? (
+          <picture>
+            {previewIsWebp ? <source srcSet={preview} type="image/webp" /> : null}
+            <img
+              src={previewFallback}
+              alt={previewAlt}
+              loading="lazy"
+              decoding="async"
+              width={640}
+              height={400}
+            />
+          </picture>
+        ) : (
+          <img
+            src={preview}
+            alt={previewAlt}
+            loading="lazy"
+            decoding="async"
+            width={640}
+            height={400}
+          />
+        )}
       </div>
       <div className="portal-home__product-body">
         <header className="portal-home__product-head">
@@ -80,7 +116,8 @@ export function PortalHome() {
       <section className="portal-home__grid" aria-label={p.gridAriaLabel}>
         <ProductCard
           to="/stage-builder"
-          preview="/portal-previews/stage-builder.svg"
+          preview="/portal-previews/stage-builder.webp"
+          previewFallback="/portal-previews/stage-builder.svg"
           previewAlt={`${p.stageBuilderTitle} — ${p.stageBuilderDesc}`}
           title={p.stageBuilderTitle}
           description={p.stageBuilderDesc}
