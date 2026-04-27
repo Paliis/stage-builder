@@ -151,13 +151,22 @@ export function HitFactorPage() {
     const baseTime = totalTimeSec - makeupTimeSec
     const makeupSharePct = baseTime > 0 ? (makeupTimeSec / baseTime) * 100 : 0
 
-    if (pointsLossPct >= 5.0 || makeupSharePct >= 5.0) {
+    if (makeupSharePct >= 5.0) {
+      return {
+        kind: 'makeups' as const,
+        title: hf.focusMakeupsTitle,
+        text: formatTemplate(hf.focusMakeupsText, {
+          time: makeupSharePct.toFixed(1),
+        }),
+      }
+    }
+
+    if (pointsLossPct >= 5.0) {
       return {
         kind: 'accuracy' as const,
         title: hf.focusAccuracyTitle,
         text: formatTemplate(hf.focusAccuracyText, {
           loss: pointsLossPct.toFixed(1),
-          time: makeupSharePct.toFixed(1),
         }),
       }
     }
@@ -188,6 +197,8 @@ export function HitFactorPage() {
     hf.focusAccuracyTitle,
     hf.focusBalancedText,
     hf.focusBalancedTitle,
+    hf.focusMakeupsText,
+    hf.focusMakeupsTitle,
     hf.focusSpeedText,
     hf.focusSpeedTitle,
   ])
