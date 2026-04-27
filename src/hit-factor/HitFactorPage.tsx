@@ -116,7 +116,7 @@ export function HitFactorPage() {
               </label>
             </div>
 
-            <div className="hit-factor__grid hit-factor__grid--3">
+            <div className="hit-factor__grid hit-factor__grid--2">
               <label className="hit-factor__field">
                 <span className="hit-factor__label">{hf.powerFactorLabel}</span>
                 <select
@@ -142,10 +142,6 @@ export function HitFactorPage() {
                   </span>
                 </button>
               </label>
-              <div className="hit-factor__field hit-factor__field--note">
-                <span className="hit-factor__label">{hf.modelNoteLabel}</span>
-                <p className="hit-factor__note">{hf.modelNote}</p>
-              </div>
             </div>
 
             <div className="hit-factor__penalties">
@@ -202,6 +198,11 @@ export function HitFactorPage() {
                 </label>
               </div>
             </div>
+
+            <details className="hit-factor__modelNote">
+              <summary className="hit-factor__modelNoteSummary">{hf.modelNoteLabel}</summary>
+              <p className="hit-factor__modelNoteBody">{hf.modelNote}</p>
+            </details>
           </div>
 
           <div className="hit-factor__resultCol" aria-live="polite">
