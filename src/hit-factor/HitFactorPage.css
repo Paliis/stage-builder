@@ -486,9 +486,8 @@
 }
 
 .hit-factor__scoreTop {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
@@ -496,6 +495,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
 }
 
 .hit-factor__scoreMeta--muted {
@@ -511,10 +511,12 @@
 
 .hit-factor__scoreValue {
   font-variant-numeric: tabular-nums;
-  font-size: 1.65rem;
+  font-size: clamp(1.35rem, 4.2vw, 1.65rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-h);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .hit-factor__scoreBottom {

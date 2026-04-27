@@ -23,6 +23,13 @@ function clampNonNegInt(n: number): number {
   return Math.max(0, Math.trunc(n))
 }
 
+function formatHf(v: number): string {
+  const a = Math.abs(v)
+  if (a >= 1000) return v.toFixed(2)
+  if (a >= 100) return v.toFixed(3)
+  return v.toFixed(4)
+}
+
 export function HitFactorPage() {
   const { tree } = useI18n()
   const p = tree.portal
@@ -160,13 +167,13 @@ export function HitFactorPage() {
                 <div className="hit-factor__scoreMeta">
                   <span className="hit-factor__scoreLabel">{hf.hfActualLabel}</span>
                   <strong className="hit-factor__scoreValue">
-                    {analysis?.hfActual !== null && analysis ? analysis.hfActual.toFixed(4) : '—'}
+                    {analysis?.hfActual !== null && analysis ? formatHf(analysis.hfActual) : '—'}
                   </strong>
                 </div>
                 <div className="hit-factor__scoreMeta hit-factor__scoreMeta--muted">
                   <span className="hit-factor__scoreLabel">{hf.hfMaxLabel}</span>
                   <strong className="hit-factor__scoreValue">
-                    {analysis?.hfMax !== null && analysis ? analysis.hfMax.toFixed(4) : '—'}
+                    {analysis?.hfMax !== null && analysis ? formatHf(analysis.hfMax) : '—'}
                   </strong>
                 </div>
               </div>
