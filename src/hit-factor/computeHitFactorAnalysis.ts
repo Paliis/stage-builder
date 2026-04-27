@@ -29,10 +29,18 @@ export type HitFactorAnalysisOutput = {
   pointsDelta: number
 
   hfMax: number | null
+  /** All effects of points only (no extra time) */
+  hfPointsOnly: number | null
+  /** All effects of time only (no point loss) */
+  hfTimeOnly: number | null
   hfActual: number | null
 
   /** Relative loss vs max HF, in percent (0..100+). */
   hfLossPct: number | null
+  /** Loss driven by points only, vs max HF (percent). */
+  pointsLossPct: number | null
+  /** Loss driven by time only, vs max HF (percent). */
+  timeLossPct: number | null
 
   /** Seconds needed to compensate a given points delta at current HF. */
   secondsToOffsetPoints: (pointsDeltaAbs: number) => number | null
@@ -92,10 +100,16 @@ export function computeHitFactorAnalysis(raw: HitFactorAnalysisInput): HitFactor
   const actualPoints = maxPoints + pointsDelta
 
   const hfMax = timeBaseSec ? maxPoints / timeBaseSec : null
+  const hfPointsOnly = timeBaseSec ? actualPoints / timeBaseSec : null
+  const hfTimeOnly = timeActualSec ? maxPoints / timeActualSec : null
   const hfActual = timeActualSec ? actualPoints / timeActualSec : null
 
   const hfLossPct =
     hfMax !== null && hfActual !== null && hfMax > 0 ? ((hfMax - hfActual) / hfMax) * 100 : null
+  const pointsLossPct =
+    hfMax !== null && hfPointsOnly !== null && hfMax > 0 ? ((hfMax - hfPointsOnly) / hfMax) * 100 : null
+  const timeLossPct =
+    hfMax !== null && hfTimeOnly !== null && hfMax > 0 ? ((hfMax - hfTimeOnly) / hfMax) * 100 : null
 
   const secondsToOffsetPoints = (pointsDeltaAbs: number) => {
     if (hfActual === null) return null
@@ -126,8 +140,12 @@ export function computeHitFactorAnalysis(raw: HitFactorAnalysisInput): HitFactor
     actualPoints,
     pointsDelta,
     hfMax,
+    hfPointsOnly,
+    hfTimeOnly,
     hfActual,
     hfLossPct,
+    pointsLossPct,
+    timeLossPct,
     secondsToOffsetPoints,
     perError,
   }

@@ -18,8 +18,12 @@ describe('computeHitFactorAnalysis', () => {
     expect(r.maxPoints).toBe(100)
     expect(r.actualPoints).toBe(100)
     expect(r.hfMax).toBeCloseTo(10, 6)
+    expect(r.hfPointsOnly).toBeCloseTo(10, 6)
+    expect(r.hfTimeOnly).toBeCloseTo(10, 6)
     expect(r.hfActual).toBeCloseTo(10, 6)
     expect(r.hfLossPct).toBeCloseTo(0, 6)
+    expect(r.pointsLossPct).toBeCloseTo(0, 6)
+    expect(r.timeLossPct).toBeCloseTo(0, 6)
   })
 
   it('treats a miss as -15 by default (penalty + lost alpha)', () => {
@@ -36,6 +40,7 @@ describe('computeHitFactorAnalysis', () => {
     })
     expect(r.pointsDelta).toBe(-15)
     expect(r.actualPoints).toBe(85)
+    expect(r.hfPointsOnly).toBeCloseTo(8.5, 6)
     expect(r.hfActual).toBeCloseTo(8.5, 6)
   })
 
