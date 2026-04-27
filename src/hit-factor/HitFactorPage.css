@@ -522,7 +522,7 @@
 
 .hit-factor__kv {
   display: grid;
-  grid-template-rows: 1rem 1.2rem;
+  grid-template-rows: 2.1rem 1.2rem;
   align-content: space-between;
   padding: 0.55rem 0.6rem;
   border: 1px solid var(--border);
@@ -534,10 +534,8 @@
 .hit-factor__kv > span {
   font-size: 0.75rem;
   color: var(--text);
-  line-height: 1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.05rem;
+  white-space: normal;
 }
 
 .hit-factor__kv > strong {
