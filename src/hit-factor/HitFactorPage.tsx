@@ -154,7 +154,7 @@ export function HitFactorPage() {
         kind: 'accuracy' as const,
         title: hf.focusAccuracyTitle,
         text: formatTemplate(hf.focusAccuracyText, {
-          sec: makeupTimeSec.toFixed(2),
+          loss: pointsLossPct.toFixed(1),
         }),
       }
     }
