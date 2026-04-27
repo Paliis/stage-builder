@@ -142,12 +142,8 @@ export function HitFactorPage() {
     if (totalTimeSec === null || totalTimeSec <= 0) return null
     if (analysis.hfActual === null || analysis.hfActual <= 0) return null
 
-    const clamp = (x: number, min: number, max: number) => Math.min(max, Math.max(min, x))
-    const deltaTime = Math.max(1.0, clamp(totalTimeSec * 0.05, 0.1, 2.0))
-    const hfPlusTime = analysis.actualPoints / (totalTimeSec + deltaTime)
-    const timeSensitivityPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
-
-    const pointsLossPct = analysis.hfLossPct ?? 0
+    const pointsLossPct = analysis.pointsLossPct ?? 0
+    const timeLossPct = analysis.timeLossPct ?? 0
 
     if (pointsLossPct >= 5.0) {
       return {
@@ -159,12 +155,12 @@ export function HitFactorPage() {
       }
     }
 
-    if (pointsLossPct <= 2.0 && timeSensitivityPct >= 5.0) {
+    if (pointsLossPct <= 2.0 && timeLossPct >= 5.0 && timeLossPct >= pointsLossPct + 2.0) {
       return {
         kind: 'speed' as const,
         title: hf.focusSpeedTitle,
         text: formatTemplate(hf.focusSpeedText, {
-          pct: timeSensitivityPct.toFixed(1),
+          pct: timeLossPct.toFixed(1),
         }),
       }
     }
