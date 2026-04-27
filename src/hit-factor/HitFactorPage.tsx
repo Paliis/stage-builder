@@ -142,6 +142,10 @@ export function HitFactorPage() {
     if (totalTimeSec === null || totalTimeSec <= 0) return null
     if (analysis.hfActual === null || analysis.hfActual <= 0) return null
 
+    const deltaTime = 1.0
+    const hfPlusTime = analysis.actualPoints / (totalTimeSec + deltaTime)
+    const timeSensitivityPct = ((analysis.hfActual - hfPlusTime) / analysis.hfActual) * 100
+
     const pointsLossPct = analysis.pointsLossPct ?? 0
     const timeLossPct = analysis.timeLossPct ?? 0
 
@@ -155,12 +159,13 @@ export function HitFactorPage() {
       }
     }
 
-    if (pointsLossPct <= 2.0 && timeLossPct >= 5.0 && timeLossPct >= pointsLossPct + 2.0) {
+    const speedPct = Math.max(timeLossPct, timeSensitivityPct)
+    if (pointsLossPct <= 2.0 && speedPct >= 5.0 && speedPct >= pointsLossPct + 2.0) {
       return {
         kind: 'speed' as const,
         title: hf.focusSpeedTitle,
         text: formatTemplate(hf.focusSpeedText, {
-          pct: timeLossPct.toFixed(1),
+          pct: speedPct.toFixed(1),
         }),
       }
     }

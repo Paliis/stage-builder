@@ -1410,7 +1410,7 @@ export const enMessages: MessageTree = {
       'Point loss is already meaningful (≈{{loss}}% HF). Better to slow down slightly and keep Alphas.',
     focusSpeedTitle: 'Focus: speed',
     focusSpeedText:
-      'Time loss is already meaningful (≈{{pct}}% HF). If points are clean, you can push speed.',
+      'At this pace, +1 sec costs about {{pct}}% HF. If points are clean, you can push speed.',
     focusBalancedTitle: 'Focus: balance',
     focusBalancedText:
       'Your pace looks balanced. Stay in control and avoid misses.',
