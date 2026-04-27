@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useI18n } from '../i18n/useI18n'
 import { formatTemplate } from '../i18n/format'
@@ -46,6 +46,9 @@ export function HitFactorPage() {
   const [deltaNoShootRaw, setDeltaNoShootRaw] = useState('0')
   const [deltaProceduralRaw, setDeltaProceduralRaw] = useState('0')
 
+  const [makeupSplitRaw, setMakeupSplitRaw] = useState('')
+  const [makeupSplitManual, setMakeupSplitManual] = useState(false)
+
   const bump = (raw: string, by: number) => String(clampNonNegInt((parseIntOrNull(raw) ?? 0) + by))
 
   const requiredHits = useMemo(() => parseIntOrNull(requiredHitsRaw), [requiredHitsRaw])
@@ -55,6 +58,26 @@ export function HitFactorPage() {
   const deltaMiss = useMemo(() => parseIntOrNull(deltaMissRaw), [deltaMissRaw])
   const deltaNoShoot = useMemo(() => parseIntOrNull(deltaNoShootRaw), [deltaNoShootRaw])
   const deltaProcedural = useMemo(() => parseIntOrNull(deltaProceduralRaw), [deltaProceduralRaw])
+
+  const defaultMakeupSplitSec = useMemo(() => {
+    if (timeSec === null || timeSec <= 0) return null
+    const hits = requiredHits ?? 0
+    if (hits <= 0) return null
+    return timeSec / hits / 2
+  }, [requiredHits, timeSec])
+
+  const makeupSplitSec = useMemo(() => {
+    const n = parseNum(makeupSplitRaw)
+    if (n !== null && n > 0) return n
+    if (defaultMakeupSplitSec !== null && defaultMakeupSplitSec > 0) return defaultMakeupSplitSec
+    return 0.25
+  }, [defaultMakeupSplitSec, makeupSplitRaw])
+
+  useEffect(() => {
+    if (makeupSplitManual) return
+    if (defaultMakeupSplitSec === null) return
+    setMakeupSplitRaw(defaultMakeupSplitSec.toFixed(2))
+  }, [defaultMakeupSplitSec, makeupSplitManual])
 
   const timeSlider = useMemo(() => {
     const t = parseNum(timeRaw)
@@ -103,17 +126,6 @@ export function HitFactorPage() {
     if (timeSec === null || timeSec <= 0) return null
     if (analysis.hfActual === null || analysis.hfActual <= 0) return null
 
-    const secMiss = analysis.perError.miss.seconds
-    const secNs = analysis.perError.noShoot.seconds
-    const secProc = analysis.perError.procedural.seconds
-    const worst = Math.max(secMiss ?? 0, secNs ?? 0, secProc ?? 0)
-    const worstLabel =
-      worst === (secMiss ?? -1)
-        ? hf.missLabel
-        : worst === (secNs ?? -1)
-          ? hf.noShootLabel
-          : hf.proceduralLabel
-
     const clamp = (x: number, min: number, max: number) => Math.min(max, Math.max(min, x))
     const deltaTime = clamp(timeSec * 0.05, 0.1, 2.0)
     const hfPlusTime = analysis.actualPoints / (timeSec + deltaTime)
@@ -126,8 +138,7 @@ export function HitFactorPage() {
         kind: 'accuracy' as const,
         title: hf.focusAccuracyTitle,
         text: formatTemplate(hf.focusAccuracyText, {
-          err: worstLabel,
-          sec: worst.toFixed(2),
+          sec: makeupSplitSec.toFixed(2),
         }),
       }
     }
@@ -145,13 +156,11 @@ export function HitFactorPage() {
     return {
       kind: 'balanced' as const,
       title: hf.focusBalancedTitle,
-      text: formatTemplate(hf.focusBalancedText, {
-        err: worstLabel,
-        sec: worst.toFixed(2),
-      }),
+      text: hf.focusBalancedText,
     }
   }, [
     analysis,
+    makeupSplitSec,
     timeSec,
     hf.focusAccuracyText,
     hf.focusAccuracyTitle,
@@ -159,9 +168,6 @@ export function HitFactorPage() {
     hf.focusBalancedTitle,
     hf.focusSpeedText,
     hf.focusSpeedTitle,
-    hf.missLabel,
-    hf.noShootLabel,
-    hf.proceduralLabel,
   ])
 
   const helmetTitle = `${hf.pageTitle} — ${p.title}`
@@ -317,6 +323,27 @@ export function HitFactorPage() {
                     </div>
                   )
                 })}
+
+                <div className="hit-factor__deviationRow">
+                  <span className="hit-factor__deviationKey">{hf.makeupShotLabel}</span>
+                  <div className="hit-factor__stepper" role="group" aria-label={hf.makeupShotLabel}>
+                    <input
+                      inputMode="decimal"
+                      className="hit-factor__input"
+                      value={makeupSplitRaw}
+                      onChange={(e) => {
+                        setMakeupSplitManual(true)
+                        setMakeupSplitRaw(e.target.value)
+                      }}
+                      placeholder={defaultMakeupSplitSec !== null ? defaultMakeupSplitSec.toFixed(2) : '0.25'}
+                      aria-label={hf.makeupShotSplitLabel}
+                    />
+                  </div>
+                  <span className="hit-factor__deviationPts">0</span>
+                  <span className="hit-factor__deviationSec">
+                    {`${makeupSplitSec.toFixed(2)} ${hf.secondsUnit}`}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -371,6 +398,8 @@ export function HitFactorPage() {
                 setDeltaMissRaw('0')
                 setDeltaProceduralRaw('0')
                 setDeltaNoShootRaw('0')
+                setMakeupSplitRaw('')
+                setMakeupSplitManual(false)
               }}
             >
               {hf.reset}
