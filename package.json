@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "check": "npm run lint && npm test && npm run build && npm run ro-helper:validate",
+    "check": "npm run lint && npm test && npm run build && npm run ro-helper:validate && npm run ro-helper:audit-en",
     "icons": "node scripts/generate-icons-from-preview.mjs",
     "icons:st": "node scripts/apply-st-to-icon-preview.mjs && node scripts/generate-icons-from-preview.mjs",
     "ro-helper:export-review": "node scripts/export-ro-helper-review-pack.mjs",
@@ -23,6 +23,7 @@
     "ro-helper:sync-matrix": "node scripts/sync-ro-helper-matrix-from-index.mjs",
     "ro-helper:sync-card-ids": "node scripts/sync-ro-helper-frontmatter-card-id.mjs",
     "ro-helper:build-search-index": "node scripts/build-ro-helper-search-index.mjs",
+    "ro-helper:audit-en": "node scripts/ro-helper-audit-en.mjs",
     "sitemap:generate": "node scripts/generate-sitemap.mjs"
   },
   "dependencies": {
