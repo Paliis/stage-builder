@@ -70,7 +70,7 @@
 ## План 2D: рамка, копіювання, вставка
 
 - **Режим рамки** (`marqueeModeActive` у `App.tsx` → `StageCanvas`): ЛКМ тягне прямокутник; у світі AABB. У виділення потрапляють об’єкти, у яких **центр** (`position`) всередині прямокутника (`collectIdsInWorldRect` / логіка в канвасі).
-- **API канваса** — `StageCanvasHandle`: `getSelectionForCopy()`, `getSpawnCenterWorld()` (центр поточного видимого вікна в світових метрах); виклики з `App.tsx`.
+- **API канваса** — `StageCanvasHandle`: `getSelectionForCopy()`, `getSpawnCenterWorld()`, **`captureVisiblePngDataUrl()`** (PNG поточного 2D-виду для PDF); виклики з `App.tsx`.
 - **Копіювання** — **Ctrl+C** / Cmd+C і кнопка: deep clone виділення; внутрішній буфер у `App`; додатково спроба записати JSON у системний clipboard (помилки ігноруються).
 - **Вставка** — **Ctrl+V** / кнопка: `shiftClonesForPaste` і пов’язана логіка в **`planClipboard.ts`**; центр мас набору вирівнюється з `getSpawnCenterWorld`; нові сутності через `pasteCloneEntities` у `stageStore` (нові `id`).
 - **Взаємовиключення**: рамка, вимір і placement; перехід у **3D** або **очищення вправи** вимикає рамку й скидає внутрішній буфер.
@@ -122,11 +122,11 @@
 - **Огляд і режим PDF:** початкова точка огляду (`StageNavigator`) береться з `computeOverviewAnchorWorld2d` (`overviewAnchor.ts`): якщо на сцені є стартові позиції — центр обраної з мінімальним **Y** на плані, при рівності — з максимальним **X**; інакше серед усіх кінців усіх штрафних ліній (`faultLine`) та сама логіка; якщо немає ні старту, ні ліній — центр поля. Відносний зсув камери до точки погляду зберігається як у попередній фіксованій схемі для центру поля.
 - **Розмір WebGL:** обгортка з `ResizeObserver` задає піксельні `width`/`height` для `Canvas`; у `App.css` — **absolute inset 0** на `.app__r3f-canvas-outer` (не PDF), **stretch** на `.app__stage-print-frame`, **`min-height`** на картці (коли `100cqw === 0`, `height` міг бути 0px).
 - **Земля:** площина поля — `Ground`, `meshStandardMaterial`, `receiveShadow`; колір з **`fieldGroundCover3d`** (`earth` / `grass` / `sand` у `fieldGround3d.ts`), зберігається в **`.stage.json`** і чернетці сесії.
-- Знімок сцени для PDF знімається через ref/handle компонента 3D (узгоджено з `App.tsx` / експортом).
+- Знімок для PDF: у **3D** — `capturePngDataUrl` у `StageView3D`; у **2D** — `captureVisiblePngDataUrl` у `StageCanvas` (PNG поточного кадру канвасу: видимий viewport, сітка, закріплені розміри `planDimensions`). Виклик з `App.handleExportPdf` після пару `requestAnimationFrame`.
 
 ## PDF брифінгу
 
-- **`exportBriefingPdf.ts`** — таблиця полів брифінгу, вбудований знімок 3D (після `addImage` — обведення `roundedRect` навколо кадру), QR у верхньому правому куті **сторінки**, бренд-текст і URL по центру під знімком; вертикальний старт знімка не вище за низ QR.
+- **`exportBriefingPdf.ts`** — таблиця полів брифінгу, вбудований знімок (після `addImage` — обведення `roundedRect` навколо кадру; джерело — 3D або 2D канвас), QR у верхньому правому куті **сторінки**, бренд-текст і URL по центру під знімком; вертикальний старт знімка не вище за низ QR.
 - **`pdfFonts.ts`** — підвантаження **Roboto** (Regular/Bold) у base64 і реєстрація в jsPDF, щоб коректно рендерити кирилицю.
 - **`a4PrintLayout.ts`** — розміри A4 в мм/px, співвідношення для знімка плану в UI (узгоджено з PDF).
 

@@ -742,6 +742,10 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         await new Promise<void>((r) => requestAnimationFrame(() => r()))
         await new Promise<void>((r) => requestAnimationFrame(() => r()))
         snap = view3dRef.current?.capturePngDataUrl() ?? null
+      } else if (viewMode === '2d') {
+        await new Promise<void>((r) => requestAnimationFrame(() => r()))
+        await new Promise<void>((r) => requestAnimationFrame(() => r()))
+        snap = planCanvasRef.current?.captureVisiblePngDataUrl() ?? null
       }
       const safeName = `${briefing.documentTitle.replace(/[\\/:*?"<>|]/g, '').slice(0, 80) || 'briefing'}.pdf`
       const { exportBriefingPdf } = await import('./presentation/lib/exportBriefingPdf')
@@ -1713,10 +1717,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
             {pdfBusy ? tree.briefing.downloadPdfBusy : tree.briefing.downloadPdf}
           </button>
-          <p className="app__briefing-hint">
-            {tree.briefing.hintBefore} <strong>{tree.briefing.hintEm}</strong>
-            {tree.briefing.hintAfter}
-          </p>
+          <p className="app__briefing-hint">{tree.briefing.pdfSnapshotHint}</p>
         </div>
       </details>
 

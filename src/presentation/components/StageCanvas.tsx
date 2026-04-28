@@ -2181,6 +2181,8 @@ export type StageCanvasHandle = {
   getSpawnCenterWorld: () => { x: number; y: number } | null
   /** Центрує вид на світовій точці (м); при масштабі 1 трохи наближає. координати площадки. */
   centerOnWorldPoint: (worldX: number, worldY: number) => void
+  /** PNG-потік поточного кадру 2D (видима сітка та сцена) для PDF; null якщо канвас недоступний. */
+  captureVisiblePngDataUrl: () => string | null
   /** Скидає точки вимірювання (виклик з App при вимкненні режиму). */
   clearMeasure: () => void
   /** Знімок виділених сутностей для копіювання (глибокі копії). */
@@ -2460,6 +2462,18 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         }
         gridHoverRef.current = null
         repaint()
+      },
+      captureVisiblePngDataUrl: () => {
+        const canvas = canvasRef.current
+        if (!canvas) return null
+        const rect = canvas.getBoundingClientRect()
+        if (rect.width < 2 || rect.height < 2) return null
+        repaint()
+        try {
+          return canvas.toDataURL('image/png')
+        } catch {
+          return null
+        }
       },
       clearMeasure: () => {
         setMeasurePoints({ a: null, b: null })
