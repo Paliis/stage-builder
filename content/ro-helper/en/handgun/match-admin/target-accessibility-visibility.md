@@ -3,7 +3,7 @@ card_id: C517
 slug: target-accessibility-visibility
 discipline: handgun
 locale: en
-title: "Target accessibility visibility"
+title: "Target visibility and accessibility"
 category: match-admin
 ipsc_refs:
   - rule: "9.1"
@@ -16,17 +16,26 @@ status: draft
 reviewer: ""
 ipsc_edition: "Jan 2026"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-draft_source: llm-pending
+draft_source: llm
 review_date: ""
 ---
 
-## Translation pending
+## What this is
 
-This article has not been translated into English yet. The Ukrainian version
-contains the current text — switch the portal language to **UK** at the top of
-the page to read it. `status: draft`, `draft_source: llm-pending`.
+A fair **engagement** and correct scoring under **section 9.1** require targets to comply with **Appendix B** and be reachable from all permitted positions for typical shooters (height, port, barricade).
 
-## IPSC
+## RO algorithm
 
-If you need to verify the rule directly, see the official IPSC source linked in
-the frontmatter (`primary_url`) and the rule numbers under `ipsc_refs`.
+1. **Inspection:** walk the stage from the WSB extreme positions; verify the scoring zone is not fully blocked for a short / tall shooter.
+2. **Assessment:** compare with **Appendix B** (size, height, angle); if a target "hides" only for a subset — there is a risk of unfair **9.1** application.
+3. **Announce:** notify **MD** / **RM** before the division starts; no squad start until the issue is fixed or formally allowed.
+4. **Document:** log the WSB change / photo in the stage diary; update the briefing for shooters.
+
+## Key nuances (Jan 2026)
+
+* **Hard cover** combined with the port geometry can render a target effectively unreachable — this is a design / **Appendix B** issue, not a question of shooter "intent".
+* Low ports must not force an **engagement** into the ground in front of the shooter — coordinate with the **MD**.
+
+## Local (FPSU)
+
+Chapter II. Regional accessibility requirements for all categories.

@@ -3,7 +3,7 @@ card_id: C541
 slug: managing-restoration-errors
 discipline: handgun
 locale: en
-title: "Managing restoration errors"
+title: "Stage restoration errors"
 category: match-admin
 ipsc_refs:
   - rule: "8.3.1"
@@ -18,17 +18,26 @@ status: draft
 reviewer: ""
 ipsc_edition: "Jan 2026"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-draft_source: llm-pending
+draft_source: llm
 review_date: ""
 ---
 
-## Translation pending
+## What this is
 
-This article has not been translated into English yet. The Ukrainian version
-contains the current text — switch the portal language to **UK** at the top of
-the page to read it. `status: draft`, `draft_source: llm-pending`.
+Un-pasted holes, un-reset mechanics, broken stage start: the **RO** is responsible for safety **10.5** and a correct record per **9.10**.
 
-## IPSC
+## RO algorithm
 
-If you need to verify the rule directly, see the official IPSC source linked in
-the frontmatter (`primary_url`) and the rule numbers under `ipsc_refs`.
+1. **Stop:** detected mid-COF — "Stop" (**8.3.1**); gun in a safe state.
+2. **Assessment:** did it affect the result / was the stage unsafe (**10.5**).
+3. **RM:** reshoot or another decision; **REF** per **MD** policy without citing other chapters.
+4. **Record / brief:** update **9.10**; brief the helpers; re-run the **checklist** before the next shooter.
+
+## Key nuances (Jan 2026)
+
+* Penalty targets are pasted first.
+* Do not "back-fill" a scoring zone for a previous shooter's hole.
+
+## Common RO mistakes
+
+* Continuing a string on a known-broken stage.
