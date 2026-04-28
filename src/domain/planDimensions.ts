@@ -1,31 +1,31 @@
-import type { PlanDimensionLine, StageEntityRef } from './models'
-import { refKey } from './activations'
+import type { PlanDimensionLine, Vec2 } from './models'
+import { clampVec2ToField } from './field'
 
-export function filterPlanDimensionsAfterRemoveTarget(
+const POINT_DEDUP_M = 0.03
+
+export function reclampPlanDimensionsToField(
   dims: readonly PlanDimensionLine[],
-  targetId: string,
+  widthM: number,
+  heightM: number,
 ): PlanDimensionLine[] {
-  return dims.filter(
-    (d) =>
-      !(d.from.kind === 'target' && d.from.id === targetId) &&
-      !(d.to.kind === 'target' && d.to.id === targetId),
-  )
+  return dims.map((d) => ({
+    ...d,
+    endA: clampVec2ToField(d.endA, 0, widthM, heightM),
+    endB: clampVec2ToField(d.endB, 0, widthM, heightM),
+  }))
 }
 
-export function filterPlanDimensionsAfterRemoveProp(
-  dims: readonly PlanDimensionLine[],
-  propId: string,
-): PlanDimensionLine[] {
-  return dims.filter(
-    (d) =>
-      !(d.from.kind === 'prop' && d.from.id === propId) &&
-      !(d.to.kind === 'prop' && d.to.id === propId),
-  )
+/** Дублікат тієї ж лінії (кінці збігаються з урахуванням порядку). */
+export function planDimensionsDuplicateUnordered(
+  d: PlanDimensionLine,
+  endA: Vec2,
+  endB: Vec2,
+): boolean {
+  const ap = pointApproxEqual(d.endA, endA) && pointApproxEqual(d.endB, endB)
+  const swapped = pointApproxEqual(d.endA, endB) && pointApproxEqual(d.endB, endA)
+  return ap || swapped
 }
 
-/** Ключ для виявлення дублікату лінії (A→B дорівнює B→A). */
-export function planDimensionUnorderedPairKey(from: StageEntityRef, to: StageEntityRef): string {
-  const k1 = refKey(from)
-  const k2 = refKey(to)
-  return k1 <= k2 ? `${k1}\0${k2}` : `${k2}\0${k1}`
+function pointApproxEqual(a: Vec2, b: Vec2): boolean {
+  return Math.hypot(a.x - b.x, a.y - b.y) <= POINT_DEDUP_M
 }

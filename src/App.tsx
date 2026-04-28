@@ -20,7 +20,15 @@ import { computeMinRounds, countStageTargetUnits } from './domain/computeMinRoun
 import type { PlacementMode } from './domain/placementMode'
 import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
 import { refKey } from './domain/activations'
-import type { Prop, PropType, StageCategory, StageEntityRef, Target, TargetType } from './domain/models'
+import type {
+  Prop,
+  PropType,
+  StageCategory,
+  StageEntityRef,
+  Target,
+  TargetType,
+  Vec2,
+} from './domain/models'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
 import { FIELD_GROUND_COVER_3D_VALUES, type FieldGroundCover3d } from './domain/fieldGround3d'
 import {
@@ -194,7 +202,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const [activationLinkMode, setActivationLinkMode] = useState(false)
   const [activationPendingFrom, setActivationPendingFrom] = useState<StageEntityRef | null>(null)
   const [dimensionLinkMode, setDimensionLinkMode] = useState(false)
-  const [dimensionPendingFrom, setDimensionPendingFrom] = useState<StageEntityRef | null>(null)
+  const [dimensionDraftWorld, setDimensionDraftWorld] = useState<Vec2 | null>(null)
   const [planSelectionSummary, setPlanSelectionSummary] = useState({ empty: true, count: 0 })
   const [hasPlanClipboard, setHasPlanClipboard] = useState(false)
   const internalClipboardRef = useRef<{ targets: Target[]; props: Prop[] } | null>(null)
@@ -225,7 +233,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     setActivationLinkMode(false)
     setActivationPendingFrom(null)
     setDimensionLinkMode(false)
-    setDimensionPendingFrom(null)
+    setDimensionDraftWorld(null)
     setMobileMenuOpen(false)
     setHasPlanClipboard(false)
     internalClipboardRef.current = null
@@ -463,7 +471,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
       setDimensionLinkMode(false)
-      setDimensionPendingFrom(null)
+      setDimensionDraftWorld(null)
     }
   }, [viewMode])
 
@@ -474,7 +482,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
       setDimensionLinkMode(false)
-      setDimensionPendingFrom(null)
+      setDimensionDraftWorld(null)
     }
   }, [marqueeModeActive])
 
@@ -484,7 +492,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
       setDimensionLinkMode(false)
-      setDimensionPendingFrom(null)
+      setDimensionDraftWorld(null)
     }
   }, [measureToolActive])
 
@@ -494,7 +502,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
       setDimensionLinkMode(false)
-      setDimensionPendingFrom(null)
+      setDimensionDraftWorld(null)
     }
   }, [placementMode])
 
@@ -504,7 +512,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setPlacementMode(null)
       setMarqueeModeActive(false)
       setDimensionLinkMode(false)
-      setDimensionPendingFrom(null)
+      setDimensionDraftWorld(null)
     }
   }, [activationLinkMode])
 
@@ -544,7 +552,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       if (dimensionLinkMode) {
         e.preventDefault()
         setDimensionLinkMode(false)
-        setDimensionPendingFrom(null)
+        setDimensionDraftWorld(null)
         return
       }
       if (activationLinkMode) {
@@ -592,12 +600,13 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     [addActivationEdge],
   )
 
-  const handleDimensionEntityPick = useCallback(
-    (ref: StageEntityRef) => {
-      setDimensionPendingFrom((prev) => {
-        if (!prev) return ref
-        if (refKey(prev) === refKey(ref)) return null
-        addPlanDimensionLine(prev, ref)
+  const handleDimensionWorldPick = useCallback(
+    (world: Vec2) => {
+      setDimensionDraftWorld((prev) => {
+        if (!prev) return { x: world.x, y: world.y }
+        const d = Math.hypot(world.x - prev.x, world.y - prev.y)
+        if (d < 0.025) return null
+        addPlanDimensionLine(prev, world)
         return null
       })
     },
@@ -1287,8 +1296,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       activationPendingFrom={activationPendingFrom}
                       onActivationEntityPick={readOnly ? undefined : handleActivationEntityPick}
                       dimensionLinkModeActive={!readOnly && dimensionLinkMode}
-                      dimensionPendingFrom={dimensionPendingFrom}
-                      onDimensionEntityPick={readOnly ? undefined : handleDimensionEntityPick}
+                      dimensionDraftWorld={dimensionDraftWorld}
+                      onDimensionWorldPick={readOnly ? undefined : handleDimensionWorldPick}
                       onRemovePlanDimensionLine={readOnly ? undefined : removePlanDimensionLine}
                     />
                     {!readOnly ? (
@@ -1302,7 +1311,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         onClick={() => {
                           setMarqueeModeActive((v) => !v)
                           setDimensionLinkMode(false)
-                          setDimensionPendingFrom(null)
+                          setDimensionDraftWorld(null)
                         }}
                       >
                         <svg
@@ -1377,7 +1386,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                           setActivationLinkMode((v) => !v)
                           setActivationPendingFrom(null)
                           setDimensionLinkMode(false)
-                          setDimensionPendingFrom(null)
+                          setDimensionDraftWorld(null)
                         }}
                       >
                         <svg
@@ -1406,7 +1415,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         onClick={() => {
                           setPlacementMode(null)
                           setDimensionLinkMode((v) => !v)
-                          setDimensionPendingFrom(null)
+                          setDimensionDraftWorld(null)
                           setActivationLinkMode(false)
                           setActivationPendingFrom(null)
                           setMeasureToolActive(false)
@@ -1439,7 +1448,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         onClick={() => {
                           setPlacementMode(null)
                           setDimensionLinkMode(false)
-                          setDimensionPendingFrom(null)
+                          setDimensionDraftWorld(null)
                           setActivationLinkMode(false)
                           setActivationPendingFrom(null)
                           setMeasureToolActive((v) => !v)

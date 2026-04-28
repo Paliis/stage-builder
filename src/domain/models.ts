@@ -109,11 +109,11 @@ export type ActivationEdge = {
   to: StageEntityRef
 }
 
-/** Закріплений розмір на 2D-плані: відстань між центрами двох об’єктів (кваліфікаційна репліка сцени). */
+/** Закріплений розмір на плані: відрізок між двома довільними точками поля (м). */
 export type PlanDimensionLine = {
   id: string
-  from: StageEntityRef
-  to: StageEntityRef
+  endA: Vec2
+  endB: Vec2
 }
 
 export type Stage = {

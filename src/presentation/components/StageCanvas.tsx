@@ -27,7 +27,6 @@ import {
   globalActivationNumberMap,
   planAnchorWorld,
   refKey,
-  resolveEntityRef,
 } from '../../domain/activations'
 import {
   cooperTunnelPenaltyPlankOffsetsXM,
@@ -908,8 +907,6 @@ function pickPlanDimensionLineIdAtScreen(
   sx: number,
   sy: number,
   dims: readonly PlanDimensionLine[],
-  targets: readonly Target[],
-  props: readonly Prop[],
   tf: ViewTransform,
 ): string | null {
   const maxSq = PLAN_DIMENSION_PICK_MAX_PX * PLAN_DIMENSION_PICK_MAX_PX
@@ -917,11 +914,8 @@ function pickPlanDimensionLineIdAtScreen(
   let bestD = Infinity
   for (let i = dims.length - 1; i >= 0; i--) {
     const d = dims[i]!
-    const wa = planAnchorWorld(d.from, targets, props)
-    const wb = planAnchorWorld(d.to, targets, props)
-    if (!wa || !wb) continue
-    const sa = worldToScreen(wa.x, wa.y, tf)
-    const sb = worldToScreen(wb.x, wb.y, tf)
+    const sa = worldToScreen(d.endA.x, d.endA.y, tf)
+    const sb = worldToScreen(d.endB.x, d.endB.y, tf)
     const dsq = distancePointToSegmentSq(sx, sy, sa.x, sa.y, sb.x, sb.y)
     if (dsq <= maxSq && dsq < bestD) {
       bestD = dsq
@@ -931,57 +925,28 @@ function pickPlanDimensionLineIdAtScreen(
   return bestId
 }
 
-/** Радіус маркера кінця лінії розміру (px): не ширший за силует об’єкта на плані. */
-function dimensionEndpointDotRadiusPx(
-  ref: StageEntityRef,
-  targets: readonly Target[],
-  props: readonly Prop[],
-  tf: ViewTransform,
-): number {
-  const base = Math.max(2.8, Math.min(10, 2.4 + tf.pxPerMeter * 0.052))
-  const e = resolveEntityRef(ref, targets, props)
-  if (!e) return base
-  let rM: number
-  if (ref.kind === 'target') {
-    rM = targetFootprintWorld(e as Target).boundsR
-  } else {
-    const p = e as Prop
-    const outline = propOutlineWorld(p)
-    if (outline.length < 2) {
-      rM = Math.min(p.sizeM.x, p.sizeM.y) * 0.5
-    } else {
-      rM = 0
-      for (const q of outline) {
-        rM = Math.max(rM, Math.hypot(q.x - p.position.x, q.y - p.position.y))
-      }
-    }
-  }
-  const capPx = rM * tf.pxPerMeter * 0.36
-  return Math.max(2.2, Math.min(base, capPx))
+function dimensionPlanEndpointDotPx(tf: ViewTransform): number {
+  return Math.max(2.6, Math.min(9, 2.2 + tf.pxPerMeter * 0.048))
 }
 
-/** Закріплені розміри centre-to-centre; стиль відмінний від тимчасового виміру (помаранчевий). */
+/** Закріплені розміри між довільними точками поля (м); стиль відмінний від тимчасового виміру. */
 function drawSavedPlanDimensions(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
   dims: readonly PlanDimensionLine[],
-  targets: readonly Target[],
-  props: readonly Prop[],
   formatMeasureDistance: (m: number) => string,
-  pendingFrom: StageEntityRef | null,
+  draftFirstWorldPoint: Vec2 | null,
 ) {
+  const dotPx = dimensionPlanEndpointDotPx(tf)
+  const dotRA = dotPx
+  const dotRB = dotPx
+  const dotRForOffset = dotPx
   for (let di = 0; di < dims.length; di++) {
     const dim = dims[di]!
-    const wa = planAnchorWorld(dim.from, targets, props)
-    const wb = planAnchorWorld(dim.to, targets, props)
-    if (!wa || !wb) continue
-    const sa = worldToScreen(wa.x, wa.y, tf)
-    const sb = worldToScreen(wb.x, wb.y, tf)
-    const distM = Math.hypot(wb.x - wa.x, wb.y - wa.y)
+    const sa = worldToScreen(dim.endA.x, dim.endA.y, tf)
+    const sb = worldToScreen(dim.endB.x, dim.endB.y, tf)
+    const distM = Math.hypot(dim.endB.x - dim.endA.x, dim.endB.y - dim.endA.y)
     const label = formatMeasureDistance(distM)
-    const dotRA = dimensionEndpointDotRadiusPx(dim.from, targets, props, tf)
-    const dotRB = dimensionEndpointDotRadiusPx(dim.to, targets, props, tf)
-    const dotRForOffset = Math.max(dotRA, dotRB)
 
     ctx.save()
     ctx.strokeStyle = 'rgba(13, 148, 136, 0.92)'
@@ -1050,20 +1015,17 @@ function drawSavedPlanDimensions(
     ctx.restore()
   }
 
-  if (pendingFrom) {
-    const pos = planAnchorWorld(pendingFrom, targets, props)
-    if (pos) {
-      const sc = worldToScreen(pos.x, pos.y, tf)
-      ctx.save()
-      ctx.setLineDash([6, 4])
-      ctx.strokeStyle = 'rgba(20, 184, 166, 0.96)'
-      ctx.lineWidth = 2.5
-      ctx.beginPath()
-      ctx.arc(sc.x, sc.y, Math.max(14, tf.pxPerMeter * 0.22), 0, Math.PI * 2)
-      ctx.stroke()
-      ctx.setLineDash([])
-      ctx.restore()
-    }
+  if (draftFirstWorldPoint) {
+    const sc = worldToScreen(draftFirstWorldPoint.x, draftFirstWorldPoint.y, tf)
+    ctx.save()
+    ctx.setLineDash([6, 4])
+    ctx.strokeStyle = 'rgba(20, 184, 166, 0.96)'
+    ctx.lineWidth = 2.5
+    ctx.beginPath()
+    ctx.arc(sc.x, sc.y, Math.max(12, tf.pxPerMeter * 0.18), 0, Math.PI * 2)
+    ctx.stroke()
+    ctx.setLineDash([])
+    ctx.restore()
   }
 }
 
@@ -1869,7 +1831,7 @@ function redraw(
   activationNumMap: Map<string, number>,
   activationPendingFrom: StageEntityRef | null,
   planDimensions: readonly PlanDimensionLine[],
-  planDimensionPendingFrom: StageEntityRef | null,
+  planDimensionDraftWorld: Vec2 | null,
 ) {
   const dpr = window.devicePixelRatio || 1
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -2127,15 +2089,7 @@ function redraw(
     activationNumMap,
     activationPendingFrom,
   )
-  drawSavedPlanDimensions(
-    ctx,
-    tf,
-    planDimensions,
-    targets,
-    props,
-    formatMeasureDistance,
-    planDimensionPendingFrom,
-  )
+  drawSavedPlanDimensions(ctx, tf, planDimensions, formatMeasureDistance, planDimensionDraftWorld)
   drawPlanSelectOutlines(ctx, tf, targets, props, planSelect)
   drawPenaltyVertexHandles(ctx, tf, penaltyZoneSet, planSelect)
 
@@ -2196,10 +2150,10 @@ export type StageCanvasProps = {
   activationLinkModeActive?: boolean
   activationPendingFrom?: StageEntityRef | null
   onActivationEntityPick?: (ref: StageEntityRef) => void
-  /** Закріплені розміри між центрами об'єктів (два кліки; клік по лінії — видалити). */
+  /** Закріплені розміри: два кліки по полю в метрах (клік по лінії — видалити). */
   dimensionLinkModeActive?: boolean
-  dimensionPendingFrom?: StageEntityRef | null
-  onDimensionEntityPick?: (ref: StageEntityRef) => void
+  dimensionDraftWorld?: Vec2 | null
+  onDimensionWorldPick?: (world: Vec2) => void
   onRemovePlanDimensionLine?: (id: string) => void
   /** Режим перегляду за share-посиланням: лише пан/зум і вимірювання, без редагування сцени. */
   readOnly?: boolean
@@ -2258,8 +2212,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   activationPendingFrom = null,
   onActivationEntityPick,
   dimensionLinkModeActive = false,
-  dimensionPendingFrom = null,
-  onDimensionEntityPick,
+  dimensionDraftWorld = null,
+  onDimensionWorldPick,
   onRemovePlanDimensionLine,
   readOnly = false,
 }: StageCanvasProps,
@@ -2419,7 +2373,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         activationNumMap,
         activationPendingFrom,
         planDimensions,
-        dimensionPendingFrom,
+        dimensionDraftWorld,
       )
 
     const t = transformRef.current
@@ -2446,7 +2400,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     activationNumMap,
     activationPendingFrom,
     planDimensions,
-    dimensionPendingFrom,
+    dimensionDraftWorld,
   ])
 
   useImperativeHandle(
@@ -2515,10 +2469,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     onActivationEntityPickRef.current = onActivationEntityPick
   }, [onActivationEntityPick])
 
-  const onDimensionEntityPickRef = useRef(onDimensionEntityPick)
+  const onDimensionWorldPickRef = useRef(onDimensionWorldPick)
   useEffect(() => {
-    onDimensionEntityPickRef.current = onDimensionEntityPick
-  }, [onDimensionEntityPick])
+    onDimensionWorldPickRef.current = onDimensionWorldPick
+  }, [onDimensionWorldPick])
 
   const onRemovePlanDimensionLineRef = useRef(onRemovePlanDimensionLine)
   useEffect(() => {
@@ -2740,24 +2694,18 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
       const tf = transformRef.current
-      const hitLine = pickPlanDimensionLineIdAtScreen(sx, sy, planDimensions, targets, props, tf)
+      const hitLine = pickPlanDimensionLineIdAtScreen(sx, sy, planDimensions, tf)
       if (hitLine) {
         onRemovePlanDimensionLineRef.current?.(hitLine)
         repaint()
         return
       }
-      const ppm = tf.pxPerMeter
-      const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
-      const hitT = pickTargetAt(targets, w.x, w.y, touchPad)
-      if (hitT) {
-        onDimensionEntityPickRef.current?.({ kind: 'target', id: hitT.id })
-        return
-      }
-      const hitP = pickPropAt(props, w.x, w.y, touchPad)
-      if (hitP) {
-        onDimensionEntityPickRef.current?.({ kind: 'prop', id: hitP.id })
-        return
-      }
+      const wx = Math.min(Math.max(w.x, 0), fw)
+      const wy = Math.min(Math.max(w.y, 0), fh)
+      pendingEmptyPanRef.current = null
+      gridHoverRef.current = null
+      setPlanSelect({ mode: 'none' })
+      onDimensionWorldPickRef.current?.({ x: wx, y: wy })
       return
     }
 

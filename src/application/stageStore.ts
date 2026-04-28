@@ -17,9 +17,8 @@ import {
   refKey,
 } from '../domain/activations'
 import {
-  filterPlanDimensionsAfterRemoveProp,
-  filterPlanDimensionsAfterRemoveTarget,
-  planDimensionUnorderedPairKey,
+  planDimensionsDuplicateUnordered,
+  reclampPlanDimensionsToField,
 } from '../domain/planDimensions'
 import {
   emptyPenaltyZoneSet,
@@ -107,7 +106,7 @@ export type StageState = {
   penaltyZoneSet: PenaltyZoneSet
   /** Зв’язки активації (BL-004). */
   activations: ActivationEdge[]
-  /** Закріплені розміри між центрами об’єктів на плані (кваліфікація). */
+  /** Закріплені розміри між двома точками плану в метрах. */
   planDimensions: PlanDimensionLine[]
   setStageName: (name: string) => void
   setFieldGroundCover3d: (cover: FieldGroundCover3d) => void
@@ -147,8 +146,8 @@ export type StageState = {
   movePenaltyVertex: (polygonId: string, ringId: string, vertexIndex: number, position: Vec2) => void
   /** Якщо після видалення вершин < 3 — зовнішній контур скидає весь полігон, дірку прибираємо. */
   removePenaltyVertex: (polygonId: string, ringId: string, vertexIndex: number) => void
-  /** Закріплений розмір centre-to-centre між двома об’єктами (не впорядкована пара — один запис). */
-  addPlanDimensionLine: (from: StageEntityRef, to: StageEntityRef) => void
+  /** Закріплений розмір між двома точками поля (перетинають границю або об’єкт — як зручно). */
+  addPlanDimensionLine: (endA: Vec2, endB: Vec2) => void
   removePlanDimensionLine: (id: string) => void
 }
 
@@ -181,7 +180,11 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         next.y,
       )
       const activations = snapshot.activations ?? []
-      const planDimensions = snapshot.planDimensions ?? []
+      const planDimensions = reclampPlanDimensionsToField(
+        snapshot.planDimensions ?? [],
+        next.x,
+        next.y,
+      )
       return {
         name: snapshot.name.trim().slice(0, 200) || s.name,
         weaponClass: snapshot.weaponClass,
@@ -211,14 +214,18 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       }
     }),
 
-  addPlanDimensionLine: (from, to) =>
+  addPlanDimensionLine: (endA, endB) =>
     set((s) => {
-      if (refKey(from) === refKey(to)) return s
-      const pairKey = planDimensionUnorderedPairKey(from, to)
-      const dup = s.planDimensions.some((d) => planDimensionUnorderedPairKey(d.from, d.to) === pairKey)
+      const fw = s.fieldSizeM.x
+      const fh = s.fieldSizeM.y
+      const a = clampVec2ToField(endA, 0, fw, fh)
+      const b = clampVec2ToField(endB, 0, fw, fh)
+      if (Math.hypot(b.x - a.x, b.y - a.y) < 1e-9) return s
+      const dup = s.planDimensions.some((d) => planDimensionsDuplicateUnordered(d, a, b))
       if (dup) return s
-      const line: PlanDimensionLine = { id: newId(), from, to }
-      return { planDimensions: [...s.planDimensions, line] }
+      return {
+        planDimensions: [...s.planDimensions, { id: newId(), endA: a, endB: b }],
+      }
     }),
 
   removePlanDimensionLine: (id) =>
@@ -358,7 +365,8 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       if (next.x === s.fieldSizeM.x && next.y === s.fieldSizeM.y) return s
       const { targets, props } = reclampTargetsProps(s.targets, s.props, next.x, next.y)
       const penaltyZoneSet = reclampPenaltyZoneSet(s.penaltyZoneSet, next.x, next.y)
-      return { fieldSizeM: next, targets, props, penaltyZoneSet }
+      const planDimensions = reclampPlanDimensionsToField(s.planDimensions, next.x, next.y)
+      return { fieldSizeM: next, targets, props, penaltyZoneSet, planDimensions }
     }),
 
   addTarget: (type, isNoShoot = false, positionHint) =>
@@ -441,14 +449,12 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set((s) => ({
       targets: s.targets.filter((x) => x.id !== id),
       activations: filterActivationsAfterRemoveTarget(s.activations, id),
-      planDimensions: filterPlanDimensionsAfterRemoveTarget(s.planDimensions, id),
     })),
 
   removeProp: (id) =>
     set((s) => ({
       props: s.props.filter((x) => x.id !== id),
       activations: filterActivationsAfterRemoveProp(s.activations, id),
-      planDimensions: filterPlanDimensionsAfterRemoveProp(s.planDimensions, id),
     })),
 
   pasteCloneEntities: (targets, props) =>

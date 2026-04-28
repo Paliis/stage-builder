@@ -200,8 +200,8 @@ describe('stageProjectFile', () => {
         planDimensions: [
           {
             id: 'd1',
-            from: { kind: 'target', id: 'ta' },
-            to: { kind: 'target', id: 'tb' },
+            endA: { x: 1, y: 1 },
+            endB: { x: 5, y: 1 },
           },
         ],
       },
@@ -211,6 +211,53 @@ describe('stageProjectFile', () => {
     expect(parsed.ok).toBe(true)
     if (!parsed.ok) return
     expect(parsed.data.stage.planDimensions).toHaveLength(1)
-    expect(parsed.data.stage.planDimensions[0]!.from.id).toBe('ta')
+    expect(parsed.data.stage.planDimensions[0]!.endA).toEqual({ x: 1, y: 1 })
+    expect(parsed.data.stage.planDimensions[0]!.endB).toEqual({ x: 5, y: 1 })
+  })
+
+  it('parses legacy planDimensions with from/to as world anchors', () => {
+    const raw = {
+      format: 'stage-builder',
+      version: 4,
+      stage: {
+        name: 'Legacy',
+        weaponClass: 'handgun',
+        fieldSizeM: { x: 20, y: 30 },
+        fieldGroundCover3d: 'grass',
+        targets: [
+          {
+            id: 'ta',
+            type: 'metalPlate',
+            isNoShoot: false,
+            position: { x: 1, y: 1 },
+            rotationRad: 0,
+          },
+          {
+            id: 'tb',
+            type: 'metalPlate',
+            isNoShoot: false,
+            position: { x: 5, y: 1 },
+            rotationRad: 0,
+          },
+        ],
+        props: [],
+        penaltyZoneSet: emptyPenaltyZoneSet(),
+        activations: [],
+        planDimensions: [
+          {
+            id: 'd1',
+            from: { kind: 'target', id: 'ta' },
+            to: { kind: 'target', id: 'tb' },
+          },
+        ],
+      },
+      briefing: defaultStageBriefing(),
+    }
+    const parsed = parseStageProjectJson(JSON.stringify(raw))
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    expect(parsed.data.stage.planDimensions).toHaveLength(1)
+    expect(parsed.data.stage.planDimensions[0]!.endA).toEqual({ x: 1, y: 1 })
+    expect(parsed.data.stage.planDimensions[0]!.endB).toEqual({ x: 5, y: 1 })
   })
 })
