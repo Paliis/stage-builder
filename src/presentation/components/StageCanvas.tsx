@@ -27,6 +27,7 @@ import {
   globalActivationNumberMap,
   planAnchorWorld,
   refKey,
+  resolveEntityRef,
 } from '../../domain/activations'
 import {
   cooperTunnelPenaltyPlankOffsetsXM,
@@ -930,6 +931,35 @@ function pickPlanDimensionLineIdAtScreen(
   return bestId
 }
 
+/** Радіус маркера кінця лінії розміру (px): не ширший за силует об’єкта на плані. */
+function dimensionEndpointDotRadiusPx(
+  ref: StageEntityRef,
+  targets: readonly Target[],
+  props: readonly Prop[],
+  tf: ViewTransform,
+): number {
+  const base = Math.max(2.8, Math.min(10, 2.4 + tf.pxPerMeter * 0.052))
+  const e = resolveEntityRef(ref, targets, props)
+  if (!e) return base
+  let rM: number
+  if (ref.kind === 'target') {
+    rM = targetFootprintWorld(e as Target).boundsR
+  } else {
+    const p = e as Prop
+    const outline = propOutlineWorld(p)
+    if (outline.length < 2) {
+      rM = Math.min(p.sizeM.x, p.sizeM.y) * 0.5
+    } else {
+      rM = 0
+      for (const q of outline) {
+        rM = Math.max(rM, Math.hypot(q.x - p.position.x, q.y - p.position.y))
+      }
+    }
+  }
+  const capPx = rM * tf.pxPerMeter * 0.36
+  return Math.max(2.2, Math.min(base, capPx))
+}
+
 /** Закріплені розміри centre-to-centre; стиль відмінний від тимчасового виміру (помаранчевий). */
 function drawSavedPlanDimensions(
   ctx: CanvasRenderingContext2D,
@@ -949,7 +979,9 @@ function drawSavedPlanDimensions(
     const sb = worldToScreen(wb.x, wb.y, tf)
     const distM = Math.hypot(wb.x - wa.x, wb.y - wa.y)
     const label = formatMeasureDistance(distM)
-    const dotR = Math.max(3.5, 0.08 * tf.pxPerMeter)
+    const dotRA = dimensionEndpointDotRadiusPx(dim.from, targets, props, tf)
+    const dotRB = dimensionEndpointDotRadiusPx(dim.to, targets, props, tf)
+    const dotRForOffset = Math.max(dotRA, dotRB)
 
     ctx.save()
     ctx.strokeStyle = 'rgba(13, 148, 136, 0.92)'
@@ -961,12 +993,14 @@ function drawSavedPlanDimensions(
 
     ctx.fillStyle = 'rgba(204, 251, 241, 0.45)'
     ctx.strokeStyle = 'rgba(13, 148, 136, 0.95)'
-    for (const p of [sa, sb]) {
+    const drawDot = (cx: number, cy: number, r: number) => {
       ctx.beginPath()
-      ctx.arc(p.x, p.y, dotR, 0, Math.PI * 2)
+      ctx.arc(cx, cy, r, 0, Math.PI * 2)
       ctx.fill()
       ctx.stroke()
     }
+    drawDot(sa.x, sa.y, dotRA)
+    drawDot(sb.x, sb.y, dotRB)
 
     const m0x = (sa.x + sb.x) / 2
     const m0y = (sa.y + sb.y) / 2
@@ -986,7 +1020,7 @@ function drawSavedPlanDimensions(
       nx = -nx
       ny = -ny
     }
-    const perpOffPx = Math.max(12, dotR + 5 + tf.pxPerMeter * 0.034)
+    const perpOffPx = Math.max(12, dotRForOffset + 5 + tf.pxPerMeter * 0.034)
     const staggerAlongPx = ((di * 19 + (h >>> 0) % 17) % 27) - 13
     const lx = m0x + nx * perpOffPx + ux * staggerAlongPx
     const ly = m0y + ny * perpOffPx + uy * staggerAlongPx
