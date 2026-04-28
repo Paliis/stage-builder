@@ -106,7 +106,9 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* Full preview bitmap visible (asset is 16:10); avoid double-cropping vs container */
+  object-fit: contain;
+  object-position: center;
 }
 
 .portal-home__product-body {
