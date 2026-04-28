@@ -93,19 +93,21 @@ const ROTATION_SNAP_RAD = Math.PI / 36
 
 type Vec2 = { x: number; y: number }
 
-/** Виділення на плані: одне або кілька (рамка за центром об’єкта); вершина контуру штрафної зони. */
+/** Виділення на плані: одне або кілька (рамка за центром об’єкта); вершина контуру штрафної зони; лінія розмірів. */
 export type PlanSelectState =
   | { mode: 'none' }
   | { mode: 'single'; kind: 'target' | 'prop'; id: string }
   | { mode: 'multi'; targetIds: string[]; propIds: string[] }
   | { mode: 'penaltyVertex'; polygonId: string; ringId: string; vertexIndex: number }
+  | { mode: 'planDimension'; id: string }
 
 function snapshotEntitiesForCopy(
   planSelect: PlanSelectState,
   targets: readonly Target[],
   props: readonly Prop[],
 ): { targets: Target[]; props: Prop[] } | null {
-  if (planSelect.mode === 'none' || planSelect.mode === 'penaltyVertex') return null
+  if (planSelect.mode === 'none' || planSelect.mode === 'penaltyVertex' || planSelect.mode === 'planDimension')
+    return null
   if (planSelect.mode === 'single') {
     if (planSelect.kind === 'target') {
       const t = targets.find((x) => x.id === planSelect.id)
@@ -143,6 +145,14 @@ type DragMode =
     }
   | { mode: 'rotate'; kind: 'target' | 'prop'; id: string }
   | { mode: 'stretchFaultLine'; id: string; anchor: 'neg' | 'pos' }
+  | {
+      mode: 'editPlanDimension'
+      id: string
+      part: 'endA' | 'endB' | 'move'
+      startW: Vec2
+      origA: Vec2
+      origB: Vec2
+    }
 
 function collectIdsInWorldRect(
   targets: readonly Target[],
@@ -920,14 +930,37 @@ function distancePointToSegmentSq(
   return (px - projX) ** 2 + (py - projY) ** 2
 }
 
-function pickPlanDimensionLineIdAtScreen(
+function dimensionPlanEndpointDotPx(tf: ViewTransform): number {
+  return Math.max(2.6, Math.min(9, 2.2 + tf.pxPerMeter * 0.048))
+}
+
+/** Кінець (пріоритет) або сам відрізок — для перетягування закріплених розмірів. */
+function pickPlanDimensionPartAtScreen(
   sx: number,
   sy: number,
   dims: readonly PlanDimensionLine[],
   tf: ViewTransform,
-): string | null {
+): { id: string; part: 'endA' | 'endB' | 'segment' } | null {
+  if (dims.length === 0) return null
+  const endPx = Math.max(12, dimensionPlanEndpointDotPx(tf) + 8)
+  const endRsq = endPx * endPx
+  let bestEnd: { id: string; part: 'endA' | 'endB'; d2: number } | null = null
+  for (let i = dims.length - 1; i >= 0; i--) {
+    const d = dims[i]!
+    const sa = worldToScreen(d.endA.x, d.endA.y, tf)
+    const sb = worldToScreen(d.endB.x, d.endB.y, tf)
+    const da = (sx - sa.x) ** 2 + (sy - sa.y) ** 2
+    const db = (sx - sb.x) ** 2 + (sy - sb.y) ** 2
+    if (da <= endRsq && (!bestEnd || da < bestEnd.d2)) {
+      bestEnd = { id: d.id, part: 'endA', d2: da }
+    }
+    if (db <= endRsq && (!bestEnd || db < bestEnd.d2)) {
+      bestEnd = { id: d.id, part: 'endB', d2: db }
+    }
+  }
+  if (bestEnd) return { id: bestEnd.id, part: bestEnd.part }
   const maxSq = PLAN_DIMENSION_PICK_MAX_PX * PLAN_DIMENSION_PICK_MAX_PX
-  let bestId: string | null = null
+  let bestSeg: string | null = null
   let bestD = Infinity
   for (let i = dims.length - 1; i >= 0; i--) {
     const d = dims[i]!
@@ -936,14 +969,10 @@ function pickPlanDimensionLineIdAtScreen(
     const dsq = distancePointToSegmentSq(sx, sy, sa.x, sa.y, sb.x, sb.y)
     if (dsq <= maxSq && dsq < bestD) {
       bestD = dsq
-      bestId = d.id
+      bestSeg = d.id
     }
   }
-  return bestId
-}
-
-function dimensionPlanEndpointDotPx(tf: ViewTransform): number {
-  return Math.max(2.6, Math.min(9, 2.2 + tf.pxPerMeter * 0.048))
+  return bestSeg ? { id: bestSeg, part: 'segment' } : null
 }
 
 /** Закріплені розміри між довільними точками поля (м); стиль відмінний від тимчасового виміру. */
@@ -953,6 +982,7 @@ function drawSavedPlanDimensions(
   dims: readonly PlanDimensionLine[],
   formatMeasureDistance: (m: number) => string,
   draftFirstWorldPoint: Vec2 | null,
+  selectedDimensionId: string | null,
 ) {
   const dotPx = dimensionPlanEndpointDotPx(tf)
   const dotRA = dotPx
@@ -960,14 +990,15 @@ function drawSavedPlanDimensions(
   const dotRForOffset = dotPx
   for (let di = 0; di < dims.length; di++) {
     const dim = dims[di]!
+    const sel = selectedDimensionId !== null && dim.id === selectedDimensionId
     const sa = worldToScreen(dim.endA.x, dim.endA.y, tf)
     const sb = worldToScreen(dim.endB.x, dim.endB.y, tf)
     const distM = Math.hypot(dim.endB.x - dim.endA.x, dim.endB.y - dim.endA.y)
     const label = formatMeasureDistance(distM)
 
     ctx.save()
-    ctx.strokeStyle = 'rgba(13, 148, 136, 0.92)'
-    ctx.lineWidth = Math.max(1.5, Math.min(3, tf.pxPerMeter * 0.05))
+    ctx.strokeStyle = sel ? 'rgba(79, 70, 229, 0.95)' : 'rgba(13, 148, 136, 0.92)'
+    ctx.lineWidth = Math.max(1.75, Math.min(3.4, tf.pxPerMeter * 0.052 + (sel ? 0.35 : 0)))
     ctx.beginPath()
     ctx.moveTo(sa.x, sa.y)
     ctx.lineTo(sb.x, sb.y)
@@ -981,8 +1012,10 @@ function drawSavedPlanDimensions(
       ctx.fill()
       ctx.stroke()
     }
-    drawDot(sa.x, sa.y, dotRA)
-    drawDot(sb.x, sb.y, dotRB)
+    const drA = sel ? dotRA * 1.15 : dotRA
+    const drB = sel ? dotRB * 1.15 : dotRB
+    drawDot(sa.x, sa.y, drA)
+    drawDot(sb.x, sb.y, drB)
 
     const m0x = (sa.x + sb.x) / 2
     const m0y = (sa.y + sb.y) / 2
@@ -2106,7 +2139,14 @@ function redraw(
     activationNumMap,
     activationPendingFrom,
   )
-  drawSavedPlanDimensions(ctx, tf, planDimensions, formatMeasureDistance, planDimensionDraftWorld)
+  drawSavedPlanDimensions(
+    ctx,
+    tf,
+    planDimensions,
+    formatMeasureDistance,
+    planDimensionDraftWorld,
+    planSelect.mode === 'planDimension' ? planSelect.id : null,
+  )
   drawPlanSelectOutlines(ctx, tf, targets, props, planSelect)
   drawPenaltyVertexHandles(ctx, tf, penaltyZoneSet, planSelect)
 
@@ -2306,6 +2346,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     if (readOnly) return
     const ps = planSelectRef.current
     if (ps.mode === 'none') return
+    if (ps.mode === 'planDimension') {
+      onRemovePlanDimensionLine?.(ps.id)
+      setPlanSelect({ mode: 'none' })
+      return
+    }
     if (ps.mode === 'penaltyVertex') {
       removePenaltyVertex(ps.polygonId, ps.ringId, ps.vertexIndex)
       setPlanSelect({ mode: 'none' })
@@ -2319,7 +2364,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       else onDeleteProp(ps.id)
     }
     setPlanSelect({ mode: 'none' })
-  }, [readOnly, onDeleteTarget, onDeleteProp, removePenaltyVertex])
+  }, [readOnly, onDeleteTarget, onDeleteProp, removePenaltyVertex, onRemovePlanDimensionLine])
 
   const clearLongPressTimer = useCallback(() => {
     if (longPressTimerRef.current != null) {
@@ -2574,6 +2619,12 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
           setMeasurePoints({ a: null, b: null })
           return
         }
+        if (planSelectRef.current.mode === 'planDimension') {
+          e.preventDefault()
+          setPlanSelect({ mode: 'none' })
+          repaint()
+          return
+        }
       }
       if (e.code === 'Delete' || e.code === 'Backspace') {
         if (readOnly) return
@@ -2628,6 +2679,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     measurePoints.b,
     measureToolActive,
     readOnly,
+    repaint,
   ])
 
   useEffect(() => {
@@ -2719,24 +2771,56 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
+    if (
+      !readOnly &&
+      !measureToolActive &&
+      !marqueeModeActive &&
+      !activationLinkModeActive &&
+      ev.button === 0 &&
+      planDimensions.length > 0
+    ) {
+      const tfPick = transformRef.current
+      const pickDm = pickPlanDimensionPartAtScreen(sx, sy, planDimensions, tfPick)
+      if (pickDm) {
+        ev.preventDefault()
+        clearLongPressTimer()
+        pendingEmptyPanRef.current = null
+        gridHoverRef.current = null
+        const dim = planDimensions.find((d) => d.id === pickDm.id)
+        if (!dim) return
+        const wx = Math.min(Math.max(w.x, 0), fw)
+        const wy = Math.min(Math.max(w.y, 0), fh)
+        setPlanSelect({ mode: 'planDimension', id: dim.id })
+        dragRef.current = {
+          mode: 'editPlanDimension',
+          id: dim.id,
+          part: pickDm.part === 'segment' ? 'move' : pickDm.part,
+          startW: { x: wx, y: wy },
+          origA: { ...dim.endA },
+          origB: { ...dim.endB },
+        }
+        try {
+          canvas.setPointerCapture(ev.pointerId)
+        } catch {
+          /* ignore */
+        }
+        repaint()
+        return
+      }
+    }
+
     if (dimensionLinkModeActive && !readOnly && ev.button === 0) {
       ev.preventDefault()
       clearLongPressTimer()
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
-      const tf = transformRef.current
-      const hitLine = pickPlanDimensionLineIdAtScreen(sx, sy, planDimensions, tf)
-      if (hitLine) {
-        onRemovePlanDimensionLineRef.current?.(hitLine)
-        repaint()
-        return
-      }
       const wx = Math.min(Math.max(w.x, 0), fw)
       const wy = Math.min(Math.max(w.y, 0), fh)
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
       setPlanSelect({ mode: 'none' })
-      const ppm = tf.pxPerMeter
+      const tfDm = transformRef.current
+      const ppm = tfDm.pxPerMeter
       const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
       const anchor = planDimensionAnchorWorld(targets, props, wx, wy, touchPad)
       onDimensionWorldPickRef.current?.(anchor)
@@ -2846,7 +2930,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       !measureToolActive &&
       !activationLinkModeActive &&
       !dimensionLinkModeActive &&
-      planSelect.mode !== 'none'
+      planSelect.mode !== 'none' &&
+      planSelect.mode !== 'planDimension'
     ) {
       clearLongPressTimer()
       longPressArmRef.current = { pointerId: ev.pointerId, x: ev.clientX, y: ev.clientY }
@@ -3183,6 +3268,25 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
     const w = screenToWorld(sx, sy, transformRef.current)
+
+    if (drag.mode === 'editPlanDimension') {
+      const cur = clampVec2ToField(screenToWorld(sx, sy, transformRef.current), 0, fw, fh)
+      const dx = cur.x - drag.startW.x
+      const dy = cur.y - drag.startW.y
+      let na = drag.origA
+      let nb = drag.origB
+      if (drag.part === 'move') {
+        na = { x: drag.origA.x + dx, y: drag.origA.y + dy }
+        nb = { x: drag.origB.x + dx, y: drag.origB.y + dy }
+      } else if (drag.part === 'endA') {
+        na = cur
+      } else {
+        nb = cur
+      }
+      useStageStore.getState().setPlanDimensionLineEnds(drag.id, na, nb)
+      repaint()
+      return
+    }
 
     if (drag.mode === 'rotate') {
       const ent =

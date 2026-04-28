@@ -149,6 +149,8 @@ export type StageState = {
   /** Закріплений розмір між двома точками поля (перетинають границю або об’єкт — як зручно). */
   addPlanDimensionLine: (endA: Vec2, endB: Vec2) => void
   removePlanDimensionLine: (id: string) => void
+  /** Оновлення кінців (перетягування); без дублікату інших ліній; нульову довжину ігноруємо. */
+  setPlanDimensionLineEnds: (id: string, endA: Vec2, endB: Vec2) => void
 }
 
 export const useStageStore = create<StageState>()(temporal((set) => ({
@@ -232,6 +234,23 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set((s) => ({
       planDimensions: s.planDimensions.filter((d) => d.id !== id),
     })),
+
+  setPlanDimensionLineEnds: (id, endA, endB) =>
+    set((s) => {
+      const fw = s.fieldSizeM.x
+      const fh = s.fieldSizeM.y
+      const a = clampVec2ToField(endA, 0, fw, fh)
+      const b = clampVec2ToField(endB, 0, fw, fh)
+      if (Math.hypot(b.x - a.x, b.y - a.y) < 1e-9) return s
+      const idx = s.planDimensions.findIndex((d) => d.id === id)
+      if (idx < 0) return s
+      const others = s.planDimensions.filter((d) => d.id !== id)
+      if (others.some((d) => planDimensionsDuplicateUnordered(d, a, b))) return s
+      const nextLines = [...s.planDimensions]
+      const prev = nextLines[idx]!
+      nextLines[idx] = { ...prev, endA: a, endB: b }
+      return { planDimensions: nextLines }
+    }),
 
   addActivationEdge: (from, to) =>
     set((s) => {

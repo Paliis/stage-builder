@@ -702,7 +702,7 @@ export const ukMessages: MessageTree = {
       '\u0414\u0432\u0430 \u043a\u043b\u0456\u043a\u0438: \u0441\u043f\u043e\u0447\u0430\u0442\u043a\u0443 \u0434\u0436\u0435\u0440\u0435\u043b\u043e, \u043f\u043e\u0442\u0456\u043c \u0446\u0456\u043b\u044c. Esc \u2014 \u0432\u0438\u0439\u0442\u0438 \u0437 \u0440\u0435\u0436\u0438\u043c\u0443.',
     dimensionLinkMode: '\u0420\u043e\u0437\u043c\u0456\u0440\u0438',
     dimensionLinkModeTitle:
-      'Два кліки по плані: по мішені (у межах контуру) — кінець у центрі мішені; по реквізиту (щит, штрафна лінія тощо) або по порожньому полю — там, де клікнули. Лінія й підпис у файлі. Клік по лінії — видалити. Esc — вийти.',
+      'Два кліки — новий розмір; перетягувати кінець або середину (рух усій лінії). Клік виділяє — Delete або Backspace видаляють. Esc знімає виділення (вихід з режиму «Розміри» — як раніше через панель).',
     copySelection: '\u041a\u043e\u043f\u0456\u044f',
     copySelectionTitle:
       '\u041a\u043e\u043f\u0456\u044e\u0432\u0430\u0442\u0438 \u0432\u0438\u0434\u0456\u043b\u0435\u043d\u0435 (Ctrl+C). \u0421\u043f\u043e\u0447\u0430\u0442\u043a\u0443 \u2014 \u0432\u043d\u0443\u0442\u0440\u0456\u0448\u043d\u0454 \u0437\u0431\u0435\u0440\u0456\u0433\u0430\u043d\u043d\u044f \u0442\u0430\u043a\u043e\u0436 \u0443 \u0431\u0443\u0444\u0435\u0440 \u043e\u0431\u043c\u0456\u043d\u0443.',
@@ -1242,7 +1242,7 @@ export const enMessages: MessageTree = {
       'Two clicks: first the source object, then the target. Esc exits the mode.',
     dimensionLinkMode: 'Dimensions',
     dimensionLinkModeTitle:
-      'Two clicks: on a target footprint — snaps to target centre; on a prop (shield, fault line, etc.) or bare field — the exact click point. Line and label saved in file. Click a dimension line to remove. Esc exits.',
+      'Two clicks — new dimension. Drag an endpoint or the segment body to move. Click selects (violet); Delete or Backspace removes. Esc clears line selection (exit Dimensions mode from the toolbar as before).',
     copySelection: 'Copy',
     copySelectionTitle:
       'Copy selection (Ctrl+C). Also saved to the internal buffer; tries system clipboard when allowed.',
