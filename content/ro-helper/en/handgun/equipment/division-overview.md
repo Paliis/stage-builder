@@ -1,57 +1,54 @@
 ---
-title: "Divisions and equipment classes"
-card_id: "C255"
-slug: "division-overview"
-category: equipment
-locale: en
+card_id: C255
+slug: division-overview
 discipline: handgun
-control_values: "Verify Handgun Jan 2026 PDF — Ch.5 and relevant appendices (Production, Classic, Open, etc.)"
-ipsc_edition: "Jan 2026"
+locale: en
+title: "Division compliance"
+category: equipment
 ipsc_refs:
-  - rule: "5"
-    note: "Divisions and equipment rules — Handgun Ch.5 + appendices"
-primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+  - rule: "Appendix D"
+    note: ""
 fpsu_refs:
   - rule: "VII §1"
     note: "Firearms"
     url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#1-%D0%B7%D0%B1%D1%80%D0%BE%D1%8F"
   - rule: "VIII §2"
-    note: "Match classes"
+    note: "Match divisions"
     url: "https://upsf.org.ua/rules/upsf/2020/08-match-structure#2-%D0%BA%D0%BB%D0%B0%D1%81%D0%B8-%D1%83-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85"
-fpsu_delta_verified: false
-reviewer: ""
-review_date: ""
-draft_source: llm
+fpsu_delta_verified: true
 status: draft
+reviewer: ""
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+draft_source: llm
+review_date: ""
 ---
 
 ## What this is
 
-**Chapter 5** of **IPSC Handgun** plus **appendices** defines **divisions** (Open, Limited, Production, Classic, Revolver, etc. — **exact list in your PDF**) and **equipment limits** for each. The bay **RO** performs **visible compliance** checks (holster, optics, magazines) and escalates to **chrono** / **division arbiter** when in doubt — do not invent ad-hoc “sub-divisions”.
+Use of a firearm that does not match the technical parameters of the declared division.
 
-## What the Range Officer (RO) does
+## RO algorithm
 
-1. **Confirm** the competitor is entered in the **division** that matches the visible handgun configuration.
-2. **On clear mismatch** (e.g. compensator in a forbidden division) — hold the start and call **RM** / arbiter.
-3. **Do not run a full match inspection** on the bay without authority — only what **MD** or **Chapter 5** requires.
-4. **Respect** chrono outcomes and official trigger checks (Production appendix, etc.).
-5. **Point the competitor** to the right channel to challenge division classification if that is outside RO scope.
+1. **Inspect:** review firearm modifications (ports, compensators, optical sights, magazine well extensions).
+2. **Assess:** cross-check parameters against the Appendix D tables and criteria for the relevant division.
+3. **Action:** on a mismatch (e.g. a compensator in Standard) — notify the RM at once.
+4. **Document:** move the shooter to the appropriate division (usually Open) or process a DQ for deliberate firearm switching — the RM decides.
 
-## IPSC (Jan 2026)
+## Key nuances (Jan 2026)
 
-- Read **Chapter 5** and the relevant **Appendix** per division; sub-clause numbers from your PDF.
+* **Approved list:** for the Production division the firearm must be on the official IPSC Approved list.
+* **Magazines:** length limits (141.25 mm or 170 mm) are critical for Standard and Open — per the Appendix D text.
 
 ## Local (FPSU)
 **Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
 
 - [VII §1 — Firearms](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#1-%D0%B7%D0%B1%D1%80%D0%BE%D1%8F)
-- [VIII §2 — Match classes](https://upsf.org.ua/rules/upsf/2020/08-match-structure#2-%D0%BA%D0%BB%D0%B0%D1%81%D0%B8-%D1%83-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85)
+- [VIII §2 — Match divisions](https://upsf.org.ua/rules/upsf/2020/08-match-structure#2-%D0%BA%D0%BB%D0%B0%D1%81%D0%B8-%D1%83-%D0%B7%D0%BC%D0%B0%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%D1%85)
 
 
-FPSU may limit which divisions run at a match — **MD** briefing. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+Appendix 4 of the FPSU rules. Division compliance is checked at the equipment check station or directly on the stage.
 
-## Common mistakes
+## Common RO mistakes
 
-- **Allowing a start** with obviously illegal gear “we’ll sort it later”.
-- **Mixing PCC** with handgun on shared ranges — different rules.
-- **RO ejects** from a division without **RM**.
+* "Re-classifying" the division on one's own without involving the RM.

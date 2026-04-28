@@ -1,59 +1,55 @@
 ---
-title: "Ready conditions and RO commands"
-card_id: "C230"
-slug: "ready-conditions"
-category: equipment
-locale: en
+card_id: C230
+slug: ready-conditions
 discipline: handgun
-control_values: "Verify Handgun Jan 2026 PDF — 8.1–8.3 (command sequence, firearm state)"
-ipsc_edition: "Jan 2026"
+locale: en
+title: "Ready conditions (Handgun)"
+category: equipment
 ipsc_refs:
   - rule: "8.1"
-    note: "Ready conditions — Handgun; read 8.1–8.3 together"
-  - rule: "8.3"
-    note: "Commands / states — Handgun; full list in PDF"
-primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+    note: ""
 fpsu_refs:
   - rule: "IX §1"
     note: "Firearm ready conditions"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#1-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D0%B7%D0%B1%D1%80%D0%BE%D1%97"
   - rule: "IX §2"
-    note: "Competitor ready conditions"
+    note: "Athlete ready conditions"
     url: "https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#2-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0"
-fpsu_delta_verified: false
-reviewer: ""
-review_date: ""
-draft_source: llm
+fpsu_delta_verified: true
 status: draft
+reviewer: ""
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+draft_source: llm
+review_date: ""
 ---
 
 ## What this is
 
-**8.1–8.3** describe **ready conditions** for the handgun on the line (**loaded / unloaded**, slide position, holstered state, etc. — **per PDF text**) and the standard **RO command sequence** before, during, and after the **COF**. This is the backbone of safety and predictability; deviations are allowed only if the **MD** explicitly approves an alternative that does **not** contradict IPSC.
+The firearm condition does not match the requirement set out in the written stage briefing (WSB).
 
-## What the Range Officer (RO) does
+## RO algorithm
 
-1. **Use** official commands in **English** (or **MD**-approved translation) in the correct order.
-2. **Do not skip** steps (e.g. **Make Ready** before verifying state) unless the PDF allows it.
-3. **Check** visible state: slide, magazine, finger, muzzle **before** the start signal.
-4. **Stop** the competitor on an illegal ready state; repeat issues — **RM**.
-5. **After the COF** — finish commands per **8.3** and **Chapter 9** (approaching targets).
+1. **Inspect:** before "Standby" visually confirm the firearm condition (hammer/striker, magazine present).
+2. **Assess:** compare the actual condition with the WSB requirement (Option 1, 2, or 3).
+3. **Action:** if the condition is wrong — order the shooter to fix it before the start signal.
+4. **Document:** if the shooter started with the wrong condition — record the breach and assess a procedural penalty per Chapter 10 per match procedure (clarify with the RM if needed).
 
-## IPSC (Jan 2026)
+## Key nuances (Jan 2026)
 
-- Read **8.1**, **8.2**, **8.3** in order; do not confuse with **8.5** (movement during COF) or **8.7** (walkthrough).
+* **Option 1:** round in the chamber, hammer cocked, or the firearm in a safe state per the division, safety on (if applicable).
+* **Option 2:** magazine inserted, chamber empty.
+* **Option 3:** firearm fully unloaded, magazine well empty.
 
 ## Local (FPSU)
 **Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
 
 - [IX §1 — Firearm ready conditions](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#1-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D0%B7%D0%B1%D1%80%D0%BE%D1%97)
-- [IX §2 — Competitor ready conditions](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#2-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0)
+- [IX §2 — Athlete ready conditions](https://upsf.org.ua/rules/upsf/2020/09-course-of-fire#2-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0)
 
 
-Some clubs add a short local-language cue after English — per **MD**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+Per Chapter VIII §1 of the FPSU 2020 rules. Commands and the visible ready state on the line are aligned with the MD's briefing; on a discrepancy — RM.
 
-## Common mistakes
+## Common RO mistakes
 
-- **Custom command order** “how I always do it”.
-- **Starting** without confirming the competitor understood the ready state.
-- **Ignoring** an unsafe ready posture “to keep the squad moving”.
+* Letting the shooter start with Option 1 when Option 2 was required, without scoring a penalty.

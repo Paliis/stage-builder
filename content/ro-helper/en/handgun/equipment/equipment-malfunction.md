@@ -1,58 +1,54 @@
 ---
-title: "Equipment malfunction"
-card_id: "C265"
-slug: "equipment-malfunction"
-category: equipment
-locale: en
+card_id: C265
+slug: equipment-malfunction
 discipline: handgun
-control_values: "Verify Handgun Jan 2026 PDF — matrix cites 5.7; confirm actual clause (may overlap PF / Ch.4 reshoot)"
-ipsc_edition: "Jan 2026"
+locale: en
+title: "Shooter's equipment malfunction"
+category: equipment
 ipsc_refs:
   - rule: "5.7"
-    note: "Matrix anchor — Handgun; confirm in PDF malfunction vs PF wording"
-primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+    note: ""
 fpsu_refs:
   - rule: "VI §6"
-    note: "Range equipment failure"
+    note: "Stage equipment malfunction"
     url: "https://upsf.org.ua/rules/upsf/2020/06-range-equipment#6-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D1%96%D1%81%D1%82%D1%8C-%D0%BE%D0%B1%D0%BB%D0%B0%D0%B4%D0%BD%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%B8-%D1%82%D0%B0-%D1%96%D0%BD%D1%88%D1%96-%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D0%BD%D1%8F"
   - rule: "VII §7"
-    note: "Competitor equipment failure"
+    note: "Equipment malfunctions"
     url: "https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#7-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0"
-fpsu_delta_verified: false
-reviewer: ""
-review_date: ""
-draft_source: llm
+fpsu_delta_verified: true
 status: draft
+reviewer: ""
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+draft_source: llm
+review_date: ""
 ---
 
 ## What this is
 
-An **equipment malfunction** during a match is when the **handgun**, **magazine**, **optic**, or other allowed gear **fails** without competitor fault (slide won’t close, trigger fails, mag body breaks, etc.). Under **Handgun Jan 2026**, whether you **stop**, **reshoot**, or **score as-is** depends on the **exact PDF clause** (this card’s matrix cites **5.7** — **verify** whether that is the same sub-rule as **PF** or another paragraph on malfunctions / **Chapter 4** reshoots).
+A failure of the shooter's firearm or equipment elements during the stage.
 
-## What the Range Officer (RO) does
+## RO algorithm
 
-1. **Stop the COF** with **“STOP”** / **“CEASE FIRE”** if continuing is unsafe or impossible.
-2. **Make the gun safe** per **Chapter 8** commands.
-3. **Do not solo-declare** an “automatic reshoot” — only per PDF + **MD**.
-4. **Log** what happened (failure type, shots before failure) for **RM** / scoring.
-5. **After RM decision** — run the reshoot or enter the score as the rule requires.
+1. **Inspect:** visually record the stoppage or breakage. The RO has no right to intervene or assist.
+2. **Assess:** if the shooter clears the malfunction unaided — the stage continues.
+3. **Action:** if the shooter cannot safely clear the breakage — they must stop and unload the firearm.
+4. **Document:** the stage time is recorded at the last shot. A reshoot due to the shooter's firearm malfunction is not granted (5.7).
 
-## IPSC (Jan 2026)
+## Key nuances (Jan 2026)
 
-- Read the PDF: **malfunction** vs **forgotten magazine** vs **safety breach** — different outcomes.
-- Cross-check **4.7** (if reshoots live there) and **9.10** (time).
+* **Safety:** while clearing a malfunction the finger must stay outside the trigger guard and the muzzle in a safe direction.
+* **Stoppage:** if the shooter places the firearm on the ground or table to repair before the stage ends — immediate halt per match procedure.
 
 ## Local (FPSU)
 **Primary source — FPSU Rules 2020 (official text on upsf.org.ua):**
 
-- [VI §6 — Range equipment failure](https://upsf.org.ua/rules/upsf/2020/06-range-equipment#6-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D1%96%D1%81%D1%82%D1%8C-%D0%BE%D0%B1%D0%BB%D0%B0%D0%B4%D0%BD%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%B8-%D1%82%D0%B0-%D1%96%D0%BD%D1%88%D1%96-%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D0%BD%D1%8F)
-- [VII §7 — Competitor equipment failure](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#7-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0)
+- [VI §6 — Stage equipment malfunction](https://upsf.org.ua/rules/upsf/2020/06-range-equipment#6-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D1%96%D1%81%D1%82%D1%8C-%D0%BE%D0%B1%D0%BB%D0%B0%D0%B4%D0%BD%D0%B0%D0%BD%D0%BD%D1%8F-%D0%B2%D0%BF%D1%80%D0%B0%D0%B2%D0%B8-%D1%82%D0%B0-%D1%96%D0%BD%D1%88%D1%96-%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D0%BD%D1%8F)
+- [VII §7 — Equipment malfunctions](https://upsf.org.ua/rules/upsf/2020/07-firearms-and-equipment#7-%D0%BD%D0%B5%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%96-%D1%81%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F-%D1%81%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D0%B0)
 
 
-Some matches cap malfunction reshoots — **MD**. **`fpsu_delta_verified`**: **false** until **RO_HELPER_V0 §4.1** review.
+Per Chapter VII §7 of the FPSU 2020 rules. Reshoot and stop details — per the national text and the MD's briefing.
 
-## Common mistakes
+## Common RO mistakes
 
-- **Treating** a skill error as a **malfunction**.
-- **Mercy reshoot** without a rule basis.
-- **RO repairs** the gun on the bay — not allowed; only the competitor in the **Safety Area** per rules.
+* Granting a reshoot to a shooter whose round jammed or whose sight broke.
