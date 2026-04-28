@@ -53,10 +53,13 @@
 - Ширина вікна — десктопна (`≥ 1024 px`), щоб блоки не стискались у вузькі
   колонки.
 
-### 2.3. RO Helper (`ro-helper.webp`)
-- Список статей з **видимими чипами категорій** (`Procedures`, `Penalties`,
-  `Scoring`, `Equipment`) і двома-трьома картками.
-- Скрол у самий верх, щоб у кадр не лізли старі/несумісні елементи.
+### 2.3. RO Helper (`ro-helper.webp` + `ro-helper.png` fallback)
+- Екран **категорій** обраної дисципліни (наприклад **Shotgun**): заголовок дисципліни,
+  пошук «Search articles…», **п’ять SOS-карток** (Safety / Penalties / Scoring /
+  Equipment / Match admin) з кольоровими смужками та короткими описами — типовий вигляд
+  модуля для прев’ю на головній порталу.
+- У шапці видно **Shooters Tools** і висвітлений пункт **RO Helper** (контекст продукту).
+- Скрол у верх сторінки, без зайвих елементів поза кадром `16:10`.
 
 ---
 
@@ -164,6 +167,7 @@ public/portal-previews/
   stage-builder.svg       # <picture>-fallback / архів мокапа
   hit-factor.webp         # 1280×800, 16:10
   ro-helper.webp          # 1280×800, 16:10
+  ro-helper.png           # fallback для `<picture>` у `PortalHome` (якщо WebP недоступний)
 ```
 
 - Не міняємо імена — інакше `<img src>` у `PortalHome.tsx` потрібно буде

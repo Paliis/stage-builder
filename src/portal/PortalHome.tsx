@@ -139,6 +139,7 @@ export function PortalHome() {
           <ProductCard
             to={roHelperPath()}
             preview="/portal-previews/ro-helper.webp"
+            previewFallback="/portal-previews/ro-helper.png"
             previewAlt={`${p.roHelperTitle} — ${p.roHelperDesc}`}
             title={p.roHelperTitle}
             description={p.roHelperDesc}
