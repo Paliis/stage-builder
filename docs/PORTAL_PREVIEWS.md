@@ -46,12 +46,13 @@
     UI пішла в mobile-режим, або зняти у Shooter's view, де її не видно).
 - **Поверхня:** `Grass` — найбільш «нейтральна» зеленка під будь-яку тему.
 
-### 2.2. Hit Factor (`hit-factor.webp`)
-- Калькулятор з **уже введеними** прикладовими значеннями
-  (хіти, час, штрафи) — щоб у кадрі читалися числа `HF actual` / `HF max` /
-  блок `focus`.
-- Ширина вікна — десктопна (`≥ 1024 px`), щоб блоки не стискались у вузькі
-  колонки.
+### 2.2. Hit Factor (`hit-factor.webp` + `hit-factor.png` fallback)
+- Калькулятор HF із прикладовими значеннями (**hits**, **time**, слайдер часу), блоками
+  **Actual HF / Max HF**, підсумками (**Max points**, **Actual points**, **Loss**),
+  секцією **Deviations**, **Recommendation** та перемикачем **Minor/Major** — типовий
+  робочий кадр для прев’ю на головній.
+- **Генерація:** `portal-preview-prepare.mjs … hit-factor contain "#f1f5f9"` — повний UI без
+  обрізання країв; прев’ю на картці через **`object-fit: contain`** у `PortalHome.css`.
 
 ### 2.3. RO Helper (`ro-helper.webp` + `ro-helper.png` fallback)
 - Екран **категорій** обраної дисципліни (наприклад **Shotgun**): заголовок дисципліни,
@@ -168,6 +169,7 @@ public/portal-previews/
   stage-builder.webp      # 1280×800, 16:10
   stage-builder.svg       # <picture>-fallback / архів мокапа
   hit-factor.webp         # 1280×800, 16:10
+  hit-factor.png          # fallback для `<picture>` у `PortalHome`
   ro-helper.webp          # 1280×800, 16:10
   ro-helper.png           # fallback для `<picture>` у `PortalHome` (якщо WebP недоступний)
 ```

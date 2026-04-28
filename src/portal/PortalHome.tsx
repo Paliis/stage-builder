@@ -127,6 +127,7 @@ export function PortalHome() {
         <ProductCard
           to="/hit-factor"
           preview="/portal-previews/hit-factor.webp"
+          previewFallback="/portal-previews/hit-factor.png"
           previewAlt={`${p.hitFactorTitle} — ${p.hitFactorDesc}`}
           title={p.hitFactorTitle}
           description={p.hitFactorDesc}
