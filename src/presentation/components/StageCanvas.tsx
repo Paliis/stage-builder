@@ -325,6 +325,23 @@ function pickPropAt(props: readonly Prop[], wx: number, wy: number, touchPadM: n
   return null
 }
 
+/**
+ * Анкер закріпленого розміру: клік по мішені підганяє до центру (як на плані); по реквізиту або поза об’єктами — координата кліку в метрах.
+ */
+function planDimensionAnchorWorld(
+  targets: readonly Target[],
+  props: readonly Prop[],
+  wx: number,
+  wy: number,
+  touchPadM: number,
+): Vec2 {
+  const hitT = pickTargetAt(targets, wx, wy, touchPadM)
+  if (hitT) return { x: hitT.position.x, y: hitT.position.y }
+  const hitP = pickPropAt(props, wx, wy, touchPadM)
+  if (hitP) return { x: wx, y: wy }
+  return { x: wx, y: wy }
+}
+
 function handleWorldPosTarget(t: Target): Vec2 {
   const rot = t.rotationRad
   const { boundsR } = targetFootprintWorld(t)
@@ -2705,7 +2722,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
       setPlanSelect({ mode: 'none' })
-      onDimensionWorldPickRef.current?.({ x: wx, y: wy })
+      const ppm = tf.pxPerMeter
+      const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
+      const anchor = planDimensionAnchorWorld(targets, props, wx, wy, touchPad)
+      onDimensionWorldPickRef.current?.(anchor)
       return
     }
 
