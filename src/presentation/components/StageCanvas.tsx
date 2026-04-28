@@ -940,7 +940,8 @@ function drawSavedPlanDimensions(
   formatMeasureDistance: (m: number) => string,
   pendingFrom: StageEntityRef | null,
 ) {
-  for (const dim of dims) {
+  for (let di = 0; di < dims.length; di++) {
+    const dim = dims[di]!
     const wa = planAnchorWorld(dim.from, targets, props)
     const wb = planAnchorWorld(dim.to, targets, props)
     if (!wa || !wb) continue
@@ -967,16 +968,37 @@ function drawSavedPlanDimensions(
       ctx.stroke()
     }
 
-    const mx = (sa.x + sb.x) / 2
-    const my = (sa.y + sb.y) / 2
+    const m0x = (sa.x + sb.x) / 2
+    const m0y = (sa.y + sb.y) / 2
+    const sdx = sb.x - sa.x
+    const sdy = sb.y - sa.y
+    const segScr = Math.hypot(sdx, sdy) || 1
+    const ux = sdx / segScr
+    const uy = sdy / segScr
+    /** Лівий нормаль у координатах екрана; для майже горизонтальних відрізків підпис зсувається «вгору». */
+    let nx = -uy
+    let ny = ux
+    let h = 0
+    for (let ki = 0; ki < dim.id.length; ki++) {
+      h = (h * 33 + dim.id.charCodeAt(ki)!) | 0
+    }
+    if (h % 2 === 1) {
+      nx = -nx
+      ny = -ny
+    }
+    const perpOffPx = Math.max(16, dotR + 8 + tf.pxPerMeter * 0.038)
+    const staggerAlongPx = ((di * 19 + (h >>> 0) % 17) % 27) - 13
+    const lx = m0x + nx * perpOffPx + ux * staggerAlongPx
+    const ly = m0y + ny * perpOffPx + uy * staggerAlongPx
+
     ctx.font = `${Math.max(11, Math.round(12 * Math.sqrt(tf.pxPerMeter / 14)))}px system-ui, sans-serif`
     const tw = ctx.measureText(label).width
     const pad = 6
-    ctx.fillStyle = 'rgba(240, 253, 250, 0.97)'
-    ctx.strokeStyle = 'rgba(17, 94, 89, 0.5)'
+    ctx.fillStyle = 'rgba(240, 253, 250, 0.9)'
+    ctx.strokeStyle = 'rgba(17, 94, 89, 0.52)'
     ctx.lineWidth = 1
-    const bx = mx - tw / 2 - pad
-    const by = my - 11 - pad
+    const bx = lx - tw / 2 - pad
+    const by = ly - 11 - pad
     const bw = tw + pad * 2
     const bh = 22 + pad * 0.5
     ctx.fillRect(bx, by, bw, bh)
@@ -984,7 +1006,7 @@ function drawSavedPlanDimensions(
     ctx.fillStyle = 'rgba(17, 94, 89, 0.98)'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    ctx.fillText(label, mx, my)
+    ctx.fillText(label, lx, ly)
     ctx.restore()
   }
 
