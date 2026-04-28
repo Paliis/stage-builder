@@ -930,8 +930,9 @@ function distancePointToSegmentSq(
   return (px - projX) ** 2 + (py - projY) ** 2
 }
 
+/** Радіус маркера кінця (екранний px): менший, щоб не перекривати дрібні мішені при віддалені/наближенні. */
 function dimensionPlanEndpointDotPx(tf: ViewTransform): number {
-  return Math.max(2.6, Math.min(9, 2.2 + tf.pxPerMeter * 0.048))
+  return Math.max(1.8, Math.min(5.2, 1.35 + tf.pxPerMeter * 0.03))
 }
 
 /** Кінець (пріоритет) або сам відрізок — для перетягування закріплених розмірів. */
@@ -942,7 +943,7 @@ function pickPlanDimensionPartAtScreen(
   tf: ViewTransform,
 ): { id: string; part: 'endA' | 'endB' | 'segment' } | null {
   if (dims.length === 0) return null
-  const endPx = Math.max(12, dimensionPlanEndpointDotPx(tf) + 8)
+  const endPx = Math.max(10, dimensionPlanEndpointDotPx(tf) + 5)
   const endRsq = endPx * endPx
   let bestEnd: { id: string; part: 'endA' | 'endB'; d2: number } | null = null
   for (let i = dims.length - 1; i >= 0; i--) {
@@ -998,7 +999,7 @@ function drawSavedPlanDimensions(
 
     ctx.save()
     ctx.strokeStyle = sel ? 'rgba(79, 70, 229, 0.95)' : 'rgba(13, 148, 136, 0.92)'
-    ctx.lineWidth = Math.max(1.75, Math.min(3.4, tf.pxPerMeter * 0.052 + (sel ? 0.35 : 0)))
+    ctx.lineWidth = Math.max(1.5, Math.min(3, tf.pxPerMeter * 0.046 + (sel ? 0.3 : 0)))
     ctx.beginPath()
     ctx.moveTo(sa.x, sa.y)
     ctx.lineTo(sb.x, sb.y)
@@ -1012,8 +1013,8 @@ function drawSavedPlanDimensions(
       ctx.fill()
       ctx.stroke()
     }
-    const drA = sel ? dotRA * 1.15 : dotRA
-    const drB = sel ? dotRB * 1.15 : dotRB
+    const drA = sel ? dotRA * 1.08 : dotRA
+    const drB = sel ? dotRB * 1.08 : dotRB
     drawDot(sa.x, sa.y, drA)
     drawDot(sb.x, sb.y, drB)
 
@@ -1035,7 +1036,7 @@ function drawSavedPlanDimensions(
       nx = -nx
       ny = -ny
     }
-    const perpOffPx = Math.max(12, dotRForOffset + 5 + tf.pxPerMeter * 0.034)
+    const perpOffPx = Math.max(10, dotRForOffset + 4 + tf.pxPerMeter * 0.03)
     const staggerAlongPx = ((di * 19 + (h >>> 0) % 17) % 27) - 13
     const lx = m0x + nx * perpOffPx + ux * staggerAlongPx
     const ly = m0y + ny * perpOffPx + uy * staggerAlongPx
@@ -1070,9 +1071,9 @@ function drawSavedPlanDimensions(
     ctx.save()
     ctx.setLineDash([6, 4])
     ctx.strokeStyle = 'rgba(20, 184, 166, 0.96)'
-    ctx.lineWidth = 2.5
+    ctx.lineWidth = 2.2
     ctx.beginPath()
-    ctx.arc(sc.x, sc.y, Math.max(12, tf.pxPerMeter * 0.18), 0, Math.PI * 2)
+    ctx.arc(sc.x, sc.y, Math.max(9, tf.pxPerMeter * 0.125), 0, Math.PI * 2)
     ctx.stroke()
     ctx.setLineDash([])
     ctx.restore()
