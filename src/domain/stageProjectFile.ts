@@ -3,6 +3,7 @@ import { clampFieldDimensions, FIELD_SIZE_LIMITS } from './field'
 import type {
   ActivationEdge,
   MetalPlateRectSideCm,
+  PlanDimensionLine,
   Prop,
   PropType,
   StageCategory,
@@ -11,6 +12,7 @@ import type {
   TargetType,
   Vec2,
 } from './models'
+import { refKey } from './activations'
 import type { StageBriefing } from './stageBriefing'
 import { defaultStageBriefing } from './stageBriefing'
 import type { WeaponClass } from './weaponClass'
@@ -24,8 +26,8 @@ import {
 } from './penaltyZones'
 
 export const STAGE_PROJECT_FORMAT = 'stage-builder' as const
-/** 1 — початковий формат; 2 — `penaltyZoneSet`; 3 — `activations` (BL-004). */
-export const STAGE_PROJECT_VERSION = 3
+/** 1 — початковий формат; 2 — `penaltyZoneSet`; 3 — `activations`; 4 — `planDimensions` (розміри на плані). */
+export const STAGE_PROJECT_VERSION = 4
 /** Старі файли залишаються валідними при парсингу. */
 export const STAGE_PROJECT_VERSION_MIN = 1
 export const STAGE_PROJECT_FILE_EXTENSION = '.stage.json'
@@ -107,6 +109,8 @@ export type StageProjectSnapshot = {
   penaltyZoneSet: PenaltyZoneSet
   /** Зв’язки активації (BL-004). Для `version < 3` при парсингу — `[]`. */
   activations: ActivationEdge[]
+  /** Закріплені розміри між центрами об’єктів на плані. Для `version < 4` при парсингу — `[]`. */
+  planDimensions: PlanDimensionLine[]
 }
 
 export type StageProjectFileV1 = {
@@ -275,6 +279,39 @@ function parseActivations(raw: unknown): ActivationEdge[] {
   return ensureUniqueActivationIds(out)
 }
 
+function ensureUniquePlanDimensionIds(lines: PlanDimensionLine[]): PlanDimensionLine[] {
+  const seen = new Set<string>()
+  return lines.map((line) => {
+    let id = line.id
+    if (!id || seen.has(id)) id = newEntityId()
+    while (seen.has(id)) id = newEntityId()
+    seen.add(id)
+    return { ...line, id }
+  })
+}
+
+function parsePlanDimensionLine(raw: unknown, idx: number): PlanDimensionLine | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const o = raw as Record<string, unknown>
+  const from = parseStageEntityRef(o.from)
+  const to = parseStageEntityRef(o.to)
+  if (!from || !to) return null
+  if (refKey(from) === refKey(to)) return null
+  const id = typeof o.id === 'string' && o.id ? o.id : `dim-${idx}`
+  return { id, from, to }
+}
+
+function parsePlanDimensions(raw: unknown): PlanDimensionLine[] {
+  if (raw === undefined || raw === null) return []
+  if (!Array.isArray(raw)) return []
+  const out: PlanDimensionLine[] = []
+  for (let i = 0; i < raw.length; i++) {
+    const line = parsePlanDimensionLine(raw[i], i)
+    if (line) out.push(line)
+  }
+  return ensureUniquePlanDimensionIds(out)
+}
+
 function parseBriefing(raw: unknown): StageBriefing {
   const d = defaultStageBriefing()
   if (typeof raw !== 'object' || raw === null) return d
@@ -338,6 +375,11 @@ export function buildStageProjectFile(snapshot: {
         id: e.id,
         from: { ...e.from },
         to: { ...e.to },
+      })),
+      planDimensions: snapshot.stage.planDimensions.map((d) => ({
+        id: d.id,
+        from: { ...d.from },
+        to: { ...d.to },
       })),
     },
     briefing: { ...snapshot.briefing },
@@ -419,6 +461,8 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
     activations = parseActivations(stageObj.activations)
   }
 
+  const planDimensions = parsePlanDimensions(stageObj.planDimensions)
+
   const data: StageProjectFileV1 = {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
@@ -431,6 +475,7 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
       fieldGroundCover3d,
       penaltyZoneSet,
       activations,
+      planDimensions,
     },
     briefing: parseBriefing(root.briefing),
   }

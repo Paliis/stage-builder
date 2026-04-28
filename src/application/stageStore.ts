@@ -3,6 +3,7 @@ import { temporal } from 'zundo'
 import type {
   ActivationEdge,
   MetalPlateRectSideCm,
+  PlanDimensionLine,
   Prop,
   PropType,
   StageEntityRef,
@@ -15,6 +16,11 @@ import {
   filterActivationsAfterRemoveTarget,
   refKey,
 } from '../domain/activations'
+import {
+  filterPlanDimensionsAfterRemoveProp,
+  filterPlanDimensionsAfterRemoveTarget,
+  planDimensionUnorderedPairKey,
+} from '../domain/planDimensions'
 import {
   emptyPenaltyZoneSet,
   newPolygonId,
@@ -101,6 +107,8 @@ export type StageState = {
   penaltyZoneSet: PenaltyZoneSet
   /** Зв’язки активації (BL-004). */
   activations: ActivationEdge[]
+  /** Закріплені розміри між центрами об’єктів на плані (кваліфікація). */
+  planDimensions: PlanDimensionLine[]
   setStageName: (name: string) => void
   setFieldGroundCover3d: (cover: FieldGroundCover3d) => void
   /** Повна заміна сцени (напр. з файлу вправи). */
@@ -113,6 +121,7 @@ export type StageState = {
     fieldGroundCover3d?: FieldGroundCover3d
     penaltyZoneSet?: PenaltyZoneSet
     activations?: ActivationEdge[]
+    planDimensions?: PlanDimensionLine[]
   }) => void
   setWeaponClass: (wc: WeaponClass) => void
   setFieldSizeM: (size: Vec2) => void
@@ -138,6 +147,9 @@ export type StageState = {
   movePenaltyVertex: (polygonId: string, ringId: string, vertexIndex: number, position: Vec2) => void
   /** Якщо після видалення вершин < 3 — зовнішній контур скидає весь полігон, дірку прибираємо. */
   removePenaltyVertex: (polygonId: string, ringId: string, vertexIndex: number) => void
+  /** Закріплений розмір centre-to-centre між двома об’єктами (не впорядкована пара — один запис). */
+  addPlanDimensionLine: (from: StageEntityRef, to: StageEntityRef) => void
+  removePlanDimensionLine: (id: string) => void
 }
 
 export const useStageStore = create<StageState>()(temporal((set) => ({
@@ -149,6 +161,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   props: [],
   penaltyZoneSet: emptyPenaltyZoneSet(),
   activations: [],
+  planDimensions: [],
 
   setStageName: (name) =>
     set({
@@ -168,6 +181,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         next.y,
       )
       const activations = snapshot.activations ?? []
+      const planDimensions = snapshot.planDimensions ?? []
       return {
         name: snapshot.name.trim().slice(0, 200) || s.name,
         weaponClass: snapshot.weaponClass,
@@ -177,6 +191,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         props,
         penaltyZoneSet,
         activations,
+        planDimensions,
       }
     }),
 
@@ -192,8 +207,24 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         props: [],
         penaltyZoneSet: emptyPenaltyZoneSet(),
         activations: [],
+        planDimensions: [],
       }
     }),
+
+  addPlanDimensionLine: (from, to) =>
+    set((s) => {
+      if (refKey(from) === refKey(to)) return s
+      const pairKey = planDimensionUnorderedPairKey(from, to)
+      const dup = s.planDimensions.some((d) => planDimensionUnorderedPairKey(d.from, d.to) === pairKey)
+      if (dup) return s
+      const line: PlanDimensionLine = { id: newId(), from, to }
+      return { planDimensions: [...s.planDimensions, line] }
+    }),
+
+  removePlanDimensionLine: (id) =>
+    set((s) => ({
+      planDimensions: s.planDimensions.filter((d) => d.id !== id),
+    })),
 
   addActivationEdge: (from, to) =>
     set((s) => {
@@ -410,12 +441,14 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set((s) => ({
       targets: s.targets.filter((x) => x.id !== id),
       activations: filterActivationsAfterRemoveTarget(s.activations, id),
+      planDimensions: filterPlanDimensionsAfterRemoveTarget(s.planDimensions, id),
     })),
 
   removeProp: (id) =>
     set((s) => ({
       props: s.props.filter((x) => x.id !== id),
       activations: filterActivationsAfterRemoveProp(s.activations, id),
+      planDimensions: filterPlanDimensionsAfterRemoveProp(s.planDimensions, id),
     })),
 
   pasteCloneEntities: (targets, props) =>
@@ -435,6 +468,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       props,
       penaltyZoneSet,
       activations,
+      planDimensions,
     } = state
     return {
       name,
@@ -445,6 +479,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       props,
       penaltyZoneSet,
       activations,
+      planDimensions,
     }
   },
 }))

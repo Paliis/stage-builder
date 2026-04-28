@@ -17,6 +17,8 @@ function baseEnvelope(): SessionDraftEnvelope {
       targets: [],
       props: [],
       penaltyZoneSet: emptyPenaltyZoneSet(),
+      activations: [],
+      planDimensions: [],
     },
     briefing: defaultStageBriefing(),
   }

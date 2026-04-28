@@ -61,7 +61,8 @@ export function isSessionDraftMeaningful(envelope: SessionDraftEnvelope): boolea
     stage.targets.length > 0 ||
     stage.props.length > 0 ||
     pz.polygons.length > 0 ||
-    (stage.activations?.length ?? 0) > 0
+    (stage.activations?.length ?? 0) > 0 ||
+    (stage.planDimensions?.length ?? 0) > 0
   )
     return true
   if (stage.name.trim() !== DEFAULT_STAGE_NAME_UA) return true
@@ -142,6 +143,7 @@ function persistDraftNow(): void {
     props,
     penaltyZoneSet,
     activations,
+    planDimensions,
   } = useStageStore.getState()
   const envelope: SessionDraftEnvelope = {
     draftMetaVersion: SESSION_DRAFT_META_VERSION,
@@ -155,6 +157,7 @@ function persistDraftNow(): void {
       props,
       penaltyZoneSet,
       activations,
+      planDimensions,
     },
     briefing: briefingSnapshot(),
   }

@@ -10,7 +10,14 @@ import {
 } from 'react'
 import { useStageStore } from '../../application/stageStore'
 import { CERAMIC_FACE_RGBA } from '../../domain/ceramicPlateSpec'
-import type { ActivationEdge, MetalPlateRectSideCm, Prop, StageEntityRef, Target } from '../../domain/models'
+import type {
+  ActivationEdge,
+  MetalPlateRectSideCm,
+  PlanDimensionLine,
+  Prop,
+  StageEntityRef,
+  Target,
+} from '../../domain/models'
 import {
   activationPlanLabelRenderPoint,
   activationPlanPointToward,
@@ -872,6 +879,132 @@ function drawMeasureOverlay(
   ctx.restore()
 }
 
+const PLAN_DIMENSION_PICK_MAX_PX = 10
+
+function distancePointToSegmentSq(
+  px: number,
+  py: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+): number {
+  const vx = x2 - x1
+  const vy = y2 - y1
+  const wx = px - x1
+  const wy = py - y1
+  const c1 = vx * wx + vy * wy
+  if (c1 <= 0) return (px - x1) ** 2 + (py - y1) ** 2
+  const c2 = vx * vx + vy * vy
+  if (c2 <= c1) return (px - x2) ** 2 + (py - y2) ** 2
+  const t = c1 / c2
+  const projX = x1 + t * vx
+  const projY = y1 + t * vy
+  return (px - projX) ** 2 + (py - projY) ** 2
+}
+
+function pickPlanDimensionLineIdAtScreen(
+  sx: number,
+  sy: number,
+  dims: readonly PlanDimensionLine[],
+  targets: readonly Target[],
+  props: readonly Prop[],
+  tf: ViewTransform,
+): string | null {
+  const maxSq = PLAN_DIMENSION_PICK_MAX_PX * PLAN_DIMENSION_PICK_MAX_PX
+  let bestId: string | null = null
+  let bestD = Infinity
+  for (let i = dims.length - 1; i >= 0; i--) {
+    const d = dims[i]!
+    const wa = planAnchorWorld(d.from, targets, props)
+    const wb = planAnchorWorld(d.to, targets, props)
+    if (!wa || !wb) continue
+    const sa = worldToScreen(wa.x, wa.y, tf)
+    const sb = worldToScreen(wb.x, wb.y, tf)
+    const dsq = distancePointToSegmentSq(sx, sy, sa.x, sa.y, sb.x, sb.y)
+    if (dsq <= maxSq && dsq < bestD) {
+      bestD = dsq
+      bestId = d.id
+    }
+  }
+  return bestId
+}
+
+/** Закріплені розміри centre-to-centre; стиль відмінний від тимчасового виміру (помаранчевий). */
+function drawSavedPlanDimensions(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  dims: readonly PlanDimensionLine[],
+  targets: readonly Target[],
+  props: readonly Prop[],
+  formatMeasureDistance: (m: number) => string,
+  pendingFrom: StageEntityRef | null,
+) {
+  for (const dim of dims) {
+    const wa = planAnchorWorld(dim.from, targets, props)
+    const wb = planAnchorWorld(dim.to, targets, props)
+    if (!wa || !wb) continue
+    const sa = worldToScreen(wa.x, wa.y, tf)
+    const sb = worldToScreen(wb.x, wb.y, tf)
+    const distM = Math.hypot(wb.x - wa.x, wb.y - wa.y)
+    const label = formatMeasureDistance(distM)
+    const dotR = Math.max(3.5, 0.08 * tf.pxPerMeter)
+
+    ctx.save()
+    ctx.strokeStyle = 'rgba(13, 148, 136, 0.92)'
+    ctx.lineWidth = Math.max(1.5, Math.min(3, tf.pxPerMeter * 0.05))
+    ctx.beginPath()
+    ctx.moveTo(sa.x, sa.y)
+    ctx.lineTo(sb.x, sb.y)
+    ctx.stroke()
+
+    ctx.fillStyle = 'rgba(204, 251, 241, 0.45)'
+    ctx.strokeStyle = 'rgba(13, 148, 136, 0.95)'
+    for (const p of [sa, sb]) {
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, dotR, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.stroke()
+    }
+
+    const mx = (sa.x + sb.x) / 2
+    const my = (sa.y + sb.y) / 2
+    ctx.font = `${Math.max(11, Math.round(12 * Math.sqrt(tf.pxPerMeter / 14)))}px system-ui, sans-serif`
+    const tw = ctx.measureText(label).width
+    const pad = 6
+    ctx.fillStyle = 'rgba(240, 253, 250, 0.97)'
+    ctx.strokeStyle = 'rgba(17, 94, 89, 0.5)'
+    ctx.lineWidth = 1
+    const bx = mx - tw / 2 - pad
+    const by = my - 11 - pad
+    const bw = tw + pad * 2
+    const bh = 22 + pad * 0.5
+    ctx.fillRect(bx, by, bw, bh)
+    ctx.strokeRect(bx, by, bw, bh)
+    ctx.fillStyle = 'rgba(17, 94, 89, 0.98)'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(label, mx, my)
+    ctx.restore()
+  }
+
+  if (pendingFrom) {
+    const pos = planAnchorWorld(pendingFrom, targets, props)
+    if (pos) {
+      const sc = worldToScreen(pos.x, pos.y, tf)
+      ctx.save()
+      ctx.setLineDash([6, 4])
+      ctx.strokeStyle = 'rgba(20, 184, 166, 0.96)'
+      ctx.lineWidth = 2.5
+      ctx.beginPath()
+      ctx.arc(sc.x, sc.y, Math.max(14, tf.pxPerMeter * 0.22), 0, Math.PI * 2)
+      ctx.stroke()
+      ctx.setLineDash([])
+      ctx.restore()
+    }
+  }
+}
+
 /** Підказка вузла сітки під курсором при наближенні (світові м вже на кроці GRID_SNAP_M). */
 function drawGridSnapCursor(ctx: CanvasRenderingContext2D, tf: ViewTransform, snapped: Vec2) {
   const p = worldToScreen(snapped.x, snapped.y, tf)
@@ -1673,6 +1806,8 @@ function redraw(
   activations: readonly ActivationEdge[],
   activationNumMap: Map<string, number>,
   activationPendingFrom: StageEntityRef | null,
+  planDimensions: readonly PlanDimensionLine[],
+  planDimensionPendingFrom: StageEntityRef | null,
 ) {
   const dpr = window.devicePixelRatio || 1
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -1930,6 +2065,15 @@ function redraw(
     activationNumMap,
     activationPendingFrom,
   )
+  drawSavedPlanDimensions(
+    ctx,
+    tf,
+    planDimensions,
+    targets,
+    props,
+    formatMeasureDistance,
+    planDimensionPendingFrom,
+  )
   drawPlanSelectOutlines(ctx, tf, targets, props, planSelect)
   drawPenaltyVertexHandles(ctx, tf, penaltyZoneSet, planSelect)
 
@@ -1990,6 +2134,11 @@ export type StageCanvasProps = {
   activationLinkModeActive?: boolean
   activationPendingFrom?: StageEntityRef | null
   onActivationEntityPick?: (ref: StageEntityRef) => void
+  /** Закріплені розміри між центрами об'єктів (два кліки; клік по лінії — видалити). */
+  dimensionLinkModeActive?: boolean
+  dimensionPendingFrom?: StageEntityRef | null
+  onDimensionEntityPick?: (ref: StageEntityRef) => void
+  onRemovePlanDimensionLine?: (id: string) => void
   /** Режим перегляду за share-посиланням: лише пан/зум і вимірювання, без редагування сцени. */
   readOnly?: boolean
 }
@@ -2046,12 +2195,17 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   activationLinkModeActive = false,
   activationPendingFrom = null,
   onActivationEntityPick,
+  dimensionLinkModeActive = false,
+  dimensionPendingFrom = null,
+  onDimensionEntityPick,
+  onRemovePlanDimensionLine,
   readOnly = false,
 }: StageCanvasProps,
   ref,
 ) {
   const fieldSizeM = useStageStore((s) => s.fieldSizeM)
   const activations = useStageStore((s) => s.activations)
+  const planDimensions = useStageStore((s) => s.planDimensions)
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
   const movePenaltyVertex = useStageStore((s) => s.movePenaltyVertex)
   const removePenaltyVertex = useStageStore((s) => s.removePenaltyVertex)
@@ -2202,6 +2356,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         activations,
         activationNumMap,
         activationPendingFrom,
+        planDimensions,
+        dimensionPendingFrom,
       )
 
     const t = transformRef.current
@@ -2227,6 +2383,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     activations,
     activationNumMap,
     activationPendingFrom,
+    planDimensions,
+    dimensionPendingFrom,
   ])
 
   useImperativeHandle(
@@ -2294,6 +2452,16 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   useEffect(() => {
     onActivationEntityPickRef.current = onActivationEntityPick
   }, [onActivationEntityPick])
+
+  const onDimensionEntityPickRef = useRef(onDimensionEntityPick)
+  useEffect(() => {
+    onDimensionEntityPickRef.current = onDimensionEntityPick
+  }, [onDimensionEntityPick])
+
+  const onRemovePlanDimensionLineRef = useRef(onRemovePlanDimensionLine)
+  useEffect(() => {
+    onRemovePlanDimensionLineRef.current = onRemovePlanDimensionLine
+  }, [onRemovePlanDimensionLine])
 
   const prevFieldWH = useRef<{ w: number; h: number } | null>(null)
   useEffect(() => {
@@ -2504,6 +2672,33 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
+    if (dimensionLinkModeActive && !readOnly && ev.button === 0) {
+      ev.preventDefault()
+      clearLongPressTimer()
+      pendingEmptyPanRef.current = null
+      gridHoverRef.current = null
+      const tf = transformRef.current
+      const hitLine = pickPlanDimensionLineIdAtScreen(sx, sy, planDimensions, targets, props, tf)
+      if (hitLine) {
+        onRemovePlanDimensionLineRef.current?.(hitLine)
+        repaint()
+        return
+      }
+      const ppm = tf.pxPerMeter
+      const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
+      const hitT = pickTargetAt(targets, w.x, w.y, touchPad)
+      if (hitT) {
+        onDimensionEntityPickRef.current?.({ kind: 'target', id: hitT.id })
+        return
+      }
+      const hitP = pickPropAt(props, w.x, w.y, touchPad)
+      if (hitP) {
+        onDimensionEntityPickRef.current?.({ kind: 'prop', id: hitP.id })
+        return
+      }
+      return
+    }
+
     if (activationLinkModeActive && !readOnly && ev.button === 0) {
       ev.preventDefault()
       clearLongPressTimer()
@@ -2524,7 +2719,14 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
-    if (!readOnly && !measureToolActive && !marqueeModeActive && !activationLinkModeActive && ev.button === 0) {
+    if (
+      !readOnly &&
+      !measureToolActive &&
+      !marqueeModeActive &&
+      !activationLinkModeActive &&
+      !dimensionLinkModeActive &&
+      ev.button === 0
+    ) {
       const pv = pickPenaltyVertexAt(w.x, w.y, transformRef.current.pxPerMeter, penaltyZoneSet)
       if (pv) {
         ev.preventDefault()
@@ -2599,6 +2801,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       !placementArmed &&
       !measureToolActive &&
       !activationLinkModeActive &&
+      !dimensionLinkModeActive &&
       planSelect.mode !== 'none'
     ) {
       clearLongPressTimer()
@@ -3181,7 +3384,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
           ? 'crosshair'
           : marqueeModeActive
             ? 'crosshair'
-            : undefined
+            : activationLinkModeActive || dimensionLinkModeActive
+              ? 'crosshair'
+              : undefined
 
   return (
     <canvas

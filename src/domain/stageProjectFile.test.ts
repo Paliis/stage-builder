@@ -30,6 +30,7 @@ describe('stageProjectFile', () => {
         props: [],
         penaltyZoneSet: emptyPenaltyZoneSet(),
         activations: [],
+        planDimensions: [],
       },
       briefing,
     })
@@ -122,6 +123,7 @@ describe('stageProjectFile', () => {
     if (!parsed.ok) return
     expect(parsed.data.stage.penaltyZoneSet.polygons).toHaveLength(0)
     expect(parsed.data.stage.activations).toEqual([])
+    expect(parsed.data.stage.planDimensions).toEqual([])
   })
 
   it('roundtrips activations', () => {
@@ -157,6 +159,7 @@ describe('stageProjectFile', () => {
             to: { kind: 'target', id: 'tb' },
           },
         ],
+        planDimensions: [],
       },
       briefing,
     })
@@ -165,5 +168,49 @@ describe('stageProjectFile', () => {
     if (!parsed.ok) return
     expect(parsed.data.stage.activations).toHaveLength(1)
     expect(parsed.data.stage.activations[0]!.from.id).toBe('ta')
+  })
+
+  it('roundtrips planDimensions', () => {
+    const briefing = defaultStageBriefing()
+    const file = buildStageProjectFile({
+      stage: {
+        name: 'Dim',
+        weaponClass: 'handgun',
+        fieldSizeM: { x: 20, y: 30 },
+        fieldGroundCover3d: 'grass',
+        targets: [
+          {
+            id: 'ta',
+            type: 'metalPlate',
+            isNoShoot: false,
+            position: { x: 1, y: 1 },
+            rotationRad: 0,
+          },
+          {
+            id: 'tb',
+            type: 'metalPlate',
+            isNoShoot: false,
+            position: { x: 5, y: 1 },
+            rotationRad: 0,
+          },
+        ],
+        props: [],
+        penaltyZoneSet: emptyPenaltyZoneSet(),
+        activations: [],
+        planDimensions: [
+          {
+            id: 'd1',
+            from: { kind: 'target', id: 'ta' },
+            to: { kind: 'target', id: 'tb' },
+          },
+        ],
+      },
+      briefing,
+    })
+    const parsed = parseStageProjectJson(serializeStageProject(file))
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    expect(parsed.data.stage.planDimensions).toHaveLength(1)
+    expect(parsed.data.stage.planDimensions[0]!.from.id).toBe('ta')
   })
 })

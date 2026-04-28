@@ -102,7 +102,10 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const pasteCloneEntities = useStageStore((s) => s.pasteCloneEntities)
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
   const activations = useStageStore((s) => s.activations)
+  const planDimensions = useStageStore((s) => s.planDimensions)
   const addActivationEdge = useStageStore((s) => s.addActivationEdge)
+  const addPlanDimensionLine = useStageStore((s) => s.addPlanDimensionLine)
+  const removePlanDimensionLine = useStageStore((s) => s.removePlanDimensionLine)
   const addPenaltyClosedRing = useStageStore((s) => s.addPenaltyClosedRing)
 
   const briefing = useBriefingStore(
@@ -190,6 +193,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const [marqueeModeActive, setMarqueeModeActive] = useState(false)
   const [activationLinkMode, setActivationLinkMode] = useState(false)
   const [activationPendingFrom, setActivationPendingFrom] = useState<StageEntityRef | null>(null)
+  const [dimensionLinkMode, setDimensionLinkMode] = useState(false)
+  const [dimensionPendingFrom, setDimensionPendingFrom] = useState<StageEntityRef | null>(null)
   const [planSelectionSummary, setPlanSelectionSummary] = useState({ empty: true, count: 0 })
   const [hasPlanClipboard, setHasPlanClipboard] = useState(false)
   const internalClipboardRef = useRef<{ targets: Target[]; props: Prop[] } | null>(null)
@@ -217,6 +222,10 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     clearPenaltyContourDraft()
     setMarqueeModeActive(false)
     setMeasureToolActive(false)
+    setActivationLinkMode(false)
+    setActivationPendingFrom(null)
+    setDimensionLinkMode(false)
+    setDimensionPendingFrom(null)
     setMobileMenuOpen(false)
     setHasPlanClipboard(false)
     internalClipboardRef.current = null
@@ -296,6 +305,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         props,
         penaltyZoneSet,
         activations,
+        planDimensions,
       },
       briefing: { ...briefing },
     })
@@ -308,7 +318,18 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     a.download = fname
     a.click()
     URL.revokeObjectURL(url)
-  }, [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, activations, briefing])
+  }, [
+    name,
+    weaponClass,
+    fieldSizeM,
+    fieldGroundCover3d,
+    targets,
+    props,
+    penaltyZoneSet,
+    activations,
+    planDimensions,
+    briefing,
+  ])
 
   const shareProjectRoot = useMemo(
     () =>
@@ -322,10 +343,22 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
           props,
           penaltyZoneSet,
           activations,
+          planDimensions,
         },
         briefing: { ...briefing },
       }),
-    [name, weaponClass, fieldSizeM, fieldGroundCover3d, targets, props, penaltyZoneSet, activations, briefing],
+    [
+      name,
+      weaponClass,
+      fieldSizeM,
+      fieldGroundCover3d,
+      targets,
+      props,
+      penaltyZoneSet,
+      activations,
+      planDimensions,
+      briefing,
+    ],
   )
 
   /** Public origin for share links (matches server `resolvePublicOrigin` / `VITE_SHARE_PUBLIC_ORIGIN`). */
@@ -429,6 +462,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setMarqueeModeActive(false)
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
+      setDimensionLinkMode(false)
+      setDimensionPendingFrom(null)
     }
   }, [viewMode])
 
@@ -438,6 +473,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setPlacementMode(null)
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
+      setDimensionLinkMode(false)
+      setDimensionPendingFrom(null)
     }
   }, [marqueeModeActive])
 
@@ -446,6 +483,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setMarqueeModeActive(false)
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
+      setDimensionLinkMode(false)
+      setDimensionPendingFrom(null)
     }
   }, [measureToolActive])
 
@@ -454,6 +493,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setMarqueeModeActive(false)
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
+      setDimensionLinkMode(false)
+      setDimensionPendingFrom(null)
     }
   }, [placementMode])
 
@@ -462,8 +503,20 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setMeasureToolActive(false)
       setPlacementMode(null)
       setMarqueeModeActive(false)
+      setDimensionLinkMode(false)
+      setDimensionPendingFrom(null)
     }
   }, [activationLinkMode])
+
+  useEffect(() => {
+    if (dimensionLinkMode) {
+      setMeasureToolActive(false)
+      setPlacementMode(null)
+      setMarqueeModeActive(false)
+      setActivationLinkMode(false)
+      setActivationPendingFrom(null)
+    }
+  }, [dimensionLinkMode])
 
   useEffect(() => {
     if (readOnly) return
@@ -488,6 +541,12 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       if (e.code !== 'Escape' || e.repeat) return
       const el = e.target
       if (el instanceof HTMLElement && el.closest('input, textarea, select, [contenteditable="true"]')) return
+      if (dimensionLinkMode) {
+        e.preventDefault()
+        setDimensionLinkMode(false)
+        setDimensionPendingFrom(null)
+        return
+      }
       if (activationLinkMode) {
         e.preventDefault()
         setActivationLinkMode(false)
@@ -513,6 +572,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     activationLinkMode,
     clearPenaltyContourDraft,
     readOnly,
+    dimensionLinkMode,
   ])
 
   const formatMeasureDistance = useCallback(
@@ -530,6 +590,18 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       })
     },
     [addActivationEdge],
+  )
+
+  const handleDimensionEntityPick = useCallback(
+    (ref: StageEntityRef) => {
+      setDimensionPendingFrom((prev) => {
+        if (!prev) return ref
+        if (refKey(prev) === refKey(ref)) return null
+        addPlanDimensionLine(prev, ref)
+        return null
+      })
+    },
+    [addPlanDimensionLine],
   )
 
   const armTargetPlacement = useCallback((type: TargetType, isNoShoot = false) => {
@@ -1214,6 +1286,10 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       activationLinkModeActive={!readOnly && activationLinkMode}
                       activationPendingFrom={activationPendingFrom}
                       onActivationEntityPick={readOnly ? undefined : handleActivationEntityPick}
+                      dimensionLinkModeActive={!readOnly && dimensionLinkMode}
+                      dimensionPendingFrom={dimensionPendingFrom}
+                      onDimensionEntityPick={readOnly ? undefined : handleDimensionEntityPick}
+                      onRemovePlanDimensionLine={readOnly ? undefined : removePlanDimensionLine}
                     />
                     {!readOnly ? (
                     <div className="app__plan-map-actions" role="toolbar" aria-label={tree.view.planMapActionsAria}>
@@ -1225,6 +1301,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         title={tree.view.marqueeModeTitle}
                         onClick={() => {
                           setMarqueeModeActive((v) => !v)
+                          setDimensionLinkMode(false)
+                          setDimensionPendingFrom(null)
                         }}
                       >
                         <svg
@@ -1298,6 +1376,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                           setPlacementMode(null)
                           setActivationLinkMode((v) => !v)
                           setActivationPendingFrom(null)
+                          setDimensionLinkMode(false)
+                          setDimensionPendingFrom(null)
                         }}
                       >
                         <svg
@@ -1319,12 +1399,49 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       </button>
                       <button
                         type="button"
+                        className={`app__plan-map-action-btn${dimensionLinkMode ? ' is-active' : ''}`}
+                        aria-pressed={dimensionLinkMode}
+                        aria-label={tree.view.dimensionLinkMode}
+                        title={tree.view.dimensionLinkModeTitle}
+                        onClick={() => {
+                          setPlacementMode(null)
+                          setDimensionLinkMode((v) => !v)
+                          setDimensionPendingFrom(null)
+                          setActivationLinkMode(false)
+                          setActivationPendingFrom(null)
+                          setMeasureToolActive(false)
+                          setMarqueeModeActive(false)
+                        }}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M5 19V5" />
+                          <path d="M19 19V5" />
+                          <path d="M9 12h6" />
+                          <path d="M8 9l-2-2M8 15l-2 2M16 9l2-2M16 15l2 2" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
                         className={`app__plan-map-action-btn${measureToolActive ? ' is-active' : ''}`}
                         aria-pressed={measureToolActive}
                         aria-label={tree.view.measureTool}
                         title={tree.view.measureToolTitle}
                         onClick={() => {
                           setPlacementMode(null)
+                          setDimensionLinkMode(false)
+                          setDimensionPendingFrom(null)
+                          setActivationLinkMode(false)
+                          setActivationPendingFrom(null)
                           setMeasureToolActive((v) => !v)
                         }}
                       >

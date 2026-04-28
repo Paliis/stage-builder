@@ -26,6 +26,7 @@ describe('normalizePublishBody', () => {
         props: [],
         penaltyZoneSet: emptyPenaltyZoneSet(),
         activations: [],
+        planDimensions: [],
       },
       briefing,
     })

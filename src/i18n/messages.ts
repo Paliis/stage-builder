@@ -187,6 +187,9 @@ export type MessageTree = {
     /** Режим зв’язків активації на плані (BL-004). */
     activationLinkMode: string
     activationLinkModeTitle: string
+    /** Закріплені розміри між об’єктами (центр–центр), для кваліфікаційних схем */
+    dimensionLinkMode: string
+    dimensionLinkModeTitle: string
     copySelection: string
     copySelectionTitle: string
     pasteSelection: string
@@ -698,6 +701,9 @@ export const ukMessages: MessageTree = {
     activationLinkMode: '\u0410\u043a\u0442\u0438\u0432\u0430\u0446\u0456\u044f',
     activationLinkModeTitle:
       '\u0414\u0432\u0430 \u043a\u043b\u0456\u043a\u0438: \u0441\u043f\u043e\u0447\u0430\u0442\u043a\u0443 \u0434\u0436\u0435\u0440\u0435\u043b\u043e, \u043f\u043e\u0442\u0456\u043c \u0446\u0456\u043b\u044c. Esc \u2014 \u0432\u0438\u0439\u0442\u0438 \u0437 \u0440\u0435\u0436\u0438\u043c\u0443.',
+    dimensionLinkMode: '\u0420\u043e\u0437\u043c\u0456\u0440\u0438',
+    dimensionLinkModeTitle:
+      "Закріпити відстань між центрами двох об'єктів; лінія та підпис залишаються на плані й у файлі. Клік по лінії — видалити. Esc — вийти з режиму.",
     copySelection: '\u041a\u043e\u043f\u0456\u044f',
     copySelectionTitle:
       '\u041a\u043e\u043f\u0456\u044e\u0432\u0430\u0442\u0438 \u0432\u0438\u0434\u0456\u043b\u0435\u043d\u0435 (Ctrl+C). \u0421\u043f\u043e\u0447\u0430\u0442\u043a\u0443 \u2014 \u0432\u043d\u0443\u0442\u0440\u0456\u0448\u043d\u0454 \u0437\u0431\u0435\u0440\u0456\u0433\u0430\u043d\u043d\u044f \u0442\u0430\u043a\u043e\u0436 \u0443 \u0431\u0443\u0444\u0435\u0440 \u043e\u0431\u043c\u0456\u043d\u0443.',
@@ -712,7 +718,7 @@ export const ukMessages: MessageTree = {
     redoPlanTitle:
       '\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0438 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0443 \u0434\u0456\u044e (Ctrl+Shift+Z, Ctrl+Y \u0430\u0431\u043e \u2318+Shift+Z).',
     planMapActionsAria:
-      'Дії на 2D-плані: рамка, копія, вставка, вимір, видалити виділене, очистити всю вправу',
+      'Дії на 2D-плані: рамка, копія, вставка, активація, розміри, вимір, видалити виділене, очистити всю вправу',
     deleteSelection: 'Видалити виділене',
     deleteSelectionTitle:
       'Прибрати з плану лише виділені об’єкти (як Delete на клавіатурі). Червона кнопка з кошиком нижче — очистити всю вправу.',
@@ -1237,6 +1243,9 @@ export const enMessages: MessageTree = {
     activationLinkMode: 'Activation',
     activationLinkModeTitle:
       'Two clicks: first the source object, then the target. Esc exits the mode.',
+    dimensionLinkMode: 'Dimensions',
+    dimensionLinkModeTitle:
+      'Pin centre-to-centre distance between two objects — line and label stay on the plan and in the saved file. Click a dimension line to remove. Esc exits.',
     copySelection: 'Copy',
     copySelectionTitle:
       'Copy selection (Ctrl+C). Also saved to the internal buffer; tries system clipboard when allowed.',
@@ -1248,7 +1257,7 @@ export const enMessages: MessageTree = {
     redoPlan: 'Redo',
     redoPlanTitle: 'Redo undone change (Ctrl+Shift+Z, Ctrl+Y, or ⌘+Shift+Z).',
     planMapActionsAria:
-      '2D plan actions: marquee, copy, paste, measure, delete selection, clear entire exercise',
+      '2D plan actions: marquee, copy, paste, activation, pinned dimensions, measure, delete selection, clear entire exercise',
     deleteSelection: 'Delete selection',
     deleteSelectionTitle:
       'Remove only selected objects from the plan (same as Delete key). The red trash button below clears the whole exercise.',
