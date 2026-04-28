@@ -3,7 +3,7 @@ card_id: C399
 slug: gun-not-clear
 discipline: handgun
 locale: en
-title: "Gun not clear"
+title: "Gun not clear after the \"clear\" declaration"
 category: safety
 ipsc_refs:
   - rule: "10.5.1"
@@ -14,17 +14,30 @@ status: draft
 reviewer: ""
 ipsc_edition: "Jan 2026"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-draft_source: llm-pending
+draft_source: llm
 review_date: ""
 ---
 
-## Translation pending
+## What this is
 
-This article has not been translated into English yet. The Ukrainian version
-contains the current text — switch the portal language to **UK** at the top of
-the page to read it. `status: draft`, `draft_source: llm-pending`.
+A round is found after the shooter declared the gun empty, or a discharge happens during the controlled hammer-down / **trigger** press in the unloading procedure — an unsafe state and unsafe manipulation, both falling under **10.5.1** (**DQ**).
 
-## IPSC
+## RO algorithm
 
-If you need to verify the rule directly, see the official IPSC source linked in
-the frontmatter (`primary_url`) and the rule numbers under `ipsc_refs`.
+1. **Stop:** immediate **"STOP!"** at any discharge, primer click, or round found after "clear".
+2. **Safety:** keep the **muzzle** in a safe direction; no unauthorised corrections by the shooter.
+3. **Unload:** repeat the unload directly supervised by the RO; repeat the **chamber check** and the magazine well check.
+4. **Document:** **RM** — **DQ** per **10.5.1**, log the event.
+
+## Key nuances (Jan 2026)
+
+* **Responsibility:** the RO supervises the procedure, but the shooter is responsible for the gun actually being empty before the declaration.
+* **Muzzle:** until unloading is complete, do not change the **muzzle** direction unnecessarily.
+
+## Local (FPSU)
+
+Chapter XI §4–5. The ULSC procedure is enforced strictly; record any doubtful cases for the **RM**.
+
+## Common RO mistakes
+
+* A superficial chamber check without confirming the chamber is actually empty before "clear".

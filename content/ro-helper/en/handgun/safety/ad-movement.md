@@ -3,7 +3,7 @@ card_id: C451
 slug: ad-movement
 discipline: handgun
 locale: en
-title: "AD movement"
+title: "Accidental discharge while moving"
 category: safety
 ipsc_refs:
   - rule: "10.4.4"
@@ -14,17 +14,26 @@ status: draft
 reviewer: ""
 ipsc_edition: "Jan 2026"
 primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Handgun%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
-draft_source: llm-pending
+draft_source: llm
 review_date: ""
 ---
 
-## Translation pending
+## What this is
 
-This article has not been translated into English yet. The Ukrainian version
-contains the current text — switch the portal language to **UK** at the top of
-the page to read it. `status: draft`, `draft_source: llm-pending`.
+An **accidental discharge** while moving between positions (more than one step / a level change without engaging targets) — **DQ** under **10.4.4**.
 
-## IPSC
+## RO algorithm
 
-If you need to verify the rule directly, see the official IPSC source linked in
-the frontmatter (`primary_url`) and the rule numbers under `ipsc_refs`.
+1. **Stop:** instant **"STOP!"** at the moment of the shot in motion.
+2. **Safety:** the competitor stops; **muzzle** pointed at the target array / **backstop** per the procedure; finger off the trigger.
+3. **Inspect:** unload under supervision; record the trajectory and the impact location; confirm the shot was *not* part of a controlled engagement from this position.
+4. **Document:** report to **RM** — **DQ** per **10.4.4**.
+
+## Key nuances (Jan 2026)
+
+* **Trigger finger:** an **AD** in motion almost always involves a finger inside the trigger guard during a step.
+* **Recoil reaction:** keep the safety bubble around the shooter after **STOP** until inspection is complete.
+
+## Local (FPSU)
+
+Chapter XI §4. A shot in motion is treated as one of the most dangerous scenarios because of how easily the round can leave the bay.
