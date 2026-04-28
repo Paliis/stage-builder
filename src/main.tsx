@@ -34,6 +34,26 @@ const reloadForNewServiceWorker = registerSW({
   onNeedRefresh() {
     notifyPwaUpdateAvailable()
   },
+  onRegisteredSW(_swUrl, registration) {
+    if (!registration) return
+
+    const checkForUpdate = () => {
+      void registration.update().catch(() => {
+        // ignore transient network errors
+      })
+    }
+
+    // Check once right after registration (helps long-lived tabs).
+    checkForUpdate()
+
+    // Periodic update checks so open PWA tabs still receive updates.
+    window.setInterval(checkForUpdate, 60 * 60 * 1000)
+
+    // When user returns to the tab/app, check again.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') checkForUpdate()
+    })
+  },
 })
 setPwaApplyUpdate(reloadForNewServiceWorker)
 

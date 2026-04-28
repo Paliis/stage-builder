@@ -1,0 +1,34 @@
+---
+card_id: C432
+slug: stop-command-pcc
+discipline: pcc
+locale: en
+title: "Stop command PCC"
+category: match-admin
+ipsc_refs:
+  - rule: "8.3.2"
+    note: ""
+  - rule: "8.6.4"
+    note: ""
+  - rule: "10.6.1"
+    note: ""
+fpsu_refs: []
+fpsu_delta_verified: false
+status: draft
+reviewer: ""
+ipsc_edition: "Jan 2026"
+primary_url: "https://ipsc-pl.org/images/przepisy_2026/IPSC%20Pistol%20Caliber%20Carbine%20Competition%20Rules%20-%20Jan%202026%20Edition%20-%20Final%2029%20Dec%202025.pdf"
+draft_source: llm-pending
+review_date: ""
+---
+
+## Translation pending
+
+This article has not been translated into English yet. The Ukrainian version
+contains the current text — switch the portal language to **UK** at the top of
+the page to read it. `status: draft`, `draft_source: llm-pending`.
+
+## IPSC
+
+If you need to verify the rule directly, see the official IPSC source linked in
+the frontmatter (`primary_url`) and the rule numbers under `ipsc_refs`.
