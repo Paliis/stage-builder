@@ -986,24 +986,30 @@ function drawSavedPlanDimensions(
       nx = -nx
       ny = -ny
     }
-    const perpOffPx = Math.max(16, dotR + 8 + tf.pxPerMeter * 0.038)
+    const perpOffPx = Math.max(12, dotR + 5 + tf.pxPerMeter * 0.034)
     const staggerAlongPx = ((di * 19 + (h >>> 0) % 17) % 27) - 13
     const lx = m0x + nx * perpOffPx + ux * staggerAlongPx
     const ly = m0y + ny * perpOffPx + uy * staggerAlongPx
 
-    ctx.font = `${Math.max(11, Math.round(12 * Math.sqrt(tf.pxPerMeter / 14)))}px system-ui, sans-serif`
+    /** Менший шрифт і поле при низькому px/м (віддалення), щоб не перекривати короткі відрізки. */
+    const labelFontPx = Math.max(
+      8,
+      Math.min(14, Math.round(7.6 + tf.pxPerMeter * 0.078)),
+    )
+    const pad = Math.max(2, Math.min(5, Math.round(1.8 + tf.pxPerMeter * 0.035)))
+    ctx.font = `${labelFontPx}px system-ui, sans-serif`
     const tw = ctx.measureText(label).width
-    const pad = 6
-    ctx.fillStyle = 'rgba(240, 253, 250, 0.9)'
-    ctx.strokeStyle = 'rgba(17, 94, 89, 0.52)'
-    ctx.lineWidth = 1
+    const innerH = labelFontPx * 1.22
+    ctx.fillStyle = 'rgba(240, 253, 250, 0.38)'
+    ctx.strokeStyle = 'rgba(17, 94, 89, 0.36)'
+    ctx.lineWidth = Math.max(0.75, Math.min(1.25, tf.pxPerMeter * 0.009))
     const bx = lx - tw / 2 - pad
-    const by = ly - 11 - pad
+    const by = ly - innerH / 2 - pad
     const bw = tw + pad * 2
-    const bh = 22 + pad * 0.5
+    const bh = innerH + pad * 2
     ctx.fillRect(bx, by, bw, bh)
     ctx.strokeRect(bx, by, bw, bh)
-    ctx.fillStyle = 'rgba(17, 94, 89, 0.98)'
+    ctx.fillStyle = 'rgba(17, 94, 89, 0.92)'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.fillText(label, lx, ly)
