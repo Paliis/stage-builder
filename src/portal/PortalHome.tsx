@@ -24,6 +24,20 @@ interface ProductCardProps {
   cta: string
   badgeKind: CardBadgeKind
   badgeLabel: string
+  /** When set, the substring before the first ": " is wrapped in `<strong>` (e.g. "Точність: …"). */
+  boldFeatureLabel?: boolean
+}
+
+function renderFeatureContent(text: string, boldLabel: boolean) {
+  if (!boldLabel) return text
+  const idx = text.indexOf(': ')
+  if (idx === -1) return text
+  return (
+    <>
+      <strong className="portal-home__feature-label">{text.slice(0, idx)}:</strong>
+      {text.slice(idx + 1)}
+    </>
+  )
 }
 
 function ProductCard(props: ProductCardProps) {
@@ -38,6 +52,7 @@ function ProductCard(props: ProductCardProps) {
     cta,
     badgeKind,
     badgeLabel,
+    boldFeatureLabel = false,
   } = props
   const previewIsWebp = preview.toLowerCase().endsWith('.webp')
 
@@ -81,7 +96,7 @@ function ProductCard(props: ProductCardProps) {
         <p className="portal-home__product-desc">{description}</p>
         <ul className="portal-home__product-features">
           {features.map((feature) => (
-            <li key={feature}>{feature}</li>
+            <li key={feature}>{renderFeatureContent(feature, boldFeatureLabel)}</li>
           ))}
         </ul>
         <p className="portal-home__product-cta" aria-hidden="true">
@@ -123,9 +138,10 @@ export function PortalHome() {
           cta={p.openStageBuilder}
           badgeKind="live"
           badgeLabel={p.badgeLive}
+          boldFeatureLabel
         />
         <ProductCard
-          to="/hit-factor"
+          to={`/${locale}/hit-factor`}
           preview="/portal-previews/hit-factor.webp"
           previewFallback="/portal-previews/hit-factor.png"
           previewAlt={`${p.hitFactorTitle} — ${p.hitFactorDesc}`}

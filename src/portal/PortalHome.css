@@ -227,6 +227,11 @@
   background: var(--accent);
 }
 
+.portal-home__feature-label {
+  font-weight: 700;
+  color: var(--text-h);
+}
+
 .portal-home__product-cta {
   margin: 0.5rem 0 0;
   padding-top: 0.4rem;
