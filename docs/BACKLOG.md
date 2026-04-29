@@ -42,7 +42,20 @@
 | **BL-019** | Замкнена зона штрафних ліній (полігон) | **Повний скоп §4 одним етапом (без MVP-фаз).** Модель + редактор: послідовні точки, **epsilon 5 см**; **union**, **отвори** (кільце червоним; острівці — покриття поля). **UI:** заливка після замикання; незамкнений + **«Контур штрафної зони не замкнений»**, drag (§4.3). Старт/брифінг як §4.2 п. 5–6. Міграція — перекреслення. Лінії під реквізитом. **Щити не в полігоні**. IPSC — орієнтир. [VISIBILITY_AND_SAFETY_RULES.md §4](./VISIBILITY_AND_SAFETY_RULES.md). **Передумова** BL-010 / BL-013. | **done** | **P1** | **Зроблено в продукті:** `penaltyZoneSet` у `stageStore`, домен `penaltyZones.ts`, 2D `StageCanvas`, 3D `PenaltyZonesFaultLines3D`, файл `*.stage.json`, чернетка; див. [TECH.md](./TECH.md) (штрафні зони). |
 | **BL-020** | Окремі URL для мов (SEO / hreflang) | **Зроблено (SPA):** **`/uk/...`**, **`/en/...`** для порталу й RO Helper; **`PortalShell`** — **canonical** + **hreflang**; legacy шляхи редіректяться; **sitemap** — per-locale (`scripts/generate-sitemap.mjs`). Початкова мова: сегмент URL → **`localStorage`** → браузер. Залишається опційно: **prerender/SSR** для стабільного HTML краулерам без JS. | **done** | — | Реалізація 2026-04; див. [TECH.md](./TECH.md), [RO_HELPER_V0.md](./RO_HELPER_V0.md) §5. |
 
-*Наступний вільний номер для **нових** пунктів: **BL-025**.*
+*Наступний вільний номер для **нових** пунктів: **BL-029**.*
+
+---
+
+## Матчі, реєстрація, PractiScore (2026-04)
+
+Епік планується детально у **[MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md)** (фази A–F, модель даних, експорт `.psc`).
+
+| ID | Тема | Коротко | Статус | Пріоритет |
+|----|------|---------|--------|-----------|
+| **BL-025** | Match Admin: дані та заявки | Supabase: матч, скводи, реєстрації, auth організатор/стрілець; публічна картка матчу. | candidate | P2 |
+| **BL-026** | Оплата заявок | Webhook провайдера → статус заявки (`approved`); fallback ручна оплата. | candidate | P2 |
+| **BL-027** | Прив’язка вправ Stage Builder до матчу | Snapshot/share на вправу; метадані для експорту в PS (раунди, poppers, очки). | candidate | P2 |
+| **BL-028** | Експорт `.psc` з портала | Мапер канонічна модель → `match_def.json` + порожні scores; ZIP; регресія з `scripts/practiscore/`. | candidate | P2 |
 
 ---
 
