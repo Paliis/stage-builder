@@ -155,7 +155,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | **VERSIONING.md** | Продуктові етапи V0/V1/V2, тексти для користувачів |
 | **BACKLOG.md** | Таблиця BL-001…, стратегічний беклог, процес грумінгу |
 | **MATCH_REGISTRATION_AND_PSC_PLAN.md** | Матчі, реєстрація, експорт у PractiScore (`.psc`) |
-| **MATCH_ADMIN_ARCHITECTURE.md** | Архітектура модуля матчів, прогалини (техніка, ліцензії, операторські реєстрації, продукти) |
+| **MATCH_ADMIN_ARCHITECTURE.md** | Архітектура модуля матчів; прогалини (техніка, ліцензії, операторські реєстрації, продукти); UX-орієнтир [practicarms.ua](https://practicarms.ua/) (§8) |
 | **USER_FEEDBACK.md** | Чернетка збору відгуків |
 | **PUBLISH_POLICY.md** | Політика публікації share |
 | **BL-001_SHARE_LINK_PLAN.md** | План і статус посилань на вправу |
