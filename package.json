@@ -24,7 +24,8 @@
     "ro-helper:sync-card-ids": "node scripts/sync-ro-helper-frontmatter-card-id.mjs",
     "ro-helper:build-search-index": "node scripts/build-ro-helper-search-index.mjs",
     "ro-helper:audit-en": "node scripts/ro-helper-audit-en.mjs",
-    "sitemap:generate": "node scripts/generate-sitemap.mjs"
+    "sitemap:generate": "node scripts/generate-sitemap.mjs",
+    "practiscore:inspect-fixture": "python scripts/practiscore/psc_inspect.py scripts/practiscore/fixtures/practiscore-roundtrip-test.psc --keys"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
