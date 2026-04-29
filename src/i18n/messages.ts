@@ -867,11 +867,11 @@ export const ukMessages: MessageTree = {
     openStageBuilder: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Stage Builder',
     hitFactorTitle: 'Hit Factor',
     hitFactorDesc:
-      '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u043a\u0430\u043b\u044c\u043a\u0443\u043b\u044f\u0442\u043e\u0440: \u043e\u0447\u043a\u0438 / \u0447\u0430\u0441 = hit factor. \u0417\u0440\u0443\u0447\u043d\u043e \u043d\u0430 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438\u0449\u0456 \u0442\u0430 \u043d\u0430 \u043c\u0430\u0442\u0447\u0456.',
+      'Ваш персональний аналітик результативності безпосередньо на стрільбищі. Калькулятор не просто рахує бали, а наочно показує «ціну» кожного промаху чи додаткової секунди. Це допомагає миттєво зрозуміти, чи варто вам прискорюватися, чи краще сфокусуватися на чистоті стрільби.',
     hitFactorFeatures: [
-      '\u041e\u0447\u043a\u0438 / \u0447\u0430\u0441 = HF, Major / Minor',
-      '\u0426\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043e\u043a \u0443 \u0441\u0435\u043a\u0443\u043d\u0434\u0430\u0445',
-      '\u041f\u0456\u0434\u043a\u0430\u0437\u043a\u0430 \u0444\u043e\u043a\u0443\u0441\u0443: \u0448\u0432\u0438\u0434\u043a\u0456\u0441\u0442\u044c \u0447\u0438 \u0442\u043e\u0447\u043d\u0456\u0441\u0442\u044c',
+      'Миттєвий розрахунок: Швидке отримання хіт-фактора для Major та Minor факторів потужності.',
+      'Аналіз помилок: Чітка візуалізація того, скільки часу у вас «забирають» помилки.',
+      'Розумні підказки: Автоматична рекомендація фокуса (швидкість vs точність) для покращення результату.',
     ],
     openHitFactor: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Hit Factor',
     roHelperTitle: 'RO Helper',
@@ -1390,11 +1390,12 @@ export const enMessages: MessageTree = {
     ],
     openStageBuilder: 'Open Stage Builder',
     hitFactorTitle: 'Hit Factor',
-    hitFactorDesc: 'Quick calculator: points / time = hit factor. Handy at the range and at matches.',
+    hitFactorDesc:
+      'Your personal performance analyst at the range. The calculator doesn\u2019t just add up points\u2014it shows the \u201cprice\u201d of every miss or extra second. Instantly see whether to push speed or focus on clean shooting.',
     hitFactorFeatures: [
-      'Points / time = HF, Major / Minor',
-      'Cost of mistakes in seconds',
-      'Focus hint: speed vs accuracy',
+      'Instant calculation: Quick hit factor for Major and Minor power factors.',
+      'Error analysis: Clear view of how much time mistakes cost you.',
+      'Smart hints: Automatic focus tip (speed vs accuracy) to improve your run.',
     ],
     openHitFactor: 'Open Hit Factor',
     roHelperTitle: 'RO Helper',

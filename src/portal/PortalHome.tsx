@@ -151,6 +151,7 @@ export function PortalHome() {
           cta={p.openHitFactor}
           badgeKind="new"
           badgeLabel={p.badgeNew}
+          boldFeatureLabel
         />
         {isRoHelperEnabled() ? (
           <ProductCard
