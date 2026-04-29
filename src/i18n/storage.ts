@@ -27,5 +27,9 @@ export function detectBrowserLocale(): Locale {
 }
 
 export function getInitialLocale(): Locale {
+  if (typeof window !== 'undefined') {
+    const m = window.location.pathname.match(/^\/(uk|en)(?=\/|$)/)
+    if (m?.[1] === 'uk' || m?.[1] === 'en') return m[1]
+  }
   return readStoredLocale() ?? detectBrowserLocale()
 }

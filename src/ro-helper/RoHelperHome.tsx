@@ -19,7 +19,7 @@ const DISCIPLINE_TONE: Record<RoHelperDiscipline, string> = {
 }
 
 export function RoHelperHome() {
-  const { tree } = useI18n()
+  const { locale, tree } = useI18n()
   const rh = tree.roHelper
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export function RoHelperHome() {
             <li key={d} className="ro-helper-home__disc-item">
               <Link
                 className={`ro-helper-disc-card ro-helper-disc-card--${DISCIPLINE_TONE[d]}`}
-                to={roHelperPath(d)}
+                to={roHelperPath(locale, d)}
               >
                 <span className="ro-helper-disc-card__accent" aria-hidden="true" />
                 <span className="ro-helper-disc-card__body">

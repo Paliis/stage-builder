@@ -1051,7 +1051,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         <div className="app__header-inner">
           <div className="app__header-top-row">
             <h1 className="app__title-heading">
-              <Link to="/" className="app__title-link">
+              <Link to={`/${locale}`} className="app__title-link">
                 {tree.app.title}
               </Link>
             </h1>

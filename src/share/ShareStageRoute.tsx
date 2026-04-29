@@ -22,7 +22,7 @@ export function ShareStageRoute({ mode }: { mode: ShareMode }) {
   const { shareId } = useParams<{ shareId: string }>()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { setLocale, t } = useI18n()
+  const { setLocale, t, locale } = useI18n()
   const replaceStageState = useStageStore((s) => s.replaceStageState)
   const setBriefing = useBriefingStore((s) => s.setBriefing)
 
@@ -194,7 +194,7 @@ export function ShareStageRoute({ mode }: { mode: ShareMode }) {
         <div className="share-route__panel share-route__panel--error" role="alert">
           <p>{errorMessage ?? t('share.loadError')}</p>
           <p>
-            <Link to="/">{t('share.backHome')}</Link>
+            <Link to={`/${locale}`}>{t('share.backHome')}</Link>
           </p>
         </div>
       </div>

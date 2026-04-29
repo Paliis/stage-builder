@@ -21039,6 +21039,8 @@ function normalizeFieldGroundCover3d(raw) {
 }
 
 // src/domain/field.ts
+var DEFAULT_FIELD_WIDTH_M = 30;
+var DEFAULT_FIELD_HEIGHT_M = 40;
 var FIELD_SIZE_LIMITS = { minM: 8, maxWidthM: 50, maxHeightM: 100 };
 function clampFieldDimensions(w, h) {
   const { minM, maxWidthM, maxHeightM } = FIELD_SIZE_LIMITS;
@@ -21046,6 +21048,46 @@ function clampFieldDimensions(w, h) {
     x: Math.min(maxWidthM, Math.max(minM, Math.round(w * 10) / 10)),
     y: Math.min(maxHeightM, Math.max(minM, Math.round(h * 10) / 10))
   };
+}
+function clampVec2ToField(point, marginM, widthM = DEFAULT_FIELD_WIDTH_M, heightM = DEFAULT_FIELD_HEIGHT_M) {
+  return {
+    x: Math.max(marginM, Math.min(widthM - marginM, point.x)),
+    y: Math.max(marginM, Math.min(heightM - marginM, point.y))
+  };
+}
+
+// src/domain/ceramicPlateSpec.ts
+var MM = 1e-3;
+var CERAMIC_RADIUS_M = 55 * MM;
+
+// src/domain/targetSpecs.ts
+var CM = 0.01;
+function isSquareSteelPlateTargetType(type) {
+  return type === "metalPlate" || type === "metalPlateStand50" || type === "metalPlateStand100";
+}
+var B2_WIDE_ROW_LOCAL_Y = (28.5 - 38) * CM;
+
+// src/domain/activations.ts
+function refKey(r) {
+  return `${r.kind}:${r.id}`;
+}
+function resolveEntityRef(ref, targets, props) {
+  if (ref.kind === "target") return targets.find((t) => t.id === ref.id) ?? null;
+  return props.find((p) => p.id === ref.id) ?? null;
+}
+function planAnchorWorld(ref, targets, props) {
+  const e = resolveEntityRef(ref, targets, props);
+  if (!e) return null;
+  return e.position;
+}
+
+// src/domain/planDimensions.ts
+function reclampPlanDimensionsToField(dims, widthM, heightM) {
+  return dims.map((d) => ({
+    ...d,
+    endA: clampVec2ToField(d.endA, 0, widthM, heightM),
+    endB: clampVec2ToField(d.endB, 0, widthM, heightM)
+  }));
 }
 
 // src/domain/stageBriefing.ts
@@ -21064,17 +21106,6 @@ function defaultStageBriefing() {
     safetyAngles: "90/90/90"
   };
 }
-
-// src/domain/ceramicPlateSpec.ts
-var MM = 1e-3;
-var CERAMIC_RADIUS_M = 55 * MM;
-
-// src/domain/targetSpecs.ts
-var CM = 0.01;
-function isSquareSteelPlateTargetType(type) {
-  return type === "metalPlate" || type === "metalPlateStand50" || type === "metalPlateStand100";
-}
-var B2_WIDE_ROW_LOCAL_Y = (28.5 - 38) * CM;
 
 // src/domain/weaponClass.ts
 var ALL_TARGET_TYPES = [
@@ -21106,7 +21137,7 @@ function emptyPenaltyZoneSet() {
 
 // src/domain/stageProjectFile.ts
 var STAGE_PROJECT_FORMAT = "stage-builder";
-var STAGE_PROJECT_VERSION = 3;
+var STAGE_PROJECT_VERSION = 5;
 var STAGE_PROJECT_VERSION_MIN = 1;
 var WEAPON_CLASSES = /* @__PURE__ */ new Set(["handgun", "rifle", "shotgun"]);
 var TARGET_TYPE_SET = new Set(ALL_TARGET_TYPES);
@@ -21300,6 +21331,45 @@ function parseActivations(raw) {
   }
   return ensureUniqueActivationIds(out);
 }
+function ensureUniquePlanDimensionIds(lines) {
+  const seen = /* @__PURE__ */ new Set();
+  return lines.map((line) => {
+    let id = line.id;
+    if (!id || seen.has(id)) id = newEntityId();
+    while (seen.has(id)) id = newEntityId();
+    seen.add(id);
+    return { ...line, id };
+  });
+}
+function parsePlanDimensionLine(raw, idx, targets, props) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const id = typeof o.id === "string" && o.id ? o.id : `dim-${idx}`;
+  if (isVec2(o.endA) && isVec2(o.endB)) {
+    return {
+      id,
+      endA: { ...o.endA },
+      endB: { ...o.endB }
+    };
+  }
+  const from = parseStageEntityRef(o.from);
+  const to = parseStageEntityRef(o.to);
+  if (!from || !to || refKey(from) === refKey(to)) return null;
+  const wa = planAnchorWorld(from, targets, props);
+  const wb = planAnchorWorld(to, targets, props);
+  if (!wa || !wb) return null;
+  return { id, endA: { ...wa }, endB: { ...wb } };
+}
+function parsePlanDimensions(raw, targets, props) {
+  if (raw === void 0 || raw === null) return [];
+  if (!Array.isArray(raw)) return [];
+  const out = [];
+  for (let i = 0; i < raw.length; i++) {
+    const line = parsePlanDimensionLine(raw[i], i, targets, props);
+    if (line) out.push(line);
+  }
+  return ensureUniquePlanDimensionIds(out);
+}
 function parseBriefing(raw) {
   const d = defaultStageBriefing();
   if (typeof raw !== "object" || raw === null) return d;
@@ -21354,6 +21424,11 @@ function buildStageProjectFile(snapshot) {
         id: e.id,
         from: { ...e.from },
         to: { ...e.to }
+      })),
+      planDimensions: snapshot.stage.planDimensions.map((d) => ({
+        id: d.id,
+        endA: { ...d.endA },
+        endB: { ...d.endB }
       }))
     },
     briefing: { ...snapshot.briefing }
@@ -21412,6 +21487,8 @@ function parseStageProjectJson(text) {
   if (version3 >= 3) {
     activations = parseActivations(stageObj.activations);
   }
+  let planDimensions = parsePlanDimensions(stageObj.planDimensions, targets, props);
+  planDimensions = reclampPlanDimensionsToField(planDimensions, fw.x, fw.y);
   const data = {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
@@ -21423,7 +21500,8 @@ function parseStageProjectJson(text) {
       props: ensureUniquePropIds(props),
       fieldGroundCover3d,
       penaltyZoneSet,
-      activations
+      activations,
+      planDimensions
     },
     briefing: parseBriefing(root.briefing)
   };

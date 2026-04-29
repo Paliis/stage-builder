@@ -12,7 +12,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 
 const ORIGIN = 'https://shooters-tools.com'
-const RO_HELPER_BASE = `${ORIGIN}/tools/ro-helper`
+const PORTAL_LOCALES = ['uk', 'en']
 const matrixPath = join(root, 'docs', 'RO_HELPER_CARD_MATRIX.csv')
 const outSitemap0 = join(root, 'public', 'sitemap-0.xml')
 const outSitemap = join(root, 'public', 'sitemap.xml')
@@ -63,6 +63,33 @@ function urlEntry(loc, lastmod, changefreq, priority) {
   ].join('\n')
 }
 
+function roHelperBaseUrl(locale) {
+  return `${ORIGIN}/${locale}/tools/ro-helper`
+}
+
+function priorityForUrl(loc) {
+  let changefreq = 'weekly'
+  let priority = 0.5
+
+  if (loc === `${ORIGIN}/stage-builder`) {
+    priority = 0.95
+  } else if (PORTAL_LOCALES.some((l) => loc === `${ORIGIN}/${l}`)) {
+    priority = 1.0
+  } else if (PORTAL_LOCALES.some((l) => loc === `${ORIGIN}/${l}/hit-factor`)) {
+    priority = 0.85
+  } else if (PORTAL_LOCALES.some((l) => loc === `${ORIGIN}/${l}/publish-policy`)) {
+    priority = 0.45
+  } else if (PORTAL_LOCALES.some((l) => loc === roHelperBaseUrl(l))) {
+    priority = 0.9
+    changefreq = 'monthly'
+  } else if (PORTAL_LOCALES.some((l) => loc.startsWith(`${roHelperBaseUrl(l)}/`))) {
+    priority = 0.75
+    changefreq = 'monthly'
+  }
+
+  return { changefreq, priority }
+}
+
 async function main() {
   const lastmod = todayLastmodUtc()
   const enableRoHelper = process.env.ENABLE_RO_HELPER_SITEMAP === '1' || process.env.ENABLE_RO_HELPER_SITEMAP === 'true'
@@ -73,12 +100,15 @@ async function main() {
 
   /** @type {Set<string>} */
   const urls = new Set()
-  urls.add(`${ORIGIN}/`)
   urls.add(`${ORIGIN}/stage-builder`)
-  urls.add(`${ORIGIN}/hit-factor`)
-  urls.add(`${ORIGIN}/publish-policy`)
-  if (enableRoHelper) {
-    urls.add(RO_HELPER_BASE)
+
+  for (const loc of PORTAL_LOCALES) {
+    urls.add(`${ORIGIN}/${loc}`)
+    urls.add(`${ORIGIN}/${loc}/hit-factor`)
+    urls.add(`${ORIGIN}/${loc}/publish-policy`)
+    if (enableRoHelper) {
+      urls.add(roHelperBaseUrl(loc))
+    }
   }
 
   for (const line of dataRows) {
@@ -88,9 +118,12 @@ async function main() {
     const category = (cols[3] ?? '').trim()
     if (!slug || !discipline || !category) continue
     if (enableRoHelper) {
-      urls.add(`${RO_HELPER_BASE}/${discipline}`)
-      urls.add(`${RO_HELPER_BASE}/${discipline}/${category}`)
-      urls.add(`${RO_HELPER_BASE}/${discipline}/${category}/${slug}`)
+      for (const loc of PORTAL_LOCALES) {
+        const base = roHelperBaseUrl(loc)
+        urls.add(`${base}/${discipline}`)
+        urls.add(`${base}/${discipline}/${category}`)
+        urls.add(`${base}/${discipline}/${category}/${slug}`)
+      }
     }
   }
 
@@ -98,18 +131,7 @@ async function main() {
 
   const entries = []
   for (const loc of sorted) {
-    let changefreq = 'weekly'
-    let priority = 0.5
-    if (loc === `${ORIGIN}/`) {
-      priority = 1.0
-    } else if (loc === `${ORIGIN}/stage-builder`) {
-      priority = 0.95
-    } else if (loc === RO_HELPER_BASE) {
-      priority = 0.9
-    } else if (loc.startsWith(`${RO_HELPER_BASE}/`)) {
-      priority = 0.75
-      changefreq = 'monthly'
-    }
+    const { changefreq, priority } = priorityForUrl(loc)
     entries.push(urlEntry(loc, lastmod, changefreq, priority))
   }
 
@@ -140,4 +162,3 @@ async function main() {
 }
 
 await main()
-

@@ -92,9 +92,9 @@ function ProductCard(props: ProductCardProps) {
   )
 }
 
-/** Launcher at `/` — entry to Stage Builder, Hit Factor and RO Helper. */
+/** Launcher at `/:locale` — entry to Stage Builder, Hit Factor and RO Helper. */
 export function PortalHome() {
-  const { tree } = useI18n()
+  const { locale, tree } = useI18n()
   const p = tree.portal
 
   return (
@@ -138,7 +138,7 @@ export function PortalHome() {
         />
         {isRoHelperEnabled() ? (
           <ProductCard
-            to={roHelperPath()}
+            to={roHelperPath(locale)}
             preview="/portal-previews/ro-helper.webp"
             previewFallback="/portal-previews/ro-helper.png"
             previewAlt={`${p.roHelperTitle} — ${p.roHelperDesc}`}

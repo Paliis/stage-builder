@@ -1,0 +1,25 @@
+import { Navigate, useParams } from 'react-router-dom'
+import { getInitialLocale } from '../i18n/storage'
+import { roHelperPath } from '../ro-helper/paths'
+
+export function RootRedirect() {
+  return <Navigate to={`/${getInitialLocale()}`} replace />
+}
+
+export function LegacyHitFactorRedirect() {
+  return <Navigate to={`/${getInitialLocale()}/hit-factor`} replace />
+}
+
+export function LegacyPublishPolicyRedirect() {
+  return <Navigate to={`/${getInitialLocale()}/publish-policy`} replace />
+}
+
+/** `/tools/ro-helper/*` and `/ro-helper/*` → `/:locale/tools/ro-helper/*` */
+export function LegacyRoHelperTreeRedirect() {
+  const { '*': rest } = useParams()
+  const loc = getInitialLocale()
+  const base = roHelperPath(loc)
+  const suffix = rest?.replace(/^\/+/, '').trim()
+  const to = suffix ? `${base}/${suffix}` : base
+  return <Navigate to={to} replace />
+}

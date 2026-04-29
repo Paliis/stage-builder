@@ -122,7 +122,7 @@ export function RoHelperArticlePage() {
   }
 
   if (!valid) {
-    return <Navigate to={roHelperPath()} replace />
+    return <Navigate to={roHelperPath(locale)} replace />
   }
 
   if (phase === 'loading') {
@@ -146,7 +146,7 @@ export function RoHelperArticlePage() {
         </Helmet>
         <p className="ro-helper-article__missing">{rh.articleNotFound}</p>
         <p>
-          <Link to={roHelperPath()}>{rh.breadcrumbRo}</Link>
+          <Link to={roHelperPath(locale)}>{rh.breadcrumbRo}</Link>
         </p>
       </div>
     )
@@ -159,11 +159,11 @@ export function RoHelperArticlePage() {
         <meta name="description" content={metaDescription} />
       </Helmet>
       <nav className="ro-helper-article__crumb" aria-label="Breadcrumb">
-        <Link to={roHelperPath()}>{rh.breadcrumbRo}</Link>
+        <Link to={roHelperPath(locale)}>{rh.breadcrumbRo}</Link>
         <span aria-hidden="true"> / </span>
-        <Link to={roHelperPath(discipline!)}>{disciplineLabel(discipline!, rh)}</Link>
+        <Link to={roHelperPath(locale, discipline!)}>{disciplineLabel(discipline!, rh)}</Link>
         <span aria-hidden="true"> / </span>
-        <Link to={roHelperPath(discipline!, category!)}>{categoryLabel(category!, rh)}</Link>
+        <Link to={roHelperPath(locale, discipline!, category!)}>{categoryLabel(category!, rh)}</Link>
         <span aria-hidden="true"> / </span>
         <span>{title || humanizeRoHelperSlug(slug ?? '')}</span>
       </nav>

@@ -15,7 +15,7 @@ function escapeHtml(s: string): string {
 }
 
 export const config = {
-  matcher: ['/v/:path*', '/e/:path*', '/hit-factor'],
+  matcher: ['/v/:path*', '/e/:path*', '/hit-factor', '/uk/hit-factor', '/en/hit-factor'],
 }
 
 export default async function middleware(request: Request): Promise<Response> {
@@ -27,7 +27,8 @@ export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url)
 
   // Static public routes that need correct OG preview (Telegram, Slack, etc).
-  if (url.pathname === '/hit-factor') {
+  const hitFactorPaths = new Set(['/hit-factor', '/uk/hit-factor', '/en/hit-factor'])
+  if (hitFactorPaths.has(url.pathname)) {
     const pageUrl = escapeHtml(url.href.split('#')[0])
     const assetOrigin = resolvePublicOriginFromEnv(url.origin)
     const ogImage = escapeHtml(`${assetOrigin}/og-image.png${OG_IMAGE_ASSET_QUERY}`)
@@ -38,9 +39,10 @@ export default async function middleware(request: Request): Promise<Response> {
       'Hit Factor calculator for IPSC / practical shooting: time, hits, penalties and a quick focus hint (speed vs accuracy).',
     )
     const ogImageAlt = escapeHtml('Shooters Tools — Hit Factor calculator')
+    const htmlLang = /^\/en(\/|$)/.test(url.pathname) ? 'en' : 'uk'
 
     const html = `<!DOCTYPE html>
-<html lang="uk">
+<html lang="${htmlLang}">
 <head>
 <meta charset="utf-8"/>
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>

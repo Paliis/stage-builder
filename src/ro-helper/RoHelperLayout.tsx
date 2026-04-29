@@ -2,7 +2,6 @@ import { Outlet, useMatch } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { RoHelperFpsuPrefsProvider } from './RoHelperFpsuPrefs'
 import { useRoHelperFpsuPrefs } from './useRoHelperFpsuPrefs'
-import { RO_HELPER_BASE } from './paths'
 import { RoHelperSearchBar } from './RoHelperSearchBar'
 import './RoHelperLayout.css'
 
@@ -10,7 +9,7 @@ function RoHelperLayoutInner() {
   const { tree } = useI18n()
   const rh = tree.roHelper
   const { showFpsuLayer, setShowFpsuLayer } = useRoHelperFpsuPrefs()
-  const isArticleRoute = useMatch(`${RO_HELPER_BASE}/:discipline/:category/:slug`)
+  const isArticleRoute = useMatch('/:locale/tools/ro-helper/:discipline/:category/:slug')
 
   return (
     <>

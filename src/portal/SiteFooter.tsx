@@ -4,7 +4,7 @@ import './SiteFooter.css'
 
 /** Sitewide footer for portal shell (Stage Builder route uses its own footer with PWA install). */
 export function SiteFooter() {
-  const { tree } = useI18n()
+  const { locale, tree } = useI18n()
   const f = tree.footer
 
   return (
@@ -44,7 +44,7 @@ export function SiteFooter() {
       </div>
       <div className="site-footer__bottom">
         <nav className="site-footer__nav" aria-label="Footer">
-          <Link to="/publish-policy">{f.publishPolicy}</Link>
+          <Link to={`/${locale}/publish-policy`}>{f.publishPolicy}</Link>
         </nav>
       </div>
     </footer>

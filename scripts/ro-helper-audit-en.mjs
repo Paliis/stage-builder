@@ -12,7 +12,7 @@
  *
  * Usage:
  *   npm run ro-helper:audit-en
- *   node scripts/ro-helper-audit-en.mjs [--json] [--fail-on-stubs|--strict]
+ *   node scripts/ro-helper-audit-en.mjs [--json] [--quiet|-q] [--fail-on-stubs|--strict]
  *
  * Short bodies (<350 chars after frontmatter) always **[WARN]** (never fail unless combined with --fail-on-stubs in future — currently short is warn only).
  */
@@ -84,6 +84,7 @@ function auditFile(relPath, body, metaLines) {
 }
 
 const json = process.argv.includes('--json') || process.argv.includes('-j')
+const quiet = process.argv.includes('--quiet') || process.argv.includes('-q')
 const failOnStubs =
   process.argv.includes('--fail-on-stubs') ||
   process.argv.includes('--strict')
@@ -138,11 +139,18 @@ async function main() {
     for (const i of ukHeadings) {
       console.error(`[ERROR] ${i.kind}\t${i.path}${i.detail ? `\t${i.detail}` : ''}`)
     }
-    for (const i of stubs) {
-      console.warn(`[WARN] ${i.kind}\t${i.path}${i.detail ? `\t${i.detail}` : ''}`)
+    if (!quiet) {
+      for (const i of stubs) {
+        console.warn(`[WARN] ${i.kind}\t${i.path}${i.detail ? `\t${i.detail}` : ''}`)
+      }
+      for (const i of shorts) {
+        console.warn(`[WARN] ${i.kind}\t${i.path}${i.detail ? `\t${i.detail}` : ''}`)
+      }
     }
-    for (const i of shorts) {
-      console.warn(`[WARN] ${i.kind}\t${i.path}${i.detail ? `\t${i.detail}` : ''}`)
+    if (quiet && (stubs.length > 0 || shorts.length > 0)) {
+      console.log(
+        `ro-helper:audit-en (quiet): ${stubs.length} stub warning(s), ${shorts.length} short-body warning(s) suppressed`,
+      )
     }
     console.log(
       `ro-helper:audit-en: ${files.length} EN files — ${ukHeadings.length} heading error(s), ${stubs.length} stub(s), ${shorts.length} short-body warning(s). ${failOnStubs ? '(strict: stubs fail CI)' : '(relaxed: stubs are warnings only)'}`,

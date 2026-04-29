@@ -199,7 +199,7 @@ export function RoHelperSearchBar() {
                         >
                           <Link
                             className="ro-helper-search__item"
-                            to={roHelperPath(h.discipline, h.category, h.slug)}
+                            to={roHelperPath(locale, h.discipline, h.category, h.slug)}
                             onClick={closeWithReset}
                           >
                             <span className="ro-helper-search__item-title">{h.title}</span>

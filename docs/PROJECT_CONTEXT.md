@@ -81,15 +81,17 @@
 
 | Шлях | Призначення |
 |------|-------------|
-| `/`, `/publish-policy`, `/ro-helper/*` | Обгортка **`PortalShell`**: шапка (бренд + мова), контент, **`SiteFooter`** |
-| `/` | Головна порталу (`PortalHome`) |
-| `/hit-factor` | Hit Factor calculator (MVP) |
-| `/ro-helper` | **RO Helper** — головна (вибір дисципліни як первинна точка входу) |
-| `/ro-helper/:discipline` | Сторінка дисципліни (картки 5 категорій) |
-| `/ro-helper/:discipline/:category` | Список статей категорії |
-| `/ro-helper/:discipline/:category/:slug` | Стаття |
+| **`/`** | Редірект на **`/${locale}`** (пріоритет сегмента URL, інакше `storage` / браузер) |
+| **`/:locale`**, **`/:locale/hit-factor`**, **`/:locale/publish-policy`**, **`/:locale/tools/ro-helper/...`** | Портал: **`PortalShell`** (шапка, мова, футер, SEO `canonical` / `hreflang`) |
+| **`/:locale`** | Головна порталу (`PortalHome`) |
+| **`/:locale/hit-factor`** | Hit Factor calculator |
+| **`/:locale/publish-policy`** | Політика публікації |
+| **`/:locale/tools/ro-helper`** | RO Helper — вибір дисципліни |
+| **`/:locale/tools/ro-helper/:discipline`** | Сторінка дисципліни |
+| **`/:locale/tools/ro-helper/:discipline/:category`** | Список статей |
+| **`/:locale/tools/ro-helper/:discipline/:category/:slug`** | Стаття |
+| **`/hit-factor`**, **`/publish-policy`**, **`/ro-helper`**, **`/ro-helper/*`**, **`/tools/ro-helper`**, **`/tools/ro-helper/*`** | Legacy → відповідний шлях під **`/:locale`** (`legacyPortalRedirects.tsx`) |
 | `/stage-builder` | Повний редактор (`App`) — **поза** `PortalShell` |
-| `/publish-policy` | Політика публікації (текст для модалки share) |
 | `/v/:shareId` | Перегляд опублікованої вправи (**стабільний публічний контракт**, QR у PDF) |
 | `/e/:shareId` | Редактор за посиланням (**стабільний контракт**) |
 

@@ -1,6 +1,6 @@
 # RO Helper v0 — повна специфікація контенту та продукту
 
-**Статус:** специфікація для розробки модуля на порталі **Shooters Tools** (`/ro-helper`). Код модуля може ще не існувати; цей документ — джерело істини для контенту, UX і технічної інтеграції.
+**Статус:** специфікація для розробки модуля на порталі **Shooters Tools** (`/:locale/tools/ro-helper`). Код модуля може ще не існувати; цей документ — джерело істини для контенту, UX і технічної інтеграції.
 
 **Зв’язок:** [PORTAL_PLAN.md](./PORTAL_PLAN.md) (модулі, дисклеймер, roadmap), [TECH.md](./TECH.md) (PWA, аналітика, збірка).
 
@@ -108,10 +108,10 @@ status: draft|reviewed|published
 
 ## 5. Інформаційна архітектура та URL
 
-- **Модуль:** стабільний шлях **`/ro-helper`** (див. [PORTAL_PLAN.md](./PORTAL_PLAN.md) §4.2).
-- **Статті:** `/ro-helper/:discipline/:category/:slug` (приклад: `/ro-helper/handgun/penalties/foot-fault`), щоб **однаковий `slug`** був однозначним у різних видах стрільби. Альтернатива з узгодженням розробки: `/ro-helper/:category/:slug?discipline=handgun`. Мова контенту **не** в URL на v0 — узгоджується з **глобальною мовою UI** порталу, див. [§5.1](#51-двомовність-uk--en-та-шари-ipsc--fpsu).
-- **Головна модуля:** `/ro-helper` — великі категорійні плитки (SOS) + дисклеймер.
-- **Портал:** окрема **картка** на головній [`/`](../src/portal/PortalHome.tsx) — після імплементації.
+- **Портал (Shooters Tools):** канонічні сторінки з префіксом мови **`/uk/...`** та **`/en/...`** (головна **`/uk`**, **`/en`**, Hit Factor, політика публікації). Мова синхронізується з першим сегментом шляху; перемикач мови в **`PortalShell`** змінює лише цей сегмент.
+- **RO Helper:** стабільний сегмент **`/tools/ro-helper`** під порталом, тобто **`/:locale/tools/ro-helper/...`** (приклад статті: **`/uk/tools/ro-helper/handgun/penalties/foot-fault`**). Шлях **`/tools/ro-helper`** без префікса лишається для редіректу на **`/:locale/tools/ro-helper`** (locale з пріоритету `localStorage` / браузера). Застарілі **`/ro-helper`** — те саме.
+- **Модульна головна RO Helper:** **`/:locale/tools/ro-helper`** — плитки дисциплін + дисклеймер.
+- **Портал-лаунчер:** **`/:locale`** — картки Stage Builder, Hit Factor, RO Helper.
 
 Категорії (`category`) і кольори — [розділ 7](#7-uxui-sos-плитки-та-кольори).
 
@@ -132,7 +132,7 @@ status: draft|reviewed|published
 
 - Стан на кінець квітня 2026: повний англійський текст (не placeholder) закрито для **`handgun`** та для **`multigun`** (3 статті). У **`pcc`**, **`rifle`**, **`mini_rifle`**, **`shotgun`** частина EN-файлів може ще мати маркер чернетки **`draft_source: llm-pending`** і блок `## Translation pending` — поступове наповнення.
 - **`multigun`** (`content/ro-helper/*/multigun/`) з парним EN існує для повноти архіву; цей **`discipline` не входить** до константи `RO_HELPER_DISCIPLINES` у коді й до попередньо збірного пошукового індексу (`scripts/build-ro-helper-search-index.mjs`). Навігація та пошук у v0 охоплюють лише п’ять основних видів стрільби — доступ до multigun лише за прямим посиланням / майбутнє продуктове рішення.
-- **`npm run ro-helper:audit-en`** (`scripts/ro-helper-audit-en.mjs`): за замовчуванням **українські заголовки** у EN-файлі дають **[ERROR]** і exit **1** (помилка даних); файли з **`llm-pending`** перераховуються як **[WARN]** і **не** ламають збірку. Щоб CI падав на будь-якому неперекладеному stub: **`npm run ro-helper:audit-en -- --fail-on-stubs`** (або **`--strict`**).
+- **`npm run ro-helper:audit-en`** (`scripts/ro-helper-audit-en.mjs`): за замовчуванням **українські заголовки** у EN-файлі дають **[ERROR]** і exit **1** (помилка даних); файли з **`llm-pending`** перераховуються як **[WARN]** і **не** ламають збірку. У **`npm run check`** скрипт викликається з **`--quiet`** (лише підсумок без списку WARN per file). Щоб CI падав на будь-якому неперекладеному stub: **`npm run ro-helper:audit-en -- --fail-on-stubs`** (або **`--strict`**).
 
 ---
 
@@ -236,7 +236,7 @@ status: draft|reviewed|published
 - **Код:** рекомендовано `src/features/ro-helper/` (lazy route); не імпортувати внутрішні модулі **stage-builder** без контракту ([PORTAL_PLAN.md](./PORTAL_PLAN.md) §2.3).
 - **Контент:** Markdown; для **офлайн PWA** бажано **імпорт у бандл** (або згенерований індекс при збірці). Файли лише в `public/*.md` з `fetch` **можуть** не потрапити в Workbox precache — див. [TECH.md](./TECH.md) та `vite.config.ts` (`globPatterns`).
 - **Рендер:** легкий MD → HTML (бібліотека на вибір на етапі імплементації).
-- **UI-флоу:** головна `/ro-helper` — лише вибір **дисципліни** (5 карток); далі `/:discipline` — 5 карток-категорій (Safety / Penalties / Scoring / Equipment / Match admin); `/:discipline/:category` — перелік статей; `/:discipline/:category/:slug` — стаття. Прототипний роут `/ro-helper/demo` та зведений `/ro-helper/topics/:category` **прибрані** разом із cleanup-ом v0 (`feat: ro-helper discipline-first UX`). Каталог усіх PDF: **https://www.ipsc.org/ipsc-rules/rule-books/** — лише для документації / ручного оновлення лінків.
+- **UI-флоу:** головна **`/:locale/tools/ro-helper`** — лише вибір **дисципліни** (5 карток); далі **`/:discipline`** — 5 карток-категорій (Safety / Penalties / Scoring / Equipment / Match admin); **`/:discipline/:category`** — перелік статей; **`/:discipline/:category/:slug`** — стаття. Прототипний роут `/ro-helper/demo` та зведений `/ro-helper/topics/:category` **прибрані** разом із cleanup-ом v0 (`feat: ro-helper discipline-first UX`). Каталог усіх PDF: **https://www.ipsc.org/ipsc-rules/rule-books/** — лише для документації / ручного оновлення лінків.
 - **Пошук по статтях:** sticky-бар у верхній частині модуля (`RoHelperSearchBar` у `RoHelperLayout`) — доступний з усіх сторінок RO Helper. Працює клієнтсько по лінивозавантажуваному JSON-індексу (`src/ro-helper/data/searchIndex.<locale>.json`), який генерується скриптом `scripts/build-ro-helper-search-index.mjs` (npm-команда `ro-helper:build-search-index`; запускається автоматично через `predev`/`prebuild`). Індекс містить лише **title + slug + discipline + category** для швидкого матчу; тіло статей не індексується. Скоринг — у `roHelperSearch.ts` (точна назва > префікс > word-prefix > substring > slug > контекст).
 
 ---
@@ -272,7 +272,7 @@ IPSC: {пункти} ({ipsc_edition})
 
 | Подія | Коли | Параметри (приклад) |
 |-------|------|---------------------|
-| `module_open` | Перший екран `/ro-helper` у сесії або повторно за політикою продукту | `module: ro-helper` |
+| `module_open` | Перший екран **`/:locale/tools/ro-helper`** у сесії або повторно за політикою продукту | `module: ro-helper` |
 | `article_view` | Відкриття статті | `article_slug`, `category`, `layer_fpsu: true/false` |
 
 ---
@@ -281,7 +281,7 @@ IPSC: {пункти} ({ipsc_edition})
 
 **v0:** унікальні **`document.title`** і meta description **на клієнті** при навігації по статтях (наприклад `react-helmet-async`).
 
-**Phase 2 (опційно):** prerender / окремі HTML для краулерів, розширений sitemap з `/ro-helper/*` — коли з’явиться навантаження на пошук; узгоджувати з [BACKLOG.md](./BACKLOG.md) **BL-020** (багатомовні URL), якщо вирішите окремі шляхи `/uk/` `/en/`.
+**Phase 2 (опційно):** prerender / окремі HTML для краулерів — коли з’явиться навантаження на пошук. **BL-020 (локалізовані URL `/uk` / `en`):** реалізовано для порталу та RO Helper; sitemap — **`scripts/generate-sitemap.mjs`** (пер-локальні URL; RO Helper за **`ENABLE_RO_HELPER_SITEMAP`**).
 
 ---
 
@@ -316,7 +316,7 @@ IPSC: {пункти} ({ipsc_edition})
 
 **Інженерія (коли стартує розробка)**
 
-- [ ] Маршрут `/ro-helper` + lazy feature.
+- [ ] Маршрут **`/:locale/tools/ro-helper`** + lazy feature.
 - [ ] Картка на порталі.
 - [ ] Перемикач шару ФПСУ + `localStorage`.
 - [ ] Події `module_open` / `article_view`.

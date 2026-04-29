@@ -29,7 +29,31 @@
   ],
   "rewrites": [
     {
+      "source": "/uk",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/uk/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/en",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/en/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ro-helper",
+      "destination": "/index.html"
+    },
+    {
       "source": "/ro-helper/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools/ro-helper",
       "destination": "/index.html"
     },
     {

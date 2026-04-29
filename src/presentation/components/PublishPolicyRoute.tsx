@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
 import { PublishPolicyPanel } from './PublishPolicyPanel'
 
-/** Standalone page with the same text as the in-app publish policy modal (`/publish-policy`). */
+/** Standalone page with the same text as the in-app publish policy modal (`/:locale/publish-policy`). */
 export function PublishPolicyRoute() {
-  const { tree } = useI18n()
+  const { locale, tree } = useI18n()
   const sp = tree.share
   const p = tree.portal
   const helmetTitle = `${tree.footer.publishPolicy} — ${p.title}`
@@ -16,7 +16,7 @@ export function PublishPolicyRoute() {
         <meta name="description" content={sp.publishPolicyTitle} />
       </Helmet>
       <header className="app__publish-policy-page-header">
-        <Link to="/" className="app__publish-policy-back">
+        <Link to={`/${locale}`} className="app__publish-policy-back">
           {sp.backHome}
         </Link>
       </header>

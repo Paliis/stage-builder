@@ -18,7 +18,6 @@ import { PortalShell } from './portal/PortalShell'
 import { HitFactorRoute } from './portal/HitFactorRoute'
 import { RoHelperRouteSuspenseFallback } from './portal/RoHelperRouteSuspenseFallback'
 import { isRoHelperEnabled } from './portal/featureFlags'
-import { RO_HELPER_BASE } from './ro-helper/paths'
 import {
   RoHelperArticlePage,
   RoHelperCategoryPage,
@@ -26,6 +25,14 @@ import {
   RoHelperHome,
   RoHelperLayout,
 } from './portal/roHelperLazyRoutes'
+import { PortalLocaleGate } from './portal/PortalLocaleGate'
+import {
+  LegacyHitFactorRedirect,
+  LegacyPublishPolicyRedirect,
+  LegacyRoHelperTreeRedirect,
+  RootRedirect,
+} from './portal/legacyPortalRedirects'
+import { getInitialLocale } from './i18n/storage'
 
 hydrateSessionDraft()
 
@@ -64,33 +71,39 @@ createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <RoutePageViewAnalytics />
           <Routes>
+            <Route path="/" element={<RootRedirect />} />
+            <Route path="/hit-factor" element={<LegacyHitFactorRedirect />} />
+            <Route path="/publish-policy" element={<LegacyPublishPolicyRedirect />} />
+            <Route path="/ro-helper" element={<LegacyRoHelperTreeRedirect />} />
+            <Route path="/ro-helper/*" element={<LegacyRoHelperTreeRedirect />} />
+            <Route path="/tools/ro-helper" element={<LegacyRoHelperTreeRedirect />} />
+            <Route path="/tools/ro-helper/*" element={<LegacyRoHelperTreeRedirect />} />
             <Route element={<PortalShell />}>
-              <Route path="/" element={<PortalHome />} />
-              <Route path="/hit-factor" element={<HitFactorRoute />} />
-              <Route path="/publish-policy" element={<PublishPolicyRoute />} />
-              {isRoHelperEnabled() ? (
-                <>
-                  <Route path="/ro-helper/*" element={<Navigate to={RO_HELPER_BASE} replace />} />
+              <Route path=":locale" element={<PortalLocaleGate />}>
+                <Route index element={<PortalHome />} />
+                <Route path="hit-factor" element={<HitFactorRoute />} />
+                <Route path="publish-policy" element={<PublishPolicyRoute />} />
+                {isRoHelperEnabled() ? (
                   <Route
-                  path={RO_HELPER_BASE}
-                  element={
-                    <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
-                      <RoHelperLayout />
-                    </Suspense>
-                  }
-                >
-                  <Route index element={<RoHelperHome />} />
-                  <Route path=":discipline/:category/:slug" element={<RoHelperArticlePage />} />
-                  <Route path=":discipline/:category" element={<RoHelperCategoryPage />} />
-                  <Route path=":discipline" element={<RoHelperDisciplinePage />} />
-                </Route>
-                </>
-              ) : null}
+                    path="tools/ro-helper"
+                    element={
+                      <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                        <RoHelperLayout />
+                      </Suspense>
+                    }
+                  >
+                    <Route index element={<RoHelperHome />} />
+                    <Route path=":discipline/:category/:slug" element={<RoHelperArticlePage />} />
+                    <Route path=":discipline/:category" element={<RoHelperCategoryPage />} />
+                    <Route path=":discipline" element={<RoHelperDisciplinePage />} />
+                  </Route>
+                ) : null}
+              </Route>
             </Route>
             <Route path="/stage-builder" element={<App />} />
             <Route path="/v/:shareId" element={<ShareStageRoute mode="view" />} />
             <Route path="/e/:shareId" element={<ShareStageRoute mode="edit" />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<Navigate to={`/${getInitialLocale()}`} replace />} />
           </Routes>
         </BrowserRouter>
         <Analytics />

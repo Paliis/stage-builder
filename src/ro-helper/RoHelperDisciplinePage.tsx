@@ -34,11 +34,11 @@ function categoryDesc(c: RoHelperCategory, rh: MessageTree['roHelper']): string 
 
 export function RoHelperDisciplinePage() {
   const { discipline } = useParams<{ discipline: string }>()
-  const { tree } = useI18n()
+  const { locale, tree } = useI18n()
   const rh = tree.roHelper
 
   if (!discipline || !isRoHelperDiscipline(discipline)) {
-    return <Navigate to={roHelperPath()} replace />
+    return <Navigate to={roHelperPath(locale)} replace />
   }
 
   const dLabel = disciplineLabel(discipline, rh)
@@ -57,7 +57,7 @@ export function RoHelperDisciplinePage() {
           <li key={c} className="ro-helper-list__card-item">
             <Link
               className={`ro-helper-cat-card ro-helper-cat-card--${CATEGORY_TONE[c]}`}
-              to={roHelperPath(discipline, c)}
+              to={roHelperPath(locale, discipline, c)}
             >
               <span className="ro-helper-cat-card__accent" aria-hidden="true" />
               <span className="ro-helper-cat-card__body">
