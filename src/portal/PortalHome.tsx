@@ -33,10 +33,10 @@ function renderFeatureContent(text: string, boldLabel: boolean) {
   const idx = text.indexOf(': ')
   if (idx === -1) return text
   return (
-    <>
+    <span className="portal-home__feature-line">
       <strong className="portal-home__feature-label">{text.slice(0, idx)}:</strong>
       {text.slice(idx + 1)}
-    </>
+    </span>
   )
 }
 

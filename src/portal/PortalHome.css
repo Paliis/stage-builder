@@ -227,6 +227,12 @@
   background: var(--accent);
 }
 
+.portal-home__product-features li > .portal-home__feature-line {
+  display: block;
+  flex: 1;
+  min-width: 0;
+}
+
 .portal-home__feature-label {
   font-weight: 700;
   color: var(--text-h);
