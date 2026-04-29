@@ -165,6 +165,7 @@ export function PortalHome() {
             cta={p.openRoHelper}
             badgeKind="beta"
             badgeLabel={p.badgeBeta}
+            boldFeatureLabel
           />
         ) : null}
       </section>

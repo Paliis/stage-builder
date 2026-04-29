@@ -876,11 +876,11 @@ export const ukMessages: MessageTree = {
     openHitFactor: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 Hit Factor',
     roHelperTitle: 'RO Helper',
     roHelperDesc:
-      '\u0414\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u0430\u0432\u0438\u043b \u0442\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440 \u0434\u043b\u044f IPSC-\u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 (\u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0438 \u2014 \u0437\u0430\u0432\u0436\u0434\u0438 \u0437\u0432\u0456\u0440\u044f\u0439\u0442\u0435 \u0437 PDF).',
+      'Інтелектуальний довідник, який завжди під рукою у судді. Замість гортання сотень сторінок PDF, ви отримуєте структурований доступ до всіх процедур, пенальті та вимог до спорядження. Ідеальний інструмент для швидкого вирішення питань безпосередньо на стейджі.',
     roHelperFeatures: [
-      '\u041f\u0435\u043d\u0430\u043b\u044c\u0442\u0456, \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0438, \u0441\u043a\u043e\u0440\u0438\u043d\u0433',
-      '\u0428\u0432\u0438\u0434\u043a\u0438\u0439 \u043f\u043e\u0448\u0443\u043a \u0456 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0456\u0457',
-      'Quick cite \u043d\u0430 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438\u0449\u0456',
+      'Швидка навігація: Зручний пошук за категоріями: безпека, процедури, спорядження.',
+      'Ефективне суддівство: Чіткі алгоритми для нарахування пенальті та оцінки складних випадків.',
+      'Зручне цитування: Можливість миттєво знайти та показати потрібне правило стрільцю.',
     ],
     openRoHelper: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 RO Helper',
     gridAriaLabel: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u0456 \u0456\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438',
@@ -1400,11 +1400,11 @@ export const enMessages: MessageTree = {
     openHitFactor: 'Open Hit Factor',
     roHelperTitle: 'RO Helper',
     roHelperDesc:
-      'Rules and procedures reference for IPSC-style shooting (draft articles — always verify against your official PDF).',
+      'An intelligent rules companion at the RO post. Skip hundred-page PDF hunts\u2014get structured access to procedures, penalties, and equipment rules, built for fast answers right on the stage.',
     roHelperFeatures: [
-      'Penalties, procedures, scoring',
-      'Fast search and categories',
-      'Quick cite at the range',
+      'Quick navigation: Category-first browsing\u2014safety, procedures, equipment.',
+      'Effective officiating: Clear patterns for penalties and tough calls.',
+      'Easy citing: Surface the right rule for the competitor in moments.',
     ],
     openRoHelper: 'Open RO Helper',
     gridAriaLabel: 'Available tools',
