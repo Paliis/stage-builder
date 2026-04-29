@@ -2,7 +2,7 @@
 
 **Статус:** план реалізації (квітень 2026). **Передумога:** перевірено імпорт згенерованого `.psc` у **PractiScore 2** v1.7.36 (Android); формат = **ZIP** з `match_def.json` + `match_scores.json`.
 
-**Зв’язок:** [PORTAL_PLAN.md](./PORTAL_PLAN.md) (архітектура, Supabase), [TECH.md](./TECH.md). Інструменти для експериментів з `.psc`: `scripts/practiscore/`.
+**Зв’язок:** [PORTAL_PLAN.md](./PORTAL_PLAN.md) (архітектура, Supabase), [TECH.md](./TECH.md); **архітектура модуля матчів і прогалини (техніка / право / продукт):** [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md). Інструменти для експериментів з `.psc`: `scripts/practiscore/`.
 
 ---
 

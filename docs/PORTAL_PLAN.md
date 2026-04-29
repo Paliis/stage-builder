@@ -213,6 +213,7 @@
 - [RO_HELPER_V0.md](./RO_HELPER_V0.md) — RO Helper v0: контент, UX, IPSC + ФПСУ, аналітика, чекліст
 - [RO_HELPER_CONTENT_TZ.md](./RO_HELPER_CONTENT_TZ.md) — ТЗ на підготовку статей (пайплайн, промпт, критерії приймання)
 - [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md) — матчі, реєстрація стрільців, експорт PractiScore (`.psc`): фази та модель даних
+- [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) — архітектура модуля матчів, прогалини (код, ліцензії, реєстрація бізнесу, лінійка продуктів)
 
 ---
 
