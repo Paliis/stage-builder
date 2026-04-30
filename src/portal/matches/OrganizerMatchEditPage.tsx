@@ -2,10 +2,12 @@ import { type FormEvent, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
+import { formatTemplate } from '../../i18n/format'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { OrganizerMatchSquadsPanel } from './OrganizerMatchSquadsPanel'
+import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage'
 import '../PortalHome.css'
 
 type MatchDraft = {
@@ -13,12 +15,13 @@ type MatchDraft = {
   description_md: string
   starts_at_local: string
   location_label: string
-  competitor_limit: number
   status: string
   participant_list_visibility: 'open' | 'closed'
   prematch_enabled: boolean
   planned_main_squad_count: number
   planned_prematch_squad_count: number
+  shooters_per_main_squad: number
+  shooters_per_prematch_squad: number
 }
 
 function defaultStartsLocal(): string {
@@ -60,14 +63,16 @@ export function OrganizerMatchEditPage() {
     description_md: '',
     starts_at_local: defaultStartsLocal(),
     location_label: '',
-    competitor_limit: 32,
     status: 'draft',
     participant_list_visibility: 'closed',
     prematch_enabled: false,
     planned_main_squad_count: 8,
     planned_prematch_squad_count: 2,
+    shooters_per_main_squad: 18,
+    shooters_per_prematch_squad: 18,
   }))
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [squadSyncBanner, setSquadSyncBanner] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
@@ -80,12 +85,13 @@ export function OrganizerMatchEditPage() {
         description_md: '',
         starts_at_local: defaultStartsLocal(),
         location_label: '',
-        competitor_limit: 32,
         status: 'draft',
         participant_list_visibility: 'closed',
         prematch_enabled: false,
         planned_main_squad_count: 8,
         planned_prematch_squad_count: 2,
+        shooters_per_main_squad: 18,
+        shooters_per_prematch_squad: 18,
       })
       return
     }
@@ -103,7 +109,7 @@ export function OrganizerMatchEditPage() {
     void sb
       .from('matches')
       .select(
-        'id, title, description_md, starts_at, location_label, competitor_limit, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count',
+        'id, title, description_md, starts_at, location_label, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad',
       )
       .eq('id', matchId!)
       .maybeSingle()
@@ -126,12 +132,13 @@ export function OrganizerMatchEditPage() {
           description_md: data.description_md ?? '',
           starts_at_local: localFromIso(data.starts_at),
           location_label: data.location_label ?? '',
-          competitor_limit: Number(data.competitor_limit) || 32,
           status: data.status ?? 'draft',
           participant_list_visibility: vis,
           prematch_enabled: Boolean(data.prematch_enabled),
           planned_main_squad_count: Math.max(1, Number(data.planned_main_squad_count) || 8),
           planned_prematch_squad_count: Math.max(0, Number(data.planned_prematch_squad_count) || 0),
+          shooters_per_main_squad: Math.max(1, Number(data.shooters_per_main_squad) || 18),
+          shooters_per_prematch_squad: Math.max(1, Number(data.shooters_per_prematch_squad) || 18),
         })
         setLoadState('loaded')
       })
@@ -150,6 +157,11 @@ export function OrganizerMatchEditPage() {
     p.matchOrgEditNotFound,
   ])
 
+  useEffect(() => {
+    const msg = (location.state as { squadSyncWarning?: string } | null)?.squadSyncWarning
+    if (typeof msg === 'string' && msg.trim()) setSquadSyncBanner(msg.trim())
+  }, [location.state])
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setSaveError(null)
@@ -159,12 +171,6 @@ export function OrganizerMatchEditPage() {
       setSaveError(p.matchOrgTitleRequired)
       return
     }
-    const limit = Number(draft.competitor_limit)
-    if (!Number.isFinite(limit) || limit < 1) {
-      setSaveError(p.matchOrgLimitInvalid)
-      return
-    }
-
     const plannedMain = Math.floor(Number(draft.planned_main_squad_count))
     if (!Number.isFinite(plannedMain) || plannedMain < 1) {
       setSaveError(p.matchOrgPlannedMainInvalid)
@@ -178,13 +184,25 @@ export function OrganizerMatchEditPage() {
       return
     }
 
+    const shootersMain = Math.floor(Number(draft.shooters_per_main_squad))
+    if (!Number.isFinite(shootersMain) || shootersMain < 1) {
+      setSaveError(p.matchOrgShootersInvalid)
+      return
+    }
+    let shootersPrematch = Math.floor(Number(draft.shooters_per_prematch_squad))
+    if (!draft.prematch_enabled) {
+      shootersPrematch = Math.max(1, shootersPrematch)
+    } else if (!Number.isFinite(shootersPrematch) || shootersPrematch < 1) {
+      setSaveError(p.matchOrgShootersInvalid)
+      return
+    }
+
     const row = {
       organizer_id: user.id,
       title,
       description_md: draft.description_md.trim() ? draft.description_md : null,
       starts_at: isoFromDatetimeLocal(draft.starts_at_local),
       location_label: draft.location_label.trim() ? draft.location_label.trim() : null,
-      competitor_limit: limit,
       discipline: 'shotgun' as const,
       status: draft.status,
       participant_list_visibility: draft.participant_list_visibility,
@@ -192,6 +210,8 @@ export function OrganizerMatchEditPage() {
       prematch_enabled: draft.prematch_enabled,
       planned_main_squad_count: plannedMain,
       planned_prematch_squad_count: plannedPrematch,
+      shooters_per_main_squad: shootersMain,
+      shooters_per_prematch_squad: shootersPrematch,
     }
 
     setSaving(true)
@@ -203,7 +223,17 @@ export function OrganizerMatchEditPage() {
         setSaveError(error.message)
         return
       }
-      if (data?.id) navigate(`/${locale}/matches/my/${data.id}`, { replace: true })
+      if (data?.id) {
+        const { error: syncErr } = await sb.rpc('organizer_sync_match_squads', { p_match_id: data.id })
+        if (syncErr) {
+          navigate(`/${locale}/matches/my/${data.id}`, {
+            replace: true,
+            state: { squadSyncWarning: organizerSquadSyncErrorMessage(syncErr.message, p) },
+          })
+          return
+        }
+        navigate(`/${locale}/matches/my/${data.id}`, { replace: true })
+      }
       return
     }
 
@@ -218,6 +248,10 @@ export function OrganizerMatchEditPage() {
     if (error) {
       setSaveError(error.message)
       return
+    }
+    const { error: syncErr } = await sb.rpc('organizer_sync_match_squads', { p_match_id: matchId })
+    if (syncErr) {
+      setSaveError(organizerSquadSyncErrorMessage(syncErr.message, p))
     }
   }
 
@@ -273,6 +307,10 @@ export function OrganizerMatchEditPage() {
   const pageTitle = isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle
   const helmet = isNew ? p.matchOrgCreateHelmet : p.matchOrgEditHelmetEdit
 
+  const derivedCompetitorLimit =
+    draft.planned_main_squad_count * draft.shooters_per_main_squad +
+    (draft.prematch_enabled ? draft.planned_prematch_squad_count * draft.shooters_per_prematch_squad : 0)
+
   return (
     <div className="portal-home">
       <Helmet>
@@ -286,6 +324,27 @@ export function OrganizerMatchEditPage() {
       <header className="portal-home__hero">
         <h1 className="portal-home__hero-title">{pageTitle}</h1>
       </header>
+
+      {squadSyncBanner ?
+        <p role="alert" style={{ margin: '0 0 1rem', maxWidth: '32rem', fontSize: '0.9rem' }}>
+          {formatTemplate(p.matchOrgSquadSyncBanner, { detail: squadSyncBanner })}
+          <button
+            type="button"
+            onClick={() => setSquadSyncBanner(null)}
+            style={{
+              marginLeft: '0.75rem',
+              padding: '0.2rem 0.45rem',
+              cursor: 'pointer',
+              borderRadius: '6px',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+            }}
+          >
+            {p.matchOrgSquadSyncBannerDismiss}
+          </button>
+        </p>
+      : null}
 
       <form
         onSubmit={(e) => void handleSubmit(e)}
@@ -343,14 +402,17 @@ export function OrganizerMatchEditPage() {
         </label>
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldLimit}</span>
+          <span>{p.matchOrgFieldShootersMain}</span>
           <input
             type="number"
             min={1}
             required
-            value={draft.competitor_limit}
+            value={draft.shooters_per_main_squad}
             onChange={(e) =>
-              setDraft((d) => ({ ...d, competitor_limit: Number(e.target.value) || 1 }))
+              setDraft((d) => ({
+                ...d,
+                shooters_per_main_squad: Math.max(1, Number(e.target.value) || 1),
+              }))
             }
             style={{
               padding: '0.4rem 0.5rem',
@@ -404,30 +466,60 @@ export function OrganizerMatchEditPage() {
         </label>
 
         {draft.prematch_enabled ?
-          <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <span>{p.matchOrgFieldPlannedPrematchSquads}</span>
-            <input
-              type="number"
-              min={1}
-              required
-              value={draft.planned_prematch_squad_count || 1}
-              onChange={(e) =>
-                setDraft((d) => ({
-                  ...d,
-                  planned_prematch_squad_count: Math.max(1, Number(e.target.value) || 1),
-                }))
-              }
-              style={{
-                padding: '0.4rem 0.5rem',
-                borderRadius: '0.5rem',
-                border: '1px solid var(--border)',
-                background: 'var(--btn-bg)',
-                color: 'var(--text)',
-                maxWidth: '8rem',
-              }}
-            />
-          </label>
+          <>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+              <span>{p.matchOrgFieldPlannedPrematchSquads}</span>
+              <input
+                type="number"
+                min={1}
+                required
+                value={draft.planned_prematch_squad_count || 1}
+                onChange={(e) =>
+                  setDraft((d) => ({
+                    ...d,
+                    planned_prematch_squad_count: Math.max(1, Number(e.target.value) || 1),
+                  }))
+                }
+                style={{
+                  padding: '0.4rem 0.5rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid var(--border)',
+                  background: 'var(--btn-bg)',
+                  color: 'var(--text)',
+                  maxWidth: '8rem',
+                }}
+              />
+            </label>
+
+            <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+              <span>{p.matchOrgFieldShootersPrematch}</span>
+              <input
+                type="number"
+                min={1}
+                required
+                value={draft.shooters_per_prematch_squad}
+                onChange={(e) =>
+                  setDraft((d) => ({
+                    ...d,
+                    shooters_per_prematch_squad: Math.max(1, Number(e.target.value) || 1),
+                  }))
+                }
+                style={{
+                  padding: '0.4rem 0.5rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid var(--border)',
+                  background: 'var(--btn-bg)',
+                  color: 'var(--text)',
+                  maxWidth: '8rem',
+                }}
+              />
+            </label>
+          </>
         : null}
+
+        <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.5 }}>
+          {formatTemplate(p.matchOrgDerivedCapacityLine, { total: String(derivedCompetitorLimit) })}
+        </p>
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           <span>{p.matchOrgFieldDescription}</span>
@@ -526,13 +618,16 @@ export function OrganizerMatchEditPage() {
         ) : null}
       </form>
 
-      {!isNew && validEditId && matchId ?
+        {!isNew && validEditId && matchId ?
         <OrganizerMatchSquadsPanel
+          locale={locale}
           matchId={matchId}
           p={p}
           prematchEnabled={draft.prematch_enabled}
           plannedMainSquads={draft.planned_main_squad_count}
           plannedPrematchSquads={draft.planned_prematch_squad_count}
+          shootersPerMainSquad={draft.shooters_per_main_squad}
+          shootersPerPrematchSquad={draft.shooters_per_prematch_squad}
         />
       : null}
     </div>

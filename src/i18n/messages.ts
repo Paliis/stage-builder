@@ -450,6 +450,7 @@ export type MessageTree = {
     myMatchesColStarts: string
     myMatchesColStatus: string
     myMatchesColList: string
+    myMatchesRoster: string
     myMatchesEdit: string
     myMatchesViewPublic: string
     myMatchesNeedSignIn: string
@@ -475,7 +476,9 @@ export type MessageTree = {
     matchOrgFieldTitle: string
     matchOrgFieldStarts: string
     matchOrgFieldLocation: string
-    matchOrgFieldLimit: string
+    matchOrgDerivedCapacityLine: string
+    matchOrgFieldShootersMain: string
+    matchOrgFieldShootersPrematch: string
     matchOrgFieldDescription: string
     matchOrgFieldStatus: string
     matchOrgFieldParticipantList: string
@@ -490,24 +493,39 @@ export type MessageTree = {
     matchOrgEditBadId: string
     matchOrgEditNotFound: string
     matchOrgTitleRequired: string
-    matchOrgLimitInvalid: string
+    matchOrgShootersInvalid: string
     matchOrgSquadsHeading: string
-    matchOrgSquadsIntro: string
+    matchOrgSquadsDerivedIntro: string
+    matchOrgSquadsDerivedCapacityLine: string
+    matchOrgSquadSyncBanner: string
+    matchOrgSquadSyncBannerDismiss: string
+    matchOrgSyncErrPrematchRemove: string
+    matchOrgSyncErrLowerCapacity: string
+    matchOrgSyncErrReduceSquads: string
+    matchOrgSyncErrOrganizerInactive: string
+    matchOrgSyncErrGeneric: string
     matchOrgSquadsColPhase: string
     matchOrgSquadsPhaseMain: string
     matchOrgSquadsPhasePrematch: string
     matchOrgSquadsPlannedMainLine: string
     matchOrgSquadsPlannedPrematchLine: string
+    matchOrgRosterManageLink: string
+    matchOrgRosterHelmet: string
+    matchOrgRosterHeading: string
+    matchOrgRosterLead: string
+    matchOrgRosterEditMatch: string
+    matchOrgRosterEmpty: string
+    matchOrgRosterColName: string
+    matchOrgRosterColDivision: string
+    matchOrgRosterColStatus: string
+    matchOrgRosterColSquad: string
+    matchOrgRosterApply: string
+    matchOrgRosterSaving: string
+    matchOrgRosterNoFreeSlot: string
     matchOrgSquadsColLabel: string
     matchOrgSquadsColCapacity: string
     matchOrgSquadsColTaken: string
-    matchOrgSquadsNewLabel: string
-    matchOrgSquadsNewCapacity: string
-    matchOrgSquadsAdd: string
-    matchOrgSquadsDelete: string
-    matchOrgSquadsEmpty: string
-    matchOrgSquadCapacityInvalid: string
-    matchOrgSquadHasRegistrations: string
+    matchOrgSquadsAutoEmpty: string
   }
   hitFactor: {
     pageTitle: string
@@ -1144,6 +1162,7 @@ export const ukMessages: MessageTree = {
     myMatchesColStarts: 'Початок',
     myMatchesColStatus: 'Статус',
     myMatchesColList: 'Список учасників',
+    myMatchesRoster: 'Заявки',
     myMatchesEdit: 'Редагувати',
     myMatchesViewPublic: 'Картка',
     myMatchesNeedSignIn: 'Увійди, щоб керувати своїми матчами.',
@@ -1169,7 +1188,9 @@ export const ukMessages: MessageTree = {
     matchOrgFieldTitle: 'Назва',
     matchOrgFieldStarts: 'Початок (локальний час браузера)',
     matchOrgFieldLocation: 'Локація (текст)',
-    matchOrgFieldLimit: 'Ліміт учасників',
+    matchOrgDerivedCapacityLine: 'Разом місце на матчі (розраховано автоматично й зберігається як ліміт учасників): {{total}}.',
+    matchOrgFieldShootersMain: 'Стрільці в скводі — основний день',
+    matchOrgFieldShootersPrematch: 'Стрільці в скводі — прематч',
     matchOrgFieldDescription: 'Опис (Markdown)',
     matchOrgFieldStatus: 'Статус матчу',
     matchOrgFieldParticipantList: 'Список учасників на картці',
@@ -1184,25 +1205,46 @@ export const ukMessages: MessageTree = {
     matchOrgEditBadId: 'Некоректне посилання для редагування.',
     matchOrgEditNotFound: 'Матч не знайдено або він не належить до твого облікового запису.',
     matchOrgTitleRequired: 'Заповни назву.',
-    matchOrgLimitInvalid: 'Ліміт учасників має бути числом ≥ 1.',
+    matchOrgShootersInvalid: 'Кількість стрільців у скводі має бути цілим числом ≥ 1.',
     matchOrgSquadsHeading: 'Скводи',
-    matchOrgSquadsIntro:
-      'Скводи основного дня та прематчу розділені. Для реєстрації на картці має бути хоч один сквод із вільними місцями. Число рядків скводів можете звіряти з цільовими числами в картці матчу.',
+    matchOrgSquadsDerivedIntro:
+      'Таблиця скводів формується з налаштувань матчу: кількість скводів × стрільців у скводі (окремо для основного дня та прематчу). Збережи картку — рядки оновлються; зменшення можливе лише якщо на скводі немає активних заявок.',
+    matchOrgSquadsDerivedCapacityLine:
+      '{{mainSq}}×{{mainShoot}}{{prematchPart}} = {{planned}} місць (ціль).',
+    matchOrgSquadSyncBanner: 'Не вдалося оновити таблицю скводів: {{detail}}',
+    matchOrgSquadSyncBannerDismiss: 'Зрозуміло',
+    matchOrgSyncErrPrematchRemove:
+      'Не можна прибрати скводи прематчу, доки є очікуючі чи підтверджені заявки. Спочатку перерозподіль стрільців на сторінці заявок.',
+    matchOrgSyncErrLowerCapacity:
+      'Не можна зменшити кількість місць у скводі нижче вже зарахованої кількості стрільців. Спочатку перемісти або скасуй зайві заявки.',
+    matchOrgSyncErrReduceSquads:
+      'Не можна зменшити кількість скводів, доки один із скводів, які треба прибрати, має заявки. Спочатку перерозподіль або скасуй.',
+    matchOrgSyncErrOrganizerInactive: 'Обліковий запис організатора не активний — звернися до куратора платформи.',
+    matchOrgSyncErrGeneric: 'Не вдалося синхронізувати скводи.',
     matchOrgSquadsColPhase: 'День',
     matchOrgSquadsPhaseMain: 'Основний',
     matchOrgSquadsPhasePrematch: 'Прематч',
     matchOrgSquadsPlannedMainLine: 'Основний день: {{current}} / {{planned}} скводів (ціль).',
     matchOrgSquadsPlannedPrematchLine: 'Прематч: {{current}} / {{planned}} скводів (ціль).',
+    matchOrgRosterManageLink: 'Керувати заявками та скводами',
+    matchOrgRosterHelmet: 'Заявки на матч',
+    matchOrgRosterHeading: 'Заявки',
+    matchOrgRosterLead:
+      'Перерозподіляй стрільців по скводах після зміни сітки місткості. Для активних скводів у списку лише скводи з вільним місцем.',
+    matchOrgRosterEditMatch: 'Назад до картки матчу',
+    matchOrgRosterEmpty: 'Заявок ще немає.',
+    matchOrgRosterColName: 'Учасник',
+    matchOrgRosterColDivision: 'Дивізіон',
+    matchOrgRosterColStatus: 'Статус',
+    matchOrgRosterColSquad: 'Сквод',
+    matchOrgRosterApply: 'Застосувати',
+    matchOrgRosterSaving: 'Збереження…',
+    matchOrgRosterNoFreeSlot: 'Немає доступного скводу з місцем або зміни потребують збереження картки.',
     matchOrgSquadsColLabel: 'Назва',
     matchOrgSquadsColCapacity: 'Місць',
     matchOrgSquadsColTaken: 'Зайнято',
-    matchOrgSquadsNewLabel: 'Новий сквод',
-    matchOrgSquadsNewCapacity: 'Місць',
-    matchOrgSquadsAdd: 'Додати сквод',
-    matchOrgSquadsDelete: 'Видалити',
-    matchOrgSquadsEmpty: 'Ще немає скводів.',
-    matchOrgSquadCapacityInvalid: 'Кількість місць має бути числом ≥ 1.',
-    matchOrgSquadHasRegistrations: 'Не можна видалити: є заявки на цей сквод.',
+    matchOrgSquadsAutoEmpty:
+      'Після збереження картки тут з’являться скводи. Якщо рядків немає — збережи форму ще раз або перевір міграції БД.',
   },
   hitFactor: {
     pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
@@ -1831,6 +1873,7 @@ export const enMessages: MessageTree = {
     myMatchesColStarts: 'Starts',
     myMatchesColStatus: 'Status',
     myMatchesColList: 'Participant list',
+    myMatchesRoster: 'Registrations',
     myMatchesEdit: 'Edit',
     myMatchesViewPublic: 'Public page',
     myMatchesNeedSignIn: 'Sign in to manage your matches.',
@@ -1856,7 +1899,10 @@ export const enMessages: MessageTree = {
     matchOrgFieldTitle: 'Title',
     matchOrgFieldStarts: 'Start (browser local time)',
     matchOrgFieldLocation: 'Location (text)',
-    matchOrgFieldLimit: 'Competitor limit',
+    matchOrgDerivedCapacityLine:
+      'Total planned capacity (stored as competitor limit after save): {{total}}.',
+    matchOrgFieldShootersMain: 'Shooters per squad — main match day',
+    matchOrgFieldShootersPrematch: 'Shooters per squad — prematch',
     matchOrgFieldDescription: 'Description (Markdown)',
     matchOrgFieldStatus: 'Match status',
     matchOrgFieldParticipantList: 'Participant list on public card',
@@ -1872,25 +1918,46 @@ export const enMessages: MessageTree = {
     matchOrgEditBadId: 'Invalid edit link.',
     matchOrgEditNotFound: 'Match not found or not owned by you.',
     matchOrgTitleRequired: 'Please enter a title.',
-    matchOrgLimitInvalid: 'Competitor limit must be at least 1.',
+    matchOrgShootersInvalid: 'Shooters per squad must be an integer ≥ 1.',
     matchOrgSquadsHeading: 'Squads',
-    matchOrgSquadsIntro:
-      'Main-day squads and prematch squads are distinct. Competitors pick one squad slot for this match registration. Align row counts below with targets from the match form.',
+    matchOrgSquadsDerivedIntro:
+      'Squad rows are generated from planned squad counts × shooters per squad (main vs prematch). Saving the match updates rows; shrinking is blocked while active registrations occupy removed capacity.',
+    matchOrgSquadsDerivedCapacityLine: '{{mainSq}}×{{mainShoot}}{{prematchPart}} = {{planned}} slots (planned).',
+    matchOrgSquadSyncBanner: 'Could not rebuild squad rows: {{detail}}',
+    matchOrgSquadSyncBannerDismiss: 'Dismiss',
+    matchOrgSyncErrPrematchRemove:
+      'Cannot remove prematch squads while registrations still reference them—reassign shooters on the registrations page first.',
+    matchOrgSyncErrLowerCapacity:
+      'Cannot lower shooters-per-squad below already-assigned shooters. Reassign or cancel registrations first.',
+    matchOrgSyncErrReduceSquads:
+      'Cannot reduce squad count while a squad slated for removal still has registrations. Reassign them first.',
+    matchOrgSyncErrOrganizerInactive: 'Organizer profile is not active—contact platform support.',
+    matchOrgSyncErrGeneric: 'Could not sync squads.',
     matchOrgSquadsColPhase: 'Day',
     matchOrgSquadsPhaseMain: 'Main',
     matchOrgSquadsPhasePrematch: 'Prematch',
     matchOrgSquadsPlannedMainLine: 'Main day: {{current}} / {{planned}} squads (target).',
     matchOrgSquadsPlannedPrematchLine: 'Prematch: {{current}} / {{planned}} squads (target).',
+    matchOrgRosterManageLink: 'Manage registrations / squads',
+    matchOrgRosterHelmet: 'Match registrations',
+    matchOrgRosterHeading: 'Registrations',
+    matchOrgRosterLead:
+      'Reassign shooters after changing the squad grid—only squads with an open seat are listed for pending/confirmed entries.',
+    matchOrgRosterEditMatch: 'Back to match draft',
+    matchOrgRosterEmpty: 'No registrations yet.',
+    matchOrgRosterColName: 'Shooter',
+    matchOrgRosterColDivision: 'Division',
+    matchOrgRosterColStatus: 'Status',
+    matchOrgRosterColSquad: 'Squad',
+    matchOrgRosterApply: 'Apply',
+    matchOrgRosterSaving: 'Saving…',
+    matchOrgRosterNoFreeSlot:
+      'No squad with spare capacity—or save the match card first after changing squad settings.',
     matchOrgSquadsColLabel: 'Label',
     matchOrgSquadsColCapacity: 'Capacity',
     matchOrgSquadsColTaken: 'Taken',
-    matchOrgSquadsNewLabel: 'New squad label',
-    matchOrgSquadsNewCapacity: 'Capacity',
-    matchOrgSquadsAdd: 'Add squad',
-    matchOrgSquadsDelete: 'Delete',
-    matchOrgSquadsEmpty: 'No squads yet.',
-    matchOrgSquadCapacityInvalid: 'Capacity must be a number ≥ 1.',
-    matchOrgSquadHasRegistrations: 'Cannot delete: registrations exist on this squad.',
+    matchOrgSquadsAutoEmpty:
+      'Squads appear after saving the draft. If the table stays empty, save again or verify database migrations.',
   },
   hitFactor: {
     pageTitle: 'Hit Factor — price of mistakes',

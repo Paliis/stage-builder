@@ -1,0 +1,380 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { Link, useParams } from 'react-router-dom'
+import { useI18n } from '../../i18n/useI18n'
+import type { MessageTree } from '../../i18n/messages'
+import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
+import { useSupabaseSession } from '../useSupabaseSession'
+import { MATCH_ID_UUID_RE } from './matchPortalUuid'
+import '../PortalHome.css'
+
+type Portal = MessageTree['portal']
+
+type RosterRpcRow = {
+  registration_id: string
+  competitor_user_id: string
+  display_name: string | null
+  squad_id: string
+  squad_label: string
+  squad_phase: string
+  squad_sort_order: number
+  squad_capacity: number
+  status: string
+  division: string
+  classification_grade: string | null
+}
+
+type SquadPick = {
+  id: string
+  label: string
+  squad_phase: string
+  sort_order: number
+  capacity: number
+}
+
+function countsActiveStatuses(status: string) {
+  return status === 'pending' || status === 'confirmed'
+}
+
+function squadPhaseLabel(p: Portal, phase: string) {
+  if (phase === 'prematch') return p.matchOrgSquadsPhasePrematch
+  return p.matchOrgSquadsPhaseMain
+}
+
+function registrationStatusLabel(p: Portal, status: string) {
+  if (status === 'pending') return p.matchDetailRegistrationStatusPending
+  if (status === 'confirmed') return p.matchDetailRegistrationStatusConfirmed
+  if (status === 'cancelled') return p.matchDetailRegistrationStatusCancelled
+  return status
+}
+
+function countOnSquad(
+  rosterList: RosterRpcRow[],
+  pending: Record<string, string>,
+  squadId: string,
+  movingRegId: string,
+  movingTarget: string,
+): number {
+  let n = 0
+  for (const row of rosterList) {
+    if (!countsActiveStatuses(row.status)) continue
+    const sid =
+      row.registration_id === movingRegId ? movingTarget : (pending[row.registration_id] ?? row.squad_id)
+    if (sid === squadId) n++
+  }
+  return n
+}
+
+function validSquadsForRegistration(
+  reg: RosterRpcRow,
+  rosterList: RosterRpcRow[],
+  allSquads: SquadPick[],
+  pending: Record<string, string>,
+): SquadPick[] {
+  if (!countsActiveStatuses(reg.status)) {
+    const one = allSquads.find((s) => s.id === reg.squad_id)
+    return one ? [one] : []
+  }
+
+  return allSquads.filter(
+    (opt) =>
+      countOnSquad(rosterList, pending, opt.id, reg.registration_id, opt.id) <= opt.capacity,
+  )
+}
+
+export function OrganizerMatchRegistrationsPage() {
+  const { locale, tree } = useI18n()
+  const p = tree.portal
+  const configured = isSupabaseConfigured()
+  const { loading: sessionLoading, user } = useSupabaseSession()
+  const { matchId } = useParams<{ matchId: string }>()
+  const validId = Boolean(matchId && MATCH_ID_UUID_RE.test(matchId))
+
+  const [matchTitle, setMatchTitle] = useState<string | null>(null)
+  const [squads, setSquads] = useState<SquadPick[] | undefined>(undefined)
+  const [roster, setRoster] = useState<RosterRpcRow[] | undefined>(undefined)
+  const [loadError, setLoadError] = useState<string | null>(null)
+
+  const [pendingSquad, setPendingSquad] = useState<Record<string, string>>({})
+  const [saveRegId, setSaveRegId] = useState<string | null>(null)
+  const [saveError, setSaveError] = useState<string | null>(null)
+
+  const reload = useCallback(async () => {
+    if (!configured || !user?.id || !validId || !matchId) return
+    setLoadError(null)
+    const sb = getSupabase()
+
+    const { data: matchRow, error: mErr } = await sb
+      .from('matches')
+      .select('id, title, organizer_id')
+      .eq('id', matchId)
+      .maybeSingle()
+    if (mErr || !matchRow || matchRow.organizer_id !== user.id) {
+      setLoadError(p.matchOrgEditNotFound)
+      setSquads([])
+      setRoster([])
+      return
+    }
+    setMatchTitle(matchRow.title ?? '')
+
+    const { data: sq, error: sErr } = await sb
+      .from('match_squads')
+      .select('id, label, squad_phase, sort_order, capacity')
+      .eq('match_id', matchId)
+      .order('sort_order', { ascending: true })
+
+    if (sErr) {
+      setLoadError(sErr.message)
+      setSquads([])
+      setRoster([])
+      return
+    }
+    setSquads((sq ?? []) as SquadPick[])
+
+    const { data: rx, error: rErr } = await sb.rpc('fetch_organizer_match_registration_roster', {
+      p_match_id: matchId,
+    })
+    if (rErr) {
+      setLoadError(rErr.message)
+      setRoster([])
+      return
+    }
+    setRoster((rx ?? []) as RosterRpcRow[])
+    setPendingSquad({})
+  }, [configured, user?.id, validId, matchId, p.matchOrgEditNotFound])
+
+  useEffect(() => {
+    void reload()
+  }, [reload])
+
+  const rosterList = roster ?? []
+
+  async function saveReg(registrationId: string, nextSquadId: string) {
+    setSaveError(null)
+    if (!configured || !user?.id || !matchId) return
+    const sb = getSupabase()
+    setSaveRegId(registrationId)
+    const { error } = await sb
+      .from('match_registrations')
+      .update({ squad_id: nextSquadId })
+      .eq('id', registrationId)
+      .eq('match_id', matchId)
+    setSaveRegId(null)
+    if (error) {
+      setSaveError(error.message)
+      return
+    }
+    setPendingSquad((prev) => {
+      const n = { ...prev }
+      delete n[registrationId]
+      return n
+    })
+    await reload()
+  }
+
+  const inactiveBlock = useMemo(() => ({ padding: '0.35rem 0.45rem', opacity: 0.85 }), [])
+
+  if (!configured) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.matchOrgRosterHelmet}</title>
+        </Helmet>
+        <p>{p.matchesSupabaseUnset}</p>
+      </div>
+    )
+  }
+
+  if (sessionLoading) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.matchOrgRosterHelmet}</title>
+        </Helmet>
+        <p>{p.myMatchesLoading}</p>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.matchOrgRosterHelmet}</title>
+        </Helmet>
+        <p>{p.myMatchesNeedSignIn}</p>
+      </div>
+    )
+  }
+
+  if (!validId) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.matchOrgRosterHelmet}</title>
+        </Helmet>
+        <p role="alert">{p.matchOrgEditBadId}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="portal-home">
+      <Helmet>
+        <title>{p.matchOrgRosterHelmet}</title>
+      </Helmet>
+
+      <p style={{ margin: '0 0 1rem' }}>
+        <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+        {' · '}
+        {matchTitle ?
+          <Link to={`/${locale}/matches/my/${matchId}`}>{p.matchOrgRosterEditMatch}</Link>
+        : null}
+      </p>
+
+      <header className="portal-home__hero">
+        <h1 className="portal-home__hero-title">{matchTitle ?? p.matchOrgRosterHeading}</h1>
+        <p style={{ margin: '0.55rem 0 0', fontSize: '0.92rem', opacity: 0.92 }}>{p.matchOrgRosterLead}</p>
+      </header>
+
+      {loadError ? <p role="alert">{loadError}</p> : null}
+
+      {saveError ? <p role="alert">{saveError}</p> : null}
+
+      {roster === undefined || squads === undefined ?
+        <p>{p.myMatchesLoading}</p>
+      : roster.length === 0 ?
+        <p>{p.matchOrgRosterEmpty}</p>
+      : (
+        <div style={{ overflowX: 'auto', marginTop: '1rem', maxWidth: '52rem' }}>
+          <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                >
+                  {p.matchOrgRosterColName}
+                </th>
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                >
+                  {p.matchOrgRosterColDivision}
+                </th>
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                >
+                  {p.matchOrgRosterColStatus}
+                </th>
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                >
+                  {p.matchOrgRosterColSquad}
+                </th>
+                <th scope="col" style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }} aria-hidden />
+              </tr>
+            </thead>
+            <tbody>
+              {roster.map((reg) => {
+                const currentPick = pendingSquad[reg.registration_id] ?? reg.squad_id
+                const options = squads ? validSquadsForRegistration(reg, rosterList, squads, pendingSquad) : []
+
+                const dirty = currentPick !== reg.squad_id
+                const inactive = !countsActiveStatuses(reg.status)
+
+                return (
+                  <tr key={reg.registration_id}>
+                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                      {displayName(reg)}
+                    </td>
+                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                      {reg.division}
+                      {reg.classification_grade ?
+                        <>
+                          {' '}
+                          <span style={{ opacity: 0.85 }}>({reg.classification_grade})</span>
+                        </>
+                      : null}
+                    </td>
+                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                      {registrationStatusLabel(p, reg.status)}
+                    </td>
+                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', minWidth: '12rem' }}>
+                      {inactive ?
+                        <span style={inactiveBlock}>
+                          {reg.squad_label} ({squadPhaseLabel(p, reg.squad_phase)})
+                        </span>
+                      : options.length === 0 ?
+                        <span role="alert">{p.matchOrgRosterNoFreeSlot}</span>
+                      : (
+                        <select
+                          aria-label={p.matchOrgRosterColSquad}
+                          value={
+                            options.some((o) => o.id === currentPick) ? currentPick : (options[0]?.id ?? currentPick)
+                          }
+                          disabled={inactive}
+                          onChange={(e) =>
+                            setPendingSquad((prev) => ({
+                              ...prev,
+                              [reg.registration_id]: e.target.value,
+                            }))
+                          }
+                          style={{
+                            width: '100%',
+                            maxWidth: '22rem',
+                            padding: '0.35rem 0.45rem',
+                            borderRadius: '6px',
+                            border: '1px solid var(--border)',
+                            background: 'var(--btn-bg)',
+                            color: 'var(--text)',
+                          }}
+                        >
+                          {options.map((opt) => {
+                            const taken = countOnSquad(rosterList, pendingSquad, opt.id, reg.registration_id, opt.id)
+                            return (
+                              <option key={opt.id} value={opt.id}>
+                                {opt.label} ({squadPhaseLabel(p, opt.squad_phase)}) — {taken}/{opt.capacity}
+                              </option>
+                            )
+                          })}
+                        </select>
+                      )}
+                    </td>
+                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                      <button
+                        type="button"
+                        disabled={inactive || !dirty || saveRegId === reg.registration_id || options.length === 0}
+                        onClick={() => void saveReg(reg.registration_id, currentPick)}
+                        style={{
+                          padding: '0.35rem 0.65rem',
+                          borderRadius: '6px',
+                          border: '1px solid var(--border)',
+                          background: 'var(--text-h)',
+                          color: 'var(--btn-bg)',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {saveRegId === reg.registration_id ?
+                          p.matchOrgRosterSaving
+                        : p.matchOrgRosterApply}
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function displayName(reg: RosterRpcRow): string {
+  const n = (reg.display_name ?? '').trim()
+  if (n) return n
+  return `${reg.competitor_user_id.slice(0, 8)}…`
+}

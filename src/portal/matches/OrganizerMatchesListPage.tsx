@@ -174,6 +174,9 @@ export function OrganizerMatchesListPage() {
                   <Link to={`/${locale}/matches/my/${r.id}`} style={{ marginRight: '0.65rem' }}>
                     {p.myMatchesEdit}
                   </Link>
+                  <Link to={`/${locale}/matches/my/${r.id}/roster`} style={{ marginRight: '0.65rem' }}>
+                    {p.myMatchesRoster}
+                  </Link>
                   {r.status === 'published' ? (
                     <Link to={`/${locale}/matches/${r.id}`}>{p.myMatchesViewPublic}</Link>
                   ) : null}

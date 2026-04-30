@@ -1,7 +1,7 @@
 -- Match admin: test seed data (Supabase SQL Editor, role: postgres)
 --
--- Prerequisites: extension pgcrypto; migrations `20260501140000_match_admin_mvp.sql`,
--- `20260502140000_platform_match_organizers.sql`, `20260503120000_match_participant_list_visibility.sql`.
+-- Prerequisites: extension pgcrypto; migrations through match squad sync /
+-- organizer roster RPC (`20260506140000_*`, `20260506141000_*`).
 -- If auth.users is empty, creates two users + identities; otherwise uses first/last user by created_at.
 -- Re-run safe: skips when title "Seed: Test shotgun match" already exists.
 
@@ -175,12 +175,16 @@ BEGIN
     location_label,
     location_lat,
     location_lng,
-    competitor_limit,
     discipline,
     ps_match_type,
     ps_match_subtype,
     participant_list_visibility,
-    status
+    status,
+    prematch_enabled,
+    planned_main_squad_count,
+    planned_prematch_squad_count,
+    shooters_per_main_squad,
+    shooters_per_prematch_squad
   )
   VALUES (
     org_id,
@@ -190,34 +194,28 @@ BEGIN
     'Test range (seed)',
     50.44215,
     30.20449,
-    32,
     'shotgun',
     'uspsa_p',
     'ipsc',
     'open',
-    'published'
+    'published',
+    false,
+    2,
+    0,
+    12,
+    18
   )
   RETURNING id INTO mid;
 
-  INSERT INTO public.match_squads (match_id, label, sort_order, squad_starts_at, capacity)
-  VALUES (
-    mid,
-    'Сквод 1',
-    0,
-    (now() AT TIME ZONE 'utc') + interval '14 days' + interval '8 hours',
-    12
-  )
-  RETURNING id INTO sid1;
+  PERFORM public.organizer_sync_match_squads_internal(mid);
 
-  INSERT INTO public.match_squads (match_id, label, sort_order, squad_starts_at, capacity)
-  VALUES (
-    mid,
-    'Сквод 2',
-    1,
-    (now() AT TIME ZONE 'utc') + interval '14 days' + interval '10 hours',
-    12
-  )
-  RETURNING id INTO sid2;
+  SELECT id INTO sid1 FROM public.match_squads WHERE match_id = mid AND squad_phase = 'main' ORDER BY sort_order ASC LIMIT 1;
+
+  SELECT id INTO sid2 FROM public.match_squads WHERE match_id = mid AND squad_phase = 'main' ORDER BY sort_order ASC OFFSET 1 LIMIT 1;
+
+  IF sid1 IS NULL OR sid2 IS NULL THEN
+    RAISE EXCEPTION 'Seed squad sync failed for match % (expected 2 main squads)', mid;
+  END IF;
 
   INSERT INTO public.match_registrations (
     match_id,

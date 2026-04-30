@@ -12,6 +12,12 @@ export const OrganizerMatchEditPageLazy = lazy(() =>
   import('./matches/OrganizerMatchEditPage').then((m) => ({ default: m.OrganizerMatchEditPage })),
 )
 
+export const OrganizerMatchRegistrationsPageLazy = lazy(() =>
+  import('./matches/OrganizerMatchRegistrationsPage').then((m) => ({
+    default: m.OrganizerMatchRegistrationsPage,
+  })),
+)
+
 export const PlatformOrganizersPageLazy = lazy(() =>
   import('./admin/PlatformOrganizersPage').then((m) => ({ default: m.PlatformOrganizersPage })),
 )

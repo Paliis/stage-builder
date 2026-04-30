@@ -35,6 +35,7 @@ import {
 import {
   MatchPublicDetailPageLazy,
   OrganizerMatchEditPageLazy,
+  OrganizerMatchRegistrationsPageLazy,
   OrganizerMatchesListPageLazy,
   PlatformOrganizersPageLazy,
 } from './portal/matchPortalLazyRoutes'
@@ -112,6 +113,14 @@ createRoot(document.getElementById('root')!).render(
                       element={
                         <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
                           <OrganizerMatchEditPageLazy />
+                        </Suspense>
+                      }
+                    />
+                    <Route
+                      path="matches/my/:matchId/roster"
+                      element={
+                        <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                          <OrganizerMatchRegistrationsPageLazy />
                         </Suspense>
                       }
                     />
