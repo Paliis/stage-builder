@@ -70,7 +70,7 @@ flowchart TB
 
 | Пункт | Стан |
 |-------|------|
-| Таблиці `matches`, `squads`, `registrations` + міграції | Немає — перший кодовий епік |
+| Таблиці `matches`, `squads`, `registrations` + міграції | **Частково:** SQL у `supabase/migrations/20260501140000_match_admin_mvp.sql` — див. [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
 | RLS політики під ролі | Немає |
 | UI маршрути `match-admin` + форми | Немає |
 | Генератор `.psc` у production (TypeScript/Python на сервері), не лише Python-скрипт для розробника | Частково: є експеримент `scripts/practiscore/` |

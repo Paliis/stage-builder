@@ -49,7 +49,7 @@
 
 | Сутність | Ключові поля |
 |----------|----------------|
-| `profiles` | `id`, display name, … (розширення auth) |
+| `match_admin_profiles` | `user_id` (FK `auth.users`), `display_name` — у міграції [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
 | `matches` | `id`, `organizer_id`, назва, дата, локація, ліміт учасників, `discipline` (**MVP:** `shotgun` / ipsc shotgun; інші ipsc-дисципліни — після MVP), `ps_match_subtype` (мапінг на `match_type`/`match_subtype` у JSON PS), статус |
 | `squads` | `match_id`, номер/ім’я, `start_time`, `capacity` |
 | `registrations` | `match_id`, `user_id` або гість, `squad_id`, дивізіон, клас, PF, категорії, статус (`pending` / **`confirmed`** / `cancelled` — назви уточнити в міграції), **`payment_note`** (вільний текст, напр. «налічні 28.03»), **`confirmed_at`**, **`confirmed_by`** (організатор), timestamp подачі заявки |
@@ -150,7 +150,7 @@ RLS у Supabase обов’язковий перед production.
 ## 8. Наступні кроки (checklist)
 
 1. ~~Зафіксувати MVP-дисципліну~~ — **зроблено:** [§1.3](#13-mvp-ipsc-shotgun) (**IPSC Shotgun**).
-2. Створити **Supabase міграцію** таблиць з розділу 3 (поле `discipline` обмежити або валідувати під `shotgun` у MVP).
+2. ~~Створити **Supabase міграцію**~~ — **`supabase/migrations/20260501140000_match_admin_mvp.sql`**; опис — [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md).
 3. Додати **Edge Function** або Vercel serverless route `POST /api/matches/:id/export-psc` (auth організатора).
 4. Підключити простий **організаторський dashboard** до CRUD без polish.
 5. Після першого успішного експорту — оновити цей документ полем «протестовано з PS v…».

@@ -135,7 +135,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 |---------------|----------|
 | Портал, URL, roadmap, freemium | [PORTAL_PLAN.md](./PORTAL_PLAN.md) |
 | RO Helper (контент v0, UK+EN, IPSC/ФПСУ) | [RO_HELPER_V0.md](./RO_HELPER_V0.md), [RO_HELPER_CONTENT_TZ.md](./RO_HELPER_CONTENT_TZ.md), глосарій, topic map, реєстр карток, матриця |
-| Share / Supabase | [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md), [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md), [PUBLISH_POLICY.md](./PUBLISH_POLICY.md) |
+| Share / Supabase | [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md), [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md), [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md), [PUBLISH_POLICY.md](./PUBLISH_POLICY.md) |
 | Активації | [BL-004_ACTIVATIONS.md](./BL-004_ACTIVATIONS.md) |
 | BLE-таймер (дослідження) | [BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md) |
 | Штрафні зони / видимість (чернетка правил) | [VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md) |
@@ -162,6 +162,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | **BL-004_ACTIVATIONS.md** | Специфіка активацій на плані |
 | **BL-014_SG_TIMER_BLE.md** | SG Timer BLE API, обмеження Web Bluetooth |
 | **SUPABASE_SHARED_STAGES.md** | Застосування міграцій, RLS, smoke-тест |
+| **SUPABASE_MATCH_ADMIN.md** | Таблиці матчів, скводів, заявок, зв’язок зі share; RLS |
 | **VISIBILITY_AND_SAFETY_RULES.md** | Правила видимості, штрафні зони (§4), майбутні BL-010/013 |
 | **OPTIMIZATION.md** | Оптимізація розміру бандла |
 | **PLAN_FIELD_PDF_GRID.md** | План змін сітки / PDF |
