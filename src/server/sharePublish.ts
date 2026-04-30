@@ -38,6 +38,18 @@ export function newShareId(): string {
   return `s${s.slice(0, 24)}`
 }
 
+const UUID_V4_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+
+/** Optional body field: reuse this logical group for the new `shared_stages` row (Phase C / match refresh). */
+export function parseOptionalShareGroupId(raw: unknown): string | null {
+  if (raw === undefined || raw === null) return null
+  if (typeof raw !== 'string') return '__invalid__'
+  const t = raw.trim()
+  if (t === '') return null
+  return UUID_V4_RE.test(t) ? t.toLowerCase() : '__invalid__'
+}
+
 export type NormalizePublishResult =
   | {
       ok: true
@@ -45,6 +57,8 @@ export type NormalizePublishResult =
       mode: 'view' | 'edit'
       locale: 'uk' | 'en' | null
       idempotencyKey: string | null
+      /** When null, publish API assigns a new UUID for `shared_stages.share_group_id`. */
+      shareGroupId: string | null
     }
   | { ok: false; error: string; status: number }
 
@@ -77,10 +91,16 @@ export function normalizePublishBody(body: unknown): NormalizePublishResult {
     idempotencyKey = t.length > 0 ? t : null
   }
 
+  const shareGroupParsed = parseOptionalShareGroupId(o.shareGroupId)
+  if (shareGroupParsed === '__invalid__') {
+    return { ok: false, error: 'shareGroupId must be a UUID v4 when provided', status: 400 }
+  }
+
   const rest = { ...o }
   delete rest.mode
   delete rest.locale
   delete rest.idempotencyKey
+  delete rest.shareGroupId
   const text = JSON.stringify(rest)
   const parsed = parseStageProjectJson(text)
   if (!parsed.ok) {
@@ -98,5 +118,6 @@ export function normalizePublishBody(body: unknown): NormalizePublishResult {
     mode,
     locale,
     idempotencyKey,
+    shareGroupId: shareGroupParsed,
   }
 }

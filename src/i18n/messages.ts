@@ -295,6 +295,10 @@ export type MessageTree = {
     publishConsentBefore: string
     publishConsentLinkText: string
     publishConsentAfter: string
+    /** After view publish — next view publish can reuse share_group_id (matches: refresh latest). */
+    publishContinueViewShareGroup: string
+    /** Clears linkage so next view publish creates a new share group. */
+    publishStartNewViewShareGroup: string
     publishGetView: string
     publishGetEdit: string
     publishBusy: string
@@ -996,10 +1000,13 @@ export const ukMessages: MessageTree = {
     publishButton: '\u041f\u043e\u0434\u0456\u043b\u0438\u0442\u0438\u0441\u044f\u2026',
     publishTitle: '\u041f\u043e\u0434\u0456\u043b\u0438\u0442\u0438\u0441\u044f \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f\u043c',
     publishIntro:
-      '\u041a\u043e\u0436\u043d\u0430 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u044f \u0441\u0442\u0432\u043e\u0440\u044e\u0454 \u043d\u043e\u0432\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0437\u043d\u0456\u043c\u043e\u043a \u0432\u043f\u0440\u0430\u0432\u0438 (\u0434\u0456\u044f 365 \u0434\u043d\u0456\u0432). \u0421\u0442\u0430\u0440\u0456 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0435 \u0437\u043c\u0456\u043d\u044e\u044e\u0442\u044c\u0441\u044f.',
+      '\u041a\u043e\u0436\u043d\u0430 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u044f \u0441\u0442\u0432\u043e\u0440\u044e\u0454 \u043d\u043e\u0432\u0435 \u043f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u043d\u0430 \u0437\u043d\u0456\u043c\u043e\u043a \u0432\u043f\u0440\u0430\u0432\u0438 (\u0434\u0456\u044f 365 \u0434\u043d\u0456\u0432). \u0414\u043b\u044f \u043f\u0435\u0440\u0435\u0433\u043b\u044f\u0434\u0443 \u043c\u043e\u0436\u043d\u0430 \u043b\u0430\u043d\u0446\u044e\u0432\u0430\u0442\u0438 \u043b\u043e\u0433\u0456\u0447\u043d\u0443 \u0433\u0440\u0443\u043f\u0443: \u043d\u0430\u0441\u0442\u0443\u043f\u043d\u0456 view-\u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0457 \u0434\u043e\u0442\u0440\u0438\u043c\u0443\u044e\u0442\u044c \u0442\u0443 \u0441\u0430\u043c\u0443 \u0433\u0440\u0443\u043f\u0443: \u043c\u0430\u0442\u0447\u0456 (\u041cVP) \u0437\u0440\u043e\u0437\u0443\u043c\u0456\u044e\u0442\u044c \u0441\u043f\u0456\u043b\u044c\u043d\u0456\u0442\u044c \u043d\u0430 \u043e\u0441\u0442\u0430\u043d\u043d\u044e \u0432\u0435\u0440\u0441\u0456\u044e.',
     publishConsentBefore: '\u041e\u0437\u043d\u0430\u0439\u043e\u043c\u043b\u0435\u043d\u0438\u0439(-\u0430) \u0437',
     publishConsentLinkText: '\u043f\u043e\u043b\u0456\u0442\u0438\u043a\u043e\u044e \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0457',
     publishConsentAfter: '.',
+    publishContinueViewShareGroup:
+      '\u041d\u0430\u0441\u0442\u0443\u043f\u043d\u0430 view-\u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u044f — \u0442\u0430 \u0441\u0430\u043c\u0430 \u043b\u043e\u0433\u0456\u0447\u043d\u0430 \u0432\u043f\u0440\u0430\u0432\u0430 (\u0434\u043b\u044f \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u0438 \u043c\u0430\u0442\u0447\u0443: \xab\u041e\u043d\u043e\u0432\u0438\u0442\u0438 \u0434\u043e \u043e\u0441\u0442\u0430\u043d\u043d\u044c\u043e\u0433\u043e\xbb).',
+    publishStartNewViewShareGroup: '\u041d\u043e\u0432\u0430 \u043b\u043e\u0433\u0456\u0447\u043d\u0430 \u0432\u043f\u0440\u0430\u0432\u0430 (\u0456\u043d\u0448\u0430 view-\u0433\u0440\u0443\u043f\u0430)',
     publishGetView: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0434\u043b\u044f \u043f\u0435\u0440\u0435\u0433\u043b\u044f\u0434\u0443',
     publishGetEdit: '\u041f\u043e\u0441\u0438\u043b\u0430\u043d\u043d\u044f \u0434\u043b\u044f \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0430',
     publishBusy: '\u0417\u0430\u0447\u0435\u043a\u0430\u0439\u0442\u0435\u2026',
@@ -1725,10 +1732,13 @@ export const enMessages: MessageTree = {
     publishButton: 'Share\u2026',
     publishTitle: 'Share via link',
     publishIntro:
-      'Each publish creates a new link to a snapshot of your stage (valid 365 days). Older links stay unchanged.',
+      'Each publish creates a new link to a snapshot of your stage (valid 365 days). Viewer links can share one logical group: later view publishes can extend that chain so matches can jump to the latest snapshot.',
     publishConsentBefore: 'I have read and agree to the',
     publishConsentLinkText: 'publishing policy',
     publishConsentAfter: '.',
+    publishContinueViewShareGroup:
+      'Keep the next view publish in this logical exercise chain (helps matches use “refresh to latest”).',
+    publishStartNewViewShareGroup: 'New logical exercise (new viewer group)',
     publishGetView: 'Link for view (shooters)',
     publishGetEdit: 'Link for editor',
     publishBusy: 'Please wait\u2026',

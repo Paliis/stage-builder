@@ -122,6 +122,8 @@ const { data, error } = await supabase.rpc('fetch_shared_stage', { lookup_id: 't
 
 **Вставка** нових рядків у MVP — лише з бекенду з **service role** (Edge Function / Vercel Serverless), не з браузера напряму в таблицю.
 
+Поле **`share_group_id`**: вирівнюється **при INSERT** із **`publish-share`** (Vercel **`src/server/publishShareApiHandler.ts`**): або новий **`randomUUID()`**, або значення **`shareGroupId`** з тіла запиту (ланцюжок view-публікацій однієї вправи; див. **фазу C** у **[MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md)**). Міграція **`20260508100000_match_stage_share_group.sql`** бекфілить **`share_group_id`** для рядків, створених до цього.
+
 ## Перевірка після Run
 
 У **SQL Editor** (тест під роллю postgres; не використовуйте service key у браузері):

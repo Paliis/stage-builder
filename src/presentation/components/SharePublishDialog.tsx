@@ -9,10 +9,12 @@ function looksLikeHtmlResponse(text: string): boolean {
   return /^<!DOCTYPE/i.test(t) || /<html[\s>]/i.test(t)
 }
 
-function parsePublishJson(text: string): { data: { error?: string; url?: string }; ok: boolean } {
+type PublishOkJson = { error?: string; url?: string; shareGroupId?: string }
+
+function parsePublishJson(text: string): { data: PublishOkJson; ok: boolean } {
   if (!text.trim()) return { data: {}, ok: true }
   try {
-    return { data: JSON.parse(text) as { error?: string; url?: string }, ok: true }
+    return { data: JSON.parse(text) as PublishOkJson, ok: true }
   } catch {
     return { data: {}, ok: false }
   }
@@ -52,6 +54,9 @@ export function SharePublishDialog({
   const [errorKey, setErrorKey] = useState<PublishErr | null>(null)
   const [errorDetail, setErrorDetail] = useState<string | null>(null)
   const [policyOpen, setPolicyOpen] = useState(false)
+  /** Returned from successful view publish — sent as shareGroupId to chain revisions (matches can refresh). */
+  const [viewShareGroupId, setViewShareGroupId] = useState<string | null>(null)
+  const [continueViewShareGroup, setContinueViewShareGroup] = useState(true)
 
   useEffect(() => {
     const d = dialogRef.current
@@ -64,6 +69,7 @@ export function SharePublishDialog({
       setErrorDetail(null)
       setBusyMode(null)
       setPolicyOpen(false)
+      // Keep viewShareGroupId / continueViewShareGroup across dialog opens within the editor session.
       d.showModal()
     } else {
       setPolicyOpen(false)
@@ -91,11 +97,14 @@ export function SharePublishDialog({
       setErrorDetail(null)
       setBusyMode(mode)
       const idempotencyKey = crypto.randomUUID()
-      const body = {
+      const body: Record<string, unknown> = {
         ...projectRoot,
         mode,
         locale,
         idempotencyKey,
+      }
+      if (mode === 'view' && continueViewShareGroup && viewShareGroupId) {
+        body.shareGroupId = viewShareGroupId
       }
       try {
         const res = await fetch('/api/publish-share', {
@@ -141,8 +150,12 @@ export function SharePublishDialog({
           )
           return
         }
-        if (mode === 'view') setViewUrl(data.url)
-        else setEditUrl(data.url)
+        if (mode === 'view') {
+          setViewUrl(data.url)
+          if (typeof data.shareGroupId === 'string' && /^[0-9a-f-]{36}$/i.test(data.shareGroupId)) {
+            setViewShareGroupId(data.shareGroupId)
+          }
+        } else setEditUrl(data.url)
       } catch {
         setErrorKey('network')
         setErrorDetail(null)
@@ -150,7 +163,14 @@ export function SharePublishDialog({
         setBusyMode(null)
       }
     },
-    [consent, locale, projectRoot, sp.publishErrorHtmlResponse],
+    [
+      consent,
+      locale,
+      projectRoot,
+      sp.publishErrorHtmlResponse,
+      continueViewShareGroup,
+      viewShareGroupId,
+    ],
   )
 
   const copyToClipboard = useCallback(async (url: string, ev: MouseEvent<HTMLButtonElement>) => {
@@ -222,6 +242,29 @@ export function SharePublishDialog({
           {sp.publishConsentAfter}
         </span>
       </label>
+
+      {viewShareGroupId ?
+        <div className="app__share-publish-continue-group">
+          <label className="app__share-publish-consent">
+            <input
+              type="checkbox"
+              checked={continueViewShareGroup}
+              onChange={(e) => setContinueViewShareGroup(e.target.checked)}
+            />
+            <span>{sp.publishContinueViewShareGroup}</span>
+          </label>
+          <button
+            type="button"
+            className="app__share-publish-new-group-btn"
+            onClick={() => {
+              setViewShareGroupId(null)
+              setContinueViewShareGroup(true)
+            }}
+          >
+            {sp.publishStartNewViewShareGroup}
+          </button>
+        </div>
+      : null}
 
       {errorText ? (
         <p className="app__share-publish-error" role="alert">

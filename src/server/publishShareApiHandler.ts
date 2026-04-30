@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { randomUUID } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 import { serializeStageProject } from '../domain/stageProjectFile'
 import { resolvePublicOriginFromEnv } from '../lib/resolvePublicOriginFromEnv'
@@ -22,6 +23,7 @@ function respondWithUrls(
   id: string,
   mode: 'view' | 'edit',
   locale: 'uk' | 'en' | null,
+  shareGroupId: string,
 ) {
   const origin = resolvePublicOrigin(req)
   const pathPrefix = mode === 'view' ? '/v/' : '/e/'
@@ -34,6 +36,7 @@ function respondWithUrls(
     mode,
     path: `${path}${lang}`,
     url,
+    shareGroupId,
   })
 }
 
@@ -95,11 +98,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (normalized.idempotencyKey) {
     const { data: existing } = await supabase
       .from('shared_stages')
-      .select('id, mode')
+      .select('id, mode, share_group_id')
       .eq('idempotency_key', normalized.idempotencyKey)
       .maybeSingle()
     if (existing?.id) {
-      return respondWithUrls(req, res, existing.id, existing.mode as 'view' | 'edit', normalized.locale)
+      const gid =
+        typeof existing.share_group_id === 'string' ? existing.share_group_id : randomUUID()
+      return respondWithUrls(
+        req,
+        res,
+        existing.id,
+        existing.mode as 'view' | 'edit',
+        normalized.locale,
+        gid,
+      )
     }
   }
 
@@ -114,6 +126,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const title = String(normalized.file.stage.name || 'Stage').slice(0, 500)
   const expiresAt = new Date(Date.now() + 365 * 86400000).toISOString()
   const shareId = newShareId()
+  const shareGroupId = normalized.shareGroupId ?? randomUUID()
 
   const row = {
     id: shareId,
@@ -124,19 +137,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     expires_at: expiresAt,
     idempotency_key: normalized.idempotencyKey,
     schema_version: 1,
+    share_group_id: shareGroupId,
   }
 
-  const { data: inserted, error } = await supabase.from('shared_stages').insert(row).select('id, mode').single()
+  const { data: inserted, error } = await supabase
+    .from('shared_stages')
+    .insert(row)
+    .select('id, mode, share_group_id')
+    .single()
 
   if (error) {
     if (error.code === '23505' && normalized.idempotencyKey) {
       const { data: existing } = await supabase
         .from('shared_stages')
-        .select('id, mode')
+        .select('id, mode, share_group_id')
         .eq('idempotency_key', normalized.idempotencyKey)
         .maybeSingle()
       if (existing?.id) {
-        return respondWithUrls(req, res, existing.id, existing.mode as 'view' | 'edit', normalized.locale)
+        const gid =
+          typeof existing.share_group_id === 'string' ? existing.share_group_id : randomUUID()
+        return respondWithUrls(
+          req,
+          res,
+          existing.id,
+          existing.mode as 'view' | 'edit',
+          normalized.locale,
+          gid,
+        )
       }
     }
     return res.status(500).json({ error: error.message })
@@ -146,5 +173,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Insert returned no id' })
   }
 
-  return respondWithUrls(req, res, inserted.id, inserted.mode as 'view' | 'edit', normalized.locale)
+  const insertedGid =
+    typeof inserted.share_group_id === 'string' ? inserted.share_group_id : shareGroupId
+
+  return respondWithUrls(
+    req,
+    res,
+    inserted.id,
+    inserted.mode as 'view' | 'edit',
+    normalized.locale,
+    insertedGid,
+  )
 }

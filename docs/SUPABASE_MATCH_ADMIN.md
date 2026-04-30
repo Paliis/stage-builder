@@ -9,6 +9,7 @@
 5. **`supabase/migrations/20260505120000_match_prematch_squads.sql`** — опційний **прематч** на картці матчу: **`prematch_enabled`**, цільова кількість скводів **`planned_*`**, колонка **`match_squads.squad_phase`** (`main` \| `prematch`); оновлені RPC метрик та публічного ростера.
 6. **`supabase/migrations/20260506140000_match_squad_template_sync.sql`** — **уніфікована сітка скводів**: на **`matches`** додаються **`shooters_per_main_squad`**, **`shooters_per_prematch_squad`**; тригер перераховує **`competitor_limit`** як сума **planned × shooters** для main (+ прематч якщо увімкнено); унікальність **`match_squads (match_id, squad_phase, sort_order)`**; RPC **`organizer_sync_match_squads(p_match_id)`** синхронізує рядки й блокує скорочення при активних заявках.
 7. **`supabase/migrations/20260506141000_organizer_registration_roster_rpc.sql`** (+ оновлення **`20260507120000_fetch_organizer_roster_created_at.sql`**) — RPC **`fetch_organizer_match_registration_roster(p_match_id)`** для сторінки організатора (з **`display_name`** із **`match_admin_profiles`**, а також **`registration_created_at`** для сортування на дошці скводів).
+8. **`supabase/migrations/20260508100000_match_stage_share_group.sql`** — **`match_stage_links.share_group_id`** (логічна «група» версій **`shared_stages`**), бекфіл **UUID** для існуючих share-рядків, RPC **`organizer_refresh_match_stage_link_latest(p_link_id)`** — оновити **`share_stage_id`** на найсвіжіший **непрострочений** view-знімок у тій самій групі.
 
 Передумога: уже застосовано **`20260409120000_shared_stages.sql`** (`shared_stages` потрібен для FK у `match_stage_links`).
 
@@ -34,7 +35,7 @@
 | **`matches`** | Матч: організатор, дата `starts_at`, місце, **`competitor_limit`** (міграція **20260506140000**: сума **planned × shooters** для main та, за потреби, прематчу), **`shooters_per_main_squad`**, **`shooters_per_prematch_squad`**, **`participant_list_visibility`**, **`prematch_enabled`**, **`planned_main_squad_count`**, **`planned_prematch_squad_count`** (без прематчу — **0** для прематчу), **`discipline` зараз лише `'shotgun'`**, `ps_match_*` під PSC (nullable), статус draft/published/… |
 | **`match_squads`** | Скводи: `sort_order`, `capacity`, опційний `squad_starts_at`, **`squad_phase`** — значення **`main`** або **`prematch`**. Рядки вирівнюються через RPC **`organizer_sync_match_squads`**; скорочення блокується, якщо на «зникаючих» місцях лишилися активні заявки. |
 | **`match_registrations`** | Одна заявка на пару (**match**, **стрілок**): `division`, клас, PF, `categories` JSONB, `status` pending/confirmed/cancelled, `payment_note`, `confirmed_at/by`. |
-| **`match_stage_links`** | Порядок вправ: `share_stage_id` → `shared_stages.id`, `snapshot_meta` JSONB. |
+| **`match_stage_links`** | Порядок вправ: **`share_stage_id`** → поточний **`shared_stages.id`**, **`share_group_id`** (опційно заповнюється при створенні лінка та бекфілиться з share) — одна група = ланцюжок view-публікацій; **`snapshot_meta`** JSONB; оновлення до останнього view у групі — RPC **`organizer_refresh_match_stage_link_latest`**. |
 
 Тригер **`set_updated_at_match_admin()`** підтримує `updated_at`.
 

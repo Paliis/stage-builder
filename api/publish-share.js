@@ -12482,6 +12482,7 @@ __export(publishShareApiHandler_exports, {
   default: () => handler
 });
 module.exports = __toCommonJS(publishShareApiHandler_exports);
+var import_node_crypto2 = require("node:crypto");
 
 // node_modules/@supabase/supabase-js/dist/index.mjs
 var dist_exports = {};
@@ -21554,6 +21555,14 @@ function newShareId() {
   const s = b.toString("base64url").replace(/[^a-zA-Z0-9]/g, "");
   return `s${s.slice(0, 24)}`;
 }
+var UUID_V4_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+function parseOptionalShareGroupId(raw) {
+  if (raw === void 0 || raw === null) return null;
+  if (typeof raw !== "string") return "__invalid__";
+  const t = raw.trim();
+  if (t === "") return null;
+  return UUID_V4_RE.test(t) ? t.toLowerCase() : "__invalid__";
+}
 function normalizePublishBody(body) {
   if (typeof body !== "object" || body === null) {
     return { ok: false, error: "Invalid JSON body", status: 400 };
@@ -21580,10 +21589,15 @@ function normalizePublishBody(body) {
     const t = rawIdem.trim();
     idempotencyKey = t.length > 0 ? t : null;
   }
+  const shareGroupParsed = parseOptionalShareGroupId(o.shareGroupId);
+  if (shareGroupParsed === "__invalid__") {
+    return { ok: false, error: "shareGroupId must be a UUID v4 when provided", status: 400 };
+  }
   const rest = { ...o };
   delete rest.mode;
   delete rest.locale;
   delete rest.idempotencyKey;
+  delete rest.shareGroupId;
   const text = JSON.stringify(rest);
   const parsed = parseStageProjectJson(text);
   if (!parsed.ok) {
@@ -21598,7 +21612,8 @@ function normalizePublishBody(body) {
     file,
     mode,
     locale,
-    idempotencyKey
+    idempotencyKey,
+    shareGroupId: shareGroupParsed
   };
 }
 
@@ -21609,7 +21624,7 @@ function resolvePublicOrigin(req) {
   const fallback = typeof host === "string" ? `${proto}://${host}` : "";
   return resolvePublicOriginFromEnv(fallback);
 }
-function respondWithUrls(req, res, id, mode, locale) {
+function respondWithUrls(req, res, id, mode, locale, shareGroupId) {
   const origin = resolvePublicOrigin(req);
   const pathPrefix = mode === "view" ? "/v/" : "/e/";
   const lang = locale ? `?lang=${locale}` : "";
@@ -21620,7 +21635,8 @@ function respondWithUrls(req, res, id, mode, locale) {
     id,
     mode,
     path: `${path}${lang}`,
-    url
+    url,
+    shareGroupId
   });
 }
 async function handler(req, res) {
@@ -21665,9 +21681,17 @@ async function handler(req, res) {
     auth: { persistSession: false, autoRefreshToken: false }
   });
   if (normalized.idempotencyKey) {
-    const { data: existing } = await supabase.from("shared_stages").select("id, mode").eq("idempotency_key", normalized.idempotencyKey).maybeSingle();
+    const { data: existing } = await supabase.from("shared_stages").select("id, mode, share_group_id").eq("idempotency_key", normalized.idempotencyKey).maybeSingle();
     if (existing?.id) {
-      return respondWithUrls(req, res, existing.id, existing.mode, normalized.locale);
+      const gid = typeof existing.share_group_id === "string" ? existing.share_group_id : (0, import_node_crypto2.randomUUID)();
+      return respondWithUrls(
+        req,
+        res,
+        existing.id,
+        existing.mode,
+        normalized.locale,
+        gid
+      );
     }
   }
   const serialized = serializeStageProject(normalized.file);
@@ -21680,6 +21704,7 @@ async function handler(req, res) {
   const title = String(normalized.file.stage.name || "Stage").slice(0, 500);
   const expiresAt = new Date(Date.now() + 365 * 864e5).toISOString();
   const shareId = newShareId();
+  const shareGroupId = normalized.shareGroupId ?? (0, import_node_crypto2.randomUUID)();
   const row = {
     id: shareId,
     mode: normalized.mode,
@@ -21688,14 +21713,23 @@ async function handler(req, res) {
     locale: normalized.locale,
     expires_at: expiresAt,
     idempotency_key: normalized.idempotencyKey,
-    schema_version: 1
+    schema_version: 1,
+    share_group_id: shareGroupId
   };
-  const { data: inserted, error } = await supabase.from("shared_stages").insert(row).select("id, mode").single();
+  const { data: inserted, error } = await supabase.from("shared_stages").insert(row).select("id, mode, share_group_id").single();
   if (error) {
     if (error.code === "23505" && normalized.idempotencyKey) {
-      const { data: existing } = await supabase.from("shared_stages").select("id, mode").eq("idempotency_key", normalized.idempotencyKey).maybeSingle();
+      const { data: existing } = await supabase.from("shared_stages").select("id, mode, share_group_id").eq("idempotency_key", normalized.idempotencyKey).maybeSingle();
       if (existing?.id) {
-        return respondWithUrls(req, res, existing.id, existing.mode, normalized.locale);
+        const gid = typeof existing.share_group_id === "string" ? existing.share_group_id : (0, import_node_crypto2.randomUUID)();
+        return respondWithUrls(
+          req,
+          res,
+          existing.id,
+          existing.mode,
+          normalized.locale,
+          gid
+        );
       }
     }
     return res.status(500).json({ error: error.message });
@@ -21703,5 +21737,13 @@ async function handler(req, res) {
   if (!inserted?.id) {
     return res.status(500).json({ error: "Insert returned no id" });
   }
-  return respondWithUrls(req, res, inserted.id, inserted.mode, normalized.locale);
+  const insertedGid = typeof inserted.share_group_id === "string" ? inserted.share_group_id : shareGroupId;
+  return respondWithUrls(
+    req,
+    res,
+    inserted.id,
+    inserted.mode,
+    normalized.locale,
+    insertedGid
+  );
 }
