@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
@@ -12,9 +12,12 @@ import { roHelperPath } from '../ro-helper/paths'
 import './PortalShell.css'
 
 const HEADER_COMPACT_MQ = '(max-width: 959px)' as const
+/** Same cutoff as mq: Cursor / split preview iframes can be narrower than outer window → matchContent with ResizeObserver. */
+const HEADER_COMPACT_MAX_CONTENT_PX = 959
 
 /** Shared shell: responsive header → hamburger drawer on narrow screens. */
 export function PortalShell() {
+  const headerInnerRef = useRef<HTMLDivElement>(null)
   const panelId = useId()
   const { locale, tree } = useI18n()
   const p = tree.portal
@@ -25,10 +28,12 @@ export function PortalShell() {
   const ukAlt = `${origin}${swapLocaleInPortalPath(pathname, 'uk')}`
   const enAlt = `${origin}${swapLocaleInPortalPath(pathname, 'en')}`
 
-  const [compactHeader, setCompactHeader] = useState(() =>
+  const [mqCompact, setMqCompact] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia(HEADER_COMPACT_MQ).matches : false,
   )
+  const [layoutCompact, setLayoutCompact] = useState(false)
   const [navOpen, setNavOpen] = useState(false)
+  const compactHeader = mqCompact || layoutCompact
 
   const goLocale = (next: Locale) => {
     navigate(swapLocaleInPortalPath(pathname, next), { replace: true })
@@ -36,19 +41,31 @@ export function PortalShell() {
 
   useEffect(() => {
     const mq = window.matchMedia(HEADER_COMPACT_MQ)
-    const sync = () => {
-      const nextCompact = mq.matches
-      setCompactHeader(nextCompact)
-      if (!nextCompact) setNavOpen(false)
-    }
+    const sync = () => setMqCompact(mq.matches)
     sync()
     mq.addEventListener('change', sync)
     return () => mq.removeEventListener('change', sync)
   }, [])
 
   useEffect(() => {
+    const el = headerInnerRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver((entries) => {
+      const cr = entries[0]?.contentRect
+      const w = cr?.width ?? 0
+      setLayoutCompact(w > 0 && w <= HEADER_COMPACT_MAX_CONTENT_PX)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  useEffect(() => {
     setNavOpen(false)
   }, [pathname])
+
+  useEffect(() => {
+    if (!compactHeader) setNavOpen(false)
+  }, [compactHeader])
 
   useEffect(() => {
     if (!compactHeader || !navOpen) return
@@ -79,7 +96,7 @@ export function PortalShell() {
       </Helmet>
       <header className="portal-shell__header">
         <div className="portal-shell__header-strip">
-          <div className="portal-shell__header-inner">
+          <div className="portal-shell__header-inner" ref={headerInnerRef}>
             <Link to={`/${locale}`} className="portal-shell__brand">
               {p.title}
             </Link>

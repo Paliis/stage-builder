@@ -4,6 +4,8 @@
   display: flex;
   flex-direction: column;
   background: var(--surface);
+  /* Allow header cluster to paint at the right edge (ancestor #root uses overflow-x: clip). */
+  overflow-x: visible;
 }
 
 /* Lock scroll while mobile drawer open (paired with `--compact` breakpoint in PortalShell.tsx) */
