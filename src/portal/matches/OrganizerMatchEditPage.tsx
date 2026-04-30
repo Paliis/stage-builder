@@ -5,10 +5,12 @@ import { useI18n } from '../../i18n/useI18n'
 import { formatTemplate } from '../../i18n/format'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
+import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { OrganizerMatchStagesPanel } from './OrganizerMatchStagesPanel'
 import { OrganizerMatchSquadsPanel } from './OrganizerMatchSquadsPanel'
 import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage'
+import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import '../PortalHome.css'
 
 type MatchDraft = {
@@ -48,6 +50,8 @@ export function OrganizerMatchEditPage() {
   const p = tree.portal
   const configured = isSupabaseConfigured()
   const { loading: sessionLoading, user } = useSupabaseSession()
+  const { loading: organizerProfileLoading, profile: organizerProfile, moderationNote } =
+    useOrganizerSelfServiceProfile(user?.id)
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams<{ matchId: string }>()
@@ -98,6 +102,7 @@ export function OrganizerMatchEditPage() {
     }
 
     if (!configured || sessionLoading || !user?.id) return
+    if (organizerProfileLoading || organizerProfile !== 'active') return
     if (!validEditId) {
       setLoadState('error')
       setLoadError(p.matchOrgEditBadId)
@@ -156,6 +161,8 @@ export function OrganizerMatchEditPage() {
     user?.id,
     p.matchOrgEditBadId,
     p.matchOrgEditNotFound,
+    organizerProfileLoading,
+    organizerProfile,
   ])
 
   useEffect(() => {
@@ -167,6 +174,7 @@ export function OrganizerMatchEditPage() {
     e.preventDefault()
     setSaveError(null)
     if (!configured || !user?.id || saving) return
+    if (organizerProfile !== 'active') return
     const title = draft.title.trim()
     if (!title) {
       setSaveError(p.matchOrgTitleRequired)
@@ -287,6 +295,39 @@ export function OrganizerMatchEditPage() {
         </Helmet>
         <p>{p.myMatchesNeedSignIn}</p>
         <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+      </div>
+    )
+  }
+
+  if (organizerProfileLoading) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.myMatchesHelmet}</title>
+        </Helmet>
+        <p>{p.matchesLoadingDetail}</p>
+      </div>
+    )
+  }
+
+  if (organizerProfile !== 'active') {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.matchesPageHelmetTitle}</title>
+        </Helmet>
+        <p style={{ margin: '0 0 1rem' }}>
+          <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+        </p>
+        <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
+          <h1 className="portal-home__hero-title">{isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle}</h1>
+        </header>
+        <OrganizerMatchInactivePanel
+          locale={locale}
+          p={p}
+          profile={organizerProfile}
+          moderationNote={moderationNote}
+        />
       </div>
     )
   }

@@ -91,7 +91,7 @@
 | **`/:locale/tools/ro-helper/:discipline/:category`** | Список статей |
 | **`/:locale/tools/ro-helper/:discipline/:category/:slug`** | Стаття |
 | **`/:locale/matches`** | Матчі: публічний список майбутніх опублікованих подій — пошук, дати, календар (**якщо** `VITE_ENABLE_MATCH_PORTAL`) |
-| **`/:locale/matches/my`**, **`/:locale/matches/:matchId`**, **`/:locale/admin/organizers`** | Матчі: кабінет організатора, картка матчу, адмінка платформи (**той самий прапорець**) |
+| **`/:locale/matches/my`**, **`/:locale/matches/:matchId`**, **`/:locale/admin/organizers`** | Матчі: кабінет організатора, редактор і ростер, адмінка (**той самий прапорець**); керування показує UI лише за **`organizer_status` = active** для інших статусів — пояснювальний екран без кнопки «створити матч» |
 | **`/hit-factor`**, **`/publish-policy`**, **`/ro-helper`**, **`/ro-helper/*`**, **`/tools/ro-helper`**, **`/tools/ro-helper/*`** | Legacy → відповідний шлях під **`/:locale`** (`legacyPortalRedirects.tsx`) |
 | `/stage-builder` | Повний редактор (`App`) — **поза** `PortalShell` |
 | `/v/:shareId` | Перегляд опублікованої вправи (**стабільний публічний контракт**, QR у PDF) |

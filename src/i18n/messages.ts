@@ -358,6 +358,16 @@ export type MessageTree = {
     portalPublishedMatchesLoadError: string
     /** Footer link from match hub → organizer list (`/matches/my`). */
     matchesPortalOrganizerLink: string
+    /** Match hub footer: signed-in user is not approved organizer yet → account link. */
+    matchesPortalFooterOrganizerViaAccount: string
+    /** Match hub footer: anonymous — sign-in for organizer flows. */
+    matchesPortalFooterOrganizerSignIn: string
+    /** `/matches/my` + edit/roster denied: pending organizer profile. */
+    organizerMatchAccessDeniedPendingBody: string
+    /** No organizer profile row (guest applied flow via account page). */
+    organizerMatchAccessDeniedMissingBody: string
+    organizerMatchAccessDeniedBlockedBody: string
+    organizerMatchAccessGoAccount: string
     portalMatchesHubSearchAria: string
     portalMatchesHubSearchPlaceholder: string
     portalMatchesHubDateFrom: string
@@ -1211,6 +1221,17 @@ export const ukMessages: MessageTree = {
     portalPublishedMatchesEmpty: 'Наразі немає запланованих опублікованих матчів з сьогоднішньої дати.',
     portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
     matchesPortalOrganizerLink: 'Кабінет організатора — мої матчі (управління чернетками й заявками)',
+    matchesPortalFooterOrganizerViaAccount:
+      'Заявка та статус організатора — в обліковому записі. Керування чернетками й заявками відкриється після схвалення платформи.',
+    matchesPortalFooterOrganizerSignIn:
+      'Увійдіть, щоб подати заявку організатора або працювати з матчами після її схвалення.',
+    organizerMatchAccessDeniedPendingBody:
+      'Ваш статус організатора ще не затверджений платформою — створити чи редагувати матчі тут не можна. Прогрес заявки дивіться в обліковому записі; після схвалення цей розділ стане активним.',
+    organizerMatchAccessDeniedMissingBody:
+      'Цей розділ лише для затверджених організаторів на платформі. Подати заявку або перевірити статус можна в обліковому записі.',
+    organizerMatchAccessDeniedBlockedBody:
+      'Доступ організатора для вашого акаунта припинено з боку платформи — керувати матчами тут недоступно.',
+    organizerMatchAccessGoAccount: 'Обліковий запис',
     portalMatchesHubSearchAria: 'Пошук у списку матчів',
     portalMatchesHubSearchPlaceholder: 'Пошук за назвою або локацією…',
     portalMatchesHubDateFrom: 'Від дати',
@@ -2078,6 +2099,16 @@ export const enMessages: MessageTree = {
     portalPublishedMatchesEmpty: 'No published matches scheduled from today onward yet.',
     portalPublishedMatchesLoadError: 'Could not load the matches list',
     matchesPortalOrganizerLink: 'Organizer dashboard — my matches (drafts and registrations)',
+    matchesPortalFooterOrganizerViaAccount:
+      'Apply for organizer access and track your status from the account page. Match authoring opens after approval.',
+    matchesPortalFooterOrganizerSignIn: 'Sign in to apply as an organizer or access match tools once approved.',
+    organizerMatchAccessDeniedPendingBody:
+      'Organizer access for your account has not been approved yet — creating or editing matches is disabled here. Check your application status on the account page.',
+    organizerMatchAccessDeniedMissingBody:
+      'This organizer area is limited to approved platform organizers. Start or resume your application on the account page.',
+    organizerMatchAccessDeniedBlockedBody:
+      'Organizer features are disabled by the platform — you cannot manage matches here.',
+    organizerMatchAccessGoAccount: 'Account',
     portalMatchesHubSearchAria: 'Search matches in the list',
     portalMatchesHubSearchPlaceholder: 'Search by title or location…',
     portalMatchesHubDateFrom: 'From date',

@@ -5,9 +5,11 @@ import { useI18n } from '../../i18n/useI18n'
 import type { MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
+import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { sortSquadsPrematchFirst } from './matchSquadsSort'
 import { OrganizerMatchRosterBoard } from './OrganizerMatchRosterBoard'
+import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import '../PortalHome.css'
 
 type Portal = MessageTree['portal']
@@ -124,6 +126,8 @@ export function OrganizerMatchRegistrationsPage() {
   const p = tree.portal
   const configured = isSupabaseConfigured()
   const { loading: sessionLoading, user } = useSupabaseSession()
+  const { loading: organizerProfileLoading, profile: organizerProfile, moderationNote } =
+    useOrganizerSelfServiceProfile(user?.id)
   const { matchId } = useParams<{ matchId: string }>()
   const validId = Boolean(matchId && MATCH_ID_UUID_RE.test(matchId))
 
@@ -138,7 +142,7 @@ export function OrganizerMatchRegistrationsPage() {
   const [rosterView, setRosterView] = useState<'table' | 'board'>('table')
 
   const reload = useCallback(async () => {
-    if (!configured || !user?.id || !validId || !matchId) return
+    if (!configured || !user?.id || !validId || !matchId || organizerProfile !== 'active') return
     setLoadError(null)
     const sb = getSupabase()
 
@@ -179,11 +183,12 @@ export function OrganizerMatchRegistrationsPage() {
     }
     setRoster((rx ?? []) as RosterRpcRow[])
     setPendingSquad({})
-  }, [configured, user?.id, validId, matchId, p.matchOrgEditNotFound])
+  }, [configured, user?.id, validId, matchId, p.matchOrgEditNotFound, organizerProfile])
 
   useEffect(() => {
+    if (organizerProfileLoading || organizerProfile !== 'active') return
     void reload()
-  }, [reload])
+  }, [reload, organizerProfileLoading, organizerProfile])
 
   const rosterList = roster ?? []
 
@@ -290,6 +295,36 @@ export function OrganizerMatchRegistrationsPage() {
           <title>{p.matchOrgRosterHelmet}</title>
         </Helmet>
         <p role="alert">{p.matchOrgEditBadId}</p>
+      </div>
+    )
+  }
+
+  if (organizerProfileLoading) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.matchOrgRosterHelmet}</title>
+        </Helmet>
+        <p>{p.matchesLoadingDetail}</p>
+      </div>
+    )
+  }
+
+  if (organizerProfile !== 'active') {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.matchOrgRosterHelmet}</title>
+        </Helmet>
+        <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
+          <h1 className="portal-home__hero-title">{p.matchOrgRosterHeading}</h1>
+        </header>
+        <OrganizerMatchInactivePanel
+          locale={locale}
+          p={p}
+          profile={organizerProfile}
+          moderationNote={moderationNote}
+        />
       </div>
     )
   }

@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
+import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import type { MessageTree } from '../../i18n/messages'
 import { formatPortalDate } from './matchPortalFormat'
+import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import '../PortalHome.css'
 
 type Portal = MessageTree['portal']
@@ -23,6 +25,8 @@ export function OrganizerMatchesListPage() {
   const p = tree.portal
   const configured = isSupabaseConfigured()
   const { loading: sessionLoading, user } = useSupabaseSession()
+  const { loading: organizerProfileLoading, profile: organizerProfile, moderationNote } =
+    useOrganizerSelfServiceProfile(user?.id)
   const [rows, setRows] = useState<OrganizerMatchRow[] | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
 
@@ -44,13 +48,17 @@ export function OrganizerMatchesListPage() {
   }, [configured, user?.id])
 
   useEffect(() => {
-    if (!configured || sessionLoading) return
+    if (!configured || sessionLoading || organizerProfileLoading) return
     if (!user?.id) {
       setRows([])
       return
     }
+    if (organizerProfile !== 'active') {
+      setRows([])
+      return
+    }
     void load()
-  }, [configured, sessionLoading, user?.id, load])
+  }, [configured, sessionLoading, organizerProfileLoading, organizerProfile, user?.id, load])
 
   if (!configured) {
     return (
@@ -88,6 +96,36 @@ export function OrganizerMatchesListPage() {
           </p>
         ) : null}
         <Link to={`/${locale}`}>{p.myMatchesBackHome}</Link>
+      </div>
+    )
+  }
+
+  if (organizerProfileLoading) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.myMatchesHelmet}</title>
+        </Helmet>
+        <p>{p.matchesLoadingDetail}</p>
+      </div>
+    )
+  }
+
+  if (organizerProfile !== 'active') {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.myMatchesHelmet}</title>
+        </Helmet>
+        <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
+          <h1 className="portal-home__hero-title">{p.myMatchesTitle}</h1>
+        </header>
+        <OrganizerMatchInactivePanel
+          locale={locale}
+          p={p}
+          profile={organizerProfile}
+          moderationNote={moderationNote}
+        />
       </div>
     )
   }
