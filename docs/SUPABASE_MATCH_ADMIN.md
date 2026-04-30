@@ -11,6 +11,7 @@
 7. **`supabase/migrations/20260506141000_organizer_registration_roster_rpc.sql`** (+ оновлення **`20260507120000_fetch_organizer_roster_created_at.sql`**) — RPC **`fetch_organizer_match_registration_roster(p_match_id)`** для сторінки організатора (з **`display_name`** із **`match_admin_profiles`**, а також **`registration_created_at`** для сортування на дошці скводів).
 8. **`supabase/migrations/20260508100000_match_stage_share_group.sql`** — **`match_stage_links.share_group_id`** (логічна «група» версій **`shared_stages`**), бекфіл **UUID** для існуючих share-рядків, RPC **`organizer_refresh_match_stage_link_latest(p_link_id)`** — оновити **`share_stage_id`** на найсвіжіший **непрострочений** view-знімок у тій самій групі.
 9. **`supabase/migrations/20260508201000_share_refresh_snapshot_title_payload.sql`** — той самий RPC: **`title_snapshot`** рахує з **payload** (спершу **`briefing.documentTitle`**, потім **`stage.name`**, далі **`shared_stages.title`**), узгоджено з **`resolveSharePublishedTitle`** у коді publish.
+10. **`supabase/migrations/20260509120000_organizer_application_fields.sql`** — текст заявки (**`organizer_application_contact`**, **`organizer_application_past_matches`**), **`organizer_moderation_note`** (видно автору при статусі `blocked`); RLS **`INSERT`** вимагає **`organizer_moderation_note IS NULL`**; оновлення **`platform_list_match_organizers`**, **`platform_set_match_organizer_status(..., p_moderation_note text default null)`**. Сповіщення Slack / email через вебхуки — **[SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md)**.
 
 Передумога: уже застосовано **`20260409120000_shared_stages.sql`** (`shared_stages` потрібен для FK у `match_stage_links`).
 
@@ -31,7 +32,7 @@
 
 | Таблиця | Призначення |
 |---------|--------------|
-| **`match_admin_profiles`** | Ім’я для UI (`user_id` = `auth.users`); **`organizer_status`**: `pending` (заява на розгляді), `active` (може керувати матчами), `blocked` (без запису в модуль). Користувач може **сам підати заявку**: `INSERT` у цю таблицю зі своїм `user_id` і **`organizer_status = 'pending'`** (RLS дозволяє лише такий запис); зміна статусу на `active` / `blocked` — лише платформений адмін через **`platform_set_match_organizer_status`**. Перегляд черги — **`platform_list_match_organizers`** / UI **`/{locale}/admin/organizers`**. |
+| **`match_admin_profiles`** | Ім’я для UI (**`display_name`**), **`organizer_status`**: `pending` / `active` / `blocked`. Самоподача **`INSERT`** з **`user_id = auth.uid()`**, **`organizer_status = pending`**, **`organizer_moderation_note IS NULL`**, опційно **`organizer_application_contact`** (до ~280 сим.), **`organizer_application_past_matches`** (до 2000). Платформа змінює статус через **`platform_set_match_organizer_status`**, може записати **`organizer_moderation_note`** лише коли ставить **`blocked`** (до 600 сим.; при **`active`** / **`pending`** нотатку очищено RPC). Автор **`SELECT`** власного рядка бачить нотатку в **`/{locale}/account`**. Перегляд каталогу — **`platform_list_match_organizers`**, UI **`/{locale}/admin/organizers`**. |
 | **`portal_platform_admins`** | `user_id` власника платформи: бачить каталог організаторів і змінює їхній статус через RPC / UI **`/:locale/admin/organizers`** (див. нижче). |
 | **`matches`** | Матч: організатор, дата `starts_at`, місце, **`competitor_limit`** (міграція **20260506140000**: сума **planned × shooters** для main та, за потреби, прематчу), **`shooters_per_main_squad`**, **`shooters_per_prematch_squad`**, **`participant_list_visibility`**, **`prematch_enabled`**, **`planned_main_squad_count`**, **`planned_prematch_squad_count`** (без прематчу — **0** для прематчу), **`discipline` зараз лише `'shotgun'`**, `ps_match_*` під PSC (nullable), статус draft/published/… |
 | **`match_squads`** | Скводи: `sort_order`, `capacity`, опційний `squad_starts_at`, **`squad_phase`** — значення **`main`** або **`prematch`**. Рядки вирівнюються через RPC **`organizer_sync_match_squads`**; скорочення блокується, якщо на «зникаючих» місцях лишилися активні заявки. |
@@ -72,8 +73,8 @@
 
 2. **RPC (роль `authenticated`):**
    - **`platform_is_platform_admin()`** — чи поточний користувач у `portal_platform_admins`.
-   - **`platform_list_match_organizers()`** — список: email, ім’я, статус, кількість матчів (лише для платформеного адміна).
-   - **`platform_set_match_organizer_status(p_target_user uuid, p_status text)`** — встановити `pending` / `active` / `blocked` (створює рядок у `match_admin_profiles`, якщо його ще не було).
+   - **`platform_list_match_organizers()`** — список: email, ім’я, статус, кількість матчів, текст заявки та **`organizer_moderation_note`** (лише для платформеного адміна); після міграції **20260509120000**.
+   - **`platform_set_match_organizer_status(p_target_user uuid, p_status text, p_moderation_note text default null)`** — встановити `pending` / `active` / `blocked`; **`p_moderation_note`** використовують при **`blocked`** (видно автору профілю); двоаргументний виклик сумісний (третій аргумент за замовчуванням **`null`**).
 
 3. **UI:** у застосунку — **`/{uk|en}/admin/organizers`** (маршрут з’являється лише з **`VITE_ENABLE_MATCH_PORTAL`**, як і публічна картка матчу). Увійти тим користувачем, чий `user_id` додано в **`portal_platform_admins`**.
 
@@ -83,8 +84,8 @@
 
 ## Обліковий запис у шапці порталу
 
-- **`/{locale}/account`** — вхід через Supabase Email, текстове пояснення ролей, для організатора посилання на **`/{locale}/matches/my`**, кнопка виходу.
-- У **`PortalShell`**: «Увійти» або в один ряд — бейджі **Учасник** / **Організатор** (за тими ж правилами, що нижче), **іконка облікового запису** (email лише в підказці та `aria-label`), кнопка виходу. Статус **`pending`** у шапку **не виводиться**. Компактний режим (**гамбургер**, виїзна панель) якщо **вузьке вікно** (`matchMedia` **≤ 959px**) **або** вузький фактичний ряд хедера (**`ResizeObserver`**, те саме — наприклад у вбудованому прев’ю Cursor із широким зовнішнім вікном та вузьким iframe). Кореневий клас **`portal-shell--nav-compact`** скидає конфлікт «широке вікно / компактний ряд»: гамбургер і drawer стилять **за JS**, без прив’язки лише до `(max-width: 959px)`. На ширших рядках у розгорнутому режимі — блок праворуч **flex**, без **`display: contents`** (стабільніше в браузерах).
+- **`/{locale}/account`** — вхід через Supabase Email, пояснення ролей, подача заявки організатора (форма з опційним контактом та посиланнями), для організатора посилання на **`/{locale}/matches/my`**, кнопка виходу.
+- У **`PortalShell`**: «Увійти» або в один ряд — бейджі **Учасник** / **Організатор** / **на розгляді** (**`pending`**) тощо, **іконка облікового запису** (email лише в підказці та `aria-label`), кнопка виходу. Компактний режим (**гамбургер**, виїзна панель) якщо **вузьке вікно** (`matchMedia` **≤ 959px`) **або** вузький фактичний ряд хедера (**`ResizeObserver`**, те саме — наприклад у вбудованому прев’ю Cursor із широким зовнішнім вікном та вузьким iframe). Кореневий клас **`portal-shell--nav-compact`** скидає конфлікт «широке вікно / компактний ряд»: гамбургер і drawer стилять **за JS**, без прив’язки лише до `(max-width: 959px)`. На ширших рядках у розгорнутому режимі — блок праворуч **flex**, без **`display: contents`** (стабільніше в браузерах).
 
 ---
 

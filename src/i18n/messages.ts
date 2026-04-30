@@ -450,6 +450,19 @@ export type MessageTree = {
     organizersSave: string
     organizersSaving: string
     organizersBackHome: string
+    organizersFilterAll: string
+    organizersFilterApplications: string
+    organizersFilterPendingAll: string
+    organizersColBadge: string
+    organizersColContact: string
+    organizersColPastMatches: string
+    organizersColModeration: string
+    organizersBadgeApplication: string
+    organizersBadgePendingExtra: string
+    organizersModerationNoteLabel: string
+    organizersModerationNotePlaceholder: string
+    organizersApplicationEmpty: string
+    organizersModerationNoteTooLong: string
     /** Header + `/:locale/account`: explicit session & role badges. */
     accountHeaderAria: string
     accountHeaderChecking: string
@@ -481,6 +494,13 @@ export type MessageTree = {
     accountOrganizerApplyPendingBody: string
     accountOrganizerApplyBlockedBody: string
     accountOrganizerApplyErrorPrefix: string
+    accountOrganizerApplyDuplicateFriendly: string
+    accountOrganizerApplyValidationLength: string
+    accountOrganizerModerationHeading: string
+    accountOrganizerApplyContactLabel: string
+    accountOrganizerApplyContactPlaceholder: string
+    accountOrganizerApplyPastMatchesLabel: string
+    accountOrganizerApplyPastMatchesPlaceholder: string
     /** Responsive shell header: mobile drawer + hamburger. */
     portalShellMenuOpenAria: string
     portalShellMenuCloseAria: string
@@ -1227,7 +1247,7 @@ export const ukMessages: MessageTree = {
     organizersAdminHelmetTitle: 'Організатори матчів — адмін порталу',
     organizersAdminTitle: 'Організатори матчів',
     organizersAdminIntro:
-      'Лише для власника порталу. Статус «Активний» дозволяє створювати й змінювати матчі; «Новий» або «Заблокований» — без запису до модуля матчів.',
+      'Лише для власника порталу. Заявки — рядки зі статусом «Новий» без створених матчів (фільтр «Заявки»). При «Заблокованому» можна лишити короткий коментар — автор побачить його в обліковому записі. «Активний» створює та змінює матчі.',
     organizersNeedSignIn: 'Увійдіть у Supabase Auth, щоб відкрити цю сторінку.',
     organizersForbidden: 'Немає прав власника порталу. Доступ налаштовується в таблиці portal_platform_admins.',
     organizersLoading: 'Завантаження…',
@@ -1242,6 +1262,21 @@ export const ukMessages: MessageTree = {
     organizersSave: 'Зберегти',
     organizersSaving: 'Збереження…',
     organizersBackHome: 'На головну порталу',
+    organizersFilterAll: 'Усі',
+    organizersFilterApplications: 'Заявки (без матчів)',
+    organizersFilterPendingAll: 'Усі «Нові»',
+    organizersColBadge: 'Тип',
+    organizersColContact: 'Контакт у заявці',
+    organizersColPastMatches: 'Минулі матчі / посилання',
+    organizersColModeration: 'Коментар / причина',
+    organizersBadgeApplication: 'Заявка',
+    organizersBadgePendingExtra: 'На розгляді (є матчі)',
+    organizersModerationNoteLabel:
+      'Коментар для автора заявки при статусі «Заблокований» (опційно; показується в обліковому записі).',
+    organizersModerationNotePlaceholder:
+      'Коротка причина або що змінити перед повторною спробою (до 600 символів)',
+    organizersApplicationEmpty: '—',
+    organizersModerationNoteTooLong: 'Коментар занадто довгий (макс. 600 символів)',
     accountHeaderAria: 'Обліковий запис порталу',
     accountHeaderChecking: 'Перевірка сесії…',
     accountHeaderSignIn: 'Увійти',
@@ -1259,14 +1294,14 @@ export const ukMessages: MessageTree = {
     accountSummaryHeading: 'Поточний вхід',
     accountSummaryLogin: 'Логін:',
     accountPageIntroParticipant:
-      'Ролі: «Учасник» доступний усім авторизованим користувачам. Маркер організатора з’являється лише після рішення платформи («активний» може керувати матчами; «обмежено» — без прав на створення або зміни). «Очікування» платформи не показуємо в інтерфейсі, щоб не плутати з профілем стрільця.',
+      'Ролі: «Учасник» доступний усім авторизованим користувачам. Маркер організатора з’являється після подачі заявки («на розгляді») або коли платформа налаштовує обліковий запис («активний» може керувати матчами; «обмежено» — без прав створення чи редагування).',
     accountPageGoOrganizer: 'Мої матчі (організатор)',
     accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
     accountPageShooterSoon:
       'Окремий кабінет стрільця (розширений профіль, мої матчі та заявки, збережені класи тощо) з’явиться в наступних оновленнях.',
     accountOrganizerApplyHeading: 'Стати організатором матчів',
     accountOrganizerApplyIntro:
-      'Подайте коротку заявку: у профілі створюється статус «на розгляді». Власник порталу підтвердить його в адмін-розділі й надасть права створювати матчі («Мої матчі»).',
+      'Подайте заявку: у профілі створюється статус «на розгляді». Контакт і посилання — опційно, допоможуть модератору швидше відповісти. Власник порталу затверджує доступ у розділі «Організатори матчів».',
     accountOrganizerApplyButton: 'Подати заявку',
     accountOrganizerApplySubmitting: 'Надсилання…',
     accountOrganizerApplyPendingTitle: 'Заява вже подана',
@@ -1275,6 +1310,14 @@ export const ukMessages: MessageTree = {
     accountOrganizerApplyBlockedBody:
       'Для вашого облікового запису призупинено статус організатора з боку платформи. Нову заявку подати не можна — зверніться до підтримки порталу.',
     accountOrganizerApplyErrorPrefix: 'Не вдалося подати заявку',
+    accountOrganizerApplyDuplicateFriendly:
+      'Профіль організатора для цього акаунта вже є в системі — можливо, заявку вже підано або платформа створила запис раніше. Якщо статус так і лишився лише учасника, перевірте сторінку пізніше або напишіть у підтримку.',
+    accountOrganizerApplyValidationLength: 'Перевірте довжину полів: контакт до 280 символів, блок про матчі до 2000.',
+    accountOrganizerModerationHeading: 'Повідомлення від платформи',
+    accountOrganizerApplyContactLabel: 'Контакт (Telegram, телефон тощо) — опційно',
+    accountOrganizerApplyContactPlaceholder: 'Наприклад @username або +380…',
+    accountOrganizerApplyPastMatchesLabel: 'Посилання на минулі матчі / коментар — опційно',
+    accountOrganizerApplyPastMatchesPlaceholder: 'Посилання на PSC, постер, сайт або короткий опис досвіду',
     portalShellMenuOpenAria: 'Відкрити меню навігації',
     portalShellMenuCloseAria: 'Закрити меню навігації',
     portalShellNavDrawerAria: 'Навігація й обліковий запис',
@@ -2024,7 +2067,7 @@ export const enMessages: MessageTree = {
     organizersAdminHelmetTitle: 'Match organizers — platform admin',
     organizersAdminTitle: 'Match organizers',
     organizersAdminIntro:
-      'Platform owners only. “Active” can create and edit matches; “Pending” or “Blocked” denies match-module writes.',
+      'Platform owners only. “Applications only” highlights pending users without matches. When blocking, an optional note is shown on the applicant’s account page. “Active” creates and edits matches.',
     organizersNeedSignIn: 'Sign in with Supabase Auth to open this page.',
     organizersForbidden:
       'No platform owner privileges. Managed in portal_platform_admins.',
@@ -2040,6 +2083,21 @@ export const enMessages: MessageTree = {
     organizersSave: 'Save',
     organizersSaving: 'Saving…',
     organizersBackHome: 'Portal home',
+    organizersFilterAll: 'All',
+    organizersFilterApplications: 'Applications only',
+    organizersFilterPendingAll: 'All pending',
+    organizersColBadge: 'Type',
+    organizersColContact: 'Application contact',
+    organizersColPastMatches: 'Past events / links',
+    organizersColModeration: 'Moderator note',
+    organizersBadgeApplication: 'Application',
+    organizersBadgePendingExtra: 'Pending (has matches)',
+    organizersModerationNoteLabel:
+      'Note for the applicant when blocking (optional — shown on their account page).',
+    organizersModerationNotePlaceholder:
+      'Short reason or what they should fix (max 600 characters)',
+    organizersApplicationEmpty: '—',
+    organizersModerationNoteTooLong: 'Note is too long (max 600 characters)',
     accountHeaderAria: 'Portal account',
     accountHeaderChecking: 'Checking session…',
     accountHeaderSignIn: 'Sign in',
@@ -2057,14 +2115,14 @@ export const enMessages: MessageTree = {
     accountSummaryHeading: 'Signed in',
     accountSummaryLogin: 'Login:',
     accountPageIntroParticipant:
-      'Roles: “Participant” applies to anyone signed in. The organizer badge only appears once the platform has set your status (“active” can manage matches; “restricted” cannot create or edit as organizer). We do not surface “pending” in the UI to avoid mixing it with the shooter profile.',
+      'Everyone signed in has the “Participant” role. The organizer badge appears once you apply (“pending review”) or once the platform updates your account (“active” can manage matches; “restricted” cannot create or edit as organizer).',
     accountPageGoOrganizer: 'My matches (organizer)',
     accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
     accountPageShooterSoon:
       'A dedicated shooter hub (rich profile, your matches and signup status, saved division/class presets, etc.) will ship in a follow-up iteration.',
     accountOrganizerApplyHeading: 'Apply to organise matches',
     accountOrganizerApplyIntro:
-      'Submit a short request: your profile is marked pending while the portal owner reviews it in the admin directory and can grant organizer rights (Manage matches → My matches).',
+      'Submit your request: your profile is marked pending for review. Contact and links are optional but help moderators. The platform owner grants access in the organizers admin page.',
     accountOrganizerApplyButton: 'Submit application',
     accountOrganizerApplySubmitting: 'Submitting…',
     accountOrganizerApplyPendingTitle: 'Application received',
@@ -2073,6 +2131,14 @@ export const enMessages: MessageTree = {
     accountOrganizerApplyBlockedBody:
       'Organizer access has been revoked for your account by the platform. You cannot submit a new application — contact portal support.',
     accountOrganizerApplyErrorPrefix: 'Could not submit application',
+    accountOrganizerApplyDuplicateFriendly:
+      'Your account already has an organizer profile in the database — perhaps you already applied, or an admin added it earlier. Refresh this page after a minute; contact support if the status seems wrong.',
+    accountOrganizerApplyValidationLength: 'Check field length: contact max 280 characters; past matches block max 2000.',
+    accountOrganizerModerationHeading: 'Message from the platform',
+    accountOrganizerApplyContactLabel: 'Contact (Telegram, phone, etc.) — optional',
+    accountOrganizerApplyContactPlaceholder: 'e.g. @username or +1…',
+    accountOrganizerApplyPastMatchesLabel: 'Past matches / links — optional',
+    accountOrganizerApplyPastMatchesPlaceholder: 'Links to PSC, posters, clubs, or a short experience summary',
     portalShellMenuOpenAria: 'Open navigation menu',
     portalShellMenuCloseAria: 'Close navigation menu',
     portalShellNavDrawerAria: 'Navigation and account',

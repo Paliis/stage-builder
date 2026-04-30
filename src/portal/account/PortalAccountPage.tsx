@@ -12,12 +12,13 @@ export function PortalAccountPage() {
   const { locale, tree } = useI18n()
   const p = tree.portal
   const { loading: sessionLoading, user } = useSupabaseSession()
-  const { loading: profileLoading, profile, refresh: refreshOrganizerProfile } = useOrganizerSelfServiceProfile(
-    user?.id,
-  )
+  const { loading: profileLoading, profile, moderationNote, refresh: refreshOrganizerProfile } =
+    useOrganizerSelfServiceProfile(user?.id)
   const pathnameRedirect = `/${locale}/account`
   const [applyBusy, setApplyBusy] = useState(false)
   const [applyError, setApplyError] = useState<string | null>(null)
+  const [applyContact, setApplyContact] = useState('')
+  const [applyPastMatches, setApplyPastMatches] = useState('')
 
   const onSignOut = useCallback(async () => {
     if (!isSupabaseConfigured()) return
@@ -26,21 +27,32 @@ export function PortalAccountPage() {
 
   const submitOrganizerApplication = useCallback(async () => {
     if (!user?.id || !isSupabaseConfigured()) return
+    const contact = applyContact.trim()
+    const past = applyPastMatches.trim()
+    if (contact.length > 280 || past.length > 2000) {
+      setApplyError(p.accountOrganizerApplyValidationLength)
+      return
+    }
     setApplyBusy(true)
     setApplyError(null)
     const sb = getSupabase()
     const { error } = await sb.from('match_admin_profiles').insert({
       user_id: user.id,
       organizer_status: 'pending',
+      ...(contact.length ? { organizer_application_contact: contact } : {}),
+      ...(past.length ? { organizer_application_past_matches: past } : {}),
     })
     setApplyBusy(false)
     if (error) {
-      setApplyError(error.message)
+      const msg = error.message ?? ''
+      const dup =
+        error.code === '23505' || /duplicate key|unique constraint/i.test(msg) || /already exists/i.test(msg)
+      setApplyError(dup ? p.accountOrganizerApplyDuplicateFriendly : `${p.accountOrganizerApplyErrorPrefix}: ${msg}`)
       await refreshOrganizerProfile()
       return
     }
     await refreshOrganizerProfile()
-  }, [user?.id, refreshOrganizerProfile])
+  }, [user?.id, refreshOrganizerProfile, applyContact, applyPastMatches, p])
 
   if (!isSupabaseConfigured()) {
     return (
@@ -119,9 +131,60 @@ export function PortalAccountPage() {
                   {p.accountOrganizerApplyHeading}
                 </h2>
                 <p style={{ margin: '0 0 0.85rem', fontSize: '0.92rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyIntro}</p>
+                <label style={{ display: 'block', margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 650 }}>
+                  {p.accountOrganizerApplyContactLabel}
+                </label>
+                <input
+                  type="text"
+                  className="portal-shell__account-sign-out"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    maxWidth: '22rem',
+                    boxSizing: 'border-box',
+                    margin: '0 0 0.65rem',
+                    padding: '0.45rem 0.55rem',
+                    borderRadius: '0.45rem',
+                    border: '1px solid var(--border)',
+                    background: 'var(--surface)',
+                    color: 'var(--text)',
+                    fontSize: '0.9rem',
+                  }}
+                  value={applyContact}
+                  maxLength={280}
+                  onChange={(e) => setApplyContact(e.target.value)}
+                  autoComplete="off"
+                  placeholder={p.accountOrganizerApplyContactPlaceholder}
+                />
+                <label style={{ display: 'block', margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 650 }}>
+                  {p.accountOrganizerApplyPastMatchesLabel}
+                </label>
+                <textarea
+                  className="portal-shell__account-sign-out"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    maxWidth: '28rem',
+                    minHeight: '4.5rem',
+                    boxSizing: 'border-box',
+                    margin: '0 0 0.85rem',
+                    padding: '0.45rem 0.55rem',
+                    borderRadius: '0.45rem',
+                    border: '1px solid var(--border)',
+                    background: 'var(--surface)',
+                    color: 'var(--text)',
+                    fontSize: '0.9rem',
+                    lineHeight: 1.45,
+                    resize: 'vertical',
+                  }}
+                  value={applyPastMatches}
+                  maxLength={2000}
+                  onChange={(e) => setApplyPastMatches(e.target.value)}
+                  placeholder={p.accountOrganizerApplyPastMatchesPlaceholder}
+                />
                 {applyError ?
                   <p role="alert" style={{ margin: '0 0 0.65rem', fontSize: '0.9rem' }}>
-                    {p.accountOrganizerApplyErrorPrefix}: {applyError}
+                    {applyError}
                   </p>
                 : null}
                 <button
@@ -167,6 +230,26 @@ export function PortalAccountPage() {
                 }}
               >
                 {p.accountOrganizerApplyBlockedBody}
+                {moderationNote ?
+                  <span style={{ display: 'block', marginTop: '0.65rem' }}>
+                    <strong style={{ display: 'block', marginBottom: '0.35rem' }}>
+                      {p.accountOrganizerModerationHeading}
+                    </strong>
+                    <span
+                      style={{
+                        display: 'block',
+                        padding: '0.6rem 0.75rem',
+                        borderLeft: '3px solid var(--border)',
+                        background: 'rgba(0,0,0,0.04)',
+                        fontSize: '0.9rem',
+                        lineHeight: 1.5,
+                        whiteSpace: 'pre-wrap',
+                      }}
+                    >
+                      {moderationNote}
+                    </span>
+                  </span>
+                : null}
               </p>
             : null
           : null}
