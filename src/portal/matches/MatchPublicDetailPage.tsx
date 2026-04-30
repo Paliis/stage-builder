@@ -6,6 +6,7 @@ import { useI18n } from '../../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from './matchPortalFormat'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
+import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
 import '../PortalHome.css'
 
 type MatchDetailRow = {
@@ -217,6 +218,8 @@ export function MatchPublicDetailPage() {
           <ReactMarkdown>{row.description_md}</ReactMarkdown>
         </section>
       ) : null}
+
+      <MatchPublicRegistrationSection locale={locale} matchUuid={row.id} p={p} />
 
       <section style={{ marginTop: '1.75rem', maxWidth: '48rem' }} aria-labelledby="match-participants-heading">
         <h2

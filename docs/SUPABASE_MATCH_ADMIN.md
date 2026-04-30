@@ -5,6 +5,7 @@
 1. **`supabase/migrations/20260501140000_match_admin_mvp.sql`** — таблиці матчу, скводів, заявок, лінків.
 2. **`supabase/migrations/20260502140000_platform_match_organizers.sql`** (опційно, для власника порталу): **`organizer_status`**, **`portal_platform_admins`**, RPC **`platform_*`**, RLS — **запис у модуль матчів лише якщо статус `active`**.
 3. **`supabase/migrations/20260503120000_match_participant_list_visibility.sql`** — **`participant_list_visibility`** на **`matches`**, RPC **`fetch_public_match_roster`** для публічного ростера без викриття `auth.users`.
+4. **`supabase/migrations/20260504140000_public_match_registration_metrics.sql`** — RPC **`fetch_public_match_registration_metrics`** (лише для **`published`**) — кількість зайнятих місць по скводах і сумарні заявки для публічної форми реєстрації без `SELECT match_registrations` для `anon`.
 
 Передумога: уже застосовано **`20260409120000_shared_stages.sql`** (`shared_stages` потрібен для FK у `match_stage_links`).
 
@@ -77,7 +78,7 @@
 
 ## Організатор — «Мої матчі»
 
-При **`VITE_ENABLE_MATCH_PORTAL`**: **`/{locale}/matches/my`** — список власних матчів; **`/{locale}/matches/my/new`** — створення; **`/{locale}/matches/my/:matchId`** — редагування полів матчу. Публічна картка — **`/{locale}/matches/:matchId`**. Запис у таблицю **`matches`** доступний активному організатору (**`organizer_status = 'active'`**) згідно з RLS.
+При **`VITE_ENABLE_MATCH_PORTAL`**: **`/{locale}/matches/my`** — список власних матчів; **`/{locale}/matches/my/new`** — створення; **`/{locale}/matches/my/:matchId`** — редагування полів матчу й **управління скводами** (назва та місткість; видалення — якщо ще немає заявок). Публічна картка — **`/{locale}/matches/:matchId`** (опис блоку реєстрації стрільця — після застосування міграції з **`fetch_public_match_registration_metrics`**). Запис у таблицю **`matches`** доступний активному організатору (**`organizer_status = 'active'`**) згідно з RLS.
 
 ---
 

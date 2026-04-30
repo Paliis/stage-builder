@@ -5,6 +5,7 @@ import { useI18n } from '../../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
+import { OrganizerMatchSquadsPanel } from './OrganizerMatchSquadsPanel'
 import '../PortalHome.css'
 
 type MatchDraft = {
@@ -430,6 +431,8 @@ export function OrganizerMatchEditPage() {
           </p>
         ) : null}
       </form>
+
+      {!isNew && validEditId && matchId ? <OrganizerMatchSquadsPanel matchId={matchId} p={p} /> : null}
     </div>
   )
 }

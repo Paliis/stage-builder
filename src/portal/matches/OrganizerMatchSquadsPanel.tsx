@@ -1,0 +1,204 @@
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
+import { getSupabase } from '../../lib/supabaseClient'
+import type { MessageTree } from '../../i18n/messages'
+
+type Portal = MessageTree['portal']
+
+export type OrganizerMatchSquadsPanelProps = {
+  matchId: string
+  p: Portal
+}
+
+type SquadRow = {
+  id: string
+  label: string
+  sort_order: number
+  capacity: number
+}
+
+export function OrganizerMatchSquadsPanel({ matchId, p }: OrganizerMatchSquadsPanelProps) {
+  const sb = useMemo(() => getSupabase(), [])
+  const [rows, setRows] = useState<SquadRow[] | undefined>(undefined)
+  const [takenMap, setTakenMap] = useState<Record<string, number>>({})
+  const [loadError, setLoadError] = useState<string | null>(null)
+
+  const [newLabel, setNewLabel] = useState('')
+  const [newCap, setNewCap] = useState(18)
+  const [mutating, setMutating] = useState(false)
+  const [mutErr, setMutErr] = useState<string | null>(null)
+
+  const reload = useCallback(async () => {
+    setLoadError(null)
+    const { data: squads, error: sErr } = await sb
+      .from('match_squads')
+      .select('id, label, sort_order, capacity')
+      .eq('match_id', matchId)
+      .order('sort_order', { ascending: true })
+
+    if (sErr) {
+      setLoadError(sErr.message)
+      setRows([])
+      return
+    }
+
+    const list = (squads ?? []) as SquadRow[]
+    setRows(list)
+
+    const { data: regs, error: rErr } = await sb
+      .from('match_registrations')
+      .select('squad_id, status')
+      .eq('match_id', matchId)
+
+    if (rErr || !regs) {
+      setTakenMap({})
+      return
+    }
+
+    const map: Record<string, number> = {}
+    for (const r of regs as { squad_id: string; status: string }[]) {
+      if (r.status !== 'pending' && r.status !== 'confirmed') continue
+      map[r.squad_id] = (map[r.squad_id] ?? 0) + 1
+    }
+    setTakenMap(map)
+  }, [matchId, sb])
+
+  useEffect(() => {
+    void reload()
+  }, [reload])
+
+  async function handleAdd(ev: FormEvent) {
+    ev.preventDefault()
+    setMutErr(null)
+    const label = newLabel.trim()
+    if (!label) return
+    const cap = Number(newCap)
+    if (!Number.isFinite(cap) || cap < 1) {
+      setMutErr(p.matchOrgSquadCapacityInvalid)
+      return
+    }
+    const nextOrder = rows?.length ? Math.max(...rows.map((r) => r.sort_order), -1) + 1 : 0
+    setMutating(true)
+    const { error } = await sb.from('match_squads').insert({
+      match_id: matchId,
+      label,
+      capacity: Math.floor(cap),
+      sort_order: nextOrder,
+    })
+    setMutating(false)
+    if (error) {
+      setMutErr(error.message)
+      return
+    }
+    setNewLabel('')
+    setNewCap(18)
+    await reload()
+  }
+
+  async function handleDelete(id: string) {
+    setMutErr(null)
+    const taken = takenMap[id] ?? 0
+    if (taken > 0) {
+      setMutErr(p.matchOrgSquadHasRegistrations)
+      return
+    }
+    setMutating(true)
+    const { error } = await sb.from('match_squads').delete().eq('id', id)
+    setMutating(false)
+    if (error) {
+      setMutErr(error.message.includes('foreign key') ? p.matchOrgSquadHasRegistrations : error.message)
+      return
+    }
+    await reload()
+  }
+
+  return (
+    <section style={{ marginTop: '2rem', maxWidth: '36rem' }} aria-labelledby="match-squads-heading">
+      <h2 id="match-squads-heading" className="portal-home__hero-title" style={{ fontSize: '1.1rem', margin: '0 0 0.5rem' }}>
+        {p.matchOrgSquadsHeading}
+      </h2>
+      <p style={{ margin: '0 0 0.75rem', fontSize: '0.88rem', lineHeight: 1.55, opacity: 0.92 }}>
+        {p.matchOrgSquadsIntro}
+      </p>
+
+      {loadError ?
+        <p role="alert">{p.matchesLoadError}: {loadError}</p>
+      : rows === undefined ?
+        <p>{p.myMatchesLoading}</p>
+      : rows.length === 0 ?
+        <p style={{ margin: '0 0 0.85rem', fontSize: '0.95rem' }}>{p.matchOrgSquadsEmpty}</p>
+      : <div style={{ overflowX: 'auto', marginBottom: '1rem' }}>
+          <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
+            <thead>
+              <tr>
+                <th scope="col" style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                  {p.matchOrgSquadsColLabel}
+                </th>
+                <th scope="col" style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                  {p.matchOrgSquadsColCapacity}
+                </th>
+                <th scope="col" style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                  {p.matchOrgSquadsColTaken}
+                </th>
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                  aria-label={p.matchOrgSquadsDelete}
+                />
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.id}>
+                  <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>{r.label}</td>
+                  <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>{r.capacity}</td>
+                  <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>{takenMap[r.id] ?? 0}</td>
+                  <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                    <button
+                      type="button"
+                      disabled={mutating || (takenMap[r.id] ?? 0) > 0}
+                      onClick={() => void handleDelete(r.id)}
+                    >
+                      {p.matchOrgSquadsDelete}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <form
+        onSubmit={(e) => void handleAdd(e)}
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0.65rem',
+          alignItems: 'flex-end',
+          fontSize: '0.92rem',
+        }}
+      >
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          {p.matchOrgSquadsNewLabel}
+          <input type="text" value={newLabel} onChange={(e) => setNewLabel(e.target.value)} disabled={mutating} style={{ padding: '0.35rem 0.45rem', minWidth: '10rem' }} />
+        </label>
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          {p.matchOrgSquadsNewCapacity}
+          <input
+            type="number"
+            min={1}
+            value={newCap}
+            onChange={(e) => setNewCap(Number(e.target.value) || 1)}
+            disabled={mutating}
+            style={{ padding: '0.35rem 0.45rem', width: '5.5rem' }}
+          />
+        </label>
+        <button type="submit" disabled={mutating}>
+          {p.matchOrgSquadsAdd}
+        </button>
+      </form>
+
+      {mutErr ? <p role="alert" style={{ margin: '0.65rem 0 0', fontSize: '0.9rem' }}>{mutErr}</p> : null}
+    </section>
+  )
+}

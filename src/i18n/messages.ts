@@ -375,6 +375,44 @@ export type MessageTree = {
     matchDetailParticipantsColName: string
     matchDetailParticipantsColDivision: string
     matchDetailParticipantsColClass: string
+    /** When RPC migration not applied yet */
+    matchDetailApplyMigrationHint: string
+    matchDetailRegistrationHeading: string
+    matchDetailRegistrationNoSquads: string
+    matchDetailRegistrationColSquad: string
+    matchDetailRegistrationColFree: string
+    matchDetailRegistrationFull: string
+    matchDetailRegistrationMatchFull: string
+    matchDetailRegistrationSignInIntro: string
+    matchDetailRegistrationFieldSquad: string
+    matchDetailRegistrationSelectSquad: string
+    matchDetailRegistrationDivision: string
+    matchDetailRegistrationClass: string
+    matchDetailRegistrationPFOptional: string
+    matchDetailRegistrationPFNone: string
+    matchDetailRegistrationPFMajor: string
+    matchDetailRegistrationPFMinor: string
+    matchDetailRegistrationSubmit: string
+    matchDetailRegistrationSubmitting: string
+    matchDetailRegistrationDonePending: string
+    matchDetailRegistrationYourStatus: string
+    matchDetailRegistrationStatusPending: string
+    matchDetailRegistrationStatusConfirmed: string
+    matchDetailRegistrationStatusCancelled: string
+    matchDetailRegistrationCancel: string
+    matchDetailRegistrationCancelling: string
+    matchDetailRegistrationPickOpenSquad: string
+    matchDetailRegistrationErrorPrefix: string
+    portalCompactAuthAria: string
+    portalCompactAuthSignIn: string
+    portalCompactAuthSignUp: string
+    portalCompactAuthEmail: string
+    portalCompactAuthPassword: string
+    portalCompactAuthSubmitSignIn: string
+    portalCompactAuthSubmitSignUp: string
+    portalCompactAuthSignOut: string
+    portalCompactAuthSignupSession: string
+    portalCompactAuthSignupConfirm: string
     /** Platform owner: match organizers directory (`/admin/organizers`). */
     organizersAdminHelmetTitle: string
     organizersAdminTitle: string
@@ -438,6 +476,18 @@ export type MessageTree = {
     matchOrgEditNotFound: string
     matchOrgTitleRequired: string
     matchOrgLimitInvalid: string
+    matchOrgSquadsHeading: string
+    matchOrgSquadsIntro: string
+    matchOrgSquadsColLabel: string
+    matchOrgSquadsColCapacity: string
+    matchOrgSquadsColTaken: string
+    matchOrgSquadsNewLabel: string
+    matchOrgSquadsNewCapacity: string
+    matchOrgSquadsAdd: string
+    matchOrgSquadsDelete: string
+    matchOrgSquadsEmpty: string
+    matchOrgSquadCapacityInvalid: string
+    matchOrgSquadHasRegistrations: string
   }
   hitFactor: {
     pageTitle: string
@@ -997,6 +1047,47 @@ export const ukMessages: MessageTree = {
     matchDetailParticipantsColName: 'Ім’я',
     matchDetailParticipantsColDivision: 'Дивізіон',
     matchDetailParticipantsColClass: 'Клас',
+    matchDetailApplyMigrationHint:
+      'Застосуй міграцію `20260504140000_public_match_registration_metrics.sql` у проєкті Supabase (RPC для вільних місць).',
+    matchDetailRegistrationHeading: 'Реєстрація',
+    matchDetailRegistrationNoSquads:
+      'Для цього матчу ще не додані скводи. Поверніться пізніше або зв’яжіться з організатором.',
+    matchDetailRegistrationColSquad: 'Сквод',
+    matchDetailRegistrationColFree: 'Вільні місця',
+    matchDetailRegistrationFull: 'Повний',
+    matchDetailRegistrationMatchFull: 'Ліміт учасників матчу вже заповнений; нові заявки тимчасово недоступні.',
+    matchDetailRegistrationSignInIntro: 'Увійдіть або створіть обліковий запис, щоб подати заявку на участь.',
+    matchDetailRegistrationFieldSquad: 'Сквод',
+    matchDetailRegistrationSelectSquad: 'Оберіть сквод',
+    matchDetailRegistrationDivision: 'Дивізіон',
+    matchDetailRegistrationClass: 'Клас',
+    matchDetailRegistrationPFOptional: 'Power factor (необов’язково)',
+    matchDetailRegistrationPFNone: '—',
+    matchDetailRegistrationPFMajor: 'Major',
+    matchDetailRegistrationPFMinor: 'Minor',
+    matchDetailRegistrationSubmit: 'Подати заявку',
+    matchDetailRegistrationSubmitting: 'Надсилання…',
+    matchDetailRegistrationDonePending:
+      'Заявку прийнято. Статус «очікує» — організатор підтвердить участь після перевірки оплати.',
+    matchDetailRegistrationYourStatus: 'Ваша заявка',
+    matchDetailRegistrationStatusPending: 'очікує підтвердження',
+    matchDetailRegistrationStatusConfirmed: 'підтверджено',
+    matchDetailRegistrationStatusCancelled: 'скасовано',
+    matchDetailRegistrationCancel: 'Скасувати заявку',
+    matchDetailRegistrationCancelling: 'Скасування…',
+    matchDetailRegistrationPickOpenSquad: 'Оберіть сквод із вільними місцями.',
+    matchDetailRegistrationErrorPrefix: 'Помилка',
+    portalCompactAuthAria: 'Режим входу',
+    portalCompactAuthSignIn: 'Вхід',
+    portalCompactAuthSignUp: 'Реєстрація',
+    portalCompactAuthEmail: 'Email',
+    portalCompactAuthPassword: 'Пароль',
+    portalCompactAuthSubmitSignIn: 'Увійти',
+    portalCompactAuthSubmitSignUp: 'Зареєструватися',
+    portalCompactAuthSignOut: 'Вийти',
+    portalCompactAuthSignupSession: 'Готово: ви ввійшли в обліковий запис.',
+    portalCompactAuthSignupConfirm:
+      'Обліковий запис створено. Якщо увімкнено підтвердження email — відкрийте лист і перейдіть за посиланням, потім увійдіть.',
     organizersAdminHelmetTitle: 'Організатори матчів — адмін порталу',
     organizersAdminTitle: 'Організатори матчів',
     organizersAdminIntro:
@@ -1059,6 +1150,19 @@ export const ukMessages: MessageTree = {
     matchOrgEditNotFound: 'Матч не знайдено або він не належить до твого облікового запису.',
     matchOrgTitleRequired: 'Заповни назву.',
     matchOrgLimitInvalid: 'Ліміт учасників має бути числом ≥ 1.',
+    matchOrgSquadsHeading: 'Скводи',
+    matchOrgSquadsIntro:
+      'Додайте хоча б один сквод з місцями — інакше стрільці не зможуть подати заявку на публічній картці. Видалення можливе лише якщо на скводі ще немає заявок.',
+    matchOrgSquadsColLabel: 'Назва',
+    matchOrgSquadsColCapacity: 'Місць',
+    matchOrgSquadsColTaken: 'Зайнято',
+    matchOrgSquadsNewLabel: 'Новий сквод',
+    matchOrgSquadsNewCapacity: 'Місць',
+    matchOrgSquadsAdd: 'Додати сквод',
+    matchOrgSquadsDelete: 'Видалити',
+    matchOrgSquadsEmpty: 'Ще немає скводів.',
+    matchOrgSquadCapacityInvalid: 'Кількість місць має бути числом ≥ 1.',
+    matchOrgSquadHasRegistrations: 'Не можна видалити: є заявки на цей сквод.',
   },
   hitFactor: {
     pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
@@ -1608,6 +1712,48 @@ export const enMessages: MessageTree = {
     matchDetailParticipantsColName: 'Name',
     matchDetailParticipantsColDivision: 'Division',
     matchDetailParticipantsColClass: 'Class',
+    matchDetailApplyMigrationHint:
+      'Apply migration `20260504140000_public_match_registration_metrics.sql` in your Supabase project (RPC for open seats).',
+    matchDetailRegistrationHeading: 'Registration',
+    matchDetailRegistrationNoSquads:
+      'No squads were added yet. Check back later or contact the match organizer.',
+    matchDetailRegistrationColSquad: 'Squad',
+    matchDetailRegistrationColFree: 'Open seats',
+    matchDetailRegistrationFull: 'Full',
+    matchDetailRegistrationMatchFull:
+      'The competitor limit for this match is reached; new sign-ups are not available right now.',
+    matchDetailRegistrationSignInIntro: 'Sign in or create an account to register for this match.',
+    matchDetailRegistrationFieldSquad: 'Squad',
+    matchDetailRegistrationSelectSquad: 'Select a squad',
+    matchDetailRegistrationDivision: 'Division',
+    matchDetailRegistrationClass: 'Class',
+    matchDetailRegistrationPFOptional: 'Power factor (optional)',
+    matchDetailRegistrationPFNone: '—',
+    matchDetailRegistrationPFMajor: 'Major',
+    matchDetailRegistrationPFMinor: 'Minor',
+    matchDetailRegistrationSubmit: 'Submit registration',
+    matchDetailRegistrationSubmitting: 'Submitting…',
+    matchDetailRegistrationDonePending:
+      'Registration received. Pending status—the organizer confirms after verifying payment arrangements.',
+    matchDetailRegistrationYourStatus: 'Your registration',
+    matchDetailRegistrationStatusPending: 'pending organizer confirmation',
+    matchDetailRegistrationStatusConfirmed: 'confirmed',
+    matchDetailRegistrationStatusCancelled: 'cancelled',
+    matchDetailRegistrationCancel: 'Cancel registration',
+    matchDetailRegistrationCancelling: 'Cancelling…',
+    matchDetailRegistrationPickOpenSquad: 'Choose a squad with open seats.',
+    matchDetailRegistrationErrorPrefix: 'Error',
+    portalCompactAuthAria: 'Sign-in mode',
+    portalCompactAuthSignIn: 'Sign in',
+    portalCompactAuthSignUp: 'Sign up',
+    portalCompactAuthEmail: 'Email',
+    portalCompactAuthPassword: 'Password',
+    portalCompactAuthSubmitSignIn: 'Sign in',
+    portalCompactAuthSubmitSignUp: 'Sign up',
+    portalCompactAuthSignOut: 'Sign out',
+    portalCompactAuthSignupSession: 'You are signed in.',
+    portalCompactAuthSignupConfirm:
+      'Account created. If email confirmation is enabled, confirm from your inbox before signing in.',
     organizersAdminHelmetTitle: 'Match organizers — platform admin',
     organizersAdminTitle: 'Match organizers',
     organizersAdminIntro:
@@ -1672,6 +1818,19 @@ export const enMessages: MessageTree = {
     matchOrgEditNotFound: 'Match not found or not owned by you.',
     matchOrgTitleRequired: 'Please enter a title.',
     matchOrgLimitInvalid: 'Competitor limit must be at least 1.',
+    matchOrgSquadsHeading: 'Squads',
+    matchOrgSquadsIntro:
+      'Add at least one squad with capacity so competitors can sign up from the public page. Squads can be deleted only if they have no registrations.',
+    matchOrgSquadsColLabel: 'Label',
+    matchOrgSquadsColCapacity: 'Capacity',
+    matchOrgSquadsColTaken: 'Taken',
+    matchOrgSquadsNewLabel: 'New squad label',
+    matchOrgSquadsNewCapacity: 'Capacity',
+    matchOrgSquadsAdd: 'Add squad',
+    matchOrgSquadsDelete: 'Delete',
+    matchOrgSquadsEmpty: 'No squads yet.',
+    matchOrgSquadCapacityInvalid: 'Capacity must be a number ≥ 1.',
+    matchOrgSquadHasRegistrations: 'Cannot delete: registrations exist on this squad.',
   },
   hitFactor: {
     pageTitle: 'Hit Factor — price of mistakes',
