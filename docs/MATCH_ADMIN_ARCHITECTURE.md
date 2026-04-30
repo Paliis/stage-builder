@@ -2,6 +2,8 @@
 
 **Статус:** чернетка (квітень 2026). **Зв’язок:** [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [PORTAL_PLAN.md](./PORTAL_PLAN.md), [TECH.md](./TECH.md).
 
+**MVP-дисципліна матчів:** **IPSC Shotgun** (рушниця) — зафіксовано у [MATCH_REGISTRATION_AND_PSC_PLAN §1.3](./MATCH_REGISTRATION_AND_PSC_PLAN.md#13-mvp-ipsc-shotgun).
+
 ---
 
 ## 1. Цільовий технічний малюнок
