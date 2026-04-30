@@ -1,23 +1,157 @@
 -- Match admin: test seed data (Supabase SQL Editor, role: postgres)
--- Prerequisites: at least one user in Authentication; shared_stages optional.
--- Safe to re-run only on empty test project — uses fixed title match; see bottom for cleanup.
+--
+-- Prerequisites: extension pgcrypto (Dashboard → Database → Extensions; usually already on).
+-- If auth.users is empty, creates two users + identities; otherwise uses first/last user by created_at.
+-- Re-run safe: skips when title "Seed: Test shotgun match" already exists.
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 DO $$
 DECLARE
-  org_id  uuid;
-  comp_id uuid;
-  mid     uuid;
-  sid1    uuid;
-  sid2    uuid;
+  inst_id       uuid;
+  org_id        uuid;
+  comp_id       uuid;
+  mid           uuid;
+  sid1          uuid;
+  sid2          uuid;
+  user_count    int;
+  seed_md_email constant text := 'stagebuilder.seed.md@local.test';
+  seed_sh_email constant text := 'stagebuilder.seed.shooter@local.test';
+  v_pw          text;
 BEGIN
-  SELECT id INTO org_id FROM auth.users ORDER BY created_at ASC LIMIT 1;
-  IF org_id IS NULL THEN
-    RAISE EXCEPTION 'auth.users is empty: create a user via Auth UI or your app first';
+  IF EXISTS (SELECT 1 FROM public.matches WHERE title = 'Seed: Test shotgun match') THEN
+    RAISE NOTICE 'Seed skipped: match "Seed: Test shotgun match" already exists. DELETE that row to re-seed.';
+    RETURN;
   END IF;
 
-  SELECT id INTO comp_id FROM auth.users ORDER BY created_at DESC LIMIT 1;
-  IF comp_id IS NULL THEN
-    comp_id := org_id;
+  SELECT id INTO inst_id FROM auth.instances ORDER BY id LIMIT 1;
+  IF inst_id IS NULL THEN
+    inst_id := '00000000-0000-0000-0000-000000000000'::uuid;
+  END IF;
+
+  SELECT count(*)::int INTO user_count FROM auth.users;
+
+  IF user_count = 0 THEN
+    v_pw := crypt('SeedOnly_ChangeMe_9', gen_salt('bf'));
+
+    org_id := gen_random_uuid();
+    INSERT INTO auth.users (
+      id,
+      instance_id,
+      aud,
+      role,
+      email,
+      encrypted_password,
+      email_confirmed_at,
+      raw_app_meta_data,
+      raw_user_meta_data,
+      created_at,
+      updated_at,
+      is_sso_user,
+      is_anonymous
+    )
+    VALUES (
+      org_id,
+      inst_id,
+      'authenticated',
+      'authenticated',
+      seed_md_email,
+      v_pw,
+      now(),
+      '{"provider":"email","providers":["email"]}'::jsonb,
+      '{}'::jsonb,
+      now(),
+      now(),
+      false,
+      false
+    );
+
+    INSERT INTO auth.identities (
+      id,
+      user_id,
+      provider_id,
+      identity_data,
+      provider,
+      last_sign_in_at,
+      created_at,
+      updated_at
+    )
+    VALUES (
+      gen_random_uuid(),
+      org_id,
+      org_id::text,
+      jsonb_build_object('sub', org_id::text, 'email', seed_md_email),
+      'email',
+      now(),
+      now(),
+      now()
+    );
+
+    comp_id := gen_random_uuid();
+    INSERT INTO auth.users (
+      id,
+      instance_id,
+      aud,
+      role,
+      email,
+      encrypted_password,
+      email_confirmed_at,
+      raw_app_meta_data,
+      raw_user_meta_data,
+      created_at,
+      updated_at,
+      is_sso_user,
+      is_anonymous
+    )
+    VALUES (
+      comp_id,
+      inst_id,
+      'authenticated',
+      'authenticated',
+      seed_sh_email,
+      v_pw,
+      now(),
+      '{"provider":"email","providers":["email"]}'::jsonb,
+      '{}'::jsonb,
+      now(),
+      now(),
+      false,
+      false
+    );
+
+    INSERT INTO auth.identities (
+      id,
+      user_id,
+      provider_id,
+      identity_data,
+      provider,
+      last_sign_in_at,
+      created_at,
+      updated_at
+    )
+    VALUES (
+      gen_random_uuid(),
+      comp_id,
+      comp_id::text,
+      jsonb_build_object('sub', comp_id::text, 'email', seed_sh_email),
+      'email',
+      now(),
+      now(),
+      now()
+    );
+
+    RAISE NOTICE 'Created seed auth users: % (MD), % (shooter). Password: SeedOnly_ChangeMe_9', seed_md_email, seed_sh_email;
+
+  ELSE
+    SELECT id INTO org_id FROM auth.users ORDER BY created_at ASC LIMIT 1;
+    IF org_id IS NULL THEN
+      RAISE EXCEPTION 'auth.users count > 0 but no id returned (unexpected)';
+    END IF;
+
+    SELECT id INTO comp_id FROM auth.users ORDER BY created_at DESC LIMIT 1;
+    IF comp_id IS NULL THEN
+      comp_id := org_id;
+    END IF;
   END IF;
 
   INSERT INTO public.match_admin_profiles (user_id, display_name)
@@ -144,4 +278,9 @@ ON CONFLICT DO NOTHING;
 -- Cleanup (run manually to remove seed data)
 /*
 DELETE FROM public.matches WHERE title = 'Seed: Test shotgun match';
+-- Optional: remove auto-created demo users only if unused elsewhere:
+-- DELETE FROM auth.users WHERE email IN (
+--   'stagebuilder.seed.md@local.test',
+--   'stagebuilder.seed.shooter@local.test'
+-- );
 */
