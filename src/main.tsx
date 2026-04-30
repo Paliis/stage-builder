@@ -1,4 +1,4 @@
-import { StrictMode, Suspense } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
@@ -33,6 +33,13 @@ import {
   RootRedirect,
 } from './portal/legacyPortalRedirects'
 import { getInitialLocale } from './i18n/storage'
+
+const LazyDevSupabaseAuthSmoke =
+  import.meta.env.DEV ?
+    lazy(() =>
+      import('./portal/DevSupabaseAuthSmoke').then((m) => ({ default: m.DevSupabaseAuthSmoke })),
+    )
+  : null
 
 hydrateSessionDraft()
 
@@ -81,6 +88,16 @@ createRoot(document.getElementById('root')!).render(
             <Route element={<PortalShell />}>
               <Route path=":locale" element={<PortalLocaleGate />}>
                 <Route index element={<PortalHome />} />
+                {LazyDevSupabaseAuthSmoke ? (
+                  <Route
+                    path="dev/supabase-auth-smoke"
+                    element={
+                      <Suspense fallback={null}>
+                        <LazyDevSupabaseAuthSmoke />
+                      </Suspense>
+                    }
+                  />
+                ) : null}
                 <Route path="hit-factor" element={<HitFactorRoute />} />
                 <Route path="publish-policy" element={<PublishPolicyRoute />} />
                 {isRoHelperEnabled() ? (
