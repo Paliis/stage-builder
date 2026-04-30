@@ -69,15 +69,21 @@ html.portal-shell__nav-drawer-lock body {
   }
 }
 
-/* Desktop: unwrap toolbar so nav/account/lang behave as siblings of brand … */
+/* Desktop: grouped nav + account + lang (avoid display:contents — Safari / a11y can hide children). */
 @media (min-width: 960px) {
   .portal-shell__header-inner {
     flex-wrap: wrap;
     justify-content: space-between;
   }
 
-  .portal-shell__header-toolbar {
-    display: contents;
+  .portal-shell__header-toolbar:not(.portal-shell__header-toolbar--compact) {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    min-width: 0;
   }
 }
 
