@@ -8,7 +8,16 @@
 
 Передумога: уже застосовано **`20260409120000_shared_stages.sql`** (`shared_stages` потрібен для FK у `match_stage_links`).
 
-**Apply:** Dashboard → SQL Editor → вставити вміст міграції → **Run**.
+**Apply (вибір способу):**
+
+| Спосіб | Коли |
+|--------|------|
+| **SQL Editor** у дашборді | Один раз або без CLI: вставити вміст файлу міграції → **Run**. |
+| **Supabase CLI** | Повторне накочування, перевірки в Cursor, менше ручних помилок. |
+
+Кроки CLI (логін, `link`, `db push`): див. **[supabase/README.md](../supabase/README.md)** та npm-скрипти **`npm run supabase:login`**, **`supabase:link`**, **`supabase:push`**.
+
+Корінь проєкту вже містить **`supabase/config.toml`** від `supabase init`; міграції лежать у **`supabase/migrations/`**.
 
 ---
 

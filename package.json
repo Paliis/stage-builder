@@ -25,7 +25,13 @@
     "ro-helper:build-search-index": "node scripts/build-ro-helper-search-index.mjs",
     "ro-helper:audit-en": "node scripts/ro-helper-audit-en.mjs",
     "sitemap:generate": "node scripts/generate-sitemap.mjs",
-    "practiscore:inspect-fixture": "python scripts/practiscore/psc_inspect.py scripts/practiscore/fixtures/practiscore-roundtrip-test.psc --keys"
+    "practiscore:inspect-fixture": "python scripts/practiscore/psc_inspect.py scripts/practiscore/fixtures/practiscore-roundtrip-test.psc --keys",
+    "supabase": "npx supabase",
+    "supabase:login": "npx supabase login",
+    "supabase:link": "npx supabase link",
+    "supabase:push": "npx supabase db push",
+    "supabase:migration-list": "npx supabase migration list",
+    "supabase:diff": "npx supabase db diff"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
