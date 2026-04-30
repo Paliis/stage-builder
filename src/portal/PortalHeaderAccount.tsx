@@ -74,6 +74,8 @@ export function PortalHeaderAccount({ locale, p, onAfterSignOut }: Props) {
           <span className="portal-shell__badge portal-shell__badge--organizer">{p.accountBadgeOrganizerActive}</span>
         : organizer === 'blocked' ?
           <span className="portal-shell__badge portal-shell__badge--blocked">{p.accountBadgeOrganizerBlocked}</span>
+        : organizer === 'pending' ?
+          <span className="portal-shell__badge portal-shell__badge--pending">{p.accountBadgeOrganizerPending}</span>
         : null}
       </div>
       <Link

@@ -1,10 +1,10 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useI18n } from '../../i18n/useI18n'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
-import { useOrganizerPortalStatus } from '../useOrganizerPortalStatus'
+import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { isMatchPortalEnabled } from '../featureFlags'
 
@@ -12,13 +12,35 @@ export function PortalAccountPage() {
   const { locale, tree } = useI18n()
   const p = tree.portal
   const { loading: sessionLoading, user } = useSupabaseSession()
-  const organizer = useOrganizerPortalStatus(user?.id)
+  const { loading: profileLoading, profile, refresh: refreshOrganizerProfile } = useOrganizerSelfServiceProfile(
+    user?.id,
+  )
   const pathnameRedirect = `/${locale}/account`
+  const [applyBusy, setApplyBusy] = useState(false)
+  const [applyError, setApplyError] = useState<string | null>(null)
 
   const onSignOut = useCallback(async () => {
     if (!isSupabaseConfigured()) return
     await getSupabase().auth.signOut()
   }, [])
+
+  const submitOrganizerApplication = useCallback(async () => {
+    if (!user?.id || !isSupabaseConfigured()) return
+    setApplyBusy(true)
+    setApplyError(null)
+    const sb = getSupabase()
+    const { error } = await sb.from('match_admin_profiles').insert({
+      user_id: user.id,
+      organizer_status: 'pending',
+    })
+    setApplyBusy(false)
+    if (error) {
+      setApplyError(error.message)
+      await refreshOrganizerProfile()
+      return
+    }
+    await refreshOrganizerProfile()
+  }, [user?.id, refreshOrganizerProfile])
 
   if (!isSupabaseConfigured()) {
     return (
@@ -63,16 +85,91 @@ export function PortalAccountPage() {
 
           <div className="portal-shell__badges" style={{ marginBottom: '0.85rem' }}>
             <span className="portal-shell__badge portal-shell__badge--participant">{p.accountBadgeParticipant}</span>
-            {organizer === 'loading' ?
+            {profileLoading ?
               <span className="portal-shell__badge portal-shell__badge--muted">{p.accountBadgeLoading}</span>
-            : organizer === 'active' ?
+            : profile === 'pending' ?
+              <span className="portal-shell__badge portal-shell__badge--pending">{p.accountBadgeOrganizerPending}</span>
+            : profile === 'active' ?
               <span className="portal-shell__badge portal-shell__badge--organizer">{p.accountBadgeOrganizerActive}</span>
-            : organizer === 'blocked' ?
+            : profile === 'blocked' ?
               <span className="portal-shell__badge portal-shell__badge--blocked">{p.accountBadgeOrganizerBlocked}</span>
             : null}
           </div>
 
           <p style={{ margin: '0 0 1rem', fontSize: '0.95rem', lineHeight: 1.55 }}>{p.accountPageIntroParticipant}</p>
+
+          {isMatchPortalEnabled() && !profileLoading && user?.id ?
+            profile === 'missing' ?
+              <section
+                aria-labelledby="account-organizer-apply-heading"
+                style={{
+                  margin: '0 0 1.25rem',
+                  padding: '0.85rem 1rem',
+                  maxWidth: '40rem',
+                  border: '1px solid var(--border)',
+                  borderRadius: '0.65rem',
+                  background: 'var(--btn-bg)',
+                }}
+              >
+                <h2
+                  id="account-organizer-apply-heading"
+                  className="portal-home__hero-title"
+                  style={{ fontSize: '1rem', margin: '0 0 0.5rem', letterSpacing: '-0.02em' }}
+                >
+                  {p.accountOrganizerApplyHeading}
+                </h2>
+                <p style={{ margin: '0 0 0.85rem', fontSize: '0.92rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyIntro}</p>
+                {applyError ?
+                  <p role="alert" style={{ margin: '0 0 0.65rem', fontSize: '0.9rem' }}>
+                    {p.accountOrganizerApplyErrorPrefix}: {applyError}
+                  </p>
+                : null}
+                <button
+                  type="button"
+                  disabled={applyBusy}
+                  className="portal-shell__account-sign-out portal-shell__account-sign-out--block"
+                  style={{ marginTop: 0 }}
+                  onClick={() => void submitOrganizerApplication()}
+                >
+                  {applyBusy ? p.accountOrganizerApplySubmitting : p.accountOrganizerApplyButton}
+                </button>
+              </section>
+            : profile === 'pending' ?
+              <section
+                aria-labelledby="account-organizer-pending-heading"
+                style={{
+                  margin: '0 0 1.25rem',
+                  padding: '0.85rem 1rem',
+                  maxWidth: '40rem',
+                  border: '1px solid var(--border)',
+                  borderRadius: '0.65rem',
+                  background: 'rgba(251, 191, 36, 0.08)',
+                }}
+              >
+                <h2
+                  id="account-organizer-pending-heading"
+                  className="portal-home__hero-title"
+                  style={{ fontSize: '1rem', margin: '0 0 0.5rem', letterSpacing: '-0.02em' }}
+                >
+                  {p.accountOrganizerApplyPendingTitle}
+                </h2>
+                <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyPendingBody}</p>
+              </section>
+            : profile === 'blocked' ?
+              <p
+                role="status"
+                style={{
+                  margin: '0 0 1.25rem',
+                  maxWidth: '40rem',
+                  fontSize: '0.92rem',
+                  lineHeight: 1.52,
+                  color: 'var(--text)',
+                }}
+              >
+                {p.accountOrganizerApplyBlockedBody}
+              </p>
+            : null
+          : null}
 
           <ul style={{ margin: '0 0 1.25rem', paddingLeft: '1.25rem', fontSize: '0.95rem', lineHeight: 1.55 }}>
             {isMatchPortalEnabled() ?

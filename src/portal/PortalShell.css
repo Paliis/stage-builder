@@ -401,6 +401,12 @@ html.portal-shell__nav-drawer-lock .portal-shell__header-strip {
   border-color: rgba(239, 68, 68, 0.35);
 }
 
+.portal-shell__badge--pending {
+  background: rgba(251, 191, 36, 0.16);
+  color: #92400e;
+  border-color: rgba(251, 191, 36, 0.42);
+}
+
 .portal-shell__badge--muted {
   opacity: 0.65;
 }

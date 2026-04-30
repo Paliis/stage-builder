@@ -461,6 +461,8 @@ export type MessageTree = {
     accountBadgeParticipantHint: string
     accountBadgeOrganizerActive: string
     accountBadgeOrganizerBlocked: string
+    /** Account page — organizer application pending approval. */
+    accountBadgeOrganizerPending: string
     accountBadgeLoading: string
     accountPageHelmet: string
     accountPageTitle: string
@@ -471,6 +473,14 @@ export type MessageTree = {
     accountPageGoOrganizer: string
     accountPageOrganizerExplain: string
     accountPageShooterSoon: string
+    accountOrganizerApplyHeading: string
+    accountOrganizerApplyIntro: string
+    accountOrganizerApplyButton: string
+    accountOrganizerApplySubmitting: string
+    accountOrganizerApplyPendingTitle: string
+    accountOrganizerApplyPendingBody: string
+    accountOrganizerApplyBlockedBody: string
+    accountOrganizerApplyErrorPrefix: string
     /** Responsive shell header: mobile drawer + hamburger. */
     portalShellMenuOpenAria: string
     portalShellMenuCloseAria: string
@@ -1241,6 +1251,7 @@ export const ukMessages: MessageTree = {
     accountBadgeParticipantHint: 'Можете реєструватися на опубліковані матчі',
     accountBadgeOrganizerActive: 'Організатор',
     accountBadgeOrganizerBlocked: 'Організатор (обмежено)',
+    accountBadgeOrganizerPending: 'Організатор — на розгляді',
     accountBadgeLoading: '…',
     accountPageHelmet: 'Обліковий запис — Shooters Tools',
     accountPageTitle: 'Обліковий запис',
@@ -1253,6 +1264,17 @@ export const ukMessages: MessageTree = {
     accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
     accountPageShooterSoon:
       'Окремий кабінет стрільця (розширений профіль, мої матчі та заявки, збережені класи тощо) з’явиться в наступних оновленнях.',
+    accountOrganizerApplyHeading: 'Стати організатором матчів',
+    accountOrganizerApplyIntro:
+      'Подайте коротку заявку: у профілі створюється статус «на розгляді». Власник порталу підтвердить його в адмін-розділі й надасть права створювати матчі («Мої матчі»).',
+    accountOrganizerApplyButton: 'Подати заявку',
+    accountOrganizerApplySubmitting: 'Надсилання…',
+    accountOrganizerApplyPendingTitle: 'Заява вже подана',
+    accountOrganizerApplyPendingBody:
+      'Статус «Новий» у модерації платформи. Після затвердження з’явиться доступ до створення матчів; ми надішлемо лише статус у цьому кабінеті (email-сповіщень може ще не бути).',
+    accountOrganizerApplyBlockedBody:
+      'Для вашого облікового запису призупинено статус організатора з боку платформи. Нову заявку подати не можна — зверніться до підтримки порталу.',
+    accountOrganizerApplyErrorPrefix: 'Не вдалося подати заявку',
     portalShellMenuOpenAria: 'Відкрити меню навігації',
     portalShellMenuCloseAria: 'Закрити меню навігації',
     portalShellNavDrawerAria: 'Навігація й обліковий запис',
@@ -2027,6 +2049,7 @@ export const enMessages: MessageTree = {
     accountBadgeParticipantHint: 'You can register for published matches',
     accountBadgeOrganizerActive: 'Organizer',
     accountBadgeOrganizerBlocked: 'Organizer (restricted)',
+    accountBadgeOrganizerPending: 'Organizer — pending approval',
     accountBadgeLoading: '…',
     accountPageHelmet: 'Account — Shooters Tools',
     accountPageTitle: 'Account',
@@ -2039,6 +2062,17 @@ export const enMessages: MessageTree = {
     accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
     accountPageShooterSoon:
       'A dedicated shooter hub (rich profile, your matches and signup status, saved division/class presets, etc.) will ship in a follow-up iteration.',
+    accountOrganizerApplyHeading: 'Apply to organise matches',
+    accountOrganizerApplyIntro:
+      'Submit a short request: your profile is marked pending while the portal owner reviews it in the admin directory and can grant organizer rights (Manage matches → My matches).',
+    accountOrganizerApplyButton: 'Submit application',
+    accountOrganizerApplySubmitting: 'Submitting…',
+    accountOrganizerApplyPendingTitle: 'Application received',
+    accountOrganizerApplyPendingBody:
+      'Your status is “Pending” until the platform approves it. After approval you can create matches; you will see updates on this account page when we add notifications.',
+    accountOrganizerApplyBlockedBody:
+      'Organizer access has been revoked for your account by the platform. You cannot submit a new application — contact portal support.',
+    accountOrganizerApplyErrorPrefix: 'Could not submit application',
     portalShellMenuOpenAria: 'Open navigation menu',
     portalShellMenuCloseAria: 'Close navigation menu',
     portalShellNavDrawerAria: 'Navigation and account',

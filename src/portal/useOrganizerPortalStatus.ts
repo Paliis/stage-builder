@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient'
 
-/** From `match_admin_profiles.organizer_status` — excludes `pending`, which overlaps with shooters. */
-export type OrganizerPortalStatus = 'none' | 'active' | 'blocked' | 'loading'
+/** From `match_admin_profiles.organizer_status` for header badges (includes application pending). */
+export type OrganizerPortalStatus = 'none' | 'active' | 'blocked' | 'pending' | 'loading'
 
 /**
- * Resolves organizer write role for portal UI badges.
- * Rows with status `pending` are treated as `none` (not shown as organizer)
- * so shooters with a default profile row are not labelled organizers.
+ * Resolves organizer-related labels for portal header.
+ * `pending` is shown as «application under review», not as full organizer.
  */
 export function useOrganizerPortalStatus(userId: string | undefined): OrganizerPortalStatus {
   const [state, setState] = useState<OrganizerPortalStatus>('loading')
@@ -37,6 +36,7 @@ export function useOrganizerPortalStatus(userId: string | undefined): OrganizerP
       const raw = typeof data.organizer_status === 'string' ? data.organizer_status.trim() : ''
       if (raw === 'active') setState('active')
       else if (raw === 'blocked') setState('blocked')
+      else if (raw === 'pending') setState('pending')
       else setState('none')
     })()
 
