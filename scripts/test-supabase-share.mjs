@@ -7,8 +7,8 @@
  * Usage (repo root):
  *   node scripts/test-supabase-share.mjs
  *
- * Reads `.env.local` if present (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY).
- * Optional: SUPABASE_SERVICE_ROLE_KEY in `.env.local` (never commit; dev-only).
+ * Reads `.env` then `.env.local` if present (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY).
+ * Optional: SUPABASE_SERVICE_ROLE_KEY (never commit; dev-only).
  */
 
 import { createClient } from '@supabase/supabase-js'
@@ -18,8 +18,8 @@ import { dirname, join } from 'path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-function loadEnvLocal() {
-  const p = join(__dirname, '..', '.env.local')
+function loadEnvFile(name) {
+  const p = join(__dirname, '..', name)
   if (!existsSync(p)) return
   const raw = readFileSync(p, 'utf8')
   for (const line of raw.split('\n')) {
@@ -32,19 +32,19 @@ function loadEnvLocal() {
     if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
       v = v.slice(1, -1)
     }
-    // Same as dotenv: later lines win; overwrite empty strings from parent shell.
     process.env[k] = v
   }
 }
 
-loadEnvLocal()
+loadEnvFile('.env')
+loadEnvFile('.env.local')
 
 const url = process.env.VITE_SUPABASE_URL?.trim()
 const anon = process.env.VITE_SUPABASE_ANON_KEY?.trim()
 const service = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()
 
 if (!url || !anon) {
-  console.error('FAIL: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be set (e.g. in .env.local)')
+  console.error('FAIL: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be set (e.g. in .env or .env.local)')
   process.exit(1)
 }
 
