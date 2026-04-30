@@ -455,6 +455,8 @@ export type MessageTree = {
     accountHeaderChecking: string
     accountHeaderSignIn: string
     accountHeaderProfile: string
+    /** `aria-label` on header profile icon — include {{email}}. */
+    accountHeaderProfileIconAria: string
     accountBadgeParticipant: string
     accountBadgeParticipantHint: string
     accountBadgeOrganizerActive: string
@@ -1230,6 +1232,7 @@ export const ukMessages: MessageTree = {
     accountHeaderChecking: 'Перевірка сесії…',
     accountHeaderSignIn: 'Увійти',
     accountHeaderProfile: 'Профіль',
+    accountHeaderProfileIconAria: 'Обліковий запис. Залогінено як {{email}}',
     accountBadgeParticipant: 'Учасник',
     accountBadgeParticipantHint: 'Можете реєструватися на опубліковані матчі',
     accountBadgeOrganizerActive: 'Організатор',
@@ -2012,6 +2015,7 @@ export const enMessages: MessageTree = {
     accountHeaderChecking: 'Checking session…',
     accountHeaderSignIn: 'Sign in',
     accountHeaderProfile: 'Account',
+    accountHeaderProfileIconAria: 'Account. Signed in as {{email}}',
     accountBadgeParticipant: 'Participant',
     accountBadgeParticipantHint: 'You can register for published matches',
     accountBadgeOrganizerActive: 'Organizer',

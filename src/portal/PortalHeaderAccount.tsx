@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import { formatTemplate } from '../i18n/format'
 import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient'
 import type { MessageTree } from '../i18n/messages'
 import { useOrganizerPortalStatus } from './useOrganizerPortalStatus'
@@ -11,7 +12,18 @@ type Props = {
   p: MessageTree['portal']
 }
 
-/** Header cluster: explicit login state + role badges + profile / sign-out. */
+function ProfileAccountIconSvg() {
+  return (
+    <svg className="portal-shell__account-icon-svg" width={20} height={20} viewBox="0 0 24 24" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M12 12q-1.73 0-2.865-1.135T8 8q0-1.73 1.135-2.865T12 4q1.73 0 2.865 1.135T16 8q0 1.73-1.135 2.865T12 12Zm-8 9v-.9q0-1.02.558-1.865 1.44-2.085 3.487-3.065T12 15q2.395 0 4.442.98 2.046.98 3.487 3.065.558.845.558 1.865v.9H4Z"
+      />
+    </svg>
+  )
+}
+
+/** Header cluster: badges (single row) + profile icon + sign-out — email only in tooltip / aria. */
 export function PortalHeaderAccount({ locale, p }: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const organizer = useOrganizerPortalStatus(user?.id)
@@ -45,7 +57,7 @@ export function PortalHeaderAccount({ locale, p }: Props) {
     )
   }
 
-  const email = user.email?.trim() || user.id.slice(0, 8)
+  const emailForAria = user.email?.trim() || user.id
 
   return (
     <div className="portal-shell__account" role="group" aria-label={p.accountHeaderAria}>
@@ -61,11 +73,14 @@ export function PortalHeaderAccount({ locale, p }: Props) {
           <span className="portal-shell__badge portal-shell__badge--blocked">{p.accountBadgeOrganizerBlocked}</span>
         : null}
       </div>
-      <span className="portal-shell__account-email" title={user.email ?? undefined}>
-        {email}
-      </span>
-      <Link to={accountPath} className="portal-shell__account-profile-link">
-        {p.accountHeaderProfile}
+      <Link
+        to={accountPath}
+        className="portal-shell__account-icon-link"
+        title={emailForAria}
+        aria-label={formatTemplate(p.accountHeaderProfileIconAria, { email: emailForAria })}
+      >
+        <ProfileAccountIconSvg />
+        <span className="portal-shell__sr-only">{p.accountHeaderProfile}</span>
       </Link>
       <button type="button" className="portal-shell__account-sign-out" onClick={() => void onSignOut()}>
         {p.portalCompactAuthSignOut}
