@@ -1,6 +1,7 @@
 -- Match admin: test seed data (Supabase SQL Editor, role: postgres)
 --
--- Prerequisites: extension pgcrypto (Dashboard → Database → Extensions; usually already on).
+-- Prerequisites: extension pgcrypto; migrations `20260501140000_match_admin_mvp.sql`,
+-- `20260502140000_platform_match_organizers.sql`, `20260503120000_match_participant_list_visibility.sql`.
 -- If auth.users is empty, creates two users + identities; otherwise uses first/last user by created_at.
 -- Re-run safe: skips when title "Seed: Test shotgun match" already exists.
 
@@ -154,9 +155,17 @@ BEGIN
     END IF;
   END IF;
 
-  INSERT INTO public.match_admin_profiles (user_id, display_name)
-  VALUES (org_id, 'Test MD (seed)')
-  ON CONFLICT (user_id) DO UPDATE SET display_name = EXCLUDED.display_name, updated_at = now();
+  INSERT INTO public.match_admin_profiles (user_id, display_name, organizer_status)
+  VALUES (org_id, 'Test MD (seed)', 'active')
+  ON CONFLICT (user_id) DO UPDATE SET
+    display_name = EXCLUDED.display_name,
+    organizer_status = 'active',
+    updated_at = now();
+
+  -- After migration 20260502140000_platform_match_organizers: seed org can open /{locale}/admin/organizers
+  INSERT INTO public.portal_platform_admins (user_id)
+  VALUES (org_id)
+  ON CONFLICT (user_id) DO NOTHING;
 
   INSERT INTO public.matches (
     organizer_id,
@@ -170,6 +179,7 @@ BEGIN
     discipline,
     ps_match_type,
     ps_match_subtype,
+    participant_list_visibility,
     status
   )
   VALUES (
@@ -184,6 +194,7 @@ BEGIN
     'shotgun',
     'uspsa_p',
     'ipsc',
+    'open',
     'published'
   )
   RETURNING id INTO mid;

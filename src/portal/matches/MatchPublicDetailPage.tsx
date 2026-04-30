@@ -19,6 +19,15 @@ type MatchDetailRow = {
   competitor_limit: number | null
   discipline: string
   status: string
+  participant_list_visibility: 'open' | 'closed' | null
+}
+
+type PublicRosterRow = {
+  squad_sort: number
+  squad_label: string
+  display_name: string
+  division: string
+  classification_grade: string
 }
 
 export function MatchPublicDetailPage() {
@@ -27,6 +36,8 @@ export function MatchPublicDetailPage() {
   const p = tree.portal
   const [row, setRow] = useState<MatchDetailRow | null | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
+  const [roster, setRoster] = useState<PublicRosterRow[] | null | undefined>(undefined)
+  const [rosterError, setRosterError] = useState<string | null>(null)
 
   const validId = matchId && UUID_RE.test(matchId)
   const configured = isSupabaseConfigured()
@@ -37,10 +48,12 @@ export function MatchPublicDetailPage() {
     const sb = getSupabase()
     void (async () => {
       setRow(undefined)
+      setRoster(undefined)
+      setRosterError(null)
       const { data, error: qErr } = await sb
         .from('matches')
         .select(
-          'id, title, description_md, starts_at, location_label, competitor_limit, discipline, status',
+          'id, title, description_md, starts_at, location_label, competitor_limit, discipline, status, participant_list_visibility',
         )
         .eq('id', matchId)
         .eq('status', 'published')
@@ -58,6 +71,36 @@ export function MatchPublicDetailPage() {
       cancelled = true
     }
   }, [matchId, validId, configured])
+
+  useEffect(() => {
+    if (!validId || !configured || !row?.id) {
+      setRoster(undefined)
+      setRosterError(null)
+      return
+    }
+    const vis = row.participant_list_visibility ?? 'closed'
+    if (vis !== 'open') {
+      setRoster(null)
+      setRosterError(null)
+      return
+    }
+    let cancelled = false
+    const sb = getSupabase()
+    setRoster(undefined)
+    setRosterError(null)
+    void sb.rpc('fetch_public_match_roster', { p_match_id: row.id }).then(({ data, error: rErr }) => {
+      if (cancelled) return
+      if (rErr) {
+        setRosterError(rErr.message)
+        setRoster([])
+        return
+      }
+      setRoster((data ?? []) as PublicRosterRow[])
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [validId, configured, row?.id, row?.participant_list_visibility])
 
   if (!validId) {
     return (
@@ -176,6 +219,118 @@ export function MatchPublicDetailPage() {
           <ReactMarkdown>{row.description_md}</ReactMarkdown>
         </section>
       ) : null}
+
+      <section style={{ marginTop: '1.75rem', maxWidth: '48rem' }} aria-labelledby="match-participants-heading">
+        <h2
+          id="match-participants-heading"
+          className="portal-home__hero-title"
+          style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.65rem', letterSpacing: '-0.02em' }}
+        >
+          {p.matchDetailParticipantsHeading}
+        </h2>
+        {(row.participant_list_visibility ?? 'closed') !== 'open' ? (
+          <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55, color: 'var(--text)' }}>
+            {p.matchDetailParticipantsClosed}
+          </p>
+        ) : roster === undefined ? (
+          <p style={{ margin: 0, fontSize: '0.95rem' }}>{p.matchesLoadingDetail}</p>
+        ) : rosterError ? (
+          <p role="alert" style={{ margin: 0, fontSize: '0.95rem' }}>
+            {p.matchesLoadError}: {rosterError}
+          </p>
+        ) : (roster ?? []).length === 0 ? (
+          <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55 }}>{p.matchDetailParticipantsOpenEmpty}</p>
+        ) : (
+          <>
+            <div style={{ overflowX: 'auto' }}>
+              <table
+                style={{
+                  width: '100%',
+                  borderCollapse: 'collapse',
+                  fontSize: '0.92rem',
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th
+                      scope="col"
+                      style={{
+                        textAlign: 'left',
+                        padding: '0.5rem 0.6rem',
+                        borderBottom: '1px solid var(--border)',
+                        color: 'var(--text-h)',
+                      }}
+                    >
+                      {p.matchDetailParticipantsColSquad}
+                    </th>
+                    <th
+                      scope="col"
+                      style={{
+                        textAlign: 'left',
+                        padding: '0.5rem 0.6rem',
+                        borderBottom: '1px solid var(--border)',
+                        color: 'var(--text-h)',
+                      }}
+                    >
+                      {p.matchDetailParticipantsColName}
+                    </th>
+                    <th
+                      scope="col"
+                      style={{
+                        textAlign: 'left',
+                        padding: '0.5rem 0.6rem',
+                        borderBottom: '1px solid var(--border)',
+                        color: 'var(--text-h)',
+                      }}
+                    >
+                      {p.matchDetailParticipantsColDivision}
+                    </th>
+                    <th
+                      scope="col"
+                      style={{
+                        textAlign: 'left',
+                        padding: '0.5rem 0.6rem',
+                        borderBottom: '1px solid var(--border)',
+                        color: 'var(--text-h)',
+                      }}
+                    >
+                      {p.matchDetailParticipantsColClass}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(roster ?? []).map((r, i) => (
+                    <tr key={`${r.squad_sort}-${r.squad_label}-${i}`}>
+                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
+                        {r.squad_label}
+                      </td>
+                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
+                        {r.display_name}
+                      </td>
+                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
+                        {r.division}
+                      </td>
+                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
+                        {r.classification_grade}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p
+              style={{
+                margin: '0.65rem 0 0',
+                fontSize: '0.8125rem',
+                lineHeight: 1.45,
+                color: 'var(--text)',
+              }}
+            >
+              {p.matchDetailParticipantsFootnote}
+            </p>
+          </>
+        )}
+      </section>
     </article>
   )
 }

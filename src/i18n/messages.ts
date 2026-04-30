@@ -366,6 +366,33 @@ export type MessageTree = {
     matchDetailLocationLabel: string
     matchDetailDisciplineLabel: string
     matchDetailLimitLabel: string
+    /** Public match card: roster block (participant_list_visibility). */
+    matchDetailParticipantsHeading: string
+    matchDetailParticipantsClosed: string
+    matchDetailParticipantsOpenEmpty: string
+    matchDetailParticipantsFootnote: string
+    matchDetailParticipantsColSquad: string
+    matchDetailParticipantsColName: string
+    matchDetailParticipantsColDivision: string
+    matchDetailParticipantsColClass: string
+    /** Platform owner: match organizers directory (`/admin/organizers`). */
+    organizersAdminHelmetTitle: string
+    organizersAdminTitle: string
+    organizersAdminIntro: string
+    organizersNeedSignIn: string
+    organizersForbidden: string
+    organizersLoading: string
+    organizersLoadError: string
+    organizersColEmail: string
+    organizersColDisplayName: string
+    organizersColMatches: string
+    organizersColStatus: string
+    organizersStatusPending: string
+    organizersStatusActive: string
+    organizersStatusBlocked: string
+    organizersSave: string
+    organizersSaving: string
+    organizersBackHome: string
   }
   hitFactor: {
     pageTitle: string
@@ -914,6 +941,35 @@ export const ukMessages: MessageTree = {
     matchDetailLocationLabel: 'Локація',
     matchDetailDisciplineLabel: 'Дисципліна',
     matchDetailLimitLabel: 'Ліміт учасників',
+    matchDetailParticipantsHeading: 'Учасники',
+    matchDetailParticipantsClosed:
+      'Список зареєстрованих учасників для цього матчу закритий (налаштування організатора).',
+    matchDetailParticipantsOpenEmpty:
+      'Публічний список поки порожній (підтверджених заявок ще немає).',
+    matchDetailParticipantsFootnote:
+      'Показано лише підтверджені заявки; ім’я — з профілю учасника в порталі, якщо вказано.',
+    matchDetailParticipantsColSquad: 'Сквод',
+    matchDetailParticipantsColName: 'Ім’я',
+    matchDetailParticipantsColDivision: 'Дивізіон',
+    matchDetailParticipantsColClass: 'Клас',
+    organizersAdminHelmetTitle: 'Організатори матчів — адмін порталу',
+    organizersAdminTitle: 'Організатори матчів',
+    organizersAdminIntro:
+      'Лише для власника порталу. Статус «Активний» дозволяє створювати й змінювати матчі; «Новий» або «Заблокований» — без запису до модуля матчів.',
+    organizersNeedSignIn: 'Увійдіть у Supabase Auth, щоб відкрити цю сторінку.',
+    organizersForbidden: 'Немає прав власника порталу. Доступ налаштовується в таблиці portal_platform_admins.',
+    organizersLoading: 'Завантаження…',
+    organizersLoadError: 'Не вдалося завантажити список',
+    organizersColEmail: 'Email',
+    organizersColDisplayName: 'Ім’я в додатку',
+    organizersColMatches: 'Матчів',
+    organizersColStatus: 'Статус',
+    organizersStatusPending: 'Новий',
+    organizersStatusActive: 'Активний',
+    organizersStatusBlocked: 'Заблокований',
+    organizersSave: 'Зберегти',
+    organizersSaving: 'Збереження…',
+    organizersBackHome: 'На головну порталу',
   },
   hitFactor: {
     pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
@@ -1452,6 +1508,36 @@ export const enMessages: MessageTree = {
     matchDetailLocationLabel: 'Location',
     matchDetailDisciplineLabel: 'Discipline',
     matchDetailLimitLabel: 'Competitor limit',
+    matchDetailParticipantsHeading: 'Participants',
+    matchDetailParticipantsClosed:
+      'The registered participant list is not published for this match (organizer setting).',
+    matchDetailParticipantsOpenEmpty:
+      'The public list is empty (no confirmed registrations yet).',
+    matchDetailParticipantsFootnote:
+      'Only confirmed registrations are shown; name comes from the participant profile when set.',
+    matchDetailParticipantsColSquad: 'Squad',
+    matchDetailParticipantsColName: 'Name',
+    matchDetailParticipantsColDivision: 'Division',
+    matchDetailParticipantsColClass: 'Class',
+    organizersAdminHelmetTitle: 'Match organizers — platform admin',
+    organizersAdminTitle: 'Match organizers',
+    organizersAdminIntro:
+      'Platform owners only. “Active” can create and edit matches; “Pending” or “Blocked” denies match-module writes.',
+    organizersNeedSignIn: 'Sign in with Supabase Auth to open this page.',
+    organizersForbidden:
+      'No platform owner privileges. Managed in portal_platform_admins.',
+    organizersLoading: 'Loading…',
+    organizersLoadError: 'Could not load the list',
+    organizersColEmail: 'Email',
+    organizersColDisplayName: 'Display name',
+    organizersColMatches: 'Matches',
+    organizersColStatus: 'Status',
+    organizersStatusPending: 'Pending',
+    organizersStatusActive: 'Active',
+    organizersStatusBlocked: 'Blocked',
+    organizersSave: 'Save',
+    organizersSaving: 'Saving…',
+    organizersBackHome: 'Portal home',
   },
   hitFactor: {
     pageTitle: 'Hit Factor — price of mistakes',

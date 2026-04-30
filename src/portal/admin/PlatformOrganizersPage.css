@@ -1,0 +1,62 @@
+.portal-org-admin {
+  overflow-x: auto;
+}
+
+.portal-org-admin__intro {
+  margin: 0;
+  max-width: 48rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.portal-org-admin__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.portal-org-admin__table th,
+.portal-org-admin__table td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.portal-org-admin__table th {
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.portal-org-admin__table tr:last-child td {
+  border-bottom: none;
+}
+
+.portal-org-admin__select {
+  min-width: 9.5rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text);
+}
+
+.portal-org-admin__actions {
+  white-space: nowrap;
+}
+
+.portal-org-admin__save-btn {
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--text-h);
+  color: var(--btn-bg);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.portal-org-admin__save-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
