@@ -95,3 +95,24 @@
 .portal-account__apply-collapse:hover {
   text-decoration: none;
 }
+
+.portal-account__link-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 650;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.portal-account__link-btn:hover:not(:disabled) {
+  text-decoration: none;
+}
+
+.portal-account__link-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

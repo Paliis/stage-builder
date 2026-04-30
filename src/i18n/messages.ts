@@ -351,6 +351,11 @@ export type MessageTree = {
     openRoHelper: string
     /** ARIA label for the cards grid section. */
     gridAriaLabel: string
+    /** Home: published matches when match portal enabled. */
+    portalPublishedMatchesHeading: string
+    portalPublishedMatchesLead: string
+    portalPublishedMatchesEmpty: string
+    portalPublishedMatchesLoadError: string
     /** Status badge label — stable / generally available product. */
     badgeLive: string
     /** Status badge label — new / recently launched product. */
@@ -509,6 +514,25 @@ export type MessageTree = {
     accountOrganizerApplyContactPlaceholder: string
     accountOrganizerApplyPastMatchesLabel: string
     accountOrganizerApplyPastMatchesPlaceholder: string
+    accountMyRegistrationsHeading: string
+    accountMyRegistrationsEmpty: string
+    accountMyRegistrationsLoadError: string
+    accountMyRegistrationsColMatch: string
+    accountMyRegistrationsColDate: string
+    accountMyRegistrationsColStatus: string
+    accountMyRegistrationsColActions: string
+    accountMyRegistrationsStatusPending: string
+    accountMyRegistrationsStatusConfirmed: string
+    accountMyRegistrationsStatusCancelled: string
+    accountMyRegistrationsOpenMatch: string
+    accountMyRegistrationsCancel: string
+    accountMyRegistrationsCancelling: string
+    accountMyRegistrationsMatchUnavailable: string
+    accountParticipantDefaultsHeading: string
+    accountParticipantDefaultsLead: string
+    accountParticipantDefaultsSave: string
+    accountParticipantDefaultsSaving: string
+    accountParticipantDefaultsSaved: string
     /** Responsive shell header: mobile drawer + hamburger. */
     portalShellMenuOpenAria: string
     portalShellMenuCloseAria: string
@@ -1167,6 +1191,11 @@ export const ukMessages: MessageTree = {
     ],
     openRoHelper: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 RO Helper',
     gridAriaLabel: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u0456 \u0456\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438',
+    portalPublishedMatchesHeading: 'Матчі на порталі',
+    portalPublishedMatchesLead:
+      'Майбутні опубліковані змагання; реєстрація — на картці матчу після входу. Повний огляд ваших заявок — в обліковому записі.',
+    portalPublishedMatchesEmpty: 'Наразі немає запланованих опублікованих матчів з сьогоднішньої дати.',
+    portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
     badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
     badgeNew: '\u041d\u043e\u0432\u0435',
     badgeBeta: 'Beta',
@@ -1309,7 +1338,7 @@ export const ukMessages: MessageTree = {
     accountPageGoOrganizer: 'Мої матчі (організатор)',
     accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
     accountPageShooterSoon:
-      'Незабаром тут буде окреміший огляд: ваші активні реєстрації та історія — поки використовуйте прямі посилання на матчі й листування з організатором.',
+      'На головній порталі — огляд запланованих опублікованих матчів. Нижче — ваші заявки й типові поля форми для наступної реєстрації (їх також можна змінити на картці матчу).',
     accountOrganizerSectionHeading: 'Організатор матчів',
     accountOrganizerActiveLead: 'У вас є права створювати та вести матчі в цьому порталі.',
     accountOrganizerApplyTeaser:
@@ -1335,6 +1364,27 @@ export const ukMessages: MessageTree = {
     accountOrganizerApplyContactPlaceholder: 'Наприклад @username або +380…',
     accountOrganizerApplyPastMatchesLabel: 'Посилання на минулі матчі / коментар — опційно',
     accountOrganizerApplyPastMatchesPlaceholder: 'Посилання на PSC, постер, сайт або короткий опис досвіду',
+    accountMyRegistrationsHeading: 'Мої реєстрації на матчі',
+    accountMyRegistrationsEmpty:
+      'Немає заявок на матчі. Майбутні опубліковані події — на головній порталі; картку відкрити також можна за прямим посиланням від організатора.',
+    accountMyRegistrationsLoadError: 'Не вдалося завантажити реєстрації',
+    accountMyRegistrationsColMatch: 'Матч',
+    accountMyRegistrationsColDate: 'Початок',
+    accountMyRegistrationsColStatus: 'Заявка',
+    accountMyRegistrationsColActions: 'Дії',
+    accountMyRegistrationsStatusPending: 'очікує підтвердження',
+    accountMyRegistrationsStatusConfirmed: 'підтверджено',
+    accountMyRegistrationsStatusCancelled: 'скасовано',
+    accountMyRegistrationsOpenMatch: 'Картка',
+    accountMyRegistrationsCancel: 'Скасувати заявку',
+    accountMyRegistrationsCancelling: 'Скасування…',
+    accountMyRegistrationsMatchUnavailable: '(картка недоступна)',
+    accountParticipantDefaultsHeading: 'Типові дані для нової заявки',
+    accountParticipantDefaultsLead:
+      'Ці поля підставляються у форму реєстрації на картці матчу (можна змінити перед відправкою).',
+    accountParticipantDefaultsSave: 'Зберегти',
+    accountParticipantDefaultsSaving: 'Збереження…',
+    accountParticipantDefaultsSaved: 'Збережено.',
     portalShellMenuOpenAria: 'Відкрити меню навігації',
     portalShellMenuCloseAria: 'Закрити меню навігації',
     portalShellNavDrawerAria: 'Навігація й обліковий запис',
@@ -1995,6 +2045,11 @@ export const enMessages: MessageTree = {
     ],
     openRoHelper: 'Open RO Helper',
     gridAriaLabel: 'Available tools',
+    portalPublishedMatchesHeading: 'Matches on the portal',
+    portalPublishedMatchesLead:
+      'Upcoming published events; sign up from each match page while signed in. Your personal sign-up list lives on the account page.',
+    portalPublishedMatchesEmpty: 'No published matches scheduled from today onward yet.',
+    portalPublishedMatchesLoadError: 'Could not load the matches list',
     badgeLive: 'Live',
     badgeNew: 'New',
     badgeBeta: 'Beta',
@@ -2140,7 +2195,7 @@ export const enMessages: MessageTree = {
     accountPageGoOrganizer: 'My matches (organizer)',
     accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
     accountPageShooterSoon:
-      'Soon you will see registrations and history here — for now, use match links shared by organizers.',
+      'Scheduled published matches are listed on the portal home. Below: your match sign-ups and default fields for the next sign-up (you can override them on each match page).',
     accountOrganizerSectionHeading: 'Match organizer',
     accountOrganizerActiveLead: 'You can create and manage matches on this portal.',
     accountOrganizerApplyTeaser:
@@ -2166,6 +2221,27 @@ export const enMessages: MessageTree = {
     accountOrganizerApplyContactPlaceholder: 'e.g. @username or +1…',
     accountOrganizerApplyPastMatchesLabel: 'Past matches / links — optional',
     accountOrganizerApplyPastMatchesPlaceholder: 'Links to PSC, posters, clubs, or a short experience summary',
+    accountMyRegistrationsHeading: 'My match sign-ups',
+    accountMyRegistrationsEmpty:
+      'No match sign-ups yet. Upcoming published events are listed on the portal home; you can also open a match via a link from the organizer.',
+    accountMyRegistrationsLoadError: 'Could not load registrations',
+    accountMyRegistrationsColMatch: 'Match',
+    accountMyRegistrationsColDate: 'Starts',
+    accountMyRegistrationsColStatus: 'Status',
+    accountMyRegistrationsColActions: 'Actions',
+    accountMyRegistrationsStatusPending: 'awaiting confirmation',
+    accountMyRegistrationsStatusConfirmed: 'confirmed',
+    accountMyRegistrationsStatusCancelled: 'cancelled',
+    accountMyRegistrationsOpenMatch: 'Open',
+    accountMyRegistrationsCancel: 'Cancel sign-up',
+    accountMyRegistrationsCancelling: 'Cancelling…',
+    accountMyRegistrationsMatchUnavailable: '(match unavailable)',
+    accountParticipantDefaultsHeading: 'Default registration details',
+    accountParticipantDefaultsLead:
+      'Prefills the sign-up form on a match page (you can edit before submitting).',
+    accountParticipantDefaultsSave: 'Save',
+    accountParticipantDefaultsSaving: 'Saving…',
+    accountParticipantDefaultsSaved: 'Saved.',
     portalShellMenuOpenAria: 'Open navigation menu',
     portalShellMenuCloseAria: 'Close navigation menu',
     portalShellNavDrawerAria: 'Navigation and account',

@@ -246,3 +246,109 @@
   color: var(--accent);
   letter-spacing: 0.005em;
 }
+
+/* ------------------------------------------------ Published matches (portal home) */
+
+.portal-home__matches-published {
+  width: 100%;
+  padding: 1rem 0 0.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.portal-home__matches-published-title {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.05rem, 1.2vw + 0.9rem, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+}
+
+.portal-home__matches-published-lead {
+  margin: 0 0 0.95rem;
+  max-width: 44rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.portal-home__matches-published-empty {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.portal-home__matches-published-error {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.portal-home__matches-published-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  max-width: 48rem;
+}
+
+.portal-home__matches-published-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.55rem 0.72rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+}
+
+@media (min-width: 640px) {
+  .portal-home__matches-published-item {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+.portal-home__matches-published-item-meta {
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.portal-home__matches-published-item-body {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.portal-home__matches-published-link {
+  font-size: 0.975rem;
+  font-weight: 700;
+  color: var(--text-h);
+  text-decoration: none;
+}
+
+.portal-home__matches-published-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.portal-home__matches-published-link:focus-visible {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.portal-home__matches-published-cta {
+  flex: 0 0 auto;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+

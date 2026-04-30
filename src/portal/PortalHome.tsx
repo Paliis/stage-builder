@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
-import { isRoHelperEnabled } from './featureFlags'
+import { isMatchPortalEnabled, isRoHelperEnabled } from './featureFlags'
+import { PortalPublishedMatchesSection } from './PortalPublishedMatchesSection'
 import { roHelperPath } from '../ro-helper/paths'
 import './PortalHome.css'
 
@@ -125,6 +126,8 @@ export function PortalHome() {
         </h1>
         <p className="portal-home__hero-lead">{p.lead}</p>
       </section>
+
+      {isMatchPortalEnabled() ? <PortalPublishedMatchesSection /> : null}
 
       <section className="portal-home__grid" aria-label={p.gridAriaLabel}>
         <ProductCard

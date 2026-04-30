@@ -7,6 +7,7 @@ import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { isMatchPortalEnabled } from '../featureFlags'
+import { AccountParticipantHub } from './AccountParticipantHub'
 import '../PortalHome.css'
 import './PortalAccountPage.css'
 
@@ -122,6 +123,9 @@ export function PortalAccountPage() {
               </li>
               <li>{p.accountPageShooterSoon}</li>
             </ul>
+            {isMatchPortalEnabled() && user?.id ?
+              <AccountParticipantHub locale={locale} p={p} userId={user.id} />
+            : null}
           </section>
 
           {isMatchPortalEnabled() ?

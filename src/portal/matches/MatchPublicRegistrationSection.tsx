@@ -1,4 +1,4 @@
-import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import type { MessageTree } from '../../i18n/messages'
@@ -25,6 +25,7 @@ export type OwnRegistrationRow = {
   squad_id: string
   division: string
   classification_grade: string
+  power_factor?: string | null
 }
 
 type Props = {
@@ -67,6 +68,19 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
   const [mineBusy, setMineBusy] = useState(false)
   const [feedback, setFeedback] = useState<string | null>(null)
 
+  /** Dedupe prefilling participant defaults per (match,user) pair; cleared when `matchUuid` changes. */
+  const defaultsPrefetchKeyRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    defaultsPrefetchKeyRef.current = null
+    setMine(undefined)
+    setPickedSquad('')
+    setDivision('')
+    setClassification('')
+    setPowerFactor('')
+    setFeedback(null)
+  }, [matchUuid])
+
   const loadMetrics = useCallback(async () => {
     setMetrics(undefined)
     setMetricsError(null)
@@ -97,7 +111,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
     setMine(undefined)
     const { data, error } = await sb
       .from('match_registrations')
-      .select('id, status, squad_id, division, classification_grade')
+      .select('id, status, squad_id, division, classification_grade, power_factor')
       .eq('match_id', matchUuid)
       .eq('competitor_user_id', user.id)
       .maybeSingle()
@@ -113,12 +127,62 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
     if (row?.squad_id) setPickedSquad(row.squad_id)
     if (row?.division) setDivision(row.division)
     if (row?.classification_grade) setClassification(row.classification_grade)
+    if (row?.power_factor) {
+      const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
+      setPowerFactor(pf === 'MAJOR' ? 'MAJOR' : pf === 'MINOR' ? 'MINOR' : '')
+    }
   }, [configured, sb, matchUuid, user?.id, p.matchesLoadError])
 
   useEffect(() => {
     if (sessionLoading || !configured) return
     void loadMine()
   }, [configured, loadMine, sessionLoading])
+
+  useEffect(() => {
+    if (!configured || sessionLoading || !user?.id) return
+    if (mine === undefined) return
+    if (mine !== null) return
+
+    const pendingKey = `${matchUuid}:${user.id}`
+    if (defaultsPrefetchKeyRef.current === pendingKey) return
+    defaultsPrefetchKeyRef.current = pendingKey
+
+    void (async () => {
+      const { data, error } = await sb
+        .from('participant_registration_defaults')
+        .select('division, classification_grade, power_factor')
+        .eq('user_id', user.id)
+        .maybeSingle()
+
+      if (defaultsPrefetchKeyRef.current !== pendingKey) return
+      if (error || !data) return
+
+      const row = data as {
+        division?: string | null
+        classification_grade?: string | null
+        power_factor?: string | null
+      }
+
+      setDivision((d) => {
+        const t = d.trim()
+        if (t) return d
+        return typeof row.division === 'string' ? row.division : ''
+      })
+      setClassification((c) => {
+        const t = c.trim()
+        if (t) return c
+        return typeof row.classification_grade === 'string' ? row.classification_grade : ''
+      })
+      setPowerFactor((pf) => {
+        if (pf !== '') return pf
+        const raw =
+          typeof row.power_factor === 'string' ?
+            row.power_factor.trim().toUpperCase()
+          : ''
+        return raw === 'MAJOR' ? 'MAJOR' : raw === 'MINOR' ? 'MINOR' : ''
+      })
+    })()
+  }, [configured, sessionLoading, user?.id, mine, matchUuid, sb])
 
   const matchTotal =
     metrics && metrics.length > 0 ? num(metrics[0]!.match_total_registered) : undefined
