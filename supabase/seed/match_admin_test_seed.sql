@@ -3,6 +3,7 @@
 -- Prerequisites: extension pgcrypto; migrations through match squad sync /
 -- organizer roster RPC (`20260506140000_*`, `20260506141000_*`).
 -- If auth.users is empty, creates two users + identities; otherwise uses first/last user by created_at.
+-- Adds 8 extra auth users + confirmed registrations — **4 testers per main squad** (довга дошка скводів).
 -- Re-run safe: skips when title "Seed: Test shotgun match" already exists.
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
@@ -19,6 +20,10 @@ DECLARE
   seed_md_email constant text := 'stagebuilder.seed.md@local.test';
   seed_sh_email constant text := 'stagebuilder.seed.shooter@local.test';
   v_pw          text;
+  extra_uid     uuid;
+  extra_em      text;
+  extra_slot    int;
+  div_roll      constant text[] := ARRAY['Modified', 'Standard', 'Classic', 'Production'];
 BEGIN
   IF EXISTS (SELECT 1 FROM public.matches WHERE title = 'Seed: Test shotgun match') THEN
     RAISE NOTICE 'Seed skipped: match "Seed: Test shotgun match" already exists. DELETE that row to re-seed.';
@@ -153,6 +158,8 @@ BEGIN
     IF comp_id IS NULL THEN
       comp_id := org_id;
     END IF;
+
+    v_pw := crypt('SeedOnly_ChangeMe_9', gen_salt('bf'));
   END IF;
 
   INSERT INTO public.match_admin_profiles (user_id, display_name, organizer_status)
@@ -271,7 +278,190 @@ BEGIN
     AND competitor_user_id = comp_id
     AND status = 'pending';
 
-  RAISE NOTICE 'seed match_id = %, squads = %, %', mid, sid1, sid2;
+  -- По 4 підтверджені «тестових стрільця» у кожен main-сквод (окремі auth.users + профілі для ПІБ у ростері).
+  FOR extra_slot IN 1..4 LOOP
+    extra_uid := gen_random_uuid();
+    extra_em := format('stagebuilder.seed.extra.main1.u%s@local.test', extra_slot);
+
+    INSERT INTO auth.users (
+      id,
+      instance_id,
+      aud,
+      role,
+      email,
+      encrypted_password,
+      email_confirmed_at,
+      raw_app_meta_data,
+      raw_user_meta_data,
+      created_at,
+      updated_at,
+      is_sso_user,
+      is_anonymous
+    )
+    VALUES (
+      extra_uid,
+      inst_id,
+      'authenticated',
+      'authenticated',
+      extra_em,
+      v_pw,
+      now(),
+      '{"provider":"email","providers":["email"]}'::jsonb,
+      '{}'::jsonb,
+      now(),
+      now(),
+      false,
+      false
+    );
+
+    INSERT INTO auth.identities (
+      id,
+      user_id,
+      provider_id,
+      identity_data,
+      provider,
+      last_sign_in_at,
+      created_at,
+      updated_at
+    )
+    VALUES (
+      gen_random_uuid(),
+      extra_uid,
+      extra_uid::text,
+      jsonb_build_object('sub', extra_uid::text, 'email', extra_em),
+      'email',
+      now(),
+      now(),
+      now()
+    );
+
+    INSERT INTO public.match_admin_profiles (user_id, display_name, organizer_status)
+    VALUES (
+      extra_uid,
+      format('Іваненко Тарас (Скв. 1 №%s)', extra_slot),
+      'pending'
+    );
+
+    INSERT INTO public.match_registrations (
+      match_id,
+      squad_id,
+      competitor_user_id,
+      division,
+      classification_grade,
+      power_factor,
+      categories,
+      status,
+      payment_note,
+      confirmed_at,
+      confirmed_by
+    )
+    VALUES (
+      mid,
+      sid1,
+      extra_uid,
+      div_roll[extra_slot],
+      'U',
+      CASE WHEN extra_slot IN (2, 4) THEN 'MINOR' ELSE 'MAJOR' END,
+      '[]'::jsonb,
+      'confirmed',
+      'seed: тестові стрільці для дошки скводів',
+      now(),
+      org_id
+    );
+  END LOOP;
+
+  FOR extra_slot IN 1..4 LOOP
+    extra_uid := gen_random_uuid();
+    extra_em := format('stagebuilder.seed.extra.main2.u%s@local.test', extra_slot);
+
+    INSERT INTO auth.users (
+      id,
+      instance_id,
+      aud,
+      role,
+      email,
+      encrypted_password,
+      email_confirmed_at,
+      raw_app_meta_data,
+      raw_user_meta_data,
+      created_at,
+      updated_at,
+      is_sso_user,
+      is_anonymous
+    )
+    VALUES (
+      extra_uid,
+      inst_id,
+      'authenticated',
+      'authenticated',
+      extra_em,
+      v_pw,
+      now(),
+      '{"provider":"email","providers":["email"]}'::jsonb,
+      '{}'::jsonb,
+      now(),
+      now(),
+      false,
+      false
+    );
+
+    INSERT INTO auth.identities (
+      id,
+      user_id,
+      provider_id,
+      identity_data,
+      provider,
+      last_sign_in_at,
+      created_at,
+      updated_at
+    )
+    VALUES (
+      gen_random_uuid(),
+      extra_uid,
+      extra_uid::text,
+      jsonb_build_object('sub', extra_uid::text, 'email', extra_em),
+      'email',
+      now(),
+      now(),
+      now()
+    );
+
+    INSERT INTO public.match_admin_profiles (user_id, display_name, organizer_status)
+    VALUES (
+      extra_uid,
+      format('Коваль Марія (Скв. 2 №%s)', extra_slot),
+      'pending'
+    );
+
+    INSERT INTO public.match_registrations (
+      match_id,
+      squad_id,
+      competitor_user_id,
+      division,
+      classification_grade,
+      power_factor,
+      categories,
+      status,
+      payment_note,
+      confirmed_at,
+      confirmed_by
+    )
+    VALUES (
+      mid,
+      sid2,
+      extra_uid,
+      div_roll[extra_slot],
+      'B',
+      CASE WHEN extra_slot IN (2, 4) THEN 'MINOR' ELSE 'MAJOR' END,
+      '["Lady"]'::jsonb,
+      'confirmed',
+      'seed: тестові стрільці для дошки скводів',
+      now(),
+      org_id
+    );
+  END LOOP;
+
+  RAISE NOTICE 'seed match_id = %, squads = %, % (+ 4+4 extra board testers)', mid, sid1, sid2;
 END $$;
 
 -- Optional: link first published shared stage to this match (if any)
