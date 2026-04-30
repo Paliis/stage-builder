@@ -32,6 +32,19 @@ type PublicRosterRow = {
   classification_grade: string
 }
 
+type PublicStageLinkRow = {
+  sort_order: number
+  share_stage_id: string | null
+  snapshot_meta: Record<string, unknown> | null
+}
+
+function programmeRowTitle(r: PublicStageLinkRow): string {
+  const meta = r.snapshot_meta
+  const snap = typeof meta?.title_snapshot === 'string' ? meta.title_snapshot.trim() : ''
+  if (snap) return snap
+  return r.share_stage_id?.trim() || '—'
+}
+
 export function MatchPublicDetailPage() {
   const { matchId } = useParams<{ matchId: string }>()
   const { locale, tree } = useI18n()
@@ -42,6 +55,8 @@ export function MatchPublicDetailPage() {
   const [rosterError, setRosterError] = useState<string | null>(null)
   /** pending+confirmed total from public metrics — used when participant list is open but таблиця confirmed-only порожня. */
   const [openVisibilityActiveRegTotal, setOpenVisibilityActiveRegTotal] = useState<number | undefined>(undefined)
+  const [programmeLinks, setProgrammeLinks] = useState<PublicStageLinkRow[] | undefined>(undefined)
+  const [programmeError, setProgrammeError] = useState<string | null>(null)
 
   const validId = matchId && MATCH_ID_UUID_RE.test(matchId)
   const configured = isSupabaseConfigured()
@@ -127,6 +142,35 @@ export function MatchPublicDetailPage() {
       cancelledMetrics = true
     }
   }, [validId, configured, row?.id, row?.participant_list_visibility])
+
+  useEffect(() => {
+    if (!validId || !configured || !row?.id) {
+      setProgrammeLinks(undefined)
+      setProgrammeError(null)
+      return
+    }
+    let cancelled = false
+    const sb = getSupabase()
+    setProgrammeLinks(undefined)
+    setProgrammeError(null)
+    void (async () => {
+      const { data, error: qErr } = await sb
+        .from('match_stage_links')
+        .select('sort_order, share_stage_id, snapshot_meta')
+        .eq('match_id', row.id)
+        .order('sort_order', { ascending: true })
+      if (cancelled) return
+      if (qErr) {
+        setProgrammeError(qErr.message)
+        setProgrammeLinks([])
+        return
+      }
+      setProgrammeLinks((data ?? []) as PublicStageLinkRow[])
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [validId, configured, row?.id])
 
   if (!validId) {
     return (
@@ -249,6 +293,60 @@ export function MatchPublicDetailPage() {
           <ReactMarkdown>{row.description_md}</ReactMarkdown>
         </section>
       ) : null}
+
+      {programmeLinks === undefined || programmeLinks.length > 0 || programmeError ?
+        <section style={{ marginTop: '1.75rem', maxWidth: '48rem' }} aria-labelledby="match-programme-heading">
+          <h2
+            id="match-programme-heading"
+            className="portal-home__hero-title"
+            style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.65rem', letterSpacing: '-0.02em' }}
+          >
+            {p.matchDetailProgrammeHeading}
+          </h2>
+          {programmeLinks === undefined ?
+            <p style={{ margin: 0, fontSize: '0.95rem' }}>{p.matchesLoadingDetail}</p>
+          : programmeError ?
+            <p role="alert" style={{ margin: 0, fontSize: '0.95rem' }}>
+              {p.matchesLoadError}: {programmeError}
+            </p>
+          : (
+            <>
+              <ol style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                {programmeLinks.map((lnk, idx) => {
+                  const sid = lnk.share_stage_id?.trim()
+                  const title = programmeRowTitle(lnk)
+                  return (
+                    <li key={`${sid ?? ''}-${lnk.sort_order}-${idx}`}>
+                      {sid ?
+                        <a
+                          href={`/v/${encodeURIComponent(sid)}?lang=${locale}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${title} (${p.matchDetailProgrammeViewLink})`}
+                        >
+                          {title}
+                        </a>
+                      : (
+                        title
+                      )}
+                    </li>
+                  )
+                })}
+              </ol>
+              <p
+                style={{
+                  margin: '0.65rem 0 0',
+                  fontSize: '0.8125rem',
+                  lineHeight: 1.45,
+                  color: 'var(--text)',
+                }}
+              >
+                {p.matchDetailProgrammeFootnote}
+              </p>
+            </>
+          )}
+        </section>
+      : null}
 
       <MatchPublicRegistrationSection
         locale={locale}

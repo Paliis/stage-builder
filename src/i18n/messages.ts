@@ -373,6 +373,10 @@ export type MessageTree = {
     matchDetailPrematchLabel: string
     matchDetailPrematchValueYes: string
     matchDetailPrematchValueNo: string
+    /** Public match card: linked exercises (match_stage_links). */
+    matchDetailProgrammeHeading: string
+    matchDetailProgrammeViewLink: string
+    matchDetailProgrammeFootnote: string
     /** Public match card: roster block (participant_list_visibility). */
     matchDetailParticipantsHeading: string
     matchDetailParticipantsClosed: string
@@ -1120,6 +1124,10 @@ export const ukMessages: MessageTree = {
     matchDetailPrematchLabel: 'Прематч',
     matchDetailPrematchValueYes: 'так — окремі скводи за день(-і) до основного матчу',
     matchDetailPrematchValueNo: 'ні',
+    matchDetailProgrammeHeading: 'Програма (вправи)',
+    matchDetailProgrammeViewLink: 'Схема / брифінг',
+    matchDetailProgrammeFootnote:
+      'Посилання ведуть на режим перегляду вправи в Stage Builder (знімок на момент публікації організатором).',
     matchDetailParticipantsHeading: 'Учасники',
     matchDetailParticipantsClosed:
       'Список зареєстрованих учасників для цього матчу закритий (налаштування організатора). Організатор може опублікувати його в редакторі матчу («Мої матчі») — параметр видимості списку учасників.',
@@ -1876,6 +1884,10 @@ export const enMessages: MessageTree = {
     matchDetailPrematchLabel: 'Prematch',
     matchDetailPrematchValueYes: 'yes — separate squad capacity the day(s) before match day',
     matchDetailPrematchValueNo: 'no',
+    matchDetailProgrammeHeading: 'Programme',
+    matchDetailProgrammeViewLink: 'Course of fire',
+    matchDetailProgrammeFootnote:
+      'Links open Stage Builder view snapshots (as published by the organizer).',
     matchDetailParticipantsHeading: 'Participants',
     matchDetailParticipantsClosed:
       'The registered participant list is not published for this match (organizer setting). The organizer can turn on the participant list visibility in the match draft (My matches → edit match).',
