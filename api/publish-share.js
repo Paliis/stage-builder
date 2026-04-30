@@ -21513,6 +21513,14 @@ function serializeStageProject(file) {
 `;
 }
 
+// src/domain/sharePublishedTitle.ts
+function resolveSharePublishedTitle(stage, briefing) {
+  const doc = briefing.documentTitle.trim();
+  const sn = stage.name.trim();
+  const t = doc || sn || "Stage";
+  return t.slice(0, 500);
+}
+
 // src/seo/canonicalProductionOrigin.ts
 var CANONICAL_PRODUCTION_ORIGIN = "https://shooters-tools.com";
 
@@ -21701,7 +21709,7 @@ async function handler(req, res) {
   } catch {
     return res.status(500).json({ error: "Serialization failed" });
   }
-  const title = String(normalized.file.stage.name || "Stage").slice(0, 500);
+  const title = resolveSharePublishedTitle(normalized.file.stage, normalized.file.briefing);
   const expiresAt = new Date(Date.now() + 365 * 864e5).toISOString();
   const shareId = newShareId();
   const shareGroupId = normalized.shareGroupId ?? (0, import_node_crypto2.randomUUID)();

@@ -2,6 +2,9 @@ import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { Link } from 'react-router-dom'
 import { getSupabase } from '../../lib/supabaseClient'
 import type { MessageTree } from '../../i18n/messages'
+import { parseStageProjectJson } from '../../domain/stageProjectFile'
+import { resolveSharePublishedTitle } from '../../domain/sharePublishedTitle'
+import { payloadToProjectText } from '../../share/payloadToProjectText'
 import { extractShareViewId } from './extractShareViewId'
 
 type Portal = MessageTree['portal']
@@ -103,7 +106,20 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         return
       }
       const shareId = typeof row.id === 'string' ? row.id : id
-      const title = typeof row.title === 'string' ? row.title : ''
+      let linkedTitle = ''
+      try {
+        const text = payloadToProjectText(row.payload)
+        if (text) {
+          const parsed = parseStageProjectJson(text)
+          if (parsed.ok) {
+            linkedTitle = resolveSharePublishedTitle(parsed.data.stage, parsed.data.briefing)
+          }
+        }
+      } catch {
+        /* ignore malformed payload */
+      }
+      const titleFallback = typeof row.title === 'string' ? row.title : ''
+      const title = linkedTitle || titleFallback
       const groupIdRaw = row.share_group_id
       const shareGroupId = typeof groupIdRaw === 'string' ? groupIdRaw : null
 

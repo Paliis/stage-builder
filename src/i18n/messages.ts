@@ -1258,7 +1258,7 @@ export const ukMessages: MessageTree = {
     matchOrgShootersInvalid: 'Кількість стрільців у скводі має бути цілим числом ≥ 1.',
     matchOrgStagesHeading: 'Вправи програми',
     matchOrgStagesIntro:
-      'Створи сцену в Stage Builder і опубликуй посилання для перегляду («Поділитися» → посилання для стрільців). Далі встав URL або лише ідентифікатор із рядка /v/… — це прив’яже знімок до матчу.',
+      'Створи сцену в Stage Builder. Назва в програмі береться з поля заголовку брифінгу («Заголовок документа» — як для PDF); якщо його порожньо — з назви впра ви на плані. Знімок із share фіксує текст на момент публікації або «Оновити до останньої».',
     matchOrgStagesOpenEditor: 'Відкрити Stage Builder (нова вкладка)',
     matchOrgStagesPasteLabel: 'Посилання перегляду або id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… або s…',
@@ -2018,7 +2018,7 @@ export const enMessages: MessageTree = {
     matchOrgShootersInvalid: 'Shooters per squad must be an integer ≥ 1.',
     matchOrgStagesHeading: 'Programme exercises',
     matchOrgStagesIntro:
-      'Publish each stage from Stage Builder (Share → view link). Paste the `/v/…` URL or the short share id—the snapshot is tied to this match.',
+      'Build the stage in Stage Builder. Names in this list use the briefing «Document title» (same as PDF) first; if empty, the plan’s stage name. The share snapshot freezes that wording until you re-publish view or tap «Update to latest».',
     matchOrgStagesOpenEditor: 'Open Stage Builder (new tab)',
     matchOrgStagesPasteLabel: 'View URL or share id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… or s…',

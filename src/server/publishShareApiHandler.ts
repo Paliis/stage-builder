@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { randomUUID } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 import { serializeStageProject } from '../domain/stageProjectFile'
+import { resolveSharePublishedTitle } from '../domain/sharePublishedTitle'
 import { resolvePublicOriginFromEnv } from '../lib/resolvePublicOriginFromEnv'
 import {
   checkPublishRateLimit,
@@ -123,7 +124,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Serialization failed' })
   }
 
-  const title = String(normalized.file.stage.name || 'Stage').slice(0, 500)
+  const title = resolveSharePublishedTitle(normalized.file.stage, normalized.file.briefing)
   const expiresAt = new Date(Date.now() + 365 * 86400000).toISOString()
   const shareId = newShareId()
   const shareGroupId = normalized.shareGroupId ?? randomUUID()
