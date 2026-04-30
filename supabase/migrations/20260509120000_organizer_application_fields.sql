@@ -42,10 +42,12 @@ CREATE POLICY "match_admin_profiles_insert_own"
   );
 
 -- -----------------------------------------------------------------------------
--- Replace list RPC (add application + moderation columns)
--- -----------------------------------------------------------------------------
+-- Replace list RPC (add application + moderation columns — must DROP first: Postgres
+-- disallows CREATE OR REPLACE when OUT / RETURNS TABLE signature changes.)
 
-CREATE OR REPLACE FUNCTION public.platform_list_match_organizers()
+DROP FUNCTION IF EXISTS public.platform_list_match_organizers();
+
+CREATE FUNCTION public.platform_list_match_organizers()
 RETURNS TABLE (
   user_id UUID,
   email TEXT,
@@ -85,6 +87,8 @@ BEGIN
   LEFT JOIN public.match_admin_profiles mp ON mp.user_id = o.uid;
 END;
 $$;
+
+GRANT EXECUTE ON FUNCTION public.platform_list_match_organizers() TO authenticated;
 
 -- -----------------------------------------------------------------------------
 -- Set status (+ optional moderation note when blocked); drop overload (uuid, text)
