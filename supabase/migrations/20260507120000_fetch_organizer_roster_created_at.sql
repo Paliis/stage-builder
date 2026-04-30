@@ -1,5 +1,8 @@
 -- Organizer roster board: stable sort within squad via registration created_at.
 
+-- Postgres does not allow changing RETURNS TABLE columns via CREATE OR REPLACE; drop first if upgrading from 20260506141000 definition.
+DROP FUNCTION IF EXISTS public.fetch_organizer_match_registration_roster(UUID);
+
 CREATE OR REPLACE FUNCTION public.fetch_organizer_match_registration_roster(p_match_id UUID)
 RETURNS TABLE (
   registration_id UUID,
