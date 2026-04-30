@@ -180,7 +180,7 @@ export function MatchPublicDetailPage() {
         </Helmet>
         <p>{p.matchDetailNotFoundBody}</p>
         <p>
-          <Link to={`/${locale}`}>{p.matchDetailBackToList}</Link>
+          <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
         </p>
       </div>
     )
@@ -194,7 +194,7 @@ export function MatchPublicDetailPage() {
         </Helmet>
         <p>{p.matchesSupabaseUnset}</p>
         <p>
-          <Link to={`/${locale}`}>{p.matchDetailBackToList}</Link>
+          <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
         </p>
       </div>
     )
@@ -221,7 +221,7 @@ export function MatchPublicDetailPage() {
           {p.matchesLoadError}: {error}
         </p>
         <p>
-          <Link to={`/${locale}`}>{p.matchDetailBackToList}</Link>
+          <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
         </p>
       </div>
     )
@@ -235,7 +235,7 @@ export function MatchPublicDetailPage() {
         </Helmet>
         <p>{p.matchDetailNotFoundBody}</p>
         <p>
-          <Link to={`/${locale}`}>{p.matchDetailBackToList}</Link>
+          <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
         </p>
       </div>
     )
@@ -250,7 +250,7 @@ export function MatchPublicDetailPage() {
       </Helmet>
 
       <p style={{ margin: '0 0 0.5rem' }}>
-        <Link to={`/${locale}`}>{p.matchDetailBackToList}</Link>
+        <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
       </p>
 
       <header className="portal-home__hero">

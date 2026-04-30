@@ -34,6 +34,7 @@ import {
 } from './portal/legacyPortalRedirects'
 import {
   MatchPublicDetailPageLazy,
+  MatchPortalHomePageLazy,
   OrganizerMatchEditPageLazy,
   OrganizerMatchRegistrationsPageLazy,
   OrganizerMatchesListPageLazy,
@@ -146,6 +147,14 @@ createRoot(document.getElementById('root')!).render(
                       element={
                         <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
                           <OrganizerMatchesListPageLazy />
+                        </Suspense>
+                      }
+                    />
+                    <Route
+                      path="matches"
+                      element={
+                        <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                          <MatchPortalHomePageLazy />
                         </Suspense>
                       }
                     />

@@ -13,7 +13,7 @@ type PubMatch = {
   location_label?: string | null
 }
 
-/** Published matches teaser on portal home (`/:locale`) — not part of shooter account hub. */
+/** Published match catalog hub section — used at `/:locale/matches` (not the portal tool launcher). */
 export function PortalPublishedMatchesSection() {
   const { locale, tree } = useI18n()
   const p = tree.portal
@@ -54,9 +54,9 @@ export function PortalPublishedMatchesSection() {
 
   return (
     <section className="portal-home__matches-published" aria-labelledby="portal-published-matches">
-      <h2 id="portal-published-matches" className="portal-home__matches-published-title">
+      <h1 id="portal-published-matches" className="portal-home__matches-published-title">
         {p.portalPublishedMatchesHeading}
-      </h2>
+      </h1>
       <p className="portal-home__matches-published-lead">{p.portalPublishedMatchesLead}</p>
       {error ?
         <p role="alert" className="portal-home__matches-published-error">

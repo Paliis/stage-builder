@@ -133,11 +133,10 @@ export function PortalShell() {
                 </NavLink>
                 {isMatchPortalEnabled() ?
                   <NavLink
-                    end
-                    to={`/${locale}/matches/my`}
+                    to={`/${locale}/matches`}
                     className={({ isActive }) => (isActive ? 'is-active' : '')}
                   >
-                    {p.navMyMatches}
+                    {p.navMatches}
                   </NavLink>
                 : null}
                 {isRoHelperEnabled() ?

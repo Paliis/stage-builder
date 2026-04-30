@@ -4,6 +4,10 @@ export const MatchPublicDetailPageLazy = lazy(() =>
   import('./matches/MatchPublicDetailPage').then((m) => ({ default: m.MatchPublicDetailPage })),
 )
 
+export const MatchPortalHomePageLazy = lazy(() =>
+  import('./matches/MatchPortalHomePage').then((m) => ({ default: m.MatchPortalHomePage })),
+)
+
 export const OrganizerMatchesListPageLazy = lazy(() =>
   import('./matches/OrganizerMatchesListPage').then((m) => ({ default: m.OrganizerMatchesListPage })),
 )

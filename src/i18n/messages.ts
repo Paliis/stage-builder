@@ -351,11 +351,13 @@ export type MessageTree = {
     openRoHelper: string
     /** ARIA label for the cards grid section. */
     gridAriaLabel: string
-    /** Home: published matches when match portal enabled. */
+    /** Match hub (`/:locale/matches`): published list + lead copy. */
     portalPublishedMatchesHeading: string
     portalPublishedMatchesLead: string
     portalPublishedMatchesEmpty: string
     portalPublishedMatchesLoadError: string
+    /** Footer link from match hub → organizer list (`/matches/my`). */
+    matchesPortalOrganizerLink: string
     /** Status badge label — stable / generally available product. */
     badgeLive: string
     /** Status badge label — new / recently launched product. */
@@ -537,8 +539,8 @@ export type MessageTree = {
     portalShellMenuOpenAria: string
     portalShellMenuCloseAria: string
     portalShellNavDrawerAria: string
-    /** Organizer: `/matches/my` CRUD MVP. */
-    navMyMatches: string
+    /** Match portal hub in shell — `/:locale/matches`. */
+    navMatches: string
     myMatchesTitle: string
     myMatchesHelmet: string
     myMatchesCreate: string
@@ -1196,6 +1198,7 @@ export const ukMessages: MessageTree = {
       'Майбутні опубліковані змагання; реєстрація — на картці матчу після входу. Повний огляд ваших заявок — в обліковому записі.',
     portalPublishedMatchesEmpty: 'Наразі немає запланованих опублікованих матчів з сьогоднішньої дати.',
     portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
+    matchesPortalOrganizerLink: 'Кабінет організатора — мої матчі (управління чернетками й заявками)',
     badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
     badgeNew: '\u041d\u043e\u0432\u0435',
     badgeBeta: 'Beta',
@@ -1205,7 +1208,7 @@ export const ukMessages: MessageTree = {
       'Клієнт Supabase не налаштовано (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY). Дані матчу в браузері недоступні.',
     matchesLoadError: 'Не вдалося завантажити дані',
     matchesLoadingDetail: 'Завантаження матчу…',
-    matchDetailBackToList: 'На головну порталу',
+    matchDetailBackToList: 'До списку матчів',
     matchDetailNotFoundTitle: 'Матч не знайдено — Shooters Tools',
     matchDetailNotFoundBody:
       'Матч із таким ідентифікатором немає серед опублікованих або посилання некоректне.',
@@ -1338,7 +1341,7 @@ export const ukMessages: MessageTree = {
     accountPageGoOrganizer: 'Мої матчі (організатор)',
     accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
     accountPageShooterSoon:
-      'На головній порталі — огляд запланованих опублікованих матчів. Нижче — ваші заявки й типові поля форми для наступної реєстрації (їх також можна змінити на картці матчу).',
+      'На сторінці «Матчі» — огляд запланованих опублікованих подій. Нижче — ваші заявки й типові поля форми для наступної реєстрації (їх також можна змінити на картці матчу).',
     accountOrganizerSectionHeading: 'Організатор матчів',
     accountOrganizerActiveLead: 'У вас є права створювати та вести матчі в цьому порталі.',
     accountOrganizerApplyTeaser:
@@ -1366,7 +1369,7 @@ export const ukMessages: MessageTree = {
     accountOrganizerApplyPastMatchesPlaceholder: 'Посилання на PSC, постер, сайт або короткий опис досвіду',
     accountMyRegistrationsHeading: 'Мої реєстрації на матчі',
     accountMyRegistrationsEmpty:
-      'Немає заявок на матчі. Майбутні опубліковані події — на головній порталі; картку відкрити також можна за прямим посиланням від організатора.',
+      'Немає заявок на матчі. Майбутні опубліковані події — у розділі «Матчі»; картку також можна відкрити за прямим посиланням від організатора.',
     accountMyRegistrationsLoadError: 'Не вдалося завантажити реєстрації',
     accountMyRegistrationsColMatch: 'Матч',
     accountMyRegistrationsColDate: 'Початок',
@@ -1388,7 +1391,7 @@ export const ukMessages: MessageTree = {
     portalShellMenuOpenAria: 'Відкрити меню навігації',
     portalShellMenuCloseAria: 'Закрити меню навігації',
     portalShellNavDrawerAria: 'Навігація й обліковий запис',
-    navMyMatches: 'Мої матчі',
+    navMatches: 'Матчі',
     myMatchesTitle: 'Мої матчі',
     myMatchesHelmet: 'Мої матчі — Shooters Tools',
     myMatchesCreate: 'Створити матч',
@@ -2050,6 +2053,7 @@ export const enMessages: MessageTree = {
       'Upcoming published events; sign up from each match page while signed in. Your personal sign-up list lives on the account page.',
     portalPublishedMatchesEmpty: 'No published matches scheduled from today onward yet.',
     portalPublishedMatchesLoadError: 'Could not load the matches list',
+    matchesPortalOrganizerLink: 'Organizer dashboard — my matches (drafts and registrations)',
     badgeLive: 'Live',
     badgeNew: 'New',
     badgeBeta: 'Beta',
@@ -2059,7 +2063,7 @@ export const enMessages: MessageTree = {
       'Supabase client is not configured (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY). Match data is unavailable in the browser.',
     matchesLoadError: 'Could not load data',
     matchesLoadingDetail: 'Loading match…',
-    matchDetailBackToList: 'Portal home',
+    matchDetailBackToList: 'Back to matches',
     matchDetailNotFoundTitle: 'Match not found — Shooters Tools',
     matchDetailNotFoundBody:
       'There is no published match with this id, or the link is invalid.',
@@ -2195,7 +2199,7 @@ export const enMessages: MessageTree = {
     accountPageGoOrganizer: 'My matches (organizer)',
     accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
     accountPageShooterSoon:
-      'Scheduled published matches are listed on the portal home. Below: your match sign-ups and default fields for the next sign-up (you can override them on each match page).',
+      'Use the «Matches» page for the public schedule. Below: your sign-ups and default fields for the next sign-up (you can override them on each match page).',
     accountOrganizerSectionHeading: 'Match organizer',
     accountOrganizerActiveLead: 'You can create and manage matches on this portal.',
     accountOrganizerApplyTeaser:
@@ -2223,7 +2227,7 @@ export const enMessages: MessageTree = {
     accountOrganizerApplyPastMatchesPlaceholder: 'Links to PSC, posters, clubs, or a short experience summary',
     accountMyRegistrationsHeading: 'My match sign-ups',
     accountMyRegistrationsEmpty:
-      'No match sign-ups yet. Upcoming published events are listed on the portal home; you can also open a match via a link from the organizer.',
+      'No match sign-ups yet. Upcoming published events are on the «Matches» page; you can also open a match via a link from the organizer.',
     accountMyRegistrationsLoadError: 'Could not load registrations',
     accountMyRegistrationsColMatch: 'Match',
     accountMyRegistrationsColDate: 'Starts',
@@ -2245,7 +2249,7 @@ export const enMessages: MessageTree = {
     portalShellMenuOpenAria: 'Open navigation menu',
     portalShellMenuCloseAria: 'Close navigation menu',
     portalShellNavDrawerAria: 'Navigation and account',
-    navMyMatches: 'My matches',
+    navMatches: 'Matches',
     myMatchesTitle: 'My matches',
     myMatchesHelmet: 'My matches — Shooters Tools',
     myMatchesCreate: 'Create match',
