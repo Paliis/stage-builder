@@ -461,6 +461,11 @@ BEGIN
     );
   END LOOP;
 
+  -- Публічна картка матчу показує таблицю учасників лише коли видимість = open (див. fetch_public_match_roster).
+  UPDATE public.matches
+  SET participant_list_visibility = 'open', updated_at = now()
+  WHERE id = mid;
+
   RAISE NOTICE 'seed match_id = %, squads = %, % (+ 4+4 extra board testers)', mid, sid1, sid2;
 END $$;
 

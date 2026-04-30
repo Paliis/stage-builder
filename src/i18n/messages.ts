@@ -1085,7 +1085,7 @@ export const ukMessages: MessageTree = {
     matchDetailPrematchValueNo: 'ні',
     matchDetailParticipantsHeading: 'Учасники',
     matchDetailParticipantsClosed:
-      'Список зареєстрованих учасників для цього матчу закритий (налаштування організатора).',
+      'Список зареєстрованих учасників для цього матчу закритий (налаштування організатора). Організатор може опублікувати його в редакторі матчу («Мої матчі») — параметр видимості списку учасників.',
     matchDetailParticipantsOpenEmpty:
       'Публічний список поки порожній (підтверджених заявок ще немає).',
     matchDetailParticipantsFootnote:
@@ -1801,7 +1801,7 @@ export const enMessages: MessageTree = {
     matchDetailPrematchValueNo: 'no',
     matchDetailParticipantsHeading: 'Participants',
     matchDetailParticipantsClosed:
-      'The registered participant list is not published for this match (organizer setting).',
+      'The registered participant list is not published for this match (organizer setting). The organizer can turn on the participant list visibility in the match draft (My matches → edit match).',
     matchDetailParticipantsOpenEmpty:
       'The public list is empty (no confirmed registrations yet).',
     matchDetailParticipantsFootnote:

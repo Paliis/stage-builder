@@ -97,6 +97,8 @@
 
 Якщо матч уже існує після старішого запуску seed **без** цих 8 заявок, виконай під **postgres**: **`supabase/seed/match_admin_seed_add_extra_board_shooters.sql`** (повтор безпечний — не дублює email/заявки).
 
+Публічна сторінка матчу показує таблицю **Учасники** лише якщо в картці матчу **`participant_list_visibility = open`** і заявки **confirmed** (`fetch_public_match_roster`). Після локального редагу матчу в UI перевір видимість, якщо список зник.
+
 **Перевірка:** Table Editor → **`match_registrations`** — мають з’явитися рядки. Кнопка **Insert** вручну під RLS часто не підходить без сесії того ж користувача — seed через SQL обходить RLS.
 
 **Видалення seed:** у кінці файлу закоментовано `DELETE FROM matches WHERE title = 'Seed: Test shotgun match'` (каскад прибере скводи й заявки).
