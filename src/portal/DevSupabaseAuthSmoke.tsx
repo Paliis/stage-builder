@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient'
+import { useI18n } from '../i18n/useI18n'
 import { useSupabaseSession } from './useSupabaseSession'
 
 /** Dev-only: показ уривка JSON сесії Supabase у localStorage */
@@ -18,7 +19,9 @@ function readAuthStoragePeek(): string {
 
 /** Лише dev: перевірка A1 (persist, PKCE, storageKey). Маршрут не реєструється в production-білдах. */
 export function DevSupabaseAuthSmoke() {
+  const { locale } = useI18n()
   const { loading, session, user } = useSupabaseSession()
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)
@@ -59,6 +62,39 @@ export function DevSupabaseAuthSmoke() {
     }
   }
 
+  async function handleSignUp(e: FormEvent) {
+    e.preventDefault()
+    setMessage(null)
+    setBusy(true)
+    try {
+      const sb = getSupabase()
+      const redirectTo =
+        typeof window !== 'undefined' ?
+          `${window.location.origin}/${locale}/dev/supabase-auth-smoke`
+        : undefined
+      const { data, error } = await sb.auth.signUp({
+        email: email.trim(),
+        password,
+        options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
+      })
+      if (error) {
+        setMessage(`${error.message} (${error.name})`)
+        return
+      }
+      if (data.session) {
+        setMessage('Зареєстровано й одразу в сесії (confirm email вимкнено або автопідтвердження).')
+        return
+      }
+      setMessage(
+        'Обліківку створено. Якщо в Dashboard увімкнено підтвердження email — відкрий лист і перейди по посиланню, потім увійди формою «Вхід».',
+      )
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : String(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
   return (
     <article className="portal-home" style={{ maxWidth: '40rem', margin: '0 auto', padding: '1.5rem' }}>
       <Helmet title="DEV: Supabase auth smoke test" />
@@ -68,16 +104,14 @@ export function DevSupabaseAuthSmoke() {
       </h1>
 
       <p style={{ opacity: 0.9, fontSize: '0.92rem', lineHeight: 1.5 }}>
-        Ця сторінка є лише при <strong>vite dev</strong> і має простий Email/Password sign-in через{' '}
-        <code style={{ wordBreak: 'break-all' }}>signInWithPassword</code>, щоб переконатися, що сесія зберігається і
-        хук <code>useSupabaseSession</code> оновлюється.
+        Лише <strong>vite dev</strong>: вхід <code>signInWithPassword</code> і реєстрація <code>signUp</code> (email +
+        пароль) для перевірки сесії, <code>useSupabaseSession</code> і <code>localStorage</code>.
       </p>
 
       <ol style={{ margin: '1rem 0', paddingLeft: '1.25rem', fontSize: '0.9rem', lineHeight: 1.55 }}>
         <li>
-          У Dashboard: <strong>Auth → Providers → Email</strong> увімкнено; створи користувача (
-          <strong>Authentication → Users → Add user</strong>) із паролем або зайди знаючи email/пароль тестового
-          запису.
+          У Dashboard: <strong>Auth → Providers → Email</strong> увімкнено. Тест або через{' '}
+          <strong>реєстрацію нижче</strong>, або <strong>Users → Add user</strong>.
         </li>
         <li>
           <strong>Auth → URL Configuration</strong>: Site URL = твій dev origin (напр.{' '}
@@ -89,7 +123,7 @@ export function DevSupabaseAuthSmoke() {
           <code>npm run dev</code>.
         </li>
         <li>
-          Увійти формою нижче → DevTools → <strong>Application → Local Storage</strong> → має з’явитися ключ{' '}
+          Після входу або після реєстрації з сесією відкрий DevTools → <strong>Application → Local Storage</strong> → ключ{' '}
           <code style={{ wordBreak: 'break-all' }}>sb-stage-builder-auth</code>.
         </li>
         <li>
@@ -139,7 +173,40 @@ export function DevSupabaseAuthSmoke() {
         </pre>
       </section>
 
-      <form onSubmit={handleSignIn} style={{ marginTop: '1.25rem', display: 'grid', gap: '0.6rem', maxWidth: '22rem' }}>
+      <div
+        role="group"
+        aria-label="Режим авторизації"
+        style={{ marginTop: '1.25rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}
+      >
+        <button
+          type="button"
+          aria-pressed={authMode === 'signin'}
+          onClick={() => {
+            setAuthMode('signin')
+            setMessage(null)
+          }}
+          disabled={busy || !configured}
+        >
+          Вхід
+        </button>
+        <button
+          type="button"
+          aria-pressed={authMode === 'signup'}
+          onClick={() => {
+            setAuthMode('signup')
+            setMessage(null)
+          }}
+          disabled={busy || !configured}
+        >
+          Реєстрація
+        </button>
+      </div>
+
+      <form
+        key={authMode}
+        onSubmit={authMode === 'signin' ? handleSignIn : handleSignUp}
+        style={{ marginTop: '0.75rem', display: 'grid', gap: '0.6rem', maxWidth: '22rem' }}
+      >
         <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.9rem' }}>
           Email
           <input
@@ -152,18 +219,19 @@ export function DevSupabaseAuthSmoke() {
           />
         </label>
         <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.9rem' }}>
-          Password
+          Password (мін. довжина залежить від налаштувань проєкту, зазвичай ≥ 6)
           <input
             type="password"
-            autoComplete="current-password"
+            autoComplete={authMode === 'signup' ? 'new-password' : 'current-password'}
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
             required
+            minLength={6}
             disabled={busy || !configured}
           />
         </label>
         <button type="submit" disabled={busy || !configured}>
-          {busy ? '…' : 'Увійти'}
+          {busy ? '…' : authMode === 'signin' ? 'Увійти' : 'Зареєструватися'}
         </button>
       </form>
 
