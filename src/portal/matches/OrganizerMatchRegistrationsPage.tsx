@@ -48,6 +48,26 @@ function registrationStatusLabel(p: Portal, status: string) {
   return status
 }
 
+/** Occupancy on `squadId` given pending picks; the row being edited resolves to `editingEffectiveSquad` (dropdown value). */
+function countOnSquadForLabel(
+  rosterList: RosterRpcRow[],
+  pending: Record<string, string>,
+  squadId: string,
+  editingRegId: string,
+  editingEffectiveSquad: string,
+): number {
+  let n = 0
+  for (const row of rosterList) {
+    if (!countsActiveStatuses(row.status)) continue
+    const sid =
+      row.registration_id === editingRegId ?
+        editingEffectiveSquad
+      : (pending[row.registration_id] ?? row.squad_id)
+    if (sid === squadId) n++
+  }
+  return n
+}
+
 function countOnSquad(
   rosterList: RosterRpcRow[],
   pending: Record<string, string>,
@@ -333,7 +353,13 @@ export function OrganizerMatchRegistrationsPage() {
                           }}
                         >
                           {options.map((opt) => {
-                            const taken = countOnSquad(rosterList, pendingSquad, opt.id, reg.registration_id, opt.id)
+                            const taken = countOnSquadForLabel(
+                              rosterList,
+                              pendingSquad,
+                              opt.id,
+                              reg.registration_id,
+                              currentPick,
+                            )
                             return (
                               <option key={opt.id} value={opt.id}>
                                 {opt.label} ({squadPhaseLabel(p, opt.squad_phase)}) — {taken}/{opt.capacity}
