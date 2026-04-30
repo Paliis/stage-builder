@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getSupabase } from '../../lib/supabaseClient'
 import { formatTemplate } from '../../i18n/format'
+import { getSupabase } from '../../lib/supabaseClient'
 import type { MessageTree } from '../../i18n/messages'
 import { sortSquadsPrematchFirst } from './matchSquadsSort'
 
@@ -40,6 +40,7 @@ export function OrganizerMatchSquadsPanel({
   const [rows, setRows] = useState<SquadRow[] | undefined>(undefined)
   const [takenMap, setTakenMap] = useState<Record<string, number>>({})
   const [loadError, setLoadError] = useState<string | null>(null)
+  const [regBreakdown, setRegBreakdown] = useState<{ pending: number; confirmed: number } | undefined>(undefined)
 
   const plannedCapacity =
     plannedMainSquads * shootersPerMainSquad +
@@ -47,6 +48,7 @@ export function OrganizerMatchSquadsPanel({
 
   const reload = useCallback(async () => {
     setLoadError(null)
+    setRegBreakdown(undefined)
     const { data: squads, error: sErr } = await sb
       .from('match_squads')
       .select('id, label, sort_order, capacity, squad_phase')
@@ -56,6 +58,7 @@ export function OrganizerMatchSquadsPanel({
     if (sErr) {
       setLoadError(sErr.message.includes('column') ? `${sErr.message} (${p.matchDetailApplyMigrationHint})` : sErr.message)
       setRows([])
+      setRegBreakdown(undefined)
       return
     }
 
@@ -69,15 +72,21 @@ export function OrganizerMatchSquadsPanel({
 
     if (rErr || !regs) {
       setTakenMap({})
+      setRegBreakdown({ pending: 0, confirmed: 0 })
       return
     }
 
+    let pendingN = 0
+    let confirmedN = 0
     const map: Record<string, number> = {}
     for (const r of regs as { squad_id: string; status: string }[]) {
+      if (r.status === 'pending') pendingN++
+      else if (r.status === 'confirmed') confirmedN++
       if (r.status !== 'pending' && r.status !== 'confirmed') continue
       map[r.squad_id] = (map[r.squad_id] ?? 0) + 1
     }
     setTakenMap(map)
+    setRegBreakdown({ pending: pendingN, confirmed: confirmedN })
   }, [matchId, sb, p.matchDetailApplyMigrationHint])
 
   useEffect(() => {
@@ -117,6 +126,17 @@ export function OrganizerMatchSquadsPanel({
       <p style={{ margin: '0 0 1rem' }}>
         <Link to={`/${locale}/matches/my/${matchId}/roster`}>{p.matchOrgRosterManageLink}</Link>
       </p>
+
+      {rows !== undefined && regBreakdown !== undefined ?
+        regBreakdown.pending > 0 || regBreakdown.confirmed > 0 ?
+          <p style={{ margin: '0 0 1rem', fontSize: '0.88rem', lineHeight: 1.55, opacity: 0.95 }}>
+            {formatTemplate(p.matchOrgRegistrationsSummary, {
+              pending: regBreakdown.pending,
+              confirmed: regBreakdown.confirmed,
+            })}
+          </p>
+        : <p style={{ margin: '0 0 1rem', fontSize: '0.88rem', opacity: 0.9 }}>{p.matchOrgRegistrationsNoneYet}</p>
+      : null}
 
       <ul style={{ margin: '0 0 1rem', paddingLeft: '1.25rem', fontSize: '0.86rem', lineHeight: 1.55, opacity: 0.94 }}>
         <li>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
+import { formatTemplate } from '../../i18n/format'
 import { useI18n } from '../../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from './matchPortalFormat'
@@ -39,6 +40,8 @@ export function MatchPublicDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [roster, setRoster] = useState<PublicRosterRow[] | null | undefined>(undefined)
   const [rosterError, setRosterError] = useState<string | null>(null)
+  /** pending+confirmed total from public metrics — used when participant list is open but таблиця confirmed-only порожня. */
+  const [openVisibilityActiveRegTotal, setOpenVisibilityActiveRegTotal] = useState<number | undefined>(undefined)
 
   const validId = matchId && MATCH_ID_UUID_RE.test(matchId)
   const configured = isSupabaseConfigured()
@@ -51,6 +54,7 @@ export function MatchPublicDetailPage() {
       setRow(undefined)
       setRoster(undefined)
       setRosterError(null)
+      setOpenVisibilityActiveRegTotal(undefined)
       const { data, error: qErr } = await sb
         .from('matches')
         .select(
@@ -77,14 +81,34 @@ export function MatchPublicDetailPage() {
     if (!validId || !configured || !row?.id) {
       setRoster(undefined)
       setRosterError(null)
+      setOpenVisibilityActiveRegTotal(undefined)
       return
     }
     const vis = row.participant_list_visibility ?? 'closed'
     if (vis !== 'open') {
       setRoster(null)
       setRosterError(null)
+      setOpenVisibilityActiveRegTotal(undefined)
       return
     }
+    let cancelledMetrics = false
+    const sbM = getSupabase()
+    setOpenVisibilityActiveRegTotal(undefined)
+    void sbM.rpc('fetch_public_match_registration_metrics', { p_match_id: row.id }).then(({ data: mdata, error: mErr }) => {
+      if (cancelledMetrics) return
+      if (mErr || !mdata?.length) {
+        setOpenVisibilityActiveRegTotal(undefined)
+        return
+      }
+      const raw = (mdata[0] as { match_total_registered?: number | string }).match_total_registered
+      const n =
+        typeof raw === 'number' ?
+          raw
+        : typeof raw === 'string' ?
+          Number(raw)
+        : NaN
+      setOpenVisibilityActiveRegTotal(Number.isFinite(n) ? n : undefined)
+    })
     let cancelled = false
     const sb = getSupabase()
     setRoster(undefined)
@@ -100,6 +124,7 @@ export function MatchPublicDetailPage() {
     })
     return () => {
       cancelled = true
+      cancelledMetrics = true
     }
   }, [validId, configured, row?.id, row?.participant_list_visibility])
 
@@ -250,9 +275,16 @@ export function MatchPublicDetailPage() {
           <p role="alert" style={{ margin: 0, fontSize: '0.95rem' }}>
             {p.matchesLoadError}: {rosterError}
           </p>
-        ) : (roster ?? []).length === 0 ? (
-          <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55 }}>{p.matchDetailParticipantsOpenEmpty}</p>
-        ) : (
+        ) : (roster ?? []).length === 0 ?
+          openVisibilityActiveRegTotal !== undefined && openVisibilityActiveRegTotal > 0 ?
+            <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55 }}>
+              {formatTemplate(p.matchDetailParticipantsOpenAwaitingConfirmation, {
+                count: openVisibilityActiveRegTotal,
+              })}
+            </p>
+          : <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55 }}>{p.matchDetailParticipantsOpenEmpty}</p>
+
+        : (
           <>
             <div style={{ overflowX: 'auto' }}>
               <table

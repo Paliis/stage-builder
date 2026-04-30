@@ -373,6 +373,7 @@ export type MessageTree = {
     matchDetailParticipantsHeading: string
     matchDetailParticipantsClosed: string
     matchDetailParticipantsOpenEmpty: string
+    matchDetailParticipantsOpenAwaitingConfirmation: string
     matchDetailParticipantsFootnote: string
     matchDetailParticipantsColSquad: string
     matchDetailParticipantsColPhase: string
@@ -484,6 +485,9 @@ export type MessageTree = {
     matchOrgFieldParticipantList: string
     matchOrgParticipantsListOpen: string
     matchOrgParticipantsListClosed: string
+    matchOrgParticipantListFootnote: string
+    matchOrgRegistrationsSummary: string
+    matchOrgRegistrationsNoneYet: string
     matchOrgDisciplineShotgunNote: string
     matchOrgFieldPrematch: string
     matchOrgFieldPlannedMainSquads: string
@@ -521,6 +525,8 @@ export type MessageTree = {
     matchOrgRosterColSquad: string
     matchOrgRosterApply: string
     matchOrgRosterSaving: string
+    matchOrgRosterConfirm: string
+    matchOrgRosterColActions: string
     matchOrgRosterNoFreeSlot: string
     matchOrgRosterViewTable: string
     matchOrgRosterViewBoard: string
@@ -1088,6 +1094,8 @@ export const ukMessages: MessageTree = {
       'Список зареєстрованих учасників для цього матчу закритий (налаштування організатора). Організатор може опублікувати його в редакторі матчу («Мої матчі») — параметр видимості списку учасників.',
     matchDetailParticipantsOpenEmpty:
       'Публічний список поки порожній (підтверджених заявок ще немає).',
+    matchDetailParticipantsOpenAwaitingConfirmation:
+      'У скводах уже є {{count}} активних записів (разом очікуючі та підтверджені), але нижній список поки порожній, бо ми показуємо лише підтверджених учасників. Підтвердь потрібні заявки в «Мої матчі» → «Заявки» — і вони з’являться в цьому блоці.',
     matchDetailParticipantsFootnote:
       'Показано лише підтверджені заявки; ім’я — з профілю учасника в порталі, якщо вказано.',
     matchDetailParticipantsColSquad: 'Сквод',
@@ -1202,6 +1210,11 @@ export const ukMessages: MessageTree = {
     matchOrgFieldParticipantList: 'Список учасників на картці',
     matchOrgParticipantsListOpen: 'Відкритий (лише підтверджені)',
     matchOrgParticipantsListClosed: 'Закритий',
+    matchOrgParticipantListFootnote:
+      'На публічній картці в блоці «Учасники» відображаються лише ті заявки, які мають статус «підтверджено». «Очікує підтвердження» залишається тільки в твоєму списку заявок організатора.',
+    matchOrgRegistrationsSummary:
+      'Заявки цього матчу (організатор): {{confirmed}} підтверджено · {{pending}} очікує підтвердження. Публічна таблиця учасників показує лише підтверджених.',
+    matchOrgRegistrationsNoneYet: 'Заявок на цей матч поки немає.',
     matchOrgDisciplineShotgunNote: 'Дисципліна MVP: shotgun (налаштовується лише на рівні коду БД).',
     matchOrgFieldPrematch: 'Прематч (стрільба суддів та організаційних стрільців напередодні)',
     matchOrgFieldPlannedMainSquads: 'Запланована кількість скводів — основний день',
@@ -1245,6 +1258,8 @@ export const ukMessages: MessageTree = {
     matchOrgRosterColSquad: 'Сквод',
     matchOrgRosterApply: 'Застосувати',
     matchOrgRosterSaving: 'Збереження…',
+    matchOrgRosterConfirm: 'Підтвердити участь',
+    matchOrgRosterColActions: 'Дії',
     matchOrgRosterNoFreeSlot: 'Немає доступного скводу з місцем або зміни потребують збереження картки.',
     matchOrgRosterViewTable: 'Таблиця',
     matchOrgRosterViewBoard: 'Дошка скводів',
@@ -1804,6 +1819,8 @@ export const enMessages: MessageTree = {
       'The registered participant list is not published for this match (organizer setting). The organizer can turn on the participant list visibility in the match draft (My matches → edit match).',
     matchDetailParticipantsOpenEmpty:
       'The public list is empty (no confirmed registrations yet).',
+    matchDetailParticipantsOpenAwaitingConfirmation:
+      'There are already {{count}} active sign-ups in squads (pending + confirmed counted together), but this table is empty because it lists only shooters the organizer has confirmed. Confirm entries under My matches → Registrations.',
     matchDetailParticipantsFootnote:
       'Only confirmed registrations are shown; name comes from the participant profile when set.',
     matchDetailParticipantsColSquad: 'Squad',
@@ -1921,6 +1938,11 @@ export const enMessages: MessageTree = {
     matchOrgFieldParticipantList: 'Participant list on public card',
     matchOrgParticipantsListOpen: 'Open (confirmed only)',
     matchOrgParticipantsListClosed: 'Closed',
+    matchOrgParticipantListFootnote:
+      'On the public match card, the «Participants» table lists only confirmed entries. Pending sign-ups stay visible in your organizer roster until you confirm them.',
+    matchOrgRegistrationsSummary:
+      'Registrations on this match: {{confirmed}} confirmed · {{pending}} awaiting confirmation (the public Participants table lists confirmed only).',
+    matchOrgRegistrationsNoneYet: 'No registrations for this match yet.',
     matchOrgDisciplineShotgunNote:
       'MVP discipline is shotgun only (stored in DB; not selectable in UI yet).',
     matchOrgFieldPrematch: 'Prematch (RO/staff shooters the day before match day)',
@@ -1964,6 +1986,8 @@ export const enMessages: MessageTree = {
     matchOrgRosterColSquad: 'Squad',
     matchOrgRosterApply: 'Apply',
     matchOrgRosterSaving: 'Saving…',
+    matchOrgRosterConfirm: 'Confirm entry',
+    matchOrgRosterColActions: 'Actions',
     matchOrgRosterNoFreeSlot:
       'No squad with spare capacity—or save the match card first after changing squad settings.',
     matchOrgRosterViewTable: 'Table',

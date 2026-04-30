@@ -219,6 +219,35 @@ export function OrganizerMatchRegistrationsPage() {
     await reload()
   }
 
+  async function confirmReg(registrationId: string) {
+    setSaveError(null)
+    if (!configured || !user?.id || !matchId) return
+    const sb = getSupabase()
+    setSaveRegId(registrationId)
+    const { error } = await sb
+      .from('match_registrations')
+      .update({
+        status: 'confirmed',
+        confirmed_at: new Date().toISOString(),
+        confirmed_by: user.id,
+        payment_note: 'Organizer confirmed (portal roster)',
+      })
+      .eq('id', registrationId)
+      .eq('match_id', matchId)
+      .eq('status', 'pending')
+    setSaveRegId(null)
+    if (error) {
+      setSaveError(error.message)
+      return
+    }
+    setPendingSquad((prev) => {
+      const n = { ...prev }
+      delete n[registrationId]
+      return n
+    })
+    await reload()
+  }
+
   const inactiveBlock = useMemo(() => ({ padding: '0.35rem 0.45rem', opacity: 0.85 }), [])
 
   if (!configured) {
@@ -343,23 +372,24 @@ export function OrganizerMatchRegistrationsPage() {
           {rosterView === 'board' ?
             squads.length > 0 ?
               <OrganizerMatchRosterBoard
-              locale={locale}
-              p={p}
-              squads={squads}
-              rosterActive={rosterActiveBoard}
-              inactiveRegistrations={rosterInactiveBoard}
-              savingRegId={saveRegId}
-              squadPhaseLabel={(phase) => squadPhaseLabel(p, phase)}
-              registrationStatusLabel={(status) => registrationStatusLabel(p, status)}
-              displayShooterName={(reg) => displayName(reg)}
-              activeCountForSquad={(squadId) => countActiveAssignments(rosterList, pendingSquad, squadId)}
-              countAfterHypotheticalMove={(movingRegId, targetSquadId, countedSquadId) =>
-                countOnSquad(rosterList, pendingSquad, countedSquadId, movingRegId, targetSquadId)
-              }
-              onMoveRegistration={async (registrationId, targetSquadId) =>
-                saveReg(registrationId, targetSquadId)
-              }
-            />
+                locale={locale}
+                p={p}
+                squads={squads}
+                rosterActive={rosterActiveBoard}
+                inactiveRegistrations={rosterInactiveBoard}
+                savingRegId={saveRegId}
+                squadPhaseLabel={(phase) => squadPhaseLabel(p, phase)}
+                registrationStatusLabel={(status) => registrationStatusLabel(p, status)}
+                displayShooterName={(reg) => displayName(reg)}
+                activeCountForSquad={(squadId) => countActiveAssignments(rosterList, pendingSquad, squadId)}
+                countAfterHypotheticalMove={(movingRegId, targetSquadId, countedSquadId) =>
+                  countOnSquad(rosterList, pendingSquad, countedSquadId, movingRegId, targetSquadId)
+                }
+                onConfirmPending={(registrationId) => confirmReg(registrationId)}
+                onMoveRegistration={async (registrationId, targetSquadId) =>
+                  saveReg(registrationId, targetSquadId)
+                }
+              />
           : <p style={{ marginTop: '1rem' }}>{p.matchOrgSquadsAutoEmpty}</p>
           : null}
 
@@ -392,7 +422,12 @@ export function OrganizerMatchRegistrationsPage() {
                 >
                   {p.matchOrgRosterColSquad}
                 </th>
-                <th scope="col" style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }} aria-hidden />
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                >
+                  {p.matchOrgRosterColActions}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -467,24 +502,54 @@ export function OrganizerMatchRegistrationsPage() {
                         </select>
                       )}
                     </td>
-                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                      <button
-                        type="button"
-                        disabled={inactive || !dirty || saveRegId === reg.registration_id || options.length === 0}
-                        onClick={() => void saveReg(reg.registration_id, currentPick)}
-                        style={{
-                          padding: '0.35rem 0.65rem',
-                          borderRadius: '6px',
-                          border: '1px solid var(--border)',
-                          background: 'var(--text-h)',
-                          color: 'var(--btn-bg)',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {saveRegId === reg.registration_id ?
-                          p.matchOrgRosterSaving
-                        : p.matchOrgRosterApply}
-                      </button>
+                    <td
+                      style={{
+                        padding: '0.45rem 0.55rem',
+                        borderBottom: '1px solid var(--border)',
+                        verticalAlign: 'top',
+                      }}
+                    >
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', alignItems: 'flex-start' }}>
+                        {reg.status === 'pending' ?
+                          <button
+                            type="button"
+                            disabled={saveRegId === reg.registration_id}
+                            onClick={() => void confirmReg(reg.registration_id)}
+                            style={{
+                              padding: '0.35rem 0.65rem',
+                              borderRadius: '6px',
+                              border: '1px solid var(--border)',
+                              background: 'var(--btn-bg)',
+                              color: 'var(--text)',
+                              cursor: saveRegId === reg.registration_id ? 'wait' : 'pointer',
+                              fontSize: '0.86rem',
+                            }}
+                          >
+                            {saveRegId === reg.registration_id ?
+                              p.matchOrgRosterSaving
+                            : p.matchOrgRosterConfirm}
+                          </button>
+                        : null}
+                        <button
+                          type="button"
+                          disabled={
+                            inactive || !dirty || saveRegId === reg.registration_id || options.length === 0
+                          }
+                          onClick={() => void saveReg(reg.registration_id, currentPick)}
+                          style={{
+                            padding: '0.35rem 0.65rem',
+                            borderRadius: '6px',
+                            border: '1px solid var(--border)',
+                            background: 'var(--text-h)',
+                            color: 'var(--btn-bg)',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {saveRegId === reg.registration_id ?
+                            p.matchOrgRosterSaving
+                          : p.matchOrgRosterApply}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 )

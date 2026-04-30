@@ -34,6 +34,8 @@ export type OrganizerMatchRosterBoardProps = {
   rosterActive: OrganizerRosterReg[]
   inactiveRegistrations: OrganizerRosterReg[]
   savingRegId: string | null
+  /** Optional: confirm pending registration (organizer). */
+  onConfirmPending?: (registrationId: string) => Promise<void>
   onMoveRegistration: (registrationId: string, targetSquadId: string) => Promise<void>
   squadPhaseLabel: (phase: string) => string
   registrationStatusLabel: (status: string) => string
@@ -53,6 +55,7 @@ export function OrganizerMatchRosterBoard({
   rosterActive,
   inactiveRegistrations,
   savingRegId,
+  onConfirmPending,
   onMoveRegistration,
   squadPhaseLabel,
   registrationStatusLabel,
@@ -239,6 +242,28 @@ export function OrganizerMatchRosterBoard({
                     <div style={{ opacity: 0.82, marginTop: '0.2rem', fontSize: '0.76rem' }}>
                       {registrationStatusLabel(reg.status)}
                     </div>
+                    {reg.status === 'pending' && onConfirmPending ?
+                      <button
+                        type="button"
+                        draggable={false}
+                        disabled={savingRegId === reg.registration_id}
+                        onClick={() => void onConfirmPending(reg.registration_id)}
+                        style={{
+                          marginTop: '0.45rem',
+                          padding: '0.28rem 0.52rem',
+                          fontSize: '0.74rem',
+                          borderRadius: '6px',
+                          border: '1px solid var(--border)',
+                          background: 'var(--btn-bg)',
+                          color: 'var(--text)',
+                          cursor: savingRegId === reg.registration_id ? 'wait' : 'pointer',
+                        }}
+                      >
+                        {savingRegId === reg.registration_id ?
+                          p.matchOrgRosterSaving
+                        : p.matchOrgRosterConfirm}
+                      </button>
+                    : null}
                   </article>
                 ))}
 

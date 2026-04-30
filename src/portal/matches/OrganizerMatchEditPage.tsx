@@ -585,6 +585,10 @@ export function OrganizerMatchEditPage() {
         </label>
 
         <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.9 }}>
+          {p.matchOrgParticipantListFootnote}
+        </p>
+
+        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.9 }}>
           {p.matchOrgDisciplineShotgunNote}
         </p>
 
