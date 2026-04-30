@@ -1,0 +1,435 @@
+import { type FormEvent, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useI18n } from '../../i18n/useI18n'
+import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
+import { useSupabaseSession } from '../useSupabaseSession'
+import { MATCH_ID_UUID_RE } from './matchPortalUuid'
+import '../PortalHome.css'
+
+type MatchDraft = {
+  title: string
+  description_md: string
+  starts_at_local: string
+  location_label: string
+  competitor_limit: number
+  status: string
+  participant_list_visibility: 'open' | 'closed'
+}
+
+function defaultStartsLocal(): string {
+  const d = new Date(Date.now() + 7 * 86400000)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+
+function isoFromDatetimeLocal(local: string): string {
+  const t = Date.parse(local)
+  if (!Number.isFinite(t)) return new Date().toISOString()
+  return new Date(t).toISOString()
+}
+
+function localFromIso(iso: string): string {
+  const d = new Date(iso)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+
+export function OrganizerMatchEditPage() {
+  const { locale, tree } = useI18n()
+  const p = tree.portal
+  const configured = isSupabaseConfigured()
+  const { loading: sessionLoading, user } = useSupabaseSession()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const params = useParams<{ matchId: string }>()
+  const isNew = /\/matches\/my\/new\/?$/.test(location.pathname)
+  const matchId = params.matchId
+  const validEditId = Boolean(matchId && MATCH_ID_UUID_RE.test(matchId))
+
+  const [loadState, setLoadState] = useState<'idle' | 'loading' | 'loaded' | 'error'>(
+    isNew ? 'loaded' : 'loading',
+  )
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const [draft, setDraft] = useState<MatchDraft>(() => ({
+    title: '',
+    description_md: '',
+    starts_at_local: defaultStartsLocal(),
+    location_label: '',
+    competitor_limit: 32,
+    status: 'draft',
+    participant_list_visibility: 'closed',
+  }))
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    if (isNew) {
+      setLoadState('loaded')
+      setLoadError(null)
+      setSaveError(null)
+      setDraft({
+        title: '',
+        description_md: '',
+        starts_at_local: defaultStartsLocal(),
+        location_label: '',
+        competitor_limit: 32,
+        status: 'draft',
+        participant_list_visibility: 'closed',
+      })
+      return
+    }
+
+    if (!configured || sessionLoading || !user?.id) return
+    if (!validEditId) {
+      setLoadState('error')
+      setLoadError(p.matchOrgEditBadId)
+      return
+    }
+    let cancelled = false
+    const sb = getSupabase()
+    setLoadState('loading')
+    setLoadError(null)
+    void sb
+      .from('matches')
+      .select(
+        'id, title, description_md, starts_at, location_label, competitor_limit, status, participant_list_visibility, organizer_id',
+      )
+      .eq('id', matchId!)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (cancelled) return
+        if (error) {
+          setLoadError(error.message)
+          setLoadState('error')
+          return
+        }
+        if (!data || data.organizer_id !== user.id) {
+          setLoadError(p.matchOrgEditNotFound)
+          setLoadState('error')
+          return
+        }
+        const vis =
+          data.participant_list_visibility === 'open' ? 'open' : 'closed'
+        setDraft({
+          title: data.title ?? '',
+          description_md: data.description_md ?? '',
+          starts_at_local: localFromIso(data.starts_at),
+          location_label: data.location_label ?? '',
+          competitor_limit: Number(data.competitor_limit) || 32,
+          status: data.status ?? 'draft',
+          participant_list_visibility: vis,
+        })
+        setLoadState('loaded')
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [
+    location.pathname,
+    configured,
+    sessionLoading,
+    isNew,
+    validEditId,
+    matchId,
+    user?.id,
+    p.matchOrgEditBadId,
+    p.matchOrgEditNotFound,
+  ])
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    setSaveError(null)
+    if (!configured || !user?.id || saving) return
+    const title = draft.title.trim()
+    if (!title) {
+      setSaveError(p.matchOrgTitleRequired)
+      return
+    }
+    const limit = Number(draft.competitor_limit)
+    if (!Number.isFinite(limit) || limit < 1) {
+      setSaveError(p.matchOrgLimitInvalid)
+      return
+    }
+
+    const row = {
+      organizer_id: user.id,
+      title,
+      description_md: draft.description_md.trim() ? draft.description_md : null,
+      starts_at: isoFromDatetimeLocal(draft.starts_at_local),
+      location_label: draft.location_label.trim() ? draft.location_label.trim() : null,
+      competitor_limit: limit,
+      discipline: 'shotgun' as const,
+      status: draft.status,
+      participant_list_visibility: draft.participant_list_visibility,
+      ps_match_subtype: 'ipsc',
+    }
+
+    setSaving(true)
+    const sb = getSupabase()
+    if (isNew) {
+      const { data, error } = await sb.from('matches').insert(row).select('id').single()
+      setSaving(false)
+      if (error) {
+        setSaveError(error.message)
+        return
+      }
+      if (data?.id) navigate(`/${locale}/matches/my/${data.id}`, { replace: true })
+      return
+    }
+
+    if (!matchId || !validEditId) {
+      setSaving(false)
+      return
+    }
+    const { organizer_id, ...updatePayload } = row
+    void organizer_id
+    const { error } = await sb.from('matches').update(updatePayload).eq('id', matchId).eq('organizer_id', user.id)
+    setSaving(false)
+    if (error) {
+      setSaveError(error.message)
+      return
+    }
+  }
+
+  if (!configured) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.myMatchesHelmet}</title>
+        </Helmet>
+        <p>{p.matchesSupabaseUnset}</p>
+        <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+      </div>
+    )
+  }
+
+  if (sessionLoading) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.myMatchesHelmet}</title>
+        </Helmet>
+        <p>{p.myMatchesLoading}</p>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.myMatchesHelmet}</title>
+        </Helmet>
+        <p>{p.myMatchesNeedSignIn}</p>
+        <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+      </div>
+    )
+  }
+
+  if (!isNew && loadState !== 'loaded') {
+    return (
+      <div className="portal-home">
+        <Helmet>
+          <title>{p.matchOrgEditHelmetLoading}</title>
+        </Helmet>
+        {loadState === 'loading' ? <p>{p.myMatchesLoading}</p> : <p role="alert">{loadError ?? p.matchesLoadError}</p>}
+        <p>
+          <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+        </p>
+      </div>
+    )
+  }
+
+  const pageTitle = isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle
+  const helmet = isNew ? p.matchOrgCreateHelmet : p.matchOrgEditHelmetEdit
+
+  return (
+    <div className="portal-home">
+      <Helmet>
+        <title>{helmet}</title>
+      </Helmet>
+
+      <p style={{ margin: '0 0 1rem' }}>
+        <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+      </p>
+
+      <header className="portal-home__hero">
+        <h1 className="portal-home__hero-title">{pageTitle}</h1>
+      </header>
+
+      <form
+        onSubmit={(e) => void handleSubmit(e)}
+        style={{ maxWidth: '32rem', display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.95rem' }}
+      >
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldTitle}</span>
+          <input
+            type="text"
+            required
+            value={draft.title}
+            onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
+            autoComplete="off"
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+            }}
+          />
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldStarts}</span>
+          <input
+            type="datetime-local"
+            required
+            value={draft.starts_at_local}
+            onChange={(e) => setDraft((d) => ({ ...d, starts_at_local: e.target.value }))}
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+            }}
+          />
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldLocation}</span>
+          <input
+            type="text"
+            value={draft.location_label}
+            onChange={(e) => setDraft((d) => ({ ...d, location_label: e.target.value }))}
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+            }}
+          />
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldLimit}</span>
+          <input
+            type="number"
+            min={1}
+            required
+            value={draft.competitor_limit}
+            onChange={(e) =>
+              setDraft((d) => ({ ...d, competitor_limit: Number(e.target.value) || 1 }))
+            }
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+              maxWidth: '8rem',
+            }}
+          />
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldDescription}</span>
+          <textarea
+            rows={6}
+            value={draft.description_md}
+            onChange={(e) => setDraft((d) => ({ ...d, description_md: e.target.value }))}
+            style={{
+              padding: '0.45rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+              fontFamily: 'inherit',
+              resize: 'vertical',
+            }}
+          />
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldStatus}</span>
+          <select
+            value={draft.status}
+            onChange={(e) => setDraft((d) => ({ ...d, status: e.target.value }))}
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+              maxWidth: '14rem',
+            }}
+          >
+            <option value="draft">{p.matchOrgStatusDraft}</option>
+            <option value="published">{p.matchOrgStatusPublished}</option>
+            <option value="cancelled">{p.matchOrgStatusCancelled}</option>
+            <option value="completed">{p.matchOrgStatusCompleted}</option>
+          </select>
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldParticipantList}</span>
+          <select
+            value={draft.participant_list_visibility}
+            onChange={(e) =>
+              setDraft((d) => ({
+                ...d,
+                participant_list_visibility: e.target.value === 'open' ? 'open' : 'closed',
+              }))
+            }
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+              maxWidth: '14rem',
+            }}
+          >
+            <option value="closed">{p.matchOrgParticipantsListClosed}</option>
+            <option value="open">{p.matchOrgParticipantsListOpen}</option>
+          </select>
+        </label>
+
+        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.9 }}>
+          {p.matchOrgDisciplineShotgunNote}
+        </p>
+
+        {saveError ? (
+          <p role="alert" style={{ margin: 0 }}>
+            {saveError}
+          </p>
+        ) : null}
+
+        <button
+          type="submit"
+          disabled={saving}
+          style={{
+            alignSelf: 'flex-start',
+            padding: '0.5rem 1rem',
+            borderRadius: '0.5rem',
+            border: '1px solid var(--border)',
+            background: 'var(--text-h)',
+            color: 'var(--btn-bg)',
+            cursor: saving ? 'not-allowed' : 'pointer',
+            opacity: saving ? 0.7 : 1,
+          }}
+        >
+          {saving ? p.matchOrgSaveSaving : p.matchOrgSave}
+        </button>
+
+        {!isNew && draft.status === 'published' ? (
+          <p style={{ margin: 0 }}>
+            <Link to={`/${locale}/matches/${matchId}`}>{p.myMatchesViewPublic}</Link>
+          </p>
+        ) : null}
+      </form>
+    </div>
+  )
+}

@@ -5,7 +5,7 @@ import { swapLocaleInPortalPath } from '../i18n/portalLocalePath'
 import { getPublicSiteOrigin } from '../seo/publicOriginClient'
 import type { Locale } from '../i18n/messages'
 import { SiteFooter } from './SiteFooter'
-import { isRoHelperEnabled } from './featureFlags'
+import { isMatchPortalEnabled, isRoHelperEnabled } from './featureFlags'
 import { roHelperPath } from '../ro-helper/paths'
 import './PortalShell.css'
 
@@ -50,6 +50,15 @@ export function PortalShell() {
             >
               {p.navHitFactor}
             </NavLink>
+            {isMatchPortalEnabled() ? (
+              <NavLink
+                end
+                to={`/${locale}/matches/my`}
+                className={({ isActive }) => (isActive ? 'is-active' : '')}
+              >
+                {p.navMyMatches}
+              </NavLink>
+            ) : null}
             {isRoHelperEnabled() ? (
               <NavLink
                 to={roHelperPath(locale)}

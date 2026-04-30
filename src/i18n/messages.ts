@@ -393,6 +393,51 @@ export type MessageTree = {
     organizersSave: string
     organizersSaving: string
     organizersBackHome: string
+    /** Organizer: `/matches/my` CRUD MVP. */
+    navMyMatches: string
+    myMatchesTitle: string
+    myMatchesHelmet: string
+    myMatchesCreate: string
+    myMatchesColTitle: string
+    myMatchesColStarts: string
+    myMatchesColStatus: string
+    myMatchesColList: string
+    myMatchesEdit: string
+    myMatchesViewPublic: string
+    myMatchesNeedSignIn: string
+    myMatchesDevSignInHint: string
+    myMatchesLoading: string
+    myMatchesLoadError: string
+    myMatchesEmpty: string
+    myMatchesBackHome: string
+    matchOrgStatusDraft: string
+    matchOrgStatusPublished: string
+    matchOrgStatusCancelled: string
+    matchOrgStatusCompleted: string
+    matchOrgParticipantsOpenShort: string
+    matchOrgParticipantsClosedShort: string
+    matchOrgCreateTitle: string
+    matchOrgEditTitle: string
+    matchOrgCreateHelmet: string
+    matchOrgEditHelmetEdit: string
+    matchOrgEditHelmetLoading: string
+    matchOrgSave: string
+    matchOrgSaveSaving: string
+    matchOrgBackList: string
+    matchOrgFieldTitle: string
+    matchOrgFieldStarts: string
+    matchOrgFieldLocation: string
+    matchOrgFieldLimit: string
+    matchOrgFieldDescription: string
+    matchOrgFieldStatus: string
+    matchOrgFieldParticipantList: string
+    matchOrgParticipantsListOpen: string
+    matchOrgParticipantsListClosed: string
+    matchOrgDisciplineShotgunNote: string
+    matchOrgEditBadId: string
+    matchOrgEditNotFound: string
+    matchOrgTitleRequired: string
+    matchOrgLimitInvalid: string
   }
   hitFactor: {
     pageTitle: string
@@ -970,6 +1015,50 @@ export const ukMessages: MessageTree = {
     organizersSave: 'Зберегти',
     organizersSaving: 'Збереження…',
     organizersBackHome: 'На головну порталу',
+    navMyMatches: 'Мої матчі',
+    myMatchesTitle: 'Мої матчі',
+    myMatchesHelmet: 'Мої матчі — Shooters Tools',
+    myMatchesCreate: 'Створити матч',
+    myMatchesColTitle: 'Назва',
+    myMatchesColStarts: 'Початок',
+    myMatchesColStatus: 'Статус',
+    myMatchesColList: 'Список учасників',
+    myMatchesEdit: 'Редагувати',
+    myMatchesViewPublic: 'Картка',
+    myMatchesNeedSignIn: 'Увійди, щоб керувати своїми матчами.',
+    myMatchesDevSignInHint: 'Тест входу (dev)',
+    myMatchesLoading: 'Завантаження…',
+    myMatchesLoadError: 'Помилка',
+    myMatchesEmpty: 'Ще немає матчів. Створи перший.',
+    myMatchesBackHome: 'На головну порталу',
+    matchOrgStatusDraft: 'Чернетка',
+    matchOrgStatusPublished: 'Опубліковано',
+    matchOrgStatusCancelled: 'Скасовано',
+    matchOrgStatusCompleted: 'Завершено',
+    matchOrgParticipantsOpenShort: 'Відкритий',
+    matchOrgParticipantsClosedShort: 'Закритий',
+    matchOrgCreateTitle: 'Новий матч',
+    matchOrgEditTitle: 'Редагування матчу',
+    matchOrgCreateHelmet: 'Новий матч — Shooters Tools',
+    matchOrgEditHelmetEdit: 'Редагування матчу — Shooters Tools',
+    matchOrgEditHelmetLoading: 'Матч — завантаження',
+    matchOrgSave: 'Зберегти',
+    matchOrgSaveSaving: 'Збереження…',
+    matchOrgBackList: 'До списку матчів',
+    matchOrgFieldTitle: 'Назва',
+    matchOrgFieldStarts: 'Початок (локальний час браузера)',
+    matchOrgFieldLocation: 'Локація (текст)',
+    matchOrgFieldLimit: 'Ліміт учасників',
+    matchOrgFieldDescription: 'Опис (Markdown)',
+    matchOrgFieldStatus: 'Статус матчу',
+    matchOrgFieldParticipantList: 'Список учасників на картці',
+    matchOrgParticipantsListOpen: 'Відкритий (лише підтверджені)',
+    matchOrgParticipantsListClosed: 'Закритий',
+    matchOrgDisciplineShotgunNote: 'Дисципліна MVP: shotgun (налаштовується лише на рівні коду БД).',
+    matchOrgEditBadId: 'Некоректне посилання для редагування.',
+    matchOrgEditNotFound: 'Матч не знайдено або він не належить до твого облікового запису.',
+    matchOrgTitleRequired: 'Заповни назву.',
+    matchOrgLimitInvalid: 'Ліміт учасників має бути числом ≥ 1.',
   },
   hitFactor: {
     pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
@@ -1538,6 +1627,51 @@ export const enMessages: MessageTree = {
     organizersSave: 'Save',
     organizersSaving: 'Saving…',
     organizersBackHome: 'Portal home',
+    navMyMatches: 'My matches',
+    myMatchesTitle: 'My matches',
+    myMatchesHelmet: 'My matches — Shooters Tools',
+    myMatchesCreate: 'Create match',
+    myMatchesColTitle: 'Title',
+    myMatchesColStarts: 'Starts',
+    myMatchesColStatus: 'Status',
+    myMatchesColList: 'Participant list',
+    myMatchesEdit: 'Edit',
+    myMatchesViewPublic: 'Public page',
+    myMatchesNeedSignIn: 'Sign in to manage your matches.',
+    myMatchesDevSignInHint: 'Auth smoke (dev)',
+    myMatchesLoading: 'Loading…',
+    myMatchesLoadError: 'Error',
+    myMatchesEmpty: 'No matches yet. Create one.',
+    myMatchesBackHome: 'Portal home',
+    matchOrgStatusDraft: 'Draft',
+    matchOrgStatusPublished: 'Published',
+    matchOrgStatusCancelled: 'Cancelled',
+    matchOrgStatusCompleted: 'Completed',
+    matchOrgParticipantsOpenShort: 'Open',
+    matchOrgParticipantsClosedShort: 'Closed',
+    matchOrgCreateTitle: 'New match',
+    matchOrgEditTitle: 'Edit match',
+    matchOrgCreateHelmet: 'New match — Shooters Tools',
+    matchOrgEditHelmetEdit: 'Edit match — Shooters Tools',
+    matchOrgEditHelmetLoading: 'Match — loading',
+    matchOrgSave: 'Save',
+    matchOrgSaveSaving: 'Saving…',
+    matchOrgBackList: 'Back to my matches',
+    matchOrgFieldTitle: 'Title',
+    matchOrgFieldStarts: 'Start (browser local time)',
+    matchOrgFieldLocation: 'Location (text)',
+    matchOrgFieldLimit: 'Competitor limit',
+    matchOrgFieldDescription: 'Description (Markdown)',
+    matchOrgFieldStatus: 'Match status',
+    matchOrgFieldParticipantList: 'Participant list on public card',
+    matchOrgParticipantsListOpen: 'Open (confirmed only)',
+    matchOrgParticipantsListClosed: 'Closed',
+    matchOrgDisciplineShotgunNote:
+      'MVP discipline is shotgun only (stored in DB; not selectable in UI yet).',
+    matchOrgEditBadId: 'Invalid edit link.',
+    matchOrgEditNotFound: 'Match not found or not owned by you.',
+    matchOrgTitleRequired: 'Please enter a title.',
+    matchOrgLimitInvalid: 'Competitor limit must be at least 1.',
   },
   hitFactor: {
     pageTitle: 'Hit Factor — price of mistakes',

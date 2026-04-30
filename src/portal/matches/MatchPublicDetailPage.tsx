@@ -5,10 +5,8 @@ import ReactMarkdown from 'react-markdown'
 import { useI18n } from '../../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from './matchPortalFormat'
+import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import '../PortalHome.css'
-
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 type MatchDetailRow = {
   id: string
@@ -39,7 +37,7 @@ export function MatchPublicDetailPage() {
   const [roster, setRoster] = useState<PublicRosterRow[] | null | undefined>(undefined)
   const [rosterError, setRosterError] = useState<string | null>(null)
 
-  const validId = matchId && UUID_RE.test(matchId)
+  const validId = matchId && MATCH_ID_UUID_RE.test(matchId)
   const configured = isSupabaseConfigured()
 
   useEffect(() => {

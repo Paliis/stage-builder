@@ -34,6 +34,8 @@ import {
 } from './portal/legacyPortalRedirects'
 import {
   MatchPublicDetailPageLazy,
+  OrganizerMatchEditPageLazy,
+  OrganizerMatchesListPageLazy,
   PlatformOrganizersPageLazy,
 } from './portal/matchPortalLazyRoutes'
 import { getInitialLocale } from './i18n/storage'
@@ -105,6 +107,30 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="hit-factor" element={<HitFactorRoute />} />
                 {isMatchPortalEnabled() ? (
                   <>
+                    <Route
+                      path="matches/my/new"
+                      element={
+                        <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                          <OrganizerMatchEditPageLazy />
+                        </Suspense>
+                      }
+                    />
+                    <Route
+                      path="matches/my/:matchId"
+                      element={
+                        <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                          <OrganizerMatchEditPageLazy />
+                        </Suspense>
+                      }
+                    />
+                    <Route
+                      path="matches/my"
+                      element={
+                        <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                          <OrganizerMatchesListPageLazy />
+                        </Suspense>
+                      }
+                    />
                     <Route
                       path="matches/:matchId"
                       element={

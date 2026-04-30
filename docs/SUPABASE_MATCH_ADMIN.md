@@ -75,6 +75,12 @@
 
 ---
 
+## Організатор — «Мої матчі»
+
+При **`VITE_ENABLE_MATCH_PORTAL`**: **`/{locale}/matches/my`** — список власних матчів; **`/{locale}/matches/my/new`** — створення; **`/{locale}/matches/my/:matchId`** — редагування полів матчу. Публічна картка — **`/{locale}/matches/:matchId`**. Запис у таблицю **`matches`** доступний активному організатору (**`organizer_status = 'active'`**) згідно з RLS.
+
+---
+
 ## Тестові дані (seed)
 
 Файл **`supabase/seed/match_admin_test_seed.sql`** — вставити в **SQL Editor** і виконати (**Run**) під роллю **postgres** (як і міграція).
