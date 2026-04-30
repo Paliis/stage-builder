@@ -522,6 +522,12 @@ export type MessageTree = {
     matchOrgRosterApply: string
     matchOrgRosterSaving: string
     matchOrgRosterNoFreeSlot: string
+    matchOrgRosterViewTable: string
+    matchOrgRosterViewBoard: string
+    matchOrgRosterBoardHint: string
+    matchOrgRosterBoardSquadFull: string
+    matchOrgRosterBoardEmptyColumn: string
+    matchOrgRosterInactiveHeading: string
     matchOrgSquadsColLabel: string
     matchOrgSquadsColCapacity: string
     matchOrgSquadsColTaken: string
@@ -1240,6 +1246,13 @@ export const ukMessages: MessageTree = {
     matchOrgRosterApply: 'Застосувати',
     matchOrgRosterSaving: 'Збереження…',
     matchOrgRosterNoFreeSlot: 'Немає доступного скводу з місцем або зміни потребують збереження картки.',
+    matchOrgRosterViewTable: 'Таблиця',
+    matchOrgRosterViewBoard: 'Дошка скводів',
+    matchOrgRosterBoardHint:
+      'Тягни картку стрільця в інший сквод — зміна зберігається одразу. У сквод є місце, якщо зайнято менше місткості.',
+    matchOrgRosterBoardSquadFull: 'У цьому скводі немає вільного місця для цієї заявки.',
+    matchOrgRosterBoardEmptyColumn: 'Немає активних заявок',
+    matchOrgRosterInactiveHeading: 'Неактивні заявки (не на дошці)',
     matchOrgSquadsColLabel: 'Назва',
     matchOrgSquadsColCapacity: 'Місць',
     matchOrgSquadsColTaken: 'Зайнято',
@@ -1953,6 +1966,13 @@ export const enMessages: MessageTree = {
     matchOrgRosterSaving: 'Saving…',
     matchOrgRosterNoFreeSlot:
       'No squad with spare capacity—or save the match card first after changing squad settings.',
+    matchOrgRosterViewTable: 'Table',
+    matchOrgRosterViewBoard: 'Squads board',
+    matchOrgRosterBoardHint:
+      'Drag a shooter card into another squad—the change saves immediately when there is spare capacity.',
+    matchOrgRosterBoardSquadFull: 'This squad has no spare seat for this registration.',
+    matchOrgRosterBoardEmptyColumn: 'No active registrations',
+    matchOrgRosterInactiveHeading: 'Inactive registrations (not on the board)',
     matchOrgSquadsColLabel: 'Label',
     matchOrgSquadsColCapacity: 'Capacity',
     matchOrgSquadsColTaken: 'Taken',

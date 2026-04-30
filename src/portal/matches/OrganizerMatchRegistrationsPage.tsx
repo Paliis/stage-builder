@@ -7,6 +7,7 @@ import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { sortSquadsPrematchFirst } from './matchSquadsSort'
+import { OrganizerMatchRosterBoard } from './OrganizerMatchRosterBoard'
 import '../PortalHome.css'
 
 type Portal = MessageTree['portal']
@@ -23,6 +24,7 @@ type RosterRpcRow = {
   status: string
   division: string
   classification_grade: string | null
+  registration_created_at?: string | null
 }
 
 type SquadPick = {
@@ -64,6 +66,20 @@ function countOnSquadForLabel(
       row.registration_id === editingRegId ?
         editingEffectiveSquad
       : (pending[row.registration_id] ?? row.squad_id)
+    if (sid === squadId) n++
+  }
+  return n
+}
+
+function countActiveAssignments(
+  rosterList: RosterRpcRow[],
+  pending: Record<string, string>,
+  squadId: string,
+): number {
+  let n = 0
+  for (const row of rosterList) {
+    if (!countsActiveStatuses(row.status)) continue
+    const sid = pending[row.registration_id] ?? row.squad_id
     if (sid === squadId) n++
   }
   return n
@@ -119,6 +135,7 @@ export function OrganizerMatchRegistrationsPage() {
   const [pendingSquad, setPendingSquad] = useState<Record<string, string>>({})
   const [saveRegId, setSaveRegId] = useState<string | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [rosterView, setRosterView] = useState<'table' | 'board'>('table')
 
   const reload = useCallback(async () => {
     if (!configured || !user?.id || !validId || !matchId) return
@@ -169,6 +186,15 @@ export function OrganizerMatchRegistrationsPage() {
   }, [reload])
 
   const rosterList = roster ?? []
+
+  const rosterActiveBoard = useMemo(
+    () => rosterList.filter((r) => countsActiveStatuses(r.status)),
+    [rosterList],
+  )
+  const rosterInactiveBoard = useMemo(
+    () => rosterList.filter((r) => !countsActiveStatuses(r.status)),
+    [rosterList],
+  )
 
   async function saveReg(registrationId: string, nextSquadId: string) {
     setSaveError(null)
@@ -267,7 +293,78 @@ export function OrganizerMatchRegistrationsPage() {
       : roster.length === 0 ?
         <p>{p.matchOrgRosterEmpty}</p>
       : (
-        <div style={{ overflowX: 'auto', marginTop: '1rem', maxWidth: '52rem' }}>
+        <>
+          <div
+            role="tablist"
+            aria-label={locale === 'uk' ? 'Вигляд списку заявок' : 'Registration list view'}
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.1rem', alignItems: 'center' }}
+          >
+            <button
+              type="button"
+              role="tab"
+              aria-selected={rosterView === 'table'}
+              onClick={() => setRosterView('table')}
+              style={{
+                padding: '0.4rem 0.75rem',
+                borderRadius: '8px',
+                border:
+                  rosterView === 'table' ? '2px solid var(--text-h)' : '1px solid var(--border)',
+                background: rosterView === 'table' ? 'var(--text-h)' : 'var(--btn-bg)',
+                color: rosterView === 'table' ? 'var(--btn-bg)' : 'var(--text)',
+                cursor: 'pointer',
+                fontWeight: rosterView === 'table' ? 600 : 400,
+              }}
+            >
+              {p.matchOrgRosterViewTable}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={rosterView === 'board'}
+              onClick={() => {
+                setPendingSquad({})
+                setRosterView('board')
+              }}
+              style={{
+                padding: '0.4rem 0.75rem',
+                borderRadius: '8px',
+                border:
+                  rosterView === 'board' ? '2px solid var(--text-h)' : '1px solid var(--border)',
+                background: rosterView === 'board' ? 'var(--text-h)' : 'var(--btn-bg)',
+                color: rosterView === 'board' ? 'var(--btn-bg)' : 'var(--text)',
+                cursor: 'pointer',
+                fontWeight: rosterView === 'board' ? 600 : 400,
+              }}
+            >
+              {p.matchOrgRosterViewBoard}
+            </button>
+          </div>
+
+          {rosterView === 'board' ?
+            squads.length > 0 ?
+              <OrganizerMatchRosterBoard
+              locale={locale}
+              p={p}
+              squads={squads}
+              rosterActive={rosterActiveBoard}
+              inactiveRegistrations={rosterInactiveBoard}
+              savingRegId={saveRegId}
+              squadPhaseLabel={(phase) => squadPhaseLabel(p, phase)}
+              registrationStatusLabel={(status) => registrationStatusLabel(p, status)}
+              displayShooterName={(reg) => displayName(reg)}
+              activeCountForSquad={(squadId) => countActiveAssignments(rosterList, pendingSquad, squadId)}
+              countAfterHypotheticalMove={(movingRegId, targetSquadId, countedSquadId) =>
+                countOnSquad(rosterList, pendingSquad, countedSquadId, movingRegId, targetSquadId)
+              }
+              onMoveRegistration={async (registrationId, targetSquadId) =>
+                saveReg(registrationId, targetSquadId)
+              }
+            />
+          : <p style={{ marginTop: '1rem' }}>{p.matchOrgSquadsAutoEmpty}</p>
+          : null}
+
+          {rosterView === 'table' ?
+            <div style={{ overflowX: 'auto', marginTop: '1rem', maxWidth: '52rem' }}>
           <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
             <thead>
               <tr>
@@ -394,7 +491,9 @@ export function OrganizerMatchRegistrationsPage() {
               })}
             </tbody>
           </table>
-        </div>
+            </div>
+          : null}
+        </>
       )}
     </div>
   )
