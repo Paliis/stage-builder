@@ -32,6 +32,7 @@ import {
   LegacyRoHelperTreeRedirect,
   RootRedirect,
 } from './portal/legacyPortalRedirects'
+import { MatchListPageLazy, MatchPublicDetailPageLazy } from './portal/matchPortalLazyRoutes'
 import { getInitialLocale } from './i18n/storage'
 
 const LazyDevSupabaseAuthSmoke =
@@ -99,6 +100,22 @@ createRoot(document.getElementById('root')!).render(
                   />
                 ) : null}
                 <Route path="hit-factor" element={<HitFactorRoute />} />
+                <Route
+                  path="matches"
+                  element={
+                    <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                      <MatchListPageLazy />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="matches/:matchId"
+                  element={
+                    <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                      <MatchPublicDetailPageLazy />
+                    </Suspense>
+                  }
+                />
                 <Route path="publish-policy" element={<PublishPolicyRoute />} />
                 {isRoHelperEnabled() ? (
                   <Route

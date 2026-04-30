@@ -353,6 +353,27 @@ export type MessageTree = {
     badgeNew: string
     /** Status badge label — beta / under active development. */
     badgeBeta: string
+    /** Nav label for published matches list (phase A). */
+    navMatches: string
+    matchesPageTitle: string
+    matchesPageHelmetTitle: string
+    /** Short suffix for `<title>` on detail (after match name). */
+    matchesPageShortTitle: string
+    matchesPageMetaDescription: string
+    matchesPageLead: string
+    matchesSupabaseUnset: string
+    matchesLoadError: string
+    matchesEmpty: string
+    matchesLoadingList: string
+    matchesLoadingDetail: string
+    matchCardCta: string
+    matchDetailBackToList: string
+    matchDetailNotFoundTitle: string
+    matchDetailNotFoundBody: string
+    matchDetailStartsLabel: string
+    matchDetailLocationLabel: string
+    matchDetailDisciplineLabel: string
+    matchDetailLimitLabel: string
   }
   hitFactor: {
     pageTitle: string
@@ -887,6 +908,29 @@ export const ukMessages: MessageTree = {
     badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
     badgeNew: '\u041d\u043e\u0432\u0435',
     badgeBeta: 'Beta',
+    navMatches: '\u041c\u0430\u0442\u0447\u0456',
+    matchesPageTitle: '\u041c\u0430\u0442\u0447\u0456 (\u043e\u043f\u0443\u0431\u043b\u0456\u043a\u043e\u0432\u0430\u043d\u0456)',
+    matchesPageHelmetTitle: 'Матчі — Shooters Tools',
+    matchesPageShortTitle: 'Матч',
+    matchesPageMetaDescription:
+      'Список опублікованих змагань. Реєстрація та кабінет організатора додаються у наступних кроках.',
+    matchesPageLead:
+      'Тут видно лише матчі зі статусом «опубліковано». Авторизовані сценарії (подача заявки, редагування) — у фазах A3–A5.',
+    matchesSupabaseUnset:
+      'Клієнт Supabase не налаштовано (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY). Список недоступний у цьому середовищі.',
+    matchesLoadError: 'Не вдалося завантажити дані',
+    matchesEmpty: 'Поки що немає опублікованих матчів.',
+    matchesLoadingList: 'Завантаження…',
+    matchesLoadingDetail: 'Завантаження матчу…',
+    matchCardCta: 'Деталі',
+    matchDetailBackToList: 'Усі матчі',
+    matchDetailNotFoundTitle: 'Матч не знайдено — Shooters Tools',
+    matchDetailNotFoundBody:
+      'Матч із таким ідентифікатором немає серед опублікованих або посилання некоректне.',
+    matchDetailStartsLabel: 'Початок',
+    matchDetailLocationLabel: 'Локація',
+    matchDetailDisciplineLabel: 'Дисципліна',
+    matchDetailLimitLabel: 'Ліміт учасників',
   },
   hitFactor: {
     pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
@@ -1411,6 +1455,29 @@ export const enMessages: MessageTree = {
     badgeLive: 'Live',
     badgeNew: 'New',
     badgeBeta: 'Beta',
+    navMatches: 'Matches',
+    matchesPageTitle: 'Matches (published)',
+    matchesPageHelmetTitle: 'Matches — Shooters Tools',
+    matchesPageShortTitle: 'Match',
+    matchesPageMetaDescription:
+      'List of published matches. Registration and organiser flows will follow in later steps.',
+    matchesPageLead:
+      'Only matches with published status appear here. Sign-in flows (squads, applications) arrive in phases A3–A5.',
+    matchesSupabaseUnset:
+      'Supabase client is not configured (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY). Listing is unavailable in this environment.',
+    matchesLoadError: 'Could not load data',
+    matchesEmpty: 'No published matches yet.',
+    matchesLoadingList: 'Loading…',
+    matchesLoadingDetail: 'Loading match…',
+    matchCardCta: 'Details',
+    matchDetailBackToList: 'All matches',
+    matchDetailNotFoundTitle: 'Match not found — Shooters Tools',
+    matchDetailNotFoundBody:
+      'There is no published match with this id, or the link is invalid.',
+    matchDetailStartsLabel: 'Starts',
+    matchDetailLocationLabel: 'Location',
+    matchDetailDisciplineLabel: 'Discipline',
+    matchDetailLimitLabel: 'Competitor limit',
   },
   hitFactor: {
     pageTitle: 'Hit Factor — price of mistakes',

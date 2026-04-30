@@ -50,6 +50,12 @@ export function PortalShell() {
             >
               {p.navHitFactor}
             </NavLink>
+            <NavLink
+              to={`/${locale}/matches`}
+              className={({ isActive }) => (isActive ? 'is-active' : '')}
+            >
+              {p.navMatches}
+            </NavLink>
             {isRoHelperEnabled() ? (
               <NavLink
                 to={roHelperPath(locale)}
