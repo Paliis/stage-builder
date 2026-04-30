@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { getSupabase } from '../../lib/supabaseClient'
 import { formatTemplate } from '../../i18n/format'
 import type { MessageTree } from '../../i18n/messages'
+import { sortSquadsPrematchFirst } from './matchSquadsSort'
 
 type Portal = MessageTree['portal']
 
@@ -58,7 +59,7 @@ export function OrganizerMatchSquadsPanel({
       return
     }
 
-    const list = (squads ?? []) as SquadRow[]
+    const list = sortSquadsPrematchFirst((squads ?? []) as SquadRow[])
     setRows(list)
 
     const { data: regs, error: rErr } = await sb

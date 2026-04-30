@@ -6,6 +6,7 @@ import type { MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
+import { sortSquadsPrematchFirst } from './matchSquadsSort'
 import '../PortalHome.css'
 
 type Portal = MessageTree['portal']
@@ -149,7 +150,7 @@ export function OrganizerMatchRegistrationsPage() {
       setRoster([])
       return
     }
-    setSquads((sq ?? []) as SquadPick[])
+    setSquads(sortSquadsPrematchFirst((sq ?? []) as SquadPick[]))
 
     const { data: rx, error: rErr } = await sb.rpc('fetch_organizer_match_registration_roster', {
       p_match_id: matchId,

@@ -4,6 +4,7 @@ import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import type { MessageTree } from '../../i18n/messages'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
+import { sortPrematchFirstByPhase } from './matchSquadsSort'
 
 type Portal = MessageTree['portal']
 
@@ -79,7 +80,8 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
       setMetrics([])
       return
     }
-    setMetrics((data ?? []) as MetricRow[])
+    const rows = sortPrematchFirstByPhase<MetricRow>((data ?? []) as MetricRow[], (m) => num(m.squad_sort))
+    setMetrics(rows)
   }, [sb, matchUuid, p.matchDetailApplyMigrationHint])
 
   useEffect(() => {
