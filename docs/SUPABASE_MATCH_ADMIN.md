@@ -87,7 +87,7 @@
 
 ## Тестові дані (seed)
 
-Файл **`supabase/seed/match_admin_test_seed.sql`** — вставити в **SQL Editor** і виконати (**Run**) під роллю **postgres** (як і міграція).
+Файл **`supabase/seed/match_admin_test_seed.sql`** — вставити в **SQL Editor** і виконати (**Run**) під роллю **postgres** (як і міграція). Або з кореня репо (після **`npm run supabase:link`**): **`npm run supabase:seed:match-all`** — див. **`supabase/README.md`**.
 
 **Якщо `auth.users` порожня:** скрипт сам створить **два** тестових користувачі + записи в `auth.identities` (`stagebuilder.seed.md@local.test`, `stagebuilder.seed.shooter@local.test`, один пароль `SeedOnly_ChangeMe_9` — змінити або видалити після тесту). На початку файлу виконується `CREATE EXTENSION IF NOT EXISTS pgcrypto` (якщо відмовить — увімкни **pgcrypto** у Extensions). Повторний запуск **пропускається**, якщо матч з такою назвою вже є — спочатку `DELETE`, як у кінці файлу.
 
