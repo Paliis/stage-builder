@@ -87,7 +87,7 @@ export function PortalShell() {
   : 'portal-shell__header-toolbar'
 
   return (
-    <div className="portal-shell">
+<div className={`portal-shell${compactHeader ? ' portal-shell--nav-compact' : ''}`}>
       <Helmet>
         <link rel="canonical" href={canonical} />
         <link rel="alternate" hrefLang="uk" href={ukAlt} />

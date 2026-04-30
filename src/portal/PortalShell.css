@@ -71,34 +71,99 @@ html.portal-shell__nav-drawer-lock body {
   }
 }
 
-/* Desktop: grouped nav + account + lang (avoid display:contents — Safari / a11y can hide children). */
 @media (min-width: 960px) {
   .portal-shell__header-inner {
     flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .portal-shell__header-toolbar:not(.portal-shell__header-toolbar--compact) {
-    display: flex;
-    flex: 1 1 auto;
-    justify-content: flex-end;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.75rem 1rem;
-    min-width: 0;
+    justify-content: flex-start;
   }
 }
 
-@media (max-width: 959px) {
-  .portal-shell__menu-toggle {
-    display: inline-flex;
-  }
+/* Expanded: nav cluster (not tied only to viewport width — survives cache / mq quirks). */
+.portal-shell__header-toolbar:not(.portal-shell__header-toolbar--compact) {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem 1rem;
+  margin-left: auto;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
-@media (min-width: 960px) {
-  .portal-shell__menu-toggle {
-    display: none !important;
-  }
+/*
+ * Drawer when JS turns on compact mode (narrow viewport OR narrow header row / iframe).
+ * Must NOT live only inside `(max-width: 959px)`: viewport can be wide while content is compact.
+ */
+.portal-shell__header-toolbar--compact {
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: calc(var(--portal-shell-strip-h) + env(safe-area-inset-top));
+  max-height: none;
+  margin: 0 !important;
+  flex: none !important;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1rem 1.25rem calc(2rem + env(safe-area-inset-bottom));
+  border-bottom: none;
+  background: var(--surface);
+  box-shadow: 0 10px 32px rgba(15, 23, 42, 0.12);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-0.4rem);
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+  z-index: 25;
+}
+
+.portal-shell__header-toolbar--compact.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Stacked drawer links whenever compact JS mode is active (narrow vp or narrow row). */
+.portal-shell--nav-compact .portal-shell__nav {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  flex-wrap: nowrap !important;
+  gap: 0.35rem !important;
+  padding: 0.5rem !important;
+}
+
+.portal-shell--nav-compact .portal-shell__nav a {
+  display: block !important;
+  width: 100%;
+  padding: 0.55rem 0.65rem !important;
+}
+
+.portal-shell--nav-compact .portal-shell__lang {
+  align-self: flex-start !important;
+}
+
+.portal-shell--nav-compact .portal-shell__account {
+  justify-content: flex-start;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+/* Hamburger tied to TS `compactHeader`, not viewport alone (fixes wide window + narrow iframe). */
+.portal-shell:not(.portal-shell--nav-compact) .portal-shell__menu-toggle {
+  display: none !important;
+}
+
+.portal-shell--nav-compact .portal-shell__menu-toggle {
+  display: inline-flex !important;
 }
 
 .portal-shell__menu-toggle {
@@ -164,76 +229,11 @@ html.portal-shell__nav-drawer-lock body {
   }
 }
 
-/* Mobile drawer: nav + account + language */
-@media (max-width: 959px) {
-  .portal-shell__header-toolbar--compact {
-    display: flex !important;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: calc(var(--portal-shell-strip-h) + env(safe-area-inset-top, 0px));
-    max-height: none;
-    margin: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: 1rem 1.25rem calc(2rem + env(safe-area-inset-bottom));
-    border-bottom: none;
-    background: var(--surface);
-    box-shadow: 0 10px 32px rgba(15, 23, 42, 0.12);
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(-0.4rem);
-    pointer-events: none;
-    transition:
-      opacity 0.2s ease,
-      transform 0.2s ease,
-      visibility 0.2s;
-    z-index: 25;
-  }
-
-  .portal-shell__header-toolbar--compact.is-open {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-
-  .portal-shell__nav {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    flex-wrap: nowrap !important;
-    gap: 0.35rem !important;
-    padding: 0.5rem !important;
-  }
-
-  .portal-shell__nav a {
-    display: block !important;
-    width: 100%;
-    padding: 0.55rem 0.65rem !important;
-  }
-
-  .portal-shell__lang {
-    align-self: flex-start !important;
-  }
-
-  /* Mobile: account badges row may scroll horizontally if squeezed */
-  .portal-shell__account {
-    justify-content: flex-start;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 0.25rem;
-  }
-
-  html.portal-shell__nav-drawer-lock .portal-shell__header-strip {
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-  }
+html.portal-shell__nav-drawer-lock .portal-shell__header-strip {
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
-@media (max-width: 959px) and (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .portal-shell__header-toolbar--compact {
     transition: none !important;
     transform: none !important;
