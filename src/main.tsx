@@ -17,7 +17,7 @@ import { PortalHome } from './portal/PortalHome'
 import { PortalShell } from './portal/PortalShell'
 import { HitFactorRoute } from './portal/HitFactorRoute'
 import { RoHelperRouteSuspenseFallback } from './portal/RoHelperRouteSuspenseFallback'
-import { isRoHelperEnabled } from './portal/featureFlags'
+import { isMatchPortalEnabled, isRoHelperEnabled } from './portal/featureFlags'
 import {
   RoHelperArticlePage,
   RoHelperCategoryPage,
@@ -100,14 +100,16 @@ createRoot(document.getElementById('root')!).render(
                   />
                 ) : null}
                 <Route path="hit-factor" element={<HitFactorRoute />} />
-                <Route
-                  path="matches/:matchId"
-                  element={
-                    <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
-                      <MatchPublicDetailPageLazy />
-                    </Suspense>
-                  }
-                />
+                {isMatchPortalEnabled() ? (
+                  <Route
+                    path="matches/:matchId"
+                    element={
+                      <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                        <MatchPublicDetailPageLazy />
+                      </Suspense>
+                    }
+                  />
+                ) : null}
                 <Route path="publish-policy" element={<PublishPolicyRoute />} />
                 {isRoHelperEnabled() ? (
                   <Route
