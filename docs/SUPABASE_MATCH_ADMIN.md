@@ -40,8 +40,18 @@
 
 ---
 
-## Зв’язок
+## Тестові дані (seed)
 
-- [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md)
+Файл **`supabase/seed/match_admin_test_seed.sql`** — вставити в **SQL Editor** і виконати (**Run**) під роллю **postgres** (як і міграція).
+
+**Потрібно:** хоча б **один** користувач у **Authentication → Users**. Якщо користувачів кілька: перший за датою створення — організатор матчу, останній — перший стрілець у заявці; для другого стрільця додається організатор у другий сквод (унікальність заявок). Якщо користувач один — одна заявка (той самий user як MD і стрілець).
+
+Створюється опублікований матч **`Seed: Test shotgun match`**, два скводи, 1–2 заявки; заявка стрільця `comp_id` одразу переводиться в **`confirmed`** з тестовою `payment_note`.
+
+**Перевірка:** Table Editor → **`match_registrations`** — мають з’явитися рядки. Кнопка **Insert** вручну під RLS часто не підходить без сесії того ж користувача — seed через SQL обходить RLS.
+
+**Видалення seed:** у кінці файлу закоментовано `DELETE FROM matches WHERE title = 'Seed: Test shotgun match'` (каскад прибере скводи й заявки).
+
+---
 - [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md)
 - [TECH.md](./TECH.md)
