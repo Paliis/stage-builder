@@ -1,3 +1,4 @@
+import { useEffect, useId, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
@@ -6,12 +7,15 @@ import { getPublicSiteOrigin } from '../seo/publicOriginClient'
 import type { Locale } from '../i18n/messages'
 import { SiteFooter } from './SiteFooter'
 import { isMatchPortalEnabled, isRoHelperEnabled } from './featureFlags'
-import { roHelperPath } from '../ro-helper/paths'
 import { PortalHeaderAccount } from './PortalHeaderAccount'
+import { roHelperPath } from '../ro-helper/paths'
 import './PortalShell.css'
 
-/** Shared shell: header (title + language) + main + sitewide footer — for portal routes only. */
+const HEADER_COMPACT_MQ = '(max-width: 959px)' as const
+
+/** Shared shell: responsive header → hamburger drawer on narrow screens. */
 export function PortalShell() {
+  const panelId = useId()
   const { locale, tree } = useI18n()
   const p = tree.portal
   const { pathname } = useLocation()
@@ -21,9 +25,49 @@ export function PortalShell() {
   const ukAlt = `${origin}${swapLocaleInPortalPath(pathname, 'uk')}`
   const enAlt = `${origin}${swapLocaleInPortalPath(pathname, 'en')}`
 
+  const [compactHeader, setCompactHeader] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(HEADER_COMPACT_MQ).matches : false,
+  )
+  const [navOpen, setNavOpen] = useState(false)
+
   const goLocale = (next: Locale) => {
     navigate(swapLocaleInPortalPath(pathname, next), { replace: true })
   }
+
+  useEffect(() => {
+    const mq = window.matchMedia(HEADER_COMPACT_MQ)
+    const sync = () => {
+      const nextCompact = mq.matches
+      setCompactHeader(nextCompact)
+      if (!nextCompact) setNavOpen(false)
+    }
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    setNavOpen(false)
+  }, [pathname])
+
+  useEffect(() => {
+    if (!compactHeader || !navOpen) return
+    document.documentElement.classList.add('portal-shell__nav-drawer-lock')
+    return () => document.documentElement.classList.remove('portal-shell__nav-drawer-lock')
+  }, [compactHeader, navOpen])
+
+  useEffect(() => {
+    if (!navOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setNavOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [navOpen])
+
+  const toolbarClassName = compactHeader ?
+    `portal-shell__header-toolbar portal-shell__header-toolbar--compact${navOpen ? ' is-open' : ''}`
+  : 'portal-shell__header-toolbar'
 
   return (
     <div className="portal-shell">
@@ -34,61 +78,94 @@ export function PortalShell() {
         <link rel="alternate" hrefLang="x-default" href={ukAlt} />
       </Helmet>
       <header className="portal-shell__header">
-        <div className="portal-shell__header-inner">
-          <Link to={`/${locale}`} className="portal-shell__brand">
-            {p.title}
-          </Link>
-          <nav className="portal-shell__nav" aria-label="Primary">
-            <NavLink
-              to="/stage-builder"
-              className={({ isActive }) => (isActive ? 'is-active' : '')}
-            >
-              {p.navStageBuilder}
-            </NavLink>
-            <NavLink
-              to={`/${locale}/hit-factor`}
-              className={({ isActive }) => (isActive ? 'is-active' : '')}
-            >
-              {p.navHitFactor}
-            </NavLink>
-            {isMatchPortalEnabled() ? (
-              <NavLink
-                end
-                to={`/${locale}/matches/my`}
-                className={({ isActive }) => (isActive ? 'is-active' : '')}
-              >
-                {p.navMyMatches}
-              </NavLink>
-            ) : null}
-            {isRoHelperEnabled() ? (
-              <NavLink
-                to={roHelperPath(locale)}
-                className={({ isActive }) => (isActive ? 'is-active' : '')}
-              >
-                {p.navRoHelper}
-              </NavLink>
-            ) : null}
-          </nav>
-          <PortalHeaderAccount locale={locale} p={p} />
-          <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
+        <div className="portal-shell__header-strip">
+          <div className="portal-shell__header-inner">
+            <Link to={`/${locale}`} className="portal-shell__brand">
+              {p.title}
+            </Link>
             <button
               type="button"
-              className={locale === 'uk' ? 'is-active' : ''}
-              onClick={() => goLocale('uk')}
-              lang="uk"
+              className="portal-shell__menu-toggle"
+              aria-expanded={compactHeader ? navOpen : undefined}
+              aria-controls={compactHeader ? panelId : undefined}
+              aria-hidden={compactHeader ? undefined : true}
+              aria-label={
+                compactHeader ? (navOpen ? p.portalShellMenuCloseAria : p.portalShellMenuOpenAria) : undefined
+              }
+              onClick={() => setNavOpen((v) => !v)}
             >
-              {tree.common.langUk}
+              <span className={`portal-shell__menu-burger ${navOpen ? 'is-open' : ''}`} aria-hidden>
+                <span />
+                <span />
+                <span />
+              </span>
             </button>
-            <button
-              type="button"
-              className={locale === 'en' ? 'is-active' : ''}
-              onClick={() => goLocale('en')}
-              lang="en"
-            >
-              {tree.common.langEn}
-            </button>
+            <div id={panelId} className={toolbarClassName} aria-label={p.portalShellNavDrawerAria}>
+              <nav className="portal-shell__nav" aria-label="Primary">
+                <NavLink
+                  to="/stage-builder"
+                  className={({ isActive }) => (isActive ? 'is-active' : '')}
+                >
+                  {p.navStageBuilder}
+                </NavLink>
+                <NavLink
+                  to={`/${locale}/hit-factor`}
+                  className={({ isActive }) => (isActive ? 'is-active' : '')}
+                >
+                  {p.navHitFactor}
+                </NavLink>
+                {isMatchPortalEnabled() ?
+                  <NavLink
+                    end
+                    to={`/${locale}/matches/my`}
+                    className={({ isActive }) => (isActive ? 'is-active' : '')}
+                  >
+                    {p.navMyMatches}
+                  </NavLink>
+                : null}
+                {isRoHelperEnabled() ?
+                  <NavLink
+                    to={roHelperPath(locale)}
+                    className={({ isActive }) => (isActive ? 'is-active' : '')}
+                  >
+                    {p.navRoHelper}
+                  </NavLink>
+                : null}
+              </nav>
+              <PortalHeaderAccount
+                locale={locale}
+                p={p}
+                onAfterSignOut={compactHeader ? () => setNavOpen(false) : undefined}
+              />
+              <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
+                <button
+                  type="button"
+                  className={locale === 'uk' ? 'is-active' : ''}
+                  onClick={() => goLocale('uk')}
+                  lang="uk"
+                >
+                  {tree.common.langUk}
+                </button>
+                <button
+                  type="button"
+                  className={locale === 'en' ? 'is-active' : ''}
+                  onClick={() => goLocale('en')}
+                  lang="en"
+                >
+                  {tree.common.langEn}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+        {compactHeader && navOpen ?
+          <div
+            className="portal-shell__nav-backdrop"
+            aria-hidden
+            role="presentation"
+            onClick={() => setNavOpen(false)}
+          />
+        : null}
       </header>
       <main className="portal-shell__main">
         <Outlet />

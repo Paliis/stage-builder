@@ -471,6 +471,10 @@ export type MessageTree = {
     accountPageGoOrganizer: string
     accountPageOrganizerExplain: string
     accountPageShooterSoon: string
+    /** Responsive shell header: mobile drawer + hamburger. */
+    portalShellMenuOpenAria: string
+    portalShellMenuCloseAria: string
+    portalShellNavDrawerAria: string
     /** Organizer: `/matches/my` CRUD MVP. */
     navMyMatches: string
     myMatchesTitle: string
@@ -1249,6 +1253,9 @@ export const ukMessages: MessageTree = {
     accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
     accountPageShooterSoon:
       'Окремий кабінет стрільця (розширений профіль, мої матчі та заявки, збережені класи тощо) з’явиться в наступних оновленнях.',
+    portalShellMenuOpenAria: 'Відкрити меню навігації',
+    portalShellMenuCloseAria: 'Закрити меню навігації',
+    portalShellNavDrawerAria: 'Навігація й обліковий запис',
     navMyMatches: 'Мої матчі',
     myMatchesTitle: 'Мої матчі',
     myMatchesHelmet: 'Мої матчі — Shooters Tools',
@@ -2032,6 +2039,9 @@ export const enMessages: MessageTree = {
     accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
     accountPageShooterSoon:
       'A dedicated shooter hub (rich profile, your matches and signup status, saved division/class presets, etc.) will ship in a follow-up iteration.',
+    portalShellMenuOpenAria: 'Open navigation menu',
+    portalShellMenuCloseAria: 'Close navigation menu',
+    portalShellNavDrawerAria: 'Navigation and account',
     navMyMatches: 'My matches',
     myMatchesTitle: 'My matches',
     myMatchesHelmet: 'My matches — Shooters Tools',

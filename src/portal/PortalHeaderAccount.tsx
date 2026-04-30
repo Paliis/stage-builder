@@ -10,6 +10,8 @@ import './PortalShell.css'
 type Props = {
   locale: string
   p: MessageTree['portal']
+  /** Called after sign-out succeeds (e.g. close mobile drawer). */
+  onAfterSignOut?: () => void
 }
 
 function ProfileAccountIconSvg() {
@@ -24,14 +26,15 @@ function ProfileAccountIconSvg() {
 }
 
 /** Header cluster: badges (single row) + profile icon + sign-out — email only in tooltip / aria. */
-export function PortalHeaderAccount({ locale, p }: Props) {
+export function PortalHeaderAccount({ locale, p, onAfterSignOut }: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const organizer = useOrganizerPortalStatus(user?.id)
 
   const onSignOut = useCallback(async () => {
     if (!isSupabaseConfigured()) return
     await getSupabase().auth.signOut()
-  }, [])
+    onAfterSignOut?.()
+  }, [onAfterSignOut])
 
   const accountPath = `/${locale}/account`
 

@@ -6,39 +6,244 @@
   background: var(--surface);
 }
 
+/* Lock scroll while mobile drawer open (paired with `--compact` breakpoint in PortalShell.tsx) */
+html.portal-shell__nav-drawer-lock {
+  overflow: hidden;
+}
+
+html.portal-shell__nav-drawer-lock body {
+  overflow: hidden;
+}
+
 .portal-shell__header {
-  /**
-   * Outer band: full-window background + bottom border.
-   * Constraining the visible content to a 72rem grid is the inner wrapper's job
-   * so that on wide screens the brand/nav/lang line up with the cards below.
-   */
-  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 50;
+}
+
+.portal-shell__header-strip {
+  position: relative;
+  z-index: 30;
   background: var(--btn-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+:root {
+  /* Used for stacked overlay top offset (strip height ≈ paddings + logo line); tune if typography changes */
+  --portal-shell-strip-h: 3.75rem;
 }
 
 .portal-shell__header-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
   width: 100%;
   max-width: 72rem;
   margin: 0 auto;
   padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  min-height: var(--portal-shell-strip-h);
+  box-sizing: border-box;
 }
 
 .portal-shell__brand {
+  flex-shrink: 0;
   margin: 0;
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--text-h);
   text-decoration: none;
   letter-spacing: -0.02em;
+  max-width: min(54vw, 14rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .portal-shell__brand:hover {
   color: var(--accent);
+}
+
+@media (max-width: 959px) {
+  .portal-shell__header-inner {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+}
+
+/* Desktop: unwrap toolbar so nav/account/lang behave as siblings of brand … */
+@media (min-width: 960px) {
+  .portal-shell__header-inner {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .portal-shell__header-toolbar {
+    display: contents;
+  }
+}
+
+@media (max-width: 959px) {
+  .portal-shell__menu-toggle {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 960px) {
+  .portal-shell__menu-toggle {
+    display: none !important;
+  }
+}
+
+.portal-shell__menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: min(44px, 11vw);
+  height: min(44px, 11vw);
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--text-h);
+  transition:
+    border-color 0.12s ease,
+    background 0.12s ease,
+    color 0.12s ease;
+}
+
+.portal-shell__menu-toggle:hover {
+  background: var(--btn-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.portal-shell__menu-burger {
+  display: grid;
+  gap: 0.28rem;
+  width: 1.125rem;
+  pointer-events: none;
+}
+
+.portal-shell__menu-burger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  border-radius: 2px;
+  transition:
+    transform 0.22s ease,
+    opacity 0.15s ease;
+}
+
+.portal-shell__menu-burger.is-open span:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.portal-shell__menu-burger.is-open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.portal-shell__menu-burger.is-open span:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-shell__menu-burger span {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* Mobile drawer: nav + account + language */
+@media (max-width: 959px) {
+  .portal-shell__header-toolbar--compact {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: calc(var(--portal-shell-strip-h) + env(safe-area-inset-top, 0px));
+    max-height: none;
+    margin: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1rem 1.25rem calc(2rem + env(safe-area-inset-bottom));
+    border-bottom: none;
+    background: var(--surface);
+    box-shadow: 0 10px 32px rgba(15, 23, 42, 0.12);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-0.4rem);
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0.2s;
+    z-index: 25;
+  }
+
+  .portal-shell__header-toolbar--compact.is-open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .portal-shell__nav {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    flex-wrap: nowrap !important;
+    gap: 0.35rem !important;
+    padding: 0.5rem !important;
+  }
+
+  .portal-shell__nav a {
+    display: block !important;
+    width: 100%;
+    padding: 0.55rem 0.65rem !important;
+  }
+
+  .portal-shell__lang {
+    align-self: flex-start !important;
+  }
+
+  /* Mobile: account badges row may scroll horizontally if squeezed */
+  .portal-shell__account {
+    justify-content: flex-start;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  html.portal-shell__nav-drawer-lock .portal-shell__header-strip {
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  }
+}
+
+@media (max-width: 959px) and (prefers-reduced-motion: reduce) {
+  .portal-shell__header-toolbar--compact {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+.portal-shell__nav-backdrop {
+  position: fixed;
+  top: calc(var(--portal-shell-strip-h) + env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  z-index: 20;
+  cursor: pointer;
+  background: rgba(15, 23, 42, 0.35);
 }
 
 .portal-shell__nav {
@@ -50,6 +255,19 @@
   border: 1px solid var(--border);
   border-radius: 0.65rem;
   background: var(--surface);
+}
+
+/* Tighten toolbar when sidebar still desktop but cramped */
+@media (min-width: 960px) and (max-width: 1180px) {
+  .portal-shell__nav {
+    gap: 0.5rem;
+    padding: 0.18rem 0.3rem;
+  }
+
+  .portal-shell__nav a {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.8125rem;
+  }
 }
 
 .portal-shell__nav a {
@@ -122,7 +340,6 @@
   border: 0;
 }
 
-/* Header: single-row badges + profile icon + sign-out */
 .portal-shell__account {
   display: inline-flex;
   flex-wrap: nowrap;
