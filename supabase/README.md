@@ -60,5 +60,6 @@ npm run supabase:migration-list
 - **Seed для матчів** ([SUPABASE_MATCH_ADMIN.md](../docs/SUPABASE_MATCH_ADMIN.md)): після **`npm run supabase:link`** (і логіну CLI) виконувати з кореня репо:
   - **`npm run supabase:seed:match-all`** — спочатку повний матчевий seed, потім доповнення з 8 тестовими стрільцями для дошки (другий файл ідempotent);
   - окремо: **`npm run supabase:seed:match-admin`**, **`npm run supabase:seed:match-board-extras`**.
+  - ті самі 8 «дошкових» тестових стрільців на **довільний** матч — відредагуй **`mid`** у **`supabase/seed/match_admin_attach_extra_board_testers_by_match_uuid.sql`**, потім `npx supabase db query --linked -f …` або вставка в SQL Editor (див. [SUPABASE_MATCH_ADMIN.md](../docs/SUPABASE_MATCH_ADMIN.md)).
   - Як без CLI: Dashboard → SQL Editor → вставити вміст `seed/*.sql` (варіант A вище).
 - Локальний smoke API (share): **`node scripts/test-supabase-share.mjs`** ([SUPABASE_SHARED_STAGES.md](../docs/SUPABASE_SHARED_STAGES.md)).
