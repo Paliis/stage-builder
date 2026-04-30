@@ -502,6 +502,30 @@ export type MessageTree = {
     matchOrgEditNotFound: string
     matchOrgTitleRequired: string
     matchOrgShootersInvalid: string
+    matchOrgStagesHeading: string
+    matchOrgStagesIntro: string
+    matchOrgStagesOpenEditor: string
+    matchOrgStagesPasteLabel: string
+    matchOrgStagesPastePlaceholder: string
+    matchOrgStagesAdd: string
+    matchOrgStagesAdding: string
+    matchOrgStagesEmpty: string
+    matchOrgStagesColTitle: string
+    matchOrgStagesColShareId: string
+    matchOrgStagesColActions: string
+    matchOrgStagesViewLink: string
+    matchOrgStagesMoveUp: string
+    matchOrgStagesMoveDown: string
+    matchOrgStagesRemove: string
+    matchOrgStagesRefreshLatest: string
+    matchOrgStagesRefreshing: string
+    matchOrgStagesErrorGeneric: string
+    matchOrgStagesInvalidPaste: string
+    matchOrgStagesNotFound: string
+    matchOrgStagesNotViewMode: string
+    matchOrgStagesDuplicate: string
+    matchOrgStagesErrNoShareGroup: string
+    matchOrgStagesErrNoLatestShare: string
     matchOrgSquadsHeading: string
     matchOrgSquadsDerivedIntro: string
     matchOrgSquadsDerivedCapacityLine: string
@@ -1232,6 +1256,34 @@ export const ukMessages: MessageTree = {
     matchOrgEditNotFound: 'Матч не знайдено або він не належить до твого облікового запису.',
     matchOrgTitleRequired: 'Заповни назву.',
     matchOrgShootersInvalid: 'Кількість стрільців у скводі має бути цілим числом ≥ 1.',
+    matchOrgStagesHeading: 'Вправи програми',
+    matchOrgStagesIntro:
+      'Створи сцену в Stage Builder і опубликуй посилання для перегляду («Поділитися» → посилання для стрільців). Далі встав URL або лише ідентифікатор із рядка /v/… — це прив’яже знімок до матчу.',
+    matchOrgStagesOpenEditor: 'Відкрити Stage Builder (нова вкладка)',
+    matchOrgStagesPasteLabel: 'Посилання перегляду або id',
+    matchOrgStagesPastePlaceholder: 'https://…/v/s… або s…',
+    matchOrgStagesAdd: 'Додати до матчу',
+    matchOrgStagesAdding: 'Додавання…',
+    matchOrgStagesEmpty: 'Ще немає прив’язаних вправ — додай перше посилання перегляду.',
+    matchOrgStagesColTitle: 'Назва',
+    matchOrgStagesColShareId: 'Share',
+    matchOrgStagesColActions: 'Дії',
+    matchOrgStagesViewLink: 'Відкрити',
+    matchOrgStagesMoveUp: 'Вгору',
+    matchOrgStagesMoveDown: 'Вниз',
+    matchOrgStagesRemove: 'Прибрати',
+    matchOrgStagesRefreshLatest: 'Оновити до останньої',
+    matchOrgStagesRefreshing: 'Оновлення…',
+    matchOrgStagesErrorGeneric: 'Операцію не виконано. Перезавантаж сторінку або перевір міграції.',
+    matchOrgStagesInvalidPaste: 'Не вдалося розпізнати id посилання для перегляду. Очікується URL з /v/… або короткий id типу s…',
+    matchOrgStagesNotFound: 'Вправу не знайдено або термін посилання минув.',
+    matchOrgStagesNotViewMode:
+      'Прив’язуємо лише посилання перегляду (view). Скористайся view-публікацією з редактора; edit-посилання сюди не підходять.',
+    matchOrgStagesDuplicate: 'Цей share вже є в списку програми.',
+    matchOrgStagesErrNoShareGroup:
+      'Немає логічної групи версій (share_group_id). Додай вправу знову або накоти міграцію та оновлення publish API.',
+    matchOrgStagesErrNoLatestShare:
+      'Не знайдено актуального view для цієї групи — перевір прострочення посилань або що знов опубліковано view із тим самим shareGroupId.',
     matchOrgSquadsHeading: 'Скводи',
     matchOrgSquadsDerivedIntro:
       'Таблиця скводів формується з налаштувань матчу: кількість скводів × стрільців у скводі (окремо для основного дня та прематчу). Збережи картку — рядки оновлються; зменшення можливе лише якщо на скводі немає активних заявок.',
@@ -1964,6 +2016,33 @@ export const enMessages: MessageTree = {
     matchOrgEditNotFound: 'Match not found or not owned by you.',
     matchOrgTitleRequired: 'Please enter a title.',
     matchOrgShootersInvalid: 'Shooters per squad must be an integer ≥ 1.',
+    matchOrgStagesHeading: 'Programme exercises',
+    matchOrgStagesIntro:
+      'Publish each stage from Stage Builder (Share → view link). Paste the `/v/…` URL or the short share id—the snapshot is tied to this match.',
+    matchOrgStagesOpenEditor: 'Open Stage Builder (new tab)',
+    matchOrgStagesPasteLabel: 'View URL or share id',
+    matchOrgStagesPastePlaceholder: 'https://…/v/s… or s…',
+    matchOrgStagesAdd: 'Add to match',
+    matchOrgStagesAdding: 'Adding…',
+    matchOrgStagesEmpty: 'No exercises linked yet—add the first view link.',
+    matchOrgStagesColTitle: 'Title',
+    matchOrgStagesColShareId: 'Share',
+    matchOrgStagesColActions: 'Actions',
+    matchOrgStagesViewLink: 'Open',
+    matchOrgStagesMoveUp: 'Up',
+    matchOrgStagesMoveDown: 'Down',
+    matchOrgStagesRemove: 'Remove',
+    matchOrgStagesRefreshLatest: 'Update to latest',
+    matchOrgStagesRefreshing: 'Updating…',
+    matchOrgStagesErrorGeneric: 'Something went wrong. Reload or verify migrations.',
+    matchOrgStagesInvalidPaste: 'Paste a `/v/…` view URL or a short id starting with «s».',
+    matchOrgStagesNotFound: 'Stage not found or link expired.',
+    matchOrgStagesNotViewMode: 'Only view (reader) shares can be attached. Publish a view link first.',
+    matchOrgStagesDuplicate: 'That share id is already in the programme.',
+    matchOrgStagesErrNoShareGroup:
+      'Missing share_group_id for this row—reenable migrations / publish pipeline, or re-add this exercise.',
+    matchOrgStagesErrNoLatestShare:
+      'No current view snapshot in this group—links may have expired or you need another view publish in the same group.',
     matchOrgSquadsHeading: 'Squads',
     matchOrgSquadsDerivedIntro:
       'Squad rows are generated from planned squad counts × shooters per squad (main vs prematch). Saving the match updates rows; shrinking is blocked while active registrations occupy removed capacity.',

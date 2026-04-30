@@ -6,6 +6,7 @@ import { formatTemplate } from '../../i18n/format'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
+import { OrganizerMatchStagesPanel } from './OrganizerMatchStagesPanel'
 import { OrganizerMatchSquadsPanel } from './OrganizerMatchSquadsPanel'
 import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage'
 import '../PortalHome.css'
@@ -623,16 +624,19 @@ export function OrganizerMatchEditPage() {
       </form>
 
         {!isNew && validEditId && matchId ?
-        <OrganizerMatchSquadsPanel
-          locale={locale}
-          matchId={matchId}
-          p={p}
-          prematchEnabled={draft.prematch_enabled}
-          plannedMainSquads={draft.planned_main_squad_count}
-          plannedPrematchSquads={draft.planned_prematch_squad_count}
-          shootersPerMainSquad={draft.shooters_per_main_squad}
-          shootersPerPrematchSquad={draft.shooters_per_prematch_squad}
-        />
+        <>
+          <OrganizerMatchStagesPanel locale={locale} matchId={matchId} p={p} />
+          <OrganizerMatchSquadsPanel
+            locale={locale}
+            matchId={matchId}
+            p={p}
+            prematchEnabled={draft.prematch_enabled}
+            plannedMainSquads={draft.planned_main_squad_count}
+            plannedPrematchSquads={draft.planned_prematch_squad_count}
+            shootersPerMainSquad={draft.shooters_per_main_squad}
+            shootersPerPrematchSquad={draft.shooters_per_prematch_squad}
+          />
+        </>
       : null}
     </div>
   )
