@@ -482,10 +482,18 @@ export type MessageTree = {
     accountAuthHeading: string
     accountSummaryHeading: string
     accountSummaryLogin: string
-    accountPageIntroParticipant: string
+    accountShooterCabinetHeading: string
+    accountShooterCabinetLead: string
+    accountShooterPortalLinkLabel: string
+    accountShooterPortalLinkSuffix: string
     accountPageGoOrganizer: string
     accountPageOrganizerExplain: string
     accountPageShooterSoon: string
+    accountOrganizerSectionHeading: string
+    accountOrganizerActiveLead: string
+    accountOrganizerApplyTeaser: string
+    accountOrganizerApplyToggleExpand: string
+    accountOrganizerApplyToggleCollapse: string
     accountOrganizerApplyHeading: string
     accountOrganizerApplyIntro: string
     accountOrganizerApplyButton: string
@@ -1293,12 +1301,21 @@ export const ukMessages: MessageTree = {
     accountAuthHeading: 'Вхід',
     accountSummaryHeading: 'Поточний вхід',
     accountSummaryLogin: 'Логін:',
-    accountPageIntroParticipant:
-      'Ролі: «Учасник» доступний усім авторизованим користувачам. Маркер організатора з’являється після подачі заявки («на розгляді») або коли платформа налаштовує обліковий запис («активний» може керувати матчами; «обмежено» — без прав створення чи редагування).',
+    accountShooterCabinetHeading: 'Кабінет стрільця',
+    accountShooterCabinetLead:
+      'Ви можете реєструватися на опубліковані матчі, коли знаєте посилання або анонс. Роль «Учасник» є для всіх, хто увійшов у портал.',
+    accountShooterPortalLinkLabel: 'Головна порталу',
+    accountShooterPortalLinkSuffix: ' — новини інструментів та перехід до Stage Builder тощо; пряме посилання на картку матчу організатор зазвичай надсилає окремо.',
     accountPageGoOrganizer: 'Мої матчі (організатор)',
     accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
     accountPageShooterSoon:
-      'Окремий кабінет стрільця (розширений профіль, мої матчі та заявки, збережені класи тощо) з’явиться в наступних оновленнях.',
+      'Незабаром тут буде окреміший огляд: ваші активні реєстрації та історія — поки використовуйте прямі посилання на матчі й листування з організатором.',
+    accountOrganizerSectionHeading: 'Організатор матчів',
+    accountOrganizerActiveLead: 'У вас є права створювати та вести матчі в цьому порталі.',
+    accountOrganizerApplyTeaser:
+      'Організаторську роль видає платформа після заявки. Якщо вам потрібен доступ до «Моїх матчів», розгорніть форму — для більшості стрільців цей блок можна просто проігнорувати.',
+    accountOrganizerApplyToggleExpand: 'Подати заявку на організатора',
+    accountOrganizerApplyToggleCollapse: 'Згорнути',
     accountOrganizerApplyHeading: 'Стати організатором матчів',
     accountOrganizerApplyIntro:
       'Подайте заявку: у профілі створюється статус «на розгляді». Контакт і посилання — опційно, допоможуть модератору швидше відповісти. Власник порталу затверджує доступ у розділі «Організатори матчів».',
@@ -2114,12 +2131,22 @@ export const enMessages: MessageTree = {
     accountAuthHeading: 'Sign in',
     accountSummaryHeading: 'Signed in',
     accountSummaryLogin: 'Login:',
-    accountPageIntroParticipant:
-      'Everyone signed in has the “Participant” role. The organizer badge appears once you apply (“pending review”) or once the platform updates your account (“active” can manage matches; “restricted” cannot create or edit as organizer).',
+    accountShooterCabinetHeading: 'Shooter hub',
+    accountShooterCabinetLead:
+      'You can register for published matches when you have a link or announcement from an organizer. The Participant role applies to anyone signed in.',
+    accountShooterPortalLinkLabel: 'Portal home',
+    accountShooterPortalLinkSuffix:
+      ' — product cards and Stage Builder entry; organizers usually send a direct link to each match.',
     accountPageGoOrganizer: 'My matches (organizer)',
     accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
     accountPageShooterSoon:
-      'A dedicated shooter hub (rich profile, your matches and signup status, saved division/class presets, etc.) will ship in a follow-up iteration.',
+      'Soon you will see registrations and history here — for now, use match links shared by organizers.',
+    accountOrganizerSectionHeading: 'Match organizer',
+    accountOrganizerActiveLead: 'You can create and manage matches on this portal.',
+    accountOrganizerApplyTeaser:
+      'Organizer access is granted by the platform after you apply. If you need «My matches», expand the form below — most shooters can skip this.',
+    accountOrganizerApplyToggleExpand: 'Apply to become an organizer',
+    accountOrganizerApplyToggleCollapse: 'Collapse',
     accountOrganizerApplyHeading: 'Apply to organise matches',
     accountOrganizerApplyIntro:
       'Submit your request: your profile is marked pending for review. Contact and links are optional but help moderators. The platform owner grants access in the organizers admin page.',

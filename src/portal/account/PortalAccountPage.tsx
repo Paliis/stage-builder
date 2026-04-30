@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
@@ -7,6 +7,8 @@ import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { isMatchPortalEnabled } from '../featureFlags'
+import '../PortalHome.css'
+import './PortalAccountPage.css'
 
 export function PortalAccountPage() {
   const { locale, tree } = useI18n()
@@ -19,6 +21,16 @@ export function PortalAccountPage() {
   const [applyError, setApplyError] = useState<string | null>(null)
   const [applyContact, setApplyContact] = useState('')
   const [applyPastMatches, setApplyPastMatches] = useState('')
+  const [applyFormExpanded, setApplyFormExpanded] = useState(false)
+
+  useEffect(() => {
+    if (profile !== 'missing') {
+      setApplyFormExpanded(false)
+      setApplyError(null)
+      setApplyContact('')
+      setApplyPastMatches('')
+    }
+  }, [profile])
 
   const onSignOut = useCallback(async () => {
     if (!isSupabaseConfigured()) return
@@ -90,184 +102,202 @@ export function PortalAccountPage() {
           >
             {p.accountSummaryHeading}
           </h2>
-          <p style={{ margin: '0 0 0.75rem', fontSize: '0.95rem', wordBreak: 'break-word' }}>
+          <p style={{ margin: '0 0 1.25rem', fontSize: '0.95rem', wordBreak: 'break-word' }}>
             <strong>{p.accountSummaryLogin}</strong>{' '}
             {user.email ?? user.id}
           </p>
 
-          <div className="portal-shell__badges" style={{ marginBottom: '0.85rem' }}>
-            <span className="portal-shell__badge portal-shell__badge--participant">{p.accountBadgeParticipant}</span>
-            {profileLoading ?
-              <span className="portal-shell__badge portal-shell__badge--muted">{p.accountBadgeLoading}</span>
-            : profile === 'pending' ?
-              <span className="portal-shell__badge portal-shell__badge--pending">{p.accountBadgeOrganizerPending}</span>
-            : profile === 'active' ?
-              <span className="portal-shell__badge portal-shell__badge--organizer">{p.accountBadgeOrganizerActive}</span>
-            : profile === 'blocked' ?
-              <span className="portal-shell__badge portal-shell__badge--blocked">{p.accountBadgeOrganizerBlocked}</span>
-            : null}
-          </div>
+          <section className="portal-account__section" aria-labelledby="account-shooter-heading">
+            <h3 id="account-shooter-heading" className="portal-account__section-title">
+              {p.accountShooterCabinetHeading}
+            </h3>
+            <div className="portal-shell__badges" style={{ marginBottom: '0.75rem' }}>
+              <span className="portal-shell__badge portal-shell__badge--participant">{p.accountBadgeParticipant}</span>
+            </div>
+            <p className="portal-account__section-lead">{p.accountShooterCabinetLead}</p>
+            <ul className="portal-account__list">
+              <li>
+                <Link to={`/${locale}`}>{p.accountShooterPortalLinkLabel}</Link>
+                {p.accountShooterPortalLinkSuffix}
+              </li>
+              <li>{p.accountPageShooterSoon}</li>
+            </ul>
+          </section>
 
-          <p style={{ margin: '0 0 1rem', fontSize: '0.95rem', lineHeight: 1.55 }}>{p.accountPageIntroParticipant}</p>
+          {isMatchPortalEnabled() ?
+            <section className="portal-account__section" aria-labelledby="account-organizer-heading">
+              <h3 id="account-organizer-heading" className="portal-account__section-title">
+                {p.accountOrganizerSectionHeading}
+              </h3>
 
-          {isMatchPortalEnabled() && !profileLoading && user?.id ?
-            profile === 'missing' ?
-              <section
-                aria-labelledby="account-organizer-apply-heading"
-                style={{
-                  margin: '0 0 1.25rem',
-                  padding: '0.85rem 1rem',
-                  maxWidth: '40rem',
-                  border: '1px solid var(--border)',
-                  borderRadius: '0.65rem',
-                  background: 'var(--btn-bg)',
-                }}
-              >
-                <h2
-                  id="account-organizer-apply-heading"
-                  className="portal-home__hero-title"
-                  style={{ fontSize: '1rem', margin: '0 0 0.5rem', letterSpacing: '-0.02em' }}
-                >
-                  {p.accountOrganizerApplyHeading}
-                </h2>
-                <p style={{ margin: '0 0 0.85rem', fontSize: '0.92rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyIntro}</p>
-                <label style={{ display: 'block', margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 650 }}>
-                  {p.accountOrganizerApplyContactLabel}
-                </label>
-                <input
-                  type="text"
-                  className="portal-shell__account-sign-out"
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    maxWidth: '22rem',
-                    boxSizing: 'border-box',
-                    margin: '0 0 0.65rem',
-                    padding: '0.45rem 0.55rem',
-                    borderRadius: '0.45rem',
-                    border: '1px solid var(--border)',
-                    background: 'var(--surface)',
-                    color: 'var(--text)',
-                    fontSize: '0.9rem',
-                  }}
-                  value={applyContact}
-                  maxLength={280}
-                  onChange={(e) => setApplyContact(e.target.value)}
-                  autoComplete="off"
-                  placeholder={p.accountOrganizerApplyContactPlaceholder}
-                />
-                <label style={{ display: 'block', margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 650 }}>
-                  {p.accountOrganizerApplyPastMatchesLabel}
-                </label>
-                <textarea
-                  className="portal-shell__account-sign-out"
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    maxWidth: '28rem',
-                    minHeight: '4.5rem',
-                    boxSizing: 'border-box',
-                    margin: '0 0 0.85rem',
-                    padding: '0.45rem 0.55rem',
-                    borderRadius: '0.45rem',
-                    border: '1px solid var(--border)',
-                    background: 'var(--surface)',
-                    color: 'var(--text)',
-                    fontSize: '0.9rem',
-                    lineHeight: 1.45,
-                    resize: 'vertical',
-                  }}
-                  value={applyPastMatches}
-                  maxLength={2000}
-                  onChange={(e) => setApplyPastMatches(e.target.value)}
-                  placeholder={p.accountOrganizerApplyPastMatchesPlaceholder}
-                />
-                {applyError ?
-                  <p role="alert" style={{ margin: '0 0 0.65rem', fontSize: '0.9rem' }}>
-                    {applyError}
+              {profileLoading ?
+                <p style={{ margin: '0 0 0.5rem', fontSize: '0.94rem', opacity: 0.75 }}>{p.accountBadgeLoading}</p>
+              : profile === 'active' ?
+                <>
+                  <div className="portal-shell__badges" style={{ marginBottom: '0.65rem' }}>
+                    <span className="portal-shell__badge portal-shell__badge--organizer">{p.accountBadgeOrganizerActive}</span>
+                  </div>
+                  <p className="portal-account__section-lead" style={{ marginBottom: '0.65rem' }}>
+                    {p.accountOrganizerActiveLead}
                   </p>
-                : null}
-                <button
-                  type="button"
-                  disabled={applyBusy}
-                  className="portal-shell__account-sign-out portal-shell__account-sign-out--block"
-                  style={{ marginTop: 0 }}
-                  onClick={() => void submitOrganizerApplication()}
+                  <p style={{ margin: 0, fontSize: '0.94rem', lineHeight: 1.55 }}>
+                    <Link to={`/${locale}/matches/my`}>{p.accountPageGoOrganizer}</Link>
+                    {' — '}
+                    <span>{p.accountPageOrganizerExplain}</span>
+                  </p>
+                </>
+              : profile === 'pending' ?
+                <div
+                  className="portal-account__organizer-muted portal-account__organizer-muted--pending"
+                  role="status"
                 >
-                  {applyBusy ? p.accountOrganizerApplySubmitting : p.accountOrganizerApplyButton}
-                </button>
-              </section>
-            : profile === 'pending' ?
-              <section
-                aria-labelledby="account-organizer-pending-heading"
-                style={{
-                  margin: '0 0 1.25rem',
-                  padding: '0.85rem 1rem',
-                  maxWidth: '40rem',
-                  border: '1px solid var(--border)',
-                  borderRadius: '0.65rem',
-                  background: 'rgba(251, 191, 36, 0.08)',
-                }}
-              >
-                <h2
-                  id="account-organizer-pending-heading"
-                  className="portal-home__hero-title"
-                  style={{ fontSize: '1rem', margin: '0 0 0.5rem', letterSpacing: '-0.02em' }}
+                  <div className="portal-shell__badges" style={{ marginBottom: '0.45rem' }}>
+                    <span className="portal-shell__badge portal-shell__badge--pending">{p.accountBadgeOrganizerPending}</span>
+                  </div>
+                  <p style={{ margin: '0 0 0.35rem', fontWeight: 700, fontSize: '0.95rem' }}>
+                    {p.accountOrganizerApplyPendingTitle}
+                  </p>
+                  <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyPendingBody}</p>
+                </div>
+              : profile === 'blocked' ?
+                <div
+                  className="portal-account__organizer-muted portal-account__organizer-muted--blocked"
+                  role="status"
                 >
-                  {p.accountOrganizerApplyPendingTitle}
-                </h2>
-                <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyPendingBody}</p>
-              </section>
-            : profile === 'blocked' ?
-              <p
-                role="status"
-                style={{
-                  margin: '0 0 1.25rem',
-                  maxWidth: '40rem',
-                  fontSize: '0.92rem',
-                  lineHeight: 1.52,
-                  color: 'var(--text)',
-                }}
-              >
-                {p.accountOrganizerApplyBlockedBody}
-                {moderationNote ?
-                  <span style={{ display: 'block', marginTop: '0.65rem' }}>
-                    <strong style={{ display: 'block', marginBottom: '0.35rem' }}>
-                      {p.accountOrganizerModerationHeading}
-                    </strong>
-                    <span
-                      style={{
-                        display: 'block',
-                        padding: '0.6rem 0.75rem',
-                        borderLeft: '3px solid var(--border)',
-                        background: 'rgba(0,0,0,0.04)',
-                        fontSize: '0.9rem',
-                        lineHeight: 1.5,
-                        whiteSpace: 'pre-wrap',
-                      }}
-                    >
+                  <div className="portal-shell__badges" style={{ marginBottom: '0.45rem' }}>
+                    <span className="portal-shell__badge portal-shell__badge--blocked">{p.accountBadgeOrganizerBlocked}</span>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyBlockedBody}</p>
+                  {moderationNote ?
+                    <span className="portal-account__moderation-quote">
+                      <strong style={{ display: 'block', marginBottom: '0.35rem' }}>{p.accountOrganizerModerationHeading}</strong>
                       {moderationNote}
                     </span>
-                  </span>
-                : null}
-              </p>
-            : null
+                  : null}
+                </div>
+              : (
+                <>
+                  <p className="portal-account__section-lead" style={{ marginBottom: '0.5rem' }}>
+                    {p.accountOrganizerApplyTeaser}
+                  </p>
+                  {!applyFormExpanded ?
+                    <div className="portal-account__apply-collapsed-actions">
+                      <button
+                        type="button"
+                        className="portal-account__apply-expand"
+                        disabled={profileLoading || applyBusy}
+                        onClick={() => {
+                          setApplyFormExpanded(true)
+                          setApplyError(null)
+                        }}
+                      >
+                        {p.accountOrganizerApplyToggleExpand}
+                      </button>
+                    </div>
+                  :
+                    <div
+                      style={{
+                        marginTop: '0.35rem',
+                        padding: '0.85rem 1rem',
+                        border: '1px solid var(--border)',
+                        borderRadius: '0.65rem',
+                        background: 'var(--btn-bg)',
+                        maxWidth: '40rem',
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className="portal-account__apply-collapse"
+                        onClick={() => {
+                          setApplyFormExpanded(false)
+                          setApplyError(null)
+                        }}
+                      >
+                        {p.accountOrganizerApplyToggleCollapse}
+                      </button>
+                      <p
+                        className="portal-home__hero-title"
+                        style={{
+                          fontSize: '1rem',
+                          margin: '0 0 0.5rem',
+                          letterSpacing: '-0.02em',
+                          fontWeight: 700,
+                        }}
+                      >
+                        {p.accountOrganizerApplyHeading}
+                      </p>
+                      <p style={{ margin: '0 0 0.85rem', fontSize: '0.92rem', lineHeight: 1.52 }}>
+                        {p.accountOrganizerApplyIntro}
+                      </p>
+                      <label style={{ display: 'block', margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 650 }}>
+                        {p.accountOrganizerApplyContactLabel}
+                      </label>
+                      <input
+                        type="text"
+                        style={{
+                          display: 'block',
+                          width: '100%',
+                          maxWidth: '22rem',
+                          boxSizing: 'border-box',
+                          margin: '0 0 0.65rem',
+                          padding: '0.45rem 0.55rem',
+                          borderRadius: '0.45rem',
+                          border: '1px solid var(--border)',
+                          background: 'var(--surface)',
+                          color: 'var(--text)',
+                          fontSize: '0.9rem',
+                        }}
+                        value={applyContact}
+                        maxLength={280}
+                        onChange={(e) => setApplyContact(e.target.value)}
+                        autoComplete="off"
+                        placeholder={p.accountOrganizerApplyContactPlaceholder}
+                      />
+                      <label style={{ display: 'block', margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 650 }}>
+                        {p.accountOrganizerApplyPastMatchesLabel}
+                      </label>
+                      <textarea
+                        style={{
+                          display: 'block',
+                          width: '100%',
+                          maxWidth: '28rem',
+                          minHeight: '4.5rem',
+                          boxSizing: 'border-box',
+                          margin: '0 0 0.85rem',
+                          padding: '0.45rem 0.55rem',
+                          borderRadius: '0.45rem',
+                          border: '1px solid var(--border)',
+                          background: 'var(--surface)',
+                          color: 'var(--text)',
+                          fontSize: '0.9rem',
+                          lineHeight: 1.45,
+                          resize: 'vertical',
+                        }}
+                        value={applyPastMatches}
+                        maxLength={2000}
+                        onChange={(e) => setApplyPastMatches(e.target.value)}
+                        placeholder={p.accountOrganizerApplyPastMatchesPlaceholder}
+                      />
+                      {applyError ?
+                        <p role="alert" style={{ margin: '0 0 0.65rem', fontSize: '0.9rem' }}>
+                          {applyError}
+                        </p>
+                      : null}
+                      <button
+                        type="button"
+                        disabled={applyBusy}
+                        className="portal-shell__account-sign-out portal-shell__account-sign-out--block"
+                        style={{ marginTop: 0 }}
+                        onClick={() => void submitOrganizerApplication()}
+                      >
+                        {applyBusy ? p.accountOrganizerApplySubmitting : p.accountOrganizerApplyButton}
+                      </button>
+                    </div>
+                  }
+                </>
+              )}
+            </section>
           : null}
-
-          <ul style={{ margin: '0 0 1.25rem', paddingLeft: '1.25rem', fontSize: '0.95rem', lineHeight: 1.55 }}>
-            {isMatchPortalEnabled() ?
-              <>
-                <li>
-                  <Link to={`/${locale}/matches/my`}>{p.accountPageGoOrganizer}</Link>
-                  {' — '}
-                  <span>{p.accountPageOrganizerExplain}</span>
-                </li>
-                <li>{p.accountPageShooterSoon}</li>
-              </>
-            : (
-              <li>{p.accountPageShooterSoon}</li>
-            )}
-          </ul>
 
           <button type="button" className="portal-shell__account-sign-out portal-shell__account-sign-out--block" onClick={() => void onSignOut()}>
             {p.portalCompactAuthSignOut}
