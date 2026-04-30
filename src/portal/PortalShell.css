@@ -108,3 +108,103 @@
   font-size: 0.875rem;
   color: var(--text-muted, #64748b);
 }
+
+/* Header: logged-in chip + role badges (participant vs organizer) */
+.portal-shell__account {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.6rem;
+  max-width: min(100%, 22rem);
+  font-size: 0.8125rem;
+}
+
+.portal-shell__account-placeholder {
+  color: var(--text-muted, #64748b);
+}
+
+.portal-shell__badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.portal-shell__badge {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--border);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.portal-shell__badge--participant {
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--text-h);
+  border-color: rgba(59, 130, 246, 0.28);
+}
+
+.portal-shell__badge--organizer {
+  background: rgba(34, 197, 94, 0.14);
+  color: #047857;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.portal-shell__badge--blocked {
+  background: rgba(239, 68, 68, 0.1);
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.portal-shell__badge--muted {
+  opacity: 0.65;
+}
+
+.portal-shell__account-email {
+  font-weight: 600;
+  color: var(--text-h);
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal-shell__account-signin-link,
+.portal-shell__account-profile-link {
+  font-weight: 650;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.portal-shell__account-signin-link:hover,
+.portal-shell__account-profile-link:hover {
+  text-decoration: underline;
+}
+
+.portal-shell__account-sign-out {
+  margin: 0;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.45rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.portal-shell__account-sign-out:hover {
+  background: var(--btn-bg);
+}
+
+.portal-shell__account-sign-out--block {
+  display: inline-block;
+  padding: 0.5rem 0.85rem;
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+}

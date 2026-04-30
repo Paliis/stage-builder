@@ -38,6 +38,7 @@ import {
   OrganizerMatchRegistrationsPageLazy,
   OrganizerMatchesListPageLazy,
   PlatformOrganizersPageLazy,
+  PortalAccountPageLazy,
 } from './portal/matchPortalLazyRoutes'
 import { getInitialLocale } from './i18n/storage'
 
@@ -106,6 +107,14 @@ createRoot(document.getElementById('root')!).render(
                   />
                 ) : null}
                 <Route path="hit-factor" element={<HitFactorRoute />} />
+                <Route
+                  path="account"
+                  element={
+                    <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                      <PortalAccountPageLazy />
+                    </Suspense>
+                  }
+                />
                 {isMatchPortalEnabled() ? (
                   <>
                     <Route

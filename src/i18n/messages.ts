@@ -450,6 +450,25 @@ export type MessageTree = {
     organizersSave: string
     organizersSaving: string
     organizersBackHome: string
+    /** Header + `/:locale/account`: explicit session & role badges. */
+    accountHeaderAria: string
+    accountHeaderChecking: string
+    accountHeaderSignIn: string
+    accountHeaderProfile: string
+    accountBadgeParticipant: string
+    accountBadgeParticipantHint: string
+    accountBadgeOrganizerActive: string
+    accountBadgeOrganizerBlocked: string
+    accountBadgeLoading: string
+    accountPageHelmet: string
+    accountPageTitle: string
+    accountAuthHeading: string
+    accountSummaryHeading: string
+    accountSummaryLogin: string
+    accountPageIntroParticipant: string
+    accountPageGoOrganizer: string
+    accountPageOrganizerExplain: string
+    accountPageShooterSoon: string
     /** Organizer: `/matches/my` CRUD MVP. */
     navMyMatches: string
     myMatchesTitle: string
@@ -1207,6 +1226,26 @@ export const ukMessages: MessageTree = {
     organizersSave: 'Зберегти',
     organizersSaving: 'Збереження…',
     organizersBackHome: 'На головну порталу',
+    accountHeaderAria: 'Обліковий запис порталу',
+    accountHeaderChecking: 'Перевірка сесії…',
+    accountHeaderSignIn: 'Увійти',
+    accountHeaderProfile: 'Профіль',
+    accountBadgeParticipant: 'Учасник',
+    accountBadgeParticipantHint: 'Можете реєструватися на опубліковані матчі',
+    accountBadgeOrganizerActive: 'Організатор',
+    accountBadgeOrganizerBlocked: 'Організатор (обмежено)',
+    accountBadgeLoading: '…',
+    accountPageHelmet: 'Обліковий запис — Shooters Tools',
+    accountPageTitle: 'Обліковий запис',
+    accountAuthHeading: 'Вхід',
+    accountSummaryHeading: 'Поточний вхід',
+    accountSummaryLogin: 'Логін:',
+    accountPageIntroParticipant:
+      'Ролі: «Учасник» доступний усім авторизованим користувачам. Маркер організатора з’являється лише після рішення платформи («активний» може керувати матчами; «обмежено» — без прав на створення або зміни). «Очікування» платформи не показуємо в інтерфейсі, щоб не плутати з профілем стрільця.',
+    accountPageGoOrganizer: 'Мої матчі (організатор)',
+    accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
+    accountPageShooterSoon:
+      'Окремий кабінет стрільця (розширений профіль, мої матчі та заявки, збережені класи тощо) з’явиться в наступних оновленнях.',
     navMyMatches: 'Мої матчі',
     myMatchesTitle: 'Мої матчі',
     myMatchesHelmet: 'Мої матчі — Shooters Tools',
@@ -1969,6 +2008,26 @@ export const enMessages: MessageTree = {
     organizersSave: 'Save',
     organizersSaving: 'Saving…',
     organizersBackHome: 'Portal home',
+    accountHeaderAria: 'Portal account',
+    accountHeaderChecking: 'Checking session…',
+    accountHeaderSignIn: 'Sign in',
+    accountHeaderProfile: 'Account',
+    accountBadgeParticipant: 'Participant',
+    accountBadgeParticipantHint: 'You can register for published matches',
+    accountBadgeOrganizerActive: 'Organizer',
+    accountBadgeOrganizerBlocked: 'Organizer (restricted)',
+    accountBadgeLoading: '…',
+    accountPageHelmet: 'Account — Shooters Tools',
+    accountPageTitle: 'Account',
+    accountAuthHeading: 'Sign in',
+    accountSummaryHeading: 'Signed in',
+    accountSummaryLogin: 'Login:',
+    accountPageIntroParticipant:
+      'Roles: “Participant” applies to anyone signed in. The organizer badge only appears once the platform has set your status (“active” can manage matches; “restricted” cannot create or edit as organizer). We do not surface “pending” in the UI to avoid mixing it with the shooter profile.',
+    accountPageGoOrganizer: 'My matches (organizer)',
+    accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
+    accountPageShooterSoon:
+      'A dedicated shooter hub (rich profile, your matches and signup status, saved division/class presets, etc.) will ship in a follow-up iteration.',
     navMyMatches: 'My matches',
     myMatchesTitle: 'My matches',
     myMatchesHelmet: 'My matches — Shooters Tools',

@@ -21,3 +21,7 @@ export const OrganizerMatchRegistrationsPageLazy = lazy(() =>
 export const PlatformOrganizersPageLazy = lazy(() =>
   import('./admin/PlatformOrganizersPage').then((m) => ({ default: m.PlatformOrganizersPage })),
 )
+
+export const PortalAccountPageLazy = lazy(() =>
+  import('./account/PortalAccountPage').then((m) => ({ default: m.PortalAccountPage })),
+)

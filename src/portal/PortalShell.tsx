@@ -7,6 +7,7 @@ import type { Locale } from '../i18n/messages'
 import { SiteFooter } from './SiteFooter'
 import { isMatchPortalEnabled, isRoHelperEnabled } from './featureFlags'
 import { roHelperPath } from '../ro-helper/paths'
+import { PortalHeaderAccount } from './PortalHeaderAccount'
 import './PortalShell.css'
 
 /** Shared shell: header (title + language) + main + sitewide footer — for portal routes only. */
@@ -68,6 +69,7 @@ export function PortalShell() {
               </NavLink>
             ) : null}
           </nav>
+          <PortalHeaderAccount locale={locale} p={p} />
           <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
             <button
               type="button"
