@@ -16,6 +16,9 @@ type MatchDraft = {
   competitor_limit: number
   status: string
   participant_list_visibility: 'open' | 'closed'
+  prematch_enabled: boolean
+  planned_main_squad_count: number
+  planned_prematch_squad_count: number
 }
 
 function defaultStartsLocal(): string {
@@ -60,6 +63,9 @@ export function OrganizerMatchEditPage() {
     competitor_limit: 32,
     status: 'draft',
     participant_list_visibility: 'closed',
+    prematch_enabled: false,
+    planned_main_squad_count: 8,
+    planned_prematch_squad_count: 2,
   }))
   const [saveError, setSaveError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
@@ -77,6 +83,9 @@ export function OrganizerMatchEditPage() {
         competitor_limit: 32,
         status: 'draft',
         participant_list_visibility: 'closed',
+        prematch_enabled: false,
+        planned_main_squad_count: 8,
+        planned_prematch_squad_count: 2,
       })
       return
     }
@@ -94,7 +103,7 @@ export function OrganizerMatchEditPage() {
     void sb
       .from('matches')
       .select(
-        'id, title, description_md, starts_at, location_label, competitor_limit, status, participant_list_visibility, organizer_id',
+        'id, title, description_md, starts_at, location_label, competitor_limit, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count',
       )
       .eq('id', matchId!)
       .maybeSingle()
@@ -120,6 +129,9 @@ export function OrganizerMatchEditPage() {
           competitor_limit: Number(data.competitor_limit) || 32,
           status: data.status ?? 'draft',
           participant_list_visibility: vis,
+          prematch_enabled: Boolean(data.prematch_enabled),
+          planned_main_squad_count: Math.max(1, Number(data.planned_main_squad_count) || 8),
+          planned_prematch_squad_count: Math.max(0, Number(data.planned_prematch_squad_count) || 0),
         })
         setLoadState('loaded')
       })
@@ -153,6 +165,19 @@ export function OrganizerMatchEditPage() {
       return
     }
 
+    const plannedMain = Math.floor(Number(draft.planned_main_squad_count))
+    if (!Number.isFinite(plannedMain) || plannedMain < 1) {
+      setSaveError(p.matchOrgPlannedMainInvalid)
+      return
+    }
+    let plannedPrematch = Math.floor(Number(draft.planned_prematch_squad_count))
+    if (!draft.prematch_enabled) {
+      plannedPrematch = 0
+    } else if (!Number.isFinite(plannedPrematch) || plannedPrematch < 1) {
+      setSaveError(p.matchOrgPlannedPrematchInvalid)
+      return
+    }
+
     const row = {
       organizer_id: user.id,
       title,
@@ -164,6 +189,9 @@ export function OrganizerMatchEditPage() {
       status: draft.status,
       participant_list_visibility: draft.participant_list_visibility,
       ps_match_subtype: 'ipsc',
+      prematch_enabled: draft.prematch_enabled,
+      planned_main_squad_count: plannedMain,
+      planned_prematch_squad_count: plannedPrematch,
     }
 
     setSaving(true)
@@ -335,6 +363,72 @@ export function OrganizerMatchEditPage() {
           />
         </label>
 
+        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={draft.prematch_enabled}
+            onChange={(e) =>
+              setDraft((d) => ({
+                ...d,
+                prematch_enabled: e.target.checked,
+                planned_prematch_squad_count: e.target.checked ? Math.max(1, d.planned_prematch_squad_count) : 0,
+              }))
+            }
+            style={{ width: '1rem', height: '1rem' }}
+          />
+          <span>{p.matchOrgFieldPrematch}</span>
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldPlannedMainSquads}</span>
+          <input
+            type="number"
+            min={1}
+            required
+            value={draft.planned_main_squad_count}
+            onChange={(e) =>
+              setDraft((d) => ({
+                ...d,
+                planned_main_squad_count: Math.max(1, Number(e.target.value) || 1),
+              }))
+            }
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+              maxWidth: '8rem',
+            }}
+          />
+        </label>
+
+        {draft.prematch_enabled ?
+          <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+            <span>{p.matchOrgFieldPlannedPrematchSquads}</span>
+            <input
+              type="number"
+              min={1}
+              required
+              value={draft.planned_prematch_squad_count || 1}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  planned_prematch_squad_count: Math.max(1, Number(e.target.value) || 1),
+                }))
+              }
+              style={{
+                padding: '0.4rem 0.5rem',
+                borderRadius: '0.5rem',
+                border: '1px solid var(--border)',
+                background: 'var(--btn-bg)',
+                color: 'var(--text)',
+                maxWidth: '8rem',
+              }}
+            />
+          </label>
+        : null}
+
         <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           <span>{p.matchOrgFieldDescription}</span>
           <textarea
@@ -432,7 +526,15 @@ export function OrganizerMatchEditPage() {
         ) : null}
       </form>
 
-      {!isNew && validEditId && matchId ? <OrganizerMatchSquadsPanel matchId={matchId} p={p} /> : null}
+      {!isNew && validEditId && matchId ?
+        <OrganizerMatchSquadsPanel
+          matchId={matchId}
+          p={p}
+          prematchEnabled={draft.prematch_enabled}
+          plannedMainSquads={draft.planned_main_squad_count}
+          plannedPrematchSquads={draft.planned_prematch_squad_count}
+        />
+      : null}
     </div>
   )
 }

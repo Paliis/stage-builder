@@ -15,6 +15,7 @@ type MetricRow = {
   squad_taken: number | string
   match_total_registered: number | string
   match_competitor_limit: number
+  squad_phase?: string | null
 }
 
 export type OwnRegistrationRow = {
@@ -29,6 +30,11 @@ type Props = {
   locale: string
   matchUuid: string
   p: Portal
+  prematchEnabled: boolean
+}
+
+function phaseOf(m: MetricRow): 'main' | 'prematch' {
+  return m.squad_phase === 'prematch' ? 'prematch' : 'main'
 }
 
 function num(v: number | string | undefined): number {
@@ -40,7 +46,7 @@ function num(v: number | string | undefined): number {
   return 0
 }
 
-export function MatchPublicRegistrationSection({ locale, matchUuid, p }: Props) {
+export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchEnabled }: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const sb = useMemo(() => getSupabase(), [])
   const configured = isSupabaseConfigured()
@@ -124,6 +130,16 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p }: Props) 
     matchLimit !== undefined &&
     matchLimit > 0 &&
     matchTotal >= matchLimit
+
+  const prematchMetrics = useMemo(
+    () => (metrics ?? []).filter((r) => phaseOf(r) === 'prematch'),
+    [metrics],
+  )
+
+  const mainMetrics = useMemo(
+    () => (metrics ?? []).filter((r) => phaseOf(r) === 'main'),
+    [metrics],
+  )
 
   const spotFreeMap = useMemo(() => {
     const m: Record<string, number> = {}
@@ -242,44 +258,152 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p }: Props) 
           {p.matchDetailRegistrationNoSquads}
         </p>
       : <>
-          <div style={{ overflowX: 'auto', marginBottom: '1rem' }}>
-            <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
-              <thead>
-                <tr>
-                  <th
-                    scope="col"
-                    style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
-                  >
-                    {p.matchDetailRegistrationColSquad}
-                  </th>
-                  <th
-                    scope="col"
-                    style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
-                  >
-                    {p.matchDetailRegistrationColFree}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {metrics.map((r) => {
-                  const cap = Number(r.capacity)
-                  const tk = num(r.squad_taken)
-                  const free = Math.max(0, cap - tk)
-                  const fullRow = free <= 0
-                  return (
-                    <tr key={r.squad_id}>
-                      <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                        {r.squad_label}
-                      </td>
-                      <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                        {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+          {prematchEnabled ?
+            <>
+              <h3
+                style={{
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  margin: '0 0 0.45rem',
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                {p.matchDetailRegistrationPrematchHeading}
+              </h3>
+              {prematchMetrics.length === 0 ?
+                <p style={{ margin: '0 0 1rem', fontSize: '0.92rem' }}>{p.matchDetailRegistrationPrematchEmpty}</p>
+              : <div style={{ overflowX: 'auto', marginBottom: '1rem' }}>
+                  <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
+                        >
+                          {p.matchDetailRegistrationColSquad}
+                        </th>
+                        <th
+                          scope="col"
+                          style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
+                        >
+                          {p.matchDetailRegistrationColFree}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {prematchMetrics.map((r) => {
+                        const cap = Number(r.capacity)
+                        const tk = num(r.squad_taken)
+                        const free = Math.max(0, cap - tk)
+                        const fullRow = free <= 0
+                        return (
+                          <tr key={r.squad_id}>
+                            <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                              {r.squad_label}
+                            </td>
+                            <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                              {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              }
+
+              <h3
+                style={{
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  margin: '0.35rem 0 0.45rem',
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                {p.matchDetailRegistrationMainHeading}
+              </h3>
+              {mainMetrics.length === 0 ?
+                <p style={{ margin: '0 0 1rem', fontSize: '0.92rem' }}>{p.matchDetailRegistrationMainEmpty}</p>
+              : <div style={{ overflowX: 'auto', marginBottom: '1rem' }}>
+                  <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
+                        >
+                          {p.matchDetailRegistrationColSquad}
+                        </th>
+                        <th
+                          scope="col"
+                          style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
+                        >
+                          {p.matchDetailRegistrationColFree}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {mainMetrics.map((r) => {
+                        const cap = Number(r.capacity)
+                        const tk = num(r.squad_taken)
+                        const free = Math.max(0, cap - tk)
+                        const fullRow = free <= 0
+                        return (
+                          <tr key={r.squad_id}>
+                            <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                              {r.squad_label}
+                            </td>
+                            <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                              {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </>
+          : (
+            <div style={{ overflowX: 'auto', marginBottom: '1rem' }}>
+              <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
+                <thead>
+                  <tr>
+                    <th
+                      scope="col"
+                      style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
+                    >
+                      {p.matchDetailRegistrationColSquad}
+                    </th>
+                    <th
+                      scope="col"
+                      style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
+                    >
+                      {p.matchDetailRegistrationColFree}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(metrics ?? []).map((r) => {
+                    const cap = Number(r.capacity)
+                    const tk = num(r.squad_taken)
+                    const free = Math.max(0, cap - tk)
+                    const fullRow = free <= 0
+                    return (
+                      <tr key={r.squad_id}>
+                        <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                          {r.squad_label}
+                        </td>
+                        <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                          {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           {matchFull ?
             <p style={{ margin: '0 0 0.75rem', fontSize: '0.95rem', color: 'var(--text)' }}>
@@ -338,15 +462,21 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p }: Props) 
                           }}
                         >
                           <option value="">{p.matchDetailRegistrationSelectSquad}</option>
-                          {metrics.map((r) => (
-                            <option
-                              key={r.squad_id}
-                              value={r.squad_id}
-                              disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
-                            >
-                              {r.squad_label} ({spotFreeMap[r.squad_id] ?? 0} / {Number(r.capacity)})
-                            </option>
-                          ))}
+                          {metrics.map((r) => {
+                            const phaseLabel =
+                              phaseOf(r) === 'prematch' ?
+                                p.matchDetailRegistrationPhaseShortPrematch
+                              : p.matchDetailRegistrationPhaseShortMain
+                            return (
+                              <option
+                                key={r.squad_id}
+                                value={r.squad_id}
+                                disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
+                              >
+                                [{phaseLabel}] {r.squad_label} ({spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
+                              </option>
+                            )
+                          })}
                         </select>
                       </label>
                       <label style={{ display: 'grid', gap: '0.25rem' }}>

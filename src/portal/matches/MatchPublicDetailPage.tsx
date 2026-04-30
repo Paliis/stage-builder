@@ -19,9 +19,11 @@ type MatchDetailRow = {
   discipline: string
   status: string
   participant_list_visibility: 'open' | 'closed' | null
+  prematch_enabled: boolean | null
 }
 
 type PublicRosterRow = {
+  squad_phase: string | null
   squad_sort: number
   squad_label: string
   display_name: string
@@ -52,7 +54,7 @@ export function MatchPublicDetailPage() {
       const { data, error: qErr } = await sb
         .from('matches')
         .select(
-          'id, title, description_md, starts_at, location_label, competitor_limit, discipline, status, participant_list_visibility',
+          'id, title, description_md, starts_at, location_label, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled',
         )
         .eq('id', matchId)
         .eq('status', 'published')
@@ -211,6 +213,10 @@ export function MatchPublicDetailPage() {
             <dd style={{ margin: 0 }}>{row.competitor_limit}</dd>
           </>
         ) : null}
+        <dt>{p.matchDetailPrematchLabel}</dt>
+        <dd style={{ margin: 0 }}>
+          {row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}
+        </dd>
       </dl>
 
       {row.description_md?.trim() ? (
@@ -219,7 +225,12 @@ export function MatchPublicDetailPage() {
         </section>
       ) : null}
 
-      <MatchPublicRegistrationSection locale={locale} matchUuid={row.id} p={p} />
+      <MatchPublicRegistrationSection
+        locale={locale}
+        matchUuid={row.id}
+        p={p}
+        prematchEnabled={Boolean(row.prematch_enabled)}
+      />
 
       <section style={{ marginTop: '1.75rem', maxWidth: '48rem' }} aria-labelledby="match-participants-heading">
         <h2
@@ -264,6 +275,19 @@ export function MatchPublicDetailPage() {
                     >
                       {p.matchDetailParticipantsColSquad}
                     </th>
+                    {row.prematch_enabled ?
+                      <th
+                        scope="col"
+                        style={{
+                          textAlign: 'left',
+                          padding: '0.5rem 0.6rem',
+                          borderBottom: '1px solid var(--border)',
+                          color: 'var(--text-h)',
+                        }}
+                      >
+                        {p.matchDetailParticipantsColPhase}
+                      </th>
+                    : null}
                     <th
                       scope="col"
                       style={{
@@ -301,10 +325,17 @@ export function MatchPublicDetailPage() {
                 </thead>
                 <tbody>
                   {(roster ?? []).map((r, i) => (
-                    <tr key={`${r.squad_sort}-${r.squad_label}-${i}`}>
+                    <tr key={`${r.squad_phase ?? ''}-${r.squad_sort}-${r.squad_label}-${i}`}>
                       <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
                         {r.squad_label}
                       </td>
+                      {row.prematch_enabled ?
+                        <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
+                          {r.squad_phase === 'prematch' ?
+                            p.matchDetailRegistrationPhaseShortPrematch
+                          : p.matchDetailRegistrationPhaseShortMain}
+                        </td>
+                      : null}
                       <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
                         {r.display_name}
                       </td>

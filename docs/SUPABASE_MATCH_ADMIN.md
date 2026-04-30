@@ -6,6 +6,7 @@
 2. **`supabase/migrations/20260502140000_platform_match_organizers.sql`** (опційно, для власника порталу): **`organizer_status`**, **`portal_platform_admins`**, RPC **`platform_*`**, RLS — **запис у модуль матчів лише якщо статус `active`**.
 3. **`supabase/migrations/20260503120000_match_participant_list_visibility.sql`** — **`participant_list_visibility`** на **`matches`**, RPC **`fetch_public_match_roster`** для публічного ростера без викриття `auth.users`.
 4. **`supabase/migrations/20260504140000_public_match_registration_metrics.sql`** — RPC **`fetch_public_match_registration_metrics`** (лише для **`published`**) — кількість зайнятих місць по скводах і сумарні заявки для публічної форми реєстрації без `SELECT match_registrations` для `anon`.
+5. **`supabase/migrations/20260505120000_match_prematch_squads.sql`** — опційний **прематч** на картці матчу: **`prematch_enabled`**, цільова кількість скводів **`planned_*`**, колонка **`match_squads.squad_phase`** (`main` \| `prematch`); оновлені RPC метрик та публічного ростера.
 
 Передумога: уже застосовано **`20260409120000_shared_stages.sql`** (`shared_stages` потрібен для FK у `match_stage_links`).
 
@@ -28,8 +29,8 @@
 |---------|--------------|
 | **`match_admin_profiles`** | Ім’я для UI (`user_id` = `auth.users`); **`organizer_status`**: `pending` (новий), `active` (може керувати матчами), `blocked` (без запису в модуль). Самостійно змінити статус організатор не може (оновлення колонки лише через платформений RPC). |
 | **`portal_platform_admins`** | `user_id` власника платформи: бачить каталог організаторів і змінює їхній статус через RPC / UI **`/:locale/admin/organizers`** (див. нижче). |
-| **`matches`** | Матч: організатор, дата `starts_at`, місце, ліміт `competitor_limit`, **`participant_list_visibility`** (`open` \| `closed` — чи показувати публічно підтверджених учасників на картці), **`discipline` зараз лише `'shotgun'`**, `ps_match_*` під PSC (nullable), статус draft/published/… |
-| **`match_squads`** | Скводи матчу: `sort_order`, `capacity`, опційний `squad_starts_at`. |
+| **`matches`** | Матч: організатор, дата `starts_at`, місце, ліміт `competitor_limit`, **`participant_list_visibility`**, **`prematch_enabled`**, **`planned_main_squad_count`**, **`planned_prematch_squad_count`** (цільові числа скводів основного дня та прематчу; коли прематч вимкнено — число скводів прематчу зберігається як **0`), **`discipline` зараз лише `'shotgun'`**, `ps_match_*` під PSC (nullable), статус draft/published/… |
+| **`match_squads`** | Скводи матчу: `sort_order`, `capacity`, опційний `squad_starts_at`, **`squad_phase`** — **`main`** (день матчу) або **`prematch`** (напередодні / окремий день для суддів і організаційних стрільців). |
 | **`match_registrations`** | Одна заявка на пару (**match**, **стрілок**): `division`, клас, PF, `categories` JSONB, `status` pending/confirmed/cancelled, `payment_note`, `confirmed_at/by`. |
 | **`match_stage_links`** | Порядок вправ: `share_stage_id` → `shared_stages.id`, `snapshot_meta` JSONB. |
 
@@ -78,7 +79,7 @@
 
 ## Організатор — «Мої матчі»
 
-При **`VITE_ENABLE_MATCH_PORTAL`**: **`/{locale}/matches/my`** — список власних матчів; **`/{locale}/matches/my/new`** — створення; **`/{locale}/matches/my/:matchId`** — редагування полів матчу й **управління скводами** (назва та місткість; видалення — якщо ще немає заявок). Публічна картка — **`/{locale}/matches/:matchId`** (опис блоку реєстрації стрільця — після застосування міграції з **`fetch_public_match_registration_metrics`**). Запис у таблицю **`matches`** доступний активному організатору (**`organizer_status = 'active'`**) згідно з RLS.
+При **`VITE_ENABLE_MATCH_PORTAL`**: **`/{locale}/matches/my`** — список; **`/{locale}/matches/my/new`** — створення; **`/{locale}/matches/my/:matchId`** — картка матчу (у т.ч. **прематч так/ні**, **цільова кількість скводів** для основного дня та для прематчу) і **скводи** з ознакою **день матчу / прематч**. Публічна картка — **`/{locale}/matches/:matchId`**. Запис у **`matches`** — лише активний організатор згідно з RLS.
 
 ---
 

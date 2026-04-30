@@ -366,18 +366,28 @@ export type MessageTree = {
     matchDetailLocationLabel: string
     matchDetailDisciplineLabel: string
     matchDetailLimitLabel: string
+    matchDetailPrematchLabel: string
+    matchDetailPrematchValueYes: string
+    matchDetailPrematchValueNo: string
     /** Public match card: roster block (participant_list_visibility). */
     matchDetailParticipantsHeading: string
     matchDetailParticipantsClosed: string
     matchDetailParticipantsOpenEmpty: string
     matchDetailParticipantsFootnote: string
     matchDetailParticipantsColSquad: string
+    matchDetailParticipantsColPhase: string
     matchDetailParticipantsColName: string
     matchDetailParticipantsColDivision: string
     matchDetailParticipantsColClass: string
     /** When RPC migration not applied yet */
     matchDetailApplyMigrationHint: string
     matchDetailRegistrationHeading: string
+    matchDetailRegistrationPrematchHeading: string
+    matchDetailRegistrationMainHeading: string
+    matchDetailRegistrationPrematchEmpty: string
+    matchDetailRegistrationMainEmpty: string
+    matchDetailRegistrationPhaseShortPrematch: string
+    matchDetailRegistrationPhaseShortMain: string
     matchDetailRegistrationNoSquads: string
     matchDetailRegistrationColSquad: string
     matchDetailRegistrationColFree: string
@@ -472,12 +482,22 @@ export type MessageTree = {
     matchOrgParticipantsListOpen: string
     matchOrgParticipantsListClosed: string
     matchOrgDisciplineShotgunNote: string
+    matchOrgFieldPrematch: string
+    matchOrgFieldPlannedMainSquads: string
+    matchOrgFieldPlannedPrematchSquads: string
+    matchOrgPlannedMainInvalid: string
+    matchOrgPlannedPrematchInvalid: string
     matchOrgEditBadId: string
     matchOrgEditNotFound: string
     matchOrgTitleRequired: string
     matchOrgLimitInvalid: string
     matchOrgSquadsHeading: string
     matchOrgSquadsIntro: string
+    matchOrgSquadsColPhase: string
+    matchOrgSquadsPhaseMain: string
+    matchOrgSquadsPhasePrematch: string
+    matchOrgSquadsPlannedMainLine: string
+    matchOrgSquadsPlannedPrematchLine: string
     matchOrgSquadsColLabel: string
     matchOrgSquadsColCapacity: string
     matchOrgSquadsColTaken: string
@@ -1036,6 +1056,9 @@ export const ukMessages: MessageTree = {
     matchDetailLocationLabel: 'Локація',
     matchDetailDisciplineLabel: 'Дисципліна',
     matchDetailLimitLabel: 'Ліміт учасників',
+    matchDetailPrematchLabel: 'Прематч',
+    matchDetailPrematchValueYes: 'так — окремі скводи за день(-і) до основного матчу',
+    matchDetailPrematchValueNo: 'ні',
     matchDetailParticipantsHeading: 'Учасники',
     matchDetailParticipantsClosed:
       'Список зареєстрованих учасників для цього матчу закритий (налаштування організатора).',
@@ -1044,12 +1067,19 @@ export const ukMessages: MessageTree = {
     matchDetailParticipantsFootnote:
       'Показано лише підтверджені заявки; ім’я — з профілю учасника в порталі, якщо вказано.',
     matchDetailParticipantsColSquad: 'Сквод',
+    matchDetailParticipantsColPhase: 'День',
     matchDetailParticipantsColName: 'Ім’я',
     matchDetailParticipantsColDivision: 'Дивізіон',
     matchDetailParticipantsColClass: 'Клас',
     matchDetailApplyMigrationHint:
-      'Застосуй міграцію `20260504140000_public_match_registration_metrics.sql` у проєкті Supabase (RPC для вільних місць).',
+      'Застосуй останні міграції Supabase з каталогу supabase/migrations (зокрема `20260504140000_public_match_registration_metrics.sql` та `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Реєстрація',
+    matchDetailRegistrationPrematchHeading: 'Прематч',
+    matchDetailRegistrationMainHeading: 'Основний день матчу',
+    matchDetailRegistrationPrematchEmpty: 'Скводи прематчу ще не додані організатором.',
+    matchDetailRegistrationMainEmpty: 'Скводи основного дня ще не додані.',
+    matchDetailRegistrationPhaseShortPrematch: 'Прематч',
+    matchDetailRegistrationPhaseShortMain: 'Матч',
     matchDetailRegistrationNoSquads:
       'Для цього матчу ще не додані скводи. Поверніться пізніше або зв’яжіться з організатором.',
     matchDetailRegistrationColSquad: 'Сквод',
@@ -1146,13 +1176,23 @@ export const ukMessages: MessageTree = {
     matchOrgParticipantsListOpen: 'Відкритий (лише підтверджені)',
     matchOrgParticipantsListClosed: 'Закритий',
     matchOrgDisciplineShotgunNote: 'Дисципліна MVP: shotgun (налаштовується лише на рівні коду БД).',
+    matchOrgFieldPrematch: 'Прематч (стрільба суддів та організаційних стрільців напередодні)',
+    matchOrgFieldPlannedMainSquads: 'Запланована кількість скводів — основний день',
+    matchOrgFieldPlannedPrematchSquads: 'Запланована кількість скводів — прематч',
+    matchOrgPlannedMainInvalid: 'Число скводів на основний день має бути цілим числом ≥ 1.',
+    matchOrgPlannedPrematchInvalid: 'З увімкненим прематчем потрібно ціле число скводів для прематчу ≥ 1.',
     matchOrgEditBadId: 'Некоректне посилання для редагування.',
     matchOrgEditNotFound: 'Матч не знайдено або він не належить до твого облікового запису.',
     matchOrgTitleRequired: 'Заповни назву.',
     matchOrgLimitInvalid: 'Ліміт учасників має бути числом ≥ 1.',
     matchOrgSquadsHeading: 'Скводи',
     matchOrgSquadsIntro:
-      'Додайте хоча б один сквод з місцями — інакше стрільці не зможуть подати заявку на публічній картці. Видалення можливе лише якщо на скводі ще немає заявок.',
+      'Скводи основного дня та прематчу розділені. Для реєстрації на картці має бути хоч один сквод із вільними місцями. Число рядків скводів можете звіряти з цільовими числами в картці матчу.',
+    matchOrgSquadsColPhase: 'День',
+    matchOrgSquadsPhaseMain: 'Основний',
+    matchOrgSquadsPhasePrematch: 'Прематч',
+    matchOrgSquadsPlannedMainLine: 'Основний день: {{current}} / {{planned}} скводів (ціль).',
+    matchOrgSquadsPlannedPrematchLine: 'Прематч: {{current}} / {{planned}} скводів (ціль).',
     matchOrgSquadsColLabel: 'Назва',
     matchOrgSquadsColCapacity: 'Місць',
     matchOrgSquadsColTaken: 'Зайнято',
@@ -1701,6 +1741,9 @@ export const enMessages: MessageTree = {
     matchDetailLocationLabel: 'Location',
     matchDetailDisciplineLabel: 'Discipline',
     matchDetailLimitLabel: 'Competitor limit',
+    matchDetailPrematchLabel: 'Prematch',
+    matchDetailPrematchValueYes: 'yes — separate squad capacity the day(s) before match day',
+    matchDetailPrematchValueNo: 'no',
     matchDetailParticipantsHeading: 'Participants',
     matchDetailParticipantsClosed:
       'The registered participant list is not published for this match (organizer setting).',
@@ -1709,12 +1752,19 @@ export const enMessages: MessageTree = {
     matchDetailParticipantsFootnote:
       'Only confirmed registrations are shown; name comes from the participant profile when set.',
     matchDetailParticipantsColSquad: 'Squad',
+    matchDetailParticipantsColPhase: 'Day',
     matchDetailParticipantsColName: 'Name',
     matchDetailParticipantsColDivision: 'Division',
     matchDetailParticipantsColClass: 'Class',
     matchDetailApplyMigrationHint:
-      'Apply migration `20260504140000_public_match_registration_metrics.sql` in your Supabase project (RPC for open seats).',
+      'Apply the latest migrations from supabase/migrations (including `20260504140000_public_match_registration_metrics.sql` and `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Registration',
+    matchDetailRegistrationPrematchHeading: 'Prematch day',
+    matchDetailRegistrationMainHeading: 'Main match day',
+    matchDetailRegistrationPrematchEmpty: 'No prematch squads configured yet.',
+    matchDetailRegistrationMainEmpty: 'No main-day squads configured yet.',
+    matchDetailRegistrationPhaseShortPrematch: 'Prematch',
+    matchDetailRegistrationPhaseShortMain: 'Match',
     matchDetailRegistrationNoSquads:
       'No squads were added yet. Check back later or contact the match organizer.',
     matchDetailRegistrationColSquad: 'Squad',
@@ -1814,13 +1864,23 @@ export const enMessages: MessageTree = {
     matchOrgParticipantsListClosed: 'Closed',
     matchOrgDisciplineShotgunNote:
       'MVP discipline is shotgun only (stored in DB; not selectable in UI yet).',
+    matchOrgFieldPrematch: 'Prematch (RO/staff shooters the day before match day)',
+    matchOrgFieldPlannedMainSquads: 'Planned squads — main match day',
+    matchOrgFieldPlannedPrematchSquads: 'Planned squads — prematch day',
+    matchOrgPlannedMainInvalid: 'Main-day squad count must be an integer ≥ 1.',
+    matchOrgPlannedPrematchInvalid: 'With prematch enabled, prematch squad count must be an integer ≥ 1.',
     matchOrgEditBadId: 'Invalid edit link.',
     matchOrgEditNotFound: 'Match not found or not owned by you.',
     matchOrgTitleRequired: 'Please enter a title.',
     matchOrgLimitInvalid: 'Competitor limit must be at least 1.',
     matchOrgSquadsHeading: 'Squads',
     matchOrgSquadsIntro:
-      'Add at least one squad with capacity so competitors can sign up from the public page. Squads can be deleted only if they have no registrations.',
+      'Main-day squads and prematch squads are distinct. Competitors pick one squad slot for this match registration. Align row counts below with targets from the match form.',
+    matchOrgSquadsColPhase: 'Day',
+    matchOrgSquadsPhaseMain: 'Main',
+    matchOrgSquadsPhasePrematch: 'Prematch',
+    matchOrgSquadsPlannedMainLine: 'Main day: {{current}} / {{planned}} squads (target).',
+    matchOrgSquadsPlannedPrematchLine: 'Prematch: {{current}} / {{planned}} squads (target).',
     matchOrgSquadsColLabel: 'Label',
     matchOrgSquadsColCapacity: 'Capacity',
     matchOrgSquadsColTaken: 'Taken',
