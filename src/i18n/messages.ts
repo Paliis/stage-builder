@@ -358,6 +358,18 @@ export type MessageTree = {
     portalPublishedMatchesLoadError: string
     /** Footer link from match hub → organizer list (`/matches/my`). */
     matchesPortalOrganizerLink: string
+    portalMatchesHubSearchAria: string
+    portalMatchesHubSearchPlaceholder: string
+    portalMatchesHubDateFrom: string
+    portalMatchesHubDateTo: string
+    portalMatchesHubClearFilters: string
+    portalMatchesHubCalendarPrevAria: string
+    portalMatchesHubCalendarNextAria: string
+    portalMatchesHubMonthJumpLabel: string
+    portalMatchesHubCalendarAria: string
+    /** `formatTemplate`: `{{date}}` → YYYY-MM-DD (local calendar day label). */
+    portalMatchesHubDayButtonAria: string
+    portalMatchesHubNoMatchesFiltered: string
     /** Status badge label — stable / generally available product. */
     badgeLive: string
     /** Status badge label — new / recently launched product. */
@@ -1199,6 +1211,18 @@ export const ukMessages: MessageTree = {
     portalPublishedMatchesEmpty: 'Наразі немає запланованих опублікованих матчів з сьогоднішньої дати.',
     portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
     matchesPortalOrganizerLink: 'Кабінет організатора — мої матчі (управління чернетками й заявками)',
+    portalMatchesHubSearchAria: 'Пошук у списку матчів',
+    portalMatchesHubSearchPlaceholder: 'Пошук за назвою або локацією…',
+    portalMatchesHubDateFrom: 'Від дати',
+    portalMatchesHubDateTo: 'До дати',
+    portalMatchesHubClearFilters: 'Скинути фільтри',
+    portalMatchesHubCalendarPrevAria: 'Попередній місяць',
+    portalMatchesHubCalendarNextAria: 'Наступний місяць',
+    portalMatchesHubMonthJumpLabel: 'Місяць',
+    portalMatchesHubCalendarAria: 'Календар днів із матчами',
+    portalMatchesHubDayButtonAria: 'Фільтр списку за день {{date}}',
+    portalMatchesHubNoMatchesFiltered:
+      'За поточними умовами нічого не знайдено. Змініть пошук, діапазон дат або календар і спробуйте «Скинути фільтри».',
     badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
     badgeNew: '\u041d\u043e\u0432\u0435',
     badgeBeta: 'Beta',
@@ -2054,6 +2078,18 @@ export const enMessages: MessageTree = {
     portalPublishedMatchesEmpty: 'No published matches scheduled from today onward yet.',
     portalPublishedMatchesLoadError: 'Could not load the matches list',
     matchesPortalOrganizerLink: 'Organizer dashboard — my matches (drafts and registrations)',
+    portalMatchesHubSearchAria: 'Search matches in the list',
+    portalMatchesHubSearchPlaceholder: 'Search by title or location…',
+    portalMatchesHubDateFrom: 'From date',
+    portalMatchesHubDateTo: 'To date',
+    portalMatchesHubClearFilters: 'Clear filters',
+    portalMatchesHubCalendarPrevAria: 'Previous month',
+    portalMatchesHubCalendarNextAria: 'Next month',
+    portalMatchesHubMonthJumpLabel: 'Month',
+    portalMatchesHubCalendarAria: 'Calendar of days with matches',
+    portalMatchesHubDayButtonAria: 'Filter list to {{date}}',
+    portalMatchesHubNoMatchesFiltered:
+      'Nothing matches these filters yet. Adjust search or dates, or tap "Clear filters".',
     badgeLive: 'Live',
     badgeNew: 'New',
     badgeBeta: 'Beta',
