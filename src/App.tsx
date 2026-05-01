@@ -51,7 +51,11 @@ import { summarizeTargetsDescriptionFromScene } from './domain/targetSummary'
 import { useI18n } from './i18n/useI18n'
 import { CANONICAL_PRODUCTION_ORIGIN } from './seo/canonicalProductionOrigin'
 import { formatTemplate } from './i18n/format'
-import { defaultStageBriefing, type BriefingPdfLabels } from './domain/stageBriefing'
+import {
+  BRIEFING_SCENE_SYNC_POINTS_PER_SCORING_HIT,
+  defaultStageBriefing,
+  type BriefingPdfLabels,
+} from './domain/stageBriefing'
 import { StageBuilderToolbar } from './presentation/components/StageBuilderToolbar'
 import { type StageCanvasHandle, StageCanvas } from './presentation/components/StageCanvas'
 import { StageMinimap } from './presentation/components/StageMinimap'
@@ -456,6 +460,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     setBriefing({
       targetsDescription: summarizeTargetsDescriptionFromScene(targets, props, activations, locale),
       recommendedShots: String(minRounds),
+      maxPoints: String(minRounds * BRIEFING_SCENE_SYNC_POINTS_PER_SCORING_HIT),
     })
   }
 

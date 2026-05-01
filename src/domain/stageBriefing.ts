@@ -1,5 +1,10 @@
 import type { StageCategory } from './models'
 
+/**
+ * Підстановка з сцени: макс. очки = мін. залікові постріли × це значення (залік «А» IPSC-стилю).
+ */
+export const BRIEFING_SCENE_SYNC_POINTS_PER_SCORING_HIT = 5
+
 /** Поля таблиці брифінгу, як у класифікаційних вправах (PDF). */
 export type StageBriefing = {
   documentTitle: string

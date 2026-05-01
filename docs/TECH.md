@@ -100,7 +100,7 @@
 
 - **`targetSpecs.ts`** — `isPaperTargetType`, `isPaperTwoPostTargetType` (паперова палітра — лише типи з двома стійками), `isCeramicTargetType`, `isSquareSteelPlateTargetType`, тощо. Кріплення: `paperIpscTwoPostStandAnchorsLocalM`, `paperA4TwoPostStandAnchorsLocalM`, `paperMiniIpscTwoPostStandAnchorsLocalM` або узагальнено `paperTwoPostStandAnchorsLocalM(type)`; на 2D — `targetPaperTwoPostStickIndicatorsWorld` (уздовж локального «низу» лиця).
 - **`computeMinRounds.ts`** — евристика мінімуму пострілів (папір ×2, сталь/кераміка ×1; подвійний ківак = дві одиниці).
-- **`targetSummary.ts`** — текст для брифінгу/PDF (метал, кераміка, папір, NS).
+- **`targetSummary.ts`** — текст для брифінгу/PDF (метал, кераміка, папір, NS). Кнопка «підставити з сцени» в `App.tsx` оновлює `targetsDescription`, `recommendedShots` і **`maxPoints` = `computeMinRounds` × `BRIEFING_SCENE_SYNC_POINTS_PER_SCORING_HIT`** (5 очок на заліковий постріл, IPSC-стиль «А»).
 - **`countStageTargetUnits`** — одиниці на плані для підказок UI.
 
 ## Домен: реквізит
