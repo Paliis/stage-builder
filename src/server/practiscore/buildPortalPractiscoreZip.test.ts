@@ -100,7 +100,7 @@ describe('buildPortalPractiscoreZip', () => {
         {
           sort_order: 0,
           snapshot_meta: null,
-          psc_metrics: { stage_poppers: 4, stage_numtargs: 3, stage_noshoots: true },
+          psc_metrics: { stage_poppers: 4, stage_numtargs: 3, stage_noshoots: true, stage_poppers_maxnpms: 0 },
         },
         { sort_order: 1, snapshot_meta: null },
       ],
@@ -109,13 +109,19 @@ describe('buildPortalPractiscoreZip', () => {
     if (!r.ok) throw new Error('expected ok')
 
     const def = JSON.parse(strFromU8(unzipSync(r.bytes)['match_def.json']!)) as {
-      match_stages: { stage_poppers: number; stage_numtargs: number; stage_noshoots: boolean }[]
+      match_stages: {
+        stage_poppers: number
+        stage_numtargs: number
+        stage_noshoots: boolean
+        stage_poppers_maxnpms: number
+      }[]
     }
 
     expect(def.match_stages[0]).toMatchObject({
       stage_poppers: 4,
       stage_numtargs: 3,
       stage_noshoots: true,
+      stage_poppers_maxnpms: 0,
     })
     expect(def.match_stages[1]).toMatchObject({
       stage_poppers: 8,
@@ -134,6 +140,10 @@ describe('helpers', () => {
   it('splitDisplayName', () => {
     expect(splitDisplayName('A')).toEqual({ sh_fn: 'A', sh_ln: '' })
     expect(splitDisplayName('Ann B. Core')).toEqual({ sh_fn: 'Ann', sh_ln: 'B. Core' })
+    expect(splitDisplayName('Oleksandr Kovtun')).toEqual({ sh_fn: 'Oleksandr', sh_ln: 'Kovtun' })
+    expect(splitDisplayName('Іваненко Тарас')).toEqual({ sh_ln: 'Іваненко', sh_fn: 'Тарас' })
+    expect(splitDisplayName('Іваненко, Тарас')).toEqual({ sh_ln: 'Іваненко', sh_fn: 'Тарас' })
+    expect(splitDisplayName('Іваненко Тарас (Скв. 1 №1)')).toEqual({ sh_ln: 'Іваненко', sh_fn: 'Тарас' })
   })
 
   it('normalizePowerFactor', () => {

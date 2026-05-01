@@ -22,7 +22,7 @@ describe('computePscStageMetrics', () => {
         t({ type: 'miniPopper' }),
         t({ type: 'popper', isNoShoot: true }),
       ]),
-    ).toEqual({ stage_poppers: 2, stage_numtargs: 0, stage_noshoots: true })
+    ).toEqual({ stage_poppers: 2, stage_numtargs: 0, stage_noshoots: true, stage_poppers_maxnpms: 0 })
   })
 
   it('counts paper and double swinger paper as two units', () => {
@@ -31,6 +31,16 @@ describe('computePscStageMetrics', () => {
         t({ type: 'paperIpscTwoPostStand100' }),
         t({ type: 'swingerDoublePaper' }),
       ]),
-    ).toEqual({ stage_poppers: 0, stage_numtargs: 3, stage_noshoots: false })
+    ).toEqual({ stage_poppers: 0, stage_numtargs: 3, stage_noshoots: false, stage_poppers_maxnpms: 0 })
+  })
+
+  it('counts metal/ceramic plates into stage_poppers_maxnpms and ceramic swingers', () => {
+    expect(
+      computePscStageMetrics([
+        t({ type: 'metalPlate' }),
+        t({ type: 'ceramicPlate' }),
+        t({ id: 's', type: 'swingerDoubleCeramic' }),
+      ]),
+    ).toEqual({ stage_poppers: 0, stage_numtargs: 0, stage_noshoots: false, stage_poppers_maxnpms: 4 })
   })
 })

@@ -59,11 +59,45 @@ export function snapshotTitle(meta: Record<string, unknown> | null, fallbackSort
   return `Stage ${fallbackSort + 1}`
 }
 
+/** Strips trailing "(Скв. 2 №3)" style hints sometimes stored in portal display_name (not real PSC fields). */
+const PORTAL_SQUAD_HINT_PAREN_TAIL =
+  /\s*\(\s*[СCcс][кКk]?[ВBbв]?\.?\s*\d+[\s\S]*?[№#]\s*\d+[\s\S]*?\)\s*$/iu
+
+function stripPortalSquadHintSuffix(raw: string): string {
+  let s = raw.trim()
+  while (PORTAL_SQUAD_HINT_PAREN_TAIL.test(s)) {
+    s = s.replace(PORTAL_SQUAD_HINT_PAREN_TAIL, '').trim()
+  }
+  return s
+}
+
+function tokenLooksCyrillic(t: string): boolean {
+  return /[\u0400-\u04FF]/.test(t)
+}
+
+/**
+ * PSC uses `sh_ln` = family name, `sh_fn` = given name (`matchDefRoundtripTemplate.json`).
+ * Portal profiles often store "Прізвище Ім'я"; optional Western "Given Family" also appears.
+ */
 export function splitDisplayName(displayName: string | null | undefined): { sh_fn: string; sh_ln: string } {
-  const raw = typeof displayName === 'string' ? displayName.trim() : ''
-  if (!raw) return { sh_fn: 'Shooter', sh_ln: '' }
-  const parts = raw.split(/\s+/).filter(Boolean)
+  const cleaned = stripPortalSquadHintSuffix(typeof displayName === 'string' ? displayName : '')
+  if (!cleaned) return { sh_fn: 'Shooter', sh_ln: '' }
+
+  const comma = cleaned.indexOf(',')
+  if (comma > 0) {
+    const sh_ln = cleaned.slice(0, comma).trim()
+    const sh_fn = cleaned.slice(comma + 1).trim()
+    if (sh_ln && sh_fn) return { sh_fn, sh_ln }
+  }
+
+  const parts = cleaned.split(/\s+/).filter(Boolean)
   if (parts.length === 1) return { sh_fn: parts[0]!, sh_ln: '' }
+
+  const allCyrillic = parts.every(tokenLooksCyrillic)
+  if (allCyrillic) {
+    return { sh_ln: parts[0]!, sh_fn: parts.slice(1).join(' ') }
+  }
+
   return { sh_fn: parts[0]!, sh_ln: parts.slice(1).join(' ') }
 }
 
@@ -128,6 +162,7 @@ export function buildPortalPractiscoreZip(params: {
       merged.stage_poppers = link.psc_metrics.stage_poppers
       merged.stage_numtargs = link.psc_metrics.stage_numtargs
       merged.stage_noshoots = link.psc_metrics.stage_noshoots
+      merged.stage_poppers_maxnpms = link.psc_metrics.stage_poppers_maxnpms
     }
     return merged
   })

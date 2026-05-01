@@ -22580,11 +22580,32 @@ function snapshotTitle(meta, fallbackSort) {
   if (t) return t.slice(0, 280);
   return `Stage ${fallbackSort + 1}`;
 }
+var PORTAL_SQUAD_HINT_PAREN_TAIL = /\s*\(\s*[СCcс][кКk]?[ВBbв]?\.?\s*\d+[\s\S]*?[№#]\s*\d+[\s\S]*?\)\s*$/iu;
+function stripPortalSquadHintSuffix(raw) {
+  let s = raw.trim();
+  while (PORTAL_SQUAD_HINT_PAREN_TAIL.test(s)) {
+    s = s.replace(PORTAL_SQUAD_HINT_PAREN_TAIL, "").trim();
+  }
+  return s;
+}
+function tokenLooksCyrillic(t) {
+  return /[\u0400-\u04FF]/.test(t);
+}
 function splitDisplayName(displayName) {
-  const raw = typeof displayName === "string" ? displayName.trim() : "";
-  if (!raw) return { sh_fn: "Shooter", sh_ln: "" };
-  const parts = raw.split(/\s+/).filter(Boolean);
+  const cleaned = stripPortalSquadHintSuffix(typeof displayName === "string" ? displayName : "");
+  if (!cleaned) return { sh_fn: "Shooter", sh_ln: "" };
+  const comma = cleaned.indexOf(",");
+  if (comma > 0) {
+    const sh_ln = cleaned.slice(0, comma).trim();
+    const sh_fn = cleaned.slice(comma + 1).trim();
+    if (sh_ln && sh_fn) return { sh_fn, sh_ln };
+  }
+  const parts = cleaned.split(/\s+/).filter(Boolean);
   if (parts.length === 1) return { sh_fn: parts[0], sh_ln: "" };
+  const allCyrillic = parts.every(tokenLooksCyrillic);
+  if (allCyrillic) {
+    return { sh_ln: parts[0], sh_fn: parts.slice(1).join(" ") };
+  }
   return { sh_fn: parts[0], sh_ln: parts.slice(1).join(" ") };
 }
 function normalizePowerFactor(v) {
@@ -22628,6 +22649,7 @@ function buildPortalPractiscoreZip(params) {
       merged.stage_poppers = link.psc_metrics.stage_poppers;
       merged.stage_numtargs = link.psc_metrics.stage_numtargs;
       merged.stage_noshoots = link.psc_metrics.stage_noshoots;
+      merged.stage_poppers_maxnpms = link.psc_metrics.stage_poppers_maxnpms;
     }
     return merged;
   });
@@ -23158,19 +23180,39 @@ function parseStageProjectJson(text) {
 }
 
 // src/domain/pscStageMetrics.ts
+function isMetalRectPlateType(type) {
+  return type === "metalPlate" || type === "metalPlateStand50" || type === "metalPlateStand100";
+}
+function isCeramicPlateType(type) {
+  return type === "ceramicPlate";
+}
+function isSwingerCeramicType(type) {
+  return type === "swingerSingleCeramic" || type === "swingerDoubleCeramic";
+}
 function computePscStageMetrics(targets) {
   let poppers = 0;
   let paperUnits = 0;
+  let steelNpmApprox = 0;
   let hasNoShoot = false;
   for (const t of targets) {
     if (t.isNoShoot) hasNoShoot = true;
     const faces = swingerTargetFaceCount(t.type);
     if (faces > 0) {
-      if (swingerIsPaperLoad(t.type)) paperUnits += faces;
+      if (swingerIsPaperLoad(t.type)) {
+        paperUnits += faces;
+        continue;
+      }
+      if (isSwingerCeramicType(t.type) && !t.isNoShoot) {
+        steelNpmApprox += faces;
+      }
       continue;
     }
     if (t.type === "popper" || t.type === "miniPopper") {
       if (!t.isNoShoot) poppers += 1;
+      continue;
+    }
+    if (isMetalRectPlateType(t.type) || isCeramicPlateType(t.type)) {
+      if (!t.isNoShoot) steelNpmApprox += 1;
       continue;
     }
     if (isPaperTargetType(t.type)) {
@@ -23180,7 +23222,8 @@ function computePscStageMetrics(targets) {
   return {
     stage_poppers: poppers,
     stage_numtargs: paperUnits,
-    stage_noshoots: hasNoShoot
+    stage_noshoots: hasNoShoot,
+    stage_poppers_maxnpms: steelNpmApprox
   };
 }
 
