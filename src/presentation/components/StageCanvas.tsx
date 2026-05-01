@@ -1709,6 +1709,97 @@ function drawPenaltyZones(ctx: CanvasRenderingContext2D, tf: ViewTransform, pz: 
   }
 }
 
+/** Попередній відрізок до наступної вершини контуру: поділки (крок сітки), довжина. */
+function drawPenaltyContourRubberRuler(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  lastWorld: Vec2,
+  hoverWorld: Vec2,
+  formatMeasureDistance: (m: number) => string,
+) {
+  const lenM = Math.hypot(hoverWorld.x - lastWorld.x, hoverWorld.y - lastWorld.y)
+  if (lenM < 1e-8) return
+
+  const ux = (hoverWorld.x - lastWorld.x) / lenM
+  const uy = (hoverWorld.y - lastWorld.y) / lenM
+  const sa = worldToScreen(lastWorld.x, lastWorld.y, tf)
+  const sb = worldToScreen(hoverWorld.x, hoverWorld.y, tf)
+
+  ctx.save()
+  ctx.lineCap = 'round'
+  ctx.setLineDash([5, 5])
+  ctx.strokeStyle = 'rgba(220, 38, 38, 0.82)'
+  ctx.lineWidth = 1.85
+  ctx.beginPath()
+  ctx.moveTo(sa.x, sa.y)
+  ctx.lineTo(sb.x, sb.y)
+  ctx.stroke()
+  ctx.setLineDash([])
+
+  const vtx = sb.x - sa.x
+  const vty = sb.y - sa.y
+  const slenScr = Math.hypot(vtx, vty)
+  if (slenScr > 1e-6) {
+    const nx = -vty / slenScr
+    const ny = vtx / slenScr
+    const minorPx = Math.max(3.2, 0.08 * tf.pxPerMeter)
+    const majorPx = Math.max(5.8, 0.14 * tf.pxPerMeter)
+    const step = GRID_SNAP_M
+    for (let s = step; s < lenM - 1e-9; s += step) {
+      const wx = lastWorld.x + ux * s
+      const wy = lastWorld.y + uy * s
+      const pc = worldToScreen(wx, wy, tf)
+      const isWholeMeter = Math.abs(s - Math.round(s)) < 1e-5
+      const tickHalf = isWholeMeter ? majorPx : minorPx
+      ctx.strokeStyle = isWholeMeter ? 'rgba(127, 29, 29, 0.92)' : 'rgba(185, 55, 55, 0.75)'
+      ctx.lineWidth = isWholeMeter ? 1.35 : 1.05
+      ctx.beginPath()
+      ctx.moveTo(pc.x - nx * tickHalf * 0.5, pc.y - ny * tickHalf * 0.5)
+      ctx.lineTo(pc.x + nx * tickHalf * 0.5, pc.y + ny * tickHalf * 0.5)
+      ctx.stroke()
+    }
+  }
+
+  const rEnd = Math.max(3.8, 0.09 * tf.pxPerMeter)
+  ctx.fillStyle = 'rgba(248, 113, 113, 0.35)'
+  ctx.strokeStyle = 'rgba(185, 28, 28, 0.9)'
+  ctx.lineWidth = 1.5
+  ctx.beginPath()
+  ctx.arc(sb.x, sb.y, rEnd, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.stroke()
+
+  const distanceLabel = formatMeasureDistance(lenM)
+  const mx = (sa.x + sb.x) / 2
+  const my = (sa.y + sb.y) / 2
+  const offPx = Math.max(12, 0.08 * tf.pxPerMeter)
+  const sxLen = vtx / (slenScr || 1)
+  const syLen = vty / (slenScr || 1)
+  const lx = -syLen * offPx
+  const ly = sxLen * offPx
+  const tx = mx + lx
+  const ty = my + ly
+
+  ctx.font = `${Math.max(10, Math.round(12 * Math.sqrt(tf.pxPerMeter / 14)))}px system-ui, sans-serif`
+  const tw = ctx.measureText(distanceLabel).width
+  const pad = 6
+  ctx.fillStyle = 'rgba(254, 242, 242, 0.97)'
+  ctx.strokeStyle = 'rgba(153, 27, 27, 0.5)'
+  ctx.lineWidth = 1
+  const bx = tx - tw / 2 - pad
+  const by = ty - 10 - pad * 0.75
+  const bw = tw + pad * 2
+  const bh = 20 + pad * 0.65
+  ctx.fillRect(bx, by, bw, bh)
+  ctx.strokeRect(bx, by, bw, bh)
+  ctx.fillStyle = 'rgba(88, 18, 18, 0.98)'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(distanceLabel, tx, ty)
+
+  ctx.restore()
+}
+
 function drawPenaltyDraftPolyline(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
@@ -1923,6 +2014,7 @@ function redraw(
   formatMeasureDistance: (m: number) => string,
   penaltyZoneSet: PenaltyZoneSet,
   penaltyDraftVertices: readonly Vec2[] | null,
+  penaltyContourHoverSnap: Vec2 | null,
   activations: readonly ActivationEdge[],
   activationNumMap: Map<string, number>,
   activationPendingFrom: StageEntityRef | null,
@@ -1955,6 +2047,15 @@ function redraw(
   drawPenaltyZones(ctx, tf, penaltyZoneSet)
   if (penaltyDraftVertices && penaltyDraftVertices.length > 0) {
     drawPenaltyDraftPolyline(ctx, tf, penaltyDraftVertices)
+    if (penaltyContourHoverSnap) {
+      drawPenaltyContourRubberRuler(
+        ctx,
+        tf,
+        penaltyDraftVertices[penaltyDraftVertices.length - 1]!,
+        penaltyContourHoverSnap,
+        formatMeasureDistance,
+      )
+    }
   }
 
   const parsedAngles = parseSafetyAngles(safetyAnglesText)
@@ -2362,6 +2463,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   const gridHoverRef = useRef<Vec2 | null>(null)
   /** Останні світові координати над планом для вставки копії (оновлення при русі над канвою). */
   const pastePointerWorldRef = useRef<Vec2 | null>(null)
+  /** Прив’язаний «наступний» вузол контуру штрафної зони (для лінійки до кліку). */
+  const penaltyContourHoverSnapRef = useRef<Vec2 | null>(null)
   const viewPanDragRef = useRef<ViewPanDragState | null>(null)
   /** ЛКМ по порожньому полю при zoom: очікування руху — або скасування виділення, або панорама. */
   const pendingEmptyPanRef = useRef<PendingEmptyPan | null>(null)
@@ -2466,6 +2569,47 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     [fw, fh],
   )
 
+  const syncPenaltyContourDraftHover = useCallback((clientX: number, clientY: number): boolean => {
+    const clearHover = (): boolean => {
+      const had = penaltyContourHoverSnapRef.current !== null
+      penaltyContourHoverSnapRef.current = null
+      return had
+    }
+    if (
+      !placementArmed ||
+      !penaltyDraftVertices ||
+      penaltyDraftVertices.length === 0 ||
+      measureToolActive ||
+      dragRef.current ||
+      marqueeDragRef.current ||
+      viewPanDragRef.current
+    ) {
+      return clearHover()
+    }
+    const canvas = canvasRef.current
+    if (!canvas) return clearHover()
+    const rect = canvas.getBoundingClientRect()
+    const sx = clientX - rect.left
+    const sy = clientY - rect.top
+    if (sx < 0 || sy < 0 || sx > rect.width || sy > rect.height) {
+      return clearHover()
+    }
+    const t = transformRef.current
+    if (Math.abs(t.fieldWidthM - fw) > 1e-6 || Math.abs(t.fieldHeightM - fh) > 1e-6) return clearHover()
+    const wRaw = screenToWorld(sx, sy, t)
+    const snapped = snapVec2(clampVec2ToField(wRaw, 1, fw, fh))
+    const prev = penaltyContourHoverSnapRef.current
+    if (
+      prev &&
+      Math.abs(prev.x - snapped.x) < 1e-7 &&
+      Math.abs(prev.y - snapped.y) < 1e-7
+    ) {
+      return false
+    }
+    penaltyContourHoverSnapRef.current = { x: snapped.x, y: snapped.y }
+    return true
+  }, [placementArmed, penaltyDraftVertices, fw, fh, measureToolActive])
+
   const [spaceHeld, setSpaceHeld] = useState(false)
   const [isPanningView, setIsPanningView] = useState(false)
   const [measurePoints, setMeasurePoints] = useState<{ a: Vec2 | null; b: Vec2 | null }>({
@@ -2525,6 +2669,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         formatMeasureDistance,
         penaltyZoneSet,
         penaltyDraftVertices,
+        penaltyContourHoverSnapRef.current,
         activations,
         activationNumMap,
         activationPendingFrom,
@@ -2550,6 +2695,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     measurePoints.b,
     measureToolActive,
     formatMeasureDistance,
+    placementArmed,
     penaltyZoneSet,
     penaltyDraftVertices,
     activations,
@@ -2660,6 +2806,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     viewPanRef.current = { x: 0, y: 0 }
     gridHoverRef.current = null
     pastePointerWorldRef.current = null
+    penaltyContourHoverSnapRef.current = null
     repaint()
   }, [fw, fh, repaint])
 
@@ -3297,6 +3444,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const sx = ev.clientX - rect.left
     const sy = ev.clientY - rect.top
     syncPastePointerWorld(ev.clientX, ev.clientY)
+    if (syncPenaltyContourDraftHover(ev.clientX, ev.clientY)) repaint()
 
     const mq = marqueeDragRef.current
     if (mq && ev.pointerId === mq.pointerId) {
@@ -3731,10 +3879,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
   const onPointerLeave = () => {
     pastePointerWorldRef.current = null
+    penaltyContourHoverSnapRef.current = null
     if (gridHoverRef.current) {
       gridHoverRef.current = null
-      repaint()
     }
+    repaint()
   }
 
   const canvasCursor = isPanningView
