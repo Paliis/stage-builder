@@ -100,7 +100,7 @@ describe('buildPortalPractiscoreZip', () => {
         {
           sort_order: 0,
           snapshot_meta: null,
-          psc_metrics: { stage_poppers: 4, stage_numtargs: 3, stage_noshoots: true, stage_poppers_maxnpms: 0 },
+          psc_metrics: { stage_poppers: 4, stage_numtargs: 3, stage_noshoots: true },
         },
         { sort_order: 1, snapshot_meta: null },
       ],
@@ -121,13 +121,71 @@ describe('buildPortalPractiscoreZip', () => {
       stage_poppers: 4,
       stage_numtargs: 3,
       stage_noshoots: true,
-      stage_poppers_maxnpms: 0,
     })
+    expect(def.match_stages[0]!.stage_poppers_maxnpms).toBe(2)
     expect(def.match_stages[1]).toMatchObject({
       stage_poppers: 8,
       stage_numtargs: 0,
       stage_noshoots: true,
     })
+    expect(def.match_stages[1]!.stage_poppers_maxnpms).toBe(2)
+  })
+
+  it('maps prematch squads to high PSC labels (≥11); main keeps 1..n', () => {
+    const r = buildPortalPractiscoreZip({
+      match: {
+        title: 'M',
+        starts_at: '2026-05-02T12:00:00.000Z',
+        ps_match_type: null,
+        ps_match_subtype: null,
+      },
+      squads: [
+        { id: 'pr0', sort_order: 0, squad_phase: 'prematch' },
+        { id: 'ma0', sort_order: 0, squad_phase: 'main' },
+        { id: 'ma1', sort_order: 1, squad_phase: 'main' },
+      ],
+      registrations: [
+        {
+          squad_id: 'ma1',
+          competitor_user_id: 'mainU',
+          division: 'Modified',
+          classification_grade: 'U',
+          power_factor: 'MINOR',
+          created_at: '2026-04-03T12:00:00.000Z',
+        },
+        {
+          squad_id: 'pr0',
+          competitor_user_id: 'preU',
+          division: 'Modified',
+          classification_grade: 'U',
+          power_factor: 'MINOR',
+          created_at: '2026-04-02T12:00:00.000Z',
+        },
+        {
+          squad_id: 'unknown-squad',
+          competitor_user_id: 'fallbackU',
+          division: 'Modified',
+          classification_grade: 'U',
+          power_factor: 'MINOR',
+          created_at: '2026-04-04T12:00:00.000Z',
+        },
+      ],
+      displayNameByUserId: new Map([
+        ['mainU', 'Oleksandr Kovtun'],
+        ['preU', 'Jane Smith'],
+        ['fallbackU', 'Ann Core'],
+      ]),
+      stageLinks: [{ sort_order: 0, snapshot_meta: null }],
+    })
+    expect(r.ok).toBe(true)
+    if (!r.ok) throw new Error('expected ok')
+    const def = JSON.parse(strFromU8(unzipSync(r.bytes)['match_def.json']!)) as {
+      match_shooters: { sh_fn: string; sh_sqd: number }[]
+    }
+    const byFn = Object.fromEntries(def.match_shooters.map((s) => [s.sh_fn, s.sh_sqd]))
+    expect(byFn['Oleksandr']).toBe(1)
+    expect(byFn['Jane']).toBe(11 - 1)
+    expect(byFn['Ann']).toBe(11 - 1)
   })
 })
 

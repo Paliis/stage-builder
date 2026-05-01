@@ -7,10 +7,19 @@ import { randomBytes, randomUUID } from 'node:crypto'
 import { strToU8, zipSync } from 'fflate'
 
 import type { PscStageMetrics } from '../../domain/pscStageMetrics'
+import {
+  buildSquadIdToPsShSqdMap,
+  prematchSquadDisplayStart,
+  type PortalSquadRowForPsc,
+} from '../../domain/pscSquadNumbers'
 import matchDefRoundtripTemplate from './matchDefRoundtripTemplate.json' with { type: 'json' }
 import matchScoresRoundtripTemplate from './matchScoresRoundtripTemplate.json' with { type: 'json' }
 
-export type PortalSquadsRow = { id: string; sort_order: number }
+export type { PortalSquadRowForPsc }
+
+function isPrematchPhase(row: PortalSquadRowForPsc): boolean {
+  return (row.squad_phase ?? 'main').trim().toLowerCase() === 'prematch'
+}
 
 export type PortalRegistrationRow = {
   squad_id: string
@@ -119,7 +128,7 @@ export type BuildPortalPractiscoreZipResult =
 
 export function buildPortalPractiscoreZip(params: {
   match: PortalMatchPsFields
-  squads: PortalSquadsRow[]
+  squads: PortalSquadRowForPsc[]
   registrations: PortalRegistrationRow[]
   displayNameByUserId: ReadonlyMap<string, string | null | undefined>
   stageLinks: PortalStageLinkRow[]
@@ -129,11 +138,15 @@ export function buildPortalPractiscoreZip(params: {
     return { ok: false, reason: 'no_stages', message: 'Add at least one stage (share link) before export.' }
   }
 
-  const orderedSquads = [...params.squads].sort((a, b) => a.sort_order - b.sort_order)
-  const squadIndexById = new Map<string, number>()
-  orderedSquads.forEach((s, i) => {
-    squadIndexById.set(s.id, i)
-  })
+  const squadIdToPsSh = buildSquadIdToPsShSqdMap(params.squads)
+  const prematchSquadSlots = params.squads.filter(isPrematchPhase).length
+  const pmDisplayStart = prematchSquadDisplayStart(params.squads.length)
+  let synthPremSlot = 0
+  const fallbackPrematchSh = (): number => {
+    const j = synthPremSlot % Math.max(prematchSquadSlots, 1)
+    synthPremSlot += 1
+    return pmDisplayStart + j - 1
+  }
 
   const defTpl = deepCloneJson(matchDefRoundtripTemplate) as JsonObject & {
     match_stages?: JsonObject[]
@@ -162,7 +175,6 @@ export function buildPortalPractiscoreZip(params: {
       merged.stage_poppers = link.psc_metrics.stage_poppers
       merged.stage_numtargs = link.psc_metrics.stage_numtargs
       merged.stage_noshoots = link.psc_metrics.stage_noshoots
-      merged.stage_poppers_maxnpms = link.psc_metrics.stage_poppers_maxnpms
     }
     return merged
   })
@@ -174,8 +186,13 @@ export function buildPortalPractiscoreZip(params: {
   const matchShooters = regs.map((r, idx) => {
     const dn = params.displayNameByUserId.get(r.competitor_user_id)
     const names = splitDisplayName(dn)
-    const squadIdxRaw = squadIndexById.get(r.squad_id)
-    const shSqd = typeof squadIdxRaw === 'number' ? squadIdxRaw : 0
+    const mappedSh = squadIdToPsSh.get(r.squad_id)
+    const shSqd =
+      typeof mappedSh === 'number'
+        ? mappedSh
+        : prematchSquadSlots > 0
+          ? fallbackPrematchSh()
+          : 0
     const merged: JsonObject = { ...shooter0 }
     merged.sh_uuid = randomUUID()
     merged.sh_uid = merged.sh_uuid

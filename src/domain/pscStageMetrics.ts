@@ -2,16 +2,13 @@ import type { Target, TargetType } from './models'
 import { swingerIsPaperLoad, swingerTargetFaceCount } from './swingerGeometry'
 import { isPaperTargetType } from './targetSpecs'
 
-/** PractiScore match_stages fields we can derive from Stage Builder targets (MVP shotgun). */
+/** PractiScore match_stages fields we derive from Stage Builder targets (MVP shotgun). */
 export type PscStageMetrics = {
+  /** Popper silhouettes plus steel rectangles / ceramics (shown as «Poppers/Plates» in PS mobile). */
   stage_poppers: number
+  /** Paper/cardboard classic targets (`stage_numtargs`). */
   stage_numtargs: number
   stage_noshoots: boolean
-  /**
-   * PSC field `stage_poppers_maxnpms`: in Android this shows as “Steel NPMs” for shotgun;
-   * we approximate with rectangular steel + ceramic plate targets (incl. swinger ceramic faces).
-   */
-  stage_poppers_maxnpms: number
 }
 
 function isMetalRectPlateType(type: TargetType): boolean {
@@ -28,11 +25,11 @@ function isSwingerCeramicType(type: TargetType): boolean {
 
 /**
  * Maps editor targets to PSC stage counts (shotgun round-trip template field names).
+ * Do **not** use `stage_poppers_maxnpms` here — PractiScore treats it as scoring (max NPM), not plate count.
  */
 export function computePscStageMetrics(targets: readonly Target[]): PscStageMetrics {
-  let poppers = 0
+  let poppersLike = 0
   let paperUnits = 0
-  let steelNpmApprox = 0
   let hasNoShoot = false
 
   for (const t of targets) {
@@ -44,16 +41,16 @@ export function computePscStageMetrics(targets: readonly Target[]): PscStageMetr
         continue
       }
       if (isSwingerCeramicType(t.type) && !t.isNoShoot) {
-        steelNpmApprox += faces
+        poppersLike += faces
       }
       continue
     }
     if (t.type === 'popper' || t.type === 'miniPopper') {
-      if (!t.isNoShoot) poppers += 1
+      if (!t.isNoShoot) poppersLike += 1
       continue
     }
     if (isMetalRectPlateType(t.type) || isCeramicPlateType(t.type)) {
-      if (!t.isNoShoot) steelNpmApprox += 1
+      if (!t.isNoShoot) poppersLike += 1
       continue
     }
     if (isPaperTargetType(t.type)) {
@@ -62,9 +59,8 @@ export function computePscStageMetrics(targets: readonly Target[]): PscStageMetr
   }
 
   return {
-    stage_poppers: poppers,
+    stage_poppers: poppersLike,
     stage_numtargs: paperUnits,
     stage_noshoots: hasNoShoot,
-    stage_poppers_maxnpms: steelNpmApprox,
   }
 }

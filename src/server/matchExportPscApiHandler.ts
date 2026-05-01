@@ -92,7 +92,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const [{ data: squads, error: sqErr }, { data: regs, error: regErr }, { data: links, error: linkErr }] =
     await Promise.all([
-      supabase.from('match_squads').select('id, sort_order').eq('match_id', matchId).order('sort_order'),
+      supabase.from('match_squads').select('id, sort_order, squad_phase').eq('match_id', matchId).order('sort_order'),
       supabase
         .from('match_registrations')
         .select(

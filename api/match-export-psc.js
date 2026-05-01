@@ -21747,6 +21747,25 @@ function zipSync(data, opts) {
   return out;
 }
 
+// src/domain/pscSquadNumbers.ts
+function prematchSquadDisplayStart(totalSquadCount) {
+  return totalSquadCount > 10 ? 22 : 11;
+}
+function buildSquadIdToPsShSqdMap(squads) {
+  const isPrem = (p) => (p ?? "main").trim().toLowerCase() === "prematch";
+  const main = [...squads].filter((s) => !isPrem(s.squad_phase)).sort((a, b) => a.sort_order - b.sort_order);
+  const prem = [...squads].filter((s) => isPrem(s.squad_phase)).sort((a, b) => a.sort_order - b.sort_order);
+  const pmStartDisplay = prematchSquadDisplayStart(squads.length);
+  const m = /* @__PURE__ */ new Map();
+  main.forEach((s, i) => {
+    m.set(s.id, i);
+  });
+  prem.forEach((s, j) => {
+    m.set(s.id, pmStartDisplay + j - 1);
+  });
+  return m;
+}
+
 // src/server/practiscore/matchDefRoundtripTemplate.json
 var matchDefRoundtripTemplate_default = {
   device_arch: "script",
@@ -22562,6 +22581,9 @@ var matchScoresRoundtripTemplate_default = {
 };
 
 // src/server/practiscore/buildPortalPractiscoreZip.ts
+function isPrematchPhase(row) {
+  return (row.squad_phase ?? "main").trim().toLowerCase() === "prematch";
+}
 function deepCloneJson(v) {
   return JSON.parse(JSON.stringify(v));
 }
@@ -22623,11 +22645,15 @@ function buildPortalPractiscoreZip(params) {
   if (orderedLinks.length === 0) {
     return { ok: false, reason: "no_stages", message: "Add at least one stage (share link) before export." };
   }
-  const orderedSquads = [...params.squads].sort((a, b) => a.sort_order - b.sort_order);
-  const squadIndexById = /* @__PURE__ */ new Map();
-  orderedSquads.forEach((s, i) => {
-    squadIndexById.set(s.id, i);
-  });
+  const squadIdToPsSh = buildSquadIdToPsShSqdMap(params.squads);
+  const prematchSquadSlots = params.squads.filter(isPrematchPhase).length;
+  const pmDisplayStart = prematchSquadDisplayStart(params.squads.length);
+  let synthPremSlot = 0;
+  const fallbackPrematchSh = () => {
+    const j = synthPremSlot % Math.max(prematchSquadSlots, 1);
+    synthPremSlot += 1;
+    return pmDisplayStart + j - 1;
+  };
   const defTpl = deepCloneJson(matchDefRoundtripTemplate_default);
   const stagesTpl = Array.isArray(defTpl.match_stages) ? defTpl.match_stages : [];
   const stage0 = stagesTpl[0];
@@ -22649,7 +22675,6 @@ function buildPortalPractiscoreZip(params) {
       merged.stage_poppers = link.psc_metrics.stage_poppers;
       merged.stage_numtargs = link.psc_metrics.stage_numtargs;
       merged.stage_noshoots = link.psc_metrics.stage_noshoots;
-      merged.stage_poppers_maxnpms = link.psc_metrics.stage_poppers_maxnpms;
     }
     return merged;
   });
@@ -22659,8 +22684,8 @@ function buildPortalPractiscoreZip(params) {
   const matchShooters = regs.map((r, idx) => {
     const dn = params.displayNameByUserId.get(r.competitor_user_id);
     const names = splitDisplayName(dn);
-    const squadIdxRaw = squadIndexById.get(r.squad_id);
-    const shSqd = typeof squadIdxRaw === "number" ? squadIdxRaw : 0;
+    const mappedSh = squadIdToPsSh.get(r.squad_id);
+    const shSqd = typeof mappedSh === "number" ? mappedSh : prematchSquadSlots > 0 ? fallbackPrematchSh() : 0;
     const merged = { ...shooter0 };
     merged.sh_uuid = (0, import_node_crypto.randomUUID)();
     merged.sh_uid = merged.sh_uuid;
@@ -23190,9 +23215,8 @@ function isSwingerCeramicType(type) {
   return type === "swingerSingleCeramic" || type === "swingerDoubleCeramic";
 }
 function computePscStageMetrics(targets) {
-  let poppers = 0;
+  let poppersLike = 0;
   let paperUnits = 0;
-  let steelNpmApprox = 0;
   let hasNoShoot = false;
   for (const t of targets) {
     if (t.isNoShoot) hasNoShoot = true;
@@ -23203,16 +23227,16 @@ function computePscStageMetrics(targets) {
         continue;
       }
       if (isSwingerCeramicType(t.type) && !t.isNoShoot) {
-        steelNpmApprox += faces;
+        poppersLike += faces;
       }
       continue;
     }
     if (t.type === "popper" || t.type === "miniPopper") {
-      if (!t.isNoShoot) poppers += 1;
+      if (!t.isNoShoot) poppersLike += 1;
       continue;
     }
     if (isMetalRectPlateType(t.type) || isCeramicPlateType(t.type)) {
-      if (!t.isNoShoot) steelNpmApprox += 1;
+      if (!t.isNoShoot) poppersLike += 1;
       continue;
     }
     if (isPaperTargetType(t.type)) {
@@ -23220,10 +23244,9 @@ function computePscStageMetrics(targets) {
     }
   }
   return {
-    stage_poppers: poppers,
+    stage_poppers: poppersLike,
     stage_numtargs: paperUnits,
-    stage_noshoots: hasNoShoot,
-    stage_poppers_maxnpms: steelNpmApprox
+    stage_noshoots: hasNoShoot
   };
 }
 
@@ -23308,7 +23331,7 @@ async function handler(req, res) {
     return res.status(403).json({ error: "Match not found or access denied" });
   }
   const [{ data: squads, error: sqErr }, { data: regs, error: regErr }, { data: links, error: linkErr }] = await Promise.all([
-    supabase.from("match_squads").select("id, sort_order").eq("match_id", matchId).order("sort_order"),
+    supabase.from("match_squads").select("id, sort_order, squad_phase").eq("match_id", matchId).order("sort_order"),
     supabase.from("match_registrations").select(
       "squad_id, competitor_user_id, division, classification_grade, power_factor, created_at, status"
     ).eq("match_id", matchId).eq("status", "confirmed").order("created_at", { ascending: true }),
