@@ -984,6 +984,11 @@ function distancePointToSegmentSq(
   return (px - projX) ** 2 + (py - projY) ** 2
 }
 
+/** Радіус маркера кінця закріпленого розміру (екранний px): обмежений, щоб «шарики» на лініях розмірів не перекривали об’єкти поруч. */
+function dimensionPlanEndpointDotPx(tf: ViewTransform): number {
+  return Math.max(1.8, Math.min(5.2, 1.35 + tf.pxPerMeter * 0.03))
+}
+
 /** Кінець (пріоритет) або сам відрізок — для перетягування закріплених розмірів. */
 function pickPlanDimensionPartAtScreen(
   sx: number,
@@ -992,7 +997,7 @@ function pickPlanDimensionPartAtScreen(
   tf: ViewTransform,
 ): { id: string; part: 'endA' | 'endB' | 'segment' } | null {
   if (dims.length === 0) return null
-  const endPx = Math.max(10, planContactHandleRadiusPx(tf.pxPerMeter, true) + 6)
+  const endPx = Math.max(10, dimensionPlanEndpointDotPx(tf) + 5)
   const endRsq = endPx * endPx
   let bestEnd: { id: string; part: 'endA' | 'endB'; d2: number } | null = null
   for (let i = dims.length - 1; i >= 0; i--) {
@@ -1037,9 +1042,10 @@ function drawSavedPlanDimensions(
   for (let di = 0; di < dims.length; di++) {
     const dim = dims[di]!
     const sel = selectedDimensionId !== null && dim.id === selectedDimensionId
-    const dotRa = planContactHandleRadiusPx(tf.pxPerMeter, sel)
-    const dotRb = dotRa
-    const dotRForOffset = dotRa
+    const dotPx = dimensionPlanEndpointDotPx(tf)
+    const dotRA = dotPx
+    const dotRB = dotPx
+    const dotRForOffset = dotPx
     const sa = worldToScreen(dim.endA.x, dim.endA.y, tf)
     const sb = worldToScreen(dim.endB.x, dim.endB.y, tf)
     const distM = Math.hypot(dim.endB.x - dim.endA.x, dim.endB.y - dim.endA.y)
@@ -1061,8 +1067,10 @@ function drawSavedPlanDimensions(
       ctx.fill()
       ctx.stroke()
     }
-    drawDot(sa.x, sa.y, dotRa)
-    drawDot(sb.x, sb.y, dotRb)
+    const drA = sel ? dotRA * 1.08 : dotRA
+    const drB = sel ? dotRB * 1.08 : dotRB
+    drawDot(sa.x, sa.y, drA)
+    drawDot(sb.x, sb.y, drB)
 
     const m0x = (sa.x + sb.x) / 2
     const m0y = (sa.y + sb.y) / 2
@@ -1117,10 +1125,9 @@ function drawSavedPlanDimensions(
     ctx.save()
     ctx.setLineDash([6, 4])
     ctx.strokeStyle = 'rgba(20, 184, 166, 0.96)'
-    ctx.lineWidth = 1.85
+    ctx.lineWidth = 2.2
     ctx.beginPath()
-    const draftR = planContactHandleRadiusPx(tf.pxPerMeter, false) + 4
-    ctx.arc(sc.x, sc.y, draftR, 0, Math.PI * 2)
+    ctx.arc(sc.x, sc.y, Math.max(9, tf.pxPerMeter * 0.125), 0, Math.PI * 2)
     ctx.stroke()
     ctx.setLineDash([])
     ctx.restore()
