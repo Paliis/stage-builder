@@ -31,6 +31,7 @@ function isSwingerCeramicType(type: TargetType): boolean {
 /**
  * Maps editor targets to PSC stage counts (shotgun round-trip template field names).
  * Classic cardboard for `stage_numtargs` — only two‑post paper types + paper swingers (`isPaperTwoPostTargetType` / swingers), not «anything not in steel set».
+ * No-shoot paper is excluded (same as `summarizeTargets` / `computeMinRounds`); penalty targets must not inflate PS «Targets» / Min Rounds.
  * Do **not** use `stage_poppers_maxnpms` here — PractiScore treats it as scoring (max NPM), not plate count.
  */
 export function computePscStageMetrics(targets: readonly Target[]): PscStageMetrics {
@@ -42,7 +43,7 @@ export function computePscStageMetrics(targets: readonly Target[]): PscStageMetr
     if (t.isNoShoot) hasNoShoot = true
     const faces = swingerTargetFaceCount(t.type)
     if (faces > 0) {
-      if (swingerIsPaperLoad(t.type)) {
+      if (!t.isNoShoot && swingerIsPaperLoad(t.type)) {
         paperUnits += faces
         continue
       }
@@ -59,7 +60,7 @@ export function computePscStageMetrics(targets: readonly Target[]): PscStageMetr
       if (!t.isNoShoot) poppersLike += 1
       continue
     }
-    if (isPaperTwoPostTargetType(t.type)) {
+    if (!t.isNoShoot && isPaperTwoPostTargetType(t.type)) {
       paperUnits += 1
     }
   }
