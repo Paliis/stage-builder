@@ -35,7 +35,7 @@ import {
   clampFieldDimensions,
   clampVec2ToField,
   FIELD_SIZE_PRESETS,
-  GRID_SNAP_M,
+  PENALTY_CONTOUR_VERTEX_SNAP_M,
   snapVec2,
   STAGE_CARD_UI_DEPTH_FACTOR,
 } from './domain/field'
@@ -644,7 +644,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       if (!placementMode) return
       if (placementMode.kind === 'penaltyZoneContour') {
         const clamped = clampVec2ToField({ ...p }, 1, fieldSizeM.x, fieldSizeM.y)
-        const snapped = snapVec2(clamped, GRID_SNAP_M)
+        const snapped = snapVec2(clamped, PENALTY_CONTOUR_VERTEX_SNAP_M)
         if (penaltyDraftVertices.length >= 2 && canClosePolyline(penaltyDraftVertices, snapped)) {
           const ring = [...penaltyDraftVertices]
           if (ring.length >= 3) {

@@ -40,6 +40,9 @@ export function clampFieldDimensions(w: number, h: number): Vec2 {
 
 export const GRID_SNAP_M = 0.5
 
+/** Крок прив’язки вершин контуру штрафної зони при кліку та перетягуванні (тонший за загальну сітку поля). */
+export const PENALTY_CONTOUR_VERTEX_SNAP_M = 0.1
+
 /** Крок «шахматки» на 2D-плані (м); тонкі лінії сітки лишаються з кроком `GRID_SNAP_M`. */
 export const GRID_CHESS_M = 1
 

@@ -62,6 +62,7 @@ import {
   DEFAULT_FIELD_WIDTH_M,
   GRID_CHESS_M,
   GRID_SNAP_M,
+  PENALTY_CONTOUR_VERTEX_SNAP_M,
   snapMeters,
   snapVec2,
   PROP_PLACEMENT_SNAP_M,
@@ -90,9 +91,6 @@ const EXTRUDE_SCREEN_PX = { dx: 5, dy: 7 }
 const HANDLE_OFFSET_M = 0.32
 /** 5° — інакше 45° діагональ «лягає» на 40°/50° і краї щитів не сходяться. */
 const ROTATION_SNAP_RAD = Math.PI / 36
-
-/** Поділки на напрямній при кресленні контуру штрафної зони (м вздовж відрізка). */
-const PENALTY_CONTOUR_RULER_TICK_STEP_M = 0.1
 
 type Vec2 = { x: number; y: number }
 
@@ -1747,7 +1745,7 @@ function drawPenaltyContourRubberRuler(
     const ny = vtx / slenScr
     const minorPx = Math.max(2.2, 0.046 * tf.pxPerMeter)
     const majorPx = Math.max(5.8, 0.14 * tf.pxPerMeter)
-    const step = PENALTY_CONTOUR_RULER_TICK_STEP_M
+    const step = PENALTY_CONTOUR_VERTEX_SNAP_M
     const tickEps = step * 0.01
     for (let s = step; s < lenM - tickEps; s += step) {
       const wx = lastWorld.x + ux * s
@@ -2601,7 +2599,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const t = transformRef.current
     if (Math.abs(t.fieldWidthM - fw) > 1e-6 || Math.abs(t.fieldHeightM - fh) > 1e-6) return clearHover()
     const wRaw = screenToWorld(sx, sy, t)
-    const snapped = snapVec2(clampVec2ToField(wRaw, 1, fw, fh))
+    const snapped = snapVec2(clampVec2ToField(wRaw, 1, fw, fh), PENALTY_CONTOUR_VERTEX_SNAP_M)
     const prev = penaltyContourHoverSnapRef.current
     if (
       prev &&
@@ -3681,7 +3679,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         drag.polygonId,
         drag.ringId,
         drag.vertexIndex,
-        snapVec2(clamped, GRID_SNAP_M),
+        snapVec2(clamped, PENALTY_CONTOUR_VERTEX_SNAP_M),
       )
       return
     }
@@ -3848,7 +3846,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         drag.polygonId,
         drag.ringId,
         drag.vertexIndex,
-        snapVec2(clamped, GRID_SNAP_M),
+        snapVec2(clamped, PENALTY_CONTOUR_VERTEX_SNAP_M),
       )
     } else if (drag.mode === 'moveMulti') {
       const rect = canvas.getBoundingClientRect()
