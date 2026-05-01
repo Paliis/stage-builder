@@ -1,7 +1,8 @@
 /// <reference types="vitest/config" />
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { matchExportDevApiPlugin } from './src/dev/matchExportDevApiPlugin'
 import { CANONICAL_PRODUCTION_ORIGIN } from './src/seo/canonicalProductionOrigin'
 import { OG_IMAGE_ASSET_QUERY } from './src/seo/ogConstants'
 
@@ -55,12 +56,19 @@ function htmlTransformPlugin() {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  /** Local server-only vars (e.g. SUPABASE_SERVICE_ROLE_KEY) for vite dev middleware; never bundle into client code. */
+  if (mode === 'development') {
+    Object.assign(process.env, loadEnv(mode, process.cwd(), ''))
+  }
+
+  return {
   define: {
     /** Set at build time on Vercel so preview deployments use production host in share/QR links. */
     'import.meta.env.VITE_BUILD_PRODUCTION_ORIGIN': JSON.stringify(buildProductionOrigin),
   },
   plugins: [
+    ...(mode === 'development' ? [matchExportDevApiPlugin()] : []),
     react(),
     htmlTransformPlugin(),
     VitePWA({
@@ -148,4 +156,5 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.test.ts'],
   },
+}
 })
