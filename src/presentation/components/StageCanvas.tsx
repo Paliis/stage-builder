@@ -365,6 +365,22 @@ function pickPropAt(props: readonly Prop[], wx: number, wy: number, touchPadM: n
 }
 
 /**
+ * За multi-виділенням: хто з об’єктів під курсором входить у виділення (на плані мішені поверх реквізиту).
+ */
+function pickMultiMoveLeaderAt(
+  multi: Extract<PlanSelectState, { mode: 'multi' }>,
+  hitT: Target | null,
+  hitP: Prop | null,
+): { kind: 'target'; ent: Target } | { kind: 'prop'; ent: Prop } | null {
+  const tSel = hitT && multi.targetIds.includes(hitT.id) ? hitT : null
+  const pSel = hitP && multi.propIds.includes(hitP.id) ? hitP : null
+  if (tSel && pSel) return { kind: 'target', ent: tSel }
+  if (tSel) return { kind: 'target', ent: tSel }
+  if (pSel) return { kind: 'prop', ent: pSel }
+  return null
+}
+
+/**
  * Анкер закріпленого розміру: клік по мішені підганяє до центру (як на плані); по реквізиту або поза об’єктами — координата кліку в метрах.
  */
 function planDimensionAnchorWorld(
@@ -2228,6 +2244,8 @@ export type StageCanvasProps = {
   onPlacementWorldClick: (world: { x: number; y: number }) => void
   /** Рамка виділення: ЛКМ-тягнення; центр об’єкта всередині прямокутника. */
   marqueeModeActive: boolean
+  /** Після завершення жесту рамки (значний рух) — вимкнути режим у батьківському UI, щоб можна було перетягувати виділення. */
+  onMarqueeGestureComplete?: () => void
   onPlanSelectionChange?: (summary: { empty: boolean; count: number }) => void
   /** Довгий тап по плану при непорожньому виділенні (мобільні дії). */
   onSelectionLongPress?: () => void
@@ -2296,6 +2314,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   placementArmed,
   onPlacementWorldClick,
   marqueeModeActive,
+  onMarqueeGestureComplete,
   onPlanSelectionChange,
   onSelectionLongPress,
   penaltyDraftVertices,
@@ -3108,20 +3127,65 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
 
     const hitT = pickTargetAt(targets, w.x, w.y, touchPad)
-    if (hitT) {
-      gridHoverRef.current = null
-      if (!readOnly && planSelect.mode === 'multi' && planSelect.targetIds.includes(hitT.id)) {
+    const hitP = pickPropAt(props, w.x, w.y, touchPad)
+
+    if (planSelect.mode === 'multi') {
+      const leader = pickMultiMoveLeaderAt(planSelect, hitT, hitP)
+      if (leader) {
+        gridHoverRef.current = null
         const { origTargets, origProps } = snapshotMultiMoveOrigins(planSelect, targets, props)
-        const grabOffset = { x: w.x - hitT.position.x, y: w.y - hitT.position.y }
-        const leaderOrig = { x: hitT.position.x, y: hitT.position.y }
+        if (leader.kind === 'target') {
+          const hit = leader.ent
+          const grabOffset = { x: w.x - hit.position.x, y: w.y - hit.position.y }
+          const leaderOrig = { x: hit.position.x, y: hit.position.y }
+          if (ev.pointerType === 'touch') {
+            touchPendingDragRef.current = {
+              pointerId: ev.pointerId,
+              startX: ev.clientX,
+              startY: ev.clientY,
+              touchDrag: 'multi',
+              leaderKind: 'target',
+              leaderId: hit.id,
+              grabOffset,
+              leaderOrig,
+              origTargets,
+              origProps,
+            }
+            try {
+              canvas.setPointerCapture(ev.pointerId)
+            } catch {
+              /* ignore */
+            }
+            return
+          }
+          clearLongPressTimer()
+          dragRef.current = {
+            mode: 'moveMulti',
+            leaderKind: 'target',
+            leaderId: hit.id,
+            grabOffset,
+            leaderOrig,
+            origTargets,
+            origProps,
+          }
+          try {
+            canvas.setPointerCapture(ev.pointerId)
+          } catch {
+            /* ignore */
+          }
+          return
+        }
+        const hit = leader.ent
+        const grabOffset = { x: w.x - hit.position.x, y: w.y - hit.position.y }
+        const leaderOrig = { x: hit.position.x, y: hit.position.y }
         if (ev.pointerType === 'touch') {
           touchPendingDragRef.current = {
             pointerId: ev.pointerId,
             startX: ev.clientX,
             startY: ev.clientY,
             touchDrag: 'multi',
-            leaderKind: 'target',
-            leaderId: hitT.id,
+            leaderKind: 'prop',
+            leaderId: hit.id,
             grabOffset,
             leaderOrig,
             origTargets,
@@ -3137,8 +3201,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         clearLongPressTimer()
         dragRef.current = {
           mode: 'moveMulti',
-          leaderKind: 'target',
-          leaderId: hitT.id,
+          leaderKind: 'prop',
+          leaderId: hit.id,
           grabOffset,
           leaderOrig,
           origTargets,
@@ -3151,6 +3215,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         }
         return
       }
+    }
+
+    if (hitT) {
+      gridHoverRef.current = null
       setPlanSelect({ mode: 'single', kind: 'target', id: hitT.id })
       if (ev.pointerType === 'touch') {
         touchPendingDragRef.current = {
@@ -3179,50 +3247,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       canvas.setPointerCapture(ev.pointerId)
       return
     }
-    const hitP = pickPropAt(props, w.x, w.y, touchPad)
     if (hitP) {
       gridHoverRef.current = null
-      if (!readOnly && planSelect.mode === 'multi' && planSelect.propIds.includes(hitP.id)) {
-        const { origTargets, origProps } = snapshotMultiMoveOrigins(planSelect, targets, props)
-        const grabOffset = { x: w.x - hitP.position.x, y: w.y - hitP.position.y }
-        const leaderOrig = { x: hitP.position.x, y: hitP.position.y }
-        if (ev.pointerType === 'touch') {
-          touchPendingDragRef.current = {
-            pointerId: ev.pointerId,
-            startX: ev.clientX,
-            startY: ev.clientY,
-            touchDrag: 'multi',
-            leaderKind: 'prop',
-            leaderId: hitP.id,
-            grabOffset,
-            leaderOrig,
-            origTargets,
-            origProps,
-          }
-          try {
-            canvas.setPointerCapture(ev.pointerId)
-          } catch {
-            /* ignore */
-          }
-          return
-        }
-        clearLongPressTimer()
-        dragRef.current = {
-          mode: 'moveMulti',
-          leaderKind: 'prop',
-          leaderId: hitP.id,
-          grabOffset,
-          leaderOrig,
-          origTargets,
-          origProps,
-        }
-        try {
-          canvas.setPointerCapture(ev.pointerId)
-        } catch {
-          /* ignore */
-        }
-        return
-      }
       setPlanSelect({ mode: 'single', kind: 'prop', id: hitP.id })
       if (ev.pointerType === 'touch') {
         touchPendingDragRef.current = {
@@ -3580,6 +3606,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       if (dx < 4 && dy < 4) {
         setPlanSelect({ mode: 'none' })
         repaint()
+        onMarqueeGestureComplete?.()
         return
       }
       const l = Math.min(mqd.startSx, mqd.curSx)
@@ -3600,6 +3627,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         setPlanSelect({ mode: 'multi', targetIds, propIds })
       }
       repaint()
+      onMarqueeGestureComplete?.()
       return
     }
 

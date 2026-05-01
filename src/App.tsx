@@ -1292,6 +1292,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       placementArmed={!readOnly && placementMode !== null}
                       onPlacementWorldClick={handlePlacementWorldClick}
                       marqueeModeActive={marqueeModeActive}
+                      onMarqueeGestureComplete={() => setMarqueeModeActive(false)}
                       onPlanSelectionChange={setPlanSelectionSummary}
                       onSelectionLongPress={readOnly ? undefined : () => setSelectionSheetOpen(true)}
                       penaltyDraftVertices={
