@@ -91,6 +91,9 @@ const HANDLE_OFFSET_M = 0.32
 /** 5° — інакше 45° діагональ «лягає» на 40°/50° і краї щитів не сходяться. */
 const ROTATION_SNAP_RAD = Math.PI / 36
 
+/** Поділки на напрямній при кресленні контуру штрафної зони (м вздовж відрізка). */
+const PENALTY_CONTOUR_RULER_TICK_STEP_M = 0.1
+
 type Vec2 = { x: number; y: number }
 
 /** Виділення на плані: одне або кілька (рамка за центром об’єкта); вершина контуру штрафної зони; лінія розмірів. */
@@ -1709,7 +1712,7 @@ function drawPenaltyZones(ctx: CanvasRenderingContext2D, tf: ViewTransform, pz: 
   }
 }
 
-/** Попередній відрізок до наступної вершини контуру: поділки (крок сітки), довжина. */
+/** Попередній відрізок до наступної вершини контуру: поділки (крок 0,1 м), довжина. */
 function drawPenaltyContourRubberRuler(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
@@ -1742,14 +1745,15 @@ function drawPenaltyContourRubberRuler(
   if (slenScr > 1e-6) {
     const nx = -vty / slenScr
     const ny = vtx / slenScr
-    const minorPx = Math.max(3.2, 0.08 * tf.pxPerMeter)
+    const minorPx = Math.max(2.2, 0.046 * tf.pxPerMeter)
     const majorPx = Math.max(5.8, 0.14 * tf.pxPerMeter)
-    const step = GRID_SNAP_M
-    for (let s = step; s < lenM - 1e-9; s += step) {
+    const step = PENALTY_CONTOUR_RULER_TICK_STEP_M
+    const tickEps = step * 0.01
+    for (let s = step; s < lenM - tickEps; s += step) {
       const wx = lastWorld.x + ux * s
       const wy = lastWorld.y + uy * s
       const pc = worldToScreen(wx, wy, tf)
-      const isWholeMeter = Math.abs(s - Math.round(s)) < 1e-5
+      const isWholeMeter = Math.abs(s - Math.round(s)) < tickEps
       const tickHalf = isWholeMeter ? majorPx : minorPx
       ctx.strokeStyle = isWholeMeter ? 'rgba(127, 29, 29, 0.92)' : 'rgba(185, 55, 55, 0.75)'
       ctx.lineWidth = isWholeMeter ? 1.35 : 1.05
@@ -1783,8 +1787,8 @@ function drawPenaltyContourRubberRuler(
   ctx.font = `${Math.max(10, Math.round(12 * Math.sqrt(tf.pxPerMeter / 14)))}px system-ui, sans-serif`
   const tw = ctx.measureText(distanceLabel).width
   const pad = 6
-  ctx.fillStyle = 'rgba(254, 242, 242, 0.97)'
-  ctx.strokeStyle = 'rgba(153, 27, 27, 0.5)'
+  ctx.fillStyle = 'rgba(254, 242, 242, 0.42)'
+  ctx.strokeStyle = 'rgba(153, 27, 27, 0.28)'
   ctx.lineWidth = 1
   const bx = tx - tw / 2 - pad
   const by = ty - 10 - pad * 0.75

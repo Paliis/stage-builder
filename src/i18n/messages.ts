@@ -916,7 +916,7 @@ export const ukMessages: MessageTree = {
       '\u041d\u0430\u043c\u0430\u043b\u044c\u043e\u0432\u0443\u0432\u0430\u0442\u0438 \u0437\u0430\u043c\u043a\u043d\u0435\u043d\u0456 \u043a\u043e\u043d\u0442\u0443\u0440\u0438: \u0434\u0456\u0440\u043a\u0430 \u0432\u0438\u0437\u043d\u0430\u0447\u0430\u0454\u0442\u044c\u0441\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u043d\u043e, \u044f\u043a\u0449\u043e \u043a\u043e\u043d\u0442\u0443\u0440 \u0437\u0430\u043c\u043a\u043d\u0443\u0442\u043e \u0432\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0456 \u0456\u043d\u0448\u043e\u0457 \u0437\u043e\u043d\u0438',
     penaltyZoneContour: '\u041a\u043e\u043d\u0442\u0443\u0440 \u0448\u0442\u0440\u0430\u0444\u043d\u043e\u0457 \u0437\u043e\u043d\u0438',
     penaltyZoneCloseHint:
-      'Клацніть близько до першої точки (допуск 5 см), щоб замкнути. Під час руху курсора від останньої точки показано довжину наступного відрізка та шкалу (рисочки з кроком сітки 0,5 м, довші — на метрах). Всередині існуючої зони — дірка. Вершини — клік для виділення та перетягування; Delete / Backspace — видалити вершину (якщо менше за 3 точки в контурі — весь полігон або дірку).',
+      'Клацніть близько до першої точки (допуск 5 см), щоб замкнути. Під час руху курсора від останньої точки показано довжину наступного відрізка та шкалу (рисочки кожні 0,1 м, довші — на метрах). Всередині існуючої зони — дірка. Вершини — клік для виділення та перетягування; Delete / Backspace — видалити вершину (якщо менше за 3 точки в контурі — весь полігон або дірку).',
     penaltyContourUnclosed: '\u041a\u043e\u043d\u0442\u0443\u0440 \u0448\u0442\u0440\u0430\u0444\u043d\u043e\u0457 \u0437\u043e\u043d\u0438 \u043d\u0435 \u0437\u0430\u043c\u043a\u043d\u0435\u043d\u0438\u0439',
   },
   weapon: {
@@ -1809,7 +1809,7 @@ export const enMessages: MessageTree = {
       'Draw closed outlines: a hole is detected automatically when you close a contour inside an existing zone',
     penaltyZoneContour: 'Penalty zone outline',
     penaltyZoneCloseHint:
-      'Click near the first point (within 5 cm) to close. While you move toward the next point, the dashed guide shows edge length and metric ticks (0.5 m along the grid, taller ticks every metre). Inside an existing zone, the closed contour becomes a hole. Click a vertex to select and drag; Delete or Backspace removes the vertex (fewer than three vertices removes the whole polygon or hole).',
+      'Click near the first point (within 5 cm) to close. While you move toward the next point, the dashed guide shows edge length and metric ticks (every 0.1 m, taller ticks each full metre). Inside an existing zone, the closed contour becomes a hole. Click a vertex to select and drag; Delete or Backspace removes the vertex (fewer than three vertices removes the whole polygon or hole).',
     penaltyContourUnclosed: 'Penalty zone outline is not closed',
   },
   weapon: {
