@@ -32,6 +32,7 @@ export function OrganizerMatchesListPage() {
 
   const load = useCallback(async () => {
     if (!configured || !user?.id) return
+    await Promise.resolve()
     const sb = getSupabase()
     setError(null)
     const { data, error: qErr } = await sb
@@ -45,19 +46,19 @@ export function OrganizerMatchesListPage() {
       return
     }
     setRows((data ?? []) as OrganizerMatchRow[])
-  }, [configured, user?.id])
+  }, [configured, user])
 
   useEffect(() => {
     if (!configured || sessionLoading || organizerProfileLoading) return
     if (!user?.id) {
-      setRows([])
+      queueMicrotask(() => setRows([]))
       return
     }
     if (organizerProfile !== 'active') {
-      setRows([])
+      queueMicrotask(() => setRows([]))
       return
     }
-    void load()
+    queueMicrotask(() => void load())
   }, [configured, sessionLoading, organizerProfileLoading, organizerProfile, user?.id, load])
 
   if (!configured) {

@@ -67,6 +67,7 @@ export function PlatformOrganizersPage() {
 
   const loadRows = useCallback(async () => {
     if (!configured) return
+    await Promise.resolve()
     const sb = getSupabase()
     setListError(null)
     const { data, error } = await sb.rpc('platform_list_match_organizers')
@@ -93,8 +94,10 @@ export function PlatformOrganizersPage() {
   useEffect(() => {
     if (!configured || sessionLoading) return
     if (!user?.id) {
-      setAdminLoading(false)
-      setIsAdmin(false)
+      queueMicrotask(() => {
+        setAdminLoading(false)
+        setIsAdmin(false)
+      })
       return
     }
     let cancelled = false

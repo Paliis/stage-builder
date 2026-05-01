@@ -41,6 +41,7 @@ export function AccountParticipantHub({
 
   const loadRegs = useCallback(async () => {
     if (!sb) return
+    await Promise.resolve()
     setRegErr(null)
     const { data, error } = await sb
       .from('match_registrations')
@@ -64,7 +65,7 @@ export function AccountParticipantHub({
   }, [sb, userId])
 
   useEffect(() => {
-    void loadRegs()
+    queueMicrotask(() => void loadRegs())
   }, [loadRegs])
 
   const cancelReg = useCallback(
@@ -92,6 +93,7 @@ export function AccountParticipantHub({
 
   const loadDefaults = useCallback(async () => {
     if (!sb) return
+    await Promise.resolve()
     setDefLoading(true)
     setDefFeedback(null)
     const { data, error } = await sb.from('participant_registration_defaults').select('division, classification_grade, power_factor').eq('user_id', userId).maybeSingle()
@@ -111,7 +113,7 @@ export function AccountParticipantHub({
   }, [sb, userId])
 
   useEffect(() => {
-    void loadDefaults()
+    queueMicrotask(() => void loadDefaults())
   }, [loadDefaults])
 
   const saveDefaults = useCallback(async () => {

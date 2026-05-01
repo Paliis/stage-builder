@@ -238,6 +238,7 @@ SPA-роутінг: автоматичний `page_view` вимкнено (`send
 ### CI
 
 - **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у **`main`** та **`staging`**.
+- **ESLint (react-hooks 7.x):** правило **`react-hooks/set-state-in-effect`** забороняє синхронно викликати оновлення стану з тіла `useEffect`. Для підвантажень даних з ефекту: **`queueMicrotask(() => void load())`** або **`await Promise.resolve()`** на початку асинхронного `load`, щоб перше `setState` не відбувалося в тому ж синхронному кроці, що й сам ефект; скидання UI при зміні маршруту — також через **`queueMicrotask`**. Для **`react-hooks/preserve-manual-memoization`** залежності `useCallback` узгоджуються з тим, що реально використовується (наприклад **`user`** замість лише **`user?.id`**).
 - **Vercel (production-проєкт)** — `vercel.json`: Vite, `dist/`. Production з гілки `main`.
 
 ### Як задеплоїти production

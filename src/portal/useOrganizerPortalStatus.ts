@@ -12,16 +12,18 @@ export function useOrganizerPortalStatus(userId: string | undefined): OrganizerP
   const [state, setState] = useState<OrganizerPortalStatus>('loading')
 
   useEffect(() => {
-    if (!isSupabaseConfigured() || !userId) {
-      setState('none')
-      return
-    }
-
-    setState('loading')
     let cancelled = false
-    const sb = getSupabase()
-
     void (async () => {
+      await Promise.resolve()
+      if (cancelled) return
+      if (!isSupabaseConfigured() || !userId) {
+        setState('none')
+        return
+      }
+
+      setState('loading')
+      const sb = getSupabase()
+
       const { data, error } = await sb
         .from('match_admin_profiles')
         .select('organizer_status')

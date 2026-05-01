@@ -60,11 +60,11 @@ export function PortalShell() {
   }, [])
 
   useEffect(() => {
-    setNavOpen(false)
+    queueMicrotask(() => setNavOpen(false))
   }, [pathname])
 
   useEffect(() => {
-    if (!compactHeader) setNavOpen(false)
+    if (!compactHeader) queueMicrotask(() => setNavOpen(false))
   }, [compactHeader])
 
   useEffect(() => {

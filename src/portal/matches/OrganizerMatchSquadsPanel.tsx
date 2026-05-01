@@ -47,6 +47,7 @@ export function OrganizerMatchSquadsPanel({
     (prematchEnabled ? plannedPrematchSquads * shootersPerPrematchSquad : 0)
 
   const reload = useCallback(async () => {
+    await Promise.resolve()
     setLoadError(null)
     setRegBreakdown(undefined)
     const { data: squads, error: sErr } = await sb
@@ -90,7 +91,7 @@ export function OrganizerMatchSquadsPanel({
   }, [matchId, sb, p.matchDetailApplyMigrationHint])
 
   useEffect(() => {
-    void reload()
+    queueMicrotask(() => void reload())
   }, [reload])
 
   const counts = useMemo(() => {

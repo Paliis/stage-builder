@@ -73,15 +73,18 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
 
   useEffect(() => {
     defaultsPrefetchKeyRef.current = null
-    setMine(undefined)
-    setPickedSquad('')
-    setDivision('')
-    setClassification('')
-    setPowerFactor('')
-    setFeedback(null)
+    queueMicrotask(() => {
+      setMine(undefined)
+      setPickedSquad('')
+      setDivision('')
+      setClassification('')
+      setPowerFactor('')
+      setFeedback(null)
+    })
   }, [matchUuid])
 
   const loadMetrics = useCallback(async () => {
+    await Promise.resolve()
     setMetrics(undefined)
     setMetricsError(null)
     const { data, error } = await sb.rpc('fetch_public_match_registration_metrics', {
@@ -100,10 +103,11 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
 
   useEffect(() => {
     if (!configured) return
-    void loadMetrics()
+    queueMicrotask(() => void loadMetrics())
   }, [configured, loadMetrics])
 
   const loadMine = useCallback(async () => {
+    await Promise.resolve()
     if (!user?.id || !configured) {
       setMine(undefined)
       return
@@ -131,11 +135,11 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setPowerFactor(pf === 'MAJOR' ? 'MAJOR' : pf === 'MINOR' ? 'MINOR' : '')
     }
-  }, [configured, sb, matchUuid, user?.id, p.matchesLoadError])
+  }, [configured, sb, matchUuid, user, p.matchesLoadError])
 
   useEffect(() => {
     if (sessionLoading || !configured) return
-    void loadMine()
+    queueMicrotask(() => void loadMine())
   }, [configured, loadMine, sessionLoading])
 
   useEffect(() => {
@@ -226,7 +230,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
 
   useEffect(() => {
     if (pickedSquad || !firstOpenSquad) return
-    setPickedSquad(firstOpenSquad)
+    queueMicrotask(() => setPickedSquad(firstOpenSquad))
   }, [firstOpenSquad, pickedSquad])
 
   async function refreshAll() {

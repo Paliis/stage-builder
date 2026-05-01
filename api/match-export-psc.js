@@ -23266,7 +23266,7 @@ function computePscStageMetrics(targets) {
     if (t.isNoShoot) hasNoShoot = true;
     const faces = swingerTargetFaceCount(t.type);
     if (faces > 0) {
-      if (swingerIsPaperLoad(t.type)) {
+      if (!t.isNoShoot && swingerIsPaperLoad(t.type)) {
         paperUnits += faces;
         continue;
       }
@@ -23283,7 +23283,7 @@ function computePscStageMetrics(targets) {
       if (!t.isNoShoot) poppersLike += 1;
       continue;
     }
-    if (isPaperTwoPostTargetType(t.type)) {
+    if (!t.isNoShoot && isPaperTwoPostTargetType(t.type)) {
       paperUnits += 1;
     }
   }

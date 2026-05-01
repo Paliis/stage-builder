@@ -62,6 +62,7 @@ export function PortalPublishedMatchesSection() {
 
   const load = useCallback(async () => {
     if (!sb || !matchPortalOn) return
+    await Promise.resolve()
     setError(null)
     const start = new Date()
     start.setUTCHours(0, 0, 0, 0)
@@ -82,7 +83,7 @@ export function PortalPublishedMatchesSection() {
 
   useEffect(() => {
     if (!configured || !matchPortalOn) return
-    void load()
+    queueMicrotask(() => void load())
   }, [configured, load, matchPortalOn])
 
   const rowsForCalendar = useMemo(

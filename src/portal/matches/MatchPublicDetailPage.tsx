@@ -66,6 +66,8 @@ export function MatchPublicDetailPage() {
     let cancelled = false
     const sb = getSupabase()
     void (async () => {
+      await Promise.resolve()
+      if (cancelled) return
       setRow(undefined)
       setRoster(undefined)
       setRosterError(null)
@@ -93,50 +95,55 @@ export function MatchPublicDetailPage() {
   }, [matchId, validId, configured])
 
   useEffect(() => {
-    if (!validId || !configured || !row?.id) {
-      setRoster(undefined)
-      setRosterError(null)
-      setOpenVisibilityActiveRegTotal(undefined)
-      return
-    }
-    const vis = row.participant_list_visibility ?? 'closed'
-    if (vis !== 'open') {
-      setRoster(null)
-      setRosterError(null)
-      setOpenVisibilityActiveRegTotal(undefined)
-      return
-    }
+    let cancelled = false
     let cancelledMetrics = false
-    const sbM = getSupabase()
-    setOpenVisibilityActiveRegTotal(undefined)
-    void sbM.rpc('fetch_public_match_registration_metrics', { p_match_id: row.id }).then(({ data: mdata, error: mErr }) => {
-      if (cancelledMetrics) return
-      if (mErr || !mdata?.length) {
+    void (async () => {
+      await Promise.resolve()
+      if (cancelled) return
+
+      if (!validId || !configured || !row?.id) {
+        setRoster(undefined)
+        setRosterError(null)
         setOpenVisibilityActiveRegTotal(undefined)
         return
       }
-      const raw = (mdata[0] as { match_total_registered?: number | string }).match_total_registered
-      const n =
-        typeof raw === 'number' ?
-          raw
-        : typeof raw === 'string' ?
-          Number(raw)
-        : NaN
-      setOpenVisibilityActiveRegTotal(Number.isFinite(n) ? n : undefined)
-    })
-    let cancelled = false
-    const sb = getSupabase()
-    setRoster(undefined)
-    setRosterError(null)
-    void sb.rpc('fetch_public_match_roster', { p_match_id: row.id }).then(({ data, error: rErr }) => {
-      if (cancelled) return
-      if (rErr) {
-        setRosterError(rErr.message)
-        setRoster([])
+      const vis = row.participant_list_visibility ?? 'closed'
+      if (vis !== 'open') {
+        setRoster(null)
+        setRosterError(null)
+        setOpenVisibilityActiveRegTotal(undefined)
         return
       }
-      setRoster((data ?? []) as PublicRosterRow[])
-    })
+      const sbM = getSupabase()
+      setOpenVisibilityActiveRegTotal(undefined)
+      void sbM.rpc('fetch_public_match_registration_metrics', { p_match_id: row.id }).then(({ data: mdata, error: mErr }) => {
+        if (cancelledMetrics) return
+        if (mErr || !mdata?.length) {
+          setOpenVisibilityActiveRegTotal(undefined)
+          return
+        }
+        const raw = (mdata[0] as { match_total_registered?: number | string }).match_total_registered
+        const n =
+          typeof raw === 'number' ?
+            raw
+          : typeof raw === 'string' ?
+            Number(raw)
+          : NaN
+        setOpenVisibilityActiveRegTotal(Number.isFinite(n) ? n : undefined)
+      })
+      const sb = getSupabase()
+      setRoster(undefined)
+      setRosterError(null)
+      void sb.rpc('fetch_public_match_roster', { p_match_id: row.id }).then(({ data, error: rErr }) => {
+        if (cancelled) return
+        if (rErr) {
+          setRosterError(rErr.message)
+          setRoster([])
+          return
+        }
+        setRoster((data ?? []) as PublicRosterRow[])
+      })
+    })()
     return () => {
       cancelled = true
       cancelledMetrics = true
@@ -144,16 +151,18 @@ export function MatchPublicDetailPage() {
   }, [validId, configured, row?.id, row?.participant_list_visibility])
 
   useEffect(() => {
-    if (!validId || !configured || !row?.id) {
+    let cancelled = false
+    void (async () => {
+      await Promise.resolve()
+      if (cancelled) return
+      if (!validId || !configured || !row?.id) {
+        setProgrammeLinks(undefined)
+        setProgrammeError(null)
+        return
+      }
+      const sb = getSupabase()
       setProgrammeLinks(undefined)
       setProgrammeError(null)
-      return
-    }
-    let cancelled = false
-    const sb = getSupabase()
-    setProgrammeLinks(undefined)
-    setProgrammeError(null)
-    void (async () => {
       const { data, error: qErr } = await sb
         .from('match_stage_links')
         .select('sort_order, share_stage_id, snapshot_meta')

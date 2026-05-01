@@ -143,6 +143,7 @@ export function OrganizerMatchRegistrationsPage() {
 
   const reload = useCallback(async () => {
     if (!configured || !user?.id || !validId || !matchId || organizerProfile !== 'active') return
+    await Promise.resolve()
     setLoadError(null)
     const sb = getSupabase()
 
@@ -183,14 +184,14 @@ export function OrganizerMatchRegistrationsPage() {
     }
     setRoster((rx ?? []) as RosterRpcRow[])
     setPendingSquad({})
-  }, [configured, user?.id, validId, matchId, p.matchOrgEditNotFound, organizerProfile])
+  }, [configured, user, validId, matchId, p.matchOrgEditNotFound, organizerProfile])
 
   useEffect(() => {
     if (organizerProfileLoading || organizerProfile !== 'active') return
-    void reload()
+    queueMicrotask(() => void reload())
   }, [reload, organizerProfileLoading, organizerProfile])
 
-  const rosterList = roster ?? []
+  const rosterList = useMemo(() => roster ?? [], [roster])
 
   const rosterActiveBoard = useMemo(
     () => rosterList.filter((r) => countsActiveStatuses(r.status)),

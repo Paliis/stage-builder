@@ -15,8 +15,6 @@ export function useSupabaseSession(): SupabaseSessionState {
 
   useEffect(() => {
     if (!isSupabaseConfigured()) {
-      setLoading(false)
-      setSession(null)
       return
     }
 

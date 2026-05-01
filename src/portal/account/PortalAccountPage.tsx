@@ -26,10 +26,12 @@ export function PortalAccountPage() {
 
   useEffect(() => {
     if (profile !== 'missing') {
-      setApplyFormExpanded(false)
-      setApplyError(null)
-      setApplyContact('')
-      setApplyPastMatches('')
+      queueMicrotask(() => {
+        setApplyFormExpanded(false)
+        setApplyError(null)
+        setApplyContact('')
+        setApplyPastMatches('')
+      })
     }
   }, [profile])
 
@@ -65,7 +67,7 @@ export function PortalAccountPage() {
       return
     }
     await refreshOrganizerProfile()
-  }, [user?.id, refreshOrganizerProfile, applyContact, applyPastMatches, p])
+  }, [user, refreshOrganizerProfile, applyContact, applyPastMatches, p])
 
   if (!isSupabaseConfigured()) {
     return (

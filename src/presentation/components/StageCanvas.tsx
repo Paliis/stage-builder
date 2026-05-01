@@ -2774,8 +2774,6 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     measurePoints.b,
     measureToolActive,
     formatMeasureDistance,
-    placementArmed,
-    penaltyZoneSet,
     penaltyDraftVertices,
     activations,
     activationNumMap,
