@@ -79,6 +79,8 @@ export function OrganizerMatchEditPage() {
   const [saveError, setSaveError] = useState<string | null>(null)
   const [squadSyncBanner, setSquadSyncBanner] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
+  const [pscBusy, setPscBusy] = useState(false)
+  const [pscErr, setPscErr] = useState<string | null>(null)
 
   useEffect(() => {
     if (isNew) {
@@ -261,6 +263,63 @@ export function OrganizerMatchEditPage() {
     const { error: syncErr } = await sb.rpc('organizer_sync_match_squads', { p_match_id: matchId })
     if (syncErr) {
       setSaveError(organizerSquadSyncErrorMessage(syncErr.message, p))
+    }
+  }
+
+  async function handleDownloadMatchPsc() {
+    if (!matchId || !configured || organizerProfile !== 'active') return
+    setPscErr(null)
+    setPscBusy(true)
+    try {
+      const sb = getSupabase()
+      const { data: sess } = await sb.auth.getSession()
+      const token = sess.session?.access_token
+      if (!token) {
+        setPscErr(p.matchOrgExportPscErrSession)
+        return
+      }
+      const res = await fetch('/api/match-export-psc', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ matchId }),
+      })
+
+      if (!res.ok) {
+        let parsed: { error?: string; code?: string } | undefined
+        try {
+          parsed = (await res.json()) as { error?: string; code?: string }
+        } catch {
+          parsed = undefined
+        }
+        if (parsed?.code === 'no_stages') setPscErr(p.matchOrgExportPscErrNoStages)
+        else if (typeof parsed?.error === 'string' && parsed.error.trim())
+          setPscErr(parsed.error.trim())
+        else if (res.status === 503 || res.status === 404) setPscErr(p.matchOrgExportPscErrNetwork)
+        else setPscErr(p.matchOrgExportPscErrGeneric)
+        return
+      }
+
+      const blob = await res.blob()
+      const objectUrl = URL.createObjectURL(blob)
+      try {
+        const a = document.createElement('a')
+        a.href = objectUrl
+        const cd = res.headers.get('Content-Disposition')
+        const m = cd ? /filename="([^"]+)"/i.exec(cd) : null
+        a.download = m?.[1] ?? `match-${matchId.slice(0, 8)}.psc`
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+      } finally {
+        URL.revokeObjectURL(objectUrl)
+      }
+    } catch {
+      setPscErr(p.matchOrgExportPscErrNetwork)
+    } finally {
+      setPscBusy(false)
     }
   }
 
@@ -662,6 +721,44 @@ export function OrganizerMatchEditPage() {
             <Link to={`/${locale}/matches/${matchId}`}>{p.myMatchesViewPublic}</Link>
           </p>
         ) : null}
+
+        {!isNew && validEditId && matchId ?
+          <div
+            style={{
+              marginTop: '0.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.35rem',
+              alignItems: 'flex-start',
+            }}
+          >
+            <button
+              type="button"
+              disabled={pscBusy}
+              onClick={() => void handleDownloadMatchPsc()}
+              style={{
+                padding: '0.45rem 0.95rem',
+                borderRadius: '0.5rem',
+                border: '1px solid var(--border)',
+                background: 'var(--btn-bg)',
+                color: 'var(--text)',
+                cursor: pscBusy ? 'not-allowed' : 'pointer',
+                opacity: pscBusy ? 0.75 : 1,
+              }}
+            >
+              {pscBusy ? p.matchOrgExportPscBusy : p.matchOrgExportPsc}
+            </button>
+            {pscErr ? (
+              <p role="alert" style={{ margin: 0, fontSize: '0.9rem' }}>
+                {pscErr}
+              </p>
+            ) : null}
+            <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.9 }}>
+              {p.matchOrgExportPscHint}
+            </p>
+          </div>
+        : null}
+
       </form>
 
         {!isNew && validEditId && matchId ?

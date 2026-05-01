@@ -608,6 +608,13 @@ export type MessageTree = {
     matchOrgRegistrationsSummary: string
     matchOrgRegistrationsNoneYet: string
     matchOrgDisciplineShotgunNote: string
+    matchOrgExportPsc: string
+    matchOrgExportPscBusy: string
+    matchOrgExportPscHint: string
+    matchOrgExportPscErrGeneric: string
+    matchOrgExportPscErrNetwork: string
+    matchOrgExportPscErrNoStages: string
+    matchOrgExportPscErrSession: string
     matchOrgFieldPrematch: string
     matchOrgFieldPlannedMainSquads: string
     matchOrgFieldPlannedPrematchSquads: string
@@ -1484,6 +1491,14 @@ export const ukMessages: MessageTree = {
       'Заявки цього матчу (організатор): {{confirmed}} підтверджено · {{pending}} очікує підтвердження. Публічна таблиця учасників показує лише підтверджених.',
     matchOrgRegistrationsNoneYet: 'Заявок на цей матч поки немає.',
     matchOrgDisciplineShotgunNote: 'Дисципліна MVP: shotgun (налаштовується лише на рівні коду БД).',
+    matchOrgExportPsc: 'Завантажити .psc (PractiScore)',
+    matchOrgExportPscBusy: 'Готуємо файл…',
+    matchOrgExportPscHint:
+      'Експорт працює на деплої з `/api/match-export-psc` (наприклад Vercel preview/production). У чистому `npm run dev` без бекенду запит може не вдатися.',
+    matchOrgExportPscErrGeneric: 'Не вдалося зібрати експорт. Спробуй ще раз або перевір консоль.',
+    matchOrgExportPscErrNetwork: 'Немає відповіді від сервера експорту (локально потрібен деплой або `vercel dev`).',
+    matchOrgExportPscErrNoStages: 'Додай хоча б одну вправу (посилання share) перед експортом.',
+    matchOrgExportPscErrSession: 'Увійди в обліковий запис і онови сторінку.',
     matchOrgFieldPrematch: 'Прематч (стрільба суддів та організаційних стрільців напередодні)',
     matchOrgFieldPlannedMainSquads: 'Запланована кількість скводів — основний день',
     matchOrgFieldPlannedPrematchSquads: 'Запланована кількість скводів — прематч',
@@ -2367,6 +2382,14 @@ export const enMessages: MessageTree = {
     matchOrgRegistrationsNoneYet: 'No registrations for this match yet.',
     matchOrgDisciplineShotgunNote:
       'MVP discipline is shotgun only (stored in DB; not selectable in UI yet).',
+    matchOrgExportPsc: 'Download .psc (PractiScore)',
+    matchOrgExportPscBusy: 'Preparing file…',
+    matchOrgExportPscHint:
+      'Export requires a deployment that serves `/api/match-export-psc` (e.g. Vercel). Plain `npm run dev` may fail unless you run `vercel dev` or similar.',
+    matchOrgExportPscErrGeneric: 'Could not build the export. Retry or check the console.',
+    matchOrgExportPscErrNetwork: 'Export server unreachable (use a deployment or `vercel dev` locally).',
+    matchOrgExportPscErrNoStages: 'Link at least one stage (share URL) before exporting.',
+    matchOrgExportPscErrSession: 'Sign in and refresh the page.',
     matchOrgFieldPrematch: 'Prematch (RO/staff shooters the day before match day)',
     matchOrgFieldPlannedMainSquads: 'Planned squads — main match day',
     matchOrgFieldPlannedPrematchSquads: 'Planned squads — prematch day',

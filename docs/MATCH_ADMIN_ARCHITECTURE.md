@@ -73,7 +73,7 @@ flowchart TB
 | Таблиці `matches`, `squads`, `registrations` + міграції | **Є:** ланцюжок у `supabase/migrations/` — див. [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
 | RLS політики під ролі | **Є** (організатор / стрілець / anon; уточнення залежить від наступних міграцій — тримати узгодженим з SUPABASE_MATCH_ADMIN) |
 | UI маршрути match portal + форми | **Є** за прапором збірки — `src/portal/matches/*` |
-| Генератор `.psc` у production (TypeScript/Python на сервері), не лише Python-скрипт для розробника | Частково: є експеримент `scripts/practiscore/`; **немає** серверного endpoint |
+| Генератор `.psc` у production (TypeScript/Python на сервері), не лише Python-скрипт для розробника | **Частково:** `POST /api/match-export-psc` + шаблон із round-trip фікстури; уточнення під конкретну версію PS і метадані вправ — далі |
 | Єдиний **контракт** «матч порталу → JSON PS» у `src/` | **Немає** (лише текст у плані) |
 | Тести сумісності PSC з версією PS | Лише ручний імпорт на пристрої |
 | Окремий **staging**/`schema_version` для мігрованих матчів | Закладено (`matches.schema_version` у першій міграції MVP) |

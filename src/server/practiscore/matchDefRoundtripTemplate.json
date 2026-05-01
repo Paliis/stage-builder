@@ -1,0 +1,805 @@
+{
+  "device_arch": "script",
+  "device_model": "psc_clone_test.py",
+  "app_version": "generated",
+  "os_version": "0",
+  "match_id": "ff8ee30f-8f6c-4e88-b7ca-d4110d6da647",
+  "match_name": "Stage Builder PSC round-trip test",
+  "match_type": "uspsa_p",
+  "match_subtype": "ipsc",
+  "match_usemaxstagetime": false,
+  "match_track_ro": "none",
+  "match_docs": [
+    {
+      "url": "https://www.ipsc.org/wp-content/uploads/2023/12/IPSC-Shotgun-Competition-Rules-Jan-2024-Edition-Final-27-Dec-2023.pdf",
+      "name": "IPSC Shotgun",
+      "file": "2024_IPSC_RulesShotgun.pdf",
+      "type": "rules",
+      "chksum": "0c22904bd12004f27369bf5dc88c39b43551c502"
+    }
+  ],
+  "match_pointsdownvalue": 1.0,
+  "match_maxteamresults": 3,
+  "match_secure": false,
+  "match_level": "L1",
+  "match_date": "2026-03-28",
+  "match_creationdate": "2026-03-28 15:20:59.834",
+  "match_modifieddate": "2026-03-28 15:20:59.827",
+  "match_penalties": [],
+  "match_bonuses": [],
+  "match_cats": [
+    "Open",
+    "Modified",
+    "Standard",
+    "Standard Manual"
+  ],
+  "match_cls": [
+    "U",
+    "D",
+    "C",
+    "B",
+    "A",
+    "M",
+    "G"
+  ],
+  "match_ctgs": "[\"Junior\",\"Senior\",\"Super Senior\",\"Grand Senior\",\"Super Junior\",\"Lady\",\"Lady Senior\"]",
+  "match_chkins": [
+    "Checked in",
+    "Paid",
+    "Staff",
+    "RO"
+  ],
+  "match_procs": [
+    {
+      "uuid": "EQRTwQ",
+      "name": "10.2.7 Failure to engage target"
+    },
+    {
+      "uuid": "v9pLTA",
+      "name": "2.2.1.5 Shortcut outside shooting area"
+    },
+    {
+      "uuid": "s8g7Dn",
+      "name": "10.2.1 Shooting while beyond a Fault Line"
+    },
+    {
+      "uuid": "s8g7Dm",
+      "name": "10.2.1.1 Shooting while beyond a Fault Line (per shot)"
+    },
+    {
+      "uuid": "7wTzBw",
+      "name": "10.2.2 Fail to comply with WSB"
+    },
+    {
+      "uuid": "8wTzB1",
+      "name": "10.2.2 Fail to comply with WSB (per shot)"
+    },
+    {
+      "uuid": "jkaZwk",
+      "name": "10.2.4 Failure to reload (per shot)"
+    },
+    {
+      "uuid": "kddJxe",
+      "name": "10.2.5 Cooper Tunnel"
+    },
+    {
+      "uuid": "whF4jn",
+      "name": "10.2.8 Using strong shoulder on weak shoulder only stage (per shot)"
+    },
+    {
+      "uuid": "xdnYza",
+      "name": "10.2.11 Shots over a barrier 1.8m tall (per shot)"
+    },
+    {
+      "uuid": "xdnYzb",
+      "name": "10.2.12 Using wrong ammo type"
+    },
+    {
+      "uuid": "WEkBf8",
+      "name": "8.6.2 Assisting competitor"
+    },
+    {
+      "uuid": "bJQy4F",
+      "name": "8.7.2 Sighting aid during walkthrough"
+    },
+    {
+      "uuid": "eWtfmL",
+      "name": "10.2.9 Prohibited action (per shot)"
+    },
+    {
+      "uuid": "eWtfmK",
+      "name": "4.5.1 Rearrangement of stage equipment"
+    },
+    {
+      "uuid": "HsjtM2",
+      "name": "9.9.2 Miss on non-activated disappearing target"
+    },
+    {
+      "uuid": "GsjtMt",
+      "name": "8.7.1 Sight picture and/or dry firing (after a warning)"
+    },
+    {
+      "uuid": "uBTRY2",
+      "name": "9.1.1 Approaching targets (after a warning)"
+    },
+    {
+      "uuid": "HkvzTR",
+      "name": "10.2.6 Creeping prior Start Signal (after a warning)"
+    },
+    {
+      "uuid": "x2TVQ1",
+      "name": "6.2.5.1 Distance from the body (to Open or no score)",
+      "warn": true
+    },
+    {
+      "uuid": "x2TVQF",
+      "name": "8.7.1 Sight picture and/or dry firing (Procedural)",
+      "warn": true
+    },
+    {
+      "uuid": "BgXQGK",
+      "name": "9.1.1 Approaching targets during scoring (Procedural)",
+      "warn": true
+    },
+    {
+      "uuid": "R8cMDc",
+      "name": "10.2.6 Creeping after the Standby command (Procedural)",
+      "warn": true
+    },
+    {
+      "uuid": "7NeDtm",
+      "name": "8.3.1.1 Moving away from the start location (DQ 10.6.1)",
+      "warn": true
+    },
+    {
+      "uuid": "zLG6ev",
+      "name": "8.7.3 Unauthorized presence on stage (DQ 10.6)",
+      "warn": true
+    },
+    {
+      "uuid": "XXTzeE",
+      "name": "9.7.8 Unauthorized handling of score sheets (DQ 10.6)",
+      "warn": true
+    }
+  ],
+  "match_dqs": [
+    {
+      "uuid": "Nk2R9M",
+      "name": "10.5.2 Muzzle pointed uprange or past safe angle"
+    },
+    {
+      "uuid": "CzfrxQ",
+      "name": "10.5.5 Sweeping"
+    },
+    {
+      "uuid": "Bzfrx1",
+      "name": "10.5.6 Sweeping another person"
+    },
+    {
+      "uuid": "6kQPC1",
+      "name": "10.5 Unsafe Gun Handling"
+    },
+    {
+      "uuid": "Gtmb6C",
+      "name": "10.5.9 Finger inside trigger guard while clearing malfunction"
+    },
+    {
+      "uuid": "4LZ3Dt",
+      "name": "10.5.10 Finger inside trigger guard while loading, reloading, or unloading"
+    },
+    {
+      "uuid": "6kQPCu",
+      "name": "10.5.11 Finger inside trigger guard during movement"
+    },
+    {
+      "uuid": "uZmpFr",
+      "name": "10.4.1 Shot in unsafe direction"
+    },
+    {
+      "uuid": "snewMA",
+      "name": "10.4.2 Shot within 3 meters"
+    },
+    {
+      "uuid": "Dn5Cxd",
+      "name": "10.4.3 Shot while loading, reloading, or unloading"
+    },
+    {
+      "uuid": "xy5hNj",
+      "name": "10.4.4 Shot during remedial action"
+    },
+    {
+      "uuid": "7Ars2B",
+      "name": "10.4.5 Shot while transferring between hands"
+    },
+    {
+      "uuid": "2BuGHU",
+      "name": "10.4.6 Shot during movement"
+    },
+    {
+      "uuid": "XMxAjX",
+      "name": "10.4.7 Shot at metal target < 5m (bird, buck)"
+    },
+    {
+      "uuid": "XMxAj1",
+      "name": "10.4.7 Shot at metal target < 40m (slug)"
+    },
+    {
+      "uuid": "wnqzyc",
+      "name": "10.4.9 Unacceptable use of slug ammunition"
+    },
+    {
+      "uuid": "vtH2gf",
+      "name": "10.4.10 Unacceptable use of buckshot ammunition"
+    },
+    {
+      "uuid": "BeMf46",
+      "name": "10.5.1 Handling without permission"
+    },
+    {
+      "uuid": "wuzpsg",
+      "name": "10.5.3 Dropped gun"
+    },
+    {
+      "uuid": "cRhKE7",
+      "name": "10.5.8 Using more than one firearm"
+    },
+    {
+      "uuid": "jBKK5Q",
+      "name": "10.5.13 Handling ammo in safety area"
+    },
+    {
+      "uuid": "xuMyA3",
+      "name": "10.5.14 Unauthorized loaded firearm"
+    },
+    {
+      "uuid": "jTG7yh",
+      "name": "10.5.15 Retrieving a dropped firearm"
+    },
+    {
+      "uuid": "bvkLfz",
+      "name": "10.5.16 Using prohibited/unsafe ammo"
+    },
+    {
+      "uuid": "CvkLfA",
+      "name": "10.5.16 Using prohibited/unsafe firearm"
+    },
+    {
+      "uuid": "bvkLf1",
+      "name": "10.5 Unsafe gun handling"
+    },
+    {
+      "uuid": "pqd939",
+      "name": "10.6 Unsportsmanlike conduct"
+    },
+    {
+      "uuid": "eMBquw",
+      "name": "10.7 Prohibited substances"
+    }
+  ],
+  "match_dnfs": [
+    {
+      "uuid": "R4cPM8",
+      "name": "6.6.1 Not present at the stage"
+    },
+    {
+      "uuid": "R4cPM9",
+      "name": "2.3.3.3 Refused reshoot"
+    },
+    {
+      "uuid": "R4cPMa",
+      "name": "5.7.1 Using tools to clear malfunction"
+    },
+    {
+      "uuid": "4AEvHd",
+      "name": "8.3.4.2 Didn't fire a shot"
+    },
+    {
+      "uuid": "Hd2QA1",
+      "name": "9.7.6.1 Missing time"
+    },
+    {
+      "uuid": "Hd2QA2",
+      "name": "9.7.7 Scores not available"
+    },
+    {
+      "uuid": "Hd2QA3",
+      "name": "10.4.8 AD due to broken firearm"
+    },
+    {
+      "uuid": "4AEvH5",
+      "name": "Excluded stage"
+    }
+  ],
+  "match_stages": [
+    {
+      "stage_number": 1,
+      "stage_strings": 1,
+      "stage_scoretype": "Comstock",
+      "stage_modifieddate": "2026-03-28 15:23:48.188",
+      "stage_name": "Упр 1 Штрафи",
+      "stage_poppers": 8,
+      "stage_noshoots": true,
+      "stage_numtargs": 0,
+      "stage_uuid": "ede78aad-031d-4ea7-ad61-3d2114d178ab",
+      "stage_classictargets": true,
+      "stage_classifier": false,
+      "stage_classifiercode": "",
+      "stage_tppoints": 100,
+      "stage_poppers_maxnpms": 2,
+      "stage_removeworststring": true,
+      "stage_maxstringtime": 0.0,
+      "stage_doesntrequiretime": false
+    },
+    {
+      "stage_number": 2,
+      "stage_strings": 1,
+      "stage_scoretype": "Comstock",
+      "stage_modifieddate": "2026-03-28 15:23:12.638",
+      "stage_name": "Коротка Переноси",
+      "stage_poppers": 8,
+      "stage_noshoots": true,
+      "stage_numtargs": 0,
+      "stage_uuid": "193e75ab-386e-4a6d-823a-c2718211f2f7",
+      "stage_classictargets": true,
+      "stage_classifier": false,
+      "stage_classifiercode": "",
+      "stage_tppoints": 100,
+      "stage_removeworststring": true,
+      "stage_maxstringtime": 0.0,
+      "stage_doesntrequiretime": false
+    },
+    {
+      "stage_number": 3,
+      "stage_strings": 1,
+      "stage_scoretype": "Comstock",
+      "stage_modifieddate": "2026-03-28 15:24:40.791",
+      "stage_name": "3 Середня 3 Бокса",
+      "stage_poppers": 15,
+      "stage_noshoots": true,
+      "stage_numtargs": 0,
+      "stage_uuid": "df0a76b5-6077-4f71-a5c4-f35fe19fac21",
+      "stage_classictargets": true,
+      "stage_classifier": false,
+      "stage_classifiercode": "",
+      "stage_tppoints": 100,
+      "stage_removeworststring": true,
+      "stage_maxstringtime": 0.0,
+      "stage_doesntrequiretime": false
+    },
+    {
+      "stage_number": 4,
+      "stage_strings": 1,
+      "stage_scoretype": "Comstock",
+      "stage_modifieddate": "2026-03-28 15:25:07.596",
+      "stage_name": "Крест ",
+      "stage_poppers": 14,
+      "stage_noshoots": true,
+      "stage_numtargs": 0,
+      "stage_uuid": "e0e7076b-1bcf-4bdb-bcab-7689520a99a5",
+      "stage_classictargets": true,
+      "stage_classifier": false,
+      "stage_classifiercode": "",
+      "stage_tppoints": 100,
+      "stage_removeworststring": true,
+      "stage_maxstringtime": 0.0,
+      "stage_doesntrequiretime": false
+    }
+  ],
+  "match_shooters": [
+    {
+      "sh_uuid": "e574adc9-6bc5-4749-8963-821f501989d7",
+      "sh_uid": "e574adc9-6bc5-4749-8963-821f501989d7",
+      "sh_ln": "Test",
+      "sh_fn": "Shooter",
+      "sh_num": -1,
+      "sh_random": -2059773854,
+      "sh_sqd": 0,
+      "sh_del": false,
+      "sh_eml": "",
+      "sh_cc": "",
+      "sh_st": "",
+      "sh_dvp": "Modified",
+      "sh_pf": "MAJOR",
+      "sh_grd": "U",
+      "mod_ctgs": "2026-03-28 15:25:54.039",
+      "mod_chkins": "2026-03-28 15:25:54.039",
+      "sh_wlk": false,
+      "sh_mod": "2026-03-28 15:25:54.039",
+      "mod_pr": "2026-03-28 15:25:54.039",
+      "mod_dv": "2026-03-28 15:25:54.039",
+      "mod_pf": "2026-03-28 15:25:54.039",
+      "mod_sq": "2026-03-28 15:25:54.039",
+      "mod_dl": "2026-03-28 15:25:54.039",
+      "mod_dq": "2026-03-28 15:25:54.039",
+      "sh_dq": false
+    },
+    {
+      "sh_uuid": "63c19797-edb1-4adb-be05-c11015dd4928",
+      "sh_uid": "63c19797-edb1-4adb-be05-c11015dd4928",
+      "sh_ln": "Test",
+      "sh_fn": "Shooter",
+      "sh_num": -1,
+      "sh_random": -871192566,
+      "sh_sqd": 0,
+      "sh_del": false,
+      "sh_eml": "",
+      "sh_cc": "",
+      "sh_st": "",
+      "sh_dvp": "Standard",
+      "sh_pf": "MAJOR",
+      "sh_grd": "U",
+      "sh_gen": "FEMALE",
+      "sh_age": "JUNIOR",
+      "sh_ctgs": "[\"Junior\",\"Lady\"]",
+      "mod_ctgs": "2026-03-28 15:26:20.624",
+      "mod_chkins": "2026-03-28 15:26:20.624",
+      "sh_wlk": false,
+      "sh_mod": "2026-03-28 15:26:20.624",
+      "mod_pr": "2026-03-28 15:26:20.624",
+      "mod_dv": "2026-03-28 15:26:20.624",
+      "mod_pf": "2026-03-28 15:26:20.624",
+      "mod_sq": "2026-03-28 15:26:20.624",
+      "mod_dl": "2026-03-28 15:26:20.624",
+      "mod_dq": "2026-03-28 15:26:20.624",
+      "sh_dq": false
+    },
+    {
+      "sh_uuid": "3e8a5b36-38f6-4929-8b9c-026b6ce7e1d4",
+      "sh_uid": "3e8a5b36-38f6-4929-8b9c-026b6ce7e1d4",
+      "sh_ln": "Test",
+      "sh_fn": "Shooter",
+      "sh_num": -1,
+      "sh_random": 1340759618,
+      "sh_sqd": 0,
+      "sh_del": false,
+      "sh_eml": "",
+      "sh_cc": "",
+      "sh_st": "",
+      "sh_dvp": "Modified",
+      "sh_pf": "MAJOR",
+      "sh_grd": "U",
+      "mod_ctgs": "2026-03-28 15:26:40.191",
+      "mod_chkins": "2026-03-28 15:26:40.191",
+      "sh_wlk": false,
+      "sh_mod": "2026-03-28 15:30:01.370",
+      "mod_pr": "2026-03-28 15:30:01.370",
+      "mod_dv": "2026-03-28 15:26:40.190",
+      "mod_pf": "2026-03-28 15:26:40.191",
+      "mod_sq": "2026-03-28 15:26:40.191",
+      "mod_dl": "2026-03-28 15:26:40.190",
+      "mod_dq": "2026-03-28 15:26:40.190",
+      "sh_dq": false,
+      "history": [
+        {
+          "sh_uuid": "c7b314e8-9c23-43a5-b445-643da9abdbeb",
+          "sh_uid": "c7b314e8-9c23-43a5-b445-643da9abdbeb",
+          "sh_ln": "Єгурнов",
+          "sh_fn": "Одександр",
+          "sh_num": -1,
+          "sh_random": 1340759618,
+          "sh_sqd": 0,
+          "sh_del": false,
+          "sh_eml": "",
+          "sh_cc": "",
+          "sh_st": "",
+          "sh_dvp": "Modified",
+          "sh_pf": "MAJOR",
+          "sh_grd": "U",
+          "mod_ctgs": "2026-03-28 15:26:40.191",
+          "mod_chkins": "2026-03-28 15:26:40.191",
+          "sh_wlk": false,
+          "sh_mod": "2026-03-28 15:26:40.190",
+          "mod_pr": "2026-03-28 15:26:40.191",
+          "mod_dv": "2026-03-28 15:26:40.190",
+          "mod_pf": "2026-03-28 15:26:40.191",
+          "mod_sq": "2026-03-28 15:26:40.191",
+          "mod_dl": "2026-03-28 15:26:40.190",
+          "mod_dq": "2026-03-28 15:26:40.190",
+          "sh_dq": false
+        }
+      ]
+    },
+    {
+      "sh_uuid": "1be867e0-d07f-4baa-acf5-c39edd3dfe9f",
+      "sh_uid": "1be867e0-d07f-4baa-acf5-c39edd3dfe9f",
+      "sh_ln": "Test",
+      "sh_fn": "Shooter",
+      "sh_num": -1,
+      "sh_random": 1682423047,
+      "sh_sqd": 0,
+      "sh_del": false,
+      "sh_eml": "",
+      "sh_cc": "",
+      "sh_st": "",
+      "sh_dvp": "Standard",
+      "sh_pf": "MAJOR",
+      "sh_grd": "U",
+      "mod_ctgs": "2026-03-28 15:26:54.954",
+      "mod_chkins": "2026-03-28 15:26:54.954",
+      "sh_wlk": false,
+      "sh_mod": "2026-03-28 15:26:54.954",
+      "mod_pr": "2026-03-28 15:26:54.954",
+      "mod_dv": "2026-03-28 15:26:54.954",
+      "mod_pf": "2026-03-28 15:26:54.954",
+      "mod_sq": "2026-03-28 15:26:54.954",
+      "mod_dl": "2026-03-28 15:26:54.954",
+      "mod_dq": "2026-03-28 15:26:54.954",
+      "sh_dq": false
+    },
+    {
+      "sh_uuid": "f6128264-d533-4d39-8849-ba0786ef2197",
+      "sh_uid": "f6128264-d533-4d39-8849-ba0786ef2197",
+      "sh_ln": "Test",
+      "sh_fn": "Shooter",
+      "sh_num": -1,
+      "sh_random": -1633705552,
+      "sh_sqd": 0,
+      "sh_del": false,
+      "sh_eml": "",
+      "sh_cc": "",
+      "sh_st": "",
+      "sh_dvp": "Standard",
+      "sh_pf": "MAJOR",
+      "sh_grd": "U",
+      "mod_ctgs": "2026-03-28 15:27:08.108",
+      "mod_chkins": "2026-03-28 15:27:08.108",
+      "sh_wlk": false,
+      "sh_mod": "2026-03-28 15:27:08.108",
+      "mod_pr": "2026-03-28 15:27:08.108",
+      "mod_dv": "2026-03-28 15:27:08.108",
+      "mod_pf": "2026-03-28 15:27:08.108",
+      "mod_sq": "2026-03-28 15:27:08.108",
+      "mod_dl": "2026-03-28 15:27:08.108",
+      "mod_dq": "2026-03-28 15:27:08.108",
+      "sh_dq": false
+    }
+  ],
+  "match_custom_targets": [
+    {
+      "target_number": 0,
+      "target_name": "Steel",
+      "target_reqshots": 1,
+      "target_targdesc": [
+        [
+          "A",
+          "1"
+        ],
+        [
+          "M",
+          "1"
+        ],
+        [
+          "NS",
+          "1"
+        ],
+        [
+          "NPM",
+          "1"
+        ]
+      ]
+    },
+    {
+      "target_number": 0,
+      "target_name": "Clay",
+      "target_reqshots": 1,
+      "target_targdesc": [
+        [
+          "A",
+          "1"
+        ],
+        [
+          "M",
+          "1"
+        ],
+        [
+          "NS",
+          "1"
+        ],
+        [
+          "NPM",
+          "1"
+        ]
+      ]
+    },
+    {
+      "target_number": 0,
+      "target_name": "Paper",
+      "target_reqshots": 2,
+      "target_targdesc": [
+        [
+          "A",
+          "1"
+        ],
+        [
+          "C",
+          "1"
+        ],
+        [
+          "D",
+          "1"
+        ],
+        [
+          "M",
+          "1"
+        ],
+        [
+          "NS",
+          "1"
+        ],
+        [
+          "NPM",
+          "1"
+        ]
+      ]
+    },
+    {
+      "target_number": 0,
+      "target_name": "A4",
+      "target_reqshots": 2,
+      "target_targdesc": [
+        [
+          "A",
+          "1"
+        ],
+        [
+          "C",
+          "1"
+        ],
+        [
+          "M",
+          "1"
+        ],
+        [
+          "NS",
+          "1"
+        ],
+        [
+          "NPM",
+          "1"
+        ]
+      ]
+    },
+    {
+      "target_number": 0,
+      "target_name": "Steel x2",
+      "target_reqshots": 1,
+      "target_targdesc": [
+        [
+          "A",
+          "2"
+        ],
+        [
+          "M",
+          "1"
+        ],
+        [
+          "NS",
+          "1"
+        ],
+        [
+          "NPM",
+          "1"
+        ]
+      ]
+    },
+    {
+      "target_number": 0,
+      "target_name": "Clay x2",
+      "target_reqshots": 1,
+      "target_targdesc": [
+        [
+          "A",
+          "2"
+        ],
+        [
+          "M",
+          "1"
+        ],
+        [
+          "NS",
+          "1"
+        ],
+        [
+          "NPM",
+          "1"
+        ]
+      ]
+    },
+    {
+      "target_number": 0,
+      "target_name": "Paper x2",
+      "target_reqshots": 2,
+      "target_targdesc": [
+        [
+          "A",
+          "2"
+        ],
+        [
+          "C",
+          "2"
+        ],
+        [
+          "D",
+          "2"
+        ],
+        [
+          "M",
+          "1"
+        ],
+        [
+          "NS",
+          "1"
+        ],
+        [
+          "NPM",
+          "1"
+        ]
+      ]
+    },
+    {
+      "target_number": 0,
+      "target_name": "A4 x2",
+      "target_reqshots": 2,
+      "target_targdesc": [
+        [
+          "A",
+          "2"
+        ],
+        [
+          "C",
+          "2"
+        ],
+        [
+          "M",
+          "1"
+        ],
+        [
+          "NS",
+          "1"
+        ],
+        [
+          "NPM",
+          "1"
+        ]
+      ]
+    }
+  ],
+  "match_divisionpfs": {
+    "Standard": {
+      "major": 480
+    },
+    "Modified": {
+      "major": 480
+    },
+    "Standard Manual": {
+      "major": 480
+    },
+    "Open": {
+      "major": 480
+    }
+  },
+  "match_pfs": [
+    {
+      "name": "Major",
+      "short": "Maj",
+      "A": 5,
+      "B": 4,
+      "C": 4,
+      "D": 2,
+      "M": 10,
+      "NS": 10,
+      "disabled": ""
+    },
+    {
+      "name": "Subminor",
+      "short": "Sub",
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "M": 0,
+      "NS": 0,
+      "disabled": ""
+    }
+  ]
+}
