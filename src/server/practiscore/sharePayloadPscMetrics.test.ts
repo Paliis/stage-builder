@@ -9,6 +9,7 @@ describe('tryPscStageMetricsFromSharePayload', () => {
   it('counts paper targets on plan without briefing wording (stored share payload)', () => {
     const briefing = defaultStageBriefing()
     briefing.targetsDescription = ''
+    briefing.maxPoints = ''
     const file = buildStageProjectFile({
       briefing,
       stage: {
@@ -56,6 +57,7 @@ describe('tryPscStageMetricsFromSharePayload', () => {
       stage_poppers: 2,
       stage_numtargs: 2,
       stage_noshoots: false,
+      stage_tppoints: 30,
     })
   })
 
@@ -114,6 +116,7 @@ describe('tryPscStageMetricsFromSharePayload', () => {
       stage_poppers: 5,
       stage_numtargs: 2,
       stage_noshoots: false,
+      stage_tppoints: 45,
     })
   })
 })

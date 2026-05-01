@@ -46,6 +46,18 @@ export type PortalMatchPsFields = {
 
 type JsonObject = Record<string, unknown>
 
+/** PractiScore (IPSC shotgun) exports use `stage_targets[]` (`target_reqshots`) for cardboard; steel stays in `stage_poppers`. Golden exports often set `stage_numtargs` to 0 while listing each paper unit in `stage_targets`. */
+const PSC_IPSC_CARD_TARGET_REQ_SHOTS = 2
+
+export function paperTargetsForPractiscoreStage(paperUnits: number): { target_number: number; target_reqshots: number }[] {
+  if (paperUnits <= 0 || paperUnits > 999) return []
+  const out: { target_number: number; target_reqshots: number }[] = []
+  for (let i = 0; i < paperUnits; i += 1) {
+    out.push({ target_number: i + 1, target_reqshots: PSC_IPSC_CARD_TARGET_REQ_SHOTS })
+  }
+  return out
+}
+
 function deepCloneJson<T>(v: T): T {
   return JSON.parse(JSON.stringify(v)) as T
 }
@@ -172,9 +184,23 @@ export function buildPortalPractiscoreZip(params: {
     merged.stage_name = snapshotTitle(link.snapshot_meta, idx)
     merged.stage_uuid = randomUUID()
     if (link.psc_metrics) {
+      const paperUnits = link.psc_metrics.stage_numtargs
       merged.stage_poppers = link.psc_metrics.stage_poppers
-      merged.stage_numtargs = link.psc_metrics.stage_numtargs
       merged.stage_noshoots = link.psc_metrics.stage_noshoots
+      const heuristicTppoints =
+        5 * link.psc_metrics.stage_poppers + 10 * Math.max(paperUnits, 0)
+      merged.stage_tppoints =
+        typeof link.psc_metrics.stage_tppoints === 'number' &&
+        Number.isFinite(link.psc_metrics.stage_tppoints)
+          ? link.psc_metrics.stage_tppoints
+          : heuristicTppoints
+      if (paperUnits > 0) {
+        merged.stage_targets = paperTargetsForPractiscoreStage(paperUnits)
+        merged.stage_numtargs = 0
+      } else {
+        merged.stage_numtargs = 0
+        delete merged.stage_targets
+      }
     }
     // Round-trip template clones `stage_poppers_maxnpms: 2` from stage[0] for every stage;
     // PractiScore shows it as «Steel NPMs» and it is not our plate count — clear for portal export.

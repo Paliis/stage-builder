@@ -22584,6 +22584,15 @@ var matchScoresRoundtripTemplate_default = {
 function isPrematchPhase(row) {
   return (row.squad_phase ?? "main").trim().toLowerCase() === "prematch";
 }
+var PSC_IPSC_CARD_TARGET_REQ_SHOTS = 2;
+function paperTargetsForPractiscoreStage(paperUnits) {
+  if (paperUnits <= 0 || paperUnits > 999) return [];
+  const out = [];
+  for (let i = 0; i < paperUnits; i += 1) {
+    out.push({ target_number: i + 1, target_reqshots: PSC_IPSC_CARD_TARGET_REQ_SHOTS });
+  }
+  return out;
+}
 function deepCloneJson(v) {
   return JSON.parse(JSON.stringify(v));
 }
@@ -22672,9 +22681,18 @@ function buildPortalPractiscoreZip(params) {
     merged.stage_name = snapshotTitle(link.snapshot_meta, idx);
     merged.stage_uuid = (0, import_node_crypto.randomUUID)();
     if (link.psc_metrics) {
+      const paperUnits = link.psc_metrics.stage_numtargs;
       merged.stage_poppers = link.psc_metrics.stage_poppers;
-      merged.stage_numtargs = link.psc_metrics.stage_numtargs;
       merged.stage_noshoots = link.psc_metrics.stage_noshoots;
+      const heuristicTppoints = 5 * link.psc_metrics.stage_poppers + 10 * Math.max(paperUnits, 0);
+      merged.stage_tppoints = typeof link.psc_metrics.stage_tppoints === "number" && Number.isFinite(link.psc_metrics.stage_tppoints) ? link.psc_metrics.stage_tppoints : heuristicTppoints;
+      if (paperUnits > 0) {
+        merged.stage_targets = paperTargetsForPractiscoreStage(paperUnits);
+        merged.stage_numtargs = 0;
+      } else {
+        merged.stage_numtargs = 0;
+        delete merged.stage_targets;
+      }
     }
     merged.stage_poppers_maxnpms = 0;
     return merged;
@@ -22756,6 +22774,30 @@ function inferPaperTargetsFromBriefing(targetsDescription) {
   bump(/(?:^|\D)(\d+)\s+паперова\s+мішень/giu);
   bump(/(?:^|\D)(\d+)\s+paper\s+targets?/giu);
   return max;
+}
+
+// src/domain/stageBriefing.ts
+function defaultStageBriefing() {
+  return {
+    documentTitle: "\u0412\u043F\u0440\u0430\u0432\u0430 \u21161",
+    exerciseType: "short",
+    targetsDescription: "",
+    recommendedShots: "",
+    allowedAmmo: "\u0428\u0440\u0456\u0442 (\u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0438\u0439 \u0440\u043E\u0437\u043C\u0456\u0440 \u21163, \u043D\u0435 \u0431\u0456\u043B\u044C\u0448\u0435 3,5 \u043C\u043C \u0432 \u0434\u0456\u0430\u043C\u0435\u0442\u0440\u0456)",
+    maxPoints: "40",
+    startSignal: "\u0417\u0432\u0443\u043A\u043E\u0432\u0438\u0439",
+    readyCondition: "\u0417\u0430\u0440\u044F\u0434\u0436\u0435\u043D\u043E (\u041F\u043E\u043B\u043E\u0436\u0435\u043D\u043D\u044F 1)",
+    startPosition: "",
+    procedure: "\u0417\u0430 \u0441\u0438\u0433\u043D\u0430\u043B\u043E\u043C \u0442\u0430\u0439\u043C\u0435\u0440\u0430, \u0432\u0440\u0430\u0437\u0438\u0442\u0438 \u0432\u0441\u0456 \u043C\u0456\u0448\u0435\u043D\u0456, \u043D\u0435 \u0432\u0438\u0445\u043E\u0434\u044F\u0447\u0438 \u0437\u0430 \u043C\u0435\u0436\u0456 \u0448\u0442\u0440\u0430\u0444\u043D\u0438\u0445 \u043B\u0456\u043D\u0456\u0439. \u041C\u0435\u0442\u0430\u043B\u0435\u0432\u0456 \u043C\u0456\u0448\u0435\u043D\u0456 \u043C\u0430\u044E\u0442\u044C \u0432\u043F\u0430\u0441\u0442\u0438 \u0434\u043B\u044F \u0437\u0430\u043B\u0456\u043A\u0443. \u041A\u0435\u0440\u0430\u043C\u0456\u0447\u043D\u0456 \u043C\u0456\u0448\u0435\u043D\u0456 (\u044F\u043A\u0449\u043E \u0454) \u043C\u0430\u044E\u0442\u044C \u043C\u0430\u0442\u0438 \u044F\u0432\u043D\u0456 \u0441\u043B\u0456\u0434\u0438 \u0443\u0440\u0430\u0436\u0435\u043D\u043D\u044F.",
+    safetyAngles: "90/90/90"
+  };
+}
+function parseBriefingOptionalPositiveInt(raw) {
+  const t = raw.trim();
+  if (!t) return null;
+  const n = Number.parseFloat(t.replace(",", "."));
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return Math.round(n);
 }
 
 // src/domain/fieldGround3d.ts
@@ -22846,23 +22888,6 @@ function reclampPlanDimensionsToField(dims, widthM, heightM) {
     endA: clampVec2ToField(d.endA, 0, widthM, heightM),
     endB: clampVec2ToField(d.endB, 0, widthM, heightM)
   }));
-}
-
-// src/domain/stageBriefing.ts
-function defaultStageBriefing() {
-  return {
-    documentTitle: "\u0412\u043F\u0440\u0430\u0432\u0430 \u21161",
-    exerciseType: "short",
-    targetsDescription: "",
-    recommendedShots: "",
-    allowedAmmo: "\u0428\u0440\u0456\u0442 (\u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0438\u0439 \u0440\u043E\u0437\u043C\u0456\u0440 \u21163, \u043D\u0435 \u0431\u0456\u043B\u044C\u0448\u0435 3,5 \u043C\u043C \u0432 \u0434\u0456\u0430\u043C\u0435\u0442\u0440\u0456)",
-    maxPoints: "40",
-    startSignal: "\u0417\u0432\u0443\u043A\u043E\u0432\u0438\u0439",
-    readyCondition: "\u0417\u0430\u0440\u044F\u0434\u0436\u0435\u043D\u043E (\u041F\u043E\u043B\u043E\u0436\u0435\u043D\u043D\u044F 1)",
-    startPosition: "",
-    procedure: "\u0417\u0430 \u0441\u0438\u0433\u043D\u0430\u043B\u043E\u043C \u0442\u0430\u0439\u043C\u0435\u0440\u0430, \u0432\u0440\u0430\u0437\u0438\u0442\u0438 \u0432\u0441\u0456 \u043C\u0456\u0448\u0435\u043D\u0456, \u043D\u0435 \u0432\u0438\u0445\u043E\u0434\u044F\u0447\u0438 \u0437\u0430 \u043C\u0435\u0436\u0456 \u0448\u0442\u0440\u0430\u0444\u043D\u0438\u0445 \u043B\u0456\u043D\u0456\u0439. \u041C\u0435\u0442\u0430\u043B\u0435\u0432\u0456 \u043C\u0456\u0448\u0435\u043D\u0456 \u043C\u0430\u044E\u0442\u044C \u0432\u043F\u0430\u0441\u0442\u0438 \u0434\u043B\u044F \u0437\u0430\u043B\u0456\u043A\u0443. \u041A\u0435\u0440\u0430\u043C\u0456\u0447\u043D\u0456 \u043C\u0456\u0448\u0435\u043D\u0456 (\u044F\u043A\u0449\u043E \u0454) \u043C\u0430\u044E\u0442\u044C \u043C\u0430\u0442\u0438 \u044F\u0432\u043D\u0456 \u0441\u043B\u0456\u0434\u0438 \u0443\u0440\u0430\u0436\u0435\u043D\u043D\u044F.",
-    safetyAngles: "90/90/90"
-  };
 }
 
 // src/domain/weaponClass.ts
@@ -23285,9 +23310,14 @@ function tryPscStageMetricsFromSharePayload(payload) {
   if (!parsed.ok) return null;
   const fromScene = computePscStageMetrics(parsed.data.stage.targets);
   const fromBriefing = inferPaperTargetsFromBriefing(parsed.data.briefing.targetsDescription);
+  const stage_numtargs = Math.max(fromScene.stage_numtargs, fromBriefing);
+  const heuristicTppoints = 5 * fromScene.stage_poppers + 10 * stage_numtargs;
+  const briefPts = parseBriefingOptionalPositiveInt(parsed.data.briefing.maxPoints);
+  const stage_tppoints = briefPts !== null ? Math.max(heuristicTppoints, briefPts) : heuristicTppoints;
   return {
     ...fromScene,
-    stage_numtargs: Math.max(fromScene.stage_numtargs, fromBriefing)
+    stage_numtargs,
+    stage_tppoints
   };
 }
 

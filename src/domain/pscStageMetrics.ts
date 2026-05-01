@@ -9,6 +9,11 @@ export type PscStageMetrics = {
   /** Paper/cardboard classic targets (`stage_numtargs`). */
   stage_numtargs: number
   stage_noshoots: boolean
+  /**
+   * Optional `stage_tppoints` for PSC (IPSC shotgun: 5 per steel plate + 10 per classic paper face).
+   * Filled when metrics come from share payload (`tryPscStageMetricsFromSharePayload`); export falls back to the same heuristic if absent.
+   */
+  stage_tppoints?: number
 }
 
 function isMetalRectPlateType(type: TargetType): boolean {

@@ -4,6 +4,7 @@ import { unzipSync, strFromU8 } from 'fflate'
 import {
   buildPortalPractiscoreZip,
   normalizePowerFactor,
+  paperTargetsForPractiscoreStage,
   snapshotTitle,
   splitDisplayName,
 } from './buildPortalPractiscoreZip.ts'
@@ -114,21 +115,36 @@ describe('buildPortalPractiscoreZip', () => {
         stage_numtargs: number
         stage_noshoots: boolean
         stage_poppers_maxnpms: number
+        stage_targets?: { target_number: number; target_reqshots: number }[]
+        stage_tppoints?: number
       }[]
     }
 
     expect(def.match_stages[0]).toMatchObject({
       stage_poppers: 4,
-      stage_numtargs: 3,
+      stage_numtargs: 0,
       stage_noshoots: true,
     })
+    expect(def.match_stages[0]!.stage_targets).toHaveLength(3)
+    expect(def.match_stages[0]!.stage_targets![0]).toEqual({ target_number: 1, target_reqshots: 2 })
+    expect(def.match_stages[0]!.stage_tppoints).toBe(50)
     expect(def.match_stages[0]!.stage_poppers_maxnpms).toBe(0)
     expect(def.match_stages[1]).toMatchObject({
       stage_poppers: 8,
       stage_numtargs: 0,
       stage_noshoots: true,
     })
+    expect(def.match_stages[1]!.stage_targets).toBeUndefined()
     expect(def.match_stages[1]!.stage_poppers_maxnpms).toBe(0)
+  })
+
+  it('maps paper counts to PSC stage_targets (two hits per cardboard)', () => {
+    expect(paperTargetsForPractiscoreStage(2)).toEqual([
+      { target_number: 1, target_reqshots: 2 },
+      { target_number: 2, target_reqshots: 2 },
+    ])
+    expect(paperTargetsForPractiscoreStage(12)).toHaveLength(12)
+    expect(paperTargetsForPractiscoreStage(0)).toEqual([])
   })
 
   it('maps prematch squads to high PSC labels (≥11); main keeps 1..n', () => {

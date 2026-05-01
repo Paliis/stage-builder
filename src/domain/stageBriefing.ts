@@ -46,6 +46,15 @@ export type BriefingPdfLabels = {
   safetyAngles: string
 }
 
+/** Parses briefing «Макс. очок» for PSC exports; empty or invalid → null. */
+export function parseBriefingOptionalPositiveInt(raw: string): number | null {
+  const t = raw.trim()
+  if (!t) return null
+  const n = Number.parseFloat(t.replace(',', '.'))
+  if (!Number.isFinite(n) || n <= 0) return null
+  return Math.round(n)
+}
+
 export function briefingTableRows(
   b: StageBriefing,
   labels: BriefingPdfLabels,
