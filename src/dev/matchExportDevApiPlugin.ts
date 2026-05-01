@@ -43,7 +43,8 @@ function shimVercelResponse(res: ServerResponse): VercelResponse {
   return out as unknown as VercelResponse
 }
 
-let handlerCache: ((req: VercelRequest, res: VercelResponse) => void | Promise<void>) | undefined
+/** Real handler returns `res.*` chains (`Promise<VercelResponse>`), not `Promise<void>`. */
+let handlerCache: ((req: VercelRequest, res: VercelResponse) => unknown) | undefined
 
 /** Dev-only: POST /api/match-export-psc via real handler (needs SUPABASE_SERVICE_ROLE_KEY in .env). */
 export function matchExportDevApiPlugin(): Plugin {
@@ -95,7 +96,8 @@ export function matchExportDevApiPlugin(): Plugin {
           handlerCache = mod.default
         }
 
-        await handlerCache(vercelReq, shimVercelResponse(nodeRes))
+        const handle = handlerCache!
+        await Promise.resolve(handle(vercelReq, shimVercelResponse(nodeRes)))
       })
     },
   }
