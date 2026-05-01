@@ -137,6 +137,15 @@ type MarqueeDragState = {
 type DragMode =
   | { mode: 'move'; kind: 'target' | 'prop'; id: string; grabOffset: { x: number; y: number } }
   | {
+      mode: 'moveMulti'
+      leaderKind: 'target' | 'prop'
+      leaderId: string
+      grabOffset: { x: number; y: number }
+      leaderOrig: Vec2
+      origTargets: { id: string; orig: Vec2 }[]
+      origProps: { id: string; orig: Vec2 }[]
+    }
+  | {
       mode: 'movePenaltyVertex'
       polygonId: string
       ringId: string
@@ -274,6 +283,26 @@ function pickFaultStretchNegEnd(
 
 function snapAngleRad(r: number): number {
   return Math.round(r / ROTATION_SNAP_RAD) * ROTATION_SNAP_RAD
+}
+
+function snapshotMultiMoveOrigins(
+  multi: Extract<PlanSelectState, { mode: 'multi' }>,
+  targets: readonly Target[],
+  props: readonly Prop[],
+): { origTargets: { id: string; orig: Vec2 }[]; origProps: { id: string; orig: Vec2 }[] } {
+  const origTargets = multi.targetIds
+    .map((id) => {
+      const t = targets.find((x) => x.id === id)
+      return t ? { id, orig: { x: t.position.x, y: t.position.y } } : null
+    })
+    .filter((x): x is { id: string; orig: Vec2 } => x !== null)
+  const origProps = multi.propIds
+    .map((id) => {
+      const p = props.find((x) => x.id === id)
+      return p ? { id, orig: { x: p.position.x, y: p.position.y } } : null
+    })
+    .filter((x): x is { id: string; orig: Vec2 } => x !== null)
+  return { origTargets, origProps }
 }
 
 function pointInPolygon(wx: number, wy: number, poly: Vec2[]): boolean {
@@ -2322,14 +2351,30 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   const marqueeDragRef = useRef<MarqueeDragState | null>(null)
   const longPressTimerRef = useRef<number | null>(null)
   const longPressArmRef = useRef<{ pointerId: number; x: number; y: number } | null>(null)
-  const touchPendingDragRef = useRef<{
-    pointerId: number
-    startX: number
-    startY: number
-    kind: 'target' | 'prop'
-    id: string
-    grabOffset: Vec2
-  } | null>(null)
+  const touchPendingDragRef = useRef<
+    | {
+        pointerId: number
+        startX: number
+        startY: number
+        touchDrag: 'single'
+        kind: 'target' | 'prop'
+        id: string
+        grabOffset: Vec2
+      }
+    | {
+        pointerId: number
+        startX: number
+        startY: number
+        touchDrag: 'multi'
+        leaderKind: 'target' | 'prop'
+        leaderId: string
+        grabOffset: Vec2
+        leaderOrig: Vec2
+        origTargets: { id: string; orig: Vec2 }[]
+        origProps: { id: string; orig: Vec2 }[]
+      }
+    | null
+  >(null)
   /** After selection long-press opens the sheet: ignore pan/pending-empty for this pointer until up (avoids stray pan). */
   const blockPlanPanPointerIdRef = useRef<number | null>(null)
 
@@ -3032,12 +3077,54 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const hitT = pickTargetAt(targets, w.x, w.y, touchPad)
     if (hitT) {
       gridHoverRef.current = null
+      if (!readOnly && planSelect.mode === 'multi' && planSelect.targetIds.includes(hitT.id)) {
+        const { origTargets, origProps } = snapshotMultiMoveOrigins(planSelect, targets, props)
+        const grabOffset = { x: w.x - hitT.position.x, y: w.y - hitT.position.y }
+        const leaderOrig = { x: hitT.position.x, y: hitT.position.y }
+        if (ev.pointerType === 'touch') {
+          touchPendingDragRef.current = {
+            pointerId: ev.pointerId,
+            startX: ev.clientX,
+            startY: ev.clientY,
+            touchDrag: 'multi',
+            leaderKind: 'target',
+            leaderId: hitT.id,
+            grabOffset,
+            leaderOrig,
+            origTargets,
+            origProps,
+          }
+          try {
+            canvas.setPointerCapture(ev.pointerId)
+          } catch {
+            /* ignore */
+          }
+          return
+        }
+        clearLongPressTimer()
+        dragRef.current = {
+          mode: 'moveMulti',
+          leaderKind: 'target',
+          leaderId: hitT.id,
+          grabOffset,
+          leaderOrig,
+          origTargets,
+          origProps,
+        }
+        try {
+          canvas.setPointerCapture(ev.pointerId)
+        } catch {
+          /* ignore */
+        }
+        return
+      }
       setPlanSelect({ mode: 'single', kind: 'target', id: hitT.id })
       if (ev.pointerType === 'touch') {
         touchPendingDragRef.current = {
           pointerId: ev.pointerId,
           startX: ev.clientX,
           startY: ev.clientY,
+          touchDrag: 'single',
           kind: 'target',
           id: hitT.id,
           grabOffset: { x: w.x - hitT.position.x, y: w.y - hitT.position.y },
@@ -3062,12 +3149,54 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const hitP = pickPropAt(props, w.x, w.y, touchPad)
     if (hitP) {
       gridHoverRef.current = null
+      if (!readOnly && planSelect.mode === 'multi' && planSelect.propIds.includes(hitP.id)) {
+        const { origTargets, origProps } = snapshotMultiMoveOrigins(planSelect, targets, props)
+        const grabOffset = { x: w.x - hitP.position.x, y: w.y - hitP.position.y }
+        const leaderOrig = { x: hitP.position.x, y: hitP.position.y }
+        if (ev.pointerType === 'touch') {
+          touchPendingDragRef.current = {
+            pointerId: ev.pointerId,
+            startX: ev.clientX,
+            startY: ev.clientY,
+            touchDrag: 'multi',
+            leaderKind: 'prop',
+            leaderId: hitP.id,
+            grabOffset,
+            leaderOrig,
+            origTargets,
+            origProps,
+          }
+          try {
+            canvas.setPointerCapture(ev.pointerId)
+          } catch {
+            /* ignore */
+          }
+          return
+        }
+        clearLongPressTimer()
+        dragRef.current = {
+          mode: 'moveMulti',
+          leaderKind: 'prop',
+          leaderId: hitP.id,
+          grabOffset,
+          leaderOrig,
+          origTargets,
+          origProps,
+        }
+        try {
+          canvas.setPointerCapture(ev.pointerId)
+        } catch {
+          /* ignore */
+        }
+        return
+      }
       setPlanSelect({ mode: 'single', kind: 'prop', id: hitP.id })
       if (ev.pointerType === 'touch') {
         touchPendingDragRef.current = {
           pointerId: ev.pointerId,
           startX: ev.clientX,
           startY: ev.clientY,
+          touchDrag: 'single',
           kind: 'prop',
           id: hitP.id,
           grabOffset: { x: w.x - hitP.position.x, y: w.y - hitP.position.y },
@@ -3129,12 +3258,23 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const dSlop = Math.hypot(ev.clientX - tpdMove.startX, ev.clientY - tpdMove.startY)
       if (dSlop > TOUCH_DRAG_SLOP_PX) {
         clearLongPressTimer()
-        dragRef.current = {
-          mode: 'move',
-          kind: tpdMove.kind,
-          id: tpdMove.id,
-          grabOffset: tpdMove.grabOffset,
-        }
+        dragRef.current =
+          tpdMove.touchDrag === 'single'
+            ? {
+                mode: 'move',
+                kind: tpdMove.kind,
+                id: tpdMove.id,
+                grabOffset: tpdMove.grabOffset,
+              }
+            : {
+                mode: 'moveMulti',
+                leaderKind: tpdMove.leaderKind,
+                leaderId: tpdMove.leaderId,
+                grabOffset: tpdMove.grabOffset,
+                leaderOrig: tpdMove.leaderOrig,
+                origTargets: tpdMove.origTargets,
+                origProps: tpdMove.origProps,
+              }
         touchPendingDragRef.current = null
       }
     }
@@ -3334,6 +3474,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
+    if (drag.mode === 'moveMulti') {
+      applyMoveMultiAtWorld(drag, w, fw, fh, targets, props, onMoveTarget, onMoveProp)
+      return
+    }
+
     if (drag.mode !== 'move') return
 
     const next = { x: w.x - drag.grabOffset.x, y: w.y - drag.grabOffset.y }
@@ -3491,6 +3636,12 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         drag.vertexIndex,
         snapVec2(clamped, GRID_SNAP_M),
       )
+    } else if (drag.mode === 'moveMulti') {
+      const rect = canvas.getBoundingClientRect()
+      const sx = ev.clientX - rect.left
+      const sy = ev.clientY - rect.top
+      const ww = screenToWorld(sx, sy, transformRef.current)
+      applyMoveMultiAtWorld(drag, ww, fw, fh, targets, props, onMoveTarget, onMoveProp)
     } else if (drag.mode === 'move') {
       const rect = canvas.getBoundingClientRect()
       const sx = ev.clientX - rect.left
@@ -3556,4 +3707,38 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
 function edgeMarginForPropMove(sizeM: Prop['sizeM']): number {
   return Math.max(sizeM.x, sizeM.y) / 2 + PICK_MARGIN_M
+}
+
+function applyMoveMultiAtWorld(
+  drag: Extract<DragMode, { mode: 'moveMulti' }>,
+  pointerWorld: Vec2,
+  fw: number,
+  fh: number,
+  targets: readonly Target[],
+  props: readonly Prop[],
+  onMoveTarget: (id: string, position: Vec2) => void,
+  onMoveProp: (id: string, position: Vec2) => void,
+): void {
+  const rawLeader = {
+    x: pointerWorld.x - drag.grabOffset.x,
+    y: pointerWorld.y - drag.grabOffset.y,
+  }
+  const dx = rawLeader.x - drag.leaderOrig.x
+  const dy = rawLeader.y - drag.leaderOrig.y
+  for (const o of drag.origTargets) {
+    const t = targets.find((x) => x.id === o.id)
+    if (!t) continue
+    const cand = { x: o.orig.x + dx, y: o.orig.y + dy }
+    const margin = targetFootprintWorld({ ...t, position: cand }).boundsR + PICK_MARGIN_M
+    const clamped = clampVec2ToField(cand, margin, fw, fh)
+    onMoveTarget(o.id, snapVec2(clamped, TARGET_PLACEMENT_SNAP_M))
+  }
+  for (const o of drag.origProps) {
+    const p = props.find((x) => x.id === o.id)
+    if (!p) continue
+    const cand = { x: o.orig.x + dx, y: o.orig.y + dy }
+    const margin = edgeMarginForPropMove(p.sizeM ?? { x: 1, y: 1 })
+    const clamped = clampVec2ToField(cand, margin, fw, fh)
+    onMoveProp(o.id, snapVec2(clamped, PROP_PLACEMENT_SNAP_M))
+  }
 }
