@@ -211,11 +211,11 @@ function drawPlanSelectOutlines(
     if (planSelect.kind === 'prop' && selP?.type === 'faultLine') {
       const ends = faultLineEndPointsWorld(selP)
       if (ends) {
-        const hr = Math.max(8, 0.18 * tf.pxPerMeter)
+        const hr = penaltyContourVertexHandleRadiusPx(tf.pxPerMeter, false)
         const s = worldToScreen(ends.neg.x, ends.neg.y, tf)
         ctx.fillStyle = '#f97316'
         ctx.strokeStyle = 'rgba(15, 23, 42, 0.55)'
-        ctx.lineWidth = 1.5
+        ctx.lineWidth = 1.35
         ctx.beginPath()
         ctx.arc(s.x, s.y, hr, 0, Math.PI * 2)
         ctx.fill()
@@ -228,16 +228,16 @@ function drawPlanSelectOutlines(
     if (planSelect.kind === 'prop' && selP) hw = handleWorldPosProp(selP)
     if (hw) {
       const hs = worldToScreen(hw.x, hw.y, tf)
-      const hr = Math.max(9, 0.22 * tf.pxPerMeter)
+      const hr = penaltyContourVertexHandleRadiusPx(tf.pxPerMeter, false)
       ctx.fillStyle = 'rgba(79, 70, 229, 0.95)'
       ctx.strokeStyle = '#ffffff'
-      ctx.lineWidth = 2
+      ctx.lineWidth = 1.35
       ctx.beginPath()
       ctx.arc(hs.x, hs.y, hr, 0, Math.PI * 2)
       ctx.fill()
       ctx.stroke()
       ctx.fillStyle = '#ffffff'
-      ctx.font = `${Math.round(hr * 1.1)}px system-ui, sans-serif`
+      ctx.font = `${Math.max(8, Math.round(hr * 1.25))}px system-ui, sans-serif`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillText('↻', hs.x, hs.y + 0.5)
@@ -1830,6 +1830,14 @@ function drawPenaltyDraftPolyline(
   ctx.restore()
 }
 
+/**
+ * Екранний радіус маркера вершини контуру штрафної зони (див. drawPenaltyVertexHandles).
+ * Спільний орієнтир для ручки кінця штрафної лінії та ручки обертання на плані.
+ */
+function penaltyContourVertexHandleRadiusPx(pxPerMeter: number, selected: boolean): number {
+  return selected ? Math.max(9, 0.2 * pxPerMeter) : Math.max(5, 0.11 * pxPerMeter)
+}
+
 function drawPenaltyVertexHandles(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
@@ -1850,12 +1858,13 @@ function drawPenaltyVertexHandles(
       for (let i = 0; i < verts.length; i++) {
         const v = verts[i]!
         const p = worldToScreen(v.x, v.y, tf)
-        const isSel =
+        const isSel = Boolean(
           sel &&
-          sel.polygonId === poly.id &&
-          sel.ringId === ringId &&
-          sel.vertexIndex === i
-        const r = isSel ? Math.max(9, 0.2 * tf.pxPerMeter) : Math.max(5, 0.11 * tf.pxPerMeter)
+            sel.polygonId === poly.id &&
+            sel.ringId === ringId &&
+            sel.vertexIndex === i,
+        )
+        const r = penaltyContourVertexHandleRadiusPx(tf.pxPerMeter, isSel)
         ctx.fillStyle = isSel ? 'rgba(79, 70, 229, 0.95)' : 'rgba(255, 255, 255, 0.96)'
         ctx.strokeStyle = isSel ? '#ffffff' : 'rgba(185, 28, 28, 0.85)'
         ctx.lineWidth = isSel ? 2.25 : 1.35
