@@ -22676,6 +22676,7 @@ function buildPortalPractiscoreZip(params) {
       merged.stage_numtargs = link.psc_metrics.stage_numtargs;
       merged.stage_noshoots = link.psc_metrics.stage_noshoots;
     }
+    merged.stage_poppers_maxnpms = 0;
     return merged;
   });
   const regs = [...params.registrations].sort(
@@ -22737,6 +22738,24 @@ function buildPortalPractiscoreZip(params) {
       shooterCount: matchShooters.length
     }
   };
+}
+
+// src/domain/briefingPaperTargetHint.ts
+function inferPaperTargetsFromBriefing(targetsDescription) {
+  const s = targetsDescription.replace(/\u00A0/g, " ");
+  if (!s.trim()) return 0;
+  let max = 0;
+  const bump = (re) => {
+    for (const m of s.matchAll(re)) {
+      const n = Number.parseInt(m[1], 10);
+      if (Number.isFinite(n) && n >= 0 && n <= 999) max = Math.max(max, n);
+    }
+  };
+  bump(/(?:^|\D)(\d+)\s+паперових\s+мішен(?:ей|ь)/giu);
+  bump(/(?:^|\D)(\d+)\s+паперові\s+мішен(?:і|ей|ь)/giu);
+  bump(/(?:^|\D)(\d+)\s+паперова\s+мішень/giu);
+  bump(/(?:^|\D)(\d+)\s+paper\s+targets?/giu);
+  return max;
 }
 
 // src/domain/fieldGround3d.ts
@@ -23264,7 +23283,12 @@ function tryPscStageMetricsFromSharePayload(payload) {
   if (!text) return null;
   const parsed = parseStageProjectJson(text);
   if (!parsed.ok) return null;
-  return computePscStageMetrics(parsed.data.stage.targets);
+  const fromScene = computePscStageMetrics(parsed.data.stage.targets);
+  const fromBriefing = inferPaperTargetsFromBriefing(parsed.data.briefing.targetsDescription);
+  return {
+    ...fromScene,
+    stage_numtargs: Math.max(fromScene.stage_numtargs, fromBriefing)
+  };
 }
 
 // src/server/matchExportPscApiHandler.ts

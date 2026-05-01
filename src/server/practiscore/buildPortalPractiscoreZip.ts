@@ -176,6 +176,9 @@ export function buildPortalPractiscoreZip(params: {
       merged.stage_numtargs = link.psc_metrics.stage_numtargs
       merged.stage_noshoots = link.psc_metrics.stage_noshoots
     }
+    // Round-trip template clones `stage_poppers_maxnpms: 2` from stage[0] for every stage;
+    // PractiScore shows it as «Steel NPMs» and it is not our plate count — clear for portal export.
+    merged.stage_poppers_maxnpms = 0
     return merged
   })
 

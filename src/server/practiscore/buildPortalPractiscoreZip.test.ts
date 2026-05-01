@@ -122,13 +122,13 @@ describe('buildPortalPractiscoreZip', () => {
       stage_numtargs: 3,
       stage_noshoots: true,
     })
-    expect(def.match_stages[0]!.stage_poppers_maxnpms).toBe(2)
+    expect(def.match_stages[0]!.stage_poppers_maxnpms).toBe(0)
     expect(def.match_stages[1]).toMatchObject({
       stage_poppers: 8,
       stage_numtargs: 0,
       stage_noshoots: true,
     })
-    expect(def.match_stages[1]!.stage_poppers_maxnpms).toBe(2)
+    expect(def.match_stages[1]!.stage_poppers_maxnpms).toBe(0)
   })
 
   it('maps prematch squads to high PSC labels (≥11); main keeps 1..n', () => {
