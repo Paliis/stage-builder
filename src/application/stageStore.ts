@@ -36,7 +36,7 @@ import {
   clampVec2ToField,
   DEFAULT_FIELD_HEIGHT_M,
   DEFAULT_FIELD_WIDTH_M,
-  GRID_SNAP_M,
+  PENALTY_CONTOUR_VERTEX_SNAP_M,
   PROP_PLACEMENT_SNAP_M,
   snapVec2,
   TARGET_PLACEMENT_SNAP_M,
@@ -311,7 +311,10 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set((s) => {
       const fw = s.fieldSizeM.x
       const fh = s.fieldSizeM.y
-      const pos = snapVec2(clampVec2ToField(position, 0, fw, fh), GRID_SNAP_M)
+      const pos = snapVec2(
+        clampVec2ToField(position, 1, fw, fh),
+        PENALTY_CONTOUR_VERTEX_SNAP_M,
+      )
       const pi = s.penaltyZoneSet.polygons.findIndex((p) => p.id === polygonId)
       if (pi < 0) return s
       const poly = s.penaltyZoneSet.polygons[pi]!

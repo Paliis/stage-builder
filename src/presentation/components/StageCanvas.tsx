@@ -3751,7 +3751,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
     if (drag.mode === 'movePenaltyVertex') {
       const raw = { x: w.x - drag.grabOffset.x, y: w.y - drag.grabOffset.y }
-      const clamped = clampVec2ToField(raw, 0, fw, fh)
+      const clamped = clampVec2ToField(raw, 1, fw, fh)
       movePenaltyVertex(
         drag.polygonId,
         drag.ringId,
@@ -3919,7 +3919,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const sy = ev.clientY - rect.top
       const ww = screenToWorld(sx, sy, transformRef.current)
       const raw = { x: ww.x - drag.grabOffset.x, y: ww.y - drag.grabOffset.y }
-      const clamped = clampVec2ToField(raw, 0, fw, fh)
+      const clamped = clampVec2ToField(raw, 1, fw, fh)
       movePenaltyVertex(
         drag.polygonId,
         drag.ringId,
