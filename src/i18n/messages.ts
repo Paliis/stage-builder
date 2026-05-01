@@ -1494,9 +1494,10 @@ export const ukMessages: MessageTree = {
     matchOrgExportPsc: 'Завантажити .psc (PractiScore)',
     matchOrgExportPscBusy: 'Готуємо файл…',
     matchOrgExportPscHint:
-      'Експорт працює на деплої з `/api/match-export-psc` (наприклад Vercel preview/production). У чистому `npm run dev` без бекенду запит може не вдатися.',
+      'Локально: `npm run dev:vercel` (після `npm run vercel:link` та `SUPABASE_SERVICE_ROLE_KEY` у `.env`/`.env.local`). На проді або preview `/api/match-export-psc` працює на Vercel. Чистий `npm run dev` без серверних маршрутів експорт не викличе.',
     matchOrgExportPscErrGeneric: 'Не вдалося зібрати експорт. Спробуй ще раз або перевір консоль.',
-    matchOrgExportPscErrNetwork: 'Немає відповіді від сервера експорту (локально потрібен деплой або `vercel dev`).',
+    matchOrgExportPscErrNetwork:
+      'Немає відповіді від сервера експорту. Локально: `npm run dev:vercel` або деплой на Vercel (див. підказку нижче).',
     matchOrgExportPscErrNoStages: 'Додай хоча б одну вправу (посилання share) перед експортом.',
     matchOrgExportPscErrSession: 'Увійди в обліковий запис і онови сторінку.',
     matchOrgFieldPrematch: 'Прематч (стрільба суддів та організаційних стрільців напередодні)',
@@ -2385,9 +2386,10 @@ export const enMessages: MessageTree = {
     matchOrgExportPsc: 'Download .psc (PractiScore)',
     matchOrgExportPscBusy: 'Preparing file…',
     matchOrgExportPscHint:
-      'Export requires a deployment that serves `/api/match-export-psc` (e.g. Vercel). Plain `npm run dev` may fail unless you run `vercel dev` or similar.',
+      'Locally run `npm run dev:vercel` (after `npm run vercel:link` and `SUPABASE_SERVICE_ROLE_KEY` in `.env`/`.env.local`). Preview/production serves `/api/match-export-psc` on Vercel. Plain `npm run dev` has no `/api/*` handlers.',
     matchOrgExportPscErrGeneric: 'Could not build the export. Retry or check the console.',
-    matchOrgExportPscErrNetwork: 'Export server unreachable (use a deployment or `vercel dev` locally).',
+    matchOrgExportPscErrNetwork:
+      'Export server unreachable. Locally use `npm run dev:vercel` or deploy to Vercel (see hint below).',
     matchOrgExportPscErrNoStages: 'Link at least one stage (share URL) before exporting.',
     matchOrgExportPscErrSession: 'Sign in and refresh the page.',
     matchOrgFieldPrematch: 'Prematch (RO/staff shooters the day before match day)',
