@@ -112,6 +112,8 @@
 
 **Не seed-матч** (інша назва / UUID з URL організатора картки матчу): ті самі 8 людей із тими самими email — файл **`supabase/seed/match_admin_attach_extra_board_testers_by_match_uuid.sql`**: у блокі `DECLARE` замінити **`mid`** з нульового UUID на потрібний **`match.id`**. Потрібні щонайменше **два** main-скводи. Приклад із CLI (**після link**): `npx supabase db query --linked -f supabase/seed/match_admin_attach_extra_board_testers_by_match_uuid.sql`. Не записуй файл із BOM (краще редактор «UTF-8» без BOM) — інакше `db query` може впасти з помилкою синтаксису.
 
+**Імпорт ростеру з реального PSC (приклад):** **`supabase/seed/klassifikatsiyni_rushnytsia_etap2_2026_from_psc_stage1_roster.sql`** — створює опублікований матч «…Етап 2 2026р.», **5** підтверджених учасників з PractiScore-експорту (усі були без поділу на скводи в PS → **один** main-сквод), без вправ. Перед виконанням задати або **`v_org_id`**, або мати активного організатора в профілі.
+
 Публічна сторінка матчу показує таблицю **Учасники** лише якщо в картці матчу **`participant_list_visibility = open`** і заявки **confirmed** (`fetch_public_match_roster`). Після локального редагу матчу в UI перевір видимість, якщо список зник. **Підтвердити** очікуючі заявки можна в організаторському розділі «Заявки» (`/matches/my/:id/roster`) — лише підтверджені потрапляють у цю таблицю.
 
 **Перевірка:** Table Editor → **`match_registrations`** — мають з’явитися рядки. Кнопка **Insert** вручну під RLS часто не підходить без сесії того ж користувача — seed через SQL обходить RLS.
