@@ -179,6 +179,14 @@ function collectIdsInWorldRect(
   }
 }
 
+/**
+ * Узгоджений екранний радіус точок контакту на 2D-плані: вершини штрафного контуру, обертання,
+ * кінець штрафної лінії, вимір/розміри, підказка сітки, чернетки контуру тощо.
+ */
+function planContactHandleRadiusPx(pxPerMeter: number, selected: boolean): number {
+  return selected ? Math.max(9, 0.2 * pxPerMeter) : Math.max(5, 0.11 * pxPerMeter)
+}
+
 function drawPlanSelectOutlines(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
@@ -211,7 +219,7 @@ function drawPlanSelectOutlines(
     if (planSelect.kind === 'prop' && selP?.type === 'faultLine') {
       const ends = faultLineEndPointsWorld(selP)
       if (ends) {
-        const hr = penaltyContourVertexHandleRadiusPx(tf.pxPerMeter, false)
+        const hr = planContactHandleRadiusPx(tf.pxPerMeter, false)
         const s = worldToScreen(ends.neg.x, ends.neg.y, tf)
         ctx.fillStyle = '#f97316'
         ctx.strokeStyle = 'rgba(15, 23, 42, 0.55)'
@@ -228,7 +236,7 @@ function drawPlanSelectOutlines(
     if (planSelect.kind === 'prop' && selP) hw = handleWorldPosProp(selP)
     if (hw) {
       const hs = worldToScreen(hw.x, hw.y, tf)
-      const hr = penaltyContourVertexHandleRadiusPx(tf.pxPerMeter, false)
+      const hr = planContactHandleRadiusPx(tf.pxPerMeter, false)
       ctx.fillStyle = 'rgba(79, 70, 229, 0.95)'
       ctx.strokeStyle = '#ffffff'
       ctx.lineWidth = 1.35
@@ -901,7 +909,7 @@ function drawMeasureOverlay(
   ctx.save()
   if (a) {
     const sa = worldToScreen(a.x, a.y, tf)
-    const r = Math.max(4, 0.09 * tf.pxPerMeter)
+    const r = planContactHandleRadiusPx(tf.pxPerMeter, false)
     ctx.strokeStyle = 'rgba(217, 119, 6, 0.95)'
     ctx.fillStyle = 'rgba(251, 191, 36, 0.35)'
     ctx.lineWidth = 2
@@ -921,7 +929,7 @@ function drawMeasureOverlay(
     ctx.lineTo(sb.x, sb.y)
     ctx.stroke()
     ctx.setLineDash([])
-    const r = Math.max(4, 0.09 * tf.pxPerMeter)
+    const r = planContactHandleRadiusPx(tf.pxPerMeter, false)
     ctx.fillStyle = 'rgba(251, 191, 36, 0.35)'
     ctx.strokeStyle = 'rgba(217, 119, 6, 0.95)'
     ctx.beginPath()
@@ -976,11 +984,6 @@ function distancePointToSegmentSq(
   return (px - projX) ** 2 + (py - projY) ** 2
 }
 
-/** Радіус маркера кінця (екранний px): менший, щоб не перекривати дрібні мішені при віддалені/наближенні. */
-function dimensionPlanEndpointDotPx(tf: ViewTransform): number {
-  return Math.max(1.8, Math.min(5.2, 1.35 + tf.pxPerMeter * 0.03))
-}
-
 /** Кінець (пріоритет) або сам відрізок — для перетягування закріплених розмірів. */
 function pickPlanDimensionPartAtScreen(
   sx: number,
@@ -989,7 +992,7 @@ function pickPlanDimensionPartAtScreen(
   tf: ViewTransform,
 ): { id: string; part: 'endA' | 'endB' | 'segment' } | null {
   if (dims.length === 0) return null
-  const endPx = Math.max(10, dimensionPlanEndpointDotPx(tf) + 5)
+  const endPx = Math.max(10, planContactHandleRadiusPx(tf.pxPerMeter, true) + 6)
   const endRsq = endPx * endPx
   let bestEnd: { id: string; part: 'endA' | 'endB'; d2: number } | null = null
   for (let i = dims.length - 1; i >= 0; i--) {
@@ -1031,13 +1034,12 @@ function drawSavedPlanDimensions(
   draftFirstWorldPoint: Vec2 | null,
   selectedDimensionId: string | null,
 ) {
-  const dotPx = dimensionPlanEndpointDotPx(tf)
-  const dotRA = dotPx
-  const dotRB = dotPx
-  const dotRForOffset = dotPx
   for (let di = 0; di < dims.length; di++) {
     const dim = dims[di]!
     const sel = selectedDimensionId !== null && dim.id === selectedDimensionId
+    const dotRa = planContactHandleRadiusPx(tf.pxPerMeter, sel)
+    const dotRb = dotRa
+    const dotRForOffset = dotRa
     const sa = worldToScreen(dim.endA.x, dim.endA.y, tf)
     const sb = worldToScreen(dim.endB.x, dim.endB.y, tf)
     const distM = Math.hypot(dim.endB.x - dim.endA.x, dim.endB.y - dim.endA.y)
@@ -1059,10 +1061,8 @@ function drawSavedPlanDimensions(
       ctx.fill()
       ctx.stroke()
     }
-    const drA = sel ? dotRA * 1.08 : dotRA
-    const drB = sel ? dotRB * 1.08 : dotRB
-    drawDot(sa.x, sa.y, drA)
-    drawDot(sb.x, sb.y, drB)
+    drawDot(sa.x, sa.y, dotRa)
+    drawDot(sb.x, sb.y, dotRb)
 
     const m0x = (sa.x + sb.x) / 2
     const m0y = (sa.y + sb.y) / 2
@@ -1117,9 +1117,10 @@ function drawSavedPlanDimensions(
     ctx.save()
     ctx.setLineDash([6, 4])
     ctx.strokeStyle = 'rgba(20, 184, 166, 0.96)'
-    ctx.lineWidth = 2.2
+    ctx.lineWidth = 1.85
     ctx.beginPath()
-    ctx.arc(sc.x, sc.y, Math.max(9, tf.pxPerMeter * 0.125), 0, Math.PI * 2)
+    const draftR = planContactHandleRadiusPx(tf.pxPerMeter, false) + 4
+    ctx.arc(sc.x, sc.y, draftR, 0, Math.PI * 2)
     ctx.stroke()
     ctx.setLineDash([])
     ctx.restore()
@@ -1129,27 +1130,28 @@ function drawSavedPlanDimensions(
 /** Підказка вузла сітки під курсором при наближенні (світові м вже на кроці GRID_SNAP_M). */
 function drawGridSnapCursor(ctx: CanvasRenderingContext2D, tf: ViewTransform, snapped: Vec2) {
   const p = worldToScreen(snapped.x, snapped.y, tf)
-  const r = Math.max(6, Math.min(16, 0.14 * tf.pxPerMeter))
+  const rm = planContactHandleRadiusPx(tf.pxPerMeter, false)
+  const rArm = Math.max(6, Math.min(13, rm * 1.7))
   ctx.save()
   ctx.strokeStyle = 'rgba(14, 165, 233, 0.92)'
   ctx.fillStyle = 'rgba(14, 165, 233, 0.18)'
   ctx.lineWidth = 1.5
   ctx.beginPath()
-  ctx.arc(p.x, p.y, Math.max(2.5, r * 0.28), 0, Math.PI * 2)
+  ctx.arc(p.x, p.y, rm, 0, Math.PI * 2)
   ctx.fill()
   ctx.beginPath()
-  ctx.moveTo(p.x - r, p.y)
-  ctx.lineTo(p.x + r, p.y)
-  ctx.moveTo(p.x, p.y - r)
-  ctx.lineTo(p.x, p.y + r)
+  ctx.moveTo(p.x - rArm, p.y)
+  ctx.lineTo(p.x + rArm, p.y)
+  ctx.moveTo(p.x, p.y - rArm)
+  ctx.lineTo(p.x, p.y + rArm)
   ctx.stroke()
   ctx.font = `${Math.max(10, Math.round(11 * Math.sqrt(tf.pxPerMeter / 12)))}px system-ui, sans-serif`
   ctx.textAlign = 'left'
   ctx.textBaseline = 'bottom'
   const label = `${snapped.x.toFixed(1)} × ${snapped.y.toFixed(1)} m`
   const tw = ctx.measureText(label).width
-  const tx = p.x + r + 5
-  const ty = p.y - r - 4
+  const tx = p.x + rArm + 5
+  const ty = p.y - rArm - 4
   ctx.fillStyle = 'rgba(255, 255, 255, 0.94)'
   ctx.fillRect(tx - 3, ty - 13, tw + 6, 16)
   ctx.fillStyle = 'rgba(15, 23, 42, 0.9)'
@@ -1762,7 +1764,7 @@ function drawPenaltyContourRubberRuler(
     }
   }
 
-  const rEnd = Math.max(3.8, 0.09 * tf.pxPerMeter)
+  const rEnd = planContactHandleRadiusPx(tf.pxPerMeter, false)
   ctx.fillStyle = 'rgba(248, 113, 113, 0.35)'
   ctx.strokeStyle = 'rgba(185, 28, 28, 0.9)'
   ctx.lineWidth = 1.5
@@ -1825,17 +1827,9 @@ function drawPenaltyDraftPolyline(
   ctx.setLineDash([])
   ctx.fillStyle = 'rgba(220, 38, 38, 0.95)'
   ctx.beginPath()
-  ctx.arc(p0.x, p0.y, 3.5, 0, Math.PI * 2)
+  ctx.arc(p0.x, p0.y, planContactHandleRadiusPx(tf.pxPerMeter, false), 0, Math.PI * 2)
   ctx.fill()
   ctx.restore()
-}
-
-/**
- * Екранний радіус маркера вершини контуру штрафної зони (див. drawPenaltyVertexHandles).
- * Спільний орієнтир для ручки кінця штрафної лінії та ручки обертання на плані.
- */
-function penaltyContourVertexHandleRadiusPx(pxPerMeter: number, selected: boolean): number {
-  return selected ? Math.max(9, 0.2 * pxPerMeter) : Math.max(5, 0.11 * pxPerMeter)
 }
 
 function drawPenaltyVertexHandles(
@@ -1864,7 +1858,7 @@ function drawPenaltyVertexHandles(
             sel.ringId === ringId &&
             sel.vertexIndex === i,
         )
-        const r = penaltyContourVertexHandleRadiusPx(tf.pxPerMeter, isSel)
+        const r = planContactHandleRadiusPx(tf.pxPerMeter, isSel)
         ctx.fillStyle = isSel ? 'rgba(79, 70, 229, 0.95)' : 'rgba(255, 255, 255, 0.96)'
         ctx.strokeStyle = isSel ? '#ffffff' : 'rgba(185, 28, 28, 0.85)'
         ctx.lineWidth = isSel ? 2.25 : 1.35
@@ -1996,12 +1990,13 @@ function drawActivationsPlan2D(
     const pos = planAnchorWorld(pendingFrom, targets, props)
     if (pos) {
       const sc = worldToScreen(pos.x, pos.y, tf)
+      const pr = planContactHandleRadiusPx(tf.pxPerMeter, false) + 5
       ctx.save()
       ctx.setLineDash([6, 4])
       ctx.strokeStyle = 'rgba(234, 179, 8, 0.95)'
-      ctx.lineWidth = 2.5
+      ctx.lineWidth = 2
       ctx.beginPath()
-      ctx.arc(sc.x, sc.y, Math.max(14, tf.pxPerMeter * 0.22), 0, Math.PI * 2)
+      ctx.arc(sc.x, sc.y, pr, 0, Math.PI * 2)
       ctx.stroke()
       ctx.setLineDash([])
       ctx.restore()
