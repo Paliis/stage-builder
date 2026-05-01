@@ -1836,42 +1836,96 @@ function drawPenaltyVertexHandles(
   ctx: CanvasRenderingContext2D,
   tf: ViewTransform,
   pz: PenaltyZoneSet,
-  planSelect: PlanSelectState,
 ) {
-  const sel =
-    planSelect.mode === 'penaltyVertex'
-      ? {
-          polygonId: planSelect.polygonId,
-          ringId: planSelect.ringId,
-          vertexIndex: planSelect.vertexIndex,
-        }
-      : null
   ctx.save()
   for (const poly of pz.polygons) {
-    const drawRing = (ringId: string, verts: readonly Vec2[]) => {
+    const drawRing = (verts: readonly Vec2[]) => {
       for (let i = 0; i < verts.length; i++) {
         const v = verts[i]!
         const p = worldToScreen(v.x, v.y, tf)
-        const isSel = Boolean(
-          sel &&
-            sel.polygonId === poly.id &&
-            sel.ringId === ringId &&
-            sel.vertexIndex === i,
-        )
-        const r = planContactHandleRadiusPx(tf.pxPerMeter, isSel)
-        ctx.fillStyle = isSel ? 'rgba(79, 70, 229, 0.95)' : 'rgba(255, 255, 255, 0.96)'
-        ctx.strokeStyle = isSel ? '#ffffff' : 'rgba(185, 28, 28, 0.85)'
-        ctx.lineWidth = isSel ? 2.25 : 1.35
+        const r = planContactHandleRadiusPx(tf.pxPerMeter, false)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.96)'
+        ctx.strokeStyle = 'rgba(185, 28, 28, 0.85)'
+        ctx.lineWidth = 1.35
         ctx.beginPath()
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2)
         ctx.fill()
         ctx.stroke()
       }
     }
-    drawRing(poly.outer.id, poly.outer.vertices)
-    for (const h of poly.holes) drawRing(h.id, h.vertices)
+    drawRing(poly.outer.vertices)
+    for (const h of poly.holes) drawRing(h.vertices)
   }
   ctx.restore()
+}
+
+/** Довжини двох ребер сукупні до переміщуваної вершини під час перетягування. */
+function drawPenaltyVertexAdjacentEdgeLabels(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  pz: PenaltyZoneSet,
+  drag:
+    | { polygonId: string; ringId: string; vertexIndex: number }
+    | null,
+  formatMeasureDistance: (m: number) => string,
+) {
+  if (!drag) return
+  const poly = pz.polygons.find((p) => p.id === drag.polygonId)
+  if (!poly) return
+  const ring =
+    poly.outer.id === drag.ringId ? poly.outer : poly.holes.find((h) => h.id === drag.ringId)
+  if (!ring || ring.vertices.length < 3) return
+  const verts = ring.vertices
+  const n = verts.length
+  const i = drag.vertexIndex
+  if (i < 0 || i >= n) return
+  const prev = verts[(i - 1 + n) % n]!
+  const cur = verts[i]!
+  const next = verts[(i + 1) % n]!
+  const lenPrev = Math.hypot(cur.x - prev.x, cur.y - prev.y)
+  const lenNext = Math.hypot(next.x - cur.x, next.y - cur.y)
+
+  const drawMidLabel = (
+    aW: Vec2,
+    bW: Vec2,
+    lenM: number,
+    perpSign: 1 | -1,
+  ) => {
+    const sa = worldToScreen(aW.x, aW.y, tf)
+    const sb = worldToScreen(bW.x, bW.y, tf)
+    const mx = (sa.x + sb.x) / 2
+    const my = (sa.y + sb.y) / 2
+    const dx = sb.x - sa.x
+    const dy = sb.y - sa.y
+    const sl = Math.hypot(dx, dy) || 1
+    const nx = (-dy / sl) * perpSign
+    const ny = (dx / sl) * perpSign
+    const offPx = Math.max(10, tf.pxPerMeter * 0.065)
+    const tx = mx + nx * offPx
+    const ty = my + ny * offPx
+    const label = formatMeasureDistance(lenM)
+    ctx.save()
+    ctx.font = `${Math.max(10, Math.round(12 * Math.sqrt(tf.pxPerMeter / 14)))}px system-ui, sans-serif`
+    const tw = ctx.measureText(label).width
+    const pad = 5
+    ctx.fillStyle = 'rgba(254, 242, 242, 0.42)'
+    ctx.strokeStyle = 'rgba(153, 27, 27, 0.28)'
+    ctx.lineWidth = 1
+    const bx = tx - tw / 2 - pad
+    const by = ty - 10 - pad * 0.75
+    const bw = tw + pad * 2
+    const bh = 20 + pad * 0.65
+    ctx.fillRect(bx, by, bw, bh)
+    ctx.strokeRect(bx, by, bw, bh)
+    ctx.fillStyle = 'rgba(88, 18, 18, 0.98)'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(label, tx, ty)
+    ctx.restore()
+  }
+
+  drawMidLabel(prev, cur, lenPrev, 1)
+  drawMidLabel(cur, next, lenNext, -1)
 }
 
 function drawSafetyZone(
@@ -2021,6 +2075,7 @@ function redraw(
   penaltyZoneSet: PenaltyZoneSet,
   penaltyDraftVertices: readonly Vec2[] | null,
   penaltyContourHoverSnap: Vec2 | null,
+  penaltyVertexDrag: { polygonId: string; ringId: string; vertexIndex: number } | null,
   activations: readonly ActivationEdge[],
   activationNumMap: Map<string, number>,
   activationPendingFrom: StageEntityRef | null,
@@ -2301,7 +2356,8 @@ function redraw(
     planSelect.mode === 'planDimension' ? planSelect.id : null,
   )
   drawPlanSelectOutlines(ctx, tf, targets, props, planSelect)
-  drawPenaltyVertexHandles(ctx, tf, penaltyZoneSet, planSelect)
+  drawPenaltyVertexHandles(ctx, tf, penaltyZoneSet)
+  drawPenaltyVertexAdjacentEdgeLabels(ctx, tf, penaltyZoneSet, penaltyVertexDrag, formatMeasureDistance)
 
   if (marqueeScreen) {
     const { x1, y1, x2, y2 } = marqueeScreen
@@ -2655,6 +2711,15 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const mA = measureToolActive ? measurePoints.a : null
     const mB = measureToolActive ? measurePoints.b : null
     const md = marqueeDragRef.current
+    const pvDrag =
+      dragRef.current?.mode === 'movePenaltyVertex'
+        ? {
+            polygonId: dragRef.current.polygonId,
+            ringId: dragRef.current.ringId,
+            vertexIndex: dragRef.current.vertexIndex,
+          }
+        : null
+    const penaltyZoneSetLive = useStageStore.getState().penaltyZoneSet
     const marqueeScreen = md
       ? { x1: md.startSx, y1: md.startSy, x2: md.curSx, y2: md.curSy }
       : null
@@ -2673,9 +2738,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         mA,
         mB,
         formatMeasureDistance,
-        penaltyZoneSet,
+        penaltyZoneSetLive,
         penaltyDraftVertices,
         penaltyContourHoverSnapRef.current,
+        pvDrag,
         activations,
         activationNumMap,
         activationPendingFrom,
@@ -3685,6 +3751,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         drag.vertexIndex,
         snapVec2(clamped, PENALTY_CONTOUR_VERTEX_SNAP_M),
       )
+      repaint()
       return
     }
 
