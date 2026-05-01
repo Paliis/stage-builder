@@ -70,13 +70,13 @@ flowchart TB
 
 | Пункт | Стан |
 |-------|------|
-| Таблиці `matches`, `squads`, `registrations` + міграції | **Частково:** SQL у `supabase/migrations/20260501140000_match_admin_mvp.sql` — див. [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
-| RLS політики під ролі | Немає |
-| UI маршрути `match-admin` + форми | Немає |
-| Генератор `.psc` у production (TypeScript/Python на сервері), не лише Python-скрипт для розробника | Частково: є експеримент `scripts/practiscore/` |
-| Єдиний **контракт** «матч порталу → JSON PS» у `src/` | Немає (лише текст у плані) |
+| Таблиці `matches`, `squads`, `registrations` + міграції | **Є:** ланцюжок у `supabase/migrations/` — див. [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
+| RLS політики під ролі | **Є** (організатор / стрілець / anon; уточнення залежить від наступних міграцій — тримати узгодженим з SUPABASE_MATCH_ADMIN) |
+| UI маршрути match portal + форми | **Є** за прапором збірки — `src/portal/matches/*` |
+| Генератор `.psc` у production (TypeScript/Python на сервері), не лише Python-скрипт для розробника | Частково: є експеримент `scripts/practiscore/`; **немає** серверного endpoint |
+| Єдиний **контракт** «матч порталу → JSON PS» у `src/` | **Немає** (лише текст у плані) |
 | Тести сумісності PSC з версією PS | Лише ручний імпорт на пристрої |
-| Окремий **staging**/`schema_version` для мігрованих матчів | Закласти в першій міграції |
+| Окремий **staging**/`schema_version` для мігрованих матчів | Закладено (`matches.schema_version` у першій міграції MVP) |
 
 ---
 
