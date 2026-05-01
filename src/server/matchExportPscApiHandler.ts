@@ -1,7 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createClient } from '@supabase/supabase-js'
 
+import type { PscStageMetrics } from '../domain/pscStageMetrics'
 import { buildPortalPractiscoreZip } from './practiscore/buildPortalPractiscoreZip.ts'
+import { tryPscStageMetricsFromSharePayload } from './practiscore/sharePayloadPscMetrics.ts'
 
 const MATCH_ID_UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -99,7 +101,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .eq('match_id', matchId)
         .eq('status', 'confirmed')
         .order('created_at', { ascending: true }),
-      supabase.from('match_stage_links').select('sort_order, snapshot_meta').eq('match_id', matchId).order('sort_order'),
+      supabase
+        .from('match_stage_links')
+        .select('sort_order, snapshot_meta, share_stage_id')
+        .eq('match_id', matchId)
+        .order('sort_order'),
     ])
 
   if (sqErr) return res.status(500).json({ error: sqErr.message })
@@ -120,13 +126,40 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  const stageRows = (links ?? []).map((row) => ({
-    sort_order: row.sort_order,
-    snapshot_meta:
-      typeof row.snapshot_meta === 'object' && row.snapshot_meta !== null
-        ? (row.snapshot_meta as Record<string, unknown>)
-        : null,
-  }))
+  const linkRows = links ?? []
+  const shareIds = [
+    ...new Set(
+      linkRows
+        .map((r) => r.share_stage_id)
+        .filter((id): id is string => typeof id === 'string' && id.length > 0),
+    ),
+  ]
+
+  const metricsByShareId = new Map<string, PscStageMetrics>()
+  if (shareIds.length > 0) {
+    const { data: shareRows, error: shErr } = await supabase.from('shared_stages').select('id, payload').in('id', shareIds)
+
+    if (shErr) return res.status(500).json({ error: shErr.message })
+    for (const row of shareRows ?? []) {
+      const pm = tryPscStageMetricsFromSharePayload(row.payload)
+      if (pm) metricsByShareId.set(row.id, pm)
+    }
+  }
+
+  const stageRows = linkRows.map((row) => {
+    const base = {
+      sort_order: row.sort_order,
+      snapshot_meta:
+        typeof row.snapshot_meta === 'object' && row.snapshot_meta !== null
+          ? (row.snapshot_meta as Record<string, unknown>)
+          : null,
+    }
+    const m =
+      typeof row.share_stage_id === 'string' && row.share_stage_id
+        ? metricsByShareId.get(row.share_stage_id)
+        : undefined
+    return m ? { ...base, psc_metrics: m } : base
+  })
 
   const built = buildPortalPractiscoreZip({
     match: {

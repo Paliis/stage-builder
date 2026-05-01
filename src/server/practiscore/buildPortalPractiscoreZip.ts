@@ -6,6 +6,7 @@
 import { randomBytes, randomUUID } from 'node:crypto'
 import { strToU8, zipSync } from 'fflate'
 
+import type { PscStageMetrics } from '../../domain/pscStageMetrics'
 import matchDefRoundtripTemplate from './matchDefRoundtripTemplate.json' with { type: 'json' }
 import matchScoresRoundtripTemplate from './matchScoresRoundtripTemplate.json' with { type: 'json' }
 
@@ -23,6 +24,8 @@ export type PortalRegistrationRow = {
 export type PortalStageLinkRow = {
   sort_order: number
   snapshot_meta: Record<string, unknown> | null
+  /** Parsed from share payload; if missing, PSC stage keeps counts from round-trip template. */
+  psc_metrics?: PscStageMetrics | null
 }
 
 export type PortalMatchPsFields = {
@@ -121,6 +124,11 @@ export function buildPortalPractiscoreZip(params: {
     merged.stage_number = idx + 1
     merged.stage_name = snapshotTitle(link.snapshot_meta, idx)
     merged.stage_uuid = randomUUID()
+    if (link.psc_metrics) {
+      merged.stage_poppers = link.psc_metrics.stage_poppers
+      merged.stage_numtargs = link.psc_metrics.stage_numtargs
+      merged.stage_noshoots = link.psc_metrics.stage_noshoots
+    }
     return merged
   })
 

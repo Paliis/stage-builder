@@ -84,6 +84,45 @@ describe('buildPortalPractiscoreZip', () => {
     expect(Array.isArray(scores.match_scores)).toBe(true)
     expect(scores.match_scores).toHaveLength(0)
   })
+
+  it('overrides PSC popper/paper fields when psc_metrics is set per link', () => {
+    const r = buildPortalPractiscoreZip({
+      match: {
+        title: 'Metrics',
+        starts_at: '2026-05-02T12:00:00.000Z',
+        ps_match_type: null,
+        ps_match_subtype: null,
+      },
+      squads: [{ id: 'a', sort_order: 0 }],
+      registrations: [],
+      displayNameByUserId: new Map(),
+      stageLinks: [
+        {
+          sort_order: 0,
+          snapshot_meta: null,
+          psc_metrics: { stage_poppers: 4, stage_numtargs: 3, stage_noshoots: true },
+        },
+        { sort_order: 1, snapshot_meta: null },
+      ],
+    })
+    expect(r.ok).toBe(true)
+    if (!r.ok) throw new Error('expected ok')
+
+    const def = JSON.parse(strFromU8(unzipSync(r.bytes)['match_def.json']!)) as {
+      match_stages: { stage_poppers: number; stage_numtargs: number; stage_noshoots: boolean }[]
+    }
+
+    expect(def.match_stages[0]).toMatchObject({
+      stage_poppers: 4,
+      stage_numtargs: 3,
+      stage_noshoots: true,
+    })
+    expect(def.match_stages[1]).toMatchObject({
+      stage_poppers: 8,
+      stage_numtargs: 0,
+      stage_noshoots: true,
+    })
+  })
 })
 
 describe('helpers', () => {

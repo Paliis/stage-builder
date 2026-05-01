@@ -22624,6 +22624,11 @@ function buildPortalPractiscoreZip(params) {
     merged.stage_number = idx + 1;
     merged.stage_name = snapshotTitle(link.snapshot_meta, idx);
     merged.stage_uuid = (0, import_node_crypto.randomUUID)();
+    if (link.psc_metrics) {
+      merged.stage_poppers = link.psc_metrics.stage_poppers;
+      merged.stage_numtargs = link.psc_metrics.stage_numtargs;
+      merged.stage_noshoots = link.psc_metrics.stage_noshoots;
+    }
     return merged;
   });
   const regs = [...params.registrations].sort(
@@ -22685,6 +22690,515 @@ function buildPortalPractiscoreZip(params) {
       shooterCount: matchShooters.length
     }
   };
+}
+
+// src/domain/fieldGround3d.ts
+var DEFAULT_FIELD_GROUND_COVER_3D = "grass";
+function normalizeFieldGroundCover3d(raw) {
+  if (raw === "earth" || raw === "grass" || raw === "sand") return raw;
+  return DEFAULT_FIELD_GROUND_COVER_3D;
+}
+
+// src/domain/field.ts
+var DEFAULT_FIELD_WIDTH_M = 30;
+var DEFAULT_FIELD_HEIGHT_M = 40;
+var FIELD_SIZE_LIMITS = { minM: 8, maxWidthM: 50, maxHeightM: 100 };
+function clampFieldDimensions(w, h) {
+  const { minM, maxWidthM, maxHeightM } = FIELD_SIZE_LIMITS;
+  return {
+    x: Math.min(maxWidthM, Math.max(minM, Math.round(w * 10) / 10)),
+    y: Math.min(maxHeightM, Math.max(minM, Math.round(h * 10) / 10))
+  };
+}
+function clampVec2ToField(point, marginM, widthM = DEFAULT_FIELD_WIDTH_M, heightM = DEFAULT_FIELD_HEIGHT_M) {
+  return {
+    x: Math.max(marginM, Math.min(widthM - marginM, point.x)),
+    y: Math.max(marginM, Math.min(heightM - marginM, point.y))
+  };
+}
+
+// src/domain/ceramicPlateSpec.ts
+var MM = 1e-3;
+var CERAMIC_RADIUS_M = 55 * MM;
+
+// src/domain/swingerGeometry.ts
+var SWINGER_TYPES = /* @__PURE__ */ new Set([
+  "swingerSinglePaper",
+  "swingerDoublePaper",
+  "swingerSingleCeramic",
+  "swingerDoubleCeramic"
+]);
+function isSwingerTargetType(type) {
+  return SWINGER_TYPES.has(type);
+}
+function swingerIsPaperLoad(type) {
+  return type === "swingerSinglePaper" || type === "swingerDoublePaper";
+}
+function swingerTargetFaceCount(type) {
+  if (type === "swingerDoublePaper" || type === "swingerDoubleCeramic") return 2;
+  if (isSwingerTargetType(type)) return 1;
+  return 0;
+}
+
+// src/domain/targetSpecs.ts
+var CM = 0.01;
+function isSquareSteelPlateTargetType(type) {
+  return type === "metalPlate" || type === "metalPlateStand50" || type === "metalPlateStand100";
+}
+var STEEL_TARGET_TYPES = /* @__PURE__ */ new Set([
+  "popper",
+  "miniPopper",
+  "metalPlate",
+  "metalPlateStand50",
+  "metalPlateStand100",
+  "ceramicPlate"
+]);
+function isPaperTargetType(t) {
+  if (isSwingerTargetType(t)) return swingerIsPaperLoad(t);
+  return !STEEL_TARGET_TYPES.has(t);
+}
+var B2_WIDE_ROW_LOCAL_Y = (28.5 - 38) * CM;
+
+// src/domain/activations.ts
+function refKey(r) {
+  return `${r.kind}:${r.id}`;
+}
+function resolveEntityRef(ref, targets, props) {
+  if (ref.kind === "target") return targets.find((t) => t.id === ref.id) ?? null;
+  return props.find((p) => p.id === ref.id) ?? null;
+}
+function planAnchorWorld(ref, targets, props) {
+  const e = resolveEntityRef(ref, targets, props);
+  if (!e) return null;
+  return e.position;
+}
+
+// src/domain/planDimensions.ts
+function reclampPlanDimensionsToField(dims, widthM, heightM) {
+  return dims.map((d) => ({
+    ...d,
+    endA: clampVec2ToField(d.endA, 0, widthM, heightM),
+    endB: clampVec2ToField(d.endB, 0, widthM, heightM)
+  }));
+}
+
+// src/domain/stageBriefing.ts
+function defaultStageBriefing() {
+  return {
+    documentTitle: "\u0412\u043F\u0440\u0430\u0432\u0430 \u21161",
+    exerciseType: "short",
+    targetsDescription: "",
+    recommendedShots: "",
+    allowedAmmo: "\u0428\u0440\u0456\u0442 (\u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0438\u0439 \u0440\u043E\u0437\u043C\u0456\u0440 \u21163, \u043D\u0435 \u0431\u0456\u043B\u044C\u0448\u0435 3,5 \u043C\u043C \u0432 \u0434\u0456\u0430\u043C\u0435\u0442\u0440\u0456)",
+    maxPoints: "40",
+    startSignal: "\u0417\u0432\u0443\u043A\u043E\u0432\u0438\u0439",
+    readyCondition: "\u0417\u0430\u0440\u044F\u0434\u0436\u0435\u043D\u043E (\u041F\u043E\u043B\u043E\u0436\u0435\u043D\u043D\u044F 1)",
+    startPosition: "",
+    procedure: "\u0417\u0430 \u0441\u0438\u0433\u043D\u0430\u043B\u043E\u043C \u0442\u0430\u0439\u043C\u0435\u0440\u0430, \u0432\u0440\u0430\u0437\u0438\u0442\u0438 \u0432\u0441\u0456 \u043C\u0456\u0448\u0435\u043D\u0456, \u043D\u0435 \u0432\u0438\u0445\u043E\u0434\u044F\u0447\u0438 \u0437\u0430 \u043C\u0435\u0436\u0456 \u0448\u0442\u0440\u0430\u0444\u043D\u0438\u0445 \u043B\u0456\u043D\u0456\u0439. \u041C\u0435\u0442\u0430\u043B\u0435\u0432\u0456 \u043C\u0456\u0448\u0435\u043D\u0456 \u043C\u0430\u044E\u0442\u044C \u0432\u043F\u0430\u0441\u0442\u0438 \u0434\u043B\u044F \u0437\u0430\u043B\u0456\u043A\u0443. \u041A\u0435\u0440\u0430\u043C\u0456\u0447\u043D\u0456 \u043C\u0456\u0448\u0435\u043D\u0456 (\u044F\u043A\u0449\u043E \u0454) \u043C\u0430\u044E\u0442\u044C \u043C\u0430\u0442\u0438 \u044F\u0432\u043D\u0456 \u0441\u043B\u0456\u0434\u0438 \u0443\u0440\u0430\u0436\u0435\u043D\u043D\u044F.",
+    safetyAngles: "90/90/90"
+  };
+}
+
+// src/domain/weaponClass.ts
+var ALL_TARGET_TYPES = [
+  "paperIpscTwoPostGround",
+  "paperIpscTwoPostStand50",
+  "paperIpscTwoPostStand100",
+  "paperA4TwoPostGround",
+  "paperA4TwoPostStand50",
+  "paperA4TwoPostStand100",
+  "paperMiniIpscTwoPostGround",
+  "paperMiniIpscTwoPostStand50",
+  "paperMiniIpscTwoPostStand100",
+  "metalPlate",
+  "metalPlateStand50",
+  "metalPlateStand100",
+  "popper",
+  "miniPopper",
+  "ceramicPlate",
+  "swingerSinglePaper",
+  "swingerDoublePaper",
+  "swingerSingleCeramic",
+  "swingerDoubleCeramic"
+];
+
+// src/domain/penaltyZones.ts
+function emptyPenaltyZoneSet() {
+  return { polygons: [] };
+}
+
+// src/domain/stageProjectFile.ts
+var STAGE_PROJECT_FORMAT = "stage-builder";
+var STAGE_PROJECT_VERSION = 5;
+var STAGE_PROJECT_VERSION_MIN = 1;
+var WEAPON_CLASSES = /* @__PURE__ */ new Set(["handgun", "rifle", "shotgun"]);
+var TARGET_TYPE_SET = new Set(ALL_TARGET_TYPES);
+var PROP_TYPES = [
+  "door",
+  "faultLine",
+  "shield",
+  "shieldDouble",
+  "shieldWithPort",
+  "shieldPortLow",
+  "shieldPortHigh",
+  "shieldPortSlanted",
+  "shieldWithPortDoor",
+  "barrel",
+  "tireStack",
+  "woodTable",
+  "woodChair",
+  "weaponRackPyramid",
+  "seesaw",
+  "movingPlatform",
+  "cooperTunnel",
+  "startPosition"
+];
+var PROP_TYPE_SET = new Set(PROP_TYPES);
+var STAGE_CATEGORIES = /* @__PURE__ */ new Set(["short", "medium", "long"]);
+function newEntityId() {
+  if (globalThis.isSecureContext && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `sb-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 11)}`;
+}
+function isVec2(v) {
+  if (typeof v !== "object" || v === null) return false;
+  const o = v;
+  return typeof o.x === "number" && Number.isFinite(o.x) && typeof o.y === "number" && Number.isFinite(o.y);
+}
+function ensureUniqueTargetIds(targets) {
+  const seen = /* @__PURE__ */ new Set();
+  return targets.map((t) => {
+    let id = typeof t.id === "string" && t.id ? t.id : newEntityId();
+    while (seen.has(id)) id = newEntityId();
+    seen.add(id);
+    return { ...t, id };
+  });
+}
+function ensureUniquePropIds(props) {
+  const seen = /* @__PURE__ */ new Set();
+  return props.map((p) => {
+    let id = typeof p.id === "string" && p.id ? p.id : newEntityId();
+    while (seen.has(id)) id = newEntityId();
+    seen.add(id);
+    return { ...p, id };
+  });
+}
+function parseMetalRectSideCm(raw) {
+  if (raw === 15 || raw === 20 || raw === 30) return raw;
+  return void 0;
+}
+var LEGACY_PAPER_IPSC_TWO_POST = "paperIpscTwoPost";
+function migrateLegacySinglePostPaperType(type) {
+  if (type === "paperIpsc") return "paperIpscTwoPostStand100";
+  if (type === "paperA4") return "paperA4TwoPostStand100";
+  if (type === "paperMiniIpsc") return "paperMiniIpscTwoPostStand100";
+  return void 0;
+}
+function parseTarget(raw, idx) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const id = typeof o.id === "string" ? o.id : "";
+  const type = o.type;
+  if (typeof type !== "string") return null;
+  const migrated = migrateLegacySinglePostPaperType(type);
+  const normalizedType = type === LEGACY_PAPER_IPSC_TWO_POST ? "paperIpscTwoPostStand100" : migrated ?? type;
+  if (!TARGET_TYPE_SET.has(normalizedType)) return null;
+  const isNoShoot = Boolean(o.isNoShoot);
+  if (!isVec2(o.position)) return null;
+  const rotationRad = o.rotationRad;
+  if (typeof rotationRad !== "number" || !Number.isFinite(rotationRad)) return null;
+  const tt = normalizedType;
+  const metalRectSideCm = isSquareSteelPlateTargetType(tt) ? parseMetalRectSideCm(o.metalRectSideCm) : void 0;
+  return {
+    id: id || `t-${idx}`,
+    type: tt,
+    isNoShoot,
+    position: o.position,
+    rotationRad,
+    ...metalRectSideCm !== void 0 ? { metalRectSideCm } : {}
+  };
+}
+function parsePenaltyRing(raw, idx) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const id = typeof o.id === "string" && o.id ? o.id : `ring-${idx}`;
+  const closed = Boolean(o.closed);
+  if (!closed) return null;
+  const verts = o.vertices;
+  if (!Array.isArray(verts)) return null;
+  const vertices = [];
+  for (let i = 0; i < verts.length; i++) {
+    if (!isVec2(verts[i])) return null;
+    vertices.push(verts[i]);
+  }
+  if (vertices.length < 3) return null;
+  return { id, vertices, closed: true };
+}
+function parsePenaltyPolygon(raw, idx) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const id = typeof o.id === "string" && o.id ? o.id : `pz-${idx}`;
+  const outerRaw = o.outer;
+  const outer = parsePenaltyRing(outerRaw, `o-${idx}`);
+  if (!outer || !outer.closed) return null;
+  const holesRaw = o.holes;
+  const holes = [];
+  if (holesRaw !== void 0) {
+    if (!Array.isArray(holesRaw)) return null;
+    for (let h = 0; h < holesRaw.length; h++) {
+      const ring = parsePenaltyRing(holesRaw[h], `h-${idx}-${h}`);
+      if (!ring || !ring.closed) return null;
+      holes.push(ring);
+    }
+  }
+  return { id, outer, holes };
+}
+function parsePenaltyZoneSet(raw) {
+  if (raw === void 0 || raw === null) return emptyPenaltyZoneSet();
+  if (typeof raw !== "object") return null;
+  const o = raw;
+  const polys = o.polygons;
+  if (!Array.isArray(polys)) return null;
+  const polygons = [];
+  for (let i = 0; i < polys.length; i++) {
+    const p = parsePenaltyPolygon(polys[i], i);
+    if (!p) return null;
+    polygons.push(p);
+  }
+  return { polygons };
+}
+function parseProp(raw, idx) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const id = typeof o.id === "string" ? o.id : "";
+  const type = o.type;
+  if (typeof type !== "string" || !PROP_TYPE_SET.has(type)) return null;
+  if (!isVec2(o.position) || !isVec2(o.sizeM)) return null;
+  const rotationRad = o.rotationRad;
+  if (typeof rotationRad !== "number" || !Number.isFinite(rotationRad)) return null;
+  return {
+    id: id || `p-${idx}`,
+    type,
+    sizeM: o.sizeM,
+    position: o.position,
+    rotationRad
+  };
+}
+function parseStageEntityRef(raw) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const kind = o.kind;
+  const id = o.id;
+  if (kind !== "target" && kind !== "prop") return null;
+  if (typeof id !== "string" || !id) return null;
+  return { kind, id };
+}
+function ensureUniqueActivationIds(edges) {
+  const seen = /* @__PURE__ */ new Set();
+  return edges.map((e) => {
+    let id = e.id;
+    if (!id || seen.has(id)) id = newEntityId();
+    while (seen.has(id)) id = newEntityId();
+    seen.add(id);
+    return { ...e, id };
+  });
+}
+function parseActivationEdge(raw, idx) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const from = parseStageEntityRef(o.from);
+  const to = parseStageEntityRef(o.to);
+  if (!from || !to) return null;
+  const id = typeof o.id === "string" && o.id ? o.id : `act-${idx}`;
+  return { id, from, to };
+}
+function parseActivations(raw) {
+  if (raw === void 0 || raw === null) return [];
+  if (!Array.isArray(raw)) return [];
+  const out = [];
+  for (let i = 0; i < raw.length; i++) {
+    const e = parseActivationEdge(raw[i], i);
+    if (e) out.push(e);
+  }
+  return ensureUniqueActivationIds(out);
+}
+function ensureUniquePlanDimensionIds(lines) {
+  const seen = /* @__PURE__ */ new Set();
+  return lines.map((line) => {
+    let id = line.id;
+    if (!id || seen.has(id)) id = newEntityId();
+    while (seen.has(id)) id = newEntityId();
+    seen.add(id);
+    return { ...line, id };
+  });
+}
+function parsePlanDimensionLine(raw, idx, targets, props) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const id = typeof o.id === "string" && o.id ? o.id : `dim-${idx}`;
+  if (isVec2(o.endA) && isVec2(o.endB)) {
+    return {
+      id,
+      endA: { ...o.endA },
+      endB: { ...o.endB }
+    };
+  }
+  const from = parseStageEntityRef(o.from);
+  const to = parseStageEntityRef(o.to);
+  if (!from || !to || refKey(from) === refKey(to)) return null;
+  const wa = planAnchorWorld(from, targets, props);
+  const wb = planAnchorWorld(to, targets, props);
+  if (!wa || !wb) return null;
+  return { id, endA: { ...wa }, endB: { ...wb } };
+}
+function parsePlanDimensions(raw, targets, props) {
+  if (raw === void 0 || raw === null) return [];
+  if (!Array.isArray(raw)) return [];
+  const out = [];
+  for (let i = 0; i < raw.length; i++) {
+    const line = parsePlanDimensionLine(raw[i], i, targets, props);
+    if (line) out.push(line);
+  }
+  return ensureUniquePlanDimensionIds(out);
+}
+function parseBriefing(raw) {
+  const d = defaultStageBriefing();
+  if (typeof raw !== "object" || raw === null) return d;
+  const o = raw;
+  const exerciseType = o.exerciseType;
+  const ex = typeof exerciseType === "string" && STAGE_CATEGORIES.has(exerciseType) ? exerciseType : d.exerciseType;
+  const str = (k) => typeof o[k] === "string" ? o[k] : d[k];
+  return {
+    documentTitle: str("documentTitle"),
+    exerciseType: ex,
+    targetsDescription: str("targetsDescription"),
+    recommendedShots: str("recommendedShots"),
+    allowedAmmo: str("allowedAmmo"),
+    maxPoints: str("maxPoints"),
+    startSignal: str("startSignal"),
+    readyCondition: str("readyCondition"),
+    startPosition: str("startPosition"),
+    procedure: str("procedure"),
+    safetyAngles: str("safetyAngles")
+  };
+}
+function parseStageProjectJson(text) {
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return { ok: false, errorKey: "invalidJson" };
+  }
+  if (typeof parsed !== "object" || parsed === null) return { ok: false, errorKey: "invalidShape" };
+  const root = parsed;
+  if (root.format !== STAGE_PROJECT_FORMAT) return { ok: false, errorKey: "invalidShape" };
+  const version3 = root.version;
+  if (typeof version3 !== "number" || version3 < STAGE_PROJECT_VERSION_MIN || version3 > STAGE_PROJECT_VERSION) {
+    return { ok: false, errorKey: "invalidVersion" };
+  }
+  const st = root.stage;
+  if (typeof st !== "object" || st === null) return { ok: false, errorKey: "invalidShape" };
+  const stageObj = st;
+  const name = typeof stageObj.name === "string" ? stageObj.name.slice(0, 200) : "";
+  const wc = stageObj.weaponClass;
+  if (typeof wc !== "string" || !WEAPON_CLASSES.has(wc))
+    return { ok: false, errorKey: "invalidShape" };
+  if (!isVec2(stageObj.fieldSizeM)) return { ok: false, errorKey: "invalidShape" };
+  const rawTargets = stageObj.targets;
+  if (!Array.isArray(rawTargets)) return { ok: false, errorKey: "invalidShape" };
+  const targets = [];
+  for (let i = 0; i < rawTargets.length; i++) {
+    const t = parseTarget(rawTargets[i], i);
+    if (!t) return { ok: false, errorKey: "invalidShape" };
+    targets.push(t);
+  }
+  const rawProps = stageObj.props;
+  if (!Array.isArray(rawProps)) return { ok: false, errorKey: "invalidShape" };
+  const props = [];
+  for (let i = 0; i < rawProps.length; i++) {
+    const p = parseProp(rawProps[i], i);
+    if (!p) return { ok: false, errorKey: "invalidShape" };
+    props.push(p);
+  }
+  const fw = clampFieldDimensions(stageObj.fieldSizeM.x, stageObj.fieldSizeM.y);
+  if (fw.x < FIELD_SIZE_LIMITS.minM || fw.x > FIELD_SIZE_LIMITS.maxWidthM || fw.y < FIELD_SIZE_LIMITS.minM || fw.y > FIELD_SIZE_LIMITS.maxHeightM) {
+    return { ok: false, errorKey: "invalidShape" };
+  }
+  const fieldGroundCover3d = normalizeFieldGroundCover3d(stageObj.fieldGroundCover3d);
+  let penaltyZoneSet = emptyPenaltyZoneSet();
+  if (version3 >= 2) {
+    const pz = parsePenaltyZoneSet(stageObj.penaltyZoneSet);
+    if (pz === null) return { ok: false, errorKey: "invalidShape" };
+    penaltyZoneSet = pz;
+  }
+  let activations = [];
+  if (version3 >= 3) {
+    activations = parseActivations(stageObj.activations);
+  }
+  let planDimensions = parsePlanDimensions(stageObj.planDimensions, targets, props);
+  planDimensions = reclampPlanDimensionsToField(planDimensions, fw.x, fw.y);
+  const data = {
+    format: STAGE_PROJECT_FORMAT,
+    version: STAGE_PROJECT_VERSION,
+    stage: {
+      name: name || "\u041D\u043E\u0432\u0430 \u0432\u043F\u0440\u0430\u0432\u0430",
+      weaponClass: wc,
+      fieldSizeM: fw,
+      targets: ensureUniqueTargetIds(targets),
+      props: ensureUniquePropIds(props),
+      fieldGroundCover3d,
+      penaltyZoneSet,
+      activations,
+      planDimensions
+    },
+    briefing: parseBriefing(root.briefing)
+  };
+  return { ok: true, data };
+}
+
+// src/domain/pscStageMetrics.ts
+function computePscStageMetrics(targets) {
+  let poppers = 0;
+  let paperUnits = 0;
+  let hasNoShoot = false;
+  for (const t of targets) {
+    if (t.isNoShoot) hasNoShoot = true;
+    const faces = swingerTargetFaceCount(t.type);
+    if (faces > 0) {
+      if (swingerIsPaperLoad(t.type)) paperUnits += faces;
+      continue;
+    }
+    if (t.type === "popper" || t.type === "miniPopper") {
+      if (!t.isNoShoot) poppers += 1;
+      continue;
+    }
+    if (isPaperTargetType(t.type)) {
+      paperUnits += 1;
+    }
+  }
+  return {
+    stage_poppers: poppers,
+    stage_numtargs: paperUnits,
+    stage_noshoots: hasNoShoot
+  };
+}
+
+// src/share/payloadToProjectText.ts
+function payloadToProjectText(payload) {
+  if (payload == null) return null;
+  if (typeof payload === "string") return payload;
+  if (typeof payload === "object") return JSON.stringify(payload);
+  return null;
+}
+
+// src/server/practiscore/sharePayloadPscMetrics.ts
+function tryPscStageMetricsFromSharePayload(payload) {
+  const text = payloadToProjectText(payload);
+  if (!text) return null;
+  const parsed = parseStageProjectJson(text);
+  if (!parsed.ok) return null;
+  return computePscStageMetrics(parsed.data.stage.targets);
 }
 
 // src/server/matchExportPscApiHandler.ts
@@ -22755,7 +23269,7 @@ async function handler(req, res) {
     supabase.from("match_registrations").select(
       "squad_id, competitor_user_id, division, classification_grade, power_factor, created_at, status"
     ).eq("match_id", matchId).eq("status", "confirmed").order("created_at", { ascending: true }),
-    supabase.from("match_stage_links").select("sort_order, snapshot_meta").eq("match_id", matchId).order("sort_order")
+    supabase.from("match_stage_links").select("sort_order, snapshot_meta, share_stage_id").eq("match_id", matchId).order("sort_order")
   ]);
   if (sqErr) return res.status(500).json({ error: sqErr.message });
   if (regErr) return res.status(500).json({ error: regErr.message });
@@ -22769,10 +23283,29 @@ async function handler(req, res) {
       displayNameByUserId.set(p.user_id, p.display_name);
     }
   }
-  const stageRows = (links ?? []).map((row) => ({
-    sort_order: row.sort_order,
-    snapshot_meta: typeof row.snapshot_meta === "object" && row.snapshot_meta !== null ? row.snapshot_meta : null
-  }));
+  const linkRows = links ?? [];
+  const shareIds = [
+    ...new Set(
+      linkRows.map((r) => r.share_stage_id).filter((id) => typeof id === "string" && id.length > 0)
+    )
+  ];
+  const metricsByShareId = /* @__PURE__ */ new Map();
+  if (shareIds.length > 0) {
+    const { data: shareRows, error: shErr } = await supabase.from("shared_stages").select("id, payload").in("id", shareIds);
+    if (shErr) return res.status(500).json({ error: shErr.message });
+    for (const row of shareRows ?? []) {
+      const pm = tryPscStageMetricsFromSharePayload(row.payload);
+      if (pm) metricsByShareId.set(row.id, pm);
+    }
+  }
+  const stageRows = linkRows.map((row) => {
+    const base = {
+      sort_order: row.sort_order,
+      snapshot_meta: typeof row.snapshot_meta === "object" && row.snapshot_meta !== null ? row.snapshot_meta : null
+    };
+    const m = typeof row.share_stage_id === "string" && row.share_stage_id ? metricsByShareId.get(row.share_stage_id) : void 0;
+    return m ? { ...base, psc_metrics: m } : base;
+  });
   const built = buildPortalPractiscoreZip({
     match: {
       title: match.title,
