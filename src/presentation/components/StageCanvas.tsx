@@ -2249,6 +2249,8 @@ export type StageCanvasProps = {
 export type StageCanvasHandle = {
   /** Центр поточного виду плану в метрах; null якщо канвас ще не готовий. */
   getSpawnCenterWorld: () => { x: number; y: number } | null
+  /** Останні координати покажчика над планом (світ); null поза межами канваса — для резервної вставки використовувати getSpawnCenterWorld. */
+  getPasteAnchorWorld: () => { x: number; y: number } | null
   /** Центрує вид на світовій точці (м); при масштабі 1 трохи наближає. координати площадки. */
   centerOnWorldPoint: (worldX: number, worldY: number) => void
   /** PNG-потік поточного кадру 2D (видима сітка та сцена) для PDF; null якщо канвас недоступний. */
@@ -2339,6 +2341,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   const pinchLastDistRef = useRef(0)
   /** Вузол сітки (світ) під курсором при zoom > 1; оновлюється в onPointerMove без перетягування. */
   const gridHoverRef = useRef<Vec2 | null>(null)
+  /** Останні світові координати над планом для вставки копії (оновлення при русі над канвою). */
+  const pastePointerWorldRef = useRef<Vec2 | null>(null)
   const viewPanDragRef = useRef<ViewPanDragState | null>(null)
   /** ЛКМ по порожньому полю при zoom: очікування руху — або скасування виділення, або панорама. */
   const pendingEmptyPanRef = useRef<PendingEmptyPan | null>(null)
@@ -2419,6 +2423,29 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
     longPressArmRef.current = null
   }, [])
+
+  /** Координати поля під покажчиком для paste (clamp у межі майданчика). */
+  const syncPastePointerWorld = useCallback(
+    (clientX: number, clientY: number) => {
+      const canvas = canvasRef.current
+      if (!canvas) return
+      const rect = canvas.getBoundingClientRect()
+      const sx = clientX - rect.left
+      const sy = clientY - rect.top
+      if (sx < 0 || sy < 0 || sx > rect.width || sy > rect.height) {
+        pastePointerWorldRef.current = null
+        return
+      }
+      const t = transformRef.current
+      if (Math.abs(t.fieldWidthM - fw) > 1e-6 || Math.abs(t.fieldHeightM - fh) > 1e-6) return
+      const wRaw = screenToWorld(sx, sy, t)
+      pastePointerWorldRef.current = {
+        x: Math.min(Math.max(wRaw.x, 0), fw),
+        y: Math.min(Math.max(wRaw.y, 0), fh),
+      }
+    },
+    [fw, fh],
+  )
 
   const [spaceHeld, setSpaceHeld] = useState(false)
   const [isPanningView, setIsPanningView] = useState(false)
@@ -2525,6 +2552,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         if (t.fieldWidthM !== fw || t.fieldHeightM !== fh) return null
         return spawnCenterWorldFromView(rect.width, rect.height, t)
       },
+      getPasteAnchorWorld: () => {
+        const p = pastePointerWorldRef.current
+        return p ? { x: p.x, y: p.y } : null
+      },
       centerOnWorldPoint: (worldX: number, worldY: number) => {
         const canvas = canvasRef.current
         if (!canvas) return
@@ -2609,6 +2640,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     viewZoomRef.current = 1
     viewPanRef.current = { x: 0, y: 0 }
     gridHoverRef.current = null
+    pastePointerWorldRef.current = null
     repaint()
   }, [fw, fh, repaint])
 
@@ -2785,6 +2817,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const rect = canvas.getBoundingClientRect()
     const sx = ev.clientX - rect.left
     const sy = ev.clientY - rect.top
+    syncPastePointerWorld(ev.clientX, ev.clientY)
 
     if (ev.button === 1) {
       ev.preventDefault()
@@ -3237,6 +3270,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const rect = canvas.getBoundingClientRect()
     const sx = ev.clientX - rect.left
     const sy = ev.clientY - rect.top
+    syncPastePointerWorld(ev.clientX, ev.clientY)
 
     const mq = marqueeDragRef.current
     if (mq && ev.pointerId === mq.pointerId) {
@@ -3668,6 +3702,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   }
 
   const onPointerLeave = () => {
+    pastePointerWorldRef.current = null
     if (gridHoverRef.current) {
       gridHoverRef.current = null
       repaint()

@@ -699,6 +699,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     if (!clip || (clip.targets.length === 0 && clip.props.length === 0)) return
     if (viewMode !== '2d') return
     const anchor =
+      planCanvasRef.current?.getPasteAnchorWorld() ??
       planCanvasRef.current?.getSpawnCenterWorld() ?? {
         x: fieldSizeM.x / 2,
         y: fieldSizeM.y / 2,
