@@ -22811,17 +22811,17 @@ var CM = 0.01;
 function isSquareSteelPlateTargetType(type) {
   return type === "metalPlate" || type === "metalPlateStand50" || type === "metalPlateStand100";
 }
-var STEEL_TARGET_TYPES = /* @__PURE__ */ new Set([
-  "popper",
-  "miniPopper",
-  "metalPlate",
-  "metalPlateStand50",
-  "metalPlateStand100",
-  "ceramicPlate"
-]);
-function isPaperTargetType(t) {
-  if (isSwingerTargetType(t)) return swingerIsPaperLoad(t);
-  return !STEEL_TARGET_TYPES.has(t);
+function isPaperIpscTwoPostTargetType(type) {
+  return type === "paperIpscTwoPostGround" || type === "paperIpscTwoPostStand50" || type === "paperIpscTwoPostStand100";
+}
+function isPaperA4TwoPostTargetType(type) {
+  return type === "paperA4TwoPostGround" || type === "paperA4TwoPostStand50" || type === "paperA4TwoPostStand100";
+}
+function isPaperMiniIpscTwoPostTargetType(type) {
+  return type === "paperMiniIpscTwoPostGround" || type === "paperMiniIpscTwoPostStand50" || type === "paperMiniIpscTwoPostStand100";
+}
+function isPaperTwoPostTargetType(type) {
+  return isPaperIpscTwoPostTargetType(type) || isPaperA4TwoPostTargetType(type) || isPaperMiniIpscTwoPostTargetType(type);
 }
 var B2_WIDE_ROW_LOCAL_Y = (28.5 - 38) * CM;
 
@@ -23258,7 +23258,7 @@ function computePscStageMetrics(targets) {
       if (!t.isNoShoot) poppersLike += 1;
       continue;
     }
-    if (isPaperTargetType(t.type)) {
+    if (isPaperTwoPostTargetType(t.type)) {
       paperUnits += 1;
     }
   }

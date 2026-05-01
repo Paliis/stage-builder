@@ -1,6 +1,6 @@
 import type { Target, TargetType } from './models'
 import { swingerIsPaperLoad, swingerTargetFaceCount } from './swingerGeometry'
-import { isPaperTargetType } from './targetSpecs'
+import { isPaperTwoPostTargetType } from './targetSpecs'
 
 /** PractiScore match_stages fields we derive from Stage Builder targets (MVP shotgun). */
 export type PscStageMetrics = {
@@ -25,6 +25,7 @@ function isSwingerCeramicType(type: TargetType): boolean {
 
 /**
  * Maps editor targets to PSC stage counts (shotgun round-trip template field names).
+ * Classic cardboard for `stage_numtargs` — only two‑post paper types + paper swingers (`isPaperTwoPostTargetType` / swingers), not «anything not in steel set».
  * Do **not** use `stage_poppers_maxnpms` here — PractiScore treats it as scoring (max NPM), not plate count.
  */
 export function computePscStageMetrics(targets: readonly Target[]): PscStageMetrics {
@@ -53,7 +54,7 @@ export function computePscStageMetrics(targets: readonly Target[]): PscStageMetr
       if (!t.isNoShoot) poppersLike += 1
       continue
     }
-    if (isPaperTargetType(t.type)) {
+    if (isPaperTwoPostTargetType(t.type)) {
       paperUnits += 1
     }
   }
