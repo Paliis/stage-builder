@@ -641,6 +641,8 @@ export type MessageTree = {
     matchOrgStagesRemove: string
     matchOrgStagesRefreshLatest: string
     matchOrgStagesRefreshing: string
+    matchOrgStagesRefreshAll: string
+    matchOrgStagesRefreshAllBusy: string
     matchOrgStagesErrorGeneric: string
     matchOrgStagesInvalidPaste: string
     matchOrgStagesNotFound: string
@@ -1527,6 +1529,8 @@ export const ukMessages: MessageTree = {
     matchOrgStagesRemove: 'Прибрати',
     matchOrgStagesRefreshLatest: 'Оновити до останньої',
     matchOrgStagesRefreshing: 'Оновлення…',
+    matchOrgStagesRefreshAll: 'Оновити всі вправи до останніх',
+    matchOrgStagesRefreshAllBusy: 'Оновлення всіх вправ…',
     matchOrgStagesErrorGeneric: 'Операцію не виконано. Перезавантаж сторінку або перевір міграції.',
     matchOrgStagesInvalidPaste: 'Не вдалося розпізнати id посилання для перегляду. Очікується URL з /v/… або короткий id типу s…',
     matchOrgStagesNotFound: 'Вправу не знайдено або термін посилання минув.',
@@ -2419,6 +2423,8 @@ export const enMessages: MessageTree = {
     matchOrgStagesRemove: 'Remove',
     matchOrgStagesRefreshLatest: 'Update to latest',
     matchOrgStagesRefreshing: 'Updating…',
+    matchOrgStagesRefreshAll: 'Update all exercises to latest',
+    matchOrgStagesRefreshAllBusy: 'Updating all exercises…',
     matchOrgStagesErrorGeneric: 'Something went wrong. Reload or verify migrations.',
     matchOrgStagesInvalidPaste: 'Paste a `/v/…` view URL or a short id starting with «s».',
     matchOrgStagesNotFound: 'Stage not found or link expired.',

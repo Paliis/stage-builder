@@ -37,6 +37,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   const [paste, setPaste] = useState('')
   const [addBusy, setAddBusy] = useState(false)
   const [addError, setAddError] = useState<string | null>(null)
+  const [refreshAllBusy, setRefreshAllBusy] = useState(false)
   const [busyById, setBusyById] = useState<Record<string, 'refresh' | 'delete' | 'move' | undefined>>({})
 
   const reload = useCallback(async () => {
@@ -79,6 +80,31 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
       return next
     })
   }, [])
+
+  const interpretRefreshResult = useCallback(
+    (data: unknown, rpcError: { message: string } | null): string | null => {
+      if (rpcError) return rpcError.message
+      const o = data as Record<string, unknown> | null
+      if (!o?.ok) {
+        const err = typeof o?.error === 'string' ? o.error : 'unknown'
+        if (err === 'no_share_group') return p.matchOrgStagesErrNoShareGroup
+        if (err === 'no_latest_share') return p.matchOrgStagesErrNoLatestShare
+        return p.matchOrgStagesErrorGeneric
+      }
+      return null
+    },
+    [p],
+  )
+
+  const runRefreshRpc = useCallback(
+    async (linkId: string): Promise<string | null> => {
+      const { data, error } = await sb.rpc('organizer_refresh_match_stage_link_latest', {
+        p_link_id: linkId,
+      })
+      return interpretRefreshResult(data, error)
+    },
+    [sb, interpretRefreshResult],
+  )
 
   const handleAdd = async (e: FormEvent) => {
     e.preventDefault()
@@ -159,24 +185,34 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
     setAddError(null)
     setRowBusyKind(linkId, 'refresh')
     try {
-      const { data, error } = await sb.rpc('organizer_refresh_match_stage_link_latest', {
-        p_link_id: linkId,
-      })
-      if (error) {
-        setAddError(error.message)
-        return
-      }
-      const o = data as Record<string, unknown> | null
-      if (!o?.ok) {
-        const err = typeof o?.error === 'string' ? o.error : 'unknown'
-        if (err === 'no_share_group') setAddError(p.matchOrgStagesErrNoShareGroup)
-        else if (err === 'no_latest_share') setAddError(p.matchOrgStagesErrNoLatestShare)
-        else setAddError(p.matchOrgStagesErrorGeneric)
+      const errMsg = await runRefreshRpc(linkId)
+      if (errMsg) {
+        setAddError(errMsg)
         return
       }
       await reload()
     } finally {
       setRowBusyKind(linkId, undefined)
+    }
+  }
+
+  async function refreshAllRows() {
+    const list = [...(rows ?? [])].sort((a, b) => a.sort_order - b.sort_order)
+    if (list.length === 0) return
+    setAddError(null)
+    setRefreshAllBusy(true)
+    try {
+      const failures: string[] = []
+      for (const r of list) {
+        const errMsg = await runRefreshRpc(r.id)
+        if (errMsg) {
+          failures.push(`${rowTitle(r)}: ${errMsg}`)
+        }
+      }
+      setAddError(failures.length > 0 ? failures.join('\n') : null)
+      await reload()
+    } finally {
+      setRefreshAllBusy(false)
     }
   }
 
@@ -230,6 +266,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   }
 
   const ordered = [...(rows ?? [])].sort((a, b) => a.sort_order - b.sort_order)
+  const anyRowBusy = Object.keys(busyById).length > 0
 
   return (
     <section style={{ marginTop: '2rem', maxWidth: '42rem' }} aria-labelledby="match-stages-heading">
@@ -289,8 +326,33 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         </div>
       </form>
 
+      {ordered.length > 0 ? (
+        <div style={{ marginBottom: '0.75rem' }}>
+          <button
+            type="button"
+            disabled={refreshAllBusy || addBusy || anyRowBusy}
+            onClick={() => void refreshAllRows()}
+            style={{
+              padding: '0.4rem 0.75rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--surface)',
+              color: 'var(--text)',
+              cursor: refreshAllBusy || addBusy || anyRowBusy ? 'not-allowed' : 'pointer',
+              fontSize: '0.86rem',
+              opacity: refreshAllBusy || addBusy || anyRowBusy ? 0.7 : 1,
+            }}
+          >
+            {refreshAllBusy ? p.matchOrgStagesRefreshAllBusy : p.matchOrgStagesRefreshAll}
+          </button>
+        </div>
+      ) : null}
+
       {addError ? (
-        <p role="alert" style={{ margin: '0 0 0.75rem', fontSize: '0.86rem', color: '#991b1b' }}>
+        <p
+          role="alert"
+          style={{ margin: '0 0 0.75rem', fontSize: '0.86rem', color: '#991b1b', whiteSpace: 'pre-line' }}
+        >
           {addError}
         </p>
       ) : null}
