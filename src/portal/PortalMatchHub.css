@@ -40,25 +40,35 @@
   margin: 0 0 0.5rem;
 }
 
+/* Left column width matches search + filters; calendar column narrower; row height = max(tools, cal). */
 .portal-match-hub__masthead-body {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(13.25rem, 17.75rem);
-  column-gap: 1.35rem;
+  grid-template-columns: minmax(0, 26.5rem) minmax(10.25rem, 12.75rem);
+  column-gap: 1.15rem;
   row-gap: 0;
-  align-items: start;
+  align-items: stretch;
   width: 100%;
   min-width: 0;
 }
 
 .portal-match-hub__masthead-tools {
   min-width: 0;
+  width: 100%;
+  max-width: 26.5rem;
+  justify-self: start;
+  align-self: start;
 }
 
 .portal-match-hub__masthead-body > .portal-match-hub__calendar-panel--head {
   margin-left: 0;
-  max-width: 17.75rem;
   width: 100%;
+  max-width: 12.75rem;
+  min-width: 0;
   justify-self: end;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 @media (max-width: 720px) {
@@ -66,34 +76,66 @@
     display: flex;
     flex-direction: column;
     gap: 0.9rem;
+    align-items: stretch;
+  }
+
+  .portal-match-hub__masthead-tools {
+    max-width: none;
   }
 
   .portal-match-hub__masthead-body > .portal-match-hub__calendar-panel--head {
     order: -1;
-    justify-self: stretch;
     max-width: none;
+    justify-self: stretch;
+    align-self: stretch;
+    height: auto;
+    min-height: 0;
+  }
+
+  .portal-match-hub__calendar-panel--head .portal-match-hub__calendar-grid {
+    grid-auto-rows: unset;
+  }
+
+  .portal-match-hub__calendar-panel--head .portal-match-hub__calendar-grid > li {
+    aspect-ratio: 1;
+    min-height: 1.85rem;
   }
 }
 
 .portal-match-hub__toolbar {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 0.85rem;
   margin: 0;
   width: 100%;
   max-width: none;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .portal-match-hub__masthead .portal-match-hub__search-block {
   box-sizing: border-box;
-  width: min(18.75rem, 100%);
-  max-width: 18.75rem;
-  flex: 0 1 auto;
-  align-self: flex-start;
+  width: 100%;
+  max-width: none;
+  flex: 0 0 auto;
+  align-self: stretch;
 }
 
-/* —— Search (prominent; width capped in masthead via .masthead .search-block) */
+/* Search + filters share one column width (equal outer edges). */
+.portal-match-hub__masthead-tools .portal-match-hub__filters-stack {
+  gap: 0.85rem;
+}
+
+.portal-match-hub__masthead-tools .portal-match-hub__filters-grid {
+  width: 100%;
+}
+
+.portal-match-hub__masthead-tools .portal-match-hub__filter-field {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+}
+
+/* —— Search (prominent; full width of masthead tools column) */
 
 .portal-match-hub__search-block {
   width: 100%;
@@ -288,6 +330,56 @@
   border-radius: 0.85rem;
   border: 1px solid var(--border);
   background: var(--btn-bg);
+}
+
+/* Compact hub calendar: shorter column; stretches to match tools column height on desktop. */
+.portal-match-hub__calendar-panel--head {
+  padding: 0.42rem 0.48rem;
+  border-radius: 0.65rem;
+}
+
+.portal-match-hub__calendar-panel--head .portal-match-hub__calendar-head {
+  flex-shrink: 0;
+  margin-bottom: 0.32rem;
+  gap: 0.3rem;
+}
+
+.portal-match-hub__calendar-panel--head .portal-match-hub__calendar-month-title {
+  font-size: 0.8125rem;
+  font-weight: 720;
+}
+
+.portal-match-hub__calendar-panel--head .portal-match-hub__calendar-nav button {
+  padding: 0.18rem 0.36rem;
+  font-size: 0.8125rem;
+}
+
+.portal-match-hub__calendar-panel--head .portal-match-hub__calendar-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 0.12rem;
+  grid-auto-rows: minmax(0, 1fr);
+}
+
+.portal-match-hub__calendar-panel--head .portal-match-hub__calendar-grid > li {
+  aspect-ratio: unset;
+  min-height: 0;
+}
+
+.portal-match-hub__calendar-panel--head .portal-match-hub__calendar-dow {
+  font-size: 0.58rem;
+}
+
+.portal-match-hub__calendar-panel--head .portal-match-hub__calendar-day {
+  font-size: 0.65625rem;
+  padding-top: 0.06rem;
+  border-radius: 0.32rem;
+}
+
+.portal-match-hub__calendar-panel--head .portal-match-hub__calendar-dot {
+  width: 0.2rem;
+  height: 0.2rem;
+  margin-top: 0.05rem;
 }
 
 .portal-match-hub__calendar-head {
