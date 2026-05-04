@@ -117,6 +117,7 @@
 | [TECH.md](./TECH.md) | Модулі, формат JSON, undo, PWA, SEO, деплой, аналітика |
 | [VERSIONING.md](./VERSIONING.md) | Таблиці змін між етапами, єдиний текст оновлення для користувачів |
 | [BACKLOG.md](./BACKLOG.md) | Ідеї майбутніх фіч, грумінг, пріоритети, відкладені епіки |
+| [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md) | Модуль матчів: зведений план кроків і беклог (тип події, PSC, каталог) |
 | [README.md](../README.md) | Швидкий старт, посилання на прод, структура `src/` |
 | [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md) | Зведений бізнес + техніка, маршрути, env, реєстр усіх документів у `docs/` |
 
