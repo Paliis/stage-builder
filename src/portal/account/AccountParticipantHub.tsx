@@ -3,9 +3,28 @@ import { Link } from 'react-router-dom'
 import type { Locale, MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from '../matches/matchPortalFormat'
+import {
+  SHOOTER_CATEGORIES,
+  WEAPON_CLASS_ORDER,
+  divisionsForWeapon,
+  isValidDivisionForWeapon,
+  weaponClassLabel,
+} from '../shooterProfileCatalog'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 import './AccountParticipantHub.css'
+
+const CATEGORY_IDS = new Set(SHOOTER_CATEGORIES.map((c) => c.id))
+const CATEGORY_ORDER = new Map(SHOOTER_CATEGORIES.map((c, i) => [c.id, i]))
+
+function normalizeCategoryList(raw: unknown): string[] {
+  if (!Array.isArray(raw)) return []
+  return raw.filter((x): x is string => typeof x === 'string' && CATEGORY_IDS.has(x))
+}
+
+function sortCategoryIds(ids: string[]): string[] {
+  return [...new Set(ids)].sort((a, b) => (CATEGORY_ORDER.get(a) ?? 99) - (CATEGORY_ORDER.get(b) ?? 99))
+}
 
 type Portal = MessageTree['portal']
 
@@ -30,7 +49,7 @@ const DEFAULT_SELECT = [
   'classification_grade',
   'power_factor',
   'region',
-  'category',
+  'categories',
   'weapon_class',
 ].join(', ')
 
@@ -102,7 +121,7 @@ export function AccountParticipantHub({
   const [defClass, setDefClass] = useState('')
   const [defPf, setDefPf] = useState<'MAJOR' | 'MINOR' | ''>('')
   const [defRegion, setDefRegion] = useState('')
-  const [defCategory, setDefCategory] = useState('')
+  const [defCategories, setDefCategories] = useState<string[]>([])
   const [defWeaponClass, setDefWeaponClass] = useState('')
   const [defLoading, setDefLoading] = useState(true)
   const [defSaving, setDefSaving] = useState(false)
@@ -125,17 +144,21 @@ export function AccountParticipantHub({
       classification_grade?: string
       power_factor?: string | null
       region?: string
-      category?: string
+      categories?: string[] | null
       weapon_class?: string
     } | null
     if (row) {
-      setDefDiv(typeof row.division === 'string' ? row.division : '')
+      const rawWc = row.weapon_class
+      const wc =
+        typeof rawWc === 'string' && (WEAPON_CLASS_ORDER as readonly string[]).includes(rawWc) ? rawWc : ''
+      setDefWeaponClass(wc)
+      const rawDiv = typeof row.division === 'string' ? row.division : ''
+      setDefDiv(wc && isValidDivisionForWeapon(wc, rawDiv) ? rawDiv : '')
       setDefClass(typeof row.classification_grade === 'string' ? row.classification_grade : '')
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : '')
       setDefRegion(typeof row.region === 'string' ? row.region : '')
-      setDefCategory(typeof row.category === 'string' ? row.category : '')
-      setDefWeaponClass(typeof row.weapon_class === 'string' ? row.weapon_class : '')
+      setDefCategories(normalizeCategoryList(row.categories))
     }
   }, [sb, userId])
 
@@ -153,7 +176,7 @@ export function AccountParticipantHub({
       classification_grade: defClass.trim(),
       power_factor: defPf === '' ? null : defPf,
       region: defRegion.trim(),
-      category: defCategory.trim(),
+      categories: sortCategoryIds(defCategories.filter((id) => CATEGORY_IDS.has(id))),
       weapon_class: defWeaponClass.trim(),
     })
     setDefSaving(false)
@@ -169,7 +192,7 @@ export function AccountParticipantHub({
     defClass,
     defPf,
     defRegion,
-    defCategory,
+    defCategories,
     defWeaponClass,
     p.accountParticipantDefaultsSaved,
   ])
@@ -298,38 +321,67 @@ export function AccountParticipantHub({
                   placeholder={p.accountParticipantFieldRegionPlaceholder}
                 />
               </label>
-              <label className="portal-account__field">
-                {p.accountParticipantFieldCategory}
-                <input
-                  type="text"
-                  value={defCategory}
-                  onChange={(e) => setDefCategory(e.target.value)}
-                  disabled={defSaving}
-                  autoComplete="off"
-                  placeholder={p.accountParticipantFieldCategoryPlaceholder}
-                />
+              <fieldset className="portal-account__categories-fieldset">
+                <legend className="portal-account__categories-legend">{p.accountParticipantFieldCategory}</legend>
                 <span className="portal-account__field-hint">{p.accountParticipantFieldCategoryHint}</span>
-              </label>
+                <div className="portal-account__categories-grid" role="group">
+                  {SHOOTER_CATEGORIES.map((c) => {
+                    const checked = defCategories.includes(c.id)
+                    const lab = locale === 'en' ? c.labelEn : c.labelUk
+                    return (
+                      <label key={c.id} className="portal-account__check">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          disabled={defSaving}
+                          onChange={() => {
+                            setDefCategories((prev) =>
+                              checked ? prev.filter((x) => x !== c.id) : sortCategoryIds([...prev, c.id]),
+                            )
+                          }}
+                        />
+                        {lab}
+                      </label>
+                    )
+                  })}
+                </div>
+              </fieldset>
               <label className="portal-account__field">
                 {p.accountParticipantFieldWeaponClass}
-                <input
-                  type="text"
+                <select
                   value={defWeaponClass}
-                  onChange={(e) => setDefWeaponClass(e.target.value)}
+                  onChange={(e) => {
+                    const v = e.target.value
+                    setDefWeaponClass(v)
+                    setDefDiv((d) => (v && isValidDivisionForWeapon(v, d) ? d : ''))
+                  }}
                   disabled={defSaving}
-                  autoComplete="off"
-                  placeholder={p.accountParticipantFieldWeaponPlaceholder}
-                />
+                >
+                  <option value="">{p.accountParticipantOptionNotSelected}</option>
+                  {WEAPON_CLASS_ORDER.map((id) => (
+                    <option key={id} value={id}>
+                      {weaponClassLabel(id, locale)}
+                    </option>
+                  ))}
+                </select>
               </label>
               <label className="portal-account__field">
                 {p.matchDetailRegistrationDivision}
-                <input
-                  type="text"
+                <select
                   value={defDiv}
                   onChange={(e) => setDefDiv(e.target.value)}
-                  disabled={defSaving}
-                  autoComplete="off"
-                />
+                  disabled={defSaving || !defWeaponClass}
+                >
+                  <option value="">{p.accountParticipantOptionNotSelected}</option>
+                  {divisionsForWeapon(defWeaponClass).map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {locale === 'en' ? d.labelEn : d.labelUk}
+                    </option>
+                  ))}
+                </select>
+                {!defWeaponClass ?
+                  <span className="portal-account__field-hint">{p.accountParticipantDivisionSelectWeaponFirst}</span>
+                : null}
               </label>
               <label className="portal-account__field">
                 {p.matchDetailRegistrationClass}

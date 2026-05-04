@@ -610,10 +610,11 @@ export type MessageTree = {
     accountParticipantFieldRegion: string
     accountParticipantFieldRegionPlaceholder: string
     accountParticipantFieldCategory: string
-    accountParticipantFieldCategoryPlaceholder: string
     accountParticipantFieldCategoryHint: string
     accountParticipantFieldWeaponClass: string
     accountParticipantFieldWeaponPlaceholder: string
+    accountParticipantOptionNotSelected: string
+    accountParticipantDivisionSelectWeaponFirst: string
     /** Shown when match routes disabled but profile form still visible. */
     accountParticipantMatchPortalOffHint: string
     accountParticipantDefaultsSave: string
@@ -1572,14 +1573,15 @@ export const ukMessages: MessageTree = {
     accountParticipantDefaultsLead:
       'Ці поля підставляються у форму реєстрації на картці матчу (можна змінити перед відправкою).',
     accountParticipantProfileSectionLead:
-      'Типові поля для нових заявок і подальшого експорту: регіон, категорія (кілька — через кому), клас зброї, дивізіон, класифікація, фактор потужності.',
+      'Типові поля для нових заявок і подальшого експорту: регіон, категорії (мультивибір), клас зброї, дивізіон залежно від класу, класифікація, фактор потужності.',
     accountParticipantFieldRegion: 'Регіон / область',
     accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
-    accountParticipantFieldCategory: 'Категорія',
-    accountParticipantFieldCategoryPlaceholder: 'Lady, Junior…',
-    accountParticipantFieldCategoryHint: 'Кілька значень — через кому, як у PractiScore.',
+    accountParticipantFieldCategory: 'Категорії',
+    accountParticipantFieldCategoryHint: 'Можна обрати кілька (наприклад, Леді та Юніор).',
     accountParticipantFieldWeaponClass: 'Клас зброї',
-    accountParticipantFieldWeaponPlaceholder: 'Наприклад: Shotgun',
+    accountParticipantFieldWeaponPlaceholder: 'Оберіть з переліку',
+    accountParticipantOptionNotSelected: '—',
+    accountParticipantDivisionSelectWeaponFirst: 'Спочатку оберіть клас зброї',
     accountParticipantMatchPortalOffHint:
       'Модуль «Матчі» у цьому середовищі вимкнено — список заявок приховано. Профіль нижче зберігається для інших середовищ і майбутнього експорту.',
     accountParticipantDefaultsSave: 'Зберегти',
@@ -2544,14 +2546,15 @@ export const enMessages: MessageTree = {
     accountParticipantDefaultsLead:
       'Prefills the sign-up form on a match page (you can edit before submitting).',
     accountParticipantProfileSectionLead:
-      'Defaults for new registrations and future export: region, categories (comma-separated), weapon class, division, classification, power factor.',
+      'Defaults for new registrations and future export: region, categories (multi-select), weapon class, division (depends on class), classification, power factor.',
     accountParticipantFieldRegion: 'Region / state',
     accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
-    accountParticipantFieldCategory: 'Category',
-    accountParticipantFieldCategoryPlaceholder: 'Lady, Junior…',
-    accountParticipantFieldCategoryHint: 'Multiple values — comma-separated, like PractiScore.',
+    accountParticipantFieldCategory: 'Categories',
+    accountParticipantFieldCategoryHint: 'You can select several (e.g. Lady and Junior).',
     accountParticipantFieldWeaponClass: 'Weapon class',
-    accountParticipantFieldWeaponPlaceholder: 'e.g. Shotgun',
+    accountParticipantFieldWeaponPlaceholder: 'Select from list',
+    accountParticipantOptionNotSelected: '—',
+    accountParticipantDivisionSelectWeaponFirst: 'Select a weapon class first',
     accountParticipantMatchPortalOffHint:
       'The Matches module is off in this environment — your registration list is hidden. The profile below is still saved.',
     accountParticipantDefaultsSave: 'Save',

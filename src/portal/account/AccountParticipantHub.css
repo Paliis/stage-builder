@@ -46,14 +46,53 @@
   gap: 0.6rem 1rem;
 }
 
+.portal-account__psc-grid--full {
+  grid-column: 1 / -1;
+}
+
 @media (min-width: 520px) {
   .portal-account__psc-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
 
-  .portal-account__psc-grid--full {
-    grid-column: 1 / -1;
-  }
+.portal-account__categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  gap: 0.35rem 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.portal-account__check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+.portal-account__check input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--accent-border, #3b82f6);
+}
+
+.portal-account__categories-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  grid-column: 1 / -1;
+}
+
+.portal-account__categories-legend {
+  padding: 0;
+  margin: 0 0 0.15rem;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--text-h);
 }
 
 .portal-account__field {
