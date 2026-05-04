@@ -20,7 +20,10 @@ import './PortalHome.css'
 import './PortalMatchHub.css'
 import './PortalMatchesUi.css'
 
-/** Turn on when the published catalogue is large enough to need date/type/level filters again. */
+/**
+ * When true, show date range, PS level, and “Clear filters”.
+ * Month, event type, and weapon type stay visible either way.
+ */
 const SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS = false
 
 function weekdayShortLabels(locale: Locale): string[] {
@@ -192,80 +195,85 @@ export function PortalPublishedMatchesSection() {
           </div>
         </div>
 
-        <div
-          className={`portal-match-hub__filters-grid${SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? '' : ' portal-match-hub__filters-grid--hidden'}`}
-          aria-hidden={SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? undefined : true}
-        >
-          <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-from`}>
-            <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateFrom}</span>
-            <input
-              id={`${filterFieldId}-date-from`}
-              type="date"
-              value={dateFrom}
-              onChange={(e) => setDateFrom(e.target.value)}
-            />
-          </label>
-          <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-to`}>
-            <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateTo}</span>
-            <input id={`${filterFieldId}-date-to`} type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
-          </label>
-          <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-month`}>
-            <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubMonthJumpLabel}</span>
-            <input
-              id={`${filterFieldId}-month`}
-              type="month"
-              value={`${calY}-${String(calM + 1).padStart(2, '0')}`}
-              onChange={(e) => {
-                const v = e.target.value
-                if (!v) return
-                const [ys, ms] = v.split('-').map(Number)
-                if (!Number.isFinite(ys) || !Number.isFinite(ms)) return
-                setCalendarMonth({ y: ys, m: ms - 1 })
-              }}
-            />
-          </label>
-          <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-kind`}>
-            <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterEventKind}</span>
-            <select
-              id={`${filterFieldId}-kind`}
-              value={eventKindFilter}
-              onChange={(e) => setEventKindFilter(e.target.value as 'all' | MatchEventKind)}
+        <div className="portal-match-hub__filters-stack">
+          <div className="portal-match-hub__filters-grid">
+            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-month`}>
+              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubMonthJumpLabel}</span>
+              <input
+                id={`${filterFieldId}-month`}
+                type="month"
+                value={`${calY}-${String(calM + 1).padStart(2, '0')}`}
+                onChange={(e) => {
+                  const v = e.target.value
+                  if (!v) return
+                  const [ys, ms] = v.split('-').map(Number)
+                  if (!Number.isFinite(ys) || !Number.isFinite(ms)) return
+                  setCalendarMonth({ y: ys, m: ms - 1 })
+                }}
+              />
+            </label>
+            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-kind`}>
+              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterEventKind}</span>
+              <select
+                id={`${filterFieldId}-kind`}
+                value={eventKindFilter}
+                onChange={(e) => setEventKindFilter(e.target.value as 'all' | MatchEventKind)}
+              >
+                <option value="all">{p.portalMatchesHubFilterEventKindAll}</option>
+                <option value="training">{p.matchEventKindTraining}</option>
+                <option value="match">{p.matchEventKindMatch}</option>
+                <option value="classification">{p.matchEventKindClassification}</option>
+              </select>
+            </label>
+            <div
+              className="portal-match-hub__filter-field portal-match-hub__filter-field--disabled"
+              title={p.portalMatchesHubFilterWeaponTypePlaceholder}
+              aria-label={`${p.portalMatchesHubFilterWeaponType}. ${p.portalMatchesHubFilterWeaponTypePlaceholder}.`}
             >
-              <option value="all">{p.portalMatchesHubFilterEventKindAll}</option>
-              <option value="training">{p.matchEventKindTraining}</option>
-              <option value="match">{p.matchEventKindMatch}</option>
-              <option value="classification">{p.matchEventKindClassification}</option>
-            </select>
-          </label>
-          <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-ps`}>
-            <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterPsLevel}</span>
-            <select
-              id={`${filterFieldId}-ps`}
-              value={psLevelFilter}
-              onChange={(e) => setPsLevelFilter(e.target.value as 'all' | PsMatchLevel)}
-            >
-              <option value="all">{p.portalMatchesHubFilterPsLevelAll}</option>
-              <option value="L1">{p.matchPsLevelL1}</option>
-              <option value="L2">{p.matchPsLevelL2}</option>
-              <option value="L3">{p.matchPsLevelL3}</option>
-              <option value="L4">{p.matchPsLevelL4}</option>
-              <option value="L5">{p.matchPsLevelL5}</option>
-            </select>
-          </label>
-          <div
-            className="portal-match-hub__filter-field portal-match-hub__filter-field--disabled"
-            title={p.portalMatchesHubFilterWeaponTypePlaceholder}
-            aria-label={`${p.portalMatchesHubFilterWeaponType}. ${p.portalMatchesHubFilterWeaponTypePlaceholder}.`}
-          >
-            <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterWeaponType}</span>
-            <select disabled aria-disabled="true">
-              <option>{p.portalMatchesHubFilterWeaponTypePlaceholder}</option>
-            </select>
+              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterWeaponType}</span>
+              <select disabled aria-disabled="true">
+                <option>{p.portalMatchesHubFilterWeaponTypePlaceholder}</option>
+              </select>
+            </div>
           </div>
-          <div className="portal-match-hub__filter-actions">
-            <button type="button" className="portal-btn portal-btn--secondary portal-btn--compact" onClick={clearFilters}>
-              {p.portalMatchesHubClearFilters}
-            </button>
+
+          <div
+            className={`portal-match-hub__filters-grid portal-match-hub__filters-grid--extended${SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? '' : ' portal-match-hub__filters-grid--hidden'}`}
+            aria-hidden={SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? undefined : true}
+          >
+            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-from`}>
+              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateFrom}</span>
+              <input
+                id={`${filterFieldId}-date-from`}
+                type="date"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+              />
+            </label>
+            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-to`}>
+              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateTo}</span>
+              <input id={`${filterFieldId}-date-to`} type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+            </label>
+            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-ps`}>
+              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterPsLevel}</span>
+              <select
+                id={`${filterFieldId}-ps`}
+                value={psLevelFilter}
+                onChange={(e) => setPsLevelFilter(e.target.value as 'all' | PsMatchLevel)}
+              >
+                <option value="all">{p.portalMatchesHubFilterPsLevelAll}</option>
+                <option value="L1">{p.matchPsLevelL1}</option>
+                <option value="L2">{p.matchPsLevelL2}</option>
+                <option value="L3">{p.matchPsLevelL3}</option>
+                <option value="L4">{p.matchPsLevelL4}</option>
+                <option value="L5">{p.matchPsLevelL5}</option>
+              </select>
+            </label>
+            <div className="portal-match-hub__filter-actions">
+              <button type="button" className="portal-btn portal-btn--secondary portal-btn--compact" onClick={clearFilters}>
+                {p.portalMatchesHubClearFilters}
+              </button>
+            </div>
           </div>
         </div>
       </div>
