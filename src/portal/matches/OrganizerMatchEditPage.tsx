@@ -524,7 +524,7 @@ export function OrganizerMatchEditPage() {
         </label>
 
         <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>
-          {p.matchOrgTaxonomyOptionalHint}
+          {p.matchOrgTaxonomyOptionalLead}
         </p>
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
@@ -552,6 +552,9 @@ export function OrganizerMatchEditPage() {
             <option value="match">{p.matchEventKindMatch}</option>
             <option value="classification">{p.matchEventKindClassification}</option>
           </select>
+          <span style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>
+            {p.matchOrgEventKindHint}
+          </span>
         </label>
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
@@ -581,6 +584,9 @@ export function OrganizerMatchEditPage() {
             <option value="L4">{p.matchPsLevelL4}</option>
             <option value="L5">{p.matchPsLevelL5}</option>
           </select>
+          <span style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>
+            {p.matchOrgPsLevelHint}
+          </span>
         </label>
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>

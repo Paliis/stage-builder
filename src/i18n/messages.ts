@@ -612,7 +612,12 @@ export type MessageTree = {
     matchOrgFieldLocation: string
     matchOrgFieldEventKind: string
     matchOrgFieldPsLevel: string
-    matchOrgTaxonomyOptionalHint: string
+    /** Short line above event type / PS level block. */
+    matchOrgTaxonomyOptionalLead: string
+    /** Help under event type `<select>` (organizer match edit). */
+    matchOrgEventKindHint: string
+    /** Help under PractiScore level `<select>`. */
+    matchOrgPsLevelHint: string
     matchOrgEventKindUnset: string
     matchEventKindTraining: string
     matchEventKindMatch: string
@@ -1518,7 +1523,12 @@ export const ukMessages: MessageTree = {
     matchOrgFieldLocation: 'Локація (текст)',
     matchOrgFieldEventKind: 'Тип події',
     matchOrgFieldPsLevel: 'Рівень матчу (PractiScore)',
-    matchOrgTaxonomyOptionalHint: 'Необов’язково — можна лишити порожнім; рівень потрапляє в експорт .psc як Level I–V.',
+    matchOrgTaxonomyOptionalLead:
+      'Необов’язково: обидва поля нижче можна лишити порожніми (на картці матчу тоді буде «не вказано»).',
+    matchOrgEventKindHint:
+      'Для каталогу та картки на сайті: тренування, змагання чи класифікаційний етап. Не замінює поле «Назва».',
+    matchOrgPsLevelHint:
+      'Офіційна шкала PractiScore (Level I–V). У експорті .psc — поле match_level; якщо не обрано, ключ у файл не додається.',
     matchOrgEventKindUnset: '— не обрано —',
     matchEventKindTraining: 'Тренування',
     matchEventKindMatch: 'Матч',
@@ -2433,7 +2443,12 @@ export const enMessages: MessageTree = {
     matchOrgFieldLocation: 'Location (text)',
     matchOrgFieldEventKind: 'Event type',
     matchOrgFieldPsLevel: 'Match level (PractiScore)',
-    matchOrgTaxonomyOptionalHint: 'Optional — leave unset if unsure; level is written to the .psc export as Level I–V.',
+    matchOrgTaxonomyOptionalLead:
+      'Optional: you can leave both fields below empty (the public match page will show “Not specified”).',
+    matchOrgEventKindHint:
+      'For the public hub and match card: training, match, or classification. Does not replace the title field.',
+    matchOrgPsLevelHint:
+      'Official PractiScore scale (Level I–V). Exported in .psc as match_level; if unset, the key is omitted from the file.',
     matchOrgEventKindUnset: '— not set —',
     matchEventKindTraining: 'Training',
     matchEventKindMatch: 'Match',
