@@ -12,6 +12,8 @@ type Props = {
   p: MessageTree['portal']
   /** Called after sign-out succeeds (e.g. close mobile drawer). */
   onAfterSignOut?: () => void
+  /** On `/…/account` the page already is the sign-in form — hide duplicate header link for guests. */
+  suppressGuestSignInLink?: boolean
 }
 
 function ProfileAccountIconSvg() {
@@ -26,7 +28,7 @@ function ProfileAccountIconSvg() {
 }
 
 /** Header cluster: badges (single row) + profile icon + sign-out — email only in tooltip / aria. */
-export function PortalHeaderAccount({ locale, p, onAfterSignOut }: Props) {
+export function PortalHeaderAccount({ locale, p, onAfterSignOut, suppressGuestSignInLink }: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const organizer = useOrganizerPortalStatus(user?.id)
 
@@ -51,6 +53,9 @@ export function PortalHeaderAccount({ locale, p, onAfterSignOut }: Props) {
   }
 
   if (!user) {
+    if (suppressGuestSignInLink) {
+      return <div className="portal-shell__account" />
+    }
     return (
       <div className="portal-shell__account">
         <Link to={accountPath} className="portal-shell__account-signin-link">

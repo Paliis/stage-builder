@@ -9,6 +9,7 @@ import { useSupabaseSession } from '../useSupabaseSession'
 import { isMatchPortalEnabled } from '../featureFlags'
 import { AccountParticipantHub } from './AccountParticipantHub'
 import '../PortalHome.css'
+import '../PortalMatchesUi.css'
 import './PortalAccountPage.css'
 
 export function PortalAccountPage() {
@@ -96,17 +97,13 @@ export function PortalAccountPage() {
       </header>
 
       {sessionLoading ?
-        <p>{p.matchesLoadingDetail}</p>
+        <p className="portal-account__loading">{p.matchesLoadingDetail}</p>
       : user ?
-        <section aria-labelledby="account-summary-heading">
-          <h2
-            id="account-summary-heading"
-            className="portal-home__hero-title"
-            style={{ fontSize: '1.1rem', margin: '0 0 0.65rem', letterSpacing: '-0.02em' }}
-          >
+        <section className="portal-account__dashboard" aria-labelledby="account-summary-heading">
+          <h2 id="account-summary-heading" className="portal-account__summary-heading">
             {p.accountSummaryHeading}
           </h2>
-          <p style={{ margin: '0 0 1.25rem', fontSize: '0.95rem', wordBreak: 'break-word' }}>
+          <p className="portal-account__summary-email">
             <strong>{p.accountSummaryLogin}</strong>{' '}
             {user.email ?? user.id}
           </p>
@@ -306,17 +303,15 @@ export function PortalAccountPage() {
             </section>
           : null}
 
-          <button type="button" className="portal-shell__account-sign-out portal-shell__account-sign-out--block" onClick={() => void onSignOut()}>
-            {p.portalCompactAuthSignOut}
-          </button>
+          <div className="portal-account__sign-out-wrap">
+            <button type="button" className="portal-btn portal-btn--ghost portal-btn--block-xs" onClick={() => void onSignOut()}>
+              {p.portalCompactAuthSignOut}
+            </button>
+          </div>
         </section>
       :
-        <section aria-labelledby="account-auth-heading">
-          <h2
-            id="account-auth-heading"
-            className="portal-home__hero-title"
-            style={{ fontSize: '1.1rem', margin: '0 0 0.65rem', letterSpacing: '-0.02em' }}
-          >
+        <section className="portal-account__auth-section" aria-labelledby="account-auth-heading">
+          <h2 id="account-auth-heading" className="portal-account__auth-heading">
             {p.accountAuthHeading}
           </h2>
           <PortalCompactEmailAuth p={p} pathnameForRedirect={pathnameRedirect} />

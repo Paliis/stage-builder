@@ -1,0 +1,119 @@
+/* Compact email/password auth (account page + match registration) */
+
+.portal-compact-auth {
+  max-width: 24rem;
+  padding: 1.15rem 1.2rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--border), var(--accent-border) 15%);
+  background: linear-gradient(165deg, var(--btn-bg), color-mix(in srgb, var(--surface), var(--accent-bg) 22%));
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45) inset,
+    0 6px 22px rgba(15, 23, 42, 0.06);
+}
+
+.portal-compact-auth__mode {
+  display: inline-flex;
+  padding: 0.22rem;
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--surface), var(--border) 35%);
+  border: 1px solid var(--border);
+  gap: 0.12rem;
+}
+
+.portal-compact-auth__mode-btn {
+  padding: 0.45rem 1.05rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    background 0.14s ease,
+    color 0.14s ease,
+    box-shadow 0.14s ease;
+}
+
+.portal-compact-auth__mode-btn:hover:not(:disabled) {
+  color: var(--text-h);
+}
+
+.portal-compact-auth__mode-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.portal-compact-auth__mode-btn[aria-pressed='true'] {
+  background: var(--btn-bg);
+  color: var(--text-h);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+.portal-compact-auth__form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.portal-compact-auth__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+
+.portal-compact-auth__label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-h);
+}
+
+.portal-compact-auth__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.55rem 0.68rem;
+  border-radius: 0.55rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  transition:
+    border-color 0.14s ease,
+    box-shadow 0.14s ease;
+}
+
+.portal-compact-auth__input:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--border), var(--accent-border) 40%);
+}
+
+.portal-compact-auth__input:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.portal-compact-auth__input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.portal-compact-auth__submit-wrap {
+  margin-top: 0.15rem;
+}
+
+.portal-compact-auth__message {
+  margin: 0.85rem 0 0;
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text);
+  white-space: pre-wrap;
+  background: color-mix(in srgb, var(--surface), var(--accent-bg) 40%);
+  border: 1px solid color-mix(in srgb, var(--border), var(--accent-border) 25%);
+}

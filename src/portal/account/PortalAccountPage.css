@@ -1,3 +1,54 @@
+.portal-account__loading {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--text);
+}
+
+.portal-account__dashboard {
+  max-width: 44rem;
+}
+
+.portal-account__summary-heading {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+  line-height: 1.2;
+}
+
+.portal-account__summary-email {
+  margin: 0 0 1.35rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--btn-bg), var(--surface) 40%);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  word-break: break-word;
+  color: var(--text);
+}
+
+.portal-account__sign-out-wrap {
+  margin-top: 1.75rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--border);
+  max-width: 22rem;
+}
+
+.portal-account__auth-section {
+  max-width: 28rem;
+}
+
+.portal-account__auth-heading {
+  margin: 0 0 0.85rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+  line-height: 1.2;
+}
+
 .portal-account__section {
   margin: 0 0 1.35rem;
   max-width: 40rem;

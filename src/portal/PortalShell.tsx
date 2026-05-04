@@ -152,6 +152,7 @@ export function PortalShell() {
                 locale={locale}
                 p={p}
                 onAfterSignOut={compactHeader ? () => setNavOpen(false) : undefined}
+                suppressGuestSignInLink={pathname === `/${locale}/account`}
               />
               <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
                 <button

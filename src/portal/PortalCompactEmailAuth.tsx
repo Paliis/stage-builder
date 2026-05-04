@@ -1,6 +1,8 @@
-import { useState, type FormEvent } from 'react'
+import { useId, useState, type FormEvent } from 'react'
 import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient'
 import type { MessageTree } from '../i18n/messages'
+import './PortalCompactEmailAuth.css'
+import './PortalMatchesUi.css'
 
 type PortalMsgs = MessageTree['portal']
 
@@ -11,6 +13,7 @@ type Props = {
 }
 
 export function PortalCompactEmailAuth({ p, pathnameForRedirect }: Props) {
+  const fieldId = useId()
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -58,45 +61,47 @@ export function PortalCompactEmailAuth({ p, pathnameForRedirect }: Props) {
     }
   }
 
-  async function handleSignOut() {
-    setMessage(null)
-    setBusy(true)
-    try {
-      const sb = getSupabase()
-      const { error } = await sb.auth.signOut()
-      if (error) setMessage(error.message)
-    } finally {
-      setBusy(false)
-    }
-  }
-
   if (!configured) {
     return <p role="alert">{p.matchesSupabaseUnset}</p>
   }
 
   return (
-    <div
-      style={{
-        padding: '0.85rem',
-        borderRadius: '8px',
-        border: '1px solid var(--border)',
-        maxWidth: '22rem',
-        fontSize: '0.92rem',
-      }}
-    >
-      <div role="group" aria-label={p.portalCompactAuthAria} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-        <button type="button" aria-pressed={authMode === 'signin'} onClick={() => { setAuthMode('signin'); setMessage(null) }} disabled={busy}>
+    <div className="portal-compact-auth">
+      <div className="portal-compact-auth__mode" role="group" aria-label={p.portalCompactAuthAria}>
+        <button
+          type="button"
+          className="portal-compact-auth__mode-btn"
+          aria-pressed={authMode === 'signin'}
+          onClick={() => {
+            setAuthMode('signin')
+            setMessage(null)
+          }}
+          disabled={busy}
+        >
           {p.portalCompactAuthSignIn}
         </button>
-        <button type="button" aria-pressed={authMode === 'signup'} onClick={() => { setAuthMode('signup'); setMessage(null) }} disabled={busy}>
+        <button
+          type="button"
+          className="portal-compact-auth__mode-btn"
+          aria-pressed={authMode === 'signup'}
+          onClick={() => {
+            setAuthMode('signup')
+            setMessage(null)
+          }}
+          disabled={busy}
+        >
           {p.portalCompactAuthSignUp}
         </button>
       </div>
 
-      <form key={authMode} onSubmit={(ev) => void handleSubmit(ev)} style={{ marginTop: '0.65rem', display: 'grid', gap: '0.5rem' }}>
-        <label style={{ display: 'grid', gap: '0.2rem' }}>
-          {p.portalCompactAuthEmail}
+      <form key={authMode} className="portal-compact-auth__form" onSubmit={(ev) => void handleSubmit(ev)}>
+        <div className="portal-compact-auth__field">
+          <label className="portal-compact-auth__label" htmlFor={`${fieldId}-email`}>
+            {p.portalCompactAuthEmail}
+          </label>
           <input
+            id={`${fieldId}-email`}
+            className="portal-compact-auth__input"
             type="email"
             autoComplete="email"
             value={email}
@@ -104,10 +109,14 @@ export function PortalCompactEmailAuth({ p, pathnameForRedirect }: Props) {
             required
             disabled={busy}
           />
-        </label>
-        <label style={{ display: 'grid', gap: '0.2rem' }}>
-          {p.portalCompactAuthPassword}
+        </div>
+        <div className="portal-compact-auth__field">
+          <label className="portal-compact-auth__label" htmlFor={`${fieldId}-password`}>
+            {p.portalCompactAuthPassword}
+          </label>
           <input
+            id={`${fieldId}-password`}
+            className="portal-compact-auth__input"
             type="password"
             autoComplete={authMode === 'signup' ? 'new-password' : 'current-password'}
             value={password}
@@ -116,20 +125,16 @@ export function PortalCompactEmailAuth({ p, pathnameForRedirect }: Props) {
             minLength={6}
             disabled={busy}
           />
-        </label>
-        <button type="submit" disabled={busy}>
-          {busy ? '…' : authMode === 'signin' ? p.portalCompactAuthSubmitSignIn : p.portalCompactAuthSubmitSignUp}
-        </button>
+        </div>
+        <div className="portal-compact-auth__submit-wrap">
+          <button type="submit" className="portal-btn portal-btn--primary portal-btn--block" disabled={busy}>
+            {busy ? '…' : authMode === 'signin' ? p.portalCompactAuthSubmitSignIn : p.portalCompactAuthSubmitSignUp}
+          </button>
+        </div>
       </form>
 
-      <p style={{ margin: '0.6rem 0 0' }}>
-        <button type="button" onClick={() => void handleSignOut()} disabled={busy}>
-          {p.portalCompactAuthSignOut}
-        </button>
-      </p>
-
       {message ? (
-        <p role="status" style={{ margin: '0.65rem 0 0', fontSize: '0.88rem', whiteSpace: 'pre-wrap', opacity: 0.92 }}>
+        <p role="status" className="portal-compact-auth__message">
           {message}
         </p>
       ) : null}
