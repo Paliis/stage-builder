@@ -615,8 +615,13 @@ export type MessageTree = {
     accountParticipantAvatarErrSize: string
     accountParticipantAvatarErrCrop: string
     accountParticipantAvatarUploading: string
-    /** Shooter profile: photo is center-cropped to a square for avatar display. */
+    /** Shooter profile: short hint under avatar controls. */
     accountParticipantAvatarCropHint: string
+    accountParticipantAvatarCropTitle: string
+    accountParticipantAvatarCropLead: string
+    accountParticipantAvatarCropZoom: string
+    accountParticipantAvatarCropApply: string
+    accountParticipantAvatarCropCancel: string
     accountParticipantFieldCategory: string
     accountParticipantFieldWeaponClass: string
     accountParticipantFieldWeaponPlaceholder: string
@@ -1589,7 +1594,13 @@ export const ukMessages: MessageTree = {
     accountParticipantAvatarErrCrop: 'Не вдалося прочитати зображення. Спробуйте інший файл.',
     accountParticipantAvatarUploading: 'Завантаження фото…',
     accountParticipantAvatarCropHint:
-      'Фото автоматично обрізається по центру до квадрата під круглий аватар (у т. ч. у шапці).',
+      'Після вибору файлу відкриється вікно: перетягніть фото та змініть масштаб — саме так воно з’явиться в круглому аватарі.',
+    accountParticipantAvatarCropTitle: 'Підганяння фото під аватар',
+    accountParticipantAvatarCropLead:
+      'Перетягніть зображення та збільште або зменшіть його слайдером «Масштаб», щоб вписати обличчя в коло.',
+    accountParticipantAvatarCropZoom: 'Масштаб',
+    accountParticipantAvatarCropApply: 'Застосувати',
+    accountParticipantAvatarCropCancel: 'Скасувати',
     accountParticipantFieldCategory: 'Категорії',
     accountParticipantFieldWeaponClass: 'Клас зброї',
     accountParticipantFieldWeaponPlaceholder: '',
@@ -2567,7 +2578,13 @@ export const enMessages: MessageTree = {
     accountParticipantAvatarErrCrop: 'Could not read this image. Try another file.',
     accountParticipantAvatarUploading: 'Uploading photo…',
     accountParticipantAvatarCropHint:
-      'Photos are center-cropped to a square for the circular avatar (including the header).',
+      'After you pick a file, a window opens: drag the image and adjust zoom — that is how it will look in the circular avatar.',
+    accountParticipantAvatarCropTitle: 'Fit photo for avatar',
+    accountParticipantAvatarCropLead:
+      'Drag the image and use the scale slider to fit your face inside the circle.',
+    accountParticipantAvatarCropZoom: 'Scale',
+    accountParticipantAvatarCropApply: 'Apply',
+    accountParticipantAvatarCropCancel: 'Cancel',
     accountParticipantFieldCategory: 'Categories',
     accountParticipantFieldWeaponClass: 'Weapon class',
     accountParticipantFieldWeaponPlaceholder: '',

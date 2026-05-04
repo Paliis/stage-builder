@@ -11,8 +11,8 @@ import {
   isValidDivisionForWeapon,
   weaponClassLabel,
 } from '../shooterProfileCatalog'
-import { squareCropImageToJpeg } from '../squareCropImage'
 import { dispatchParticipantAvatarUpdated } from '../useParticipantAvatarUrl'
+import { AvatarCropModal } from './AvatarCropModal'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 import './AccountParticipantHub.css'
@@ -149,6 +149,8 @@ export function AccountParticipantHub({
   const [defAvatarUrl, setDefAvatarUrl] = useState('')
   const [avatarBusy, setAvatarBusy] = useState(false)
   const [avatarErr, setAvatarErr] = useState<string | null>(null)
+  const [avatarCropSrc, setAvatarCropSrc] = useState<string | null>(null)
+  const avatarCropUrlRef = useRef<string | null>(null)
   const avatarInputRef = useRef<HTMLInputElement>(null)
   const [defLoading, setDefLoading] = useState(true)
   const [defSaving, setDefSaving] = useState(false)
@@ -193,8 +195,25 @@ export function AccountParticipantHub({
     }
   }, [sb, userId, p])
 
-  const pickAvatarFile = useCallback(
-    async (file: File | null) => {
+  const clearAvatarCropUrl = useCallback(() => {
+    if (avatarCropUrlRef.current) {
+      URL.revokeObjectURL(avatarCropUrlRef.current)
+      avatarCropUrlRef.current = null
+    }
+    setAvatarCropSrc(null)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (avatarCropUrlRef.current) {
+        URL.revokeObjectURL(avatarCropUrlRef.current)
+        avatarCropUrlRef.current = null
+      }
+    }
+  }, [])
+
+  const openAvatarCrop = useCallback(
+    (file: File | null) => {
       if (!file || !sb) return
       setAvatarErr(null)
       const okTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
@@ -206,9 +225,20 @@ export function AccountParticipantHub({
         setAvatarErr(p.accountParticipantAvatarErrSize)
         return
       }
+      clearAvatarCropUrl()
+      const url = URL.createObjectURL(file)
+      avatarCropUrlRef.current = url
+      setAvatarCropSrc(url)
+    },
+    [sb, p, clearAvatarCropUrl],
+  )
+
+  const uploadAvatarJpeg = useCallback(
+    async (jpegBlob: Blob) => {
+      if (!sb) return
       setAvatarBusy(true)
+      setAvatarErr(null)
       try {
-        const jpegBlob = await squareCropImageToJpeg(file)
         const objectPath = `${userId}/avatar-${Date.now()}.jpg`
         const { error: upErr } = await sb.storage.from('participant-avatars').upload(objectPath, jpegBlob, {
           upsert: false,
@@ -221,13 +251,14 @@ export function AccountParticipantHub({
         const { data: pub } = sb.storage.from('participant-avatars').getPublicUrl(objectPath)
         setDefAvatarUrl(pub.publicUrl)
         dispatchParticipantAvatarUpdated(pub.publicUrl)
+        clearAvatarCropUrl()
       } catch {
         setAvatarErr(p.accountParticipantAvatarErrCrop)
       } finally {
         setAvatarBusy(false)
       }
     },
-    [sb, userId, p],
+    [sb, userId, p, clearAvatarCropUrl],
   )
 
   useEffect(() => {
@@ -280,6 +311,7 @@ export function AccountParticipantHub({
   if (!configured) return null
 
   return (
+    <>
     <div className="portal-account__hub">
       {!showMatchRegistrations ?
         <p className="portal-account__hub-env-hint" role="note">
@@ -431,17 +463,17 @@ export function AccountParticipantHub({
                       type="file"
                       accept="image/jpeg,image/png,image/webp,image/jpg"
                       className="portal-account__avatar-file"
-                      disabled={defSaving || avatarBusy}
+                      disabled={defSaving || avatarBusy || !!avatarCropSrc}
                       onChange={(e) => {
                         const f = e.target.files?.[0] ?? null
                         e.target.value = ''
-                        void pickAvatarFile(f)
+                        openAvatarCrop(f)
                       }}
                     />
                     <button
                       type="button"
                       className="portal-btn portal-btn--secondary portal-account__avatar-btn"
-                      disabled={defSaving || avatarBusy}
+                      disabled={defSaving || avatarBusy || !!avatarCropSrc}
                       onClick={() => avatarInputRef.current?.click()}
                     >
                       {avatarBusy ? p.accountParticipantAvatarUploading : p.accountParticipantAvatarChange}
@@ -450,7 +482,7 @@ export function AccountParticipantHub({
                       <button
                         type="button"
                         className="portal-account__link-btn"
-                        disabled={defSaving || avatarBusy}
+                        disabled={defSaving || avatarBusy || !!avatarCropSrc}
                         onClick={() => {
                           setDefAvatarUrl('')
                           setAvatarErr(null)
@@ -462,7 +494,7 @@ export function AccountParticipantHub({
                     : null}
                   </div>
                 </div>
-                {avatarErr ?
+                {avatarErr && !avatarCropSrc ?
                   <p role="alert" className="portal-account__avatar-error">
                     {avatarErr}
                   </p>
@@ -570,5 +602,15 @@ export function AccountParticipantHub({
         }
       </section>
     </div>
+    {avatarCropSrc ?
+      <AvatarCropModal
+        imageSrc={avatarCropSrc}
+        onCancel={clearAvatarCropUrl}
+        onApply={(blob) => uploadAvatarJpeg(blob)}
+        remoteError={avatarErr}
+        p={p}
+      />
+    : null}
+    </>
   )
 }

@@ -290,3 +290,76 @@
   line-height: 1.45;
   white-space: pre-wrap;
 }
+
+/* Avatar crop modal (portal to document.body) */
+.portal-account__avatar-crop-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  background: color-mix(in srgb, var(--text-h, #0f172a) 55%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.portal-account__avatar-crop-dialog {
+  width: min(100%, 26rem);
+  max-height: min(92vh, 40rem);
+  overflow: auto;
+  padding: 1rem 1.1rem 1.15rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 16px 48px color-mix(in srgb, var(--text-h), transparent 78%);
+}
+
+.portal-account__avatar-crop-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.portal-account__avatar-crop-lead {
+  margin: 0 0 0.65rem;
+}
+
+.portal-account__avatar-crop-stage {
+  position: relative;
+  width: 100%;
+  height: min(52vw, 16rem);
+  max-height: 60vh;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--btn-bg), var(--surface) 40%);
+  border: 1px solid var(--border);
+}
+
+.portal-account__avatar-crop-zoom {
+  margin: 0.65rem 0 0;
+}
+
+.portal-account__avatar-crop-zoom-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--text-h);
+}
+
+.portal-account__avatar-crop-zoom-label input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent-border, #2563eb);
+}
+
+.portal-account__avatar-crop-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
