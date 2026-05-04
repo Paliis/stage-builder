@@ -17,8 +17,17 @@ type Props = {
 /** Client minimum; align with Supabase Dashboard → Auth password policy if you change it. */
 const MIN_PASSWORD_LEN = 8
 
+/** GoTrue email OTP length can be 6 or 8 depending on project; accept 6–8 digits. */
+const SIGNUP_OTP_MIN = 6
+const SIGNUP_OTP_MAX = 8
+
 function normalizeSignupOtp(raw: string): string {
-  return raw.replace(/\D/g, '').slice(0, 6)
+  return raw.replace(/\D/g, '').slice(0, SIGNUP_OTP_MAX)
+}
+
+function isValidSignupOtpToken(token: string): boolean {
+  const n = token.length
+  return n >= SIGNUP_OTP_MIN && n <= SIGNUP_OTP_MAX
 }
 
 /** Eye when password is masked (action: show); eye-off when plain (action: hide). */
@@ -52,7 +61,7 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
 
-  /** SignUp succeeded without session — user must enter 6-digit code from email (`{{ .Token }}`). */
+  /** SignUp succeeded without session — user must enter OTP from email (`{{ .Token }}`, 6–8 digits). */
   const [signupAwaitingOtp, setSignupAwaitingOtp] = useState(false)
   const [otp, setOtp] = useState('')
 
@@ -114,7 +123,7 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
     e.preventDefault()
     setMessage(null)
     const token = normalizeSignupOtp(otp)
-    if (token.length !== 6) {
+    if (!isValidSignupOtpToken(token)) {
       setMessage(p.portalCompactAuthOtpLength)
       return
     }
@@ -196,10 +205,10 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
               type="text"
               inputMode="numeric"
               autoComplete="one-time-code"
-              maxLength={6}
+              maxLength={SIGNUP_OTP_MAX}
               value={otp}
               onChange={(ev) => setOtp(normalizeSignupOtp(ev.target.value))}
-              placeholder="000000"
+              placeholder="00000000"
               required
               disabled={busy}
               aria-invalid={message === p.portalCompactAuthOtpInvalid ? true : undefined}

@@ -492,7 +492,7 @@ export type MessageTree = {
     portalCompactAuthSignOut: string
     portalCompactAuthSignupSession: string
     portalCompactAuthSignupConfirm: string
-    /** After signUp without session — OTP from email (Supabase template `{{ .Token }}`). */
+    /** After signUp without session — OTP from email (Supabase `{{ .Token }}`, typically 6 or 8 digits). */
     portalCompactAuthOtpSent: string
     portalCompactAuthOtpLabel: string
     portalCompactAuthOtpHint: string
@@ -1439,10 +1439,10 @@ export const ukMessages: MessageTree = {
     portalCompactAuthSignupConfirm:
       'Обліковий запис створено. Якщо увімкнено підтвердження email — відкрийте лист і перейдіть за посиланням, потім увійдіть.',
     portalCompactAuthOtpSent:
-      'Ми надіслали 6-значний код на ваш email. Введіть його нижче (перевірте папку «Спам»).',
+      'Ми надіслали код на ваш email. Введіть усі цифри з листа нижче (перевірте папку «Спам»).',
     portalCompactAuthOtpLabel: 'Код з листа',
-    portalCompactAuthOtpHint: '6 цифр без пробілів.',
-    portalCompactAuthOtpLength: 'Потрібно рівно 6 цифр.',
+    portalCompactAuthOtpHint: '6–8 цифр, без пробілів (як у листі).',
+    portalCompactAuthOtpLength: 'Введіть повний код: 6–8 цифр.',
     portalCompactAuthOtpSubmit: 'Підтвердити email',
     portalCompactAuthOtpInvalid: 'Код невірний або прострочений. Спробуйте ще раз або надішліть новий лист.',
     portalCompactAuthOtpResend: 'Надіслати код ще раз',
@@ -2398,10 +2398,10 @@ export const enMessages: MessageTree = {
     portalCompactAuthSignupConfirm:
       'Account created. If email confirmation is enabled, confirm from your inbox before signing in.',
     portalCompactAuthOtpSent:
-      'We sent a 6-digit code to your email. Enter it below (check spam).',
+      'We sent a code to your email. Enter all digits below (check spam).',
     portalCompactAuthOtpLabel: 'Code from email',
-    portalCompactAuthOtpHint: 'Six digits, no spaces.',
-    portalCompactAuthOtpLength: 'Enter exactly 6 digits.',
+    portalCompactAuthOtpHint: '6–8 digits, no spaces (as in the email).',
+    portalCompactAuthOtpLength: 'Enter the full code: 6–8 digits.',
     portalCompactAuthOtpSubmit: 'Confirm email',
     portalCompactAuthOtpInvalid: 'Invalid or expired code. Try again or resend.',
     portalCompactAuthOtpResend: 'Resend code',
