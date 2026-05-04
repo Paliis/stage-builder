@@ -72,7 +72,7 @@ export function PortalAccountPage() {
 
   if (!isSupabaseConfigured()) {
     return (
-      <div className="portal-home portal-home--account">
+      <div className="portal-home">
         <Helmet>
           <title>{p.accountPageHelmet}</title>
         </Helmet>
@@ -85,7 +85,7 @@ export function PortalAccountPage() {
   }
 
   return (
-    <div className="portal-home portal-home--account">
+    <div className="portal-home">
       <Helmet>
         <title>{p.accountPageHelmet}</title>
       </Helmet>
