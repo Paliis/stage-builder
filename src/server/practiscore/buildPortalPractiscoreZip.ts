@@ -140,11 +140,16 @@ export type BuildPortalPractiscoreZipResult =
   | { ok: true; bytes: Uint8Array; manifest: { psMatchId: string; stageCount: number; shooterCount: number } }
   | { ok: false; reason: 'no_stages'; message: string }
 
+/** Explicit PSC names from shooter defaults; overrides `displayNameByUserId` splitting when first or last is non-empty. */
+export type PscShooterNameParts = { firstName: string; lastName: string }
+
 export function buildPortalPractiscoreZip(params: {
   match: PortalMatchPsFields
   squads: PortalSquadRowForPsc[]
   registrations: PortalRegistrationRow[]
   displayNameByUserId: ReadonlyMap<string, string | null | undefined>
+  /** Optional: per-user given/family name for `sh_fn` / `sh_ln` (PractiScore). */
+  pscShooterNameByUserId?: ReadonlyMap<string, PscShooterNameParts>
   stageLinks: PortalStageLinkRow[]
 }): BuildPortalPractiscoreZipResult {
   const orderedLinks = [...params.stageLinks].sort((a, b) => a.sort_order - b.sort_order)
@@ -214,9 +219,17 @@ export function buildPortalPractiscoreZip(params: {
     (a, b) => Date.parse(a.created_at) - Date.parse(b.created_at),
   )
 
+  const nameOverride = params.pscShooterNameByUserId
+
   const matchShooters = regs.map((r, idx) => {
-    const dn = params.displayNameByUserId.get(r.competitor_user_id)
-    const names = splitDisplayName(dn)
+    const uid = r.competitor_user_id
+    const explicit = nameOverride?.get(uid)
+    const fnEx = explicit?.firstName?.trim() ?? ''
+    const lnEx = explicit?.lastName?.trim() ?? ''
+    const names =
+      fnEx || lnEx ?
+        { sh_fn: fnEx || 'Shooter', sh_ln: lnEx }
+      : splitDisplayName(params.displayNameByUserId.get(uid))
     const mappedSh = squadIdToPsSh.get(r.squad_id)
     const shSqd =
       typeof mappedSh === 'number'

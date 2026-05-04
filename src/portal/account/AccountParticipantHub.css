@@ -95,6 +95,71 @@
   color: var(--text-h);
 }
 
+.portal-account__avatar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  grid-column: 1 / -1;
+}
+
+.portal-account__avatar-label {
+  margin: 0;
+}
+
+.portal-account__avatar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+}
+
+.portal-account__avatar-preview {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.portal-account__avatar-placeholder {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  border: 1px dashed var(--border);
+  background: color-mix(in srgb, var(--surface), var(--btn-bg) 35%);
+}
+
+.portal-account__avatar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+}
+
+.portal-account__avatar-file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.portal-account__avatar-btn {
+  font-size: 0.875rem;
+  padding: 0.45rem 0.75rem;
+}
+
+.portal-account__avatar-error {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
 .portal-account__field {
   display: flex;
   flex-direction: column;

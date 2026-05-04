@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale, MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
@@ -45,7 +45,18 @@ type MyRegRow = {
   matches: MatchNested
 }
 
-const DEFAULT_SELECT = ['division', 'power_factor', 'region', 'categories', 'weapon_class'].join(', ')
+const AVATAR_MAX_BYTES = 2 * 1024 * 1024
+
+const DEFAULT_SELECT = [
+  'division',
+  'power_factor',
+  'region',
+  'categories',
+  'weapon_class',
+  'first_name',
+  'last_name',
+  'avatar_url',
+].join(', ')
 
 export function AccountParticipantHub({
   locale,
@@ -116,6 +127,12 @@ export function AccountParticipantHub({
   const [defRegion, setDefRegion] = useState('')
   const [defCategories, setDefCategories] = useState<string[]>([])
   const [defWeaponClass, setDefWeaponClass] = useState('')
+  const [defFirstName, setDefFirstName] = useState('')
+  const [defLastName, setDefLastName] = useState('')
+  const [defAvatarUrl, setDefAvatarUrl] = useState('')
+  const [avatarBusy, setAvatarBusy] = useState(false)
+  const [avatarErr, setAvatarErr] = useState<string | null>(null)
+  const avatarInputRef = useRef<HTMLInputElement>(null)
   const [defLoading, setDefLoading] = useState(true)
   const [defSaving, setDefSaving] = useState(false)
   const [defFeedback, setDefFeedback] = useState<string | null>(null)
@@ -138,6 +155,9 @@ export function AccountParticipantHub({
       region?: string
       categories?: string[] | null
       weapon_class?: string
+      first_name?: string
+      last_name?: string
+      avatar_url?: string
     } | null
     if (row) {
       const rawWc = row.weapon_class
@@ -150,8 +170,47 @@ export function AccountParticipantHub({
       setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : '')
       setDefRegion(typeof row.region === 'string' ? row.region : '')
       setDefCategories(normalizeCategoryList(row.categories))
+      setDefFirstName(typeof row.first_name === 'string' ? row.first_name : '')
+      setDefLastName(typeof row.last_name === 'string' ? row.last_name : '')
+      setDefAvatarUrl(typeof row.avatar_url === 'string' ? row.avatar_url : '')
     }
   }, [sb, userId])
+
+  const pickAvatarFile = useCallback(
+    async (file: File | null) => {
+      if (!file || !sb) return
+      setAvatarErr(null)
+      const okTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
+      if (!okTypes.includes(file.type)) {
+        setAvatarErr(p.accountParticipantAvatarErrType)
+        return
+      }
+      if (file.size > AVATAR_MAX_BYTES) {
+        setAvatarErr(p.accountParticipantAvatarErrSize)
+        return
+      }
+      setAvatarBusy(true)
+      try {
+        const ext =
+          file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg'
+        const objectPath = `${userId}/avatar-${Date.now()}.${ext}`
+        const { error: upErr } = await sb.storage.from('participant-avatars').upload(objectPath, file, {
+          upsert: false,
+          contentType:
+            file.type === 'image/jpg' || file.type === 'image/jpeg' ? 'image/jpeg' : file.type,
+        })
+        if (upErr) {
+          setAvatarErr(upErr.message)
+          return
+        }
+        const { data: pub } = sb.storage.from('participant-avatars').getPublicUrl(objectPath)
+        setDefAvatarUrl(pub.publicUrl)
+      } finally {
+        setAvatarBusy(false)
+      }
+    },
+    [sb, userId, p.accountParticipantAvatarErrType, p.accountParticipantAvatarErrSize],
+  )
 
   useEffect(() => {
     queueMicrotask(() => void loadDefaults())
@@ -169,6 +228,9 @@ export function AccountParticipantHub({
       region: defRegion.trim(),
       categories: resolveShooterCategoriesForStorage(defCategories),
       weapon_class: defWeaponClass.trim(),
+      first_name: defFirstName.trim(),
+      last_name: defLastName.trim(),
+      avatar_url: defAvatarUrl.trim(),
     })
     setDefSaving(false)
     if (error) {
@@ -184,6 +246,9 @@ export function AccountParticipantHub({
     defRegion,
     defCategories,
     defWeaponClass,
+    defFirstName,
+    defLastName,
+    defAvatarUrl,
     p.accountParticipantDefaultsSaved,
   ])
 
@@ -308,6 +373,82 @@ export function AccountParticipantHub({
             }}
           >
             <div className="portal-account__psc-grid">
+              <label className="portal-account__field">
+                {p.accountParticipantFieldFirstName}
+                <input
+                  type="text"
+                  value={defFirstName}
+                  onChange={(e) => setDefFirstName(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="given-name"
+                />
+              </label>
+              <label className="portal-account__field">
+                {p.accountParticipantFieldLastName}
+                <input
+                  type="text"
+                  value={defLastName}
+                  onChange={(e) => setDefLastName(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="family-name"
+                />
+              </label>
+              <div className="portal-account__avatar-row portal-account__psc-grid--full">
+                <span className="portal-account__field portal-account__avatar-label">{p.accountParticipantAvatarLabel}</span>
+                <div className="portal-account__avatar-controls">
+                  {defAvatarUrl ?
+                    <img
+                      className="portal-account__avatar-preview"
+                      src={defAvatarUrl}
+                      alt=""
+                      width={72}
+                      height={72}
+                    />
+                  : (
+                    <div className="portal-account__avatar-placeholder" aria-hidden />
+                  )}
+                  <div className="portal-account__avatar-actions">
+                    <input
+                      ref={avatarInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/jpg"
+                      className="portal-account__avatar-file"
+                      disabled={defSaving || avatarBusy}
+                      onChange={(e) => {
+                        const f = e.target.files?.[0] ?? null
+                        e.target.value = ''
+                        void pickAvatarFile(f)
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="portal-btn portal-btn--secondary portal-account__avatar-btn"
+                      disabled={defSaving || avatarBusy}
+                      onClick={() => avatarInputRef.current?.click()}
+                    >
+                      {avatarBusy ? p.accountParticipantAvatarUploading : p.accountParticipantAvatarChange}
+                    </button>
+                    {defAvatarUrl ?
+                      <button
+                        type="button"
+                        className="portal-account__link-btn"
+                        disabled={defSaving || avatarBusy}
+                        onClick={() => {
+                          setDefAvatarUrl('')
+                          setAvatarErr(null)
+                        }}
+                      >
+                        {p.accountParticipantAvatarRemove}
+                      </button>
+                    : null}
+                  </div>
+                </div>
+                {avatarErr ?
+                  <p role="alert" className="portal-account__avatar-error">
+                    {avatarErr}
+                  </p>
+                : null}
+              </div>
               <fieldset className="portal-account__categories-fieldset">
                 <legend className="portal-account__categories-legend">{p.accountParticipantFieldCategory}</legend>
                 <div className="portal-account__categories-grid" role="group">

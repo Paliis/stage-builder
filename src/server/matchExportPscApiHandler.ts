@@ -114,15 +114,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const competitorIds = [...new Set((regs ?? []).map((r) => r.competitor_user_id))]
   const displayNameByUserId = new Map<string, string | null>()
+  const pscShooterNameByUserId = new Map<string, { firstName: string; lastName: string }>()
   if (competitorIds.length > 0) {
-    const { data: profiles, error: profErr } = await supabase
-      .from('match_admin_profiles')
-      .select('user_id, display_name')
-      .in('user_id', competitorIds)
+    const [{ data: profiles, error: profErr }, { data: partDefs, error: defErr }] = await Promise.all([
+      supabase.from('match_admin_profiles').select('user_id, display_name').in('user_id', competitorIds),
+      supabase
+        .from('participant_registration_defaults')
+        .select('user_id, first_name, last_name')
+        .in('user_id', competitorIds),
+    ])
 
     if (profErr) return res.status(500).json({ error: profErr.message })
+    if (defErr) return res.status(500).json({ error: defErr.message })
     for (const p of profiles ?? []) {
       displayNameByUserId.set(p.user_id, p.display_name)
+    }
+    for (const row of partDefs ?? []) {
+      const fn = typeof row.first_name === 'string' ? row.first_name.trim() : ''
+      const ln = typeof row.last_name === 'string' ? row.last_name.trim() : ''
+      if (fn || ln) {
+        pscShooterNameByUserId.set(row.user_id, { firstName: fn, lastName: ln })
+      }
     }
   }
 
@@ -179,6 +191,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       created_at: r.created_at,
     })),
     displayNameByUserId,
+    pscShooterNameByUserId,
     stageLinks: stageRows,
   })
 

@@ -606,6 +606,14 @@ export type MessageTree = {
     accountParticipantProfileSectionLead: string
     accountParticipantFieldRegion: string
     accountParticipantFieldRegionPlaceholder: string
+    accountParticipantFieldFirstName: string
+    accountParticipantFieldLastName: string
+    accountParticipantAvatarLabel: string
+    accountParticipantAvatarChange: string
+    accountParticipantAvatarRemove: string
+    accountParticipantAvatarErrType: string
+    accountParticipantAvatarErrSize: string
+    accountParticipantAvatarUploading: string
     accountParticipantFieldCategory: string
     accountParticipantFieldWeaponClass: string
     accountParticipantFieldWeaponPlaceholder: string
@@ -1564,6 +1572,14 @@ export const ukMessages: MessageTree = {
     accountParticipantProfileSectionLead: '',
     accountParticipantFieldRegion: 'Регіон / область',
     accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
+    accountParticipantFieldFirstName: "Ім'я (для PractiScore)",
+    accountParticipantFieldLastName: 'Прізвище (для PractiScore)',
+    accountParticipantAvatarLabel: 'Фото профілю',
+    accountParticipantAvatarChange: 'Обрати фото',
+    accountParticipantAvatarRemove: 'Без фото',
+    accountParticipantAvatarErrType: 'Дозволено JPEG, PNG або WebP.',
+    accountParticipantAvatarErrSize: 'Файл завеликий (макс. 2 МБ).',
+    accountParticipantAvatarUploading: 'Завантаження фото…',
     accountParticipantFieldCategory: 'Категорії',
     accountParticipantFieldWeaponClass: 'Клас зброї',
     accountParticipantFieldWeaponPlaceholder: '',
@@ -2526,6 +2542,14 @@ export const enMessages: MessageTree = {
     accountParticipantProfileSectionLead: '',
     accountParticipantFieldRegion: 'Region / state',
     accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
+    accountParticipantFieldFirstName: 'First name (PractiScore)',
+    accountParticipantFieldLastName: 'Last name (PractiScore)',
+    accountParticipantAvatarLabel: 'Profile photo',
+    accountParticipantAvatarChange: 'Choose photo',
+    accountParticipantAvatarRemove: 'Remove photo',
+    accountParticipantAvatarErrType: 'Use JPEG, PNG, or WebP.',
+    accountParticipantAvatarErrSize: 'File too large (max 2 MB).',
+    accountParticipantAvatarUploading: 'Uploading photo…',
     accountParticipantFieldCategory: 'Categories',
     accountParticipantFieldWeaponClass: 'Weapon class',
     accountParticipantFieldWeaponPlaceholder: '',

@@ -208,6 +208,40 @@ describe('buildPortalPractiscoreZip', () => {
     expect(byFn['Ann']).toBe(11 - 1)
   })
 
+  it('prefers pscShooterNameByUserId over display_name for sh_fn / sh_ln', () => {
+    const uid = 'aaaaaaaa-bbbb-4ccc-dddd-eeeeeeeeeeee'
+    const r = buildPortalPractiscoreZip({
+      match: {
+        title: 'T',
+        starts_at: '2026-01-01T12:00:00.000Z',
+        ps_match_type: null,
+        ps_match_subtype: null,
+        ps_match_level: null,
+      },
+      squads: [{ id: 'sq', sort_order: 0 }],
+      registrations: [
+        {
+          squad_id: 'sq',
+          competitor_user_id: uid,
+          division: 'Open',
+          classification_grade: '',
+          power_factor: null,
+          created_at: '2026-01-01T12:00:00.000Z',
+        },
+      ],
+      displayNameByUserId: new Map([[uid, 'Ignored Display']])),
+      pscShooterNameByUserId: new Map([[uid, { firstName: 'Тарас', lastName: 'Іваненко' }]]),
+      stageLinks: [{ sort_order: 0, snapshot_meta: { title_snapshot: 'S1' } }],
+    })
+    expect(r.ok).toBe(true)
+    if (!r.ok) throw new Error('expected ok')
+    const def = JSON.parse(strFromU8(unzipSync(r.bytes)['match_def.json']!)) as {
+      match_shooters: { sh_fn: string; sh_ln: string }[]
+    }
+    expect(def.match_shooters[0].sh_fn).toBe('Тарас')
+    expect(def.match_shooters[0].sh_ln).toBe('Іваненко')
+  })
+
   it('writes match_def.match_level when ps_match_level is set (PractiScore L1–L5)', () => {
     const r = buildPortalPractiscoreZip({
       match: {

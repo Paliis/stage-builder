@@ -22700,9 +22700,13 @@ function buildPortalPractiscoreZip(params) {
   const regs = [...params.registrations].sort(
     (a, b) => Date.parse(a.created_at) - Date.parse(b.created_at)
   );
+  const nameOverride = params.pscShooterNameByUserId;
   const matchShooters = regs.map((r, idx) => {
-    const dn = params.displayNameByUserId.get(r.competitor_user_id);
-    const names = splitDisplayName(dn);
+    const uid = r.competitor_user_id;
+    const explicit = nameOverride?.get(uid);
+    const fnEx = explicit?.firstName?.trim() ?? "";
+    const lnEx = explicit?.lastName?.trim() ?? "";
+    const names = fnEx || lnEx ? { sh_fn: fnEx || "Shooter", sh_ln: lnEx } : splitDisplayName(params.displayNameByUserId.get(uid));
     const mappedSh = squadIdToPsSh.get(r.squad_id);
     const shSqd = typeof mappedSh === "number" ? mappedSh : prematchSquadSlots > 0 ? fallbackPrematchSh() : 0;
     const merged = { ...shooter0 };
@@ -22730,6 +22734,14 @@ function buildPortalPractiscoreZip(params) {
   defTpl.app_version = "shooters-tools";
   defTpl.match_creationdate = nowPsTimestamp();
   defTpl.match_modifieddate = nowPsTimestamp();
+  {
+    const raw = typeof params.match.ps_match_level === "string" ? params.match.ps_match_level.trim() : "";
+    if (/^L[1-5]$/.test(raw)) {
+      defTpl.match_level = raw;
+    } else {
+      delete defTpl.match_level;
+    }
+  }
   if (typeof params.match.ps_match_type === "string" && params.match.ps_match_type.trim()) {
     defTpl.match_type = params.match.ps_match_type.trim();
   }
@@ -23377,7 +23389,7 @@ async function handler(req, res) {
   if (orgProfile?.organizer_status !== "active") {
     return res.status(403).json({ error: "Organizer not active" });
   }
-  const { data: match, error: matchErr } = await supabase.from("matches").select("id, organizer_id, title, starts_at, ps_match_type, ps_match_subtype").eq("id", matchId).maybeSingle();
+  const { data: match, error: matchErr } = await supabase.from("matches").select("id, organizer_id, title, starts_at, ps_match_type, ps_match_subtype, ps_match_level").eq("id", matchId).maybeSingle();
   if (matchErr) {
     return res.status(500).json({ error: matchErr.message });
   }
@@ -23396,11 +23408,23 @@ async function handler(req, res) {
   if (linkErr) return res.status(500).json({ error: linkErr.message });
   const competitorIds = [...new Set((regs ?? []).map((r) => r.competitor_user_id))];
   const displayNameByUserId = /* @__PURE__ */ new Map();
+  const pscShooterNameByUserId = /* @__PURE__ */ new Map();
   if (competitorIds.length > 0) {
-    const { data: profiles, error: profErr } = await supabase.from("match_admin_profiles").select("user_id, display_name").in("user_id", competitorIds);
+    const [{ data: profiles, error: profErr }, { data: partDefs, error: defErr }] = await Promise.all([
+      supabase.from("match_admin_profiles").select("user_id, display_name").in("user_id", competitorIds),
+      supabase.from("participant_registration_defaults").select("user_id, first_name, last_name").in("user_id", competitorIds)
+    ]);
     if (profErr) return res.status(500).json({ error: profErr.message });
+    if (defErr) return res.status(500).json({ error: defErr.message });
     for (const p of profiles ?? []) {
       displayNameByUserId.set(p.user_id, p.display_name);
+    }
+    for (const row of partDefs ?? []) {
+      const fn = typeof row.first_name === "string" ? row.first_name.trim() : "";
+      const ln2 = typeof row.last_name === "string" ? row.last_name.trim() : "";
+      if (fn || ln2) {
+        pscShooterNameByUserId.set(row.user_id, { firstName: fn, lastName: ln2 });
+      }
     }
   }
   const linkRows = links ?? [];
@@ -23431,7 +23455,8 @@ async function handler(req, res) {
       title: match.title,
       starts_at: match.starts_at,
       ps_match_type: match.ps_match_type,
-      ps_match_subtype: match.ps_match_subtype
+      ps_match_subtype: match.ps_match_subtype,
+      ps_match_level: typeof match.ps_match_level === "string" ? match.ps_match_level : null
     },
     squads: squads ?? [],
     registrations: (regs ?? []).map((r) => ({
@@ -23443,6 +23468,7 @@ async function handler(req, res) {
       created_at: r.created_at
     })),
     displayNameByUserId,
+    pscShooterNameByUserId,
     stageLinks: stageRows
   });
   if (!built.ok) {
