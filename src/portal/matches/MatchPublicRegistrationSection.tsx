@@ -4,6 +4,7 @@ import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import type { MessageTree } from '../../i18n/messages'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
+import { resolveShooterCategoriesForStorage } from '../shooterProfileCatalog'
 import { sortPrematchFirstByPhase } from './matchSquadsSort'
 
 type Portal = MessageTree['portal']
@@ -264,7 +265,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
       division: div,
       classification_grade: cg,
       power_factor: powerFactor === '' ? null : powerFactor,
-      categories: [],
+      categories: resolveShooterCategoriesForStorage([]),
     })
     setSubmitBusy(false)
 

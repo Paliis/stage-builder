@@ -7,6 +7,7 @@ export type ShooterCategoryDef = { id: string; labelUk: string; labelEn: string 
 
 /** IPSC-style participant categories; shooter may have several (e.g. Lady + Junior). */
 export const SHOOTER_CATEGORIES: readonly ShooterCategoryDef[] = [
+  { id: 'general', labelUk: 'Загальна', labelEn: 'General' },
   { id: 'lady', labelUk: 'Леді', labelEn: 'Lady' },
   { id: 'junior', labelUk: 'Юніор', labelEn: 'Junior' },
   { id: 'super_junior', labelUk: 'Супер-юніор', labelEn: 'Super Junior' },
@@ -100,4 +101,26 @@ export function weaponClassLabel(id: string, locale: 'uk' | 'en'): string {
   const m = WEAPON_CLASS_META[id as WeaponClassId]
   if (!m) return id
   return locale === 'en' ? m.labelEn : m.labelUk
+}
+
+const SHOOTER_CATEGORY_ID_SET = new Set(SHOOTER_CATEGORIES.map((c) => c.id))
+const SHOOTER_CATEGORY_ORDER = new Map(SHOOTER_CATEGORIES.map((c, i) => [c.id, i]))
+
+/** Stored when no special category applies; also used if the user leaves the multi-select empty. */
+export const DEFAULT_SHOOTER_CATEGORY_ID = 'general' as const
+
+function sortShooterCategoryIds(ids: string[]): string[] {
+  return [...new Set(ids)].sort((a, b) => (SHOOTER_CATEGORY_ORDER.get(a) ?? 99) - (SHOOTER_CATEGORY_ORDER.get(b) ?? 99))
+}
+
+/**
+ * Normalizes category ids for DB / JSON: empty or only "general" → `['general']`;
+ * if any other id is present, "general" is dropped (special categories replace default).
+ */
+export function resolveShooterCategoriesForStorage(selectedIds: readonly string[]): string[] {
+  const valid = selectedIds.filter((id) => SHOOTER_CATEGORY_ID_SET.has(id))
+  const other = valid.filter((id) => id !== DEFAULT_SHOOTER_CATEGORY_ID)
+  if (other.length > 0) return sortShooterCategoryIds(other)
+  if (valid.includes(DEFAULT_SHOOTER_CATEGORY_ID)) return [DEFAULT_SHOOTER_CATEGORY_ID]
+  return [DEFAULT_SHOOTER_CATEGORY_ID]
 }

@@ -1577,7 +1577,8 @@ export const ukMessages: MessageTree = {
     accountParticipantFieldRegion: 'Регіон / область',
     accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
     accountParticipantFieldCategory: 'Категорії',
-    accountParticipantFieldCategoryHint: 'Можна обрати кілька (наприклад, Леді та Юніор).',
+    accountParticipantFieldCategoryHint:
+      'Необов’язково. Є пункт «Загальна»; якщо нічого не позначено — під капотом зберігається «Загальна» для реєстрації та експорту.',
     accountParticipantFieldWeaponClass: 'Клас зброї',
     accountParticipantFieldWeaponPlaceholder: 'Оберіть з переліку',
     accountParticipantOptionNotSelected: '—',
@@ -2550,7 +2551,8 @@ export const enMessages: MessageTree = {
     accountParticipantFieldRegion: 'Region / state',
     accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
     accountParticipantFieldCategory: 'Categories',
-    accountParticipantFieldCategoryHint: 'You can select several (e.g. Lady and Junior).',
+    accountParticipantFieldCategoryHint:
+      'Optional. Includes «General»; if nothing is checked, «General» is stored for registration and export.',
     accountParticipantFieldWeaponClass: 'Weapon class',
     accountParticipantFieldWeaponPlaceholder: 'Select from list',
     accountParticipantOptionNotSelected: '—',

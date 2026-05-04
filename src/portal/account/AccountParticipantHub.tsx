@@ -4,6 +4,7 @@ import type { Locale, MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from '../matches/matchPortalFormat'
 import {
+  resolveShooterCategoriesForStorage,
   SHOOTER_CATEGORIES,
   WEAPON_CLASS_ORDER,
   divisionsForWeapon,
@@ -166,7 +167,7 @@ export function AccountParticipantHub({
       classification_grade: '',
       power_factor: defPf === '' ? null : defPf,
       region: defRegion.trim(),
-      categories: sortCategoryIds(defCategories.filter((id) => CATEGORY_IDS.has(id))),
+      categories: resolveShooterCategoriesForStorage(defCategories),
       weapon_class: defWeaponClass.trim(),
     })
     setDefSaving(false)
