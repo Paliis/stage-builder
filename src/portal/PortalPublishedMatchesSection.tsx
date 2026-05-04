@@ -102,7 +102,7 @@ export function PortalPublishedMatchesSection() {
     const { data, error: qErr } = await sb
       .from('matches')
       .select(
-        'id, title, starts_at, location_label, match_event_kind, ps_match_level, cover_image_url, portal_organizer_display_name',
+        'id, title, starts_at, discipline, location_label, match_event_kind, ps_match_level, cover_image_url, portal_organizer_display_name',
       )
       .eq('status', 'published')
       .gte('starts_at', start.toISOString())
@@ -179,6 +179,73 @@ export function PortalPublishedMatchesSection() {
     psLevelFilter !== 'all' ||
     weaponClassFilter !== 'all'
 
+  const calendarPanel = (
+    <div className="portal-match-hub__calendar-panel portal-match-hub__calendar-panel--head">
+      <div className="portal-match-hub__calendar-head">
+        <p className="portal-match-hub__calendar-month-title">{monthTitle}</p>
+        <div className="portal-match-hub__calendar-nav">
+          <button
+            type="button"
+            aria-label={p.portalMatchesHubCalendarPrevAria}
+            onClick={() =>
+              setCalendarMonth(({ y, m }) => {
+                const nm = m - 1
+                if (nm < 0) return { y: y - 1, m: 11 }
+                return { y, m: nm }
+              })
+            }
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            aria-label={p.portalMatchesHubCalendarNextAria}
+            onClick={() =>
+              setCalendarMonth(({ y, m }) => {
+                const nm = m + 1
+                if (nm > 11) return { y: y + 1, m: 0 }
+                return { y, m: nm }
+              })
+            }
+          >
+            ›
+          </button>
+        </div>
+      </div>
+      <ul className="portal-match-hub__calendar-grid" role="list" aria-label={p.portalMatchesHubCalendarAria}>
+        {dowLabels.map((label) => (
+          <li key={label} className="portal-match-hub__calendar-dow">
+            {label}
+          </li>
+        ))}
+        {calendarCells.map((cell, idx) => {
+          if (cell.kind === 'empty') {
+            return <li key={`e-${idx}`} />
+          }
+          const n = countsByDay[cell.dateKey] ?? 0
+          const isToday = cell.dateKey === todayKey
+          const isSel = selectedDay === cell.dateKey
+          const aria = formatTemplate(p.portalMatchesHubDayButtonAria, { date: cell.dateKey })
+          return (
+            <li key={cell.dateKey}>
+              <button
+                type="button"
+                className={`portal-match-hub__calendar-day${isToday ? ' portal-match-hub__calendar-day--today' : ''}${isSel ? ' portal-match-hub__calendar-day--selected' : ''}${n === 0 ? ' portal-match-hub__calendar-day--muted' : ''}`}
+                aria-label={aria}
+                aria-pressed={isSel}
+                disabled={n === 0}
+                onClick={() => setSelectedDay((prev) => (prev === cell.dateKey ? null : cell.dateKey))}
+              >
+                {cell.day}
+                {n > 0 ? <span className="portal-match-hub__calendar-dot" aria-hidden /> : null}
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
+
   return (
     <section className="portal-home__matches-published" aria-labelledby="portal-published-matches">
       <nav className="portal-match-hub__portal-back" aria-label={p.portalBreadcrumbAria}>
@@ -186,10 +253,15 @@ export function PortalPublishedMatchesSection() {
           ← {p.myMatchesBackHome}
         </Link>
       </nav>
-      <h1 id="portal-published-matches" className="portal-home__hero-title">
-        {p.portalPublishedMatchesHeading}
-      </h1>
 
+      <div className="portal-match-hub__title-row">
+        <h1 id="portal-published-matches" className="portal-home__hero-title portal-match-hub__page-title">
+          {p.portalPublishedMatchesHeading}
+        </h1>
+        {allRows !== undefined && !error ? calendarPanel : null}
+      </div>
+
+      {allRows !== undefined && !error ?
       <div className="portal-match-hub__toolbar">
         <div className="portal-match-hub__search-block">
           <div className="portal-match-hub__search-shell">
@@ -299,6 +371,7 @@ export function PortalPublishedMatchesSection() {
           </div>
         </div>
       </div>
+      : null}
 
       {error ?
         <p role="alert" className="portal-home__matches-published-error">
@@ -309,72 +382,7 @@ export function PortalPublishedMatchesSection() {
       : allRows !== undefined && allRows.length === 0 && !error ?
         <p className="portal-home__matches-published-empty">{p.portalPublishedMatchesEmpty}</p>
       : (
-        <div className="portal-match-hub__layout">
-          <div className="portal-match-hub__calendar-panel">
-            <div className="portal-match-hub__calendar-head">
-              <p className="portal-match-hub__calendar-month-title">{monthTitle}</p>
-              <div className="portal-match-hub__calendar-nav">
-                <button
-                  type="button"
-                  aria-label={p.portalMatchesHubCalendarPrevAria}
-                  onClick={() =>
-                    setCalendarMonth(({ y, m }) => {
-                      const nm = m - 1
-                      if (nm < 0) return { y: y - 1, m: 11 }
-                      return { y, m: nm }
-                    })
-                  }
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  aria-label={p.portalMatchesHubCalendarNextAria}
-                  onClick={() =>
-                    setCalendarMonth(({ y, m }) => {
-                      const nm = m + 1
-                      if (nm > 11) return { y: y + 1, m: 0 }
-                      return { y, m: nm }
-                    })
-                  }
-                >
-                  ›
-                </button>
-              </div>
-            </div>
-            <ul className="portal-match-hub__calendar-grid" role="list" aria-label={p.portalMatchesHubCalendarAria}>
-              {dowLabels.map((label) => (
-                <li key={label} className="portal-match-hub__calendar-dow">
-                  {label}
-                </li>
-              ))}
-              {calendarCells.map((cell, idx) => {
-                if (cell.kind === 'empty') {
-                  return <li key={`e-${idx}`} />
-                }
-                const n = countsByDay[cell.dateKey] ?? 0
-                const isToday = cell.dateKey === todayKey
-                const isSel = selectedDay === cell.dateKey
-                const aria = formatTemplate(p.portalMatchesHubDayButtonAria, { date: cell.dateKey })
-                return (
-                  <li key={cell.dateKey}>
-                    <button
-                      type="button"
-                      className={`portal-match-hub__calendar-day${isToday ? ' portal-match-hub__calendar-day--today' : ''}${isSel ? ' portal-match-hub__calendar-day--selected' : ''}${n === 0 ? ' portal-match-hub__calendar-day--muted' : ''}`}
-                      aria-label={aria}
-                      aria-pressed={isSel}
-                      disabled={n === 0}
-                      onClick={() => setSelectedDay((prev) => (prev === cell.dateKey ? null : cell.dateKey))}
-                    >
-                      {cell.day}
-                      {n > 0 ? <span className="portal-match-hub__calendar-dot" aria-hidden /> : null}
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-
+        <div className="portal-match-hub__layout portal-match-hub__layout--list-only">
           <div className="portal-match-hub__list-panel">
             {filteredList.length === 0 ?
               <p className="portal-home__matches-published-empty" role="status">
@@ -387,6 +395,8 @@ export function PortalPublishedMatchesSection() {
                   const titleText = m.title.trim() || '—'
                   const coverUrl = m.cover_image_url?.trim() ?? ''
                   const hasCover = Boolean(coverUrl)
+                  const weaponKey = (m.discipline ?? 'shotgun').trim() || 'shotgun'
+                  const weaponLine = weaponClassLabel(weaponKey, locale)
                   return (
                     <li
                       key={m.id}
@@ -422,6 +432,8 @@ export function PortalPublishedMatchesSection() {
                                 {m.location_label.trim()}
                               </>
                             : null}
+                            {' · '}
+                            {weaponLine}
                             {' · '}
                             {portalLabelMatchEventKind(m.match_event_kind ?? null, p) ||
                               p.portalMatchesHubListDash}
