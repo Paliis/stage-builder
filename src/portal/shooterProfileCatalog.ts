@@ -12,8 +12,6 @@ export const SHOOTER_CATEGORIES: readonly ShooterCategoryDef[] = [
   { id: 'junior', labelUk: 'Юніор', labelEn: 'Junior' },
   { id: 'super_junior', labelUk: 'Супер-юніор', labelEn: 'Super Junior' },
   { id: 'lady_junior', labelUk: 'Леді-юніор', labelEn: 'Lady Junior' },
-  { id: 'grand_junior', labelUk: 'Гранд-юніор', labelEn: 'Grand Junior' },
-  { id: 'lady_grand_junior', labelUk: 'Леді гранд-юніор', labelEn: 'Lady Grand Junior' },
   { id: 'senior', labelUk: 'Сеньйор', labelEn: 'Senior' },
   { id: 'lady_senior', labelUk: 'Леді-сеньйор', labelEn: 'Lady Senior' },
   { id: 'super_senior', labelUk: 'Супер-сеньйор', labelEn: 'Super Senior' },
