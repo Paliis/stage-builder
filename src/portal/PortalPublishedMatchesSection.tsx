@@ -174,6 +174,11 @@ export function PortalPublishedMatchesSection() {
 
   return (
     <section className="portal-home__matches-published" aria-labelledby="portal-published-matches">
+      <nav className="portal-match-hub__portal-back" aria-label={p.portalBreadcrumbAria}>
+        <Link to={`/${locale}`} className="portal-match-hub__portal-back-link">
+          ← {p.myMatchesBackHome}
+        </Link>
+      </nav>
       <h1 id="portal-published-matches" className="portal-home__hero-title">
         {p.portalPublishedMatchesHeading}
       </h1>

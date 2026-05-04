@@ -36,12 +36,6 @@ export function MatchPortalHomePage() {
         <title>{p.matchesPageHelmetTitle}</title>
       </Helmet>
 
-      <nav className="portal-matches-page__nav">
-        <Link className="portal-btn portal-btn--ghost portal-btn--compact" to={`/${locale}`}>
-          ← {p.myMatchesBackHome}
-        </Link>
-      </nav>
-
       <PortalPublishedMatchesSection />
 
       {footerOrganizerSlot ?

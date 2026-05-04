@@ -337,13 +337,21 @@ export function OrganizerMatchRegistrationsPage() {
         <title>{p.matchOrgRosterHelmet}</title>
       </Helmet>
 
-      <p style={{ margin: '0 0 1rem' }}>
-        <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
-        {' · '}
-        {matchTitle ?
-          <Link to={`/${locale}/matches/my/${matchId}`}>{p.matchOrgRosterEditMatch}</Link>
-        : null}
-      </p>
+      <nav className="portal-page-context" aria-label={p.portalBreadcrumbAria}>
+        <ol className="portal-breadcrumbs">
+          <li>
+            <Link to={`/${locale}/matches/my`}>{p.myMatchesTitle}</Link>
+          </li>
+          {matchId && matchTitle?.trim() ?
+            <li>
+              <Link to={`/${locale}/matches/my/${matchId}`} title={matchTitle}>
+                <span className="portal-breadcrumbs__ellipsis">{matchTitle}</span>
+              </Link>
+            </li>
+          : null}
+          <li className="portal-breadcrumbs__current">{p.matchOrgRosterHeading}</li>
+        </ol>
+      </nav>
 
       <header className="portal-home__hero">
         <h1 className="portal-home__hero-title portal-match-title-hero-wrap">

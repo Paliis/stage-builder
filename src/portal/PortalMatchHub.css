@@ -1,3 +1,23 @@
+/* Hub: link back to portal home (tight stack under main shell; avoids extra page-level gap) */
+
+.portal-match-hub__portal-back {
+  margin: 0 0 0.4rem;
+}
+
+.portal-match-hub__portal-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.portal-match-hub__portal-back-link:hover {
+  text-decoration: underline;
+}
+
 .portal-match-hub__toolbar {
   display: flex;
   flex-direction: column;

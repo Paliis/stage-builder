@@ -192,9 +192,9 @@ export function MatchPublicDetailPage() {
           <title>{p.matchDetailNotFoundTitle}</title>
         </Helmet>
         <p>{p.matchDetailNotFoundBody}</p>
-        <p>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
           <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
-        </p>
+        </nav>
       </div>
     )
   }
@@ -206,9 +206,9 @@ export function MatchPublicDetailPage() {
           <title>{p.matchesPageHelmetTitle}</title>
         </Helmet>
         <p>{p.matchesSupabaseUnset}</p>
-        <p>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
           <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
-        </p>
+        </nav>
       </div>
     )
   }
@@ -233,9 +233,9 @@ export function MatchPublicDetailPage() {
         <p role="alert">
           {p.matchesLoadError}: {error}
         </p>
-        <p>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
           <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
-        </p>
+        </nav>
       </div>
     )
   }
@@ -247,9 +247,9 @@ export function MatchPublicDetailPage() {
           <title>{p.matchDetailNotFoundTitle}</title>
         </Helmet>
         <p>{p.matchDetailNotFoundBody}</p>
-        <p>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
           <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
-        </p>
+        </nav>
       </div>
     )
   }
@@ -262,9 +262,13 @@ export function MatchPublicDetailPage() {
         <title>{helmetTitle}</title>
       </Helmet>
 
-      <p style={{ margin: '0 0 0.5rem' }}>
-        <Link to={`/${locale}/matches`}>{p.matchDetailBackToList}</Link>
-      </p>
+      <nav className="portal-page-context" aria-label={p.portalBreadcrumbAria}>
+        <ol className="portal-breadcrumbs">
+          <li>
+            <Link to={`/${locale}/matches`}>{p.navMatches}</Link>
+          </li>
+        </ol>
+      </nav>
 
       <header className="portal-home__hero">
         <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{row.title}</h1>

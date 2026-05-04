@@ -399,7 +399,9 @@ export function OrganizerMatchEditPage() {
           <title>{p.myMatchesHelmet}</title>
         </Helmet>
         <p>{p.matchesSupabaseUnset}</p>
-        <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
+          <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+        </nav>
       </div>
     )
   }
@@ -422,7 +424,9 @@ export function OrganizerMatchEditPage() {
           <title>{p.myMatchesHelmet}</title>
         </Helmet>
         <p>{p.myMatchesNeedSignIn}</p>
-        <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
+          <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
+        </nav>
       </div>
     )
   }
@@ -444,9 +448,14 @@ export function OrganizerMatchEditPage() {
         <Helmet>
           <title>{p.matchesPageHelmetTitle}</title>
         </Helmet>
-        <p style={{ margin: '0 0 1rem' }}>
-          <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
-        </p>
+        <nav className="portal-page-context" aria-label={p.portalBreadcrumbAria}>
+          <ol className="portal-breadcrumbs">
+            <li>
+              <Link to={`/${locale}/matches/my`}>{p.myMatchesTitle}</Link>
+            </li>
+            <li className="portal-breadcrumbs__current">{isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle}</li>
+          </ol>
+        </nav>
         <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
           <h1 className="portal-home__hero-title">{isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle}</h1>
         </header>
@@ -467,9 +476,9 @@ export function OrganizerMatchEditPage() {
           <title>{p.matchOrgEditHelmetLoading}</title>
         </Helmet>
         {loadState === 'loading' ? <p>{p.myMatchesLoading}</p> : <p role="alert">{loadError ?? p.matchesLoadError}</p>}
-        <p>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
           <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
-        </p>
+        </nav>
       </div>
     )
   }
@@ -487,9 +496,14 @@ export function OrganizerMatchEditPage() {
         <title>{helmet}</title>
       </Helmet>
 
-      <p style={{ margin: '0 0 1rem' }}>
-        <Link to={`/${locale}/matches/my`}>{p.matchOrgBackList}</Link>
-      </p>
+      <nav className="portal-page-context" aria-label={p.portalBreadcrumbAria}>
+        <ol className="portal-breadcrumbs">
+          <li>
+            <Link to={`/${locale}/matches/my`}>{p.myMatchesTitle}</Link>
+          </li>
+          <li className="portal-breadcrumbs__current">{pageTitle}</li>
+        </ol>
+      </nav>
 
       <header className="portal-home__hero">
         <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{pageTitle}</h1>

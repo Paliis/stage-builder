@@ -76,7 +76,9 @@ export function PortalAccountPage() {
           <title>{p.accountPageHelmet}</title>
         </Helmet>
         <p>{p.matchesSupabaseUnset}</p>
-        <Link to={`/${locale}`}>{p.myMatchesBackHome}</Link>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
+          <Link to={`/${locale}`}>{p.myMatchesBackHome}</Link>
+        </nav>
       </div>
     )
   }
@@ -86,13 +88,12 @@ export function PortalAccountPage() {
       <Helmet>
         <title>{p.accountPageHelmet}</title>
       </Helmet>
+      <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
+        <Link to={`/${locale}`}>{p.myMatchesBackHome}</Link>
+      </nav>
       <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
         <h1 className="portal-home__hero-title">{p.accountPageTitle}</h1>
       </header>
-
-      <p style={{ margin: '0 0 1rem' }}>
-        <Link to={`/${locale}`}>{p.myMatchesBackHome}</Link>
-      </p>
 
       {sessionLoading ?
         <p>{p.matchesLoadingDetail}</p>

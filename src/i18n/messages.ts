@@ -412,6 +412,8 @@ export type MessageTree = {
     matchesLoadError: string
     matchesLoadingDetail: string
     matchDetailBackToList: string
+    /** aria-label for compact breadcrumb / back rows in match flows */
+    portalBreadcrumbAria: string
     matchDetailNotFoundTitle: string
     matchDetailNotFoundBody: string
     matchDetailStartsLabel: string
@@ -1328,6 +1330,7 @@ export const ukMessages: MessageTree = {
     matchesLoadError: 'Не вдалося завантажити дані',
     matchesLoadingDetail: 'Завантаження матчу…',
     matchDetailBackToList: 'До списку матчів',
+    portalBreadcrumbAria: 'Шлях до сторінки',
     matchDetailNotFoundTitle: 'Матч не знайдено — Shooters Tools',
     matchDetailNotFoundBody:
       'Матч із таким ідентифікатором немає серед опублікованих або посилання некоректне.',
@@ -2260,6 +2263,7 @@ export const enMessages: MessageTree = {
     matchesLoadError: 'Could not load data',
     matchesLoadingDetail: 'Loading match…',
     matchDetailBackToList: 'Back to matches',
+    portalBreadcrumbAria: 'Breadcrumb',
     matchDetailNotFoundTitle: 'Match not found — Shooters Tools',
     matchDetailNotFoundBody:
       'There is no published match with this id, or the link is invalid.',

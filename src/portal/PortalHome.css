@@ -37,6 +37,74 @@
   color: var(--text);
 }
 
+/* Compact back link / breadcrumb above heroes -------------------------------- */
+
+.portal-page-context {
+  margin: 0 0 0.4rem;
+}
+
+.portal-page-context--solo-link a {
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.portal-page-context--solo-link a:hover {
+  text-decoration: underline;
+}
+
+.portal-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.portal-breadcrumbs > li {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  gap: 0.4rem;
+}
+
+.portal-breadcrumbs > li:not(:last-child)::after {
+  content: '›';
+  font-weight: 700;
+  opacity: 0.45;
+  margin-left: 0.05rem;
+}
+
+.portal-breadcrumbs a {
+  color: var(--accent);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.portal-breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.portal-breadcrumbs__current {
+  color: var(--text-h);
+  font-weight: 750;
+  min-width: 0;
+}
+
+.portal-breadcrumbs__ellipsis {
+  display: inline-block;
+  max-width: min(100%, 20rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
 /* --------------------------------------------------------------- Cards grid */
 
 .portal-home__grid {
@@ -251,8 +319,7 @@
 
 .portal-home__matches-published {
   width: 100%;
-  padding: 1rem 0 0.25rem;
-  border-top: 1px solid var(--border);
+  padding: 0 0 0.25rem;
 }
 
 .portal-home__matches-published > .portal-home__hero-title {

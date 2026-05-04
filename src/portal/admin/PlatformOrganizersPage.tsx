@@ -206,9 +206,9 @@ export function PlatformOrganizersPage() {
           <title>{p.organizersAdminHelmetTitle}</title>
         </Helmet>
         <p>{p.matchesSupabaseUnset}</p>
-        <p>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
           <Link to={`/${locale}`}>{p.organizersBackHome}</Link>
-        </p>
+        </nav>
       </div>
     )
   }
@@ -231,9 +231,9 @@ export function PlatformOrganizersPage() {
           <title>{p.organizersAdminHelmetTitle}</title>
         </Helmet>
         <p>{p.organizersNeedSignIn}</p>
-        <p>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
           <Link to={`/${locale}`}>{p.organizersBackHome}</Link>
-        </p>
+        </nav>
       </div>
     )
   }
@@ -245,9 +245,9 @@ export function PlatformOrganizersPage() {
           <title>{p.organizersAdminHelmetTitle}</title>
         </Helmet>
         <p role="alert">{p.organizersForbidden}</p>
-        <p>
+        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
           <Link to={`/${locale}`}>{p.organizersBackHome}</Link>
-        </p>
+        </nav>
       </div>
     )
   }
@@ -257,6 +257,9 @@ export function PlatformOrganizersPage() {
       <Helmet>
         <title>{p.organizersAdminHelmetTitle}</title>
       </Helmet>
+      <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
+        <Link to={`/${locale}`}>{p.organizersBackHome}</Link>
+      </nav>
       <div className="portal-home__hero">
         <h1 className="portal-home__hero-title">{p.organizersAdminTitle}</h1>
         <p className="portal-org-admin__intro">{p.organizersAdminIntro}</p>
@@ -407,10 +410,6 @@ export function PlatformOrganizersPage() {
           </tbody>
         </table>
       </div>
-
-      <p>
-        <Link to={`/${locale}`}>{p.organizersBackHome}</Link>
-      </p>
     </div>
   )
 }
