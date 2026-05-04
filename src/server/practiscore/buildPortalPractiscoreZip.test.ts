@@ -229,7 +229,7 @@ describe('buildPortalPractiscoreZip', () => {
           created_at: '2026-01-01T12:00:00.000Z',
         },
       ],
-      displayNameByUserId: new Map([[uid, 'Ignored Display']])),
+      displayNameByUserId: new Map([[uid, 'Ignored Display']]),
       pscShooterNameByUserId: new Map([[uid, { firstName: 'Тарас', lastName: 'Іваненко' }]]),
       stageLinks: [{ sort_order: 0, snapshot_meta: { title_snapshot: 'S1' } }],
     })

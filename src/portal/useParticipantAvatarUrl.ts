@@ -15,7 +15,7 @@ export function useParticipantAvatarUrl(userId: string | undefined): string | nu
 
   useEffect(() => {
     if (!userId || !isSupabaseConfigured()) {
-      setUrl(null)
+      queueMicrotask(() => setUrl(null))
       return
     }
 

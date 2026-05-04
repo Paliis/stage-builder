@@ -1,4 +1,4 @@
-import { useCallback, useDeferredValue, useEffect, useId, useMemo, useState } from 'react'
+import { useCallback, useDeferredValue, useEffect, useId, useMemo, useState, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { formatTemplate } from '../i18n/format'
@@ -32,18 +32,16 @@ const SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS = false
 /** Inline calendar in masthead at this width and above; below — modal + full-width tools. */
 const MATCH_HUB_CALENDAR_INLINE_MQ = '(min-width: 901px)'
 
-function useMatchMediaQuery(query: string) {
-  const [matches, setMatches] = useState(() =>
-    typeof window !== 'undefined' ? window.matchMedia(query).matches : true,
+function useMatchMediaQuery(query: string): boolean {
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      const mq = window.matchMedia(query)
+      mq.addEventListener('change', onStoreChange)
+      return () => mq.removeEventListener('change', onStoreChange)
+    },
+    () => window.matchMedia(query).matches,
+    () => true,
   )
-  useEffect(() => {
-    const mq = window.matchMedia(query)
-    setMatches(mq.matches)
-    const onChange = () => setMatches(mq.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [query])
-  return matches
 }
 
 function weekdayShortLabels(locale: Locale): string[] {
@@ -116,7 +114,8 @@ export function PortalPublishedMatchesSection() {
   const matchPortalOn = isMatchPortalEnabled()
 
   useEffect(() => {
-    if (calendarInline) setCalendarModalOpen(false)
+    if (!calendarInline) return
+    queueMicrotask(() => setCalendarModalOpen(false))
   }, [calendarInline])
 
   useEffect(() => {
