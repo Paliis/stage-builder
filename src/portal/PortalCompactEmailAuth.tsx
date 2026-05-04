@@ -17,6 +17,10 @@ type Props = {
 /** Client minimum; align with Supabase Dashboard → Auth password policy if you change it. */
 const MIN_PASSWORD_LEN = 8
 
+function normalizeSignupOtp(raw: string): string {
+  return raw.replace(/\D/g, '').slice(0, 6)
+}
+
 /** Eye when password is masked (action: show); eye-off when plain (action: hide). */
 function PasswordVisibilityIcon({ passwordVisible }: { passwordVisible: boolean }) {
   if (passwordVisible) {
@@ -48,7 +52,18 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
 
+  /** SignUp succeeded without session — user must enter 6-digit code from email (`{{ .Token }}`). */
+  const [signupAwaitingOtp, setSignupAwaitingOtp] = useState(false)
+  const [otp, setOtp] = useState('')
+
   const configured = isSupabaseConfigured()
+
+  function emailRedirectUrl(): string | undefined {
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    if (!origin) return undefined
+    const nextEnc = encodeURIComponent(pathnameForRedirect)
+    return `${origin}/${locale}/auth/email-callback?next=${nextEnc}`
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -61,10 +76,7 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
       }
 
       const sb = getSupabase()
-      const origin = typeof window !== 'undefined' ? window.location.origin : ''
-      const nextEnc = encodeURIComponent(pathnameForRedirect)
-      const redirectTo =
-        origin ? `${origin}/${locale}/auth/email-callback?next=${nextEnc}` : undefined
+      const redirectTo = emailRedirectUrl()
 
       if (authMode === 'signin') {
         const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password })
@@ -88,7 +100,9 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
         setMessage(p.portalCompactAuthSignupSession)
         return
       }
-      setMessage(p.portalCompactAuthSignupConfirm)
+      setSignupAwaitingOtp(true)
+      setOtp('')
+      setMessage(p.portalCompactAuthOtpSent)
     } catch (err) {
       setMessage(err instanceof Error ? err.message : String(err))
     } finally {
@@ -96,8 +110,128 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
     }
   }
 
+  async function handleVerifyOtp(e: FormEvent) {
+    e.preventDefault()
+    setMessage(null)
+    const token = normalizeSignupOtp(otp)
+    if (token.length !== 6) {
+      setMessage(p.portalCompactAuthOtpLength)
+      return
+    }
+    setBusy(true)
+    try {
+      const sb = getSupabase()
+      const { data, error } = await sb.auth.verifyOtp({
+        email: email.trim(),
+        token,
+        type: 'signup',
+      })
+      if (error) {
+        setMessage(p.portalCompactAuthOtpInvalid)
+        return
+      }
+      if (data.session) {
+        const href = emailRedirectUrl()
+        if (href && typeof window !== 'undefined') {
+          window.location.assign(href)
+          return
+        }
+        setSignupAwaitingOtp(false)
+        setMessage(p.portalCompactAuthSignupSession)
+      }
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : String(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function handleResendCode() {
+    setMessage(null)
+    setBusy(true)
+    try {
+      const sb = getSupabase()
+      const redirectTo = emailRedirectUrl()
+      const { error } = await sb.auth.resend({
+        type: 'signup',
+        email: email.trim(),
+        options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
+      })
+      if (error) {
+        setMessage(error.message)
+        return
+      }
+      setMessage(p.portalCompactAuthOtpResendDone)
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : String(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  function resetOtpStep() {
+    setSignupAwaitingOtp(false)
+    setOtp('')
+    setMessage(null)
+  }
+
   if (!configured) {
     return <p role="alert">{p.matchesSupabaseUnset}</p>
+  }
+
+  if (signupAwaitingOtp && authMode === 'signup') {
+    return (
+      <div className="portal-compact-auth">
+        <p className="portal-compact-auth__otp-email" aria-live="polite">
+          <strong>{email.trim()}</strong>
+        </p>
+        <form className="portal-compact-auth__form" onSubmit={(ev) => void handleVerifyOtp(ev)}>
+          <div className="portal-compact-auth__field">
+            <label className="portal-compact-auth__label" htmlFor={`${fieldId}-otp`}>
+              {p.portalCompactAuthOtpLabel}
+            </label>
+            <input
+              id={`${fieldId}-otp`}
+              className="portal-compact-auth__input portal-compact-auth__input--otp"
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              maxLength={6}
+              value={otp}
+              onChange={(ev) => setOtp(normalizeSignupOtp(ev.target.value))}
+              placeholder="000000"
+              required
+              disabled={busy}
+              aria-invalid={message === p.portalCompactAuthOtpInvalid ? true : undefined}
+            />
+            <p className="portal-compact-auth__field-hint">{p.portalCompactAuthOtpHint}</p>
+          </div>
+          <div className="portal-compact-auth__submit-wrap">
+            <button type="submit" className="portal-btn portal-btn--primary portal-btn--block" disabled={busy}>
+              {busy ? '…' : p.portalCompactAuthOtpSubmit}
+            </button>
+          </div>
+        </form>
+        <div className="portal-compact-auth__otp-actions">
+          <button
+            type="button"
+            className="portal-compact-auth__linkish"
+            disabled={busy}
+            onClick={() => void handleResendCode()}
+          >
+            {p.portalCompactAuthOtpResend}
+          </button>
+          <button type="button" className="portal-compact-auth__linkish" disabled={busy} onClick={() => resetOtpStep()}>
+            {p.portalCompactAuthOtpChangeEmail}
+          </button>
+        </div>
+        {message ?
+          <p role="status" className="portal-compact-auth__message">
+            {message}
+          </p>
+        : null}
+      </div>
+    )
   }
 
   return (
@@ -111,6 +245,7 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
             setAuthMode('signin')
             setShowPassword(false)
             setMessage(null)
+            resetOtpStep()
           }}
           disabled={busy}
         >
@@ -124,6 +259,7 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
             setAuthMode('signup')
             setShowPassword(false)
             setMessage(null)
+            resetOtpStep()
           }}
           disabled={busy}
         >
@@ -184,11 +320,11 @@ export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props
         </div>
       </form>
 
-      {message ? (
+      {message ?
         <p role="status" className="portal-compact-auth__message">
           {message}
         </p>
-      ) : null}
+      : null}
     </div>
   )
 }

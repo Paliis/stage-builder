@@ -492,6 +492,16 @@ export type MessageTree = {
     portalCompactAuthSignOut: string
     portalCompactAuthSignupSession: string
     portalCompactAuthSignupConfirm: string
+    /** After signUp without session — OTP from email (Supabase template `{{ .Token }}`). */
+    portalCompactAuthOtpSent: string
+    portalCompactAuthOtpLabel: string
+    portalCompactAuthOtpHint: string
+    portalCompactAuthOtpLength: string
+    portalCompactAuthOtpSubmit: string
+    portalCompactAuthOtpInvalid: string
+    portalCompactAuthOtpResend: string
+    portalCompactAuthOtpResendDone: string
+    portalCompactAuthOtpChangeEmail: string
     /** Email confirm redirect target `/{locale}/auth/email-callback`. */
     authEmailCallbackHelmet: string
     authEmailCallbackLoading: string
@@ -1428,6 +1438,16 @@ export const ukMessages: MessageTree = {
     portalCompactAuthSignupSession: 'Готово: ви ввійшли в обліковий запис.',
     portalCompactAuthSignupConfirm:
       'Обліковий запис створено. Якщо увімкнено підтвердження email — відкрийте лист і перейдіть за посиланням, потім увійдіть.',
+    portalCompactAuthOtpSent:
+      'Ми надіслали 6-значний код на ваш email. Введіть його нижче (перевірте папку «Спам»).',
+    portalCompactAuthOtpLabel: 'Код з листа',
+    portalCompactAuthOtpHint: '6 цифр без пробілів.',
+    portalCompactAuthOtpLength: 'Потрібно рівно 6 цифр.',
+    portalCompactAuthOtpSubmit: 'Підтвердити email',
+    portalCompactAuthOtpInvalid: 'Код невірний або прострочений. Спробуйте ще раз або надішліть новий лист.',
+    portalCompactAuthOtpResend: 'Надіслати код ще раз',
+    portalCompactAuthOtpResendDone: 'Новий код надіслано на вашу адресу.',
+    portalCompactAuthOtpChangeEmail: 'Змінити email / пароль',
     authEmailCallbackHelmet: 'Підтвердження email',
     authEmailCallbackLoading: 'Завершуємо вхід…',
     authEmailCallbackSuccessTitle: 'Email підтверджено',
@@ -2377,6 +2397,16 @@ export const enMessages: MessageTree = {
     portalCompactAuthSignupSession: 'You are signed in.',
     portalCompactAuthSignupConfirm:
       'Account created. If email confirmation is enabled, confirm from your inbox before signing in.',
+    portalCompactAuthOtpSent:
+      'We sent a 6-digit code to your email. Enter it below (check spam).',
+    portalCompactAuthOtpLabel: 'Code from email',
+    portalCompactAuthOtpHint: 'Six digits, no spaces.',
+    portalCompactAuthOtpLength: 'Enter exactly 6 digits.',
+    portalCompactAuthOtpSubmit: 'Confirm email',
+    portalCompactAuthOtpInvalid: 'Invalid or expired code. Try again or resend.',
+    portalCompactAuthOtpResend: 'Resend code',
+    portalCompactAuthOtpResendDone: 'A new code was sent to your address.',
+    portalCompactAuthOtpChangeEmail: 'Change email or password',
     authEmailCallbackHelmet: 'Email confirmation',
     authEmailCallbackLoading: 'Completing sign-in…',
     authEmailCallbackSuccessTitle: 'Email confirmed',
