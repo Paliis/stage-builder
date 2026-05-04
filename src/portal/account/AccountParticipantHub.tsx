@@ -464,30 +464,6 @@ export function AccountParticipantHub({
                   </p>
                 : null}
               </div>
-              <fieldset className="portal-account__categories-fieldset">
-                <legend className="portal-account__categories-legend">{p.accountParticipantFieldCategory}</legend>
-                <div className="portal-account__categories-grid" role="group">
-                  {SHOOTER_CATEGORIES.map((c) => {
-                    const checked = defCategories.includes(c.id)
-                    const lab = locale === 'en' ? c.labelEn : c.labelUk
-                    return (
-                      <label key={c.id} className="portal-account__check">
-                        <input
-                          type="checkbox"
-                          checked={checked}
-                          disabled={defSaving}
-                          onChange={() => {
-                            setDefCategories((prev) =>
-                              checked ? prev.filter((x) => x !== c.id) : sortCategoryIds([...prev, c.id]),
-                            )
-                          }}
-                        />
-                        {lab}
-                      </label>
-                    )
-                  })}
-                </div>
-              </fieldset>
               <label className="portal-account__field">
                 {p.accountParticipantFieldWeaponClass}
                 <select
@@ -550,6 +526,30 @@ export function AccountParticipantHub({
                   <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
                 </select>
               </label>
+              <fieldset className="portal-account__categories-fieldset">
+                <legend className="portal-account__categories-legend">{p.accountParticipantFieldCategory}</legend>
+                <div className="portal-account__categories-grid" role="group">
+                  {SHOOTER_CATEGORIES.map((c) => {
+                    const checked = defCategories.includes(c.id)
+                    const lab = locale === 'en' ? c.labelEn : c.labelUk
+                    return (
+                      <label key={c.id} className="portal-account__check">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          disabled={defSaving}
+                          onChange={() => {
+                            setDefCategories((prev) =>
+                              checked ? prev.filter((x) => x !== c.id) : sortCategoryIds([...prev, c.id]),
+                            )
+                          }}
+                        />
+                        {lab}
+                      </label>
+                    )
+                  })}
+                </div>
+              </fieldset>
             </div>
             {defFeedback ?
               <p role="status" className="portal-account__hub-feedback">
