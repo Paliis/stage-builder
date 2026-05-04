@@ -563,12 +563,8 @@ export type MessageTree = {
     accountSummaryHeading: string
     accountSummaryLogin: string
     accountShooterCabinetHeading: string
-    accountShooterCabinetLead: string
-    accountShooterPortalLinkLabel: string
-    accountShooterPortalLinkSuffix: string
     accountPageGoOrganizer: string
     accountPageOrganizerExplain: string
-    accountPageShooterSoon: string
     accountOrganizerSectionHeading: string
     accountOrganizerActiveLead: string
     accountOrganizerApplyTeaser: string
@@ -590,7 +586,9 @@ export type MessageTree = {
     accountOrganizerApplyPastMatchesLabel: string
     accountOrganizerApplyPastMatchesPlaceholder: string
     accountMyRegistrationsHeading: string
-    accountMyRegistrationsEmpty: string
+    /** Empty registrations hint — split around linked «Matches» hub (`/:locale/matches`). */
+    accountMyRegistrationsEmptyBeforeMatchesLink: string
+    accountMyRegistrationsEmptyAfterMatchesLink: string
     accountMyRegistrationsLoadError: string
     accountMyRegistrationsColMatch: string
     accountMyRegistrationsColDate: string
@@ -1508,7 +1506,7 @@ export const ukMessages: MessageTree = {
     accountHeaderProfile: 'Профіль',
     accountHeaderProfileIconAria: 'Обліковий запис. Залогінено як {{email}}',
     accountBadgeParticipant: 'Учасник',
-    accountBadgeParticipantHint: 'Можете реєструватися на опубліковані матчі',
+    accountBadgeParticipantHint: 'Роль у порталі',
     accountBadgeOrganizerActive: 'Організатор',
     accountBadgeOrganizerBlocked: 'Організатор (обмежено)',
     accountBadgeOrganizerPending: 'Організатор — на розгляді',
@@ -1519,12 +1517,8 @@ export const ukMessages: MessageTree = {
     accountSummaryHeading: 'Поточний вхід',
     accountSummaryLogin: 'Логін:',
     accountShooterCabinetHeading: 'Кабінет стрільця',
-    accountShooterCabinetLead: 'Реєстрація на матчі — за посиланням від організатора.',
-    accountShooterPortalLinkLabel: 'Головна порталу',
-    accountShooterPortalLinkSuffix: '',
     accountPageGoOrganizer: 'Мої матчі (організатор)',
     accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
-    accountPageShooterSoon: 'Нижче — заявки на матчі та поля профілю.',
     accountOrganizerSectionHeading: 'Організатор матчів',
     accountOrganizerActiveLead: 'У вас є права створювати та вести матчі в цьому порталі.',
     accountOrganizerApplyTeaser:
@@ -1551,8 +1545,9 @@ export const ukMessages: MessageTree = {
     accountOrganizerApplyPastMatchesLabel: 'Посилання на минулі матчі / коментар — опційно',
     accountOrganizerApplyPastMatchesPlaceholder: 'Посилання на PSC, постер, сайт або короткий опис досвіду',
     accountMyRegistrationsHeading: 'Мої реєстрації на матчі',
-    accountMyRegistrationsEmpty:
-      'Немає заявок на матчі. Майбутні опубліковані події — у розділі «Матчі»; картку також можна відкрити за прямим посиланням від організатора.',
+    accountMyRegistrationsEmptyBeforeMatchesLink:
+      'Немає заявок на жоден матч. Опубліковані події та реєстрація — у розділі ',
+    accountMyRegistrationsEmptyAfterMatchesLink: '.',
     accountMyRegistrationsLoadError: 'Не вдалося завантажити реєстрації',
     accountMyRegistrationsColMatch: 'Матч',
     accountMyRegistrationsColDate: 'Початок',
@@ -2474,7 +2469,7 @@ export const enMessages: MessageTree = {
     accountHeaderProfile: 'Account',
     accountHeaderProfileIconAria: 'Account. Signed in as {{email}}',
     accountBadgeParticipant: 'Participant',
-    accountBadgeParticipantHint: 'You can register for published matches',
+    accountBadgeParticipantHint: 'Your role on the portal',
     accountBadgeOrganizerActive: 'Organizer',
     accountBadgeOrganizerBlocked: 'Organizer (restricted)',
     accountBadgeOrganizerPending: 'Organizer — pending approval',
@@ -2485,12 +2480,8 @@ export const enMessages: MessageTree = {
     accountSummaryHeading: 'Signed in',
     accountSummaryLogin: 'Login:',
     accountShooterCabinetHeading: 'Shooter hub',
-    accountShooterCabinetLead: 'Match sign-up uses the link from an organizer.',
-    accountShooterPortalLinkLabel: 'Portal home',
-    accountShooterPortalLinkSuffix: '',
     accountPageGoOrganizer: 'My matches (organizer)',
     accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
-    accountPageShooterSoon: 'Below: your sign-ups and profile fields.',
     accountOrganizerSectionHeading: 'Match organizer',
     accountOrganizerActiveLead: 'You can create and manage matches on this portal.',
     accountOrganizerApplyTeaser:
@@ -2517,8 +2508,8 @@ export const enMessages: MessageTree = {
     accountOrganizerApplyPastMatchesLabel: 'Past matches / links — optional',
     accountOrganizerApplyPastMatchesPlaceholder: 'Links to PSC, posters, clubs, or a short experience summary',
     accountMyRegistrationsHeading: 'My match sign-ups',
-    accountMyRegistrationsEmpty:
-      'No match sign-ups yet. Upcoming published events are on the «Matches» page; you can also open a match via a link from the organizer.',
+    accountMyRegistrationsEmptyBeforeMatchesLink: 'No match sign-ups. Published events and sign-up are under ',
+    accountMyRegistrationsEmptyAfterMatchesLink: '.',
     accountMyRegistrationsLoadError: 'Could not load registrations',
     accountMyRegistrationsColMatch: 'Match',
     accountMyRegistrationsColDate: 'Starts',

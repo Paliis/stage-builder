@@ -217,7 +217,13 @@ export function AccountParticipantHub({
           {rows === undefined ?
             <p className="portal-account__hub-muted">{p.matchesLoadingDetail}</p>
           : rows.length === 0 ?
-            <p className="portal-account__hub-muted">{p.accountMyRegistrationsEmpty}</p>
+            <p className="portal-account__hub-muted">
+              {p.accountMyRegistrationsEmptyBeforeMatchesLink}
+              <Link className="portal-account__hub-inline-link" to={`/${locale}/matches`}>
+                {p.navMatches}
+              </Link>
+              {p.accountMyRegistrationsEmptyAfterMatchesLink}
+            </p>
           :
             <div className="portal-account__hub-table-wrap">
               <table className="portal-account__hub-table">

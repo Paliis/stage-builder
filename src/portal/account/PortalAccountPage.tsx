@@ -104,10 +104,13 @@ export function PortalAccountPage() {
             <h2 className="portal-account__card-title" id="account-summary-heading">
               {p.accountSummaryHeading}
             </h2>
-            <p className="portal-account__summary-email" style={{ marginBottom: 0 }}>
-              <strong>{p.accountSummaryLogin}</strong>{' '}
-              {user.email ?? user.id}
-            </p>
+            <div className="portal-account__summary-row">
+              <p className="portal-account__summary-email" style={{ marginBottom: 0 }}>
+                <strong>{p.accountSummaryLogin}</strong>{' '}
+                {user.email ?? user.id}
+              </p>
+              <span className="portal-shell__badge portal-shell__badge--participant">{p.accountBadgeParticipant}</span>
+            </div>
           </div>
 
           <div className="portal-account__card">
@@ -115,17 +118,6 @@ export function PortalAccountPage() {
               <h3 id="account-shooter-heading" className="portal-account__section-title">
                 {p.accountShooterCabinetHeading}
               </h3>
-              <div className="portal-shell__badges" style={{ marginBottom: '0.75rem' }}>
-                <span className="portal-shell__badge portal-shell__badge--participant">{p.accountBadgeParticipant}</span>
-              </div>
-              <p className="portal-account__section-lead">{p.accountShooterCabinetLead}</p>
-              <ul className="portal-account__list">
-                <li>
-                  <Link to={`/${locale}`}>{p.accountShooterPortalLinkLabel}</Link>
-                  {p.accountShooterPortalLinkSuffix}
-                </li>
-                <li>{p.accountPageShooterSoon}</li>
-              </ul>
               <AccountParticipantHub
                 locale={locale}
                 p={p}

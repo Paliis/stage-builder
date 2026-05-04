@@ -39,6 +39,19 @@
   line-height: 1.2;
 }
 
+.portal-account__summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.85rem;
+}
+
+.portal-account__summary-row .portal-account__summary-email {
+  margin-bottom: 0;
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
 .portal-account__summary-email {
   margin: 0 0 1.35rem;
   padding: 0.65rem 0.85rem;

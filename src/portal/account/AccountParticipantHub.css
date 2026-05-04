@@ -184,6 +184,17 @@
   font-weight: 650;
 }
 
+.portal-account__hub-inline-link {
+  font-weight: 650;
+  color: var(--accent-border, #2563eb);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.portal-account__hub-inline-link:hover {
+  text-decoration-thickness: from-font;
+}
+
 .portal-account__hub-inline-alert {
   margin: 0 0 0.65rem;
   font-size: 0.88rem;
