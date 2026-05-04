@@ -18,7 +18,7 @@
   text-decoration: underline;
 }
 
-/* Full-width title, then search + filters (1fr) | compact calendar (right edge). */
+/* Narrow: stacked title → tools (+ calendar button). Wide: title aligns with calendar top (shared grid). */
 .portal-match-hub__masthead {
   display: flex;
   flex-direction: column;
@@ -40,12 +40,10 @@
   margin: 0 0 0.5rem;
 }
 
-/* Full content width: tools (1fr) + fixed calendar on the right edge of the hub. */
 .portal-match-hub__masthead-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(10.25rem, 12.75rem);
-  column-gap: 1.15rem;
-  row-gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   align-items: stretch;
   width: 100%;
   min-width: 0;
@@ -55,15 +53,13 @@
   min-width: 0;
   width: 100%;
   max-width: none;
-  justify-self: stretch;
   align-self: stretch;
   display: flex;
   flex-direction: column;
 }
 
-/* Fill grid cell height so filters-stack margin-top:auto reaches the calendar bottom. */
 .portal-match-hub__masthead-tools > .portal-match-hub__toolbar {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   min-height: 0;
 }
 
@@ -71,27 +67,54 @@
   width: 100%;
   max-width: 12.75rem;
   min-width: 0;
-  justify-self: end;
-  align-self: end;
+}
+
+@media (min-width: 901px) {
+  .portal-match-hub__masthead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(10.25rem, 12.75rem);
+    grid-template-areas:
+      'hub-title cal'
+      'hub-tools cal';
+    column-gap: 1.15rem;
+    row-gap: 0.45rem;
+    align-items: start;
+    gap: unset;
+  }
+
+  .portal-match-hub__masthead-title-row {
+    grid-area: hub-title;
+  }
+
+  .portal-match-hub__masthead-body {
+    display: contents;
+  }
+
+  .portal-match-hub__masthead-tools {
+    grid-area: hub-tools;
+    justify-self: stretch;
+    align-self: stretch;
+  }
+
+  .portal-match-hub__masthead-tools > .portal-match-hub__toolbar {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .portal-match-hub__masthead-body > .portal-match-hub__calendar-panel--head {
+    grid-area: cal;
+    grid-row: 1 / -1;
+    justify-self: end;
+    align-self: stretch;
+    width: 100%;
+  }
 }
 
 /* Below 901px: calendar moves to modal (JS); tools span full content width like match cards. */
 @media (max-width: 900px) {
-  .portal-match-hub__masthead-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: stretch;
-  }
-
   .portal-match-hub__masthead-tools {
     max-width: none;
-    align-self: stretch;
     width: 100%;
-  }
-
-  .portal-match-hub__masthead-tools > .portal-match-hub__toolbar {
-    flex: 0 0 auto;
   }
 
   .portal-match-hub__masthead-tools .portal-match-hub__filters-stack {
