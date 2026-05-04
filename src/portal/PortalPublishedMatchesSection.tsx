@@ -418,17 +418,6 @@ export function PortalPublishedMatchesSection() {
                 </div>
               </div>
             </div>
-            {!calendarInline ?
-              <div className="portal-match-hub__calendar-open-wrap">
-                <button
-                  type="button"
-                  className="portal-btn portal-btn--secondary portal-btn--compact portal-match-hub__calendar-open-btn"
-                  onClick={() => setCalendarModalOpen(true)}
-                >
-                  {p.portalMatchesHubCalendarOpenButton}
-                </button>
-              </div>
-            : null}
           </div>
           {calendarInline ? renderCalendarPanel('head') : null}
         </div>
@@ -523,36 +512,60 @@ export function PortalPublishedMatchesSection() {
         </div>
       )}
 
-      {calendarModalOpen && !calendarInline ?
+      {allRows !== undefined && !error && !calendarInline ?
         createPortal(
-          <div
-            className="portal-match-hub__calendar-modal-backdrop"
-            role="presentation"
-            onClick={() => setCalendarModalOpen(false)}
-          >
-            <div
-              className="portal-match-hub__calendar-modal-dialog"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby={calendarModalTitleId}
-              onClick={(e) => e.stopPropagation()}
+          <>
+            <button
+              type="button"
+              className="portal-match-hub__calendar-drawer-tab"
+              onClick={() => setCalendarModalOpen((open) => !open)}
+              aria-expanded={calendarModalOpen}
+              aria-label={
+                calendarModalOpen ? p.portalMatchesHubCalendarModalClose : p.portalMatchesHubCalendarOpenButton
+              }
             >
-              <div className="portal-match-hub__calendar-modal-header">
-                <h2 id={calendarModalTitleId} className="portal-match-hub__calendar-modal-title">
-                  {p.portalMatchesHubCalendarModalTitle}
-                </h2>
-                <button
-                  type="button"
-                  className="portal-match-hub__calendar-modal-close"
-                  aria-label={p.portalMatchesHubCalendarModalClose}
-                  onClick={() => setCalendarModalOpen(false)}
-                >
-                  <span aria-hidden>×</span>
-                </button>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="portal-match-hub__calendar-drawer-tab-label">{p.portalMatchesHubCalendarOpenButton}</span>
+            </button>
+            <div
+              className={`portal-match-hub__calendar-drawer${calendarModalOpen ? ' is-open' : ''}`}
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setCalendarModalOpen(false)
+              }}
+              aria-hidden={!calendarModalOpen}
+            >
+              <div
+                className="portal-match-hub__calendar-drawer-panel"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={calendarModalTitleId}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="portal-match-hub__calendar-modal-header">
+                  <h2 id={calendarModalTitleId} className="portal-match-hub__calendar-modal-title">
+                    {p.portalMatchesHubCalendarModalTitle}
+                  </h2>
+                  <button
+                    type="button"
+                    className="portal-match-hub__calendar-modal-close"
+                    aria-label={p.portalMatchesHubCalendarModalClose}
+                    onClick={() => setCalendarModalOpen(false)}
+                  >
+                    <span aria-hidden>×</span>
+                  </button>
+                </div>
+                <div className="portal-match-hub__calendar-modal-body">{renderCalendarPanel('modal', true)}</div>
               </div>
-              <div className="portal-match-hub__calendar-modal-body">{renderCalendarPanel('modal', true)}</div>
             </div>
-          </div>,
+          </>,
           document.body,
         )
       : null}
