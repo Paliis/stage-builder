@@ -72,7 +72,7 @@ export function PortalAccountPage() {
 
   if (!isSupabaseConfigured()) {
     return (
-      <div className="portal-home">
+      <div className="portal-home portal-home--account">
         <Helmet>
           <title>{p.accountPageHelmet}</title>
         </Helmet>
@@ -85,46 +85,33 @@ export function PortalAccountPage() {
   }
 
   return (
-    <div className="portal-home">
+    <div className="portal-home portal-home--account">
       <Helmet>
         <title>{p.accountPageHelmet}</title>
       </Helmet>
       <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
         <Link to={`/${locale}`}>{p.myMatchesBackHome}</Link>
       </nav>
-      <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
-        <h1 className="portal-home__hero-title">{p.accountPageTitle}</h1>
-      </header>
 
       {sessionLoading ?
         <p className="portal-account__loading">{p.matchesLoadingDetail}</p>
       : user ?
-        <section className="portal-account__dashboard" aria-label={p.accountPageTitle}>
-          <div className="portal-account__card">
-            <h2 className="portal-account__card-title" id="account-summary-heading">
-              {p.accountSummaryHeading}
-            </h2>
-            <div className="portal-account__summary-row">
-              <p className="portal-account__summary-email" style={{ marginBottom: 0 }}>
-                <strong>{p.accountSummaryLogin}</strong>{' '}
-                {user.email ?? user.id}
-              </p>
-              <span className="portal-shell__badge portal-shell__badge--participant">{p.accountBadgeParticipant}</span>
-            </div>
-          </div>
-
-          <div className="portal-account__card">
-            <section className="portal-account__section" aria-labelledby="account-shooter-heading" style={{ marginBottom: 0 }}>
-              <h3 id="account-shooter-heading" className="portal-account__section-title">
+        <section className="portal-account__dashboard" aria-label={p.accountShooterCabinetHeading}>
+          <div className="portal-account__card portal-account__cabinet-card">
+            <div className="portal-account__section-head">
+              <h1 id="account-shooter-heading" className="portal-account__cabinet-title">
                 {p.accountShooterCabinetHeading}
-              </h3>
-              <AccountParticipantHub
-                locale={locale}
-                p={p}
-                userId={user.id}
-                showMatchRegistrations={isMatchPortalEnabled()}
-              />
-            </section>
+              </h1>
+              <span className="portal-shell__badge portal-shell__badge--participant" title={p.accountBadgeParticipantHint}>
+                {p.accountBadgeParticipant}
+              </span>
+            </div>
+            <AccountParticipantHub
+              locale={locale}
+              p={p}
+              userId={user.id}
+              showMatchRegistrations={isMatchPortalEnabled()}
+            />
           </div>
 
           {isMatchPortalEnabled() ?
@@ -304,8 +291,16 @@ export function PortalAccountPage() {
             </div>
           : null}
 
-          <div className="portal-account__sign-out-wrap">
-            <button type="button" className="portal-btn portal-btn--ghost portal-btn--block-xs" onClick={() => void onSignOut()}>
+          <div className="portal-account__session-bar">
+            <p className="portal-account__session-email">
+              <strong className="portal-account__session-label">{p.accountSummaryLogin}</strong>{' '}
+              <span className="portal-account__session-value">{user.email ?? user.id}</span>
+            </p>
+            <button
+              type="button"
+              className="portal-btn portal-btn--ghost portal-btn--compact portal-account__session-signout"
+              onClick={() => void onSignOut()}
+            >
               {p.portalCompactAuthSignOut}
             </button>
           </div>
