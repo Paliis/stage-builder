@@ -14,9 +14,6 @@ export function SiteFooter() {
           <h3 className="site-footer__heading">{f.feedbackHeading}</h3>
           <p className="site-footer__text">{f.feedbackText}</p>
           <div className="site-footer__links">
-            <a className="site-footer__link" href="mailto:parshencevdenis@gmail.com">
-              {f.feedbackEmail}
-            </a>
             <a
               className="site-footer__link site-footer__link--telegram"
               href="https://t.me/denysparshentsev"

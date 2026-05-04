@@ -865,7 +865,6 @@ export type MessageTree = {
   footer: {
     feedbackHeading: string
     feedbackText: string
-    feedbackEmail: string
     feedbackTelegram: string
     supportHeading: string
     supportText: string
@@ -1816,7 +1815,6 @@ export const ukMessages: MessageTree = {
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
     feedbackText: '\u0417\u043d\u0430\u0439\u0448\u043b\u0438 \u043f\u043e\u043c\u0438\u043b\u043a\u0443, \u043c\u0430\u0454\u0442\u0435 \u043f\u0440\u043e\u043f\u043e\u0437\u0438\u0446\u0456\u044e \u0447\u0438 \u0432\u0456\u0434\u0433\u0443\u043a? \u041d\u0430\u043f\u0438\u0448\u0456\u0442\u044c:',
-    feedbackEmail: 'Email',
     feedbackTelegram: 'Telegram',
     supportHeading: '\u041f\u0456\u0434\u0442\u0440\u0438\u043c\u0430\u0442\u0438 \u043f\u0440\u043e\u0454\u043a\u0442',
     supportText: 'Stage Builder \u2014 \u0431\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u0438\u0439 \u0456 \u0432\u0456\u0434\u043a\u0440\u0438\u0442\u0438\u0439. \u042f\u043a\u0449\u043e \u0432\u0456\u043d \u0432\u0430\u043c \u043a\u043e\u0440\u0438\u0441\u043d\u0438\u0439, \u043c\u043e\u0436\u0435\u0442\u0435 \u043f\u0456\u0434\u0442\u0440\u0438\u043c\u0430\u0442\u0438 \u0440\u043e\u0437\u0440\u043e\u0431\u043a\u0443:',
@@ -2754,7 +2752,6 @@ export const enMessages: MessageTree = {
   footer: {
     feedbackHeading: 'Feedback',
     feedbackText: 'Found a bug, have a suggestion, or want to leave a review? Reach out:',
-    feedbackEmail: 'Email',
     feedbackTelegram: 'Telegram',
     supportHeading: 'Support the project',
     supportText: 'Stage Builder is free and open. If you find it useful, consider supporting development:',

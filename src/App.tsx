@@ -1732,10 +1732,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
           <h3 className="app__footer-heading">{tree.footer.feedbackHeading}</h3>
           <p className="app__footer-text">{tree.footer.feedbackText}</p>
           <div className="app__footer-links">
-            <a href="mailto:parshencevdenis@gmail.com" className="app__footer-link">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              {tree.footer.feedbackEmail}
-            </a>
             <a href="https://t.me/denysparshentsev" target="_blank" rel="noopener noreferrer" className="app__footer-link">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.013 12.013 0 0 0 11.944 0Zm5.654 8.22l-1.7 8.013c-.127.6-.468.748-.95.466l-2.624-1.934l-1.266 1.218a.659.659 0 0 1-.527.257l.188-2.674l4.871-4.4c.212-.188-.046-.293-.328-.105l-6.02 3.79l-2.594-.81c-.564-.176-.575-.564.118-.835l10.14-3.91c.47-.17.882.113.692.924Z"/></svg>
               {tree.footer.feedbackTelegram}
