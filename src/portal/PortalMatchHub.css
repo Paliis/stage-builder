@@ -77,10 +77,10 @@
     grid-template-areas:
       'hub-title cal'
       'hub-tools cal';
-    column-gap: 1.85rem;
+    /* Do not use `gap: unset` here — it resets column-gap/row-gap above. */
     row-gap: 0.55rem;
+    column-gap: 2rem;
     align-items: start;
-    gap: unset;
   }
 
   .portal-match-hub__masthead-title-row {
@@ -121,6 +121,24 @@
   .portal-match-hub__masthead-tools .portal-match-hub__filters-stack {
     margin-top: 0;
   }
+
+  .portal-match-hub__masthead-tools .portal-match-hub__filters-grid {
+    gap: 0.95rem;
+  }
+
+  /* Trigger для бічного drawer — кнопка справа, не «горизонтальна смуга». */
+  .portal-match-hub__calendar-open-wrap {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .portal-match-hub__calendar-open-btn {
+    width: auto;
+    max-width: 100%;
+    min-width: 11.5rem;
+    padding-inline: 1.2rem;
+    justify-content: center;
+  }
 }
 
 .portal-match-hub__calendar-open-wrap {
@@ -128,8 +146,8 @@
   flex-shrink: 0;
 }
 
+/* Width for “Календар” is set in @media (max-width: 900px) so it does not override flex-end layout. */
 .portal-match-hub__calendar-open-btn {
-  width: 100%;
   justify-content: center;
 }
 
