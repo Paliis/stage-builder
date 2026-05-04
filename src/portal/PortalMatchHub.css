@@ -18,35 +18,55 @@
   text-decoration: underline;
 }
 
-.portal-match-hub__title-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem 1.35rem;
-  margin-bottom: 0.5rem;
+/* Full-width title row, then search + filters (left) aligned with calendar (right). */
+.portal-match-hub__masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(13.25rem, 17.75rem);
+  grid-template-areas:
+    'title title'
+    'controls cal';
+  column-gap: 1.35rem;
+  row-gap: 0.65rem;
+  align-items: start;
+  margin-bottom: 1.35rem;
   width: 100%;
 }
 
-.portal-match-hub__page-title {
-  flex: 1 1 min(100%, 18rem);
+.portal-match-hub__masthead-title {
+  grid-area: title;
   margin: 0;
+}
+
+.portal-match-hub__masthead-title-solo {
+  margin: 0 0 0.5rem;
+}
+
+.portal-match-hub__masthead-controls {
+  grid-area: controls;
   min-width: 0;
 }
 
-/* Calendar next to page title (right on wide screens, full width on narrow). */
-.portal-match-hub__calendar-panel--head {
-  flex: 0 1 17.75rem;
-  width: 100%;
+.portal-match-hub__masthead > .portal-match-hub__calendar-panel--head {
+  grid-area: cal;
+  align-self: start;
+  margin-left: 0;
   max-width: 17.75rem;
-  margin-left: auto;
+  width: 100%;
+  justify-self: end;
 }
 
-@media (max-width: 640px) {
-  .portal-match-hub__calendar-panel--head {
-    flex: 1 1 100%;
+@media (max-width: 720px) {
+  .portal-match-hub__masthead {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'title'
+      'controls'
+      'cal';
+  }
+
+  .portal-match-hub__masthead > .portal-match-hub__calendar-panel--head {
+    justify-self: stretch;
     max-width: none;
-    margin-left: 0;
   }
 }
 
@@ -54,17 +74,17 @@
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
-  margin: 0 0 1.35rem;
+  margin: 0;
   width: 100%;
   max-width: none;
 }
 
-/* Published hub: title row rhythm */
-.portal-match-hub__title-row .portal-home__hero-title {
-  margin-bottom: 0;
+.portal-match-hub__masthead .portal-match-hub__search-block {
+  width: 100%;
+  max-width: 22rem;
 }
 
-/* —— Search (prominent) */
+/* —— Search (prominent; width capped in masthead via .masthead .search-block) */
 
 .portal-match-hub__search-block {
   width: 100%;
