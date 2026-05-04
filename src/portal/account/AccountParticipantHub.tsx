@@ -391,7 +391,9 @@ export function AccountParticipantHub({
                   onChange={(e) => setDefClass(e.target.value)}
                   disabled={defSaving}
                   autoComplete="off"
+                  placeholder={p.accountParticipantFieldClassificationPlaceholder}
                 />
+                <span className="portal-account__field-hint">{p.accountParticipantFieldClassificationHint}</span>
               </label>
               <label className="portal-account__field">
                 {p.matchDetailRegistrationPFOptional}

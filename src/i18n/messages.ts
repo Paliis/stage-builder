@@ -615,6 +615,9 @@ export type MessageTree = {
     accountParticipantFieldWeaponPlaceholder: string
     accountParticipantOptionNotSelected: string
     accountParticipantDivisionSelectWeaponFirst: string
+    /** Under classification field on account hub — not weapon class. */
+    accountParticipantFieldClassificationHint: string
+    accountParticipantFieldClassificationPlaceholder: string
     /** Shown when match routes disabled but profile form still visible. */
     accountParticipantMatchPortalOffHint: string
     accountParticipantDefaultsSave: string
@@ -1418,7 +1421,7 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationFieldSquad: 'Сквод',
     matchDetailRegistrationSelectSquad: 'Оберіть сквод',
     matchDetailRegistrationDivision: 'Дивізіон',
-    matchDetailRegistrationClass: 'Клас',
+    matchDetailRegistrationClass: 'Класифікація',
     matchDetailRegistrationPFOptional: 'Power factor (необов’язково)',
     matchDetailRegistrationPFNone: '—',
     matchDetailRegistrationPFMajor: 'Major',
@@ -1582,6 +1585,9 @@ export const ukMessages: MessageTree = {
     accountParticipantFieldWeaponPlaceholder: 'Оберіть з переліку',
     accountParticipantOptionNotSelected: '—',
     accountParticipantDivisionSelectWeaponFirst: 'Спочатку оберіть клас зброї',
+    accountParticipantFieldClassificationHint:
+      'Рівень стрільця в IPSC (A, B, C, M, GM тощо) — не клас зброї й не дивізіон.',
+    accountParticipantFieldClassificationPlaceholder: 'напр. M, GM',
     accountParticipantMatchPortalOffHint:
       'Модуль «Матчі» у цьому середовищі вимкнено — список заявок приховано. Профіль нижче зберігається для інших середовищ і майбутнього експорту.',
     accountParticipantDefaultsSave: 'Зберегти',
@@ -2388,7 +2394,7 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationFieldSquad: 'Squad',
     matchDetailRegistrationSelectSquad: 'Select a squad',
     matchDetailRegistrationDivision: 'Division',
-    matchDetailRegistrationClass: 'Class',
+    matchDetailRegistrationClass: 'Classification',
     matchDetailRegistrationPFOptional: 'Power factor (optional)',
     matchDetailRegistrationPFNone: '—',
     matchDetailRegistrationPFMajor: 'Major',
@@ -2555,6 +2561,9 @@ export const enMessages: MessageTree = {
     accountParticipantFieldWeaponPlaceholder: 'Select from list',
     accountParticipantOptionNotSelected: '—',
     accountParticipantDivisionSelectWeaponFirst: 'Select a weapon class first',
+    accountParticipantFieldClassificationHint:
+      'Your IPSC shooter grade (e.g. A, B, C, M, GM) — not weapon class or division.',
+    accountParticipantFieldClassificationPlaceholder: 'e.g. M, GM',
     accountParticipantMatchPortalOffHint:
       'The Matches module is off in this environment — your registration list is hidden. The profile below is still saved.',
     accountParticipantDefaultsSave: 'Save',
