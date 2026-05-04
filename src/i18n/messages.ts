@@ -385,6 +385,12 @@ export type MessageTree = {
     portalMatchesHubCalendarNextAria: string
     portalMatchesHubMonthJumpLabel: string
     portalMatchesHubCalendarAria: string
+    /** Match hub: open calendar in modal (narrow viewports). */
+    portalMatchesHubCalendarOpenButton: string
+    /** Match hub: modal dialog title for calendar picker. */
+    portalMatchesHubCalendarModalTitle: string
+    /** Match hub: close calendar modal (visible label / aria where needed). */
+    portalMatchesHubCalendarModalClose: string
     /** `formatTemplate`: `{{date}}` → YYYY-MM-DD (local calendar day label). */
     portalMatchesHubDayButtonAria: string
     portalMatchesHubNoMatchesFiltered: string
@@ -1363,6 +1369,9 @@ export const ukMessages: MessageTree = {
     portalMatchesHubCalendarNextAria: 'Наступний місяць',
     portalMatchesHubMonthJumpLabel: 'Місяць',
     portalMatchesHubCalendarAria: 'Календар днів із матчами',
+    portalMatchesHubCalendarOpenButton: 'Календар',
+    portalMatchesHubCalendarModalTitle: 'Календар',
+    portalMatchesHubCalendarModalClose: 'Закрити',
     portalMatchesHubDayButtonAria: 'Фільтр списку за день {{date}}',
     portalMatchesHubNoMatchesFiltered:
       'За поточними умовами нічого не знайдено. Змініть пошук, діапазон дат, тип події, рівень, календар і спробуйте «Скинути фільтри».',
@@ -2345,6 +2354,9 @@ export const enMessages: MessageTree = {
     portalMatchesHubCalendarNextAria: 'Next month',
     portalMatchesHubMonthJumpLabel: 'Month',
     portalMatchesHubCalendarAria: 'Calendar of days with matches',
+    portalMatchesHubCalendarOpenButton: 'Calendar',
+    portalMatchesHubCalendarModalTitle: 'Calendar',
+    portalMatchesHubCalendarModalClose: 'Close',
     portalMatchesHubDayButtonAria: 'Filter list to {{date}}',
     portalMatchesHubNoMatchesFiltered:
       'Nothing matches these filters yet. Adjust search, dates, event type, level, or tap "Clear filters".',

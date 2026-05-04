@@ -1,4 +1,5 @@
 import { useCallback, useDeferredValue, useEffect, useId, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { formatTemplate } from '../i18n/format'
 import type { Locale } from '../i18n/messages'
@@ -27,6 +28,23 @@ import './PortalMatchesUi.css'
  * Month, event type, and weapon type stay visible either way.
  */
 const SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS = false
+
+/** Inline calendar in masthead at this width and above; below — modal + full-width tools. */
+const MATCH_HUB_CALENDAR_INLINE_MQ = '(min-width: 901px)'
+
+function useMatchMediaQuery(query: string) {
+  const [matches, setMatches] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(query).matches : true,
+  )
+  useEffect(() => {
+    const mq = window.matchMedia(query)
+    setMatches(mq.matches)
+    const onChange = () => setMatches(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [query])
+  return matches
+}
 
 function weekdayShortLabels(locale: Locale): string[] {
   const loc = locale === 'uk' ? 'uk-UA' : 'en-GB'
@@ -63,6 +81,7 @@ function MatchHubSearchIcon() {
 /** Published match catalog hub section — used at `/:locale/matches` (not the portal tool launcher). */
 export function PortalPublishedMatchesSection() {
   const filterFieldId = useId()
+  const calendarModalTitleId = useId()
   const { locale, tree } = useI18n()
   const p = tree.portal
   const configured = isSupabaseConfigured()
@@ -91,7 +110,32 @@ export function PortalPublishedMatchesSection() {
     return { y: d.getFullYear(), m: d.getMonth() }
   })
 
+  const calendarInline = useMatchMediaQuery(MATCH_HUB_CALENDAR_INLINE_MQ)
+  const [calendarModalOpen, setCalendarModalOpen] = useState(false)
+
   const matchPortalOn = isMatchPortalEnabled()
+
+  useEffect(() => {
+    if (calendarInline) setCalendarModalOpen(false)
+  }, [calendarInline])
+
+  useEffect(() => {
+    if (!calendarModalOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setCalendarModalOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [calendarModalOpen])
+
+  useEffect(() => {
+    if (!calendarModalOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [calendarModalOpen])
 
   const load = useCallback(async () => {
     if (!sb || !matchPortalOn) return
@@ -179,8 +223,8 @@ export function PortalPublishedMatchesSection() {
     psLevelFilter !== 'all' ||
     weaponClassFilter !== 'all'
 
-  const calendarPanel = (
-    <div className="portal-match-hub__calendar-panel portal-match-hub__calendar-panel--head">
+  const renderCalendarPanel = (variant: 'head' | 'modal', closeModalOnPick?: boolean) => (
+    <div className={`portal-match-hub__calendar-panel portal-match-hub__calendar-panel--${variant}`}>
       <div className="portal-match-hub__calendar-head">
         <p className="portal-match-hub__calendar-month-title">{monthTitle}</p>
         <div className="portal-match-hub__calendar-nav">
@@ -234,7 +278,10 @@ export function PortalPublishedMatchesSection() {
                 aria-label={aria}
                 aria-pressed={isSel}
                 disabled={n === 0}
-                onClick={() => setSelectedDay((prev) => (prev === cell.dateKey ? null : cell.dateKey))}
+                onClick={() => {
+                  setSelectedDay((prev) => (prev === cell.dateKey ? null : cell.dateKey))
+                  if (closeModalOnPick) setCalendarModalOpen(false)
+                }}
               >
                 {cell.day}
                 {n > 0 ? <span className="portal-match-hub__calendar-dot" aria-hidden /> : null}
@@ -372,8 +419,19 @@ export function PortalPublishedMatchesSection() {
                 </div>
               </div>
             </div>
+            {!calendarInline ?
+              <div className="portal-match-hub__calendar-open-wrap">
+                <button
+                  type="button"
+                  className="portal-btn portal-btn--secondary portal-btn--compact portal-match-hub__calendar-open-btn"
+                  onClick={() => setCalendarModalOpen(true)}
+                >
+                  {p.portalMatchesHubCalendarOpenButton}
+                </button>
+              </div>
+            : null}
           </div>
-          {calendarPanel}
+          {calendarInline ? renderCalendarPanel('head') : null}
         </div>
       </div>
       :
@@ -465,6 +523,40 @@ export function PortalPublishedMatchesSection() {
           </div>
         </div>
       )}
+
+      {calendarModalOpen && !calendarInline ?
+        createPortal(
+          <div
+            className="portal-match-hub__calendar-modal-backdrop"
+            role="presentation"
+            onClick={() => setCalendarModalOpen(false)}
+          >
+            <div
+              className="portal-match-hub__calendar-modal-dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={calendarModalTitleId}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="portal-match-hub__calendar-modal-header">
+                <h2 id={calendarModalTitleId} className="portal-match-hub__calendar-modal-title">
+                  {p.portalMatchesHubCalendarModalTitle}
+                </h2>
+                <button
+                  type="button"
+                  className="portal-match-hub__calendar-modal-close"
+                  aria-label={p.portalMatchesHubCalendarModalClose}
+                  onClick={() => setCalendarModalOpen(false)}
+                >
+                  <span aria-hidden>×</span>
+                </button>
+              </div>
+              <div className="portal-match-hub__calendar-modal-body">{renderCalendarPanel('modal', true)}</div>
+            </div>
+          </div>,
+          document.body,
+        )
+      : null}
     </section>
   )
 }
