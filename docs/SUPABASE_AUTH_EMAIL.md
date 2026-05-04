@@ -2,16 +2,11 @@
 
 Текст **«Confirm your signup»**, **«powered by Supabase»** і **ім’я відправника** задаються **не в коді Stage Builder**, а в **проєкті Supabase** (Dashboard) і/або у **SMTP-провайдера**.
 
-## 1. Змінити текст і вигляд листа
+Цей файл — **довідник** (змінні шаблону, поля SMTP, типові причини `localhost` у листі), а не покроковий мануал. Повний шлях налаштування — у [документації Supabase](https://supabase.com/docs/guides/auth) та провайдера пошти.
 
-1. У [Supabase Dashboard](https://supabase.com/dashboard) відкрийте проєкт → **Authentication** → **Email Templates**.
-2. Окремо редагуються шаблони: **Confirm signup**, **Magic link**, **Reset password** тощо.
-3. У HTML можна використовувати змінні Go templates, наприклад:
-   - `{{ .ConfirmationURL }}` — посилання для підтвердження;
-   - `{{ .SiteURL }}`, `{{ .Email }}` — залежно від типу листа (див. підказки в редакторі шаблону в Dashboard).
-4. **Subject** (тема листа) теж задається в цьому ж розділі.
+## 1. Шаблони листів (коротко)
 
-Після зміни шаблону збережіть і надішліть тестову реєстрацію — лист має прийти з новим HTML/темою.
+У Dashboard: **Authentication** → **Email Templates** — шаблони **Confirm signup** тощо; у HTML використовуйте змінні з підказок редактора (наприклад `{{ .ConfirmationURL }}`, `{{ .SiteURL }}`). Тема листа — у тому ж екрані.
 
 ## 2. Інше «від кого» (display name) і свій домен
 
