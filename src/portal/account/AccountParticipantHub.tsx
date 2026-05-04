@@ -288,7 +288,9 @@ export function AccountParticipantHub({
         <h4 id="hub-profile-heading" className="portal-account__hub-card-title">
           {p.accountParticipantDefaultsHeading}
         </h4>
-        <p className="portal-account__hub-card-lead">{p.accountParticipantProfileSectionLead}</p>
+        {p.accountParticipantProfileSectionLead.trim() ?
+          <p className="portal-account__hub-card-lead">{p.accountParticipantProfileSectionLead}</p>
+        : null}
         {defLoading ?
           <p className="portal-account__hub-muted">{p.matchesLoadingDetail}</p>
         :
@@ -302,7 +304,6 @@ export function AccountParticipantHub({
             <div className="portal-account__psc-grid">
               <fieldset className="portal-account__categories-fieldset">
                 <legend className="portal-account__categories-legend">{p.accountParticipantFieldCategory}</legend>
-                <span className="portal-account__field-hint">{p.accountParticipantFieldCategoryHint}</span>
                 <div className="portal-account__categories-grid" role="group">
                   {SHOOTER_CATEGORIES.map((c) => {
                     const checked = defCategories.includes(c.id)
@@ -358,7 +359,7 @@ export function AccountParticipantHub({
                     </option>
                   ))}
                 </select>
-                {!defWeaponClass ?
+                {!defWeaponClass && p.accountParticipantDivisionSelectWeaponFirst ?
                   <span className="portal-account__field-hint">{p.accountParticipantDivisionSelectWeaponFirst}</span>
                 : null}
               </label>

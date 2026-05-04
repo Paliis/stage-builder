@@ -604,13 +604,11 @@ export type MessageTree = {
     accountMyRegistrationsCancelling: string
     accountMyRegistrationsMatchUnavailable: string
     accountParticipantDefaultsHeading: string
-    accountParticipantDefaultsLead: string
-    /** PractiScore-oriented defaults card body (account page). */
+    /** Optional intro under shooter profile card title (account page). */
     accountParticipantProfileSectionLead: string
     accountParticipantFieldRegion: string
     accountParticipantFieldRegionPlaceholder: string
     accountParticipantFieldCategory: string
-    accountParticipantFieldCategoryHint: string
     accountParticipantFieldWeaponClass: string
     accountParticipantFieldWeaponPlaceholder: string
     accountParticipantOptionNotSelected: string
@@ -1521,14 +1519,12 @@ export const ukMessages: MessageTree = {
     accountSummaryHeading: 'Поточний вхід',
     accountSummaryLogin: 'Логін:',
     accountShooterCabinetHeading: 'Кабінет стрільця',
-    accountShooterCabinetLead:
-      'Ви можете реєструватися на опубліковані матчі, коли знаєте посилання або анонс. Роль «Учасник» є для всіх, хто увійшов у портал.',
+    accountShooterCabinetLead: 'Реєстрація на матчі — за посиланням від організатора.',
     accountShooterPortalLinkLabel: 'Головна порталу',
-    accountShooterPortalLinkSuffix: ' — новини інструментів та перехід до Stage Builder тощо; пряме посилання на картку матчу організатор зазвичай надсилає окремо.',
+    accountShooterPortalLinkSuffix: '',
     accountPageGoOrganizer: 'Мої матчі (організатор)',
     accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
-    accountPageShooterSoon:
-      'На сторінці «Матчі» — огляд запланованих опублікованих подій. Нижче — ваші заявки й типові поля форми для наступної реєстрації (їх також можна змінити на картці матчу).',
+    accountPageShooterSoon: 'Нижче — заявки на матчі та поля профілю.',
     accountOrganizerSectionHeading: 'Організатор матчів',
     accountOrganizerActiveLead: 'У вас є права створювати та вести матчі в цьому порталі.',
     accountOrganizerApplyTeaser:
@@ -1569,22 +1565,17 @@ export const ukMessages: MessageTree = {
     accountMyRegistrationsCancel: 'Скасувати заявку',
     accountMyRegistrationsCancelling: 'Скасування…',
     accountMyRegistrationsMatchUnavailable: '(картка недоступна)',
-    accountParticipantDefaultsHeading: 'Профіль стрільця (PractiScore)',
-    accountParticipantDefaultsLead:
-      'Ці поля підставляються у форму реєстрації на картці матчу (можна змінити перед відправкою).',
-    accountParticipantProfileSectionLead:
-      'Типові поля для нових заявок і подальшого експорту: категорії (мультивибір), клас зброї, дивізіон залежно від класу, регіон, фактор потужності.',
+    accountParticipantDefaultsHeading: 'Профіль стрільця',
+    accountParticipantProfileSectionLead: '',
     accountParticipantFieldRegion: 'Регіон / область',
     accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
     accountParticipantFieldCategory: 'Категорії',
-    accountParticipantFieldCategoryHint:
-      'Необов’язково. Є пункт «Загальна»; якщо нічого не позначено — під капотом зберігається «Загальна» для реєстрації та експорту.',
     accountParticipantFieldWeaponClass: 'Клас зброї',
-    accountParticipantFieldWeaponPlaceholder: 'Оберіть з переліку',
+    accountParticipantFieldWeaponPlaceholder: '',
     accountParticipantOptionNotSelected: '—',
-    accountParticipantDivisionSelectWeaponFirst: 'Спочатку оберіть клас зброї',
+    accountParticipantDivisionSelectWeaponFirst: '',
     accountParticipantMatchPortalOffHint:
-      'Модуль «Матчі» у цьому середовищі вимкнено — список заявок приховано. Профіль нижче зберігається для інших середовищ і майбутнього експорту.',
+      'Матчі в цьому середовищі вимкнено — список заявок не показується. Профіль нижче все одно зберігається.',
     accountParticipantDefaultsSave: 'Зберегти',
     accountParticipantDefaultsSaving: 'Збереження…',
     accountParticipantDefaultsSaved: 'Збережено.',
@@ -2494,15 +2485,12 @@ export const enMessages: MessageTree = {
     accountSummaryHeading: 'Signed in',
     accountSummaryLogin: 'Login:',
     accountShooterCabinetHeading: 'Shooter hub',
-    accountShooterCabinetLead:
-      'You can register for published matches when you have a link or announcement from an organizer. The Participant role applies to anyone signed in.',
+    accountShooterCabinetLead: 'Match sign-up uses the link from an organizer.',
     accountShooterPortalLinkLabel: 'Portal home',
-    accountShooterPortalLinkSuffix:
-      ' — product cards and Stage Builder entry; organizers usually send a direct link to each match.',
+    accountShooterPortalLinkSuffix: '',
     accountPageGoOrganizer: 'My matches (organizer)',
     accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
-    accountPageShooterSoon:
-      'Use the «Matches» page for the public schedule. Below: your sign-ups and default fields for the next sign-up (you can override them on each match page).',
+    accountPageShooterSoon: 'Below: your sign-ups and profile fields.',
     accountOrganizerSectionHeading: 'Match organizer',
     accountOrganizerActiveLead: 'You can create and manage matches on this portal.',
     accountOrganizerApplyTeaser:
@@ -2543,22 +2531,17 @@ export const enMessages: MessageTree = {
     accountMyRegistrationsCancel: 'Cancel sign-up',
     accountMyRegistrationsCancelling: 'Cancelling…',
     accountMyRegistrationsMatchUnavailable: '(match unavailable)',
-    accountParticipantDefaultsHeading: 'Shooter profile (PractiScore)',
-    accountParticipantDefaultsLead:
-      'Prefills the sign-up form on a match page (you can edit before submitting).',
-    accountParticipantProfileSectionLead:
-      'Defaults for new registrations and future export: categories (multi-select), weapon class, division (depends on class), region, power factor.',
+    accountParticipantDefaultsHeading: 'Shooter profile',
+    accountParticipantProfileSectionLead: '',
     accountParticipantFieldRegion: 'Region / state',
     accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
     accountParticipantFieldCategory: 'Categories',
-    accountParticipantFieldCategoryHint:
-      'Optional. Includes «General»; if nothing is checked, «General» is stored for registration and export.',
     accountParticipantFieldWeaponClass: 'Weapon class',
-    accountParticipantFieldWeaponPlaceholder: 'Select from list',
+    accountParticipantFieldWeaponPlaceholder: '',
     accountParticipantOptionNotSelected: '—',
-    accountParticipantDivisionSelectWeaponFirst: 'Select a weapon class first',
+    accountParticipantDivisionSelectWeaponFirst: '',
     accountParticipantMatchPortalOffHint:
-      'The Matches module is off in this environment — your registration list is hidden. The profile below is still saved.',
+      'Matches are off in this environment — no sign-up list. Your profile is still saved below.',
     accountParticipantDefaultsSave: 'Save',
     accountParticipantDefaultsSaving: 'Saving…',
     accountParticipantDefaultsSaved: 'Saved.',
