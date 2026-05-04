@@ -18,22 +18,21 @@
   text-decoration: underline;
 }
 
-/* Full-width title row, then search + filters (left) aligned with calendar (right). */
+/* Full-width title, then one row: search + filters (left) | calendar (right), tops aligned. */
 .portal-match-hub__masthead {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(13.25rem, 17.75rem);
-  grid-template-areas:
-    'title title'
-    'controls cal';
-  column-gap: 1.35rem;
-  row-gap: 0.65rem;
-  align-items: start;
-  margin-bottom: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
   width: 100%;
 }
 
+.portal-match-hub__masthead-title-row {
+  width: 100%;
+  min-width: 0;
+}
+
 .portal-match-hub__masthead-title {
-  grid-area: title;
   margin: 0;
 }
 
@@ -41,14 +40,21 @@
   margin: 0 0 0.5rem;
 }
 
-.portal-match-hub__masthead-controls {
-  grid-area: controls;
+.portal-match-hub__masthead-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(13.25rem, 17.75rem);
+  column-gap: 1.35rem;
+  row-gap: 0;
+  align-items: start;
+  width: 100%;
   min-width: 0;
 }
 
-.portal-match-hub__masthead > .portal-match-hub__calendar-panel--head {
-  grid-area: cal;
-  align-self: start;
+.portal-match-hub__masthead-tools {
+  min-width: 0;
+}
+
+.portal-match-hub__masthead-body > .portal-match-hub__calendar-panel--head {
   margin-left: 0;
   max-width: 17.75rem;
   width: 100%;
@@ -56,15 +62,14 @@
 }
 
 @media (max-width: 720px) {
-  .portal-match-hub__masthead {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'title'
-      'cal'
-      'controls';
+  .portal-match-hub__masthead-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
   }
 
-  .portal-match-hub__masthead > .portal-match-hub__calendar-panel--head {
+  .portal-match-hub__masthead-body > .portal-match-hub__calendar-panel--head {
+    order: -1;
     justify-self: stretch;
     max-width: none;
   }
@@ -77,11 +82,15 @@
   margin: 0;
   width: 100%;
   max-width: none;
+  align-items: flex-start;
 }
 
 .portal-match-hub__masthead .portal-match-hub__search-block {
-  width: 100%;
-  max-width: 22rem;
+  box-sizing: border-box;
+  width: min(18.75rem, 100%);
+  max-width: 18.75rem;
+  flex: 0 1 auto;
+  align-self: flex-start;
 }
 
 /* —— Search (prominent; width capped in masthead via .masthead .search-block) */

@@ -254,35 +254,36 @@ export function PortalPublishedMatchesSection() {
         </Link>
       </nav>
 
-      <div className="portal-match-hub__title-row">
-        <h1 id="portal-published-matches" className="portal-home__hero-title portal-match-hub__page-title">
-          {p.portalPublishedMatchesHeading}
-        </h1>
-        {allRows !== undefined && !error ? calendarPanel : null}
-      </div>
-
       {allRows !== undefined && !error ?
-      <div className="portal-match-hub__toolbar">
-        <div className="portal-match-hub__search-block">
-          <div className="portal-match-hub__search-shell">
-            <span className="portal-match-hub__search-icon" aria-hidden>
-              <MatchHubSearchIcon />
-            </span>
-            <input
-              type="search"
-              className="portal-match-hub__search-input"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder={p.portalMatchesHubSearchPlaceholder}
-              autoComplete="off"
-              spellCheck={false}
-              aria-label={p.portalMatchesHubSearchAria}
-            />
-          </div>
+      <div className="portal-match-hub__masthead">
+        <div className="portal-match-hub__masthead-title-row">
+          <h1 id="portal-published-matches" className="portal-home__hero-title portal-match-hub__masthead-title">
+            {p.portalPublishedMatchesHeading}
+          </h1>
         </div>
+        <div className="portal-match-hub__masthead-body">
+          <div className="portal-match-hub__masthead-tools">
+            <div className="portal-match-hub__toolbar">
+              <div className="portal-match-hub__search-block">
+                <div className="portal-match-hub__search-shell">
+                  <span className="portal-match-hub__search-icon" aria-hidden>
+                    <MatchHubSearchIcon />
+                  </span>
+                  <input
+                    type="search"
+                    className="portal-match-hub__search-input"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    placeholder={p.portalMatchesHubSearchPlaceholder}
+                    autoComplete="off"
+                    spellCheck={false}
+                    aria-label={p.portalMatchesHubSearchAria}
+                  />
+                </div>
+              </div>
 
-        <div className="portal-match-hub__filters-stack">
-          <div className="portal-match-hub__filters-grid">
+              <div className="portal-match-hub__filters-stack">
+                <div className="portal-match-hub__filters-grid">
             <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-month`}>
               <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubMonthJumpLabel}</span>
               <input
@@ -329,49 +330,57 @@ export function PortalPublishedMatchesSection() {
                 ))}
               </select>
             </label>
-          </div>
+                </div>
 
-          <div
-            className={`portal-match-hub__filters-grid portal-match-hub__filters-grid--extended${SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? '' : ' portal-match-hub__filters-grid--hidden'}`}
-            aria-hidden={SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? undefined : true}
-          >
-            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-from`}>
-              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateFrom}</span>
-              <input
-                id={`${filterFieldId}-date-from`}
-                type="date"
-                value={dateFrom}
-                onChange={(e) => setDateFrom(e.target.value)}
-              />
-            </label>
-            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-to`}>
-              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateTo}</span>
-              <input id={`${filterFieldId}-date-to`} type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
-            </label>
-            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-ps`}>
-              <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterPsLevel}</span>
-              <select
-                id={`${filterFieldId}-ps`}
-                value={psLevelFilter}
-                onChange={(e) => setPsLevelFilter(e.target.value as 'all' | PsMatchLevel)}
-              >
-                <option value="all">{p.portalMatchesHubFilterPsLevelAll}</option>
-                <option value="L1">{p.matchPsLevelL1}</option>
-                <option value="L2">{p.matchPsLevelL2}</option>
-                <option value="L3">{p.matchPsLevelL3}</option>
-                <option value="L4">{p.matchPsLevelL4}</option>
-                <option value="L5">{p.matchPsLevelL5}</option>
-              </select>
-            </label>
-            <div className="portal-match-hub__filter-actions">
-              <button type="button" className="portal-btn portal-btn--secondary portal-btn--compact" onClick={clearFilters}>
-                {p.portalMatchesHubClearFilters}
-              </button>
+                <div
+                  className={`portal-match-hub__filters-grid portal-match-hub__filters-grid--extended${SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? '' : ' portal-match-hub__filters-grid--hidden'}`}
+                  aria-hidden={SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? undefined : true}
+                >
+                  <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-from`}>
+                    <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateFrom}</span>
+                    <input
+                      id={`${filterFieldId}-date-from`}
+                      type="date"
+                      value={dateFrom}
+                      onChange={(e) => setDateFrom(e.target.value)}
+                    />
+                  </label>
+                  <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-to`}>
+                    <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateTo}</span>
+                    <input id={`${filterFieldId}-date-to`} type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+                  </label>
+                  <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-ps`}>
+                    <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterPsLevel}</span>
+                    <select
+                      id={`${filterFieldId}-ps`}
+                      value={psLevelFilter}
+                      onChange={(e) => setPsLevelFilter(e.target.value as 'all' | PsMatchLevel)}
+                    >
+                      <option value="all">{p.portalMatchesHubFilterPsLevelAll}</option>
+                      <option value="L1">{p.matchPsLevelL1}</option>
+                      <option value="L2">{p.matchPsLevelL2}</option>
+                      <option value="L3">{p.matchPsLevelL3}</option>
+                      <option value="L4">{p.matchPsLevelL4}</option>
+                      <option value="L5">{p.matchPsLevelL5}</option>
+                    </select>
+                  </label>
+                  <div className="portal-match-hub__filter-actions">
+                    <button type="button" className="portal-btn portal-btn--secondary portal-btn--compact" onClick={clearFilters}>
+                      {p.portalMatchesHubClearFilters}
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          {calendarPanel}
         </div>
       </div>
-      : null}
+      :
+      <h1 id="portal-published-matches" className="portal-home__hero-title portal-match-hub__masthead-title-solo">
+        {p.portalPublishedMatchesHeading}
+      </h1>
+      }
 
       {error ?
         <p role="alert" className="portal-home__matches-published-error">
