@@ -18,7 +18,7 @@
   text-decoration: underline;
 }
 
-/* Full-width title, then one row: search + filters (left) | calendar (right), tops aligned. */
+/* Full-width title, then search + filters (1fr) | compact calendar (right edge). */
 .portal-match-hub__masthead {
   display: flex;
   flex-direction: column;
@@ -40,10 +40,10 @@
   margin: 0 0 0.5rem;
 }
 
-/* Left column width matches search + filters; calendar column narrower; row height = max(tools, cal). */
+/* Full content width: tools (1fr) + fixed calendar on the right edge of the hub. */
 .portal-match-hub__masthead-body {
   display: grid;
-  grid-template-columns: minmax(0, 26.5rem) minmax(10.25rem, 12.75rem);
+  grid-template-columns: minmax(0, 1fr) minmax(10.25rem, 12.75rem);
   column-gap: 1.15rem;
   row-gap: 0;
   align-items: stretch;
@@ -54,21 +54,25 @@
 .portal-match-hub__masthead-tools {
   min-width: 0;
   width: 100%;
-  max-width: 26.5rem;
-  justify-self: start;
-  align-self: start;
+  max-width: none;
+  justify-self: stretch;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fill grid cell height so filters-stack margin-top:auto reaches the calendar bottom. */
+.portal-match-hub__masthead-tools > .portal-match-hub__toolbar {
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .portal-match-hub__masthead-body > .portal-match-hub__calendar-panel--head {
-  margin-left: 0;
   width: 100%;
   max-width: 12.75rem;
   min-width: 0;
   justify-self: end;
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
+  align-self: end;
 }
 
 @media (max-width: 720px) {
@@ -81,24 +85,24 @@
 
   .portal-match-hub__masthead-tools {
     max-width: none;
+    align-self: stretch;
+  }
+
+  .portal-match-hub__masthead-tools > .portal-match-hub__toolbar {
+    flex: 0 0 auto;
+  }
+
+  .portal-match-hub__masthead-tools .portal-match-hub__filters-stack {
+    margin-top: 0;
   }
 
   .portal-match-hub__masthead-body > .portal-match-hub__calendar-panel--head {
     order: -1;
     max-width: none;
+    width: 100%;
+    margin-left: 0;
     justify-self: stretch;
     align-self: stretch;
-    height: auto;
-    min-height: 0;
-  }
-
-  .portal-match-hub__calendar-panel--head .portal-match-hub__calendar-grid {
-    grid-auto-rows: unset;
-  }
-
-  .portal-match-hub__calendar-panel--head .portal-match-hub__calendar-grid > li {
-    aspect-ratio: 1;
-    min-height: 1.85rem;
   }
 }
 
@@ -123,6 +127,7 @@
 /* Search + filters share one column width (equal outer edges). */
 .portal-match-hub__masthead-tools .portal-match-hub__filters-stack {
   gap: 0.85rem;
+  margin-top: auto;
 }
 
 .portal-match-hub__masthead-tools .portal-match-hub__filters-grid {
@@ -332,7 +337,7 @@
   background: var(--btn-bg);
 }
 
-/* Compact hub calendar: shorter column; stretches to match tools column height on desktop. */
+/* Compact hub calendar: fixed column width; natural height (bottom-aligned with tools row). */
 .portal-match-hub__calendar-panel--head {
   padding: 0.42rem 0.48rem;
   border-radius: 0.65rem;
@@ -355,15 +360,13 @@
 }
 
 .portal-match-hub__calendar-panel--head .portal-match-hub__calendar-grid {
-  flex: 1 1 auto;
-  min-height: 0;
   gap: 0.12rem;
-  grid-auto-rows: minmax(0, 1fr);
 }
 
 .portal-match-hub__calendar-panel--head .portal-match-hub__calendar-grid > li {
-  aspect-ratio: unset;
+  aspect-ratio: 1;
   min-height: 0;
+  min-width: 0;
 }
 
 .portal-match-hub__calendar-panel--head .portal-match-hub__calendar-dow {
