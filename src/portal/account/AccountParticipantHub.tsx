@@ -11,6 +11,8 @@ import {
   isValidDivisionForWeapon,
   weaponClassLabel,
 } from '../shooterProfileCatalog'
+import { squareCropImageToJpeg } from '../squareCropImage'
+import { dispatchParticipantAvatarUpdated } from '../useParticipantAvatarUrl'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 import './AccountParticipantHub.css'
@@ -206,13 +208,11 @@ export function AccountParticipantHub({
       }
       setAvatarBusy(true)
       try {
-        const ext =
-          file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg'
-        const objectPath = `${userId}/avatar-${Date.now()}.${ext}`
-        const { error: upErr } = await sb.storage.from('participant-avatars').upload(objectPath, file, {
+        const jpegBlob = await squareCropImageToJpeg(file)
+        const objectPath = `${userId}/avatar-${Date.now()}.jpg`
+        const { error: upErr } = await sb.storage.from('participant-avatars').upload(objectPath, jpegBlob, {
           upsert: false,
-          contentType:
-            file.type === 'image/jpg' || file.type === 'image/jpeg' ? 'image/jpeg' : file.type,
+          contentType: 'image/jpeg',
         })
         if (upErr) {
           setAvatarErr(mapParticipantStorageError(upErr.message, p))
@@ -220,6 +220,9 @@ export function AccountParticipantHub({
         }
         const { data: pub } = sb.storage.from('participant-avatars').getPublicUrl(objectPath)
         setDefAvatarUrl(pub.publicUrl)
+        dispatchParticipantAvatarUpdated(pub.publicUrl)
+      } catch {
+        setAvatarErr(p.accountParticipantAvatarErrCrop)
       } finally {
         setAvatarBusy(false)
       }
@@ -451,6 +454,7 @@ export function AccountParticipantHub({
                         onClick={() => {
                           setDefAvatarUrl('')
                           setAvatarErr(null)
+                          dispatchParticipantAvatarUpdated('')
                         }}
                       >
                         {p.accountParticipantAvatarRemove}
@@ -463,6 +467,9 @@ export function AccountParticipantHub({
                     {avatarErr}
                   </p>
                 : null}
+                <p className="portal-account__field-hint portal-account__avatar-crop-hint">
+                  {p.accountParticipantAvatarCropHint}
+                </p>
               </div>
               <label className="portal-account__field">
                 {p.accountParticipantFieldWeaponClass}

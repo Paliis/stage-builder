@@ -5,6 +5,7 @@ import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient'
 import type { MessageTree } from '../i18n/messages'
 import { useOrganizerPortalStatus } from './useOrganizerPortalStatus'
 import { useSupabaseSession } from './useSupabaseSession'
+import { useParticipantAvatarUrl } from './useParticipantAvatarUrl'
 import './PortalShell.css'
 
 type Props = {
@@ -31,6 +32,7 @@ function ProfileAccountIconSvg() {
 export function PortalHeaderAccount({ locale, p, onAfterSignOut, suppressGuestSignInLink }: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const organizer = useOrganizerPortalStatus(user?.id)
+  const participantAvatarUrl = useParticipantAvatarUrl(user?.id)
 
   const onSignOut = useCallback(async () => {
     if (!isSupabaseConfigured()) return
@@ -85,11 +87,19 @@ export function PortalHeaderAccount({ locale, p, onAfterSignOut, suppressGuestSi
       </div>
       <Link
         to={accountPath}
-        className="portal-shell__account-icon-link"
+        className={
+          participantAvatarUrl ?
+            'portal-shell__account-icon-link portal-shell__account-icon-link--photo'
+          : 'portal-shell__account-icon-link'
+        }
         title={emailForAria}
         aria-label={formatTemplate(p.accountHeaderProfileIconAria, { email: emailForAria })}
       >
-        <ProfileAccountIconSvg />
+        {participantAvatarUrl ?
+          <img src={participantAvatarUrl} alt="" className="portal-shell__account-icon-img" />
+        :
+          <ProfileAccountIconSvg />
+        }
         <span className="portal-shell__sr-only">{p.accountHeaderProfile}</span>
       </Link>
       <button type="button" className="portal-shell__account-sign-out" onClick={() => void onSignOut()}>

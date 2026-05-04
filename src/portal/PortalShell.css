@@ -445,6 +445,18 @@ html.portal-shell__nav-drawer-lock .portal-shell__header-strip {
   color: var(--accent);
 }
 
+.portal-shell__account-icon-link--photo:hover {
+  border-color: var(--accent-border);
+}
+
+.portal-shell__account-icon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
 .portal-shell__account-icon-svg {
   display: block;
   width: 1.15rem;

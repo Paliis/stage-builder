@@ -613,7 +613,10 @@ export type MessageTree = {
     accountParticipantAvatarRemove: string
     accountParticipantAvatarErrType: string
     accountParticipantAvatarErrSize: string
+    accountParticipantAvatarErrCrop: string
     accountParticipantAvatarUploading: string
+    /** Shooter profile: photo is center-cropped to a square for avatar display. */
+    accountParticipantAvatarCropHint: string
     accountParticipantFieldCategory: string
     accountParticipantFieldWeaponClass: string
     accountParticipantFieldWeaponPlaceholder: string
@@ -1583,7 +1586,10 @@ export const ukMessages: MessageTree = {
     accountParticipantAvatarRemove: 'Без фото',
     accountParticipantAvatarErrType: 'Дозволено JPEG, PNG або WebP.',
     accountParticipantAvatarErrSize: 'Файл завеликий (макс. 2 МБ).',
+    accountParticipantAvatarErrCrop: 'Не вдалося прочитати зображення. Спробуйте інший файл.',
     accountParticipantAvatarUploading: 'Завантаження фото…',
+    accountParticipantAvatarCropHint:
+      'Фото автоматично обрізається по центру до квадрата під круглий аватар (у т. ч. у шапці).',
     accountParticipantFieldCategory: 'Категорії',
     accountParticipantFieldWeaponClass: 'Клас зброї',
     accountParticipantFieldWeaponPlaceholder: '',
@@ -2558,7 +2564,10 @@ export const enMessages: MessageTree = {
     accountParticipantAvatarRemove: 'Remove photo',
     accountParticipantAvatarErrType: 'Use JPEG, PNG, or WebP.',
     accountParticipantAvatarErrSize: 'File too large (max 2 MB).',
+    accountParticipantAvatarErrCrop: 'Could not read this image. Try another file.',
     accountParticipantAvatarUploading: 'Uploading photo…',
+    accountParticipantAvatarCropHint:
+      'Photos are center-cropped to a square for the circular avatar (including the header).',
     accountParticipantFieldCategory: 'Categories',
     accountParticipantFieldWeaponClass: 'Weapon class',
     accountParticipantFieldWeaponPlaceholder: '',
