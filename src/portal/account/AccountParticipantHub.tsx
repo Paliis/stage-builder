@@ -15,6 +15,8 @@ import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 import './AccountParticipantHub.css'
 
+type Portal = MessageTree['portal']
+
 const CATEGORY_IDS = new Set(SHOOTER_CATEGORIES.map((c) => c.id))
 const CATEGORY_ORDER = new Map(SHOOTER_CATEGORIES.map((c, i) => [c.id, i]))
 
@@ -27,7 +29,20 @@ function sortCategoryIds(ids: string[]): string[] {
   return [...new Set(ids)].sort((a, b) => (CATEGORY_ORDER.get(a) ?? 99) - (CATEGORY_ORDER.get(b) ?? 99))
 }
 
-type Portal = MessageTree['portal']
+function mapParticipantDbError(raw: string, p: Portal): string {
+  const l = raw.toLowerCase()
+  if (l.includes('does not exist') || l.includes('schema cache')) {
+    return p.accountParticipantErrDbOutdated
+  }
+  return p.accountParticipantErrGeneric
+}
+
+function mapParticipantStorageError(raw: string, p: Portal): string {
+  const l = raw.toLowerCase()
+  if (l.includes('bucket not found')) return p.accountParticipantErrStorage
+  if (l.includes('storage') && l.includes('not found')) return p.accountParticipantErrStorage
+  return p.accountParticipantErrGeneric
+}
 
 type MatchNested = {
   id: string
@@ -146,7 +161,7 @@ export function AccountParticipantHub({
 
     setDefLoading(false)
     if (error) {
-      setDefFeedback(error.message)
+      setDefFeedback(mapParticipantDbError(error.message, p))
       return
     }
     const row = data as {
@@ -174,7 +189,7 @@ export function AccountParticipantHub({
       setDefLastName(typeof row.last_name === 'string' ? row.last_name : '')
       setDefAvatarUrl(typeof row.avatar_url === 'string' ? row.avatar_url : '')
     }
-  }, [sb, userId])
+  }, [sb, userId, p])
 
   const pickAvatarFile = useCallback(
     async (file: File | null) => {
@@ -200,7 +215,7 @@ export function AccountParticipantHub({
             file.type === 'image/jpg' || file.type === 'image/jpeg' ? 'image/jpeg' : file.type,
         })
         if (upErr) {
-          setAvatarErr(upErr.message)
+          setAvatarErr(mapParticipantStorageError(upErr.message, p))
           return
         }
         const { data: pub } = sb.storage.from('participant-avatars').getPublicUrl(objectPath)
@@ -209,7 +224,7 @@ export function AccountParticipantHub({
         setAvatarBusy(false)
       }
     },
-    [sb, userId, p.accountParticipantAvatarErrType, p.accountParticipantAvatarErrSize],
+    [sb, userId, p],
   )
 
   useEffect(() => {
@@ -234,7 +249,7 @@ export function AccountParticipantHub({
     })
     setDefSaving(false)
     if (error) {
-      setDefFeedback(error.message)
+      setDefFeedback(mapParticipantDbError(error.message, p))
       return
     }
     setDefFeedback(p.accountParticipantDefaultsSaved)
@@ -249,7 +264,7 @@ export function AccountParticipantHub({
     defFirstName,
     defLastName,
     defAvatarUrl,
-    p.accountParticipantDefaultsSaved,
+    p,
   ])
 
   function regStatusLabel(s: string): string {

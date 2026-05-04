@@ -624,6 +624,10 @@ export type MessageTree = {
     accountParticipantDefaultsSave: string
     accountParticipantDefaultsSaving: string
     accountParticipantDefaultsSaved: string
+    /** Friendly errors instead of raw PostgREST / Storage messages on profile save or load. */
+    accountParticipantErrDbOutdated: string
+    accountParticipantErrStorage: string
+    accountParticipantErrGeneric: string
     /** Responsive shell header: mobile drawer + hamburger. */
     portalShellMenuOpenAria: string
     portalShellMenuCloseAria: string
@@ -1590,6 +1594,11 @@ export const ukMessages: MessageTree = {
     accountParticipantDefaultsSave: 'Зберегти',
     accountParticipantDefaultsSaving: 'Збереження…',
     accountParticipantDefaultsSaved: 'Збережено.',
+    accountParticipantErrDbOutdated:
+      'Дані профілю на сервері ще оновлюються. Зачекайте хвилину й оновіть сторінку або зверніться до адміністратора.',
+    accountParticipantErrStorage:
+      'Завантаження фото тимчасово недоступне (сховище не готове). Спробуйте пізніше або оновіть сторінку.',
+    accountParticipantErrGeneric: 'Не вдалося виконати дію. Спробуйте ще раз пізніше.',
     portalShellMenuOpenAria: 'Відкрити меню навігації',
     portalShellMenuCloseAria: 'Закрити меню навігації',
     portalShellNavDrawerAria: 'Навігація й обліковий запис',
@@ -2560,6 +2569,11 @@ export const enMessages: MessageTree = {
     accountParticipantDefaultsSave: 'Save',
     accountParticipantDefaultsSaving: 'Saving…',
     accountParticipantDefaultsSaved: 'Saved.',
+    accountParticipantErrDbOutdated:
+      'Your profile data is still updating on the server. Wait a minute, refresh the page, or contact support.',
+    accountParticipantErrStorage:
+      'Photo upload is temporarily unavailable (storage not ready). Try again later or refresh the page.',
+    accountParticipantErrGeneric: 'Something went wrong. Please try again later.',
     portalShellMenuOpenAria: 'Open navigation menu',
     portalShellMenuCloseAria: 'Close navigation menu',
     portalShellNavDrawerAria: 'Navigation and account',
