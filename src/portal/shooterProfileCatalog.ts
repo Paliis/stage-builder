@@ -71,7 +71,11 @@ export const WEAPON_CLASS_META: Record<
   shotgun: { labelUk: 'Рушниця (IPSC Shotgun)', labelEn: 'Shotgun (IPSC)', divisions: SG },
   handgun: { labelUk: 'Пістолет (IPSC Handgun)', labelEn: 'Handgun (IPSC)', divisions: HG },
   rifle: { labelUk: 'Гвинтівка (IPSC Rifle)', labelEn: 'Rifle (IPSC)', divisions: RF },
-  pcc: { labelUk: 'PCC', labelEn: 'PCC', divisions: PCC },
+  pcc: {
+    labelUk: 'Карабін (PCC)',
+    labelEn: 'PCC (pistol-caliber carbine)',
+    divisions: PCC,
+  },
   mini_rifle: { labelUk: 'Mini Rifle', labelEn: 'Mini Rifle', divisions: MINI },
 }
 
