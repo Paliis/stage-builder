@@ -68,10 +68,9 @@ export function DevSupabaseAuthSmoke() {
     setBusy(true)
     try {
       const sb = getSupabase()
-      const redirectTo =
-        typeof window !== 'undefined' ?
-          `${window.location.origin}/${locale}/dev/supabase-auth-smoke`
-        : undefined
+      const origin = typeof window !== 'undefined' ? window.location.origin : ''
+      const next = encodeURIComponent(`/${locale}/dev/supabase-auth-smoke`)
+      const redirectTo = origin ? `${origin}/${locale}/auth/email-callback?next=${next}` : undefined
       const { data, error } = await sb.auth.signUp({
         email: email.trim(),
         password,

@@ -4,6 +4,8 @@
 
 Цей файл — **довідник** (змінні шаблону, поля SMTP, типові причини `localhost` у листі), а не покроковий мануал. Повний шлях налаштування — у [документації Supabase](https://supabase.com/docs/guides/auth) та провайдера пошти.
 
+Після підтвердження email Supabase редіректить на **`/{locale}/auth/email-callback`** на вашому домені (параметр **`next`** задає клієнт при реєстрації). Ці URL мають бути в **Authentication → URL Configuration → Redirect URLs** (прод, `www`, `localhost` для dev).
+
 ## 1. Шаблони листів (коротко)
 
 У Dashboard: **Authentication** → **Email Templates** — шаблони **Confirm signup** тощо; у HTML використовуйте змінні з підказок редактора (наприклад `{{ .ConfirmationURL }}`, `{{ .SiteURL }}`). Тема листа — у тому ж екрані.

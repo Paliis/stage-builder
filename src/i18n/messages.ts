@@ -492,6 +492,16 @@ export type MessageTree = {
     portalCompactAuthSignOut: string
     portalCompactAuthSignupSession: string
     portalCompactAuthSignupConfirm: string
+    /** Email confirm redirect target `/{locale}/auth/email-callback`. */
+    authEmailCallbackHelmet: string
+    authEmailCallbackLoading: string
+    authEmailCallbackSuccessTitle: string
+    authEmailCallbackSuccessBody: string
+    authEmailCallbackContinue: string
+    authEmailCallbackToHome: string
+    authEmailCallbackFailedTitle: string
+    authEmailCallbackFailedBody: string
+    authEmailCallbackAccountCta: string
     /** Platform owner: match organizers directory (`/admin/organizers`). */
     organizersAdminHelmetTitle: string
     organizersAdminTitle: string
@@ -1418,6 +1428,17 @@ export const ukMessages: MessageTree = {
     portalCompactAuthSignupSession: 'Готово: ви ввійшли в обліковий запис.',
     portalCompactAuthSignupConfirm:
       'Обліковий запис створено. Якщо увімкнено підтвердження email — відкрийте лист і перейдіть за посиланням, потім увійдіть.',
+    authEmailCallbackHelmet: 'Підтвердження email',
+    authEmailCallbackLoading: 'Завершуємо вхід…',
+    authEmailCallbackSuccessTitle: 'Email підтверджено',
+    authEmailCallbackSuccessBody:
+      'Обліковий запис активовано. Натисніть «Далі», щоб повернутися до сторінки, з якої реєструвалися, або перейдіть на головну порталу.',
+    authEmailCallbackContinue: 'Далі',
+    authEmailCallbackToHome: 'Головна порталу',
+    authEmailCallbackFailedTitle: 'Не вдалося завершити перехід з листа',
+    authEmailCallbackFailedBody:
+      'Якщо в адресі ще з’являється сторінка з помилкою на сайті Supabase (наприклад, лінк прострочений) — поштовий клієнт міг відкрити посилання двічі, або термін дії коду вичерпано. Спробуйте увійти з паролем; за потреби зареєструйтеся знову.',
+    authEmailCallbackAccountCta: 'Сторінка облікового запису',
     organizersAdminHelmetTitle: 'Організатори матчів — адмін порталу',
     organizersAdminTitle: 'Організатори матчів',
     organizersAdminIntro:
@@ -2356,6 +2377,17 @@ export const enMessages: MessageTree = {
     portalCompactAuthSignupSession: 'You are signed in.',
     portalCompactAuthSignupConfirm:
       'Account created. If email confirmation is enabled, confirm from your inbox before signing in.',
+    authEmailCallbackHelmet: 'Email confirmation',
+    authEmailCallbackLoading: 'Completing sign-in…',
+    authEmailCallbackSuccessTitle: 'Email confirmed',
+    authEmailCallbackSuccessBody:
+      'Your account is active. Use “Continue” to return where you signed up, or open the portal home.',
+    authEmailCallbackContinue: 'Continue',
+    authEmailCallbackToHome: 'Portal home',
+    authEmailCallbackFailedTitle: 'Could not finish the email link',
+    authEmailCallbackFailedBody:
+      'If you still see a JSON error on supabase.co (e.g. otp_expired), your mail client may have opened the link twice, or the code expired. Try signing in with your password, or sign up again.',
+    authEmailCallbackAccountCta: 'Account page',
     organizersAdminHelmetTitle: 'Match organizers — platform admin',
     organizersAdminTitle: 'Match organizers',
     organizersAdminIntro:

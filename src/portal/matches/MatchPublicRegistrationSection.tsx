@@ -608,7 +608,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
           :
             <>
               <p style={{ margin: '0 0 0.55rem', fontSize: '0.95rem' }}>{p.matchDetailRegistrationSignInIntro}</p>
-              <PortalCompactEmailAuth p={p} pathnameForRedirect={pathnameRedirect} />
+              <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
               {import.meta.env.DEV ?
                 <p style={{ margin: '0.55rem 0 0', fontSize: '0.88rem' }}>
                   <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>

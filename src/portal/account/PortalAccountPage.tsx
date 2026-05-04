@@ -314,7 +314,7 @@ export function PortalAccountPage() {
           <h2 id="account-auth-heading" className="portal-account__auth-heading">
             {p.accountAuthHeading}
           </h2>
-          <PortalCompactEmailAuth p={p} pathnameForRedirect={pathnameRedirect} />
+          <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
         </section>
       }
     </div>

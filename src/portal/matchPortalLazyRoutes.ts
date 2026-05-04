@@ -29,3 +29,7 @@ export const PlatformOrganizersPageLazy = lazy(() =>
 export const PortalAccountPageLazy = lazy(() =>
   import('./account/PortalAccountPage').then((m) => ({ default: m.PortalAccountPage })),
 )
+
+export const AuthEmailCallbackPageLazy = lazy(() =>
+  import('./AuthEmailCallbackPage').then((m) => ({ default: m.AuthEmailCallbackPage })),
+)

@@ -40,6 +40,7 @@ import {
   OrganizerMatchesListPageLazy,
   PlatformOrganizersPageLazy,
   PortalAccountPageLazy,
+  AuthEmailCallbackPageLazy,
 } from './portal/matchPortalLazyRoutes'
 import { getInitialLocale } from './i18n/storage'
 
@@ -108,6 +109,14 @@ createRoot(document.getElementById('root')!).render(
                   />
                 ) : null}
                 <Route path="hit-factor" element={<HitFactorRoute />} />
+                <Route
+                  path="auth/email-callback"
+                  element={
+                    <Suspense fallback={<RoHelperRouteSuspenseFallback />}>
+                      <AuthEmailCallbackPageLazy />
+                    </Suspense>
+                  }
+                />
                 <Route
                   path="account"
                   element={

@@ -8,7 +8,9 @@ type PortalMsgs = MessageTree['portal']
 
 type Props = {
   p: PortalMsgs
-  /** Path only, e.g. `/uk/matches/…` — used for email confirmation redirect */
+  /** BCP-style locale segment, e.g. `uk` — must match `pathnameForRedirect` */
+  locale: string
+  /** Path only, e.g. `/uk/matches/…` — after email confirm, user is sent to `auth/email-callback?next=…` */
   pathnameForRedirect: string
 }
 
@@ -37,7 +39,7 @@ function PasswordVisibilityIcon({ passwordVisible }: { passwordVisible: boolean 
   )
 }
 
-export function PortalCompactEmailAuth({ p, pathnameForRedirect }: Props) {
+export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props) {
   const fieldId = useId()
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
   const [email, setEmail] = useState('')
@@ -60,7 +62,9 @@ export function PortalCompactEmailAuth({ p, pathnameForRedirect }: Props) {
 
       const sb = getSupabase()
       const origin = typeof window !== 'undefined' ? window.location.origin : ''
-      const redirectTo = origin ? `${origin}${pathnameForRedirect}` : undefined
+      const nextEnc = encodeURIComponent(pathnameForRedirect)
+      const redirectTo =
+        origin ? `${origin}/${locale}/auth/email-callback?next=${nextEnc}` : undefined
 
       if (authMode === 'signin') {
         const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password })
