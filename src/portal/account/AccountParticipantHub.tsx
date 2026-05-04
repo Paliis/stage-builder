@@ -44,14 +44,7 @@ type MyRegRow = {
   matches: MatchNested
 }
 
-const DEFAULT_SELECT = [
-  'division',
-  'classification_grade',
-  'power_factor',
-  'region',
-  'categories',
-  'weapon_class',
-].join(', ')
+const DEFAULT_SELECT = ['division', 'power_factor', 'region', 'categories', 'weapon_class'].join(', ')
 
 export function AccountParticipantHub({
   locale,
@@ -118,7 +111,6 @@ export function AccountParticipantHub({
   )
 
   const [defDiv, setDefDiv] = useState('')
-  const [defClass, setDefClass] = useState('')
   const [defPf, setDefPf] = useState<'MAJOR' | 'MINOR' | ''>('')
   const [defRegion, setDefRegion] = useState('')
   const [defCategories, setDefCategories] = useState<string[]>([])
@@ -141,7 +133,6 @@ export function AccountParticipantHub({
     }
     const row = data as {
       division?: string
-      classification_grade?: string
       power_factor?: string | null
       region?: string
       categories?: string[] | null
@@ -154,7 +145,6 @@ export function AccountParticipantHub({
       setDefWeaponClass(wc)
       const rawDiv = typeof row.division === 'string' ? row.division : ''
       setDefDiv(wc && isValidDivisionForWeapon(wc, rawDiv) ? rawDiv : '')
-      setDefClass(typeof row.classification_grade === 'string' ? row.classification_grade : '')
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : '')
       setDefRegion(typeof row.region === 'string' ? row.region : '')
@@ -173,7 +163,7 @@ export function AccountParticipantHub({
     const { error } = await sb.from('participant_registration_defaults').upsert({
       user_id: userId,
       division: defDiv.trim(),
-      classification_grade: defClass.trim(),
+      classification_grade: '',
       power_factor: defPf === '' ? null : defPf,
       region: defRegion.trim(),
       categories: sortCategoryIds(defCategories.filter((id) => CATEGORY_IDS.has(id))),
@@ -189,7 +179,6 @@ export function AccountParticipantHub({
     sb,
     userId,
     defDiv,
-    defClass,
     defPf,
     defRegion,
     defCategories,
@@ -310,17 +299,6 @@ export function AccountParticipantHub({
             }}
           >
             <div className="portal-account__psc-grid">
-              <label className="portal-account__field">
-                {p.accountParticipantFieldRegion}
-                <input
-                  type="text"
-                  value={defRegion}
-                  onChange={(e) => setDefRegion(e.target.value)}
-                  disabled={defSaving}
-                  autoComplete="off"
-                  placeholder={p.accountParticipantFieldRegionPlaceholder}
-                />
-              </label>
               <fieldset className="portal-account__categories-fieldset">
                 <legend className="portal-account__categories-legend">{p.accountParticipantFieldCategory}</legend>
                 <span className="portal-account__field-hint">{p.accountParticipantFieldCategoryHint}</span>
@@ -384,16 +362,15 @@ export function AccountParticipantHub({
                 : null}
               </label>
               <label className="portal-account__field">
-                {p.matchDetailRegistrationClass}
+                {p.accountParticipantFieldRegion}
                 <input
                   type="text"
-                  value={defClass}
-                  onChange={(e) => setDefClass(e.target.value)}
+                  value={defRegion}
+                  onChange={(e) => setDefRegion(e.target.value)}
                   disabled={defSaving}
                   autoComplete="off"
-                  placeholder={p.accountParticipantFieldClassificationPlaceholder}
+                  placeholder={p.accountParticipantFieldRegionPlaceholder}
                 />
-                <span className="portal-account__field-hint">{p.accountParticipantFieldClassificationHint}</span>
               </label>
               <label className="portal-account__field">
                 {p.matchDetailRegistrationPFOptional}
