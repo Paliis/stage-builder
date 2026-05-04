@@ -303,18 +303,14 @@ export function MatchPublicDetailPage() {
       >
         <dt>{p.matchDetailStartsLabel}</dt>
         <dd style={{ margin: 0 }}>{formatPortalDate(row.starts_at, locale)}</dd>
-        {labelEventKind(row.match_event_kind, p) ?
-          <>
-            <dt>{p.matchDetailEventKindLabel}</dt>
-            <dd style={{ margin: 0 }}>{labelEventKind(row.match_event_kind, p)}</dd>
-          </>
-        : null}
-        {labelPsLevel(row.ps_match_level, p) ?
-          <>
-            <dt>{p.matchDetailPsLevelLabel}</dt>
-            <dd style={{ margin: 0 }}>{labelPsLevel(row.ps_match_level, p)}</dd>
-          </>
-        : null}
+        <dt>{p.matchDetailEventKindLabel}</dt>
+        <dd style={{ margin: 0 }}>
+          {labelEventKind(row.match_event_kind, p) || p.matchDetailNotSpecifiedValue}
+        </dd>
+        <dt>{p.matchDetailPsLevelLabel}</dt>
+        <dd style={{ margin: 0 }}>
+          {labelPsLevel(row.ps_match_level, p) || p.matchDetailNotSpecifiedValue}
+        </dd>
         {row.location_label ? (
           <>
             <dt>{p.matchDetailLocationLabel}</dt>

@@ -398,6 +398,8 @@ export type MessageTree = {
     matchDetailStartsLabel: string
     matchDetailEventKindLabel: string
     matchDetailPsLevelLabel: string
+    /** Shown on public match card when event type / PS level was left empty. */
+    matchDetailNotSpecifiedValue: string
     matchDetailLocationLabel: string
     matchDetailDisciplineLabel: string
     matchDetailLimitLabel: string
@@ -1284,6 +1286,7 @@ export const ukMessages: MessageTree = {
     matchDetailStartsLabel: 'Початок',
     matchDetailEventKindLabel: 'Тип події',
     matchDetailPsLevelLabel: 'Рівень (PractiScore)',
+    matchDetailNotSpecifiedValue: 'не вказано',
     matchDetailLocationLabel: 'Локація',
     matchDetailDisciplineLabel: 'Дисципліна',
     matchDetailLimitLabel: 'Ліміт учасників',
@@ -2188,6 +2191,7 @@ export const enMessages: MessageTree = {
     matchDetailStartsLabel: 'Starts',
     matchDetailEventKindLabel: 'Event type',
     matchDetailPsLevelLabel: 'Level (PractiScore)',
+    matchDetailNotSpecifiedValue: 'Not specified',
     matchDetailLocationLabel: 'Location',
     matchDetailDisciplineLabel: 'Discipline',
     matchDetailLimitLabel: 'Competitor limit',
