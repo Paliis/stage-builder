@@ -86,7 +86,7 @@ src/
 
 - **Повний контекст проєкту** (бізнес + техніка, маршрути, env, індекс усіх файлів у `docs/`): **[docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md)**
 - **Бізнес- і технічний опис продукту** (аудиторія, цінність, сценарії, стек, архітектура, посилання на деталі): **[docs/PRODUCT.md](docs/PRODUCT.md)**
-- **Беклог ідей** (грумінг, пріоритети): **[docs/BACKLOG.md](docs/BACKLOG.md)**
+- **Беклог ідей** (грумінг, пріоритети): **[docs/BACKLOG.md](docs/BACKLOG.md)**; **карта планування по розділах** (Матчі, Портал, Редактор…): **[docs/PLANNING_INDEX.md](docs/PLANNING_INDEX.md)**
 - **Видимість / безпека 2D** (чернетка правил для BL-010 / BL-013): **[docs/VISIBILITY_AND_SAFETY_RULES.md](docs/VISIBILITY_AND_SAFETY_RULES.md)**
 - **Повний опис функціоналу** (можливості для користувачів і логіка редактора): **[docs/FUNCTIONALITY.md](docs/FUNCTIONALITY.md)**
 - **Технічна документація для розробників** (архітектура, домен, формат `*.stage.json`, PWA, CI): **[docs/TECH.md](docs/TECH.md)**

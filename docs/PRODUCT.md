@@ -116,6 +116,7 @@
 | [FUNCTIONALITY.md](./FUNCTIONALITY.md) | Повна поведінка UI: площадка, мішені, реквізит, 2D/3D, брифінг, PDF, файли, PWA |
 | [TECH.md](./TECH.md) | Модулі, формат JSON, undo, PWA, SEO, деплой, аналітика |
 | [VERSIONING.md](./VERSIONING.md) | Таблиці змін між етапами, єдиний текст оновлення для користувачів |
+| [PLANNING_INDEX.md](./PLANNING_INDEX.md) | Єдина карта планування: розділи (Редактор, Портал, Матчі, …), **BL** / **MA-***, як посилатися на задачу |
 | [BACKLOG.md](./BACKLOG.md) | Ідеї майбутніх фіч, грумінг, пріоритети, відкладені епіки |
 | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md) | Модуль «Матчі»: беклог **MA-** за фазами (A–F + R) |
 | [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md) | Модуль матчів: зведений план кроків і беклог (тип події, PSC, каталог) |

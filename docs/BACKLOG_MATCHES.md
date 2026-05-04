@@ -1,6 +1,6 @@
 # Беклог модуля «Матчі» (реєстрація, PractiScore)
 
-**Єдине місце для задач епіку матчів** з нумерацією **фаза + номер задачі** в межах фази. Детальні фази A–F — у **[MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md)** §4; короткий продуктовий статус — **[MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md)**. Схема БД — **[SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md)**.
+**Єдине місце для задач епіку матчів** з нумерацією **фаза + номер задачі** в межах фази. **Де цей файл у загальній структурі продукту:** **[PLANNING_INDEX.md](./PLANNING_INDEX.md)** (розділ **Матчі**). Детальні фази A–F — у **[MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md)** §4; короткий продуктовий статус — **[MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md)**. Схема БД — **[SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md)**.
 
 Загальнопродуктовий скрізний беклог **`BL-NNN`** лишається в **[BACKLOG.md](./BACKLOG.md)**; нижче — колонка **BL** для зв’язку.
 

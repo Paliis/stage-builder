@@ -1,5 +1,7 @@
 # Shooters Tools / Stage Builder — повний контекст проєкту
 
+**Єдина карта планів і беклогів по розділах продукту** (як формулювати «працюємо над Матчі — фаза B — MA-B01»): **[PLANNING_INDEX.md](./PLANNING_INDEX.md)**.
+
 **Призначення цього файлу:** один документ для **онбордингу**, **LLM-контексту**, партнерів і розробників — зведений **бізнес-** і **технічний** знімок стану репозиторію та посилання на детальні джерела. Деталі поведінки редактора — [FUNCTIONALITY.md](./FUNCTIONALITY.md); глибока технічна реалізація — [TECH.md](./TECH.md); продуктовий огляд — [PRODUCT.md](./PRODUCT.md).
 
 **Останнє оновлення документа:** квітень 2026.
@@ -150,6 +152,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 
 | Файл | Короткий зміст |
 |------|----------------|
+| **PLANNING_INDEX.md** | Карта розділів продукту, беклоги (**BL** / **MA-***), шаблони фраз для чатів |
 | **PROJECT_CONTEXT.md** | Цей файл — зведений бізнес + техніка + індекс |
 | **PRODUCT.md** | Бізнес + технічний огляд продукту (дублює частину контексту глибше в A/B) |
 | **TECH.md** | Головна технічна документація: share, архітектура, домен, PWA, SEO, CI |
@@ -204,7 +207,7 @@ npm run icons:st     # ST на іконці + похідні PNG/favicon/og
 | Реалізувати фічу в редакторі | [FUNCTIONALITY.md](./FUNCTIONALITY.md) → [TECH.md](./TECH.md) → код у `src/domain/` |
 | Share / Supabase / деплой секретів | [TECH.md](./TECH.md) (розділ BL-001) → [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md) |
 | Новий модуль на порталі | [PORTAL_PLAN.md](./PORTAL_PLAN.md) → [TECH.md](./TECH.md) |
-| Новий модуль матчів / PSC | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) → [TECH.md](./TECH.md) Supabase |
+| Новий модуль матчів / PSC | [PLANNING_INDEX.md](./PLANNING_INDEX.md) → **Матчі**, [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) → [TECH.md](./TECH.md) Supabase |
 | Дизайн / UI-UX (Claude та зовнішні дизайнери) | [DESIGN_SYSTEM_V0.md](./DESIGN_SYSTEM_V0.md), [CLAUDE_DESIGN_UX_PACKAGE.md](./CLAUDE_DESIGN_UX_PACKAGE.md) → [PORTAL_PLAN.md](./PORTAL_PLAN.md), [RO_HELPER_V0.md](./RO_HELPER_V0.md) §7 |
 | Контент RO Helper | [RO_HELPER_V0.md](./RO_HELPER_V0.md) + TZ/реєстр |
 | Ідея в беклог | [BACKLOG.md](./BACKLOG.md) (наступний вільний BL у таблиці) |

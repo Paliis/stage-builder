@@ -1,6 +1,6 @@
 # План розвитку модуля матчів — зведення (2026-05)
 
-**Призначення:** зафіксувати **узгоджений напрямок** після останніх обговорень (тип події, рівні PractiScore, публічна картка), **пронумеровані кроки** наперед і зв’язок із **[беклогом](./BACKLOG.md)** (`BL-NNN`) та **[беклогом модуля «Матчі»](./BACKLOG_MATCHES.md)** (`MA-<фаза><NN>`). Деталі фаз A–F, модель даних і PSC — у **[MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md)**; схема Supabase — **[SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md)**.
+**Призначення:** зафіксувати **узгоджений напрямок** після останніх обговорень (тип події, рівні PractiScore, публічна картка), **пронумеровані кроки** наперед і зв’язок із **[беклогом](./BACKLOG.md)** (`BL-NNN`) та **[беклогом модуля «Матчі»](./BACKLOG_MATCHES.md)** (`MA-<фаза><NN>`). **Загальна карта розділів:** **[PLANNING_INDEX.md](./PLANNING_INDEX.md)**. Деталі фаз A–F, модель даних і PSC — у **[MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md)**; схема Supabase — **[SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md)**.
 
 ---
 
