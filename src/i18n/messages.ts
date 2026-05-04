@@ -1273,7 +1273,7 @@ export const ukMessages: MessageTree = {
     portalPublishedMatchesEmpty: 'Наразі немає запланованих опублікованих матчів з сьогоднішньої дати.',
     portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
     portalPublishedMatchOpenPrimary: 'Деталі',
-    matchesPortalOrganizerLink: 'Кабінет організатора — мої матчі (управління чернетками й заявками)',
+    matchesPortalOrganizerLink: 'Кабінет організатора',
     matchesPortalFooterOrganizerViaAccount:
       'Заявка та статус організатора — в обліковому записі. Керування чернетками й заявками відкриється після схвалення платформи.',
     matchesPortalFooterOrganizerSignIn:
@@ -2197,7 +2197,7 @@ export const enMessages: MessageTree = {
     portalPublishedMatchesEmpty: 'No published matches scheduled from today onward yet.',
     portalPublishedMatchesLoadError: 'Could not load the matches list',
     portalPublishedMatchOpenPrimary: 'Details',
-    matchesPortalOrganizerLink: 'Organizer dashboard — my matches (drafts and registrations)',
+    matchesPortalOrganizerLink: 'Organizer dashboard',
     matchesPortalFooterOrganizerViaAccount:
       'Apply for organizer access and track your status from the account page. Match authoring opens after approval.',
     matchesPortalFooterOrganizerSignIn: 'Sign in to apply as an organizer or access match tools once approved.',
