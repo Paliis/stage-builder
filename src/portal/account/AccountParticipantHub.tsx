@@ -4,6 +4,7 @@ import type { Locale, MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from '../matches/matchPortalFormat'
 import '../PortalHome.css'
+import '../PortalMatchesUi.css'
 
 type Portal = MessageTree['portal']
 
@@ -184,11 +185,26 @@ export function AccountParticipantHub({
                 const canCancel = r.status === 'pending'
                 return (
                   <tr key={r.id}>
-                    <td style={{ padding: '0.45rem 0.5rem', borderBottom: '1px solid var(--border)', verticalAlign: 'top' }}>
+                    <td
+                      style={{
+                        padding: '0.45rem 0.5rem',
+                        borderBottom: '1px solid var(--border)',
+                        verticalAlign: 'top',
+                        maxWidth: '14rem',
+                      }}
+                    >
                       {m?.status === 'published' ?
-                        <Link to={`/${locale}/matches/${m.id}`}>{title}</Link>
+                        <Link
+                          className="portal-match-title-ellipsis"
+                          title={m?.title?.trim() || ''}
+                          to={`/${locale}/matches/${m.id}`}
+                        >
+                          {title}
+                        </Link>
                       : (
-                        title
+                        <span className="portal-match-title-ellipsis" title={title}>
+                          {title}
+                        </span>
                       )}
                     </td>
                     <td style={{ padding: '0.45rem 0.5rem', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>

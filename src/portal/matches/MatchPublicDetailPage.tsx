@@ -10,6 +10,7 @@ import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import '../PortalHome.css'
+import '../PortalMatchesUi.css'
 
 type MatchDetailRow = {
   id: string
@@ -266,7 +267,7 @@ export function MatchPublicDetailPage() {
       </p>
 
       <header className="portal-home__hero">
-        <h1 className="portal-home__hero-title">{row.title}</h1>
+        <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{row.title}</h1>
       </header>
 
       <dl

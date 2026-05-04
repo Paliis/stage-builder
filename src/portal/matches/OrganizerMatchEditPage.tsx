@@ -492,7 +492,7 @@ export function OrganizerMatchEditPage() {
       </p>
 
       <header className="portal-home__hero">
-        <h1 className="portal-home__hero-title">{pageTitle}</h1>
+        <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{pageTitle}</h1>
       </header>
 
       {squadSyncBanner ?

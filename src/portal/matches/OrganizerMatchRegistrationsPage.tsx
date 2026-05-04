@@ -11,6 +11,7 @@ import { sortSquadsPrematchFirst } from './matchSquadsSort'
 import { OrganizerMatchRosterBoard } from './OrganizerMatchRosterBoard'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import '../PortalHome.css'
+import '../PortalMatchesUi.css'
 
 type Portal = MessageTree['portal']
 
@@ -345,7 +346,9 @@ export function OrganizerMatchRegistrationsPage() {
       </p>
 
       <header className="portal-home__hero">
-        <h1 className="portal-home__hero-title">{matchTitle ?? p.matchOrgRosterHeading}</h1>
+        <h1 className="portal-home__hero-title portal-match-title-hero-wrap">
+          {matchTitle ?? p.matchOrgRosterHeading}
+        </h1>
         <p style={{ margin: '0.55rem 0 0', fontSize: '0.92rem', opacity: 0.92 }}>{p.matchOrgRosterLead}</p>
       </header>
 

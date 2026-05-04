@@ -191,7 +191,9 @@ export function OrganizerMatchesListPage() {
               const publicPath = `/${locale}/matches/${r.id}`
               return (
                 <li key={r.id} className="portal-matches-organizer__card">
-                  <h2 className="portal-matches-organizer__card-title">{r.title}</h2>
+                  <h2 className="portal-matches-organizer__card-title" title={r.title}>
+                    {r.title}
+                  </h2>
                   <dl className="portal-matches-organizer__meta">
                     <dt>{p.myMatchesColStarts}</dt>
                     <dd>{f.starts}</dd>
@@ -224,7 +226,7 @@ export function OrganizerMatchesListPage() {
             <table className="portal-matches-organizer__table">
               <thead>
                 <tr>
-                  <th>{p.myMatchesColTitle}</th>
+                  <th className="portal-matches-organizer__table-col-title">{p.myMatchesColTitle}</th>
                   <th>{p.myMatchesColStarts}</th>
                   <th>{p.myMatchesColEventKind}</th>
                   <th>{p.myMatchesColPsLevel}</th>
@@ -241,7 +243,11 @@ export function OrganizerMatchesListPage() {
                   const publicPath = `/${locale}/matches/${r.id}`
                   return (
                     <tr key={r.id}>
-                      <td>{r.title}</td>
+                      <td className="portal-matches-organizer__table-col-title">
+                        <span className="portal-match-title-ellipsis" title={r.title}>
+                          {r.title}
+                        </span>
+                      </td>
                       <td>{f.starts}</td>
                       <td>{f.eventKind}</td>
                       <td>{f.psLevel}</td>
