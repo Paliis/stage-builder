@@ -60,8 +60,8 @@
     grid-template-columns: 1fr;
     grid-template-areas:
       'title'
-      'controls'
-      'cal';
+      'cal'
+      'controls';
   }
 
   .portal-match-hub__masthead > .portal-match-hub__calendar-panel--head {
