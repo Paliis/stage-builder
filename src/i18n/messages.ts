@@ -371,6 +371,8 @@ export type MessageTree = {
     organizerMatchAccessDeniedBlockedBody: string
     organizerMatchAccessGoAccount: string
     portalMatchesHubSearchAria: string
+    /** Visible label above the match hub search field. */
+    portalMatchesHubSearchFieldLabel: string
     portalMatchesHubSearchPlaceholder: string
     portalMatchesHubDateFrom: string
     portalMatchesHubDateTo: string
@@ -388,6 +390,9 @@ export type MessageTree = {
     /** Match hub: filter by PractiScore level L1–L5. */
     portalMatchesHubFilterPsLevel: string
     portalMatchesHubFilterPsLevelAll: string
+    /** Match hub: weapon-type filter (UI placeholder until data exists). */
+    portalMatchesHubFilterWeaponType: string
+    portalMatchesHubFilterWeaponTypePlaceholder: string
     /** Compact placeholder when kind/level not set (list/hub). */
     portalMatchesHubListDash: string
     /** Status badge label — stable / generally available product. */
@@ -1262,12 +1267,12 @@ export const ukMessages: MessageTree = {
     ],
     openRoHelper: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 RO Helper',
     gridAriaLabel: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u0456 \u0456\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438',
-    portalPublishedMatchesHeading: 'Матчі на порталі',
+    portalPublishedMatchesHeading: 'Перелік майбутніх подій',
     portalPublishedMatchesLead:
       'Майбутні опубліковані змагання; реєстрація — на картці матчу після входу. Повний огляд ваших заявок — в обліковому записі.',
     portalPublishedMatchesEmpty: 'Наразі немає запланованих опублікованих матчів з сьогоднішньої дати.',
-      portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
-      portalPublishedMatchOpenPrimary: 'Деталі',
+    portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
+    portalPublishedMatchOpenPrimary: 'Деталі',
     matchesPortalOrganizerLink: 'Кабінет організатора — мої матчі (управління чернетками й заявками)',
     matchesPortalFooterOrganizerViaAccount:
       'Заявка та статус організатора — в обліковому записі. Керування чернетками й заявками відкриється після схвалення платформи.',
@@ -1281,7 +1286,8 @@ export const ukMessages: MessageTree = {
       'Доступ організатора для вашого акаунта припинено з боку платформи — керувати матчами тут недоступно.',
     organizerMatchAccessGoAccount: 'Обліковий запис',
     portalMatchesHubSearchAria: 'Пошук у списку матчів',
-    portalMatchesHubSearchPlaceholder: 'Пошук за назвою або локацією…',
+    portalMatchesHubSearchFieldLabel: 'Пошук',
+    portalMatchesHubSearchPlaceholder: 'Назва або локація…',
     portalMatchesHubDateFrom: 'Від дати',
     portalMatchesHubDateTo: 'До дати',
     portalMatchesHubClearFilters: 'Скинути фільтри',
@@ -1296,11 +1302,13 @@ export const ukMessages: MessageTree = {
     portalMatchesHubFilterEventKindAll: 'Усі типи',
     portalMatchesHubFilterPsLevel: 'Рівень PS',
     portalMatchesHubFilterPsLevelAll: 'Усі рівні',
+    portalMatchesHubFilterWeaponType: 'Тип зброї',
+    portalMatchesHubFilterWeaponTypePlaceholder: 'Незабаром',
     portalMatchesHubListDash: '—',
     badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
     badgeNew: '\u041d\u043e\u0432\u0435',
     badgeBeta: 'Beta',
-    matchesPageHelmetTitle: 'Матчі — Shooters Tools',
+    matchesPageHelmetTitle: 'Перелік майбутніх подій — Shooters Tools',
     matchesPageShortTitle: 'Матч',
     matchesSupabaseUnset:
       'Клієнт Supabase не налаштовано (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY). Дані матчу в браузері недоступні.',
@@ -2183,12 +2191,12 @@ export const enMessages: MessageTree = {
     ],
     openRoHelper: 'Open RO Helper',
     gridAriaLabel: 'Available tools',
-    portalPublishedMatchesHeading: 'Matches on the portal',
+    portalPublishedMatchesHeading: 'Upcoming events',
     portalPublishedMatchesLead:
       'Upcoming published events; sign up from each match page while signed in. Your personal sign-up list lives on the account page.',
     portalPublishedMatchesEmpty: 'No published matches scheduled from today onward yet.',
-      portalPublishedMatchesLoadError: 'Could not load the matches list',
-      portalPublishedMatchOpenPrimary: 'Details',
+    portalPublishedMatchesLoadError: 'Could not load the matches list',
+    portalPublishedMatchOpenPrimary: 'Details',
     matchesPortalOrganizerLink: 'Organizer dashboard — my matches (drafts and registrations)',
     matchesPortalFooterOrganizerViaAccount:
       'Apply for organizer access and track your status from the account page. Match authoring opens after approval.',
@@ -2201,7 +2209,8 @@ export const enMessages: MessageTree = {
       'Organizer features are disabled by the platform — you cannot manage matches here.',
     organizerMatchAccessGoAccount: 'Account',
     portalMatchesHubSearchAria: 'Search matches in the list',
-    portalMatchesHubSearchPlaceholder: 'Search by title or location…',
+    portalMatchesHubSearchFieldLabel: 'Search',
+    portalMatchesHubSearchPlaceholder: 'Title or location…',
     portalMatchesHubDateFrom: 'From date',
     portalMatchesHubDateTo: 'To date',
     portalMatchesHubClearFilters: 'Clear filters',
@@ -2216,11 +2225,13 @@ export const enMessages: MessageTree = {
     portalMatchesHubFilterEventKindAll: 'All types',
     portalMatchesHubFilterPsLevel: 'PS level',
     portalMatchesHubFilterPsLevelAll: 'All levels',
+    portalMatchesHubFilterWeaponType: 'Weapon type',
+    portalMatchesHubFilterWeaponTypePlaceholder: 'Coming soon',
     portalMatchesHubListDash: '—',
     badgeLive: 'Live',
     badgeNew: 'New',
     badgeBeta: 'Beta',
-    matchesPageHelmetTitle: 'Matches — Shooters Tools',
+    matchesPageHelmetTitle: 'Upcoming events — Shooters Tools',
     matchesPageShortTitle: 'Match',
     matchesSupabaseUnset:
       'Supabase client is not configured (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY). Match data is unavailable in the browser.',
