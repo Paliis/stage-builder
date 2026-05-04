@@ -5,7 +5,29 @@
 }
 
 .portal-account__dashboard {
-  max-width: 44rem;
+  max-width: 46rem;
+}
+
+.portal-account__card {
+  margin: 0 0 1.25rem;
+  padding: 1.15rem 1.2rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface), var(--btn-bg) 32%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+}
+
+.portal-account__card:last-of-type {
+  margin-bottom: 0;
+}
+
+.portal-account__card-title {
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+  line-height: 1.2;
 }
 
 .portal-account__summary-heading {

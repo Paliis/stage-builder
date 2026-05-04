@@ -605,6 +605,17 @@ export type MessageTree = {
     accountMyRegistrationsMatchUnavailable: string
     accountParticipantDefaultsHeading: string
     accountParticipantDefaultsLead: string
+    /** PractiScore-oriented defaults card body (account page). */
+    accountParticipantProfileSectionLead: string
+    accountParticipantFieldRegion: string
+    accountParticipantFieldRegionPlaceholder: string
+    accountParticipantFieldCategory: string
+    accountParticipantFieldCategoryPlaceholder: string
+    accountParticipantFieldCategoryHint: string
+    accountParticipantFieldWeaponClass: string
+    accountParticipantFieldWeaponPlaceholder: string
+    /** Shown when match routes disabled but profile form still visible. */
+    accountParticipantMatchPortalOffHint: string
     accountParticipantDefaultsSave: string
     accountParticipantDefaultsSaving: string
     accountParticipantDefaultsSaved: string
@@ -1557,9 +1568,20 @@ export const ukMessages: MessageTree = {
     accountMyRegistrationsCancel: 'Скасувати заявку',
     accountMyRegistrationsCancelling: 'Скасування…',
     accountMyRegistrationsMatchUnavailable: '(картка недоступна)',
-    accountParticipantDefaultsHeading: 'Типові дані для нової заявки',
+    accountParticipantDefaultsHeading: 'Профіль стрільця (PractiScore)',
     accountParticipantDefaultsLead:
       'Ці поля підставляються у форму реєстрації на картці матчу (можна змінити перед відправкою).',
+    accountParticipantProfileSectionLead:
+      'Типові поля для нових заявок і подальшого експорту: регіон, категорія (кілька — через кому), клас зброї, дивізіон, класифікація, фактор потужності.',
+    accountParticipantFieldRegion: 'Регіон / область',
+    accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
+    accountParticipantFieldCategory: 'Категорія',
+    accountParticipantFieldCategoryPlaceholder: 'Lady, Junior…',
+    accountParticipantFieldCategoryHint: 'Кілька значень — через кому, як у PractiScore.',
+    accountParticipantFieldWeaponClass: 'Клас зброї',
+    accountParticipantFieldWeaponPlaceholder: 'Наприклад: Shotgun',
+    accountParticipantMatchPortalOffHint:
+      'Модуль «Матчі» у цьому середовищі вимкнено — список заявок приховано. Профіль нижче зберігається для інших середовищ і майбутнього експорту.',
     accountParticipantDefaultsSave: 'Зберегти',
     accountParticipantDefaultsSaving: 'Збереження…',
     accountParticipantDefaultsSaved: 'Збережено.',
@@ -2518,9 +2540,20 @@ export const enMessages: MessageTree = {
     accountMyRegistrationsCancel: 'Cancel sign-up',
     accountMyRegistrationsCancelling: 'Cancelling…',
     accountMyRegistrationsMatchUnavailable: '(match unavailable)',
-    accountParticipantDefaultsHeading: 'Default registration details',
+    accountParticipantDefaultsHeading: 'Shooter profile (PractiScore)',
     accountParticipantDefaultsLead:
       'Prefills the sign-up form on a match page (you can edit before submitting).',
+    accountParticipantProfileSectionLead:
+      'Defaults for new registrations and future export: region, categories (comma-separated), weapon class, division, classification, power factor.',
+    accountParticipantFieldRegion: 'Region / state',
+    accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
+    accountParticipantFieldCategory: 'Category',
+    accountParticipantFieldCategoryPlaceholder: 'Lady, Junior…',
+    accountParticipantFieldCategoryHint: 'Multiple values — comma-separated, like PractiScore.',
+    accountParticipantFieldWeaponClass: 'Weapon class',
+    accountParticipantFieldWeaponPlaceholder: 'e.g. Shotgun',
+    accountParticipantMatchPortalOffHint:
+      'The Matches module is off in this environment — your registration list is hidden. The profile below is still saved.',
     accountParticipantDefaultsSave: 'Save',
     accountParticipantDefaultsSaving: 'Saving…',
     accountParticipantDefaultsSaved: 'Saved.',

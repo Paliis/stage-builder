@@ -5,6 +5,7 @@ import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from '../matches/matchPortalFormat'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
+import './AccountParticipantHub.css'
 
 type Portal = MessageTree['portal']
 
@@ -24,14 +25,26 @@ type MyRegRow = {
   matches: MatchNested
 }
 
+const DEFAULT_SELECT = [
+  'division',
+  'classification_grade',
+  'power_factor',
+  'region',
+  'category',
+  'weapon_class',
+].join(', ')
+
 export function AccountParticipantHub({
   locale,
   p,
   userId,
+  showMatchRegistrations,
 }: {
   locale: Locale
   p: Portal
   userId: string
+  /** When false (e.g. prod without `VITE_ENABLE_MATCH_PORTAL`), hide match list only — profile form stays. */
+  showMatchRegistrations: boolean
 }) {
   const configured = isSupabaseConfigured()
   const sb = useMemo(() => (configured ? getSupabase() : null), [configured])
@@ -41,7 +54,7 @@ export function AccountParticipantHub({
   const [busyId, setBusyId] = useState<string | null>(null)
 
   const loadRegs = useCallback(async () => {
-    if (!sb) return
+    if (!sb || !showMatchRegistrations) return
     await Promise.resolve()
     setRegErr(null)
     const { data, error } = await sb
@@ -63,7 +76,7 @@ export function AccountParticipantHub({
       return
     }
     setRows((data ?? []) as unknown as MyRegRow[])
-  }, [sb, userId])
+  }, [sb, userId, showMatchRegistrations])
 
   useEffect(() => {
     queueMicrotask(() => void loadRegs())
@@ -88,6 +101,9 @@ export function AccountParticipantHub({
   const [defDiv, setDefDiv] = useState('')
   const [defClass, setDefClass] = useState('')
   const [defPf, setDefPf] = useState<'MAJOR' | 'MINOR' | ''>('')
+  const [defRegion, setDefRegion] = useState('')
+  const [defCategory, setDefCategory] = useState('')
+  const [defWeaponClass, setDefWeaponClass] = useState('')
   const [defLoading, setDefLoading] = useState(true)
   const [defSaving, setDefSaving] = useState(false)
   const [defFeedback, setDefFeedback] = useState<string | null>(null)
@@ -97,19 +113,29 @@ export function AccountParticipantHub({
     await Promise.resolve()
     setDefLoading(true)
     setDefFeedback(null)
-    const { data, error } = await sb.from('participant_registration_defaults').select('division, classification_grade, power_factor').eq('user_id', userId).maybeSingle()
+    const { data, error } = await sb.from('participant_registration_defaults').select(DEFAULT_SELECT).eq('user_id', userId).maybeSingle()
 
     setDefLoading(false)
     if (error) {
       setDefFeedback(error.message)
       return
     }
-    const row = data as { division?: string; classification_grade?: string; power_factor?: string | null } | null
+    const row = data as {
+      division?: string
+      classification_grade?: string
+      power_factor?: string | null
+      region?: string
+      category?: string
+      weapon_class?: string
+    } | null
     if (row) {
       setDefDiv(typeof row.division === 'string' ? row.division : '')
       setDefClass(typeof row.classification_grade === 'string' ? row.classification_grade : '')
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : '')
+      setDefRegion(typeof row.region === 'string' ? row.region : '')
+      setDefCategory(typeof row.category === 'string' ? row.category : '')
+      setDefWeaponClass(typeof row.weapon_class === 'string' ? row.weapon_class : '')
     }
   }, [sb, userId])
 
@@ -126,6 +152,9 @@ export function AccountParticipantHub({
       division: defDiv.trim(),
       classification_grade: defClass.trim(),
       power_factor: defPf === '' ? null : defPf,
+      region: defRegion.trim(),
+      category: defCategory.trim(),
+      weapon_class: defWeaponClass.trim(),
     })
     setDefSaving(false)
     if (error) {
@@ -133,7 +162,17 @@ export function AccountParticipantHub({
       return
     }
     setDefFeedback(p.accountParticipantDefaultsSaved)
-  }, [sb, userId, defDiv, defClass, defPf, p.accountParticipantDefaultsSaved])
+  }, [
+    sb,
+    userId,
+    defDiv,
+    defClass,
+    defPf,
+    defRegion,
+    defCategory,
+    defWeaponClass,
+    p.accountParticipantDefaultsSaved,
+  ])
 
   function regStatusLabel(s: string): string {
     if (s === 'pending') return p.accountMyRegistrationsStatusPending
@@ -146,157 +185,188 @@ export function AccountParticipantHub({
 
   return (
     <div className="portal-account__hub">
-      <h4 style={{ margin: '0 0 0.45rem', fontSize: '0.97rem', fontWeight: 700, color: 'var(--text-h)' }}>
-        {p.accountMyRegistrationsHeading}
-      </h4>
-      {regErr ?
-        <p role="alert" style={{ margin: '0 0 0.65rem', fontSize: '0.88rem' }}>
-          {p.accountMyRegistrationsLoadError}: {regErr}
+      {!showMatchRegistrations ?
+        <p className="portal-account__hub-env-hint" role="note">
+          {p.accountParticipantMatchPortalOffHint}
         </p>
       : null}
-      {rows === undefined ?
-        <p style={{ margin: '0 0 1rem', fontSize: '0.9rem' }}>{p.matchesLoadingDetail}</p>
-      : rows.length === 0 ?
-        <p style={{ margin: '0 0 1rem', fontSize: '0.92rem', lineHeight: 1.5 }}>{p.accountMyRegistrationsEmpty}</p>
-      :
-        <div style={{ overflowX: 'auto', margin: '0 0 1.1rem' }}>
-          <table style={{ borderCollapse: 'collapse', fontSize: '0.875rem', width: '100%', minWidth: '18rem' }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '0.45rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
-                  {p.accountMyRegistrationsColMatch}
-                </th>
-                <th style={{ padding: '0.45rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
-                  {p.accountMyRegistrationsColDate}
-                </th>
-                <th style={{ padding: '0.45rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
-                  {p.accountMyRegistrationsColStatus}
-                </th>
-                <th style={{ padding: '0.45rem 0.5rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
-                  {p.accountMyRegistrationsColActions}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => {
-                const m = r.matches
-                const title = m?.title?.trim() || p.accountMyRegistrationsMatchUnavailable
-                const when = m?.starts_at ? formatPortalDate(m.starts_at, locale) : '—'
-                const canCancel = r.status === 'pending'
-                return (
-                  <tr key={r.id}>
-                    <td
-                      style={{
-                        padding: '0.45rem 0.5rem',
-                        borderBottom: '1px solid var(--border)',
-                        verticalAlign: 'top',
-                        maxWidth: '14rem',
-                      }}
-                    >
-                      {m?.status === 'published' ?
-                        <Link
-                          className="portal-match-title-ellipsis"
-                          title={m?.title?.trim() || ''}
-                          to={`/${locale}/matches/${m.id}`}
-                        >
-                          {title}
-                        </Link>
-                      : (
-                        <span className="portal-match-title-ellipsis" title={title}>
-                          {title}
-                        </span>
-                      )}
-                    </td>
-                    <td style={{ padding: '0.45rem 0.5rem', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>
-                      {when}
-                    </td>
-                    <td style={{ padding: '0.45rem 0.5rem', borderBottom: '1px solid var(--border)' }}>
-                      {regStatusLabel(r.status)}
-                    </td>
-                    <td style={{ padding: '0.45rem 0.5rem', borderBottom: '1px solid var(--border)' }}>
-                      {m?.status === 'published' ?
-                        <Link to={`/${locale}/matches/${m!.id}`} style={{ marginRight: '0.55rem', fontWeight: 650 }}>
-                          {p.accountMyRegistrationsOpenMatch}
-                        </Link>
-                      : null}
-                      {canCancel ?
-                        <button
-                          type="button"
-                          className="portal-account__link-btn"
-                          disabled={busyId === r.id}
-                          onClick={() => void cancelReg(r.id)}
-                        >
-                          {busyId === r.id ? p.accountMyRegistrationsCancelling : p.accountMyRegistrationsCancel}
-                        </button>
-                      : null}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      }
 
-      <h4 style={{ margin: '0.35rem 0 0.45rem', fontSize: '0.97rem', fontWeight: 700, color: 'var(--text-h)' }}>
-        {p.accountParticipantDefaultsHeading}
-      </h4>
-      <p style={{ margin: '0 0 0.6rem', fontSize: '0.88rem', lineHeight: 1.52 }}>{p.accountParticipantDefaultsLead}</p>
-      {defLoading ?
-        <p style={{ fontSize: '0.88rem' }}>{p.matchesLoadingDetail}</p>
-      :
-        <form
-          onSubmit={(ev) => {
-            ev.preventDefault()
-            void saveDefaults()
-          }}
-          style={{ display: 'grid', gap: '0.55rem', maxWidth: '22rem', fontSize: '0.9rem' }}
-        >
-          <label style={{ display: 'grid', gap: '0.25rem' }}>
-            {p.matchDetailRegistrationDivision}
-            <input
-              type="text"
-              value={defDiv}
-              onChange={(e) => setDefDiv(e.target.value)}
-              disabled={defSaving}
-              autoComplete="off"
-            />
-          </label>
-          <label style={{ display: 'grid', gap: '0.25rem' }}>
-            {p.matchDetailRegistrationClass}
-            <input
-              type="text"
-              value={defClass}
-              onChange={(e) => setDefClass(e.target.value)}
-              disabled={defSaving}
-              autoComplete="off"
-            />
-          </label>
-          <label style={{ display: 'grid', gap: '0.25rem' }}>
-            {p.matchDetailRegistrationPFOptional}
-            <select
-              value={defPf}
-              onChange={(e) =>
-                setDefPf(e.target.value === '' ? '' : e.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
-              }
-              disabled={defSaving}
-              style={{ padding: '0.35rem', borderRadius: '6px', border: '1px solid var(--border)', maxWidth: '12rem' }}
-            >
-              <option value="">{p.matchDetailRegistrationPFNone}</option>
-              <option value="MAJOR">{p.matchDetailRegistrationPFMajor}</option>
-              <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
-            </select>
-          </label>
-          {defFeedback ?
-            <p role="status" style={{ margin: 0, fontSize: '0.86rem', whiteSpace: 'pre-wrap' }}>
-              {defFeedback}
+      {showMatchRegistrations ?
+        <section className="portal-account__hub-card" aria-labelledby="hub-regs-heading">
+          <h4 id="hub-regs-heading" className="portal-account__hub-card-title">
+            {p.accountMyRegistrationsHeading}
+          </h4>
+          {regErr ?
+            <p role="alert" className="portal-account__hub-inline-alert">
+              {p.accountMyRegistrationsLoadError}: {regErr}
             </p>
           : null}
-          <button type="submit" className="portal-shell__account-sign-out" style={{ width: 'fit-content', marginTop: '0.15rem' }} disabled={defSaving}>
-            {defSaving ? p.accountParticipantDefaultsSaving : p.accountParticipantDefaultsSave}
-          </button>
-        </form>
-      }
+          {rows === undefined ?
+            <p className="portal-account__hub-muted">{p.matchesLoadingDetail}</p>
+          : rows.length === 0 ?
+            <p className="portal-account__hub-muted">{p.accountMyRegistrationsEmpty}</p>
+          :
+            <div className="portal-account__hub-table-wrap">
+              <table className="portal-account__hub-table">
+                <thead>
+                  <tr>
+                    <th>{p.accountMyRegistrationsColMatch}</th>
+                    <th>{p.accountMyRegistrationsColDate}</th>
+                    <th>{p.accountMyRegistrationsColStatus}</th>
+                    <th>{p.accountMyRegistrationsColActions}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((r) => {
+                    const m = r.matches
+                    const title = m?.title?.trim() || p.accountMyRegistrationsMatchUnavailable
+                    const when = m?.starts_at ? formatPortalDate(m.starts_at, locale) : '—'
+                    const canCancel = r.status === 'pending'
+                    return (
+                      <tr key={r.id}>
+                        <td className="portal-account__hub-td-title">
+                          {m?.status === 'published' ?
+                            <Link
+                              className="portal-match-title-ellipsis"
+                              title={m?.title?.trim() || ''}
+                              to={`/${locale}/matches/${m.id}`}
+                            >
+                              {title}
+                            </Link>
+                          : (
+                            <span className="portal-match-title-ellipsis" title={title}>
+                              {title}
+                            </span>
+                          )}
+                        </td>
+                        <td className="portal-account__hub-td-nowrap">{when}</td>
+                        <td>{regStatusLabel(r.status)}</td>
+                        <td>
+                          {m?.status === 'published' ?
+                            <Link to={`/${locale}/matches/${m!.id}`} className="portal-account__hub-action-link">
+                              {p.accountMyRegistrationsOpenMatch}
+                            </Link>
+                          : null}
+                          {canCancel ?
+                            <>
+                              {m?.status === 'published' ? ' · ' : null}
+                              <button
+                                type="button"
+                                className="portal-account__link-btn"
+                                disabled={busyId === r.id}
+                                onClick={() => void cancelReg(r.id)}
+                              >
+                                {busyId === r.id ? p.accountMyRegistrationsCancelling : p.accountMyRegistrationsCancel}
+                              </button>
+                            </>
+                          : null}
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          }
+        </section>
+      : null}
+
+      <section className="portal-account__hub-card" aria-labelledby="hub-profile-heading">
+        <h4 id="hub-profile-heading" className="portal-account__hub-card-title">
+          {p.accountParticipantDefaultsHeading}
+        </h4>
+        <p className="portal-account__hub-card-lead">{p.accountParticipantProfileSectionLead}</p>
+        {defLoading ?
+          <p className="portal-account__hub-muted">{p.matchesLoadingDetail}</p>
+        :
+          <form
+            className="portal-account__psc-form"
+            onSubmit={(ev) => {
+              ev.preventDefault()
+              void saveDefaults()
+            }}
+          >
+            <div className="portal-account__psc-grid">
+              <label className="portal-account__field">
+                {p.accountParticipantFieldRegion}
+                <input
+                  type="text"
+                  value={defRegion}
+                  onChange={(e) => setDefRegion(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="off"
+                  placeholder={p.accountParticipantFieldRegionPlaceholder}
+                />
+              </label>
+              <label className="portal-account__field">
+                {p.accountParticipantFieldCategory}
+                <input
+                  type="text"
+                  value={defCategory}
+                  onChange={(e) => setDefCategory(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="off"
+                  placeholder={p.accountParticipantFieldCategoryPlaceholder}
+                />
+                <span className="portal-account__field-hint">{p.accountParticipantFieldCategoryHint}</span>
+              </label>
+              <label className="portal-account__field">
+                {p.accountParticipantFieldWeaponClass}
+                <input
+                  type="text"
+                  value={defWeaponClass}
+                  onChange={(e) => setDefWeaponClass(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="off"
+                  placeholder={p.accountParticipantFieldWeaponPlaceholder}
+                />
+              </label>
+              <label className="portal-account__field">
+                {p.matchDetailRegistrationDivision}
+                <input
+                  type="text"
+                  value={defDiv}
+                  onChange={(e) => setDefDiv(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="off"
+                />
+              </label>
+              <label className="portal-account__field">
+                {p.matchDetailRegistrationClass}
+                <input
+                  type="text"
+                  value={defClass}
+                  onChange={(e) => setDefClass(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="off"
+                />
+              </label>
+              <label className="portal-account__field">
+                {p.matchDetailRegistrationPFOptional}
+                <select
+                  value={defPf}
+                  onChange={(e) =>
+                    setDefPf(e.target.value === '' ? '' : e.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
+                  }
+                  disabled={defSaving}
+                >
+                  <option value="">{p.matchDetailRegistrationPFNone}</option>
+                  <option value="MAJOR">{p.matchDetailRegistrationPFMajor}</option>
+                  <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
+                </select>
+              </label>
+            </div>
+            {defFeedback ?
+              <p role="status" className="portal-account__hub-feedback">
+                {defFeedback}
+              </p>
+            : null}
+            <button type="submit" className="portal-btn portal-btn--secondary portal-account__hub-save" disabled={defSaving}>
+              {defSaving ? p.accountParticipantDefaultsSaving : p.accountParticipantDefaultsSave}
+            </button>
+          </form>
+        }
+      </section>
     </div>
   )
 }

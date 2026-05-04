@@ -1,0 +1,177 @@
+/* Shooter hub: registrations + PractiScore-style default profile (account page) */
+
+.portal-account__hub {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 0.75rem;
+}
+
+.portal-account__hub-card {
+  margin: 0;
+  padding: 1rem 1.1rem 1.1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface), var(--btn-bg) 28%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+
+.portal-account__hub-card-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+  line-height: 1.25;
+}
+
+.portal-account__hub-card-lead {
+  margin: 0 0 0.75rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: 0.92;
+}
+
+.portal-account__psc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  max-width: 40rem;
+}
+
+.portal-account__psc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem 1rem;
+}
+
+@media (min-width: 520px) {
+  .portal-account__psc-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .portal-account__psc-grid--full {
+    grid-column: 1 / -1;
+  }
+}
+
+.portal-account__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--text-h);
+}
+
+.portal-account__field input,
+.portal-account__field select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.portal-account__field input:focus,
+.portal-account__field select:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 2px var(--accent-bg);
+}
+
+.portal-account__field input:disabled,
+.portal-account__field select:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.portal-account__field-hint {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text);
+  opacity: 0.78;
+}
+
+.portal-account__hub-save {
+  width: fit-content;
+  margin-top: 0.2rem;
+}
+
+.portal-account__hub-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 0.15rem;
+}
+
+.portal-account__hub-table {
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  width: 100%;
+  min-width: 18rem;
+}
+
+.portal-account__hub-table th,
+.portal-account__hub-table td {
+  padding: 0.45rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.portal-account__hub-table th {
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.portal-account__hub-td-title {
+  max-width: 14rem;
+}
+
+.portal-account__hub-td-nowrap {
+  white-space: nowrap;
+}
+
+.portal-account__hub-action-link {
+  margin-right: 0.45rem;
+  font-weight: 650;
+}
+
+.portal-account__hub-inline-alert {
+  margin: 0 0 0.65rem;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.portal-account__hub-muted {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.portal-account__hub-env-hint {
+  margin: 0 0 0.5rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.5rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent-bg), transparent 55%);
+  border: 1px solid color-mix(in srgb, var(--border), var(--accent-border) 22%);
+}
+
+.portal-account__hub-feedback {
+  margin: 0.35rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}

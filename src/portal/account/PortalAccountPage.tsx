@@ -99,37 +99,45 @@ export function PortalAccountPage() {
       {sessionLoading ?
         <p className="portal-account__loading">{p.matchesLoadingDetail}</p>
       : user ?
-        <section className="portal-account__dashboard" aria-labelledby="account-summary-heading">
-          <h2 id="account-summary-heading" className="portal-account__summary-heading">
-            {p.accountSummaryHeading}
-          </h2>
-          <p className="portal-account__summary-email">
-            <strong>{p.accountSummaryLogin}</strong>{' '}
-            {user.email ?? user.id}
-          </p>
+        <section className="portal-account__dashboard" aria-label={p.accountPageTitle}>
+          <div className="portal-account__card">
+            <h2 className="portal-account__card-title" id="account-summary-heading">
+              {p.accountSummaryHeading}
+            </h2>
+            <p className="portal-account__summary-email" style={{ marginBottom: 0 }}>
+              <strong>{p.accountSummaryLogin}</strong>{' '}
+              {user.email ?? user.id}
+            </p>
+          </div>
 
-          <section className="portal-account__section" aria-labelledby="account-shooter-heading">
-            <h3 id="account-shooter-heading" className="portal-account__section-title">
-              {p.accountShooterCabinetHeading}
-            </h3>
-            <div className="portal-shell__badges" style={{ marginBottom: '0.75rem' }}>
-              <span className="portal-shell__badge portal-shell__badge--participant">{p.accountBadgeParticipant}</span>
-            </div>
-            <p className="portal-account__section-lead">{p.accountShooterCabinetLead}</p>
-            <ul className="portal-account__list">
-              <li>
-                <Link to={`/${locale}`}>{p.accountShooterPortalLinkLabel}</Link>
-                {p.accountShooterPortalLinkSuffix}
-              </li>
-              <li>{p.accountPageShooterSoon}</li>
-            </ul>
-            {isMatchPortalEnabled() && user?.id ?
-              <AccountParticipantHub locale={locale} p={p} userId={user.id} />
-            : null}
-          </section>
+          <div className="portal-account__card">
+            <section className="portal-account__section" aria-labelledby="account-shooter-heading" style={{ marginBottom: 0 }}>
+              <h3 id="account-shooter-heading" className="portal-account__section-title">
+                {p.accountShooterCabinetHeading}
+              </h3>
+              <div className="portal-shell__badges" style={{ marginBottom: '0.75rem' }}>
+                <span className="portal-shell__badge portal-shell__badge--participant">{p.accountBadgeParticipant}</span>
+              </div>
+              <p className="portal-account__section-lead">{p.accountShooterCabinetLead}</p>
+              <ul className="portal-account__list">
+                <li>
+                  <Link to={`/${locale}`}>{p.accountShooterPortalLinkLabel}</Link>
+                  {p.accountShooterPortalLinkSuffix}
+                </li>
+                <li>{p.accountPageShooterSoon}</li>
+              </ul>
+              <AccountParticipantHub
+                locale={locale}
+                p={p}
+                userId={user.id}
+                showMatchRegistrations={isMatchPortalEnabled()}
+              />
+            </section>
+          </div>
 
           {isMatchPortalEnabled() ?
-            <section className="portal-account__section" aria-labelledby="account-organizer-heading">
+            <div className="portal-account__card">
+            <section className="portal-account__section" aria-labelledby="account-organizer-heading" style={{ marginBottom: 0 }}>
               <h3 id="account-organizer-heading" className="portal-account__section-title">
                 {p.accountOrganizerSectionHeading}
               </h3>
@@ -301,6 +309,7 @@ export function PortalAccountPage() {
                 </>
               )}
             </section>
+            </div>
           : null}
 
           <div className="portal-account__sign-out-wrap">
