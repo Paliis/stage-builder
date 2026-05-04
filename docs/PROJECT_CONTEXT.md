@@ -141,7 +141,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | Активації | [BL-004_ACTIVATIONS.md](./BL-004_ACTIVATIONS.md) |
 | BLE-таймер (дослідження) | [BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md) |
 | Штрафні зони / видимість (чернетка правил) | [VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md) |
-| Матчі, реєстрація, експорт PSC | [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) |
+| Матчі, реєстрація, експорт PSC | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) |
 | Сітка поля / PDF (план) | [PLAN_FIELD_PDF_GRID.md](./PLAN_FIELD_PDF_GRID.md) |
 
 ---
@@ -156,6 +156,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | **FUNCTIONALITY.md** | Повний опис функцій для користувача та логіки UI |
 | **VERSIONING.md** | Продуктові етапи V0/V1/V2, тексти для користувачів |
 | **BACKLOG.md** | Таблиця BL-001…, стратегічний беклог, процес грумінгу |
+| **BACKLOG_MATCHES.md** | Модуль «Матчі»: беклог **`MA-<фаза><NN>`** (фази A–F + R), зв’язок із **BL-025**… |
 | **MATCH_PORTAL_PRODUCT_PLAN.md** | Модуль матчів: пронумерований план, беклог BL-033+ |
 | **MATCH_REGISTRATION_AND_PSC_PLAN.md** | Матчі, реєстрація, експорт у PractiScore (`.psc`) |
 | **MATCH_ADMIN_ARCHITECTURE.md** | Архітектура модуля матчів; прогалини (техніка, ліцензії, операторські реєстрації, продукти); UX-орієнтир [practicarms.ua](https://practicarms.ua/) (§8) |
@@ -203,7 +204,7 @@ npm run icons:st     # ST на іконці + похідні PNG/favicon/og
 | Реалізувати фічу в редакторі | [FUNCTIONALITY.md](./FUNCTIONALITY.md) → [TECH.md](./TECH.md) → код у `src/domain/` |
 | Share / Supabase / деплой секретів | [TECH.md](./TECH.md) (розділ BL-001) → [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md) |
 | Новий модуль на порталі | [PORTAL_PLAN.md](./PORTAL_PLAN.md) → [TECH.md](./TECH.md) |
-| Новий модуль матчів / PSC | [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) → [TECH.md](./TECH.md) Supabase |
+| Новий модуль матчів / PSC | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) → [TECH.md](./TECH.md) Supabase |
 | Дизайн / UI-UX (Claude та зовнішні дизайнери) | [DESIGN_SYSTEM_V0.md](./DESIGN_SYSTEM_V0.md), [CLAUDE_DESIGN_UX_PACKAGE.md](./CLAUDE_DESIGN_UX_PACKAGE.md) → [PORTAL_PLAN.md](./PORTAL_PLAN.md), [RO_HELPER_V0.md](./RO_HELPER_V0.md) §7 |
 | Контент RO Helper | [RO_HELPER_V0.md](./RO_HELPER_V0.md) + TZ/реєстр |
 | Ідея в беклог | [BACKLOG.md](./BACKLOG.md) (наступний вільний BL у таблиці) |
