@@ -160,6 +160,40 @@ a.portal-match-title-ellipsis:hover {
   gap: 0.55rem 0.75rem;
 }
 
+/* Organizer list: breadcrumb (matches hub = previous step) + compact portal-home link */
+
+.portal-matches-organizer__list-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  width: 100%;
+  max-width: 52rem;
+  margin-bottom: 0.35rem;
+}
+
+.portal-matches-organizer__list-head .portal-page-context {
+  margin: 0;
+  min-width: 0;
+}
+
+.portal-matches-organizer__portal-home {
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--accent);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.portal-matches-organizer__portal-home:hover {
+  text-decoration: underline;
+}
+
+.portal-page-context + .portal-home__hero .portal-matches-page__toolbar {
+  margin-bottom: 0.65rem;
+}
+
 /* Organizer “my matches”: mobile cards -------------------------------- */
 
 .portal-matches-organizer__cards {

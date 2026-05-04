@@ -131,6 +131,19 @@ export function OrganizerMatchesListPage() {
         <Helmet>
           <title>{p.myMatchesHelmet}</title>
         </Helmet>
+        <div className="portal-matches-organizer__list-head">
+          <nav className="portal-page-context" aria-label={p.portalBreadcrumbAria}>
+            <ol className="portal-breadcrumbs">
+              <li>
+                <Link to={`/${locale}/matches`}>{p.navMatches}</Link>
+              </li>
+              <li className="portal-breadcrumbs__current">{p.myMatchesTitle}</li>
+            </ol>
+          </nav>
+          <Link className="portal-matches-organizer__portal-home" to={`/${locale}`}>
+            {p.myMatchesBackHome}
+          </Link>
+        </div>
         <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
           <h1 className="portal-home__hero-title">{p.myMatchesTitle}</h1>
         </header>
@@ -150,6 +163,20 @@ export function OrganizerMatchesListPage() {
         <title>{p.myMatchesHelmet}</title>
       </Helmet>
 
+      <div className="portal-matches-organizer__list-head">
+        <nav className="portal-page-context" aria-label={p.portalBreadcrumbAria}>
+          <ol className="portal-breadcrumbs">
+            <li>
+              <Link to={`/${locale}/matches`}>{p.navMatches}</Link>
+            </li>
+            <li className="portal-breadcrumbs__current">{p.myMatchesTitle}</li>
+          </ol>
+        </nav>
+        <Link className="portal-matches-organizer__portal-home" to={`/${locale}`}>
+          {p.myMatchesBackHome}
+        </Link>
+      </div>
+
       <header className="portal-home__hero" style={{ marginBottom: '0.25rem' }}>
         <div className="portal-matches-page__toolbar">
           <h1 className="portal-home__hero-title" style={{ margin: 0 }}>
@@ -158,9 +185,6 @@ export function OrganizerMatchesListPage() {
           <div className="portal-matches-page__toolbar-actions">
             <Link className="portal-btn portal-btn--primary portal-btn--block-xs" to={`/${locale}/matches/my/new`}>
               {p.myMatchesCreate}
-            </Link>
-            <Link className="portal-btn portal-btn--ghost" to={`/${locale}`}>
-              {p.myMatchesBackHome}
             </Link>
           </div>
         </div>
