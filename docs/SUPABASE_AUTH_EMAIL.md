@@ -50,7 +50,23 @@
 2. Ключ **не варто** вставляти в репозиторій чи в `.env` фронту — лише в **Supabase Dashboard** (SMTP) або в секретах бекенду.
 3. Якщо в Resend є обмеження за **типом ключа** — для продакшену краще окремий ключ з мінімальними правами, якщо провайдер це дозволяє (документація Resend щодо permissions).
 
-## 6. Корисні посилання
+## 6. Посилання в листі веде на `localhost` (зокрема з телефона)
+
+**Чому так:** у листі підтвердження URL зазвичай будується з **Authentication → URL Configuration** у Supabase і/або з **`emailRedirectTo`**, який фронт передає при `signUp` (у Stage Builder це **поточний origin браузера** + шлях сторінки, наприклад `/uk/account`). Якщо реєстрацію відкрили на **`http://localhost:3000`**, у лист потрапить саме він.
+
+**На телефоні `localhost` — це сам телефон**, не ваш ПК, тому з’являється **ERR_CONNECTION_REFUSED**.
+
+**Що зробити**
+
+1. У Supabase: **Authentication** → **URL Configuration**:
+   - **Site URL** — поставте **продакшен-URL** сайту (наприклад `https://shooters-tools.com` або той, що на Vercel), **не** `http://localhost:…`.
+   - **Redirect URLs** — додайте маски продакшену (наприклад `https://shooters-tools.com/**`) і за потреби окремо dev (`http://127.0.0.1:5173/**`), якщо тестуєте локально з ПК.
+2. Зареєструйте тестового користувача **з браузера на проді** (той самий URL, що в **Site URL**), щоб у листі було **https://…**, а не localhost.
+3. Старий лист з localhost можна ігнорувати; після зміни налаштувань надішліть підтвердження ще раз (нова реєстрація або **Resend confirmation** з Dashboard, якщо доступно).
+
+Офіційно: [Redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls).
+
+## 7. Корисні посилання
 
 - [Supabase — Email Templates](https://supabase.com/docs/guides/auth/auth-email-templates)
 - [Supabase — Send emails with custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
