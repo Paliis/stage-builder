@@ -369,6 +369,11 @@
   letter-spacing: -0.02em;
   line-height: 1.3;
   color: var(--text-h);
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .portal-match-hub__published-card-meta {
@@ -388,10 +393,14 @@
 @media (min-width: 640px) {
   .portal-match-hub__published-card-row {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
   }
+}
+
+.portal-match-hub__published-card-row > .portal-btn {
+  flex: 0 0 auto;
 }
 
 .portal-match-hub__published-card-body {

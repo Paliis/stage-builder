@@ -367,7 +367,9 @@ export function PortalPublishedMatchesSection() {
                     <li key={m.id} className="portal-match-hub__published-card">
                       <div className="portal-match-hub__published-card-row">
                         <div className="portal-match-hub__published-card-body">
-                          <h2 className="portal-match-hub__published-card-title">{titleText}</h2>
+                          <h2 className="portal-match-hub__published-card-title" title={titleText}>
+                            {titleText}
+                          </h2>
                           <p className="portal-match-hub__published-card-meta">
                             <time dateTime={m.starts_at}>{formatPortalDate(m.starts_at, locale)}</time>
                             {m.location_label?.trim() ?
