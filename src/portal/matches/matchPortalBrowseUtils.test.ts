@@ -71,6 +71,33 @@ describe('matchPortalBrowseUtils', () => {
     expect(filtered.map((x) => x.title)).toEqual(['B'])
   })
 
+  test('filterPublishedMatchesForHub filters by event kind and PS level', () => {
+    const rows: PubMatchRow[] = [
+      { ...rowAtLocal(2026, 4, 10, 'A'), match_event_kind: 'match', ps_match_level: 'L1' },
+      { ...rowAtLocal(2026, 4, 11, 'B'), match_event_kind: 'training', ps_match_level: 'L2' },
+    ]
+    expect(
+      filterPublishedMatchesForHub(rows, {
+        queryNorm: '',
+        dateFrom: null,
+        dateTo: null,
+        selectedDay: null,
+        eventKind: 'training',
+        psLevel: 'all',
+      }).map((x) => x.title),
+    ).toEqual(['B'])
+    expect(
+      filterPublishedMatchesForHub(rows, {
+        queryNorm: '',
+        dateFrom: null,
+        dateTo: null,
+        selectedDay: null,
+        eventKind: 'all',
+        psLevel: 'L1',
+      }).map((x) => x.title),
+    ).toEqual(['A'])
+  })
+
   test('mondayFirstWeekdayIndex: Friday 2026-05-01 => 4', () => {
     expect(mondayFirstWeekdayIndex(new Date(2026, 4, 1))).toBe(4)
   })

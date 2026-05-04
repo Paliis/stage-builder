@@ -4,12 +4,11 @@ import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { formatTemplate } from '../../i18n/format'
 import { useI18n } from '../../i18n/useI18n'
-import type { MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from './matchPortalFormat'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
-import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
+import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import '../PortalHome.css'
 
 type MatchDetailRow = {
@@ -47,28 +46,6 @@ function programmeRowTitle(r: PublicStageLinkRow): string {
   const snap = typeof meta?.title_snapshot === 'string' ? meta.title_snapshot.trim() : ''
   if (snap) return snap
   return r.share_stage_id?.trim() || '—'
-}
-
-function labelEventKind(
-  kind: string | null,
-  p: MessageTree['portal'],
-): string {
-  if (!kind || !isMatchEventKind(kind)) return ''
-  if (kind === 'training') return p.matchEventKindTraining
-  if (kind === 'match') return p.matchEventKindMatch
-  return p.matchEventKindClassification
-}
-
-function labelPsLevel(level: string | null, p: MessageTree['portal']): string {
-  if (!level || !isPsMatchLevel(level)) return ''
-  const m: Record<string, string> = {
-    L1: p.matchPsLevelL1,
-    L2: p.matchPsLevelL2,
-    L3: p.matchPsLevelL3,
-    L4: p.matchPsLevelL4,
-    L5: p.matchPsLevelL5,
-  }
-  return m[level] ?? level
 }
 
 export function MatchPublicDetailPage() {
@@ -305,11 +282,11 @@ export function MatchPublicDetailPage() {
         <dd style={{ margin: 0 }}>{formatPortalDate(row.starts_at, locale)}</dd>
         <dt>{p.matchDetailEventKindLabel}</dt>
         <dd style={{ margin: 0 }}>
-          {labelEventKind(row.match_event_kind, p) || p.matchDetailNotSpecifiedValue}
+          {portalLabelMatchEventKind(row.match_event_kind, p) || p.matchDetailNotSpecifiedValue}
         </dd>
         <dt>{p.matchDetailPsLevelLabel}</dt>
         <dd style={{ margin: 0 }}>
-          {labelPsLevel(row.ps_match_level, p) || p.matchDetailNotSpecifiedValue}
+          {portalLabelPsMatchLevel(row.ps_match_level, p) || p.matchDetailNotSpecifiedValue}
         </dd>
         {row.location_label ? (
           <>

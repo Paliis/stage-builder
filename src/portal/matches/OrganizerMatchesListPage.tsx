@@ -7,6 +7,7 @@ import { useSupabaseSession } from '../useSupabaseSession'
 import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import type { MessageTree } from '../../i18n/messages'
 import { formatPortalDate } from './matchPortalFormat'
+import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import '../PortalHome.css'
 
@@ -18,6 +19,8 @@ type OrganizerMatchRow = {
   starts_at: string
   status: string
   participant_list_visibility?: string | null
+  match_event_kind?: string | null
+  ps_match_level?: string | null
 }
 
 export function OrganizerMatchesListPage() {
@@ -37,7 +40,7 @@ export function OrganizerMatchesListPage() {
     setError(null)
     const { data, error: qErr } = await sb
       .from('matches')
-      .select('id, title, starts_at, status, participant_list_visibility')
+      .select('id, title, starts_at, status, participant_list_visibility, match_event_kind, ps_match_level')
       .eq('organizer_id', user.id)
       .order('starts_at', { ascending: true })
     if (qErr) {
@@ -181,6 +184,12 @@ export function OrganizerMatchesListPage() {
                 {p.myMatchesColStarts}
               </th>
               <th style={{ textAlign: 'left', borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>
+                {p.myMatchesColEventKind}
+              </th>
+              <th style={{ textAlign: 'left', borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>
+                {p.myMatchesColPsLevel}
+              </th>
+              <th style={{ textAlign: 'left', borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>
                 {p.myMatchesColStatus}
               </th>
               <th style={{ textAlign: 'left', borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>
@@ -195,6 +204,12 @@ export function OrganizerMatchesListPage() {
                 <td style={{ borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>{r.title}</td>
                 <td style={{ borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>
                   {formatPortalDate(r.starts_at, locale)}
+                </td>
+                <td style={{ borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>
+                  {portalLabelMatchEventKind(r.match_event_kind ?? null, p) || p.portalMatchesHubListDash}
+                </td>
+                <td style={{ borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>
+                  {portalLabelPsMatchLevel(r.ps_match_level ?? null, p) || p.portalMatchesHubListDash}
                 </td>
                 <td style={{ borderBottom: '1px solid var(--border)', padding: '0.45rem 0.5rem' }}>
                   {matchStatusLabel(p, r.status)}

@@ -13,6 +13,8 @@ import {
   normalizeSearchQuery,
   type PubMatchRow,
 } from './matches/matchPortalBrowseUtils'
+import type { MatchEventKind, PsMatchLevel } from '../domain/matchTaxonomy'
+import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matches/matchPortalLabels'
 import { isMatchPortalEnabled } from './featureFlags'
 import './PortalHome.css'
 import './PortalMatchHub.css'
@@ -51,6 +53,9 @@ export function PortalPublishedMatchesSection() {
   const dateFromNorm = dateFrom.trim() || null
   const dateToNorm = dateTo.trim() || null
 
+  const [eventKindFilter, setEventKindFilter] = useState<'all' | MatchEventKind>('all')
+  const [psLevelFilter, setPsLevelFilter] = useState<'all' | PsMatchLevel>('all')
+
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
 
   const [{ y: calY, m: calM }, setCalendarMonth] = useState(() => {
@@ -68,7 +73,7 @@ export function PortalPublishedMatchesSection() {
     start.setUTCHours(0, 0, 0, 0)
     const { data, error: qErr } = await sb
       .from('matches')
-      .select('id, title, starts_at, location_label')
+      .select('id, title, starts_at, location_label, match_event_kind, ps_match_level')
       .eq('status', 'published')
       .gte('starts_at', start.toISOString())
       .order('starts_at', { ascending: true })
@@ -93,8 +98,10 @@ export function PortalPublishedMatchesSection() {
         dateFrom: dateFromNorm,
         dateTo: dateToNorm,
         selectedDay: null,
+        eventKind: eventKindFilter,
+        psLevel: psLevelFilter,
       }),
-    [allRows, queryNorm, dateFromNorm, dateToNorm],
+    [allRows, queryNorm, dateFromNorm, dateToNorm, eventKindFilter, psLevelFilter],
   )
 
   const countsByDay = useMemo(() => buildCountsByLocalDay(rowsForCalendar), [rowsForCalendar])
@@ -106,8 +113,10 @@ export function PortalPublishedMatchesSection() {
         dateFrom: dateFromNorm,
         dateTo: dateToNorm,
         selectedDay,
+        eventKind: eventKindFilter,
+        psLevel: psLevelFilter,
       }),
-    [allRows, queryNorm, dateFromNorm, dateToNorm, selectedDay],
+    [allRows, queryNorm, dateFromNorm, dateToNorm, selectedDay, eventKindFilter, psLevelFilter],
   )
 
   const calendarCells = useMemo(() => buildCalendarCells(calY, calM), [calY, calM])
@@ -120,6 +129,8 @@ export function PortalPublishedMatchesSection() {
     setDateFrom('')
     setDateTo('')
     setSelectedDay(null)
+    setEventKindFilter('all')
+    setPsLevelFilter('all')
     const d = new Date()
     setCalendarMonth({ y: d.getFullYear(), m: d.getMonth() })
   }, [])
@@ -127,7 +138,12 @@ export function PortalPublishedMatchesSection() {
   if (!matchPortalOn || !configured) return null
 
   const hasActiveFilters =
-    searchInput.trim() !== '' || dateFromNorm !== null || dateToNorm !== null || selectedDay !== null
+    searchInput.trim() !== '' ||
+    dateFromNorm !== null ||
+    dateToNorm !== null ||
+    selectedDay !== null ||
+    eventKindFilter !== 'all' ||
+    psLevelFilter !== 'all'
 
   return (
     <section className="portal-home__matches-published" aria-labelledby="portal-published-matches">
@@ -158,6 +174,26 @@ export function PortalPublishedMatchesSection() {
           <label>
             {p.portalMatchesHubDateTo}
             <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+          </label>
+          <label>
+            {p.portalMatchesHubFilterEventKind}
+            <select value={eventKindFilter} onChange={(e) => setEventKindFilter(e.target.value as 'all' | MatchEventKind)}>
+              <option value="all">{p.portalMatchesHubFilterEventKindAll}</option>
+              <option value="training">{p.matchEventKindTraining}</option>
+              <option value="match">{p.matchEventKindMatch}</option>
+              <option value="classification">{p.matchEventKindClassification}</option>
+            </select>
+          </label>
+          <label>
+            {p.portalMatchesHubFilterPsLevel}
+            <select value={psLevelFilter} onChange={(e) => setPsLevelFilter(e.target.value as 'all' | PsMatchLevel)}>
+              <option value="all">{p.portalMatchesHubFilterPsLevelAll}</option>
+              <option value="L1">{p.matchPsLevelL1}</option>
+              <option value="L2">{p.matchPsLevelL2}</option>
+              <option value="L3">{p.matchPsLevelL3}</option>
+              <option value="L4">{p.matchPsLevelL4}</option>
+              <option value="L5">{p.matchPsLevelL5}</option>
+            </select>
           </label>
           <label>
             {p.portalMatchesHubMonthJumpLabel}
@@ -271,6 +307,10 @@ export function PortalPublishedMatchesSection() {
                           {m.location_label.trim()}
                         </>
                       : null}
+                      {' · '}
+                      {portalLabelMatchEventKind(m.match_event_kind ?? null, p) || p.portalMatchesHubListDash}
+                      {' · '}
+                      {portalLabelPsMatchLevel(m.ps_match_level ?? null, p) || p.portalMatchesHubListDash}
                     </span>
                     <span className="portal-home__matches-published-item-body">
                       <Link to={`/${locale}/matches/${m.id}`} className="portal-home__matches-published-link">

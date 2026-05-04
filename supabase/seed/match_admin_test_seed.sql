@@ -191,7 +191,9 @@ BEGIN
     planned_main_squad_count,
     planned_prematch_squad_count,
     shooters_per_main_squad,
-    shooters_per_prematch_squad
+    shooters_per_prematch_squad,
+    match_event_kind,
+    ps_match_level
   )
   VALUES (
     org_id,
@@ -210,7 +212,9 @@ BEGIN
     2,
     0,
     12,
-    18
+    18,
+    'match',
+    'L2'
   )
   RETURNING id INTO mid;
 

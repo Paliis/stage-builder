@@ -380,6 +380,14 @@ export type MessageTree = {
     /** `formatTemplate`: `{{date}}` → YYYY-MM-DD (local calendar day label). */
     portalMatchesHubDayButtonAria: string
     portalMatchesHubNoMatchesFiltered: string
+    /** Match hub: filter by event kind (training / match / classification). */
+    portalMatchesHubFilterEventKind: string
+    portalMatchesHubFilterEventKindAll: string
+    /** Match hub: filter by PractiScore level L1–L5. */
+    portalMatchesHubFilterPsLevel: string
+    portalMatchesHubFilterPsLevelAll: string
+    /** Compact placeholder when kind/level not set (list/hub). */
+    portalMatchesHubListDash: string
     /** Status badge label — stable / generally available product. */
     badgeLive: string
     /** Status badge label — new / recently launched product. */
@@ -572,6 +580,8 @@ export type MessageTree = {
     myMatchesCreate: string
     myMatchesColTitle: string
     myMatchesColStarts: string
+    myMatchesColEventKind: string
+    myMatchesColPsLevel: string
     myMatchesColStatus: string
     myMatchesColList: string
     myMatchesRoster: string
@@ -1269,7 +1279,12 @@ export const ukMessages: MessageTree = {
     portalMatchesHubCalendarAria: 'Календар днів із матчами',
     portalMatchesHubDayButtonAria: 'Фільтр списку за день {{date}}',
     portalMatchesHubNoMatchesFiltered:
-      'За поточними умовами нічого не знайдено. Змініть пошук, діапазон дат або календар і спробуйте «Скинути фільтри».',
+      'За поточними умовами нічого не знайдено. Змініть пошук, діапазон дат, тип події, рівень, календар і спробуйте «Скинути фільтри».',
+    portalMatchesHubFilterEventKind: 'Тип події',
+    portalMatchesHubFilterEventKindAll: 'Усі типи',
+    portalMatchesHubFilterPsLevel: 'Рівень PS',
+    portalMatchesHubFilterPsLevelAll: 'Усі рівні',
+    portalMatchesHubListDash: '—',
     badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
     badgeNew: '\u041d\u043e\u0432\u0435',
     badgeBeta: 'Beta',
@@ -1471,6 +1486,8 @@ export const ukMessages: MessageTree = {
     myMatchesCreate: 'Створити матч',
     myMatchesColTitle: 'Назва',
     myMatchesColStarts: 'Початок',
+    myMatchesColEventKind: 'Тип',
+    myMatchesColPsLevel: 'Рівень',
     myMatchesColStatus: 'Статус',
     myMatchesColList: 'Список учасників',
     myMatchesRoster: 'Заявки',
@@ -2174,7 +2191,12 @@ export const enMessages: MessageTree = {
     portalMatchesHubCalendarAria: 'Calendar of days with matches',
     portalMatchesHubDayButtonAria: 'Filter list to {{date}}',
     portalMatchesHubNoMatchesFiltered:
-      'Nothing matches these filters yet. Adjust search or dates, or tap "Clear filters".',
+      'Nothing matches these filters yet. Adjust search, dates, event type, level, or tap "Clear filters".',
+    portalMatchesHubFilterEventKind: 'Event type',
+    portalMatchesHubFilterEventKindAll: 'All types',
+    portalMatchesHubFilterPsLevel: 'PS level',
+    portalMatchesHubFilterPsLevelAll: 'All levels',
+    portalMatchesHubListDash: '—',
     badgeLive: 'Live',
     badgeNew: 'New',
     badgeBeta: 'Beta',
@@ -2379,6 +2401,8 @@ export const enMessages: MessageTree = {
     myMatchesCreate: 'Create match',
     myMatchesColTitle: 'Title',
     myMatchesColStarts: 'Starts',
+    myMatchesColEventKind: 'Type',
+    myMatchesColPsLevel: 'Level',
     myMatchesColStatus: 'Status',
     myMatchesColList: 'Participant list',
     myMatchesRoster: 'Registrations',

@@ -1,8 +1,12 @@
+import type { MatchEventKind, PsMatchLevel } from '../../domain/matchTaxonomy'
+
 export type PubMatchRow = {
   id: string
   title: string
   starts_at: string
   location_label?: string | null
+  match_event_kind?: string | null
+  ps_match_level?: string | null
 }
 
 /** Local calendar YYYY-MM-DD from a Date in the user's timezone. */
@@ -38,7 +42,7 @@ export function rowInLocalDateInclusiveRange(row: PubMatchRow, dateFrom: string 
   return true
 }
 
-/** Full pipeline: optional search norm, optional from/to inclusive, optional single selected calendar day (YYYY-MM-DD). */
+/** Full pipeline: optional search norm, optional from/to inclusive, optional single selected calendar day (YYYY-MM-DD), optional event kind / PS level. */
 export function filterPublishedMatchesForHub(
   rows: PubMatchRow[],
   filters: {
@@ -46,14 +50,24 @@ export function filterPublishedMatchesForHub(
     dateFrom: string | null
     dateTo: string | null
     selectedDay: string | null
+    eventKind?: 'all' | MatchEventKind
+    psLevel?: 'all' | PsMatchLevel
   },
 ): PubMatchRow[] {
+  const eventKind = filters.eventKind ?? 'all'
+  const psLevel = filters.psLevel ?? 'all'
   let out = rows.filter((r) => matchSearchQuery(r, filters.queryNorm))
   if (filters.dateFrom || filters.dateTo) {
     out = out.filter((r) => rowInLocalDateInclusiveRange(r, filters.dateFrom, filters.dateTo))
   }
   if (filters.selectedDay) {
     out = out.filter((r) => localDateKeyFromIso(r.starts_at) === filters.selectedDay)
+  }
+  if (eventKind !== 'all') {
+    out = out.filter((r) => r.match_event_kind === eventKind)
+  }
+  if (psLevel !== 'all') {
+    out = out.filter((r) => r.ps_match_level === psLevel)
   }
   return out
 }
