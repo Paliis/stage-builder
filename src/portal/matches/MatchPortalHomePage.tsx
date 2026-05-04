@@ -5,6 +5,7 @@ import { PortalPublishedMatchesSection } from '../PortalPublishedMatchesSection'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import '../PortalHome.css'
+import '../PortalMatchesUi.css'
 
 /** Published match catalog hub at `/:locale/matches`. */
 export function MatchPortalHomePage() {
@@ -16,11 +17,17 @@ export function MatchPortalHomePage() {
   const footerOrganizerSlot =
     sessionLoading || (user && organizerProfileLoading) ? null
     : !user ? (
-      <Link to={`/${locale}/account`}>{p.matchesPortalFooterOrganizerSignIn}</Link>
+      <Link className="portal-btn portal-btn--primary" to={`/${locale}/account`}>
+        {p.matchesPortalFooterOrganizerSignIn}
+      </Link>
     ) : organizerProfile === 'active' ? (
-      <Link to={`/${locale}/matches/my`}>{p.matchesPortalOrganizerLink}</Link>
+      <Link className="portal-btn portal-btn--primary portal-btn--block-xs" to={`/${locale}/matches/my`}>
+        {p.matchesPortalOrganizerLink}
+      </Link>
     ) : (
-      <Link to={`/${locale}/account`}>{p.matchesPortalFooterOrganizerViaAccount}</Link>
+      <Link className="portal-btn portal-btn--secondary portal-btn--block-xs" to={`/${locale}/account`}>
+        {p.matchesPortalFooterOrganizerViaAccount}
+      </Link>
     )
 
   return (
@@ -29,14 +36,25 @@ export function MatchPortalHomePage() {
         <title>{p.matchesPageHelmetTitle}</title>
       </Helmet>
 
-      <p style={{ margin: '0 0 1rem' }}>
-        <Link to={`/${locale}`}>{p.myMatchesBackHome}</Link>
-      </p>
+      <nav className="portal-matches-page__nav">
+        <Link className="portal-btn portal-btn--ghost portal-btn--compact" to={`/${locale}`}>
+          ← {p.myMatchesBackHome}
+        </Link>
+      </nav>
 
       <PortalPublishedMatchesSection />
 
       {footerOrganizerSlot ?
-        <p style={{ margin: '1rem 0 0', fontSize: '0.94rem', lineHeight: 1.5 }}>{footerOrganizerSlot}</p>
+        <div
+          style={{
+            marginTop: '1.5rem',
+            paddingTop: '1.35rem',
+            borderTop: '1px solid var(--border)',
+            maxWidth: '52rem',
+          }}
+        >
+          {footerOrganizerSlot}
+        </div>
       : null}
     </div>
   )

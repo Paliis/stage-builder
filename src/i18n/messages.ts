@@ -356,6 +356,8 @@ export type MessageTree = {
     portalPublishedMatchesLead: string
     portalPublishedMatchesEmpty: string
     portalPublishedMatchesLoadError: string
+    /** Hub list: primary CTA to open public match page. */
+    portalPublishedMatchOpenPrimary: string
     /** Footer link from match hub → organizer list (`/matches/my`). */
     matchesPortalOrganizerLink: string
     /** Match hub footer: signed-in user is not approved organizer yet → account link. */
@@ -593,6 +595,10 @@ export type MessageTree = {
     myMatchesLoadError: string
     myMatchesEmpty: string
     myMatchesBackHome: string
+    /** Organizer list: primary action → match edit hub. */
+    myMatchesManage: string
+    /** Mobile card: secondary link group (roster, public). */
+    myMatchesQuickLinksAria: string
     matchOrgStatusDraft: string
     matchOrgStatusPublished: string
     matchOrgStatusCancelled: string
@@ -1260,7 +1266,8 @@ export const ukMessages: MessageTree = {
     portalPublishedMatchesLead:
       'Майбутні опубліковані змагання; реєстрація — на картці матчу після входу. Повний огляд ваших заявок — в обліковому записі.',
     portalPublishedMatchesEmpty: 'Наразі немає запланованих опублікованих матчів з сьогоднішньої дати.',
-    portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
+      portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
+      portalPublishedMatchOpenPrimary: 'Деталі',
     matchesPortalOrganizerLink: 'Кабінет організатора — мої матчі (управління чернетками й заявками)',
     matchesPortalFooterOrganizerViaAccount:
       'Заявка та статус організатора — в обліковому записі. Керування чернетками й заявками відкриється після схвалення платформи.',
@@ -1503,7 +1510,9 @@ export const ukMessages: MessageTree = {
     myMatchesLoading: 'Завантаження…',
     myMatchesLoadError: 'Помилка',
     myMatchesEmpty: 'Ще немає матчів. Створи перший.',
-    myMatchesBackHome: 'На головну порталу',
+      myMatchesBackHome: 'На головну порталу',
+      myMatchesManage: 'Керувати',
+      myMatchesQuickLinksAria: 'Додаткові дії для цього матчу',
     matchOrgStatusDraft: 'Чернетка',
     matchOrgStatusPublished: 'Опубліковано',
     matchOrgStatusCancelled: 'Скасовано',
@@ -2178,7 +2187,8 @@ export const enMessages: MessageTree = {
     portalPublishedMatchesLead:
       'Upcoming published events; sign up from each match page while signed in. Your personal sign-up list lives on the account page.',
     portalPublishedMatchesEmpty: 'No published matches scheduled from today onward yet.',
-    portalPublishedMatchesLoadError: 'Could not load the matches list',
+      portalPublishedMatchesLoadError: 'Could not load the matches list',
+      portalPublishedMatchOpenPrimary: 'Details',
     matchesPortalOrganizerLink: 'Organizer dashboard — my matches (drafts and registrations)',
     matchesPortalFooterOrganizerViaAccount:
       'Apply for organizer access and track your status from the account page. Match authoring opens after approval.',
@@ -2423,7 +2433,9 @@ export const enMessages: MessageTree = {
     myMatchesLoading: 'Loading…',
     myMatchesLoadError: 'Error',
     myMatchesEmpty: 'No matches yet. Create one.',
-    myMatchesBackHome: 'Portal home',
+      myMatchesBackHome: 'Portal home',
+      myMatchesManage: 'Manage',
+      myMatchesQuickLinksAria: 'Additional actions for this match',
     matchOrgStatusDraft: 'Draft',
     matchOrgStatusPublished: 'Published',
     matchOrgStatusCancelled: 'Cancelled',

@@ -18,6 +18,7 @@ import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matches/ma
 import { isMatchPortalEnabled } from './featureFlags'
 import './PortalHome.css'
 import './PortalMatchHub.css'
+import './PortalMatchesUi.css'
 
 function weekdayShortLabels(locale: Locale): string[] {
   const loc = locale === 'uk' ? 'uk-UA' : 'en-GB'
@@ -147,7 +148,7 @@ export function PortalPublishedMatchesSection() {
 
   return (
     <section className="portal-home__matches-published" aria-labelledby="portal-published-matches">
-      <h1 id="portal-published-matches" className="portal-home__matches-published-title">
+      <h1 id="portal-published-matches" className="portal-home__hero-title">
         {p.portalPublishedMatchesHeading}
       </h1>
       <p className="portal-home__matches-published-lead">{p.portalPublishedMatchesLead}</p>
@@ -209,7 +210,7 @@ export function PortalPublishedMatchesSection() {
               }}
             />
           </label>
-          <button type="button" className="portal-match-hub__clear-btn" onClick={clearFilters}>
+          <button type="button" className="portal-btn portal-btn--secondary portal-btn--compact" onClick={clearFilters}>
             {p.portalMatchesHubClearFilters}
           </button>
         </div>
@@ -296,32 +297,40 @@ export function PortalPublishedMatchesSection() {
                 {hasActiveFilters ? p.portalMatchesHubNoMatchesFiltered : p.portalPublishedMatchesEmpty}
               </p>
             :
-              <ul className="portal-home__matches-published-list">
-                {filteredList.map((m) => (
-                  <li key={m.id} className="portal-home__matches-published-item">
-                    <span className="portal-home__matches-published-item-meta">
-                      <time dateTime={m.starts_at}>{formatPortalDate(m.starts_at, locale)}</time>
-                      {m.location_label?.trim() ?
-                        <>
-                          {' · '}
-                          {m.location_label.trim()}
-                        </>
-                      : null}
-                      {' · '}
-                      {portalLabelMatchEventKind(m.match_event_kind ?? null, p) || p.portalMatchesHubListDash}
-                      {' · '}
-                      {portalLabelPsMatchLevel(m.ps_match_level ?? null, p) || p.portalMatchesHubListDash}
-                    </span>
-                    <span className="portal-home__matches-published-item-body">
-                      <Link to={`/${locale}/matches/${m.id}`} className="portal-home__matches-published-link">
-                        {m.title.trim() || '—'}
-                      </Link>
-                      <span className="portal-home__matches-published-cta" aria-hidden>
-                        {' →'}
-                      </span>
-                    </span>
-                  </li>
-                ))}
+              <ul className="portal-match-hub__published-cards">
+                {filteredList.map((m) => {
+                  const detailPath = `/${locale}/matches/${m.id}`
+                  const titleText = m.title.trim() || '—'
+                  return (
+                    <li key={m.id} className="portal-match-hub__published-card">
+                      <div className="portal-match-hub__published-card-row">
+                        <div className="portal-match-hub__published-card-body">
+                          <h2 className="portal-match-hub__published-card-title">{titleText}</h2>
+                          <p className="portal-match-hub__published-card-meta">
+                            <time dateTime={m.starts_at}>{formatPortalDate(m.starts_at, locale)}</time>
+                            {m.location_label?.trim() ?
+                              <>
+                                {' · '}
+                                {m.location_label.trim()}
+                              </>
+                            : null}
+                            {' · '}
+                            {portalLabelMatchEventKind(m.match_event_kind ?? null, p) ||
+                              p.portalMatchesHubListDash}
+                            {' · '}
+                            {portalLabelPsMatchLevel(m.ps_match_level ?? null, p) || p.portalMatchesHubListDash}
+                          </p>
+                        </div>
+                        <Link
+                          className="portal-btn portal-btn--primary portal-btn--compact portal-btn--block-xs"
+                          to={detailPath}
+                        >
+                          {p.portalPublishedMatchOpenPrimary}
+                        </Link>
+                      </div>
+                    </li>
+                  )
+                })}
               </ul>
             }
           </div>

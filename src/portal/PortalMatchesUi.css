@@ -1,0 +1,400 @@
+/* Shared “product” UI for match portal flows: buttons + organizer list + hub cards */
+
+/* -------------------------------------------------------------------- Buttons */
+
+.portal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  box-sizing: border-box;
+  min-height: 2.5rem;
+  padding: 0.52rem 1.15rem;
+  border-radius: 0.65rem;
+  font-size: 0.9375rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.18s ease,
+    transform 0.16s ease;
+}
+
+.portal-btn:focus-visible {
+  outline: none;
+}
+
+.portal-btn:focus-visible {
+  box-shadow: 0 0 0 3px var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+.portal-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-btn {
+    transition: none;
+  }
+
+  .portal-btn:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+.portal-btn--primary {
+  background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent), #312e81 28%));
+  color: #fff;
+  border-color: color-mix(in srgb, var(--accent) 55%, #1e1b4b);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 3px 10px rgba(79, 70, 229, 0.25);
+}
+
+.portal-btn--primary:hover {
+  border-color: var(--accent-border);
+  filter: brightness(1.06);
+}
+
+.portal-btn--secondary {
+  background: var(--surface);
+  color: var(--text-h);
+  border-color: var(--border);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.portal-btn--secondary:hover {
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.portal-btn--ghost {
+  background: transparent;
+  color: var(--accent);
+  border-color: transparent;
+  padding-left: 0.65rem;
+  padding-right: 0.65rem;
+  box-shadow: none;
+}
+
+.portal-btn--ghost:hover {
+  background: var(--accent-bg);
+}
+
+.portal-btn--compact {
+  min-height: 2.125rem;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.875rem;
+}
+
+.portal-btn--block {
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .portal-btn--block-xs {
+    width: auto;
+  }
+}
+
+@media (max-width: 479px) {
+  .portal-btn--block-xs {
+    width: 100%;
+  }
+}
+
+/* -------------------------------------------------------------------- Page chrome */
+
+.portal-matches-page__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 0 1.25rem;
+}
+
+.portal-matches-page__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.85rem;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 52rem;
+  margin-bottom: 1.5rem;
+}
+
+.portal-matches-page__toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.75rem;
+}
+
+/* Organizer “my matches”: mobile cards -------------------------------- */
+
+.portal-matches-organizer__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 36rem;
+}
+
+@media (min-width: 768px) {
+  .portal-matches-organizer__cards {
+    display: none !important;
+  }
+}
+
+.portal-matches-organizer__card {
+  margin: 0;
+  padding: 1rem 1.08rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--btn-bg);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 10px 28px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.portal-matches-organizer__card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  color: var(--text-h);
+}
+
+.portal-matches-organizer__meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.85rem;
+  font-size: 0.84375rem;
+  line-height: 1.4;
+}
+
+.portal-matches-organizer__meta dt {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+  opacity: 0.88;
+}
+
+.portal-matches-organizer__meta dd {
+  margin: 0;
+  color: var(--text-h);
+  font-weight: 650;
+}
+
+.portal-matches-organizer__primary-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding-top: 0.2rem;
+}
+
+.portal-matches-organizer__secondary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.portal-matches-organizer__secondary a {
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.portal-matches-organizer__secondary a:hover {
+  text-decoration: underline;
+}
+
+.portal-matches-organizer__secondary a:focus-visible {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Organizer: desktop table ------------------------------------------- */
+
+.portal-matches-organizer__table-shell {
+  display: none;
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+}
+
+@media (min-width: 768px) {
+  .portal-matches-organizer__table-shell {
+    display: block;
+  }
+}
+
+.portal-matches-organizer__table {
+  width: 100%;
+  min-width: 44rem;
+  border-collapse: collapse;
+  font-size: 0.90625rem;
+}
+
+.portal-matches-organizer__table thead th {
+  text-align: left;
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 800;
+  color: var(--text-h);
+  background: color-mix(in srgb, var(--surface), var(--border) 12%);
+}
+
+.portal-matches-organizer__table tbody td {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text);
+}
+
+.portal-matches-organizer__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.portal-matches-organizer__table tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--btn-bg), var(--accent-bg) 18%);
+}
+
+.portal-matches-organizer__cell-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+  min-width: 9.5rem;
+}
+
+.portal-matches-organizer__cell-actions-secondary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+
+.portal-matches-organizer__cell-actions-secondary a {
+  color: var(--accent);
+}
+
+.portal-matches-organizer__cell-actions-secondary a:hover {
+  text-decoration: underline;
+}
+
+.portal-matches-organizer__hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.portal-matches-organizer__panel {
+  max-width: 36rem;
+  padding: 1rem 1.15rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+}
+
+.portal-matches-organizer__panel p {
+  margin: 0 0 0.65rem;
+}
+
+.portal-matches-organizer__panel p:last-child {
+  margin-bottom: 0;
+}
+
+/* Hub: vertical stack of match cards --------------------------------- */
+
+.portal-match-hub__published-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 52rem;
+}
+
+/* Hub published list — product cards --------------------------------- */
+
+.portal-match-hub__published-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem 1.08rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.2s ease;
+}
+
+.portal-match-hub__published-card:hover {
+  border-color: var(--accent-border);
+  box-shadow: 0 10px 28px rgba(79, 70, 229, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-match-hub__published-card {
+    transition: none;
+  }
+}
+
+.portal-match-hub__published-card-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-h);
+}
+
+.portal-match-hub__published-card-meta {
+  margin: 0;
+  font-size: 0.84375rem;
+  line-height: 1.45;
+  color: var(--text);
+  font-weight: 650;
+}
+
+.portal-match-hub__published-card-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .portal-match-hub__published-card-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+.portal-match-hub__published-card-body {
+  min-width: 0;
+  flex: 1 1 auto;
+}
