@@ -4,10 +4,12 @@ import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { formatTemplate } from '../../i18n/format'
 import { useI18n } from '../../i18n/useI18n'
+import type { MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from './matchPortalFormat'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
+import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
 import '../PortalHome.css'
 
 type MatchDetailRow = {
@@ -21,6 +23,8 @@ type MatchDetailRow = {
   status: string
   participant_list_visibility: 'open' | 'closed' | null
   prematch_enabled: boolean | null
+  match_event_kind: string | null
+  ps_match_level: string | null
 }
 
 type PublicRosterRow = {
@@ -43,6 +47,28 @@ function programmeRowTitle(r: PublicStageLinkRow): string {
   const snap = typeof meta?.title_snapshot === 'string' ? meta.title_snapshot.trim() : ''
   if (snap) return snap
   return r.share_stage_id?.trim() || '—'
+}
+
+function labelEventKind(
+  kind: string | null,
+  p: MessageTree['portal'],
+): string {
+  if (!kind || !isMatchEventKind(kind)) return ''
+  if (kind === 'training') return p.matchEventKindTraining
+  if (kind === 'match') return p.matchEventKindMatch
+  return p.matchEventKindClassification
+}
+
+function labelPsLevel(level: string | null, p: MessageTree['portal']): string {
+  if (!level || !isPsMatchLevel(level)) return ''
+  const m: Record<string, string> = {
+    L1: p.matchPsLevelL1,
+    L2: p.matchPsLevelL2,
+    L3: p.matchPsLevelL3,
+    L4: p.matchPsLevelL4,
+    L5: p.matchPsLevelL5,
+  }
+  return m[level] ?? level
 }
 
 export function MatchPublicDetailPage() {
@@ -75,7 +101,7 @@ export function MatchPublicDetailPage() {
       const { data, error: qErr } = await sb
         .from('matches')
         .select(
-          'id, title, description_md, starts_at, location_label, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled',
+          'id, title, description_md, starts_at, location_label, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled, match_event_kind, ps_match_level',
         )
         .eq('id', matchId)
         .eq('status', 'published')
@@ -277,6 +303,18 @@ export function MatchPublicDetailPage() {
       >
         <dt>{p.matchDetailStartsLabel}</dt>
         <dd style={{ margin: 0 }}>{formatPortalDate(row.starts_at, locale)}</dd>
+        {labelEventKind(row.match_event_kind, p) ?
+          <>
+            <dt>{p.matchDetailEventKindLabel}</dt>
+            <dd style={{ margin: 0 }}>{labelEventKind(row.match_event_kind, p)}</dd>
+          </>
+        : null}
+        {labelPsLevel(row.ps_match_level, p) ?
+          <>
+            <dt>{p.matchDetailPsLevelLabel}</dt>
+            <dd style={{ margin: 0 }}>{labelPsLevel(row.ps_match_level, p)}</dd>
+          </>
+        : null}
         {row.location_label ? (
           <>
             <dt>{p.matchDetailLocationLabel}</dt>

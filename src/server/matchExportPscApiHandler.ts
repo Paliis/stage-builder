@@ -79,7 +79,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const { data: match, error: matchErr } = await supabase
     .from('matches')
-    .select('id, organizer_id, title, starts_at, ps_match_type, ps_match_subtype')
+    .select('id, organizer_id, title, starts_at, ps_match_type, ps_match_subtype, ps_match_level')
     .eq('id', matchId)
     .maybeSingle()
 
@@ -167,6 +167,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       starts_at: match.starts_at,
       ps_match_type: match.ps_match_type,
       ps_match_subtype: match.ps_match_subtype,
+      ps_match_level: typeof match.ps_match_level === 'string' ? match.ps_match_level : null,
     },
     squads: squads ?? [],
     registrations: (regs ?? []).map((r) => ({

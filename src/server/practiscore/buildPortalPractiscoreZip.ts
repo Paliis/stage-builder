@@ -42,6 +42,8 @@ export type PortalMatchPsFields = {
   starts_at: string
   ps_match_type: string | null
   ps_match_subtype: string | null
+  /** PractiScore `match_def.match_level`: L1…L5; omit from JSON when null. */
+  ps_match_level: string | null
 }
 
 type JsonObject = Record<string, unknown>
@@ -251,6 +253,15 @@ export function buildPortalPractiscoreZip(params: {
   defTpl.app_version = 'shooters-tools'
   defTpl.match_creationdate = nowPsTimestamp()
   defTpl.match_modifieddate = nowPsTimestamp()
+
+  {
+    const raw = typeof params.match.ps_match_level === 'string' ? params.match.ps_match_level.trim() : ''
+    if (/^L[1-5]$/.test(raw)) {
+      defTpl.match_level = raw
+    } else {
+      delete defTpl.match_level
+    }
+  }
 
   if (typeof params.match.ps_match_type === 'string' && params.match.ps_match_type.trim()) {
     defTpl.match_type = params.match.ps_match_type.trim()

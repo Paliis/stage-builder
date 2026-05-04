@@ -11,6 +11,7 @@ import { OrganizerMatchStagesPanel } from './OrganizerMatchStagesPanel'
 import { OrganizerMatchSquadsPanel } from './OrganizerMatchSquadsPanel'
 import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
+import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
 import '../PortalHome.css'
 
 type MatchDraft = {
@@ -18,6 +19,8 @@ type MatchDraft = {
   description_md: string
   starts_at_local: string
   location_label: string
+  match_event_kind: '' | 'training' | 'match' | 'classification'
+  ps_match_level: '' | 'L1' | 'L2' | 'L3' | 'L4' | 'L5'
   status: string
   participant_list_visibility: 'open' | 'closed'
   prematch_enabled: boolean
@@ -68,6 +71,8 @@ export function OrganizerMatchEditPage() {
     description_md: '',
     starts_at_local: defaultStartsLocal(),
     location_label: '',
+    match_event_kind: '',
+    ps_match_level: '',
     status: 'draft',
     participant_list_visibility: 'closed',
     prematch_enabled: false,
@@ -92,6 +97,8 @@ export function OrganizerMatchEditPage() {
         description_md: '',
         starts_at_local: defaultStartsLocal(),
         location_label: '',
+        match_event_kind: '',
+        ps_match_level: '',
         status: 'draft',
         participant_list_visibility: 'closed',
         prematch_enabled: false,
@@ -117,7 +124,7 @@ export function OrganizerMatchEditPage() {
     void sb
       .from('matches')
       .select(
-        'id, title, description_md, starts_at, location_label, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad',
+        'id, title, description_md, starts_at, location_label, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad',
       )
       .eq('id', matchId!)
       .maybeSingle()
@@ -140,6 +147,14 @@ export function OrganizerMatchEditPage() {
           description_md: data.description_md ?? '',
           starts_at_local: localFromIso(data.starts_at),
           location_label: data.location_label ?? '',
+          match_event_kind:
+            typeof data.match_event_kind === 'string' && isMatchEventKind(data.match_event_kind)
+              ? data.match_event_kind
+              : '',
+          ps_match_level:
+            typeof data.ps_match_level === 'string' && isPsMatchLevel(data.ps_match_level)
+              ? data.ps_match_level
+              : '',
           status: data.status ?? 'draft',
           participant_list_visibility: vis,
           prematch_enabled: Boolean(data.prematch_enabled),
@@ -217,6 +232,12 @@ export function OrganizerMatchEditPage() {
       discipline: 'shotgun' as const,
       status: draft.status,
       participant_list_visibility: draft.participant_list_visibility,
+      match_event_kind:
+        draft.match_event_kind && isMatchEventKind(draft.match_event_kind)
+          ? draft.match_event_kind
+          : null,
+      ps_match_level:
+        draft.ps_match_level && isPsMatchLevel(draft.ps_match_level) ? draft.ps_match_level : null,
       ps_match_subtype: 'ipsc',
       prematch_enabled: draft.prematch_enabled,
       planned_main_squad_count: plannedMain,
@@ -500,6 +521,66 @@ export function OrganizerMatchEditPage() {
               color: 'var(--text)',
             }}
           />
+        </label>
+
+        <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>
+          {p.matchOrgTaxonomyOptionalHint}
+        </p>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldEventKind}</span>
+          <select
+            value={draft.match_event_kind}
+            onChange={(e) =>
+              setDraft((d) => ({
+                ...d,
+                match_event_kind: e.target.value as MatchDraft['match_event_kind'],
+              }))
+            }
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+              font: 'inherit',
+              maxWidth: '22rem',
+            }}
+          >
+            <option value="">{p.matchOrgEventKindUnset}</option>
+            <option value="training">{p.matchEventKindTraining}</option>
+            <option value="match">{p.matchEventKindMatch}</option>
+            <option value="classification">{p.matchEventKindClassification}</option>
+          </select>
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span>{p.matchOrgFieldPsLevel}</span>
+          <select
+            value={draft.ps_match_level}
+            onChange={(e) =>
+              setDraft((d) => ({
+                ...d,
+                ps_match_level: e.target.value as MatchDraft['ps_match_level'],
+              }))
+            }
+            style={{
+              padding: '0.4rem 0.5rem',
+              borderRadius: '0.5rem',
+              border: '1px solid var(--border)',
+              background: 'var(--btn-bg)',
+              color: 'var(--text)',
+              font: 'inherit',
+              maxWidth: '22rem',
+            }}
+          >
+            <option value="">{p.matchOrgPsLevelUnset}</option>
+            <option value="L1">{p.matchPsLevelL1}</option>
+            <option value="L2">{p.matchPsLevelL2}</option>
+            <option value="L3">{p.matchPsLevelL3}</option>
+            <option value="L4">{p.matchPsLevelL4}</option>
+            <option value="L5">{p.matchPsLevelL5}</option>
+          </select>
         </label>
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>

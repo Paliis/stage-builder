@@ -396,6 +396,8 @@ export type MessageTree = {
     matchDetailNotFoundTitle: string
     matchDetailNotFoundBody: string
     matchDetailStartsLabel: string
+    matchDetailEventKindLabel: string
+    matchDetailPsLevelLabel: string
     matchDetailLocationLabel: string
     matchDetailDisciplineLabel: string
     matchDetailLimitLabel: string
@@ -596,6 +598,19 @@ export type MessageTree = {
     matchOrgFieldTitle: string
     matchOrgFieldStarts: string
     matchOrgFieldLocation: string
+    matchOrgFieldEventKind: string
+    matchOrgFieldPsLevel: string
+    matchOrgTaxonomyOptionalHint: string
+    matchOrgEventKindUnset: string
+    matchEventKindTraining: string
+    matchEventKindMatch: string
+    matchEventKindClassification: string
+    matchOrgPsLevelUnset: string
+    matchPsLevelL1: string
+    matchPsLevelL2: string
+    matchPsLevelL3: string
+    matchPsLevelL4: string
+    matchPsLevelL5: string
     matchOrgDerivedCapacityLine: string
     matchOrgFieldShootersMain: string
     matchOrgFieldShootersPrematch: string
@@ -1267,6 +1282,8 @@ export const ukMessages: MessageTree = {
     matchDetailNotFoundBody:
       'Матч із таким ідентифікатором немає серед опублікованих або посилання некоректне.',
     matchDetailStartsLabel: 'Початок',
+    matchDetailEventKindLabel: 'Тип події',
+    matchDetailPsLevelLabel: 'Рівень (PractiScore)',
     matchDetailLocationLabel: 'Локація',
     matchDetailDisciplineLabel: 'Дисципліна',
     matchDetailLimitLabel: 'Ліміт учасників',
@@ -1479,6 +1496,19 @@ export const ukMessages: MessageTree = {
     matchOrgFieldTitle: 'Назва',
     matchOrgFieldStarts: 'Початок (локальний час браузера)',
     matchOrgFieldLocation: 'Локація (текст)',
+    matchOrgFieldEventKind: 'Тип події',
+    matchOrgFieldPsLevel: 'Рівень матчу (PractiScore)',
+    matchOrgTaxonomyOptionalHint: 'Необов’язково — можна лишити порожнім; рівень потрапляє в експорт .psc як Level I–V.',
+    matchOrgEventKindUnset: '— не обрано —',
+    matchEventKindTraining: 'Тренування',
+    matchEventKindMatch: 'Матч',
+    matchEventKindClassification: 'Класифікація',
+    matchOrgPsLevelUnset: '— не обрано —',
+    matchPsLevelL1: 'Рівень I',
+    matchPsLevelL2: 'Рівень II',
+    matchPsLevelL3: 'Рівень III',
+    matchPsLevelL4: 'Рівень IV',
+    matchPsLevelL5: 'Рівень V',
     matchOrgDerivedCapacityLine: 'Разом місце на матчі (розраховано автоматично й зберігається як ліміт учасників): {{total}}.',
     matchOrgFieldShootersMain: 'Стрільці в скводі — основний день',
     matchOrgFieldShootersPrematch: 'Стрільці в скводі — прематч',
@@ -2156,6 +2186,8 @@ export const enMessages: MessageTree = {
     matchDetailNotFoundBody:
       'There is no published match with this id, or the link is invalid.',
     matchDetailStartsLabel: 'Starts',
+    matchDetailEventKindLabel: 'Event type',
+    matchDetailPsLevelLabel: 'Level (PractiScore)',
     matchDetailLocationLabel: 'Location',
     matchDetailDisciplineLabel: 'Discipline',
     matchDetailLimitLabel: 'Competitor limit',
@@ -2371,6 +2403,19 @@ export const enMessages: MessageTree = {
     matchOrgFieldTitle: 'Title',
     matchOrgFieldStarts: 'Start (browser local time)',
     matchOrgFieldLocation: 'Location (text)',
+    matchOrgFieldEventKind: 'Event type',
+    matchOrgFieldPsLevel: 'Match level (PractiScore)',
+    matchOrgTaxonomyOptionalHint: 'Optional — leave unset if unsure; level is written to the .psc export as Level I–V.',
+    matchOrgEventKindUnset: '— not set —',
+    matchEventKindTraining: 'Training',
+    matchEventKindMatch: 'Match',
+    matchEventKindClassification: 'Classification',
+    matchOrgPsLevelUnset: '— not set —',
+    matchPsLevelL1: 'Level I',
+    matchPsLevelL2: 'Level II',
+    matchPsLevelL3: 'Level III',
+    matchPsLevelL4: 'Level IV',
+    matchPsLevelL5: 'Level V',
     matchOrgDerivedCapacityLine:
       'Total planned capacity (stored as competitor limit after save): {{total}}.',
     matchOrgFieldShootersMain: 'Shooters per squad — main match day',

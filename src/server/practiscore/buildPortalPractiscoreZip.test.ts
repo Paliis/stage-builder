@@ -12,7 +12,7 @@ import {
 describe('buildPortalPractiscoreZip', () => {
   it('rejects export when no stage links', () => {
     const r = buildPortalPractiscoreZip({
-      match: { title: 'T', starts_at: new Date().toISOString(), ps_match_type: null, ps_match_subtype: null },
+      match: { title: 'T', starts_at: new Date().toISOString(), ps_match_type: null, ps_match_subtype: null, ps_match_level: null },
       squads: [{ id: 'a', sort_order: 0 }],
       registrations: [],
       displayNameByUserId: new Map(),
@@ -29,6 +29,7 @@ describe('buildPortalPractiscoreZip', () => {
         starts_at: '2026-05-02T12:00:00.000Z',
         ps_match_type: null,
         ps_match_subtype: null,
+        ps_match_level: null,
       },
       squads: [
         { id: 'sq1', sort_order: 0 },
@@ -76,6 +77,7 @@ describe('buildPortalPractiscoreZip', () => {
     expect(def.match_shooters[0]!.sh_sqd).toBe(1)
     expect(def.match_shooters[0]!.sh_pf).toBe('MAJOR')
     expect(def.match_shooters[0]!.sh_dvp).toBe('Standard')
+    expect('match_level' in def).toBe(false)
 
     const scores = JSON.parse(strFromU8(files['match_scores.json']!)) as {
       match_id: string
@@ -93,6 +95,7 @@ describe('buildPortalPractiscoreZip', () => {
         starts_at: '2026-05-02T12:00:00.000Z',
         ps_match_type: null,
         ps_match_subtype: null,
+        ps_match_level: null,
       },
       squads: [{ id: 'a', sort_order: 0 }],
       registrations: [],
@@ -154,6 +157,7 @@ describe('buildPortalPractiscoreZip', () => {
         starts_at: '2026-05-02T12:00:00.000Z',
         ps_match_type: null,
         ps_match_subtype: null,
+        ps_match_level: null,
       },
       squads: [
         { id: 'pr0', sort_order: 0, squad_phase: 'prematch' },
@@ -202,6 +206,26 @@ describe('buildPortalPractiscoreZip', () => {
     expect(byFn['Oleksandr']).toBe(1)
     expect(byFn['Jane']).toBe(11 - 1)
     expect(byFn['Ann']).toBe(11 - 1)
+  })
+
+  it('writes match_def.match_level when ps_match_level is set (PractiScore L1–L5)', () => {
+    const r = buildPortalPractiscoreZip({
+      match: {
+        title: 'Lvl',
+        starts_at: '2026-05-02T12:00:00.000Z',
+        ps_match_type: null,
+        ps_match_subtype: null,
+        ps_match_level: 'L3',
+      },
+      squads: [{ id: 'a', sort_order: 0 }],
+      registrations: [],
+      displayNameByUserId: new Map(),
+      stageLinks: [{ sort_order: 0, snapshot_meta: { title_snapshot: 'S1' } }],
+    })
+    expect(r.ok).toBe(true)
+    if (!r.ok) throw new Error('expected ok')
+    const def = JSON.parse(strFromU8(unzipSync(r.bytes)['match_def.json']!)) as { match_level?: string }
+    expect(def.match_level).toBe('L3')
   })
 })
 
