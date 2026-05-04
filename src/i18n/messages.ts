@@ -481,6 +481,12 @@ export type MessageTree = {
     portalCompactAuthSignUp: string
     portalCompactAuthEmail: string
     portalCompactAuthPassword: string
+    /** Shown under password field (min length + optional guidance). */
+    portalCompactAuthPasswordHint: string
+    /** Client-side validation before Supabase (must stay in sync with project Auth policy if stricter). */
+    portalCompactAuthPasswordTooShort: string
+    portalCompactAuthShowPassword: string
+    portalCompactAuthHidePassword: string
     portalCompactAuthSubmitSignIn: string
     portalCompactAuthSubmitSignUp: string
     portalCompactAuthSignOut: string
@@ -1403,6 +1409,10 @@ export const ukMessages: MessageTree = {
     portalCompactAuthSignUp: 'Реєстрація',
     portalCompactAuthEmail: 'Email',
     portalCompactAuthPassword: 'Пароль',
+    portalCompactAuthPasswordHint: 'Щонайменше 8 символів. Довший пароль зазвичай надійніший; уникайте очевидних слів і повторів email.',
+    portalCompactAuthPasswordTooShort: 'Пароль має містити щонайменше 8 символів.',
+    portalCompactAuthShowPassword: 'Показати пароль',
+    portalCompactAuthHidePassword: 'Приховати пароль',
     portalCompactAuthSubmitSignIn: 'Увійти',
     portalCompactAuthSubmitSignUp: 'Зареєструватися',
     portalCompactAuthSignOut: 'Вийти',
@@ -2337,6 +2347,11 @@ export const enMessages: MessageTree = {
     portalCompactAuthSignUp: 'Sign up',
     portalCompactAuthEmail: 'Email',
     portalCompactAuthPassword: 'Password',
+    portalCompactAuthPasswordHint:
+      'Use at least 8 characters. Longer passphrases are usually safer; avoid obvious words or your email.',
+    portalCompactAuthPasswordTooShort: 'Password must be at least 8 characters.',
+    portalCompactAuthShowPassword: 'Show password',
+    portalCompactAuthHidePassword: 'Hide password',
     portalCompactAuthSubmitSignIn: 'Sign in',
     portalCompactAuthSubmitSignUp: 'Sign up',
     portalCompactAuthSignOut: 'Sign out',

@@ -226,7 +226,7 @@ export function DevSupabaseAuthSmoke() {
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
             required
-            minLength={6}
+            minLength={8}
             disabled={busy || !configured}
           />
         </label>

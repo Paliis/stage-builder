@@ -101,6 +101,7 @@
 | [PORTAL_PLAN.md](./PORTAL_PLAN.md) | Стратегія порталу |
 | [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md) | Матчі: фази A–F, PSC |
 | [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md) | Матчі: короткий продуктовий план кроків |
+| [SUPABASE_AUTH_EMAIL.md](./SUPABASE_AUTH_EMAIL.md) | Supabase Auth: шаблони листів, SMTP, ім’я відправника |
 | [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md) | Share / посилання на вправу |
 | [USER_FEEDBACK.md](./USER_FEEDBACK.md) | Чернетка ідей до грумінгу |
 
