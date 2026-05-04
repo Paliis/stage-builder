@@ -112,4 +112,5 @@
 
 | Дата | Зміни |
 |------|--------|
+| 2026-05-04 | Каталог матчів: обкладинка (`cover_image_url`), кеш імені організатора для хабу (`portal_organizer_display_name`), бакет Storage `match-covers`; UX хабу — sticky календар на desktop, список вище календаря на мобільному. Міграція `20260515120000_match_portal_cover_and_organizer_display.sql`. |
 | 2026-05-01 | Перша версія: структура MA-<фаза><NN>, фази A–F + R, зв’язок із BL. |

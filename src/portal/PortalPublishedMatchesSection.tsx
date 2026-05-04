@@ -98,7 +98,9 @@ export function PortalPublishedMatchesSection() {
     start.setUTCHours(0, 0, 0, 0)
     const { data, error: qErr } = await sb
       .from('matches')
-      .select('id, title, starts_at, location_label, match_event_kind, ps_match_level')
+      .select(
+        'id, title, starts_at, location_label, match_event_kind, ps_match_level, cover_image_url, portal_organizer_display_name',
+      )
       .eq('status', 'published')
       .gte('starts_at', start.toISOString())
       .order('starts_at', { ascending: true })
@@ -363,13 +365,35 @@ export function PortalPublishedMatchesSection() {
                 {filteredList.map((m) => {
                   const detailPath = `/${locale}/matches/${m.id}`
                   const titleText = m.title.trim() || '—'
+                  const coverUrl = m.cover_image_url?.trim() ?? ''
+                  const hasCover = Boolean(coverUrl)
                   return (
-                    <li key={m.id} className="portal-match-hub__published-card">
+                    <li
+                      key={m.id}
+                      className={`portal-match-hub__published-card${hasCover ? ' portal-match-hub__published-card--with-thumb' : ''}`}
+                    >
                       <div className="portal-match-hub__published-card-row">
+                        {hasCover ?
+                          <div className="portal-match-hub__published-card-thumb">
+                            <img
+                              src={coverUrl}
+                              alt={p.portalPublishedCardCoverAlt}
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </div>
+                        : null}
                         <div className="portal-match-hub__published-card-body">
                           <h2 className="portal-match-hub__published-card-title" title={titleText}>
                             {titleText}
                           </h2>
+                          {m.portal_organizer_display_name?.trim() ?
+                            <p className="portal-match-hub__published-card-organizer">
+                              {formatTemplate(p.portalPublishedCardOrganizer, {
+                                name: m.portal_organizer_display_name.trim(),
+                              })}
+                            </p>
+                          : null}
                           <p className="portal-match-hub__published-card-meta">
                             <time dateTime={m.starts_at}>{formatPortalDate(m.starts_at, locale)}</time>
                             {m.location_label?.trim() ?
@@ -386,7 +410,7 @@ export function PortalPublishedMatchesSection() {
                           </p>
                         </div>
                         <Link
-                          className="portal-btn portal-btn--primary portal-btn--compact portal-btn--block-xs"
+                          className="portal-btn portal-btn--primary portal-btn--compact portal-btn--block-xs portal-match-hub__published-card-cta"
                           to={detailPath}
                         >
                           {p.portalPublishedMatchOpenPrimary}

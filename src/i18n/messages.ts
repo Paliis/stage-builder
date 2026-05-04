@@ -358,6 +358,10 @@ export type MessageTree = {
     portalPublishedMatchesLoadError: string
     /** Hub list: primary CTA to open public match page. */
     portalPublishedMatchOpenPrimary: string
+    /** `formatTemplate` `{{name}}` — organizer line on hub card. */
+    portalPublishedCardOrganizer: string
+    /** Alt text for match cover thumbnail on hub. */
+    portalPublishedCardCoverAlt: string
     /** Footer link from match hub → organizer list (`/matches/my`). */
     matchesPortalOrganizerLink: string
     /** Match hub footer: signed-in user is not approved organizer yet → account link. */
@@ -621,6 +625,13 @@ export type MessageTree = {
     matchOrgFieldTitle: string
     matchOrgFieldStarts: string
     matchOrgFieldLocation: string
+    matchOrgFieldCoverImage: string
+    matchOrgCoverUpload: string
+    matchOrgCoverRemove: string
+    matchOrgCoverHintNew: string
+    matchOrgCoverErrType: string
+    matchOrgCoverErrSize: string
+    matchOrgCoverUploading: string
     matchOrgFieldEventKind: string
     matchOrgFieldPsLevel: string
     /** Short line above event type / PS level block. */
@@ -1273,6 +1284,8 @@ export const ukMessages: MessageTree = {
     portalPublishedMatchesEmpty: 'Наразі немає запланованих опублікованих матчів з сьогоднішньої дати.',
     portalPublishedMatchesLoadError: 'Не вдалося завантажити список матчів',
     portalPublishedMatchOpenPrimary: 'Деталі',
+    portalPublishedCardOrganizer: 'Організатор: {{name}}',
+    portalPublishedCardCoverAlt: 'Обкладинка матчу',
     matchesPortalOrganizerLink: 'Кабінет організатора',
     matchesPortalFooterOrganizerViaAccount:
       'Заявка та статус організатора — в обліковому записі. Керування чернетками й заявками відкриється після схвалення платформи.',
@@ -1538,6 +1551,13 @@ export const ukMessages: MessageTree = {
     matchOrgFieldTitle: 'Назва',
     matchOrgFieldStarts: 'Початок (локальний час браузера)',
     matchOrgFieldLocation: 'Локація (текст)',
+    matchOrgFieldCoverImage: 'Обкладинка (для переліку матчів)',
+    matchOrgCoverUpload: 'Завантажити зображення',
+    matchOrgCoverRemove: 'Прибрати',
+    matchOrgCoverHintNew: 'Після збереження матчу тут можна додати зображення для картки в переліку подій.',
+    matchOrgCoverErrType: 'Дозволені лише JPEG, PNG або WebP.',
+    matchOrgCoverErrSize: 'Файл завеликий (макс. 5 МБ).',
+    matchOrgCoverUploading: 'Завантаження…',
     matchOrgFieldEventKind: 'Тип події',
     matchOrgFieldPsLevel: 'Рівень матчу (PractiScore)',
     matchOrgTaxonomyOptionalLead:
@@ -2197,6 +2217,8 @@ export const enMessages: MessageTree = {
     portalPublishedMatchesEmpty: 'No published matches scheduled from today onward yet.',
     portalPublishedMatchesLoadError: 'Could not load the matches list',
     portalPublishedMatchOpenPrimary: 'Details',
+    portalPublishedCardOrganizer: 'Organizer: {{name}}',
+    portalPublishedCardCoverAlt: 'Match cover',
     matchesPortalOrganizerLink: 'Organizer dashboard',
     matchesPortalFooterOrganizerViaAccount:
       'Apply for organizer access and track your status from the account page. Match authoring opens after approval.',
@@ -2464,6 +2486,13 @@ export const enMessages: MessageTree = {
     matchOrgFieldTitle: 'Title',
     matchOrgFieldStarts: 'Start (browser local time)',
     matchOrgFieldLocation: 'Location (text)',
+    matchOrgFieldCoverImage: 'Cover image (match list)',
+    matchOrgCoverUpload: 'Upload image',
+    matchOrgCoverRemove: 'Remove',
+    matchOrgCoverHintNew: 'Save the match first, then you can add a list card image here.',
+    matchOrgCoverErrType: 'Only JPEG, PNG, or WebP are allowed.',
+    matchOrgCoverErrSize: 'File is too large (max 5 MB).',
+    matchOrgCoverUploading: 'Uploading…',
     matchOrgFieldEventKind: 'Event type',
     matchOrgFieldPsLevel: 'Match level (PractiScore)',
     matchOrgTaxonomyOptionalLead:

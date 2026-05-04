@@ -7,6 +7,10 @@ export type PubMatchRow = {
   location_label?: string | null
   match_event_kind?: string | null
   ps_match_level?: string | null
+  /** Public URL for hub card thumbnail (optional). */
+  cover_image_url?: string | null
+  /** Cached from match_admin_profiles.display_name for anonymous hub. */
+  portal_organizer_display_name?: string | null
 }
 
 /** Local calendar YYYY-MM-DD from a Date in the user's timezone. */
@@ -30,7 +34,8 @@ export function normalizeSearchQuery(raw: string): string {
 /** Client-side substring match on title + location (after optional server `.ilike`). */
 export function matchSearchQuery(row: PubMatchRow, queryNorm: string): boolean {
   if (!queryNorm) return true
-  const blob = `${row.title ?? ''}\u001f${row.location_label ?? ''}`.toLowerCase()
+  const blob =
+    `${row.title ?? ''}\u001f${row.location_label ?? ''}\u001f${row.portal_organizer_display_name ?? ''}`.toLowerCase()
   return blob.includes(queryNorm)
 }
 

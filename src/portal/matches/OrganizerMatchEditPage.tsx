@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useState } from 'react'
+import { type ChangeEvent, type FormEvent, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
@@ -13,12 +13,16 @@ import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
 import '../PortalHome.css'
+import '../PortalMatchesUi.css'
+
+const MATCH_COVER_MAX_BYTES = 5 * 1024 * 1024
 
 type MatchDraft = {
   title: string
   description_md: string
   starts_at_local: string
   location_label: string
+  cover_image_url: string
   match_event_kind: '' | 'training' | 'match' | 'classification'
   ps_match_level: '' | 'L1' | 'L2' | 'L3' | 'L4' | 'L5'
   status: string
@@ -71,6 +75,7 @@ export function OrganizerMatchEditPage() {
     description_md: '',
     starts_at_local: defaultStartsLocal(),
     location_label: '',
+    cover_image_url: '',
     match_event_kind: '',
     ps_match_level: '',
     status: 'draft',
@@ -86,6 +91,8 @@ export function OrganizerMatchEditPage() {
   const [saving, setSaving] = useState(false)
   const [pscBusy, setPscBusy] = useState(false)
   const [pscErr, setPscErr] = useState<string | null>(null)
+  const [coverUploadBusy, setCoverUploadBusy] = useState(false)
+  const [coverUploadErr, setCoverUploadErr] = useState<string | null>(null)
 
   useEffect(() => {
     if (isNew) {
@@ -97,6 +104,7 @@ export function OrganizerMatchEditPage() {
         description_md: '',
         starts_at_local: defaultStartsLocal(),
         location_label: '',
+        cover_image_url: '',
         match_event_kind: '',
         ps_match_level: '',
         status: 'draft',
@@ -124,7 +132,7 @@ export function OrganizerMatchEditPage() {
     void sb
       .from('matches')
       .select(
-        'id, title, description_md, starts_at, location_label, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad',
+        'id, title, description_md, starts_at, location_label, cover_image_url, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad',
       )
       .eq('id', matchId!)
       .maybeSingle()
@@ -147,6 +155,7 @@ export function OrganizerMatchEditPage() {
           description_md: data.description_md ?? '',
           starts_at_local: localFromIso(data.starts_at),
           location_label: data.location_label ?? '',
+          cover_image_url: typeof data.cover_image_url === 'string' ? data.cover_image_url : '',
           match_event_kind:
             typeof data.match_event_kind === 'string' && isMatchEventKind(data.match_event_kind)
               ? data.match_event_kind
@@ -229,6 +238,7 @@ export function OrganizerMatchEditPage() {
       description_md: draft.description_md.trim() ? draft.description_md : null,
       starts_at: isoFromDatetimeLocal(draft.starts_at_local),
       location_label: draft.location_label.trim() ? draft.location_label.trim() : null,
+      cover_image_url: draft.cover_image_url.trim() ? draft.cover_image_url.trim() : null,
       discipline: 'shotgun' as const,
       status: draft.status,
       participant_list_visibility: draft.participant_list_visibility,
@@ -341,6 +351,44 @@ export function OrganizerMatchEditPage() {
       setPscErr(p.matchOrgExportPscErrNetwork)
     } finally {
       setPscBusy(false)
+    }
+  }
+
+  async function handleCoverFileChange(e: ChangeEvent<HTMLInputElement>) {
+    setCoverUploadErr(null)
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file || !configured || !user?.id) return
+    if (!validEditId || !matchId || isNew) {
+      setCoverUploadErr(p.matchOrgCoverHintNew)
+      return
+    }
+    const okTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
+    if (!okTypes.includes(file.type)) {
+      setCoverUploadErr(p.matchOrgCoverErrType)
+      return
+    }
+    if (file.size > MATCH_COVER_MAX_BYTES) {
+      setCoverUploadErr(p.matchOrgCoverErrSize)
+      return
+    }
+    setCoverUploadBusy(true)
+    try {
+      const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg'
+      const objectPath = `${user.id}/${matchId}/cover-${Date.now()}.${ext}`
+      const sb = getSupabase()
+      const { error: upErr } = await sb.storage.from('match-covers').upload(objectPath, file, {
+        upsert: false,
+        contentType: file.type === 'image/jpg' || file.type === 'image/jpeg' ? 'image/jpeg' : file.type,
+      })
+      if (upErr) {
+        setCoverUploadErr(upErr.message)
+        return
+      }
+      const { data: pub } = sb.storage.from('match-covers').getPublicUrl(objectPath)
+      setDraft((d) => ({ ...d, cover_image_url: pub.publicUrl }))
+    } finally {
+      setCoverUploadBusy(false)
     }
   }
 
@@ -522,6 +570,58 @@ export function OrganizerMatchEditPage() {
             }}
           />
         </label>
+
+        {!isNew && validEditId ?
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+            <span style={{ fontWeight: 650 }}>{p.matchOrgFieldCoverImage}</span>
+            {draft.cover_image_url.trim() ?
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.65rem', alignItems: 'center' }}>
+                <img
+                  src={draft.cover_image_url.trim()}
+                  alt=""
+                  style={{
+                    width: '100%',
+                    maxWidth: '14rem',
+                    borderRadius: '0.5rem',
+                    border: '1px solid var(--border)',
+                    aspectRatio: '16 / 10',
+                    objectFit: 'cover',
+                  }}
+                />
+                <button
+                  type="button"
+                  className="portal-btn portal-btn--secondary portal-btn--compact"
+                  disabled={coverUploadBusy}
+                  onClick={() => {
+                    setCoverUploadErr(null)
+                    setDraft((d) => ({ ...d, cover_image_url: '' }))
+                  }}
+                >
+                  {p.matchOrgCoverRemove}
+                </button>
+              </div>
+            : null}
+            <label style={{ display: 'inline-flex', flexDirection: 'column', gap: '0.35rem', cursor: 'pointer', width: 'fit-content' }}>
+              <input
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                disabled={coverUploadBusy || saving}
+                onChange={(e) => void handleCoverFileChange(e)}
+                style={{ display: 'none' }}
+              />
+              <span className="portal-btn portal-btn--secondary portal-btn--compact">
+                {coverUploadBusy ? p.matchOrgCoverUploading : p.matchOrgCoverUpload}
+              </span>
+            </label>
+            {coverUploadErr ?
+              <p role="alert" style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text)' }}>
+                {coverUploadErr}
+              </p>
+            : null}
+          </div>
+        : (
+          <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>{p.matchOrgCoverHintNew}</p>
+        )}
 
         <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>
           {p.matchOrgTaxonomyOptionalLead}

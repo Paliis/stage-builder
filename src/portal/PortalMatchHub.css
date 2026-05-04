@@ -193,6 +193,23 @@
     grid-template-columns: minmax(0, 17.5rem) minmax(0, 1fr);
     align-items: start;
   }
+
+  .portal-match-hub__calendar-panel {
+    position: sticky;
+    top: 0.85rem;
+    align-self: start;
+  }
+}
+
+@media (max-width: 919px) {
+  .portal-match-hub__layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .portal-match-hub__list-panel {
+    order: -1;
+  }
 }
 
 .portal-match-hub__calendar-panel {
