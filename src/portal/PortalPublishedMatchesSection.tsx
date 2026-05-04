@@ -20,6 +20,9 @@ import './PortalHome.css'
 import './PortalMatchHub.css'
 import './PortalMatchesUi.css'
 
+/** Turn on when the published catalogue is large enough to need date/type/level filters again. */
+const SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS = false
+
 function weekdayShortLabels(locale: Locale): string[] {
   const loc = locale === 'uk' ? 'uk-UA' : 'en-GB'
   const fmt = new Intl.DateTimeFormat(loc, { weekday: 'short' })
@@ -172,9 +175,6 @@ export function PortalPublishedMatchesSection() {
 
       <div className="portal-match-hub__toolbar">
         <div className="portal-match-hub__search-block">
-          <div className="portal-match-hub__search-block-head">
-            <span className="portal-match-hub__search-block-title">{p.portalMatchesHubSearchFieldLabel}</span>
-          </div>
           <div className="portal-match-hub__search-shell">
             <span className="portal-match-hub__search-icon" aria-hidden>
               <MatchHubSearchIcon />
@@ -192,7 +192,10 @@ export function PortalPublishedMatchesSection() {
           </div>
         </div>
 
-        <div className="portal-match-hub__filters-grid">
+        <div
+          className={`portal-match-hub__filters-grid${SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? '' : ' portal-match-hub__filters-grid--hidden'}`}
+          aria-hidden={SHOW_PUBLISHED_MATCH_HUB_EXTENDED_FILTERS ? undefined : true}
+        >
           <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-date-from`}>
             <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubDateFrom}</span>
             <input

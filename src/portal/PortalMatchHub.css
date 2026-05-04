@@ -13,22 +13,6 @@
   max-width: 32rem;
 }
 
-.portal-match-hub__search-block-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.45rem;
-}
-
-.portal-match-hub__search-block-title {
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-h);
-}
-
 .portal-match-hub__search-shell {
   display: flex;
   align-items: center;
@@ -94,6 +78,10 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: stretch;
+}
+
+.portal-match-hub__filters-grid--hidden {
+  display: none !important;
 }
 
 .portal-match-hub__filter-field {
