@@ -370,10 +370,8 @@
   line-height: 1.3;
   color: var(--text-h);
   overflow: hidden;
-  overflow-wrap: anywhere;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .portal-match-hub__published-card-meta {
