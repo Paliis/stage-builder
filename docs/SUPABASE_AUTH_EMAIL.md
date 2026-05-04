@@ -33,7 +33,25 @@
 
 У **Authentication** → **Providers** → **Email** (або **Password** / політики залежно від версії UI) перевірте **мінімальну довжину пароля**. У клієнті Stage Builder для форми входу/реєстрації зараз очікується **не менше 8 символів**; якщо в Dashboard встановлено більше (наприклад, 12) — підлаштуйте або політику в Supabase, або текст підказки в i18n, щоб вони збігалися.
 
-## 5. Корисні посилання
+## 5. Resend → поля в Supabase Custom SMTP
+
+У [Resend — Send with SMTP](https://resend.com/docs/send-with-smtp) зазначено такі **облікові дані**:
+
+| Поле в Supabase | Значення |
+|-----------------|----------|
+| **Host** | `smtp.resend.com` |
+| **Port** | `587` (STARTTLS) або `465` (SSL) — зазвичай спочатку пробують **587**. |
+| **Username** | `resend` |
+| **Password** | повний **API key** (рядок `re_…`), не назва ключа «Shooters-Tools». |
+
+**Важливо**
+
+1. У Resend має бути **верифікований домен**; адреса **From** у Supabase (і в шаблонах Auth) має бути з цього домену (наприклад `noreply@ваш-домен`). Для швидкого тесту інколи використовують `onboarding@resend.dev` — лише для перевірки, не для продакшену.
+2. Ключ **не варто** вставляти в репозиторій чи в `.env` фронту — лише в **Supabase Dashboard** (SMTP) або в секретах бекенду.
+3. Якщо в Resend є обмеження за **типом ключа** — для продакшену краще окремий ключ з мінімальними правами, якщо провайдер це дозволяє (документація Resend щодо permissions).
+
+## 6. Корисні посилання
 
 - [Supabase — Email Templates](https://supabase.com/docs/guides/auth/auth-email-templates)
 - [Supabase — Send emails with custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
+- [Resend — SMTP credentials](https://resend.com/docs/send-with-smtp)
