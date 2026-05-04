@@ -14,13 +14,11 @@ export function MatchPortalHomePage() {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const { loading: organizerProfileLoading, profile: organizerProfile } = useOrganizerSelfServiceProfile(user?.id)
 
+  /** Guests: no organizer footer CTA (copy targets signed-in flows). Signed-in: hub → list or account. */
   const footerOrganizerSlot =
-    sessionLoading || (user && organizerProfileLoading) ? null
-    : !user ? (
-      <Link className="portal-btn portal-btn--primary" to={`/${locale}/account`}>
-        {p.matchesPortalFooterOrganizerSignIn}
-      </Link>
-    ) : organizerProfile === 'active' ? (
+    sessionLoading || !user ? null
+    : organizerProfileLoading ? null
+    : organizerProfile === 'active' ? (
       <Link className="portal-btn portal-btn--primary portal-btn--block-xs" to={`/${locale}/matches/my`}>
         {p.matchesPortalOrganizerLink}
       </Link>
