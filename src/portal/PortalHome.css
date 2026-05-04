@@ -322,9 +322,7 @@
   padding: 0 0 0.25rem;
 }
 
-.portal-home__matches-published > .portal-home__hero-title {
-  margin: 0 0 0.85rem;
-}
+/* Title margin for this hub lives in PortalMatchHub.css (aligned with toolbar). */
 
 .portal-home__matches-published-title {
   margin: 0 0 0.35rem;

@@ -1,7 +1,7 @@
-/* Hub: link back to portal home (tight stack under main shell; avoids extra page-level gap) */
+/* Hub: link back to portal home — rhythm aligned with title + toolbar (no “staircase” gaps). */
 
 .portal-match-hub__portal-back {
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.35rem;
 }
 
 .portal-match-hub__portal-back-link {
@@ -21,16 +21,21 @@
 .portal-match-hub__toolbar {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  margin: 0.35rem 0 1.5rem;
+  gap: 1.1rem;
+  margin: 0 0 1.35rem;
   max-width: 52rem;
+}
+
+/* Published hub: same title → search → filters column width (avoids narrow search vs wide filters). */
+.portal-home__matches-published > .portal-home__hero-title {
+  margin-bottom: 0.45rem;
 }
 
 /* —— Search (prominent) */
 
 .portal-match-hub__search-block {
   width: 100%;
-  max-width: 32rem;
+  max-width: none;
 }
 
 .portal-match-hub__search-shell {

@@ -98,6 +98,31 @@ describe('matchPortalBrowseUtils', () => {
     ).toEqual(['A'])
   })
 
+  test('filterPublishedMatchesForHub filters by weapon class (discipline)', () => {
+    const rows: PubMatchRow[] = [
+      { ...rowAtLocal(2026, 4, 10, 'SG'), discipline: 'shotgun' },
+      { ...rowAtLocal(2026, 4, 11, 'HG'), discipline: 'handgun' },
+    ]
+    expect(
+      filterPublishedMatchesForHub(rows, {
+        queryNorm: '',
+        dateFrom: null,
+        dateTo: null,
+        selectedDay: null,
+        weaponClass: 'handgun',
+      }).map((x) => x.title),
+    ).toEqual(['HG'])
+    expect(
+      filterPublishedMatchesForHub(rows, {
+        queryNorm: '',
+        dateFrom: null,
+        dateTo: null,
+        selectedDay: null,
+        weaponClass: 'all',
+      }).length,
+    ).toBe(2)
+  })
+
   test('mondayFirstWeekdayIndex: Friday 2026-05-01 => 4', () => {
     expect(mondayFirstWeekdayIndex(new Date(2026, 4, 1))).toBe(4)
   })

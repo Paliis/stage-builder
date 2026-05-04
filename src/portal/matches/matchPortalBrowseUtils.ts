@@ -4,6 +4,8 @@ export type PubMatchRow = {
   id: string
   title: string
   starts_at: string
+  /** Same ids as shooter catalog (`shotgun`, `handgun`, …). */
+  discipline?: string | null
   location_label?: string | null
   match_event_kind?: string | null
   ps_match_level?: string | null
@@ -57,10 +59,13 @@ export function filterPublishedMatchesForHub(
     selectedDay: string | null
     eventKind?: 'all' | MatchEventKind
     psLevel?: 'all' | PsMatchLevel
+    /** Weapon class id — same as `matches.discipline`. */
+    weaponClass?: 'all' | string
   },
 ): PubMatchRow[] {
   const eventKind = filters.eventKind ?? 'all'
   const psLevel = filters.psLevel ?? 'all'
+  const weaponClass = filters.weaponClass ?? 'all'
   let out = rows.filter((r) => matchSearchQuery(r, filters.queryNorm))
   if (filters.dateFrom || filters.dateTo) {
     out = out.filter((r) => rowInLocalDateInclusiveRange(r, filters.dateFrom, filters.dateTo))
@@ -73,6 +78,9 @@ export function filterPublishedMatchesForHub(
   }
   if (psLevel !== 'all') {
     out = out.filter((r) => r.ps_match_level === psLevel)
+  }
+  if (weaponClass !== 'all') {
+    out = out.filter((r) => (r.discipline ?? 'shotgun') === weaponClass)
   }
   return out
 }

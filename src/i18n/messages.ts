@@ -394,9 +394,9 @@ export type MessageTree = {
     /** Match hub: filter by PractiScore level L1–L5. */
     portalMatchesHubFilterPsLevel: string
     portalMatchesHubFilterPsLevelAll: string
-    /** Match hub: weapon-type filter (UI placeholder until data exists). */
+    /** Match hub: filter by weapon class (same catalog as shooter profile). */
     portalMatchesHubFilterWeaponType: string
-    portalMatchesHubFilterWeaponTypePlaceholder: string
+    portalMatchesHubFilterWeaponAll: string
     /** Compact placeholder when kind/level not set (list/hub). */
     portalMatchesHubListDash: string
     /** Status badge label — stable / generally available product. */
@@ -1371,7 +1371,7 @@ export const ukMessages: MessageTree = {
     portalMatchesHubFilterPsLevel: 'Рівень PS',
     portalMatchesHubFilterPsLevelAll: 'Усі рівні',
     portalMatchesHubFilterWeaponType: 'Тип зброї',
-    portalMatchesHubFilterWeaponTypePlaceholder: 'Незабаром',
+    portalMatchesHubFilterWeaponAll: 'Усі типи',
     portalMatchesHubListDash: '—',
     badgeLive: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e',
     badgeNew: '\u041d\u043e\u0432\u0435',
@@ -2353,7 +2353,7 @@ export const enMessages: MessageTree = {
     portalMatchesHubFilterPsLevel: 'PS level',
     portalMatchesHubFilterPsLevelAll: 'All levels',
     portalMatchesHubFilterWeaponType: 'Weapon type',
-    portalMatchesHubFilterWeaponTypePlaceholder: 'Coming soon',
+    portalMatchesHubFilterWeaponAll: 'All types',
     portalMatchesHubListDash: '—',
     badgeLive: 'Live',
     badgeNew: 'New',

@@ -16,6 +16,8 @@ import {
 import type { MatchEventKind, PsMatchLevel } from '../domain/matchTaxonomy'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matches/matchPortalLabels'
 import { isMatchPortalEnabled } from './featureFlags'
+import type { WeaponClassId } from './shooterProfileCatalog'
+import { WEAPON_CLASS_ORDER, weaponClassLabel } from './shooterProfileCatalog'
 import './PortalHome.css'
 import './PortalMatchHub.css'
 import './PortalMatchesUi.css'
@@ -80,6 +82,7 @@ export function PortalPublishedMatchesSection() {
 
   const [eventKindFilter, setEventKindFilter] = useState<'all' | MatchEventKind>('all')
   const [psLevelFilter, setPsLevelFilter] = useState<'all' | PsMatchLevel>('all')
+  const [weaponClassFilter, setWeaponClassFilter] = useState<'all' | WeaponClassId>('all')
 
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
 
@@ -127,8 +130,9 @@ export function PortalPublishedMatchesSection() {
         selectedDay: null,
         eventKind: eventKindFilter,
         psLevel: psLevelFilter,
+        weaponClass: weaponClassFilter,
       }),
-    [allRows, queryNorm, dateFromNorm, dateToNorm, eventKindFilter, psLevelFilter],
+    [allRows, queryNorm, dateFromNorm, dateToNorm, eventKindFilter, psLevelFilter, weaponClassFilter],
   )
 
   const countsByDay = useMemo(() => buildCountsByLocalDay(rowsForCalendar), [rowsForCalendar])
@@ -142,8 +146,9 @@ export function PortalPublishedMatchesSection() {
         selectedDay,
         eventKind: eventKindFilter,
         psLevel: psLevelFilter,
+        weaponClass: weaponClassFilter,
       }),
-    [allRows, queryNorm, dateFromNorm, dateToNorm, selectedDay, eventKindFilter, psLevelFilter],
+    [allRows, queryNorm, dateFromNorm, dateToNorm, selectedDay, eventKindFilter, psLevelFilter, weaponClassFilter],
   )
 
   const calendarCells = useMemo(() => buildCalendarCells(calY, calM), [calY, calM])
@@ -158,6 +163,7 @@ export function PortalPublishedMatchesSection() {
     setSelectedDay(null)
     setEventKindFilter('all')
     setPsLevelFilter('all')
+    setWeaponClassFilter('all')
     const d = new Date()
     setCalendarMonth({ y: d.getFullYear(), m: d.getMonth() })
   }, [])
@@ -170,7 +176,8 @@ export function PortalPublishedMatchesSection() {
     dateToNorm !== null ||
     selectedDay !== null ||
     eventKindFilter !== 'all' ||
-    psLevelFilter !== 'all'
+    psLevelFilter !== 'all' ||
+    weaponClassFilter !== 'all'
 
   return (
     <section className="portal-home__matches-published" aria-labelledby="portal-published-matches">
@@ -232,16 +239,24 @@ export function PortalPublishedMatchesSection() {
                 <option value="classification">{p.matchEventKindClassification}</option>
               </select>
             </label>
-            <div
-              className="portal-match-hub__filter-field portal-match-hub__filter-field--disabled"
-              title={p.portalMatchesHubFilterWeaponTypePlaceholder}
-              aria-label={`${p.portalMatchesHubFilterWeaponType}. ${p.portalMatchesHubFilterWeaponTypePlaceholder}.`}
-            >
+            <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-weapon`}>
               <span className="portal-match-hub__filter-field-label">{p.portalMatchesHubFilterWeaponType}</span>
-              <select disabled aria-disabled="true">
-                <option>{p.portalMatchesHubFilterWeaponTypePlaceholder}</option>
+              <select
+                id={`${filterFieldId}-weapon`}
+                value={weaponClassFilter}
+                onChange={(e) => {
+                  const v = e.target.value
+                  setWeaponClassFilter(v === 'all' ? 'all' : (v as WeaponClassId))
+                }}
+              >
+                <option value="all">{p.portalMatchesHubFilterWeaponAll}</option>
+                {WEAPON_CLASS_ORDER.map((id) => (
+                  <option key={id} value={id}>
+                    {weaponClassLabel(id, locale)}
+                  </option>
+                ))}
               </select>
-            </div>
+            </label>
           </div>
 
           <div
