@@ -326,6 +326,11 @@ html.portal-shell__nav-drawer-lock .portal-shell__header-strip {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  min-width: 0;
+}
+
+.portal-shell__main > * {
+  min-width: 0;
 }
 
 .portal-shell__route-loading {

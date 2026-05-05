@@ -41,6 +41,9 @@ a.portal-match-title-ellipsis:hover {
 /* Stretch full width so nested grids and % widths resolve; center via max-width + margin-inline on blocks. */
 .portal-home.portal-match-public-detail {
   align-items: stretch;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .portal-match-public-detail {
@@ -71,6 +74,7 @@ a.portal-match-title-ellipsis:hover {
 
 .portal-match-public-detail__masthead {
   width: 100%;
+  align-self: stretch;
   display: flex;
   justify-content: center;
   min-width: 0;
@@ -87,19 +91,32 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-match-public-detail__masthead-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
   width: 100%;
-  justify-items: stretch;
-  align-items: start;
+  min-width: 0;
 }
 
 @media (min-width: 760px) {
   .portal-match-public-detail__masthead-grid--has-cover {
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
-    gap: 1.15rem 1.75rem;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1.75rem;
+  }
+
+  .portal-match-public-detail__masthead-grid--has-cover .portal-match-public-detail__cover {
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  /** Absorb remaining width reliably (avoids 0-width grid column quirks in nested flex/page layouts). */
+  .portal-match-public-detail__masthead-grid--has-cover > .portal-match-public-detail__masthead-main {
+    flex: 1 1 0%;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .portal-match-public-detail__masthead-main {
@@ -109,6 +126,8 @@ a.portal-match-title-ellipsis:hover {
   .portal-match-public-detail__masthead-grid--has-cover .portal-match-public-detail__title-block {
     align-items: flex-start;
     text-align: left;
+    width: 100%;
+    max-width: 100%;
   }
 
   .portal-match-public-detail__masthead-grid--has-cover .portal-match-public-detail__facts {
@@ -145,7 +164,10 @@ a.portal-match-title-ellipsis:hover {
   aspect-ratio: 16 / 10;
   width: min(100%, var(--portal-match-cover-w));
   max-width: 100%;
-  justify-self: center;
+}
+
+.portal-match-public-detail__masthead-grid .portal-match-public-detail__cover {
+  align-self: center;
 }
 
 .portal-match-public-detail__cover img {
@@ -230,8 +252,11 @@ a.portal-match-title-ellipsis:hover {
   }
 }
 
-/* Hero title inherits .portal-match-title-hero-wrap (overflow-wrap:anywhere) — too aggressive when the grid column collapses; keep normal word breaks here. */
-.portal-match-public-detail__masthead-main .portal-match-title-hero-wrap {
+.portal-match-public-detail__hero-heading {
+  width: 100%;
+  max-width: 100%;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
   overflow-wrap: break-word;
   word-break: normal;
 }

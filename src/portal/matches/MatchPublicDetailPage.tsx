@@ -351,7 +351,7 @@ export function MatchPublicDetailPage() {
             : null}
             <div className="portal-match-public-detail__masthead-main">
               <header className="portal-home__hero portal-match-public-detail__title-block">
-                <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{row.title}</h1>
+                <h1 className="portal-home__hero-title portal-match-public-detail__hero-heading">{row.title}</h1>
               </header>
 
               <div
