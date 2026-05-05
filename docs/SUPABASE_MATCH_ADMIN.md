@@ -15,10 +15,13 @@
 11. **`supabase/migrations/20260510120000_participant_registration_defaults.sql`** (+ **`20260510130000_participant_registration_defaults_extend.sql`**) — таблиця **`participant_registration_defaults`** (типові **`division`** (id дивізіону залежно від класу зброї), **`classification_grade`**, **`power_factor`**, **`region`**, **`categories`** `text[]`, **`weapon_class`** — id класу зброї з UI-довідника; префіл кабінету / форми; **`SELECT` / `INSERT` / `UPDATE` / `DELETE`** лише власного рядка **`user_id`**). Розширення додає колонки після базової таблиці; за наявності застарілої колонки **`category`** — перенос у **`categories`** і видалення **`category`**.
 12. **`supabase/migrations/20260516130000_participant_defaults_name_avatar.sql`** — **`first_name`**, **`last_name`** (для експорту PractiScore **`sh_fn` / `sh_ln`**), **`avatar_url`** (публічний URL фото в **`participant-avatars`** Storage).
 13. **`supabase/migrations/20260511100000_match_event_kind_ps_match_level.sql`** — **`matches.match_event_kind`** (тренування / матч / класифікація) та **`matches.ps_match_level`** (`L1`–`L5`, PractiScore), обидва **nullable**.
+14. **`supabase/migrations/20260520120000_public_roster_categories_payment.sql`** — публічний RPC **`fetch_public_match_roster`**: у відповіді **`categories`** (JSONB) та **`payment_received`** замість **`classification_grade`** для блоку «Учасники».
 
 Передумога: уже застосовано **`20260409120000_shared_stages.sql`** (`shared_stages` потрібен для FK у `match_stage_links`).
 
 **Apply (вибір способу):**
+
+**Автоматизація в Cursor:** після додавання/зміни файлів у **`supabase/migrations/`** агент застосовує їх на з’єднаний проєкт командою **`npx supabase db push --linked --yes`** (див. правило **`.cursor/rules/supabase-migrations-push.mdc`**). Не залишати лише нагадування користувачу, якщо CLI і link доступні.
 
 | Спосіб | Коли |
 |--------|------|

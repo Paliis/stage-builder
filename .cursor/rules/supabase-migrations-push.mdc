@@ -1,0 +1,11 @@
+---
+description: Застосування нових файлів у supabase/migrations на linked-хмару через CLI; агент робить це сам, а не лише підказує користувачу.
+alwaysApply: true
+---
+
+# Supabase migrations: завжди пушити після нових/changed migrations
+
+1. Якщо в **цій сесії** створено або змінено SQL у **`supabase/migrations/`** (схема, RPC, RLS тощо) — **одразу після закінчення змін** із кореня репозиторію викон **`npx supabase db push --linked --yes`** (або еквівалент з авторизованою Supabase CLI і злинкованим проєктом `npm run supabase:link`).
+2. **Не обмежуватись** фразою «застосуй міграції сам» для користувача: поки середовище дозволяє мережу та link — агент **сам виконує push** і коротко повідомляє результат (успіх / текст помилки).
+3. Якщо push неможливий (немає link, CI sandbox без мережі, явна відмова доступу) — чесно передай помилку; тоді вже можна згадати SQL Editor лише як fallback.
+4. Для лише **`supabase/seed/`** без нових файлів у **`migrations/`** — правило **`supabase-match-seed-cli.mdc`** (seed через `npm run supabase:seed:match-all` тощо), не плутати з `db push`.
