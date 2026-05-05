@@ -37,6 +37,7 @@
     "supabase:seed:match-admin": "npx supabase db query --linked -f supabase/seed/match_admin_test_seed.sql",
     "supabase:seed:match-board-extras": "npx supabase db query --linked -f supabase/seed/match_admin_seed_add_extra_board_shooters.sql",
     "supabase:seed:match-all": "npm run supabase:seed:match-admin && npm run supabase:seed:match-board-extras",
+    "supabase:seed:test-match-cli-65": "npx supabase db query --linked -f supabase/seed/match_admin_fill_test_match_cli_65_shooters.sql",
     "supabase:seed:match-hub-demos": "npx supabase db query --linked -f supabase/seed/match_hub_demo_list_seed.sql",
     "supabase:seed:klassifikatsiyni-etap2": "npx supabase db query --linked -f supabase/seed/klassifikatsiyni_rushnytsia_etap2_2026_from_psc_stage1_roster.sql",
     "vercel:env-pull": "vercel env pull",
