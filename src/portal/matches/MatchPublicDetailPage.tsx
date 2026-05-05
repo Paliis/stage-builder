@@ -8,6 +8,7 @@ import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { formatPortalDate } from './matchPortalFormat'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
+import { programmeListDisplayTitles } from './matchPortalProgrammeDisplay'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import { categoryLabel, weaponClassLabel } from '../shooterProfileCatalog'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
@@ -51,13 +52,6 @@ type PublicStageLinkRow = {
   sort_order: number
   share_stage_id: string | null
   snapshot_meta: Record<string, unknown> | null
-}
-
-function programmeRowTitle(r: PublicStageLinkRow): string {
-  const meta = r.snapshot_meta
-  const snap = typeof meta?.title_snapshot === 'string' ? meta.title_snapshot.trim() : ''
-  if (snap) return snap
-  return r.share_stage_id?.trim() || '—'
 }
 
 function parseCategoryIdsFromRoster(raw: unknown): string[] {
@@ -316,6 +310,9 @@ export function MatchPublicDetailPage() {
   const psLevelLine = portalLabelPsMatchLevel(row.ps_match_level, p)
   const weaponLine = weaponClassLabel((row.discipline ?? 'shotgun').trim() || 'shotgun', locUi)
 
+  const programmeDisplayTitles =
+    programmeLinks !== undefined && !programmeError ? programmeListDisplayTitles(programmeLinks, p) : null
+
   return (
     <article className="portal-home portal-match-public-detail">
       <Helmet>
@@ -439,7 +436,7 @@ export function MatchPublicDetailPage() {
             <ol className="portal-match-public-detail__programme">
               {programmeLinks.map((lnk, idx) => {
                 const sid = lnk.share_stage_id?.trim()
-                const title = programmeRowTitle(lnk)
+                const title = programmeDisplayTitles![idx]!
                 return (
                   <li key={`${sid ?? ''}-${lnk.sort_order}-${idx}`}>
                     {sid ?

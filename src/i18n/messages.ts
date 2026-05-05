@@ -444,6 +444,11 @@ export type MessageTree = {
     matchDetailProgrammeHeading: string
     matchDetailProgrammeViewLink: string
     matchDetailProgrammeFootnote: string
+    /**
+     * When every programme snapshot title is identical (e.g. copied «Вправа №1…» everywhere), prepend/order by programme slot.
+     * `{{n}}` = serial in match programme; `{{title}}` = stored snapshot title.
+     */
+    matchDetailProgrammeDuplicateOrdinalFallback: string
     /** Public match card: roster block (participant_list_visibility). */
     matchDetailParticipantsHeading: string
     matchDetailParticipantsClosed: string
@@ -1435,6 +1440,7 @@ export const ukMessages: MessageTree = {
     matchDetailProgrammeHeading: 'Програма',
     matchDetailProgrammeViewLink: 'Схема / брифінг',
     matchDetailProgrammeFootnote: '',
+    matchDetailProgrammeDuplicateOrdinalFallback: 'Вправа №{{n}}: {{title}}',
     matchDetailParticipantsHeading: 'Учасники',
     matchDetailParticipantsClosed:
       'Список зареєстрованих учасників не опубліковано (налаштування організатора).',
@@ -2439,6 +2445,7 @@ export const enMessages: MessageTree = {
     matchDetailProgrammeHeading: 'Programme',
     matchDetailProgrammeViewLink: 'Course of fire',
     matchDetailProgrammeFootnote: '',
+    matchDetailProgrammeDuplicateOrdinalFallback: 'Exercise {{n}}: {{title}}',
     matchDetailParticipantsHeading: 'Participants',
     matchDetailParticipantsClosed:
       'The participant list is not published for this match (organizer setting).',

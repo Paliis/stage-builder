@@ -6,6 +6,10 @@ import { parseStageProjectJson } from '../../domain/stageProjectFile'
 import { resolveSharePublishedTitle } from '../../domain/sharePublishedTitle'
 import { payloadToProjectText } from '../../share/payloadToProjectText'
 import { extractShareViewId } from './extractShareViewId'
+import {
+  programmeListDisplayTitles,
+  programmeSnapshotTitleRaw,
+} from './matchPortalProgrammeDisplay'
 
 type Portal = MessageTree['portal']
 
@@ -21,13 +25,6 @@ type StageLinkRow = {
   share_stage_id: string
   share_group_id: string | null
   snapshot_meta: Record<string, unknown> | null
-}
-
-function rowTitle(r: StageLinkRow): string {
-  const meta = r.snapshot_meta
-  const snap = typeof meta?.title_snapshot === 'string' ? meta.title_snapshot.trim() : ''
-  if (snap) return snap
-  return r.share_stage_id
 }
 
 export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatchStagesPanelProps) {
@@ -206,7 +203,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
       for (const r of list) {
         const errMsg = await runRefreshRpc(r.id)
         if (errMsg) {
-          failures.push(`${rowTitle(r)}: ${errMsg}`)
+          failures.push(`${programmeSnapshotTitleRaw(r)}: ${errMsg}`)
         }
       }
       setAddError(failures.length > 0 ? failures.join('\n') : null)
@@ -266,6 +263,8 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   }
 
   const ordered = [...(rows ?? [])].sort((a, b) => a.sort_order - b.sort_order)
+  const displayTitles = programmeListDisplayTitles(ordered, p)
+
   const anyRowBusy = Object.keys(busyById).length > 0
 
   return (
@@ -390,7 +389,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
               return (
                 <tr key={r.id} style={{ borderBottom: '1px solid var(--border)', verticalAlign: 'top' }}>
                   <td style={{ padding: '0.45rem 0.4rem', opacity: 0.95 }}>{idx + 1}</td>
-                  <td style={{ padding: '0.45rem 0.4rem' }}>{rowTitle(r)}</td>
+                  <td style={{ padding: '0.45rem 0.4rem' }}>{displayTitles[idx]}</td>
                   <td style={{ padding: '0.45rem 0.4rem', wordBreak: 'break-all' }}>
                     <a href={`/v/${encodeURIComponent(r.share_stage_id)}?lang=${locale}`} target="_blank" rel="noreferrer">
                       {p.matchOrgStagesViewLink}
