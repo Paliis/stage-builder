@@ -432,6 +432,12 @@ export type MessageTree = {
     matchDetailLimitLabel: string
     /** Shown next to competitor limit once squad metrics load — `{{limit}}`, `{{free}}` (squads aggregate). */
     matchDetailLimitWithFree: string
+    /** Public match detail: range control for cover preview width (sessionStorage per match). */
+    matchDetailCoverSizeLabel: string
+    /** aria-label for masthead column with registration actions. */
+    matchDetailMastheadActionsAria: string
+    /** Short line in masthead when the user’s registration is confirmed. */
+    matchDetailRegistrationMastheadRegistered: string
     matchDetailPrematchLabel: string
     matchDetailPrematchValueYes: string
     matchDetailPrematchValueNo: string
@@ -706,6 +712,12 @@ export type MessageTree = {
     matchOrgCoverErrType: string
     matchOrgCoverErrSize: string
     matchOrgCoverUploading: string
+    matchOrgCoverCropTitle: string
+    matchOrgCoverCropLead: string
+    matchOrgCoverCropZoom: string
+    matchOrgCoverCropCancel: string
+    matchOrgCoverCropApply: string
+    matchOrgCoverCropErrCrop: string
     matchOrgFieldEventKind: string
     matchOrgFieldPsLevel: string
     /** Short line above event type / PS level block. */
@@ -1416,6 +1428,9 @@ export const ukMessages: MessageTree = {
     matchDetailDisciplineLabel: 'Дисципліна',
     matchDetailLimitLabel: 'Ліміт учасників',
     matchDetailLimitWithFree: '{{limit}} (вільно {{free}})',
+    matchDetailCoverSizeLabel: 'Ширина обкладинки на сторінці',
+    matchDetailMastheadActionsAria: 'Реєстрація на матч',
+    matchDetailRegistrationMastheadRegistered: 'Ви зареєстровані',
     matchDetailPrematchLabel: 'Прематч',
     matchDetailPrematchValueYes: 'Так — окремі скводи напередодні',
     matchDetailPrematchValueNo: 'ні',
@@ -1695,6 +1710,13 @@ export const ukMessages: MessageTree = {
     matchOrgCoverErrType: 'Дозволені лише JPEG, PNG або WebP.',
     matchOrgCoverErrSize: 'Файл завеликий (макс. 5 МБ).',
     matchOrgCoverUploading: 'Завантаження…',
+    matchOrgCoverCropTitle: 'Обріжте обкладинку',
+    matchOrgCoverCropLead:
+      'Співвідношення сторін 16∶10, як у картці матчу. Перетягніть кадр і підберіть масштаб повзунком.',
+    matchOrgCoverCropZoom: 'Масштаб',
+    matchOrgCoverCropCancel: 'Скасувати',
+    matchOrgCoverCropApply: 'Застосувати',
+    matchOrgCoverCropErrCrop: 'Не вдалося обробити зображення. Спробуйте інший файл.',
     matchOrgFieldEventKind: 'Тип події',
     matchOrgFieldPsLevel: 'Рівень матчу (PractiScore)',
     matchOrgTaxonomyOptionalLead:
@@ -2411,6 +2433,9 @@ export const enMessages: MessageTree = {
     matchDetailDisciplineLabel: 'Discipline',
     matchDetailLimitLabel: 'Competitor limit',
     matchDetailLimitWithFree: '{{limit}} ({{free}} free)',
+    matchDetailCoverSizeLabel: 'Cover width on this page',
+    matchDetailMastheadActionsAria: 'Match registration',
+    matchDetailRegistrationMastheadRegistered: 'You are registered',
     matchDetailPrematchLabel: 'Prematch',
     matchDetailPrematchValueYes: 'Yes — separate squads the day before',
     matchDetailPrematchValueNo: 'no',
@@ -2692,6 +2717,13 @@ export const enMessages: MessageTree = {
     matchOrgCoverErrType: 'Only JPEG, PNG, or WebP are allowed.',
     matchOrgCoverErrSize: 'File is too large (max 5 MB).',
     matchOrgCoverUploading: 'Uploading…',
+    matchOrgCoverCropTitle: 'Crop cover image',
+    matchOrgCoverCropLead:
+      '16∶10 aspect ratio (match list card). Drag to frame and use the slider to zoom.',
+    matchOrgCoverCropZoom: 'Zoom',
+    matchOrgCoverCropCancel: 'Cancel',
+    matchOrgCoverCropApply: 'Apply',
+    matchOrgCoverCropErrCrop: 'Could not process the image. Try another file.',
     matchOrgFieldEventKind: 'Event type',
     matchOrgFieldPsLevel: 'Match level (PractiScore)',
     matchOrgTaxonomyOptionalLead:

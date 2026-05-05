@@ -20,6 +20,11 @@ import {
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
+const COVER_W_STORAGE = 'portalMatchCoverPx:v1'
+const COVER_W_MIN = 140
+const COVER_W_MAX = 380
+const COVER_W_DEFAULT = 220
+
 type MatchDetailRow = {
   id: string
   title: string
@@ -93,6 +98,8 @@ export function MatchPublicDetailPage() {
   const [programmeError, setProgrammeError] = useState<string | null>(null)
   const [regMetrics, setRegMetrics] = useState<RegistrationMetricRow[] | undefined>(undefined)
   const [regMetricsError, setRegMetricsError] = useState<string | null>(null)
+  const [mastheadCtaMount, setMastheadCtaMount] = useState<HTMLElement | null>(null)
+  const [coverPx, setCoverPx] = useState(COVER_W_DEFAULT)
 
   const validId = matchId && MATCH_ID_UUID_RE.test(matchId)
   const configured = isSupabaseConfigured()
@@ -237,6 +244,32 @@ export function MatchPublicDetailPage() {
     }
   }, [validId, configured, row?.id])
 
+  useEffect(() => {
+    if (!row?.id) return
+    try {
+      const raw = sessionStorage.getItem(`${COVER_W_STORAGE}:${row.id}`)
+      const n = raw != null && raw !== '' ? Number(raw) : NaN
+      if (!Number.isFinite(n)) {
+        setCoverPx(COVER_W_DEFAULT)
+        return
+      }
+      setCoverPx(Math.min(COVER_W_MAX, Math.max(COVER_W_MIN, Math.round(n))))
+    } catch {
+      setCoverPx(COVER_W_DEFAULT)
+    }
+  }, [row?.id])
+
+  function persistCoverPx(next: number) {
+    const clamped = Math.min(COVER_W_MAX, Math.max(COVER_W_MIN, Math.round(next)))
+    setCoverPx(clamped)
+    if (!row?.id) return
+    try {
+      sessionStorage.setItem(`${COVER_W_STORAGE}:${row.id}`, String(clamped))
+    } catch {
+      /* ignore quota / private mode */
+    }
+  }
+
   if (!validId) {
     return (
       <div className="portal-home">
@@ -324,7 +357,7 @@ export function MatchPublicDetailPage() {
         className="portal-page-context portal-match-public-detail__breadcrumbs"
         aria-label={p.portalBreadcrumbAria}
       >
-        <ol className="portal-breadcrumbs">
+        <ol className="portal-breadcrumbs portal-match-public-detail__breadcrumbs-list">
           <li>
             <Link to={`/${locale}/matches`}>{p.navMatches}</Link>
           </li>
@@ -339,57 +372,91 @@ export function MatchPublicDetailPage() {
       <section
         className={`portal-match-public-detail__masthead${hasCover ? ' portal-match-public-detail__masthead--has-cover' : ''}`}
       >
-        {hasCover ?
-          <figure className="portal-match-public-detail__cover">
-            <img src={coverUrl} alt="" loading="lazy" decoding="async" />
-          </figure>
-        : null}
-        <div className="portal-match-public-detail__masthead-main">
-          <header className="portal-home__hero portal-match-public-detail__title-block">
-            <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{row.title}</h1>
-          </header>
+        <div className="portal-match-public-detail__masthead-sheet">
+          <div
+            className={`portal-match-public-detail__masthead-grid${hasCover ? ' portal-match-public-detail__masthead-grid--has-cover' : ''}`}
+          >
+            {hasCover ?
+              <figure
+                className="portal-match-public-detail__cover"
+                style={{
+                  ['--portal-match-cover-w' as string]: `${coverPx}px`,
+                }}
+              >
+                <img src={coverUrl} alt="" loading="lazy" decoding="async" />
+              </figure>
+            : null}
+            <div className="portal-match-public-detail__masthead-main">
+              <header className="portal-home__hero portal-match-public-detail__title-block">
+                <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{row.title}</h1>
+              </header>
 
-          <dl className="portal-match-public-detail__facts">
-            <dt>{p.matchDetailStartsLabel}</dt>
-            <dd>{formatPortalDate(row.starts_at, locale)}</dd>
-            {eventKindLine ?
-              <>
-                <dt>{p.matchDetailEventKindLabel}</dt>
-                <dd>{eventKindLine}</dd>
-              </>
-            : null}
-            {psLevelLine ?
-              <>
-                <dt>{p.matchDetailPsLevelLabel}</dt>
-                <dd>{psLevelLine}</dd>
-              </>
-            : null}
-            {row.location_label ?
-              <>
-                <dt>{p.matchDetailLocationLabel}</dt>
-                <dd>{row.location_label}</dd>
-              </>
-            : null}
-            <dt>{p.matchDetailDisciplineLabel}</dt>
-            <dd>{weaponLine}</dd>
-            {row.competitor_limit != null ?
-              <>
-                <dt>{p.matchDetailLimitLabel}</dt>
-                <dd>
-                  {regMetrics === undefined ?
-                    row.competitor_limit
-                  : regMetrics.length === 0 ?
-                    row.competitor_limit
-                  : formatTemplate(p.matchDetailLimitWithFree, {
-                      limit: row.competitor_limit,
-                      free: sumSquadSeatsTotals(regMetrics).totalFree,
-                    })}
-                </dd>
-              </>
-            : null}
-            <dt>{p.matchDetailPrematchLabel}</dt>
-            <dd>{row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}</dd>
-          </dl>
+              <dl className="portal-match-public-detail__facts">
+                <dt>{p.matchDetailStartsLabel}</dt>
+                <dd>{formatPortalDate(row.starts_at, locale)}</dd>
+                {eventKindLine ?
+                  <>
+                    <dt>{p.matchDetailEventKindLabel}</dt>
+                    <dd>{eventKindLine}</dd>
+                  </>
+                : null}
+                {psLevelLine ?
+                  <>
+                    <dt>{p.matchDetailPsLevelLabel}</dt>
+                    <dd>{psLevelLine}</dd>
+                  </>
+                : null}
+                {row.location_label ?
+                  <>
+                    <dt>{p.matchDetailLocationLabel}</dt>
+                    <dd>{row.location_label}</dd>
+                  </>
+                : null}
+                <dt>{p.matchDetailDisciplineLabel}</dt>
+                <dd>{weaponLine}</dd>
+                {row.competitor_limit != null ?
+                  <>
+                    <dt>{p.matchDetailLimitLabel}</dt>
+                    <dd>
+                      {regMetrics === undefined ?
+                        row.competitor_limit
+                      : regMetrics.length === 0 ?
+                        row.competitor_limit
+                      : formatTemplate(p.matchDetailLimitWithFree, {
+                          limit: row.competitor_limit,
+                          free: sumSquadSeatsTotals(regMetrics).totalFree,
+                        })}
+                    </dd>
+                  </>
+                : null}
+                <dt>{p.matchDetailPrematchLabel}</dt>
+                <dd>{row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}</dd>
+              </dl>
+            </div>
+            <aside
+              className="portal-match-public-detail__masthead-actions"
+              aria-label={p.matchDetailMastheadActionsAria}
+              ref={setMastheadCtaMount}
+            />
+          </div>
+          {hasCover ?
+            <div className="portal-match-public-detail__cover-size-row">
+              <label className="portal-match-public-detail__cover-size">
+                <span className="portal-match-public-detail__cover-size-label">{p.matchDetailCoverSizeLabel}</span>
+                <input
+                  type="range"
+                  min={COVER_W_MIN}
+                  max={COVER_W_MAX}
+                  step={4}
+                  value={coverPx}
+                  onChange={(e) => persistCoverPx(Number(e.target.value))}
+                  aria-valuemin={COVER_W_MIN}
+                  aria-valuemax={COVER_W_MAX}
+                  aria-valuenow={coverPx}
+                />
+              </label>
+            </div>
+          : null}
         </div>
       </section>
 
@@ -443,6 +510,7 @@ export function MatchPublicDetailPage() {
         metrics={regMetrics}
         metricsError={regMetricsError}
         reloadMetrics={loadRegistrationMetrics}
+        mastheadActionsMount={mastheadCtaMount}
         p={p}
       />
 

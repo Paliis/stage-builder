@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FormEvent, useEffect, useState } from 'react'
+import { type ChangeEvent, type FormEvent, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
@@ -11,6 +11,7 @@ import { OrganizerMatchStagesPanel } from './OrganizerMatchStagesPanel'
 import { OrganizerMatchSquadsPanel } from './OrganizerMatchSquadsPanel'
 import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
+import { MatchCoverCropModal } from './MatchCoverCropModal'
 import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
@@ -91,8 +92,18 @@ export function OrganizerMatchEditPage() {
   const [saving, setSaving] = useState(false)
   const [pscBusy, setPscBusy] = useState(false)
   const [pscErr, setPscErr] = useState<string | null>(null)
-  const [coverUploadBusy, setCoverUploadBusy] = useState(false)
   const [coverUploadErr, setCoverUploadErr] = useState<string | null>(null)
+  const coverCropObjectUrlRef = useRef<string | null>(null)
+  const [coverCropSrc, setCoverCropSrc] = useState<string | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (coverCropObjectUrlRef.current) {
+        URL.revokeObjectURL(coverCropObjectUrlRef.current)
+        coverCropObjectUrlRef.current = null
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (isNew) {
@@ -354,6 +365,36 @@ export function OrganizerMatchEditPage() {
     }
   }
 
+  function closeCoverCropModal() {
+    if (coverCropObjectUrlRef.current) {
+      URL.revokeObjectURL(coverCropObjectUrlRef.current)
+      coverCropObjectUrlRef.current = null
+    }
+    setCoverCropSrc(null)
+  }
+
+  async function uploadCoverJpegBlob(file: Blob): Promise<boolean> {
+    if (!configured || !user?.id) return false
+    if (!validEditId || !matchId || isNew) {
+      setCoverUploadErr(p.matchOrgCoverHintNew)
+      return false
+    }
+    setCoverUploadErr(null)
+    const objectPath = `${user.id}/${matchId}/cover-${Date.now()}.jpg`
+    const sb = getSupabase()
+    const { error: upErr } = await sb.storage.from('match-covers').upload(objectPath, file, {
+      upsert: false,
+      contentType: 'image/jpeg',
+    })
+    if (upErr) {
+      setCoverUploadErr(upErr.message)
+      return false
+    }
+    const { data: pub } = sb.storage.from('match-covers').getPublicUrl(objectPath)
+    setDraft((d) => ({ ...d, cover_image_url: pub.publicUrl }))
+    return true
+  }
+
   async function handleCoverFileChange(e: ChangeEvent<HTMLInputElement>) {
     setCoverUploadErr(null)
     const file = e.target.files?.[0]
@@ -372,24 +413,13 @@ export function OrganizerMatchEditPage() {
       setCoverUploadErr(p.matchOrgCoverErrSize)
       return
     }
-    setCoverUploadBusy(true)
-    try {
-      const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg'
-      const objectPath = `${user.id}/${matchId}/cover-${Date.now()}.${ext}`
-      const sb = getSupabase()
-      const { error: upErr } = await sb.storage.from('match-covers').upload(objectPath, file, {
-        upsert: false,
-        contentType: file.type === 'image/jpg' || file.type === 'image/jpeg' ? 'image/jpeg' : file.type,
-      })
-      if (upErr) {
-        setCoverUploadErr(upErr.message)
-        return
-      }
-      const { data: pub } = sb.storage.from('match-covers').getPublicUrl(objectPath)
-      setDraft((d) => ({ ...d, cover_image_url: pub.publicUrl }))
-    } finally {
-      setCoverUploadBusy(false)
+    if (coverCropObjectUrlRef.current) {
+      URL.revokeObjectURL(coverCropObjectUrlRef.current)
+      coverCropObjectUrlRef.current = null
     }
+    const url = URL.createObjectURL(file)
+    coverCropObjectUrlRef.current = url
+    setCoverCropSrc(url)
   }
 
   if (!configured) {
@@ -605,7 +635,7 @@ export function OrganizerMatchEditPage() {
                 <button
                   type="button"
                   className="portal-btn portal-btn--secondary portal-btn--compact"
-                  disabled={coverUploadBusy}
+                  disabled={saving || Boolean(coverCropSrc)}
                   onClick={() => {
                     setCoverUploadErr(null)
                     setDraft((d) => ({ ...d, cover_image_url: '' }))
@@ -619,12 +649,12 @@ export function OrganizerMatchEditPage() {
               <input
                 type="file"
                 accept="image/jpeg,image/jpg,image/png,image/webp"
-                disabled={coverUploadBusy || saving}
+                disabled={saving || Boolean(coverCropSrc)}
                 onChange={(e) => void handleCoverFileChange(e)}
                 style={{ display: 'none' }}
               />
               <span className="portal-btn portal-btn--secondary portal-btn--compact">
-                {coverUploadBusy ? p.matchOrgCoverUploading : p.matchOrgCoverUpload}
+                {p.matchOrgCoverUpload}
               </span>
             </label>
             {coverUploadErr ?
@@ -976,6 +1006,22 @@ export function OrganizerMatchEditPage() {
             shootersPerPrematchSquad={draft.shooters_per_prematch_squad}
           />
         </>
+      : null}
+      {coverCropSrc ?
+        <MatchCoverCropModal
+          imageSrc={coverCropSrc}
+          onCancel={() => {
+            setCoverUploadErr(null)
+            closeCoverCropModal()
+          }}
+          onApply={async (jpeg) => {
+            setCoverUploadErr(null)
+            const ok = await uploadCoverJpegBlob(jpeg)
+            if (ok) closeCoverCropModal()
+          }}
+          remoteError={coverUploadErr}
+          p={p}
+        />
       : null}
     </div>
   )

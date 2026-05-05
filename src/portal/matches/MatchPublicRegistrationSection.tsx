@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react'
 import { Link } from 'react-router-dom'
+import { createPortal } from 'react-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import type { Locale, MessageTree } from '../../i18n/messages'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
@@ -47,6 +48,7 @@ type Props = {
   metrics: RegistrationMetricRow[] | undefined
   metricsError: string | null
   reloadMetrics: () => Promise<void>
+  mastheadActionsMount?: HTMLElement | null
 }
 
 const SHOOTER_CATEGORY_IDS = new Set(SHOOTER_CATEGORIES.map((c) => c.id))
@@ -77,6 +79,7 @@ export function MatchPublicRegistrationSection({
   metrics,
   metricsError,
   reloadMetrics,
+  mastheadActionsMount = null,
 }: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const sb = useMemo(() => getSupabase(), [])
@@ -471,6 +474,14 @@ export function MatchPublicRegistrationSection({
     Boolean(metrics?.length)
   const showPendingTools = Boolean(user && !sessionLoading && mine?.status === 'pending')
   const showCancelledNote = Boolean(user && !sessionLoading && mine?.status === 'cancelled')
+  const showRegisteredMasthead = Boolean(user && !sessionLoading && mine?.status === 'confirmed')
+
+  const showMastheadUi =
+    showGuestAuth ||
+    showRegisterCta ||
+    showPendingTools ||
+    showCancelledNote ||
+    showRegisteredMasthead
 
   const showMatchFullNote =
     Boolean(matchFull && metrics && metrics.length > 0 && mine?.status !== 'confirmed')
@@ -479,16 +490,74 @@ export function MatchPublicRegistrationSection({
     Boolean(metricsError) ||
     (metrics !== undefined && metrics.length === 0) ||
     showMatchFullNote ||
-    showGuestAuth ||
-    showRegisterCta ||
-    showPendingTools ||
-    showCancelledNote ||
+    (!mastheadActionsMount && showMastheadUi) ||
     Boolean(feedback)
+
+  const mastheadPortal =
+    mastheadActionsMount && showMastheadUi ?
+      createPortal(
+        <div className="portal-match-public-detail__masthead-actions-inner">
+          {showGuestAuth ?
+            <>
+              <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationSignInIntro}</p>
+              <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
+              {import.meta.env.DEV ?
+                <p className="portal-reg-dev-auth-hint">
+                  <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>
+                </p>
+              : null}
+            </>
+          : null}
+
+          {showPendingTools ?
+            <>
+              <p className="portal-reg-inline-meta">
+                <strong>{p.matchDetailRegistrationYourStatus}: </strong>
+                <span className={portalMatchRegLabelClass(mine!.status)}>{p.matchDetailRegistrationStatusPending}</span>
+              </p>
+              <button
+                type="button"
+                className="portal-btn portal-btn--secondary portal-btn--compact"
+                disabled={mineBusy}
+                onClick={() => void cancelMine()}
+              >
+                {mineBusy ? p.matchDetailRegistrationCancelling : p.matchDetailRegistrationCancel}
+              </button>
+            </>
+          : null}
+
+          {showCancelledNote ?
+            <p className="portal-reg-inline-meta">
+              <strong>{p.matchDetailRegistrationYourStatus}: </strong>
+              <span className={portalMatchRegLabelClass(mine!.status)}>{p.matchDetailRegistrationStatusCancelled}</span>
+            </p>
+          : null}
+
+          {showRegisterCta ?
+            <button
+              type="button"
+              className="portal-btn portal-btn--primary portal-reg-cta portal-match-public-detail__masthead-cta"
+              onClick={openRegistrationModal}
+            >
+              {p.matchDetailRegistrationCta}
+            </button>
+          : null}
+
+          {showRegisteredMasthead ?
+            <p className="portal-match-public-detail__masthead-registered" role="status">
+              {p.matchDetailRegistrationMastheadRegistered}
+            </p>
+          : null}
+        </div>,
+        mastheadActionsMount,
+      )
+    : null
 
   if (!configured) {
     return (
       <>
         {renderRegistrationModal(regDialogRef)}
+        {mastheadPortal}
         <div className="portal-reg-minimal">
           <p className="portal-match-public-detail__muted">{p.matchesSupabaseUnset}</p>
         </div>
@@ -497,12 +566,18 @@ export function MatchPublicRegistrationSection({
   }
 
   if (!hasAnyInline) {
-    return <>{renderRegistrationModal(regDialogRef)}</>
+    return (
+      <>
+        {renderRegistrationModal(regDialogRef)}
+        {mastheadPortal}
+      </>
+    )
   }
 
   return (
     <>
       {renderRegistrationModal(regDialogRef)}
+      {mastheadPortal}
       <div className="portal-reg-minimal">
         {metricsError ?
           <p role="alert" className="portal-match-public-detail__muted">
@@ -516,7 +591,7 @@ export function MatchPublicRegistrationSection({
           <p className="portal-match-public-detail__muted">{p.matchDetailRegistrationMatchFull}</p>
         : null}
 
-        {showGuestAuth ?
+        {!mastheadActionsMount && showGuestAuth ?
           <>
             <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationSignInIntro}</p>
             <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
@@ -528,7 +603,7 @@ export function MatchPublicRegistrationSection({
           </>
         : null}
 
-        {showPendingTools ?
+        {!mastheadActionsMount && showPendingTools ?
           <>
             <p className="portal-reg-inline-meta">
               <strong>{p.matchDetailRegistrationYourStatus}: </strong>
@@ -545,17 +620,23 @@ export function MatchPublicRegistrationSection({
           </>
         : null}
 
-        {showCancelledNote ?
+        {!mastheadActionsMount && showCancelledNote ?
           <p className="portal-reg-inline-meta">
             <strong>{p.matchDetailRegistrationYourStatus}: </strong>
             <span className={portalMatchRegLabelClass(mine!.status)}>{p.matchDetailRegistrationStatusCancelled}</span>
           </p>
         : null}
 
-        {showRegisterCta ?
+        {!mastheadActionsMount && showRegisterCta ?
           <button type="button" className="portal-btn portal-btn--primary portal-reg-cta" onClick={openRegistrationModal}>
             {p.matchDetailRegistrationCta}
           </button>
+        : null}
+
+        {!mastheadActionsMount && showRegisteredMasthead ?
+          <p className="portal-match-public-detail__masthead-registered" role="status">
+            {p.matchDetailRegistrationMastheadRegistered}
+          </p>
         : null}
 
         {feedback ?
