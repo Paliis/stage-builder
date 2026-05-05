@@ -294,7 +294,8 @@ a.portal-match-title-ellipsis:hover {
   display: grid;
   grid-template-columns: 1fr;
   justify-items: start;
-  gap: 0.2rem 0.95rem;
+  align-items: baseline;
+  gap: 0.45rem 0.95rem;
   margin: 0;
   padding: 0;
   font-size: 0.90625rem;
@@ -309,18 +310,14 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-match-public-detail__facts dt {
-  margin: 0.42rem 0 0;
+  margin: 0;
   font-weight: 700;
   color: var(--text);
   opacity: 0.88;
 }
 
-.portal-match-public-detail__facts dt:first-of-type {
-  margin-top: 0;
-}
-
 .portal-match-public-detail__facts dd {
-  margin: 0 0 0.12rem;
+  margin: 0;
   color: var(--text-h);
   font-weight: 650;
 }
