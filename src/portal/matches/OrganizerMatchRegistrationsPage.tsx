@@ -10,6 +10,7 @@ import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { sortSquadsPrematchFirst } from './matchSquadsSort'
 import { OrganizerMatchRosterBoard } from './OrganizerMatchRosterBoard'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
+import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import {
   portalMatchRegLabelClass,
   portalMatchRegRowClass,
@@ -647,8 +648,8 @@ export function OrganizerMatchRegistrationsPage() {
                     </td>
                     <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', minWidth: '12rem' }}>
                       {inactive ?
-                        <span style={inactiveBlock}>
-                          {reg.squad_label} ({squadPhaseLabel(p, reg.squad_phase)})
+                        <span style={inactiveBlock} title={reg.squad_label}>
+                          {formatSquadLabelNumberOnly(reg.squad_label)} ({squadPhaseLabel(p, reg.squad_phase)})
                         </span>
                       : options.length === 0 ?
                         <span role="alert">{p.matchOrgRosterNoFreeSlot}</span>
@@ -684,8 +685,8 @@ export function OrganizerMatchRegistrationsPage() {
                               currentPick,
                             )
                             return (
-                              <option key={opt.id} value={opt.id}>
-                                {opt.label} ({squadPhaseLabel(p, opt.squad_phase)}) — {taken}/{opt.capacity}
+                              <option key={opt.id} value={opt.id} title={opt.label}>
+                                {formatSquadLabelNumberOnly(opt.label)} ({squadPhaseLabel(p, opt.squad_phase)}) — {taken}/{opt.capacity}
                               </option>
                             )
                           })}

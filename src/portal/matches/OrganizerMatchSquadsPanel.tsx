@@ -4,6 +4,7 @@ import { formatTemplate } from '../../i18n/format'
 import { getSupabase } from '../../lib/supabaseClient'
 import type { MessageTree } from '../../i18n/messages'
 import { sortSquadsPrematchFirst } from './matchSquadsSort'
+import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 
 type Portal = MessageTree['portal']
 
@@ -189,7 +190,9 @@ export function OrganizerMatchSquadsPanel({
                   <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                     {r.squad_phase === 'prematch' ? p.matchOrgSquadsPhasePrematch : p.matchOrgSquadsPhaseMain}
                   </td>
-                  <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>{r.label}</td>
+                  <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }} title={r.label}>
+                    {formatSquadLabelNumberOnly(r.label)}
+                  </td>
                   <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>{r.capacity}</td>
                   <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>{takenMap[r.id] ?? 0}</td>
                 </tr>

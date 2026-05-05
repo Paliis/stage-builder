@@ -10,6 +10,7 @@ import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import { categoryLabel } from '../shooterProfileCatalog'
+import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
@@ -402,7 +403,10 @@ export function MatchPublicDetailPage() {
         prematchEnabled={Boolean(row.prematch_enabled)}
       />
 
-      <section style={{ marginTop: '1.75rem', maxWidth: '48rem' }} aria-labelledby="match-participants-heading">
+      <section
+        style={{ marginTop: '1.75rem', maxWidth: 'min(64rem, 100%)' }}
+        aria-labelledby="match-participants-heading"
+      >
         <h2
           id="match-participants-heading"
           className="portal-home__hero-title"
@@ -432,83 +436,17 @@ export function MatchPublicDetailPage() {
         : (
           <>
             <div style={{ overflowX: 'auto' }}>
-              <table
-                style={{
-                  width: '100%',
-                  borderCollapse: 'collapse',
-                  fontSize: '0.92rem',
-                }}
-              >
+              <table className="portal-match-public-participants-table">
                 <thead>
                   <tr>
-                    <th
-                      scope="col"
-                      style={{
-                        textAlign: 'left',
-                        padding: '0.5rem 0.6rem',
-                        borderBottom: '1px solid var(--border)',
-                        color: 'var(--text-h)',
-                      }}
-                    >
-                      {p.matchDetailParticipantsColSquad}
-                    </th>
+                    <th scope="col">{p.matchDetailParticipantsColSquad}</th>
                     {row.prematch_enabled ?
-                      <th
-                        scope="col"
-                        style={{
-                          textAlign: 'left',
-                          padding: '0.5rem 0.6rem',
-                          borderBottom: '1px solid var(--border)',
-                          color: 'var(--text-h)',
-                        }}
-                      >
-                        {p.matchDetailParticipantsColPhase}
-                      </th>
+                      <th scope="col">{p.matchDetailParticipantsColPhase}</th>
                     : null}
-                    <th
-                      scope="col"
-                      style={{
-                        textAlign: 'left',
-                        padding: '0.5rem 0.6rem',
-                        borderBottom: '1px solid var(--border)',
-                        color: 'var(--text-h)',
-                      }}
-                    >
-                      {p.matchDetailParticipantsColName}
-                    </th>
-                    <th
-                      scope="col"
-                      style={{
-                        textAlign: 'left',
-                        padding: '0.5rem 0.6rem',
-                        borderBottom: '1px solid var(--border)',
-                        color: 'var(--text-h)',
-                      }}
-                    >
-                      {p.matchDetailParticipantsColDivision}
-                    </th>
-                    <th
-                      scope="col"
-                      style={{
-                        textAlign: 'left',
-                        padding: '0.5rem 0.6rem',
-                        borderBottom: '1px solid var(--border)',
-                        color: 'var(--text-h)',
-                      }}
-                    >
-                      {p.matchDetailParticipantsColCategory}
-                    </th>
-                    <th
-                      scope="col"
-                      style={{
-                        textAlign: 'left',
-                        padding: '0.5rem 0.6rem',
-                        borderBottom: '1px solid var(--border)',
-                        color: 'var(--text-h)',
-                      }}
-                    >
-                      {p.matchDetailParticipantsColPaymentConfirmation}
-                    </th>
+                    <th scope="col">{p.matchDetailParticipantsColName}</th>
+                    <th scope="col">{p.matchDetailParticipantsColDivision}</th>
+                    <th scope="col">{p.matchDetailParticipantsColCategory}</th>
+                    <th scope="col">{p.matchDetailParticipantsColPaymentConfirmation}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -520,26 +458,18 @@ export function MatchPublicDetailPage() {
                       key={`${r.squad_phase ?? ''}-${r.squad_sort}-${r.squad_label}-${i}`}
                       className="portal-match-reg-public-roster-row"
                     >
-                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
-                        {r.squad_label}
-                      </td>
+                      <td title={r.squad_label}>{formatSquadLabelNumberOnly(r.squad_label)}</td>
                       {row.prematch_enabled ?
-                        <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
+                        <td>
                           {r.squad_phase === 'prematch' ?
                             p.matchDetailRegistrationPhaseShortPrematch
                           : p.matchDetailRegistrationPhaseShortMain}
                         </td>
                       : null}
-                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
-                        {r.display_name}
-                      </td>
-                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
-                        {r.division}
-                      </td>
-                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
-                        {rosterCategoriesDisplay(r.categories, locUi)}
-                      </td>
-                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
+                      <td>{r.display_name}</td>
+                      <td>{r.division}</td>
+                      <td>{rosterCategoriesDisplay(r.categories, locUi)}</td>
+                      <td>
                         <span
                           className={
                             paid ? 'portal-match-reg-label portal-match-reg-label--confirmed'

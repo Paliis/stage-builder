@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import type { Locale, MessageTree } from '../../i18n/messages'
 
 import '../PortalMatchesUi.css'
+import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import { portalMatchRegCardCueClass, portalMatchRegLabelClass } from './matchPortalRegStatusUi'
 
 type Portal = MessageTree['portal']
@@ -157,7 +158,7 @@ export function OrganizerMatchRosterBoard({
               onDrop={(e) => void dropOnSquad(e, sq)}
             >
               <header className="portal-roster-board__column-head">
-                <div>{sq.label}</div>
+                <div title={sq.label}>{formatSquadLabelNumberOnly(sq.label)}</div>
                 <div className="portal-roster-board__column-meta">
                   {squadPhaseLabel(sq.squad_phase)} · {activeCountForSquad(sq.id)}/{sq.capacity}
                 </div>
@@ -230,10 +231,10 @@ export function OrganizerMatchRosterBoard({
           </h2>
           <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.88rem', lineHeight: 1.6 }}>
             {inactiveRegistrations.map((reg) => (
-              <li key={reg.registration_id}>
+              <li key={reg.registration_id} title={reg.squad_label}>
                 {displayShooterName(reg)} —{' '}
                 <span className={portalMatchRegLabelClass(reg.status)}>{registrationStatusLabel(reg.status)}</span> (
-                {reg.squad_label})
+                {formatSquadLabelNumberOnly(reg.squad_label)})
               </li>
             ))}
           </ul>

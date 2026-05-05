@@ -382,6 +382,24 @@ a.portal-match-title-ellipsis:hover {
   background-color: color-mix(in srgb, rgb(34 197 94) 5%, var(--btn-bg));
 }
 
+.portal-match-public-participants-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.portal-match-public-participants-table th,
+.portal-match-public-participants-table td {
+  padding: 0.55rem 0.95rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.portal-match-public-participants-table th {
+  color: var(--text-h);
+}
+
 .portal-match-reg-label {
   display: inline-block;
   padding: 0.1rem 0.42rem;

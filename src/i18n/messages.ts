@@ -448,6 +448,7 @@ export type MessageTree = {
     matchDetailParticipantsColName: string
     matchDetailParticipantsColDivision: string
     matchDetailParticipantsColCategory: string
+    /** Short header for payment_received column on public participant table */
     matchDetailParticipantsColPaymentConfirmation: string
     matchDetailParticipantsPaymentConfirmed: string
     matchDetailParticipantsPaymentPending: string
@@ -1427,7 +1428,7 @@ export const ukMessages: MessageTree = {
     matchDetailParticipantsColName: 'Ім’я',
     matchDetailParticipantsColDivision: 'Дивізіон',
     matchDetailParticipantsColCategory: 'Категорія',
-    matchDetailParticipantsColPaymentConfirmation: 'Статус підтвердження оплати',
+    matchDetailParticipantsColPaymentConfirmation: 'Підтвердження',
     matchDetailParticipantsPaymentConfirmed: 'Підтверджено',
     matchDetailParticipantsPaymentPending: 'Очікується',
     matchDetailApplyMigrationHint:
@@ -2415,7 +2416,7 @@ export const enMessages: MessageTree = {
     matchDetailParticipantsColName: 'Name',
     matchDetailParticipantsColDivision: 'Division',
     matchDetailParticipantsColCategory: 'Category',
-    matchDetailParticipantsColPaymentConfirmation: 'Payment confirmation',
+    matchDetailParticipantsColPaymentConfirmation: 'Confirmation',
     matchDetailParticipantsPaymentConfirmed: 'Confirmed',
     matchDetailParticipantsPaymentPending: 'Pending',
     matchDetailApplyMigrationHint:

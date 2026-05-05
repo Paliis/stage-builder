@@ -7,6 +7,7 @@ import { useSupabaseSession } from '../useSupabaseSession'
 import { resolveShooterCategoriesForStorage } from '../shooterProfileCatalog'
 import { sortPrematchFirstByPhase } from './matchSquadsSort'
 import { portalMatchRegLabelClass } from './matchPortalRegStatusUi'
+import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import '../PortalMatchesUi.css'
 
 type Portal = MessageTree['portal']
@@ -371,8 +372,11 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
                         const fullRow = free <= 0
                         return (
                           <tr key={r.squad_id}>
-                            <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                              {r.squad_label}
+                            <td
+                              style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                              title={r.squad_label}
+                            >
+                              {formatSquadLabelNumberOnly(r.squad_label)}
                             </td>
                             <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                               {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
@@ -423,8 +427,11 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
                         const fullRow = free <= 0
                         return (
                           <tr key={r.squad_id}>
-                            <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                              {r.squad_label}
+                            <td
+                              style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                              title={r.squad_label}
+                            >
+                              {formatSquadLabelNumberOnly(r.squad_label)}
                             </td>
                             <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                               {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
@@ -464,8 +471,11 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
                     const fullRow = free <= 0
                     return (
                       <tr key={r.squad_id}>
-                        <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                          {r.squad_label}
+                        <td
+                          style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                          title={r.squad_label}
+                        >
+                          {formatSquadLabelNumberOnly(r.squad_label)}
                         </td>
                         <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                           {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
@@ -548,7 +558,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
                                 value={r.squad_id}
                                 disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
                               >
-                                [{phaseLabel}] {r.squad_label} ({spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
+                                [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} ({spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
                               </option>
                             )
                           })}
