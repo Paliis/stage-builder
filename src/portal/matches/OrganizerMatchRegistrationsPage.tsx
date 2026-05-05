@@ -434,13 +434,16 @@ export function OrganizerMatchRegistrationsPage() {
         <title>{p.matchOrgRosterHelmet}</title>
       </Helmet>
 
-      <nav className="portal-page-context" aria-label={p.portalBreadcrumbAria}>
+      <nav
+        className="portal-page-context portal-roster-page__breadcrumbs"
+        aria-label={p.portalBreadcrumbAria}
+      >
         <ol className="portal-breadcrumbs">
           <li>
             <Link to={`/${locale}/matches/my`}>{p.myMatchesTitle}</Link>
           </li>
           {matchId && matchTitle?.trim() ?
-            <li>
+            <li className="portal-breadcrumbs__trail portal-breadcrumbs__trail--stretch">
               <Link to={`/${locale}/matches/my/${matchId}`} title={matchTitle}>
                 <span className="portal-breadcrumbs__ellipsis">{matchTitle}</span>
               </Link>
@@ -451,10 +454,13 @@ export function OrganizerMatchRegistrationsPage() {
       </nav>
 
       <header className="portal-home__hero">
-        <h1 className="portal-home__hero-title portal-match-title-hero-wrap">
+        <h1
+          className="portal-home__hero-title portal-match-title-hero-wrap portal-match-title-hero-wrap--clamp-2"
+          title={matchTitle?.trim() ? matchTitle : undefined}
+        >
           {matchTitle ?? p.matchOrgRosterHeading}
         </h1>
-        <p style={{ margin: '0.55rem 0 0', fontSize: '0.92rem', opacity: 0.92 }}>{p.matchOrgRosterLead}</p>
+        <p className="portal-roster-page__lead">{p.matchOrgRosterLead}</p>
       </header>
 
       {loadError ? <p role="alert">{loadError}</p> : null}
@@ -467,50 +473,51 @@ export function OrganizerMatchRegistrationsPage() {
         <p>{p.matchOrgRosterEmpty}</p>
       : (
         <>
-          <div
-            role="tablist"
-            aria-label={locale === 'uk' ? 'Вигляд списку заявок' : 'Registration list view'}
-            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.1rem', alignItems: 'center' }}
-          >
-            <button
-              type="button"
-              role="tab"
-              aria-selected={rosterView === 'table'}
-              onClick={() => setRosterView('table')}
-              style={{
-                padding: '0.4rem 0.75rem',
-                borderRadius: '8px',
-                border:
-                  rosterView === 'table' ? '2px solid var(--text-h)' : '1px solid var(--border)',
-                background: rosterView === 'table' ? 'var(--text-h)' : 'var(--btn-bg)',
-                color: rosterView === 'table' ? 'var(--btn-bg)' : 'var(--text)',
-                cursor: 'pointer',
-                fontWeight: rosterView === 'table' ? 600 : 400,
-              }}
+          <div className="portal-roster-toolbar">
+            <div
+              className="portal-roster-toolbar__tabs"
+              role="tablist"
+              aria-label={locale === 'uk' ? 'Вигляд списку заявок' : 'Registration list view'}
             >
-              {p.matchOrgRosterViewTable}
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={rosterView === 'board'}
-              onClick={() => {
-                setPendingSquad({})
-                setRosterView('board')
-              }}
-              style={{
-                padding: '0.4rem 0.75rem',
-                borderRadius: '8px',
-                border:
-                  rosterView === 'board' ? '2px solid var(--text-h)' : '1px solid var(--border)',
-                background: rosterView === 'board' ? 'var(--text-h)' : 'var(--btn-bg)',
-                color: rosterView === 'board' ? 'var(--btn-bg)' : 'var(--text)',
-                cursor: 'pointer',
-                fontWeight: rosterView === 'board' ? 600 : 400,
-              }}
-            >
-              {p.matchOrgRosterViewBoard}
-            </button>
+              <button
+                type="button"
+                role="tab"
+                className="portal-roster-tab"
+                aria-selected={rosterView === 'table'}
+                onClick={() => setRosterView('table')}
+              >
+                {p.matchOrgRosterViewTable}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className="portal-roster-tab"
+                aria-selected={rosterView === 'board'}
+                onClick={() => {
+                  setPendingSquad({})
+                  setRosterView('board')
+                }}
+              >
+                {p.matchOrgRosterViewBoard}
+              </button>
+            </div>
+
+            {rosterView === 'table' ?
+              <div className="portal-roster-toolbar__actions">
+                <button
+                  type="button"
+                  className={
+                    tableHasUnsavedDrafts && !saveTableBusy ? 'portal-btn portal-btn--primary portal-btn--compact'
+                    : 'portal-btn portal-btn--secondary portal-btn--compact'
+                  }
+                  disabled={!tableHasUnsavedDrafts || saveTableBusy}
+                  style={saveTableBusy ? { cursor: 'wait' } : undefined}
+                  onClick={() => void saveTablePage()}
+                >
+                  {saveTableBusy ? p.matchOrgRosterSaving : p.matchOrgRosterSavePage}
+                </button>
+              </div>
+            : null}
           </div>
 
           {rosterView === 'board' ?
@@ -541,39 +548,7 @@ export function OrganizerMatchRegistrationsPage() {
 
           {rosterView === 'table' ?
             <>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  marginTop: '0.85rem',
-                  gap: '0.5rem',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <button
-                  type="button"
-                  disabled={!tableHasUnsavedDrafts || saveTableBusy}
-                  onClick={() => void saveTablePage()}
-                  style={{
-                    padding: '0.45rem 0.95rem',
-                    borderRadius: '8px',
-                    border: '1px solid var(--border)',
-                    background:
-                      tableHasUnsavedDrafts && !saveTableBusy ? 'var(--text-h)' : 'var(--btn-bg)',
-                    color: tableHasUnsavedDrafts && !saveTableBusy ? 'var(--btn-bg)' : 'var(--text)',
-                    cursor:
-                      tableHasUnsavedDrafts && !saveTableBusy ? 'pointer'
-                      : saveTableBusy ? 'wait'
-                      : 'default',
-                    fontSize: '0.92rem',
-                    fontWeight: 600,
-                  }}
-                >
-                  {saveTableBusy ? p.matchOrgRosterSaving : p.matchOrgRosterSavePage}
-                </button>
-              </div>
-              <div style={{ overflowX: 'auto', marginTop: '0.65rem', maxWidth: 'min(42rem, 100%)' }}>
+              <div style={{ overflowX: 'auto', marginTop: '0.65rem', maxWidth: 'min(48rem, 100%)' }}>
           <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
             <thead>
               <tr>

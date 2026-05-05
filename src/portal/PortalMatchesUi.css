@@ -25,6 +25,115 @@ a.portal-match-title-ellipsis:hover {
   max-width: 100%;
 }
 
+.portal-match-title-hero-wrap--clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Organizer match roster: breadcrumbs + table toolbar ----------------------- */
+
+.portal-roster-page__breadcrumbs {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.portal-roster-page__breadcrumbs .portal-breadcrumbs {
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.portal-roster-page__breadcrumbs .portal-breadcrumbs > li {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.portal-roster-page__breadcrumbs .portal-breadcrumbs > li:first-child {
+  flex: 0 0 auto;
+}
+
+.portal-roster-page__breadcrumbs .portal-breadcrumbs > li:last-child {
+  flex: 0 0 auto;
+}
+
+.portal-roster-page__breadcrumbs .portal-breadcrumbs__trail--stretch {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.portal-roster-page__breadcrumbs .portal-breadcrumbs a {
+  display: block;
+  min-width: 0;
+}
+
+.portal-roster-page__breadcrumbs .portal-breadcrumbs__ellipsis {
+  display: block;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+
+.portal-roster-page__lead {
+  margin: 0.55rem 0 0;
+  font-size: 0.92rem;
+  opacity: 0.92;
+  max-width: min(42rem, 100%);
+}
+
+.portal-roster-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  margin-top: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.portal-roster-toolbar__tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.portal-roster-toolbar__actions {
+  flex-shrink: 0;
+}
+
+.portal-roster-tab {
+  padding: 0.4rem 0.85rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.35;
+}
+
+.portal-roster-tab[aria-selected='true'] {
+  border-width: 2px;
+  border-color: var(--text-h);
+  background: var(--text-h);
+  color: var(--btn-bg);
+  font-weight: 650;
+}
+
+.portal-roster-tab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
 /* -------------------------------------------------------------------- Buttons */
 
 .portal-btn {
