@@ -138,7 +138,9 @@ export function OrganizerMatchRegistrationsPage() {
   const [loadError, setLoadError] = useState<string | null>(null)
 
   const [pendingSquad, setPendingSquad] = useState<Record<string, string>>({})
+  const [statusDraft, setStatusDraft] = useState<Record<string, 'pending' | 'confirmed'>>({})
   const [saveRegId, setSaveRegId] = useState<string | null>(null)
+  const [saveTableBusy, setSaveTableBusy] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [rosterView, setRosterView] = useState<'table' | 'board'>('table')
 
@@ -188,11 +190,34 @@ export function OrganizerMatchRegistrationsPage() {
   }, [configured, user, validId, matchId, p.matchOrgEditNotFound, organizerProfile])
 
   useEffect(() => {
+    if (roster === undefined) return
+    setStatusDraft(() => {
+      const m: Record<string, 'pending' | 'confirmed'> = {}
+      for (const r of roster) {
+        if (!countsActiveStatuses(r.status)) continue
+        m[r.registration_id] = r.status === 'confirmed' ? 'confirmed' : 'pending'
+      }
+      return m
+    })
+  }, [roster])
+
+  useEffect(() => {
     if (organizerProfileLoading || organizerProfile !== 'active') return
     queueMicrotask(() => void reload())
   }, [reload, organizerProfileLoading, organizerProfile])
 
   const rosterList = useMemo(() => roster ?? [], [roster])
+
+  const tableHasUnsavedDrafts = useMemo(() => {
+    for (const reg of rosterList) {
+      if (!countsActiveStatuses(reg.status)) continue
+      const squadNext = pendingSquad[reg.registration_id] ?? reg.squad_id
+      const statusStored = reg.status === 'confirmed' ? 'confirmed' : 'pending'
+      const statusNext = statusDraft[reg.registration_id] ?? statusStored
+      if (squadNext !== reg.squad_id || statusNext !== statusStored) return true
+    }
+    return false
+  }, [rosterList, pendingSquad, statusDraft])
 
   const rosterActiveBoard = useMemo(
     () => rosterList.filter((r) => countsActiveStatuses(r.status)),
@@ -223,6 +248,69 @@ export function OrganizerMatchRegistrationsPage() {
       delete n[registrationId]
       return n
     })
+    await reload()
+  }
+
+  async function saveTablePage() {
+    setSaveError(null)
+    if (!configured || !user?.id || !matchId || roster === undefined || roster.length === 0) return
+
+    type StatusPatch = {
+      squad_id?: string
+      status?: 'pending' | 'confirmed'
+      confirmed_at?: string | null
+      confirmed_by?: string | null
+    }
+
+    const rowsToPersist: RosterRpcRow[] = []
+    for (const reg of rosterList) {
+      if (!countsActiveStatuses(reg.status)) continue
+      const squadNext = pendingSquad[reg.registration_id] ?? reg.squad_id
+      const statusStored = reg.status === 'confirmed' ? 'confirmed' : 'pending'
+      const statusNext = statusDraft[reg.registration_id] ?? statusStored
+      if (squadNext !== reg.squad_id || statusNext !== statusStored) {
+        rowsToPersist.push(reg)
+      }
+    }
+    if (rowsToPersist.length === 0) return
+
+    const sb = getSupabase()
+    setSaveTableBusy(true)
+
+    for (const reg of rowsToPersist) {
+      const squadNext = pendingSquad[reg.registration_id] ?? reg.squad_id
+      const statusStored = reg.status === 'confirmed' ? 'confirmed' : 'pending'
+      const statusNext = statusDraft[reg.registration_id] ?? statusStored
+
+      const patch: StatusPatch = {}
+      if (squadNext !== reg.squad_id) {
+        patch.squad_id = squadNext
+      }
+      if (statusNext !== statusStored) {
+        if (statusNext === 'confirmed') {
+          patch.status = 'confirmed'
+          patch.confirmed_at = new Date().toISOString()
+          patch.confirmed_by = user.id
+        } else {
+          patch.status = 'pending'
+          patch.confirmed_at = null
+          patch.confirmed_by = null
+        }
+      }
+
+      const { error } = await sb
+        .from('match_registrations')
+        .update(patch)
+        .eq('id', reg.registration_id)
+        .eq('match_id', matchId)
+      if (error) {
+        setSaveError(error.message)
+        setSaveTableBusy(false)
+        return
+      }
+    }
+
+    setSaveTableBusy(false)
     await reload()
   }
 
@@ -452,7 +540,40 @@ export function OrganizerMatchRegistrationsPage() {
           : null}
 
           {rosterView === 'table' ?
-            <div style={{ overflowX: 'auto', marginTop: '1rem', maxWidth: 'min(48rem, 100%)' }}>
+            <>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  marginTop: '0.85rem',
+                  gap: '0.5rem',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <button
+                  type="button"
+                  disabled={!tableHasUnsavedDrafts || saveTableBusy}
+                  onClick={() => void saveTablePage()}
+                  style={{
+                    padding: '0.45rem 0.95rem',
+                    borderRadius: '8px',
+                    border: '1px solid var(--border)',
+                    background:
+                      tableHasUnsavedDrafts && !saveTableBusy ? 'var(--text-h)' : 'var(--btn-bg)',
+                    color: tableHasUnsavedDrafts && !saveTableBusy ? 'var(--btn-bg)' : 'var(--text)',
+                    cursor:
+                      tableHasUnsavedDrafts && !saveTableBusy ? 'pointer'
+                      : saveTableBusy ? 'wait'
+                      : 'default',
+                    fontSize: '0.92rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  {saveTableBusy ? p.matchOrgRosterSaving : p.matchOrgRosterSavePage}
+                </button>
+              </div>
+              <div style={{ overflowX: 'auto', marginTop: '0.65rem', maxWidth: 'min(42rem, 100%)' }}>
           <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
             <thead>
               <tr>
@@ -480,12 +601,6 @@ export function OrganizerMatchRegistrationsPage() {
                 >
                   {p.matchOrgRosterColSquad}
                 </th>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                >
-                  {p.matchOrgRosterColActions}
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -493,8 +608,12 @@ export function OrganizerMatchRegistrationsPage() {
                 const currentPick = pendingSquad[reg.registration_id] ?? reg.squad_id
                 const options = squads ? validSquadsForRegistration(reg, rosterList, squads, pendingSquad) : []
 
-                const dirty = currentPick !== reg.squad_id
                 const inactive = !countsActiveStatuses(reg.status)
+                const controlsLocked = inactive || saveTableBusy
+
+                const statusStored = reg.status === 'confirmed' ? 'confirmed' : 'pending'
+                const statusControlValue =
+                  inactive ? statusStored : (statusDraft[reg.registration_id] ?? statusStored)
 
                 return (
                   <tr key={reg.registration_id}>
@@ -541,11 +660,14 @@ export function OrganizerMatchRegistrationsPage() {
                           <select
                             id={`reg-status-${reg.registration_id}`}
                             aria-label={p.matchOrgRosterColStatus}
-                            disabled={saveRegId === reg.registration_id}
-                            value={reg.status === 'confirmed' ? 'confirmed' : 'pending'}
+                            disabled={controlsLocked}
+                            value={statusControlValue}
                             onChange={(e) => {
                               const v = e.target.value as 'pending' | 'confirmed'
-                              void saveRegistrationStatus(reg.registration_id, v)
+                              setStatusDraft((prev) => ({
+                                ...prev,
+                                [reg.registration_id]: v,
+                              }))
                             }}
                             style={{
                               width: '100%',
@@ -577,7 +699,7 @@ export function OrganizerMatchRegistrationsPage() {
                           value={
                             options.some((o) => o.id === currentPick) ? currentPick : (options[0]?.id ?? currentPick)
                           }
-                          disabled={inactive}
+                          disabled={inactive || controlsLocked}
                           onChange={(e) =>
                             setPendingSquad((prev) => ({
                               ...prev,
@@ -611,39 +733,13 @@ export function OrganizerMatchRegistrationsPage() {
                         </select>
                       )}
                     </td>
-                    <td
-                      style={{
-                        padding: '0.45rem 0.55rem',
-                        borderBottom: '1px solid var(--border)',
-                        verticalAlign: 'top',
-                      }}
-                    >
-                      <button
-                        type="button"
-                        disabled={
-                          inactive || !dirty || saveRegId === reg.registration_id || options.length === 0
-                        }
-                        onClick={() => void saveReg(reg.registration_id, currentPick)}
-                        style={{
-                          padding: '0.35rem 0.65rem',
-                          borderRadius: '6px',
-                          border: '1px solid var(--border)',
-                          background: 'var(--text-h)',
-                          color: 'var(--btn-bg)',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {saveRegId === reg.registration_id ?
-                          p.matchOrgRosterSaving
-                        : p.matchOrgRosterApply}
-                      </button>
-                    </td>
                   </tr>
                 )
               })}
             </tbody>
           </table>
             </div>
+            </>
           : null}
         </>
       )}

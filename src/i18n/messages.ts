@@ -793,9 +793,8 @@ export type MessageTree = {
     matchOrgRosterColSquad: string
     matchOrgRosterStatusOptionPending: string
     matchOrgRosterStatusOptionConfirmed: string
-    matchOrgRosterApply: string
+    matchOrgRosterSavePage: string
     matchOrgRosterSaving: string
-    matchOrgRosterColActions: string
     matchOrgRosterNoFreeSlot: string
     matchOrgRosterViewTable: string
     matchOrgRosterViewBoard: string
@@ -1787,9 +1786,8 @@ export const ukMessages: MessageTree = {
     matchOrgRosterColSquad: 'Сквод',
     matchOrgRosterStatusOptionPending: 'очікує',
     matchOrgRosterStatusOptionConfirmed: 'підтверджено',
-    matchOrgRosterApply: 'Застосувати',
+    matchOrgRosterSavePage: 'Зберегти',
     matchOrgRosterSaving: 'Збереження…',
-    matchOrgRosterColActions: 'Дії',
     matchOrgRosterNoFreeSlot: 'Немає доступного скводу з місцем або зміни потребують збереження картки.',
     matchOrgRosterViewTable: 'Таблиця',
     matchOrgRosterViewBoard: 'Дошка скводів',
@@ -2775,9 +2773,8 @@ export const enMessages: MessageTree = {
     matchOrgRosterColSquad: 'Squad',
     matchOrgRosterStatusOptionPending: 'Awaiting',
     matchOrgRosterStatusOptionConfirmed: 'Confirmed',
-    matchOrgRosterApply: 'Apply',
+    matchOrgRosterSavePage: 'Save',
     matchOrgRosterSaving: 'Saving…',
-    matchOrgRosterColActions: 'Actions',
     matchOrgRosterNoFreeSlot:
       'No squad with spare capacity—or save the match card first after changing squad settings.',
     matchOrgRosterViewTable: 'Table',
