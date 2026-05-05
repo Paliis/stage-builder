@@ -416,13 +416,16 @@ export function MatchPublicDetailPage() {
       </section>
 
       {row.description_md?.trim() ?
-        <section className="portal-match-public-detail__description portal-home__hero-lead">
+        <section className="portal-match-public-detail__surface portal-match-public-detail__description portal-home__hero-lead">
           <ReactMarkdown>{row.description_md}</ReactMarkdown>
         </section>
       : null}
 
       {programmeLinks === undefined || programmeLinks.length > 0 || programmeError ?
-        <section className="portal-match-public-detail__section" aria-labelledby="match-programme-heading">
+        <section
+          className="portal-match-public-detail__surface portal-match-public-detail__section"
+          aria-labelledby="match-programme-heading"
+        >
           <h2 id="match-programme-heading" className="portal-match-public-detail__section-title">
             {p.matchDetailProgrammeHeading}
           </h2>
@@ -469,7 +472,10 @@ export function MatchPublicDetailPage() {
         p={p}
       />
 
-      <section className="portal-match-public-detail__section" aria-labelledby="match-participants-heading">
+      <section
+        className="portal-match-public-detail__surface portal-match-public-detail__section"
+        aria-labelledby="match-participants-heading"
+      >
         <h2 id="match-participants-heading" className="portal-match-public-detail__section-title">
           {p.matchDetailParticipantsHeading}
         </h2>

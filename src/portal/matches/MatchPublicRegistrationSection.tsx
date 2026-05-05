@@ -567,7 +567,7 @@ export function MatchPublicRegistrationSection({
       <>
         {renderRegistrationModal(regDialogRef)}
         {mastheadPortal}
-        <div className="portal-reg-minimal">
+        <div className="portal-match-public-detail__surface portal-reg-minimal">
           <p className="portal-match-public-detail__muted">{p.matchesSupabaseUnset}</p>
         </div>
       </>
@@ -587,7 +587,7 @@ export function MatchPublicRegistrationSection({
     <>
       {renderRegistrationModal(regDialogRef)}
       {mastheadPortal}
-      <div className="portal-reg-minimal">
+      <div className="portal-match-public-detail__surface portal-reg-minimal">
         {metricsError ?
           <p role="alert" className="portal-match-public-detail__muted">
             {p.matchesLoadError}: {metricsError}
