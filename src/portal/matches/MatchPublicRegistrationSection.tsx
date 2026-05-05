@@ -36,7 +36,6 @@ export type OwnRegistrationRow = {
   status: string
   squad_id: string
   division: string
-  classification_grade: string
   power_factor?: string | null
 }
 
@@ -73,7 +72,6 @@ function weaponClassForMatchDiscipline(raw: string): WeaponClassId {
 
 type ParticipantDefaultsRow = {
   division?: string | null
-  classification_grade?: string | null
   power_factor?: string | null
   categories?: unknown
   first_name?: string | null
@@ -104,7 +102,6 @@ export function MatchPublicRegistrationSection({
 
   const [pickedSquad, setPickedSquad] = useState('')
   const [division, setDivision] = useState('')
-  const [classification, setClassification] = useState('')
   const [powerFactor, setPowerFactor] = useState<'MAJOR' | 'MINOR' | ''>('')
   const [signupCategories, setSignupCategories] = useState<string[]>([])
   const [cabinetFirstName, setCabinetFirstName] = useState('')
@@ -122,7 +119,6 @@ export function MatchPublicRegistrationSection({
       setMine(undefined)
       setPickedSquad('')
       setDivision('')
-      setClassification('')
       setPowerFactor('')
       setSignupCategories([])
       setCabinetFirstName('')
@@ -140,7 +136,7 @@ export function MatchPublicRegistrationSection({
     setMine(undefined)
     const { data, error } = await sb
       .from('match_registrations')
-      .select('id, status, squad_id, division, classification_grade, power_factor')
+      .select('id, status, squad_id, division, power_factor')
       .eq('match_id', matchUuid)
       .eq('competitor_user_id', user.id)
       .maybeSingle()
@@ -158,7 +154,6 @@ export function MatchPublicRegistrationSection({
     if (row?.squad_id) setPickedSquad(row.squad_id)
     if (row?.division && isValidDivisionForWeapon(matchWeaponClassId, row.division))
       setDivision(row.division)
-    if (row?.classification_grade) setClassification(row.classification_grade)
     if (row?.power_factor) {
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setPowerFactor(pf === 'MAJOR' ? 'MAJOR' : pf === 'MINOR' ? 'MINOR' : '')
@@ -179,11 +174,6 @@ export function MatchPublicRegistrationSection({
       if (t) return d
       const divRaw = typeof row.division === 'string' ? row.division : ''
       return isValidDivisionForWeapon(matchWeaponClassId, divRaw) ? divRaw : ''
-    })
-    setClassification((c) => {
-      const t = c.trim()
-      if (t) return c
-      return typeof row.classification_grade === 'string' ? row.classification_grade : ''
     })
     setPowerFactor((pf) => {
       if (pf !== '') return pf
@@ -211,7 +201,7 @@ export function MatchPublicRegistrationSection({
     void (async () => {
       const { data, error } = await sb
         .from('participant_registration_defaults')
-        .select('division, classification_grade, power_factor, categories, first_name, last_name')
+        .select('division, power_factor, categories, first_name, last_name')
         .eq('user_id', user.id)
         .maybeSingle()
 
@@ -279,7 +269,7 @@ export function MatchPublicRegistrationSection({
       void (async () => {
         const { data, error } = await sb
           .from('participant_registration_defaults')
-          .select('division, classification_grade, power_factor, categories, first_name, last_name')
+          .select('division, power_factor, categories, first_name, last_name')
           .eq('user_id', user.id)
           .maybeSingle()
         if (!error && data) applyParticipantDefaultsRow(data as ParticipantDefaultsRow)
@@ -311,7 +301,6 @@ export function MatchPublicRegistrationSection({
       return
     }
     const div = division.trim()
-    const cg = classification.trim()
 
     setSubmitBusy(true)
     const { error } = await sb.from('match_registrations').insert({
@@ -319,7 +308,7 @@ export function MatchPublicRegistrationSection({
       squad_id: pickedSquad,
       competitor_user_id: user.id,
       division: div,
-      classification_grade: cg,
+      classification_grade: '',
       power_factor: powerFactor === '' ? null : powerFactor,
       categories: resolveShooterCategoriesForStorage(signupCategories),
     })
@@ -426,19 +415,6 @@ export function MatchPublicRegistrationSection({
                   </option>
                 ))}
               </select>
-            </label>
-
-            <label className="portal-reg-modal__label">
-              {p.matchDetailRegistrationClass}
-              <input
-                type="text"
-                value={classification}
-                onChange={(e) => setClassification(e.target.value)}
-                disabled={submitBusy}
-                autoComplete="off"
-                className="portal-reg-modal__control"
-              />
-              <span className="portal-reg-modal__field-hint">{p.matchDetailRegistrationClassificationHint}</span>
             </label>
 
             <fieldset className="portal-reg-modal__categories">

@@ -32,7 +32,6 @@ type RosterRpcRow = {
   squad_capacity: number
   status: string
   division: string
-  classification_grade: string | null
   registration_created_at?: string | null
 }
 
@@ -582,12 +581,6 @@ export function OrganizerMatchRegistrationsPage() {
                     </td>
                     <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                       {reg.division}
-                      {reg.classification_grade ?
-                        <>
-                          {' '}
-                          <span style={{ opacity: 0.85 }}>({reg.classification_grade})</span>
-                        </>
-                      : null}
                     </td>
                     <td
                       style={{

@@ -482,7 +482,6 @@ export type MessageTree = {
     matchDetailRegistrationFieldSquad: string
     matchDetailRegistrationSelectSquad: string
     matchDetailRegistrationDivision: string
-    matchDetailRegistrationClass: string
     matchDetailRegistrationPFOptional: string
     matchDetailRegistrationPFNone: string
     matchDetailRegistrationPFMajor: string
@@ -505,8 +504,6 @@ export type MessageTree = {
     matchDetailRegistrationRegisteredNameLabel: string
     matchDetailRegistrationRegisteredNameEmpty: string
     matchDetailRegistrationEditInAccount: string
-    /** Shown under the classification grade field (modal + account). */
-    matchDetailRegistrationClassificationHint: string
     matchDetailRegistrationChooseDivision: string
     portalCompactAuthAria: string
     portalCompactAuthSignIn: string
@@ -640,8 +637,6 @@ export type MessageTree = {
     accountParticipantFieldRegionPlaceholder: string
     accountParticipantFieldFirstName: string
     accountParticipantFieldLastName: string
-    /** Optional PSC-style class (M/A/B/C/D/U); same column as match registration. */
-    accountParticipantFieldClassification: string
     accountParticipantAvatarLabel: string
     accountParticipantAvatarChange: string
     accountParticipantAvatarRemove: string
@@ -1482,7 +1477,6 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationFieldSquad: 'Сквод',
     matchDetailRegistrationSelectSquad: 'Оберіть сквод',
     matchDetailRegistrationDivision: 'Дивізіон',
-    matchDetailRegistrationClass: 'Класифікація',
     matchDetailRegistrationPFOptional: 'Power factor (необов’язково)',
     matchDetailRegistrationPFNone: '—',
     matchDetailRegistrationPFMajor: 'Major',
@@ -1505,8 +1499,6 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationRegisteredNameLabel: 'Прізвище та ім’я',
     matchDetailRegistrationRegisteredNameEmpty: 'Не зазначено в обліковому записі.',
     matchDetailRegistrationEditInAccount: 'Змінити в кабінеті',
-    matchDetailRegistrationClassificationHint:
-      'Грейд майстерності за правилами дисципліни (наприклад M, A, B, C, D) або U/порожньо без класу. Як у PractiScore чи протоколі змагань.',
     matchDetailRegistrationChooseDivision: 'Оберіть дивізіон.',
     portalCompactAuthAria: 'Режим входу',
     portalCompactAuthSignIn: 'Вхід',
@@ -1643,7 +1635,6 @@ export const ukMessages: MessageTree = {
     accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
     accountParticipantFieldFirstName: "Ім'я (для PractiScore)",
     accountParticipantFieldLastName: 'Прізвище (для PractiScore)',
-    accountParticipantFieldClassification: 'Класифікація',
     accountParticipantAvatarLabel: 'Фото профілю',
     accountParticipantAvatarChange: 'Обрати фото',
     accountParticipantAvatarRemove: 'Без фото',
@@ -2491,7 +2482,6 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationFieldSquad: 'Squad',
     matchDetailRegistrationSelectSquad: 'Select a squad',
     matchDetailRegistrationDivision: 'Division',
-    matchDetailRegistrationClass: 'Classification',
     matchDetailRegistrationPFOptional: 'Power factor (optional)',
     matchDetailRegistrationPFNone: '—',
     matchDetailRegistrationPFMajor: 'Major',
@@ -2514,8 +2504,6 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationRegisteredNameLabel: 'Full name',
     matchDetailRegistrationRegisteredNameEmpty: 'Not set on your account.',
     matchDetailRegistrationEditInAccount: 'Edit in account',
-    matchDetailRegistrationClassificationHint:
-      'Your skill/class per the rulebook (e.g. M, A, B, C, D) or blank if unclassified—same as PractiScore / match paperwork.',
     matchDetailRegistrationChooseDivision: 'Choose a division.',
     portalCompactAuthAria: 'Sign-in mode',
     portalCompactAuthSignIn: 'Sign in',
@@ -2653,7 +2641,6 @@ export const enMessages: MessageTree = {
     accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
     accountParticipantFieldFirstName: 'First name (PractiScore)',
     accountParticipantFieldLastName: 'Last name (PractiScore)',
-    accountParticipantFieldClassification: 'Classification',
     accountParticipantAvatarLabel: 'Profile photo',
     accountParticipantAvatarChange: 'Choose photo',
     accountParticipantAvatarRemove: 'Remove photo',

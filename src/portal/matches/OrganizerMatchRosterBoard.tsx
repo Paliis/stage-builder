@@ -18,7 +18,6 @@ export type OrganizerRosterReg = {
   squad_capacity: number
   status: string
   division: string
-  classification_grade: string | null
   registration_created_at?: string | null
 }
 
@@ -167,8 +166,7 @@ export function OrganizerMatchRosterBoard({
                 {regs.map((reg) => {
                   const saving = savingRegId === reg.registration_id
                   const isDrag = draggingId === reg.registration_id
-                  const divLine =
-                    reg.classification_grade ? `${reg.division} (${reg.classification_grade})` : reg.division
+                  const divLine = reg.division
 
                   const tone: 'pending' | 'confirmed' | null =
                     reg.status === 'confirmed' ? 'confirmed'

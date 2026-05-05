@@ -67,7 +67,6 @@ const AVATAR_MAX_BYTES = 2 * 1024 * 1024
 
 const DEFAULT_SELECT = [
   'division',
-  'classification_grade',
   'power_factor',
   'region',
   'categories',
@@ -142,7 +141,6 @@ export function AccountParticipantHub({
   )
 
   const [defDiv, setDefDiv] = useState('')
-  const [defClassification, setDefClassification] = useState('')
   const [defPf, setDefPf] = useState<'MAJOR' | 'MINOR' | ''>('')
   const [defRegion, setDefRegion] = useState('')
   const [defCategories, setDefCategories] = useState<string[]>([])
@@ -173,7 +171,6 @@ export function AccountParticipantHub({
     }
     const row = data as {
       division?: string
-      classification_grade?: string
       power_factor?: string | null
       region?: string
       categories?: string[] | null
@@ -189,7 +186,6 @@ export function AccountParticipantHub({
       setDefWeaponClass(wc)
       const rawDiv = typeof row.division === 'string' ? row.division : ''
       setDefDiv(wc && isValidDivisionForWeapon(wc, rawDiv) ? rawDiv : '')
-      setDefClassification(typeof row.classification_grade === 'string' ? row.classification_grade : '')
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : '')
       setDefRegion(typeof row.region === 'string' ? row.region : '')
@@ -277,7 +273,7 @@ export function AccountParticipantHub({
     const { error } = await sb.from('participant_registration_defaults').upsert({
       user_id: userId,
       division: defDiv.trim(),
-      classification_grade: defClassification.trim(),
+      classification_grade: '',
       power_factor: defPf === '' ? null : defPf,
       region: defRegion.trim(),
       categories: resolveShooterCategoriesForStorage(defCategories),
@@ -296,7 +292,6 @@ export function AccountParticipantHub({
     sb,
     userId,
     defDiv,
-    defClassification,
     defPf,
     defRegion,
     defCategories,
@@ -547,17 +542,6 @@ export function AccountParticipantHub({
                 {!defWeaponClass && p.accountParticipantDivisionSelectWeaponFirst ?
                   <span className="portal-account__field-hint">{p.accountParticipantDivisionSelectWeaponFirst}</span>
                 : null}
-              </label>
-              <label className="portal-account__field portal-account__psc-grid--full">
-                {p.accountParticipantFieldClassification}
-                <input
-                  type="text"
-                  value={defClassification}
-                  onChange={(e) => setDefClassification(e.target.value)}
-                  disabled={defSaving}
-                  autoComplete="off"
-                />
-                <span className="portal-account__field-hint">{p.matchDetailRegistrationClassificationHint}</span>
               </label>
               <label className="portal-account__field">
                 {p.accountParticipantFieldRegion}

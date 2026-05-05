@@ -579,14 +579,6 @@ a.portal-match-title-ellipsis:hover {
   color: var(--text);
 }
 
-.portal-reg-modal__field-hint {
-  margin: 0.05rem 0 0;
-  font-size: 0.78rem;
-  font-weight: 450;
-  line-height: 1.45;
-  opacity: 0.88;
-}
-
 .portal-reg-modal__select {
   max-width: 100%;
 }
