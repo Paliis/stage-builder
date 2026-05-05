@@ -432,9 +432,7 @@ export type MessageTree = {
     matchDetailLimitLabel: string
     /** Shown next to competitor limit once squad metrics load — `{{limit}}`, `{{free}}` (squads aggregate). */
     matchDetailLimitWithFree: string
-    /** Public match detail: range control for cover preview width (sessionStorage per match). */
-    matchDetailCoverSizeLabel: string
-    /** aria-label for masthead column with registration actions. */
+    /** aria-label for registration area under the match title (masthead). */
     matchDetailMastheadActionsAria: string
     /** Short line in masthead when the user’s registration is confirmed. */
     matchDetailRegistrationMastheadRegistered: string
@@ -1428,7 +1426,6 @@ export const ukMessages: MessageTree = {
     matchDetailDisciplineLabel: 'Дисципліна',
     matchDetailLimitLabel: 'Ліміт учасників',
     matchDetailLimitWithFree: '{{limit}} (вільно {{free}})',
-    matchDetailCoverSizeLabel: 'Ширина обкладинки на сторінці',
     matchDetailMastheadActionsAria: 'Реєстрація на матч',
     matchDetailRegistrationMastheadRegistered: 'Ви зареєстровані',
     matchDetailPrematchLabel: 'Прематч',
@@ -2433,7 +2430,6 @@ export const enMessages: MessageTree = {
     matchDetailDisciplineLabel: 'Discipline',
     matchDetailLimitLabel: 'Competitor limit',
     matchDetailLimitWithFree: '{{limit}} ({{free}} free)',
-    matchDetailCoverSizeLabel: 'Cover width on this page',
     matchDetailMastheadActionsAria: 'Match registration',
     matchDetailRegistrationMastheadRegistered: 'You are registered',
     matchDetailPrematchLabel: 'Prematch',

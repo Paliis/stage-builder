@@ -97,19 +97,17 @@ a.portal-match-title-ellipsis:hover {
 
 @media (min-width: 760px) {
   .portal-match-public-detail__masthead-grid--has-cover {
-    grid-template-columns: auto minmax(16rem, 1fr) minmax(10.5rem, 13rem);
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: start;
-  }
-
-  .portal-match-public-detail__masthead-grid:not(.portal-match-public-detail__masthead-grid--has-cover) {
-    grid-template-columns: minmax(16rem, 1fr) minmax(10.5rem, 13rem);
-  }
-
-  .portal-match-public-detail__masthead-actions {
-    padding-top: 0.2rem;
+    gap: 1.15rem 1.75rem;
   }
 
   .portal-match-public-detail__masthead-main {
+    text-align: left;
+  }
+
+  .portal-match-public-detail__masthead-grid--has-cover .portal-match-public-detail__title-block {
+    align-items: flex-start;
     text-align: left;
   }
 
@@ -117,6 +115,7 @@ a.portal-match-title-ellipsis:hover {
     grid-template-columns: auto 1fr;
     text-align: left;
     justify-items: initial;
+    margin-inline: 0;
   }
 
   .portal-match-public-detail__facts dt {
@@ -127,6 +126,7 @@ a.portal-match-title-ellipsis:hover {
     margin: 0;
   }
 
+  /* No-cover: single column; facts use two-column layout on wide viewports */
   .portal-match-public-detail__masthead-grid:not(.portal-match-public-detail__masthead-grid--has-cover) .portal-match-public-detail__facts {
     grid-template-columns: auto 1fr;
     text-align: left;
@@ -136,7 +136,7 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-match-public-detail__cover {
-  --portal-match-cover-w: 220px;
+  --portal-match-cover-w: clamp(11rem, 28vw, 17.5rem);
   margin: 0;
   border-radius: 1rem;
   overflow: hidden;
@@ -155,52 +155,6 @@ a.portal-match-title-ellipsis:hover {
   object-fit: cover;
 }
 
-.portal-match-public-detail__cover-size-row {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.portal-match-public-detail__cover-size {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  width: min(22rem, 100%);
-  font-size: 0.8125rem;
-  font-weight: 650;
-  color: var(--text-h);
-}
-
-.portal-match-public-detail__cover-size input[type='range'] {
-  width: 100%;
-  accent-color: var(--accent-border, #2563eb);
-}
-
-.portal-match-public-detail__masthead-actions {
-  min-width: 0;
-}
-
-.portal-match-public-detail__masthead-actions-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.6rem;
-  min-width: 0;
-}
-
-.portal-match-public-detail__masthead-registered {
-  margin: 0;
-  font-size: 1.02rem;
-  font-weight: 800;
-  line-height: 1.35;
-  color: var(--text-h);
-  letter-spacing: -0.02em;
-}
-
-.portal-match-public-detail__masthead-cta {
-  margin-top: 0;
-}
-
 .portal-match-public-detail__title-block {
   padding-top: 0;
   gap: 0.45rem;
@@ -209,6 +163,71 @@ a.portal-match-title-ellipsis:hover {
 .portal-match-public-detail__masthead-main {
   min-width: 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+@media (max-width: 759px) {
+  .portal-match-public-detail__masthead-main > .portal-home__hero {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.portal-match-public-detail__masthead-cta-slot {
+  min-width: 0;
+  width: 100%;
+}
+
+.portal-match-public-detail__masthead-cta-slot:empty {
+  display: none;
+}
+
+.portal-match-public-detail__masthead-actions-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+  min-width: 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border-radius: 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--border), transparent 25%);
+  background: color-mix(in srgb, var(--surface, #fff), var(--btn-bg) 42%);
+}
+
+.portal-match-public-detail__masthead-actions-inner--success {
+  border-color: color-mix(in srgb, #16a34a, var(--border) 35%);
+  background: color-mix(in srgb, var(--surface, #fff), #16a34a 09%);
+}
+
+.portal-match-public-detail__masthead-actions-inner--attention {
+  border-color: color-mix(in srgb, #ca8a04, var(--border) 40%);
+  background: color-mix(in srgb, var(--surface, #fff), #eab308 0.08%);
+}
+
+.portal-match-public-detail__masthead-registered-head {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.38;
+  color: var(--text-h);
+  letter-spacing: -0.018em;
+}
+
+.portal-match-public-detail__masthead-cta {
+  margin-top: 0;
+  width: fit-content;
+  align-self: center;
+}
+
+@media (min-width: 760px) {
+  .portal-match-public-detail__masthead-cta {
+    align-self: flex-start;
+  }
 }
 
 /* Hero title inherits .portal-match-title-hero-wrap (overflow-wrap:anywhere) — too aggressive when the grid column collapses; keep normal word breaks here. */
@@ -222,7 +241,7 @@ a.portal-match-title-ellipsis:hover {
   grid-template-columns: 1fr;
   justify-items: center;
   gap: 0.2rem 0.95rem;
-  margin: 0.25rem 0 0;
+  margin: 0;
   padding: 0;
   font-size: 0.90625rem;
   line-height: 1.45;
