@@ -9,6 +9,7 @@ import { formatPortalDate } from './matchPortalFormat'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
+import { categoryLabel } from '../shooterProfileCatalog'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
@@ -33,7 +34,8 @@ type PublicRosterRow = {
   squad_label: string
   display_name: string
   division: string
-  classification_grade: string
+  categories: unknown
+  payment_received: boolean | null
 }
 
 type PublicStageLinkRow = {
@@ -47,6 +49,26 @@ function programmeRowTitle(r: PublicStageLinkRow): string {
   const snap = typeof meta?.title_snapshot === 'string' ? meta.title_snapshot.trim() : ''
   if (snap) return snap
   return r.share_stage_id?.trim() || '—'
+}
+
+function parseCategoryIdsFromRoster(raw: unknown): string[] {
+  if (raw == null) return []
+  if (Array.isArray(raw)) return raw.filter((x): x is string => typeof x === 'string')
+  if (typeof raw === 'string') {
+    try {
+      const p = JSON.parse(raw)
+      if (Array.isArray(p)) return p.filter((x): x is string => typeof x === 'string')
+    } catch {
+      return []
+    }
+  }
+  return []
+}
+
+function rosterCategoriesDisplay(raw: unknown, loc: 'uk' | 'en'): string {
+  const ids = parseCategoryIdsFromRoster(raw)
+  if (ids.length === 0) return '—'
+  return ids.map((id) => categoryLabel(id, loc)).join(', ')
 }
 
 export function MatchPublicDetailPage() {
@@ -474,12 +496,26 @@ export function MatchPublicDetailPage() {
                         color: 'var(--text-h)',
                       }}
                     >
-                      {p.matchDetailParticipantsColClass}
+                      {p.matchDetailParticipantsColCategory}
+                    </th>
+                    <th
+                      scope="col"
+                      style={{
+                        textAlign: 'left',
+                        padding: '0.5rem 0.6rem',
+                        borderBottom: '1px solid var(--border)',
+                        color: 'var(--text-h)',
+                      }}
+                    >
+                      {p.matchDetailParticipantsColPaymentConfirmation}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {(roster ?? []).map((r, i) => (
+                  {(roster ?? []).map((r, i) => {
+                    const locUi = locale === 'uk' ? 'uk' : 'en'
+                    const paid = Boolean(r.payment_received)
+                    return (
                     <tr
                       key={`${r.squad_phase ?? ''}-${r.squad_sort}-${r.squad_label}-${i}`}
                       className="portal-match-reg-public-roster-row"
@@ -501,10 +537,21 @@ export function MatchPublicDetailPage() {
                         {r.division}
                       </td>
                       <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
-                        {r.classification_grade}
+                        {rosterCategoriesDisplay(r.categories, locUi)}
+                      </td>
+                      <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
+                        <span
+                          className={
+                            paid ? 'portal-match-reg-label portal-match-reg-label--confirmed'
+                            : 'portal-match-reg-label portal-match-reg-label--pending'
+                          }
+                        >
+                          {paid ? p.matchDetailParticipantsPaymentConfirmed : p.matchDetailParticipantsPaymentPending}
+                        </span>
                       </td>
                     </tr>
-                  ))}
+                    )
+                  })}
                 </tbody>
               </table>
             </div>

@@ -447,7 +447,10 @@ export type MessageTree = {
     matchDetailParticipantsColPhase: string
     matchDetailParticipantsColName: string
     matchDetailParticipantsColDivision: string
-    matchDetailParticipantsColClass: string
+    matchDetailParticipantsColCategory: string
+    matchDetailParticipantsColPaymentConfirmation: string
+    matchDetailParticipantsPaymentConfirmed: string
+    matchDetailParticipantsPaymentPending: string
     /** When RPC migration not applied yet */
     matchDetailApplyMigrationHint: string
     matchDetailRegistrationHeading: string
@@ -1418,12 +1421,15 @@ export const ukMessages: MessageTree = {
     matchDetailParticipantsOpenAwaitingConfirmation:
       'У скводах уже є {{count}} активних записів (разом очікуючі та підтверджені), але нижній список поки порожній, бо ми показуємо лише підтверджених учасників. Підтвердь потрібні заявки в «Мої матчі» → «Заявки» — і вони з’являться в цьому блоці.',
     matchDetailParticipantsFootnote:
-      'Показано лише підтверджені заявки; ім’я — з профілю учасника в порталі, якщо вказано.',
+      'Показано лише підтверджені заявки; ім’я — з профілю учасника в порталі, коли вказано. Категорія та статус оплати — з даних заявки.',
     matchDetailParticipantsColSquad: 'Сквод',
     matchDetailParticipantsColPhase: 'День',
     matchDetailParticipantsColName: 'Ім’я',
     matchDetailParticipantsColDivision: 'Дивізіон',
-    matchDetailParticipantsColClass: 'Клас',
+    matchDetailParticipantsColCategory: 'Категорія',
+    matchDetailParticipantsColPaymentConfirmation: 'Статус підтвердження оплати',
+    matchDetailParticipantsPaymentConfirmed: 'Підтверджено',
+    matchDetailParticipantsPaymentPending: 'Очікується',
     matchDetailApplyMigrationHint:
       'Застосуй останні міграції Supabase з каталогу supabase/migrations (зокрема `20260504140000_public_match_registration_metrics.sql` та `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Реєстрація',
@@ -2403,12 +2409,15 @@ export const enMessages: MessageTree = {
     matchDetailParticipantsOpenAwaitingConfirmation:
       'There are already {{count}} active sign-ups in squads (pending + confirmed counted together), but this table is empty because it lists only shooters the organizer has confirmed. Confirm entries under My matches → Registrations.',
     matchDetailParticipantsFootnote:
-      'Only confirmed registrations are shown; name comes from the participant profile when set.',
+      'Only confirmed registrations are shown; name comes from the participant profile when set. Category and payment confirmation come from the registration data.',
     matchDetailParticipantsColSquad: 'Squad',
     matchDetailParticipantsColPhase: 'Day',
     matchDetailParticipantsColName: 'Name',
     matchDetailParticipantsColDivision: 'Division',
-    matchDetailParticipantsColClass: 'Class',
+    matchDetailParticipantsColCategory: 'Category',
+    matchDetailParticipantsColPaymentConfirmation: 'Payment confirmation',
+    matchDetailParticipantsPaymentConfirmed: 'Confirmed',
+    matchDetailParticipantsPaymentPending: 'Pending',
     matchDetailApplyMigrationHint:
       'Apply the latest migrations from supabase/migrations (including `20260504140000_public_match_registration_metrics.sql` and `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Registration',
