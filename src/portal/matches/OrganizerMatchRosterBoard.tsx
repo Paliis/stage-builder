@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import type { Locale, MessageTree } from '../../i18n/messages'
 
+import '../PortalMatchesUi.css'
+
 type Portal = MessageTree['portal']
 
 export type OrganizerRosterReg = {
@@ -114,45 +116,17 @@ export function OrganizerMatchRosterBoard({
     await onMoveRegistration(draggedId, target.id)
   }
 
-  const colStyle = (highlight: boolean, warn: boolean): React.CSSProperties => ({
-    flex: '0 0 min(13rem, 85vw)',
-    minWidth: '11rem',
-    maxHeight: 'min(72vh, 880px)',
-    display: 'flex',
-    flexDirection: 'column',
-    borderRadius: '10px',
-    border:
-      warn ? '2px solid var(--destructive-text, #b00020)'
-      : highlight ? '2px solid var(--text-h, #2563eb)'
-      : '1px solid var(--border)',
-    background: 'var(--btn-bg)',
-    overflow: 'hidden',
-  })
-
   return (
-    <div style={{ marginTop: '1rem' }}>
-      <p style={{ margin: '0 0 0.85rem', fontSize: '0.88rem', lineHeight: 1.55, opacity: 0.9 }}>
-        {p.matchOrgRosterBoardHint}
-      </p>
+    <div className="portal-roster-board">
+      <p className="portal-roster-board__hint">{p.matchOrgRosterBoardHint}</p>
 
       {blockedDrop ? (
-        <p role="alert" style={{ margin: '0 0 0.75rem', fontSize: '0.9rem' }}>
+        <p role="alert" className="portal-roster-board__alert">
           {p.matchOrgRosterBoardSquadFull}
         </p>
       ) : null}
 
-      <div
-        role="region"
-        aria-label={p.matchOrgRosterViewBoard}
-        style={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          gap: '0.75rem',
-          overflowX: 'auto',
-          paddingBottom: '0.35rem',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
+      <div role="region" aria-label={p.matchOrgRosterViewBoard} className="portal-roster-board__strip">
         {squads.map((sq) => {
           const regs = regsBySquad.get(sq.id) ?? []
           const dragged = draggingId
@@ -165,10 +139,17 @@ export function OrganizerMatchRosterBoard({
             Boolean(sourceReg && sourceReg.squad_id !== sq.id) &&
             !allowsHypotheticalMoveOnto(sq, dragged)
 
+          const squadSlotsForBody = Math.min(Math.max(sq.capacity, 4), 24)
+
           return (
             <section
               key={sq.id}
-              style={colStyle(canDropHere, !!(dragged !== null && showWarn))}
+              className={`portal-roster-board__column${
+                canDropHere ? ' portal-roster-board__column--drop-ok'
+                : dragged !== null && showWarn ? ' portal-roster-board__column--drop-warn'
+                : ''
+              }`}
+              style={{ ['--squad-capacity-slots' as string]: String(squadSlotsForBody) }}
               onDragOver={(e) => {
                 if (!draggingId) return
                 e.preventDefault()
@@ -176,138 +157,72 @@ export function OrganizerMatchRosterBoard({
               }}
               onDrop={(e) => void dropOnSquad(e, sq)}
             >
-              <header
-                style={{
-                  padding: '0.5rem 0.65rem',
-                  borderBottom: '1px solid var(--border)',
-                  fontWeight: 600,
-                  fontSize: '0.88rem',
-                  lineHeight: 1.35,
-                  flexShrink: 0,
-                }}
-              >
+              <header className="portal-roster-board__column-head">
                 <div>{sq.label}</div>
-                <div style={{ fontWeight: 400, fontSize: '0.8rem', opacity: 0.88 }}>
+                <div className="portal-roster-board__column-meta">
                   {squadPhaseLabel(sq.squad_phase)} · {activeCountForSquad(sq.id)}/{sq.capacity}
                 </div>
               </header>
-              <div
-                style={{
-                  flex: 1,
-                  overflowY: 'auto',
-                  padding: '0.45rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.45rem',
-                  minHeight: '4rem',
-                }}
-              >
-                {regs.map((reg) => (
-                  <article
-                    key={reg.registration_id}
-                    draggable={savingRegId !== reg.registration_id}
-                    onDragStart={(e) => {
-                      e.dataTransfer.setData(DND_MIME, reg.registration_id)
-                      e.dataTransfer.effectAllowed = 'move'
-                      setDraggingId(reg.registration_id)
-                    }}
-                    onDragEnd={() => setDraggingId(null)}
-                    style={{
-                      padding: '0.5rem 0.55rem',
-                      borderRadius: '8px',
-                      border: '1px solid var(--border)',
-                      background:
-                        draggingId === reg.registration_id ?
-                          'var(--portal-card-bg-muted, transparent)'
-                        : 'var(--btn-bg)',
-                      opacity:
-                        savingRegId === reg.registration_id ? 0.55 : draggingId === reg.registration_id ? 0.75 : 1,
-                      cursor: savingRegId === reg.registration_id ? 'wait' : 'grab',
-                      fontSize: '0.84rem',
-                      lineHeight: 1.4,
-                      boxShadow: draggingId === reg.registration_id ? '0 2px 8px rgba(0,0,0,0.12)' : undefined,
-                    }}
-                  >
-                    <div style={{ fontWeight: 600 }}>{displayShooterName(reg)}</div>
-                    <div style={{ opacity: 0.92, marginTop: '0.2rem', fontSize: '0.8rem' }}>
-                      {reg.division}
-                      {reg.classification_grade ?
-                        <>
-                          {' '}
-                          ({reg.classification_grade})
-                        </>
-                      : null}
-                    </div>
-                    {reg.status === 'pending' || reg.status === 'confirmed' ?
-                      <div style={{ marginTop: '0.42rem', width: '100%' }}>
-                        <span
-                          style={{
-                            display: 'block',
-                            fontSize: '0.7rem',
-                            opacity: 0.88,
-                            marginBottom: '0.22rem',
-                          }}
-                        >
-                          {p.matchOrgRosterColStatus}
-                        </span>
-                        <select
-                          draggable={false}
-                          aria-label={p.matchOrgRosterColStatus}
-                          disabled={savingRegId === reg.registration_id}
-                          value={reg.status === 'confirmed' ? 'confirmed' : 'pending'}
-                          onChange={(e) => {
-                            const v = e.target.value as 'pending' | 'confirmed'
-                            void onSetRegistrationStatus(reg.registration_id, v)
-                          }}
-                          style={{
-                            width: '100%',
-                            boxSizing: 'border-box',
-                            padding: '0.26rem 0.38rem',
-                            fontSize: '0.74rem',
-                            borderRadius: '6px',
-                            border: '1px solid var(--border)',
-                            background: 'var(--btn-bg)',
-                            color: 'var(--text)',
-                          }}
-                        >
-                          <option value="pending">{p.matchOrgRosterStatusOptionPending}</option>
-                          <option value="confirmed">{p.matchOrgRosterStatusOptionConfirmed}</option>
-                        </select>
+              <div className="portal-roster-board__column-body">
+                {regs.map((reg) => {
+                  const saving = savingRegId === reg.registration_id
+                  const isDrag = draggingId === reg.registration_id
+                  const divLine =
+                    reg.classification_grade ? `${reg.division} (${reg.classification_grade})` : reg.division
+
+                  return (
+                    <article
+                      key={reg.registration_id}
+                      className={`portal-roster-board-card${
+                        isDrag ? ' portal-roster-board-card--dragging' : ''
+                      }${saving ? ' portal-roster-board-card--saving' : ''}`}
+                      draggable={!saving}
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData(DND_MIME, reg.registration_id)
+                        e.dataTransfer.effectAllowed = 'move'
+                        setDraggingId(reg.registration_id)
+                      }}
+                      onDragEnd={() => setDraggingId(null)}
+                    >
+                      <div className="portal-roster-board-card__row" title={`${displayShooterName(reg)} · ${divLine}`}>
+                        <span className="portal-roster-board-card__name">{displayShooterName(reg)}</span>
+                        <span className="portal-roster-board-card__division">{divLine}</span>
                       </div>
-                    : (
-                      <div style={{ opacity: 0.82, marginTop: '0.2rem', fontSize: '0.76rem' }}>
-                        {registrationStatusLabel(reg.status)}
-                      </div>
-                    )}
-                  </article>
-                ))}
+                      {reg.status === 'pending' || reg.status === 'confirmed' ?
+                        <div className="portal-roster-board-card__status">
+                          <span className="portal-roster-board-card__status-label">
+                            {p.matchOrgRosterColStatus}
+                          </span>
+                          <select
+                            draggable={false}
+                            className="portal-roster-board-card__select"
+                            aria-label={p.matchOrgRosterColStatus}
+                            disabled={saving}
+                            value={reg.status === 'confirmed' ? 'confirmed' : 'pending'}
+                            onChange={(e) => {
+                              const v = e.target.value as 'pending' | 'confirmed'
+                              void onSetRegistrationStatus(reg.registration_id, v)
+                            }}
+                          >
+                            <option value="pending">{p.matchOrgRosterStatusOptionPending}</option>
+                            <option value="confirmed">{p.matchOrgRosterStatusOptionConfirmed}</option>
+                          </select>
+                        </div>
+                      : (
+                        <div style={{ opacity: 0.82, marginTop: '0.18rem', fontSize: '0.74rem' }}>
+                          {registrationStatusLabel(reg.status)}
+                        </div>
+                      )}
+                    </article>
+                  )
+                })}
 
                 {regs.length === 0 ?
-                  <div
-                    style={{
-                      padding: '0.85rem 0.5rem',
-                      textAlign: 'center',
-                      fontSize: '0.82rem',
-                      opacity: 0.65,
-                      border: '1px dashed var(--border)',
-                      borderRadius: '8px',
-                    }}
-                  >
-                    {p.matchOrgRosterBoardEmptyColumn}
-                  </div>
+                  <div className="portal-roster-board__empty">{p.matchOrgRosterBoardEmptyColumn}</div>
                 : null}
               </div>
 
-              <footer
-                style={{
-                  padding: '0.35rem 0.5rem',
-                  borderTop: '1px solid var(--border)',
-                  fontSize: '0.76rem',
-                  opacity: 0.85,
-                  flexShrink: 0,
-                  textAlign: 'center',
-                }}
-              >
+              <footer className="portal-roster-board__column-foot">
                 {activeCountForSquad(sq.id)}/{sq.capacity}
               </footer>
             </section>
@@ -316,7 +231,7 @@ export function OrganizerMatchRosterBoard({
       </div>
 
       {inactiveRegistrations.length === 0 ? null : (
-        <div style={{ marginTop: '1.75rem', maxWidth: '42rem' }}>
+        <div className="portal-roster-board__inactive">
           <h2 className="portal-home__hero-title" style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
             {p.matchOrgRosterInactiveHeading}
           </h2>

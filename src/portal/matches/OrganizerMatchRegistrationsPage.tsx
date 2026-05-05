@@ -485,7 +485,12 @@ export function OrganizerMatchRegistrationsPage() {
         <p>{p.matchOrgRosterEmpty}</p>
       : (
         <>
-          <div className="portal-roster-page__sheet">
+          <div
+            className={
+              rosterView === 'board' ? 'portal-roster-page__sheet portal-roster-page__sheet--board'
+              : 'portal-roster-page__sheet'
+            }
+          >
             <div className="portal-roster-toolbar">
               <div
                 className="portal-roster-toolbar__tabs"
