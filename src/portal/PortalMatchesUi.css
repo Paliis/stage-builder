@@ -105,7 +105,7 @@ a.portal-match-title-ellipsis:hover {
   flex-direction: column;
   align-items: stretch;
   gap: 0.85rem;
-  padding: 1.12rem 1.22rem;
+  padding: 1.12rem 1.38rem;
   border-radius: 1rem;
   border: 1px solid var(--border);
   box-sizing: border-box;
@@ -134,7 +134,7 @@ a.portal-match-title-ellipsis:hover {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 1rem;
+  gap: 1.08rem;
   width: 100%;
   min-width: 0;
 }
@@ -144,7 +144,7 @@ a.portal-match-title-ellipsis:hover {
     flex-direction: row;
     align-items: stretch;
     justify-content: flex-start;
-    gap: 1.75rem;
+    gap: 2.35rem;
   }
 
   .portal-match-public-detail__masthead-grid--has-cover > .portal-match-public-detail__masthead-cover-col {
@@ -175,7 +175,7 @@ a.portal-match-title-ellipsis:hover {
     justify-items: initial;
     margin-inline: 0;
     align-content: space-between;
-    gap: 0.55rem 1rem;
+    gap: 0.6rem 1.5rem;
     padding-block: 0.25rem;
   }
 
@@ -193,6 +193,7 @@ a.portal-match-title-ellipsis:hover {
     text-align: left;
     justify-items: start;
     margin-inline: 0;
+    gap: 0.6rem 1.5rem;
   }
 }
 
@@ -203,7 +204,7 @@ a.portal-match-title-ellipsis:hover {
   gap: 0.65rem;
   min-width: 0;
   max-width: 100%;
-  --portal-match-cover-w: clamp(12rem, 30vw, 20rem);
+  --portal-match-cover-w: clamp(13rem, 34vw, 24rem);
   width: min(100%, var(--portal-match-cover-w));
 }
 
