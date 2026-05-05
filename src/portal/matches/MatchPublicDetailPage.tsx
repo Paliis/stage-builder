@@ -9,7 +9,7 @@ import { formatPortalDate } from './matchPortalFormat'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
-import { categoryLabel } from '../shooterProfileCatalog'
+import { categoryLabel, weaponClassLabel } from '../shooterProfileCatalog'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
@@ -20,6 +20,7 @@ type MatchDetailRow = {
   description_md: string | null
   starts_at: string
   location_label: string | null
+  cover_image_url: string | null
   competitor_limit: number | null
   discipline: string
   status: string
@@ -102,7 +103,7 @@ export function MatchPublicDetailPage() {
       const { data, error: qErr } = await sb
         .from('matches')
         .select(
-          'id, title, description_md, starts_at, location_label, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled, match_event_kind, ps_match_level',
+          'id, title, description_md, starts_at, location_label, cover_image_url, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled, match_event_kind, ps_match_level',
         )
         .eq('id', matchId)
         .eq('status', 'published')
@@ -278,120 +279,122 @@ export function MatchPublicDetailPage() {
   }
 
   const helmetTitle = `${row.title} — ${p.matchesPageShortTitle}`
+  const coverUrl = row.cover_image_url?.trim() ?? ''
+  const hasCover = Boolean(coverUrl)
+  const locUi = locale === 'uk' ? 'uk' : 'en'
+  const eventKindLine = portalLabelMatchEventKind(row.match_event_kind, p)
+  const psLevelLine = portalLabelPsMatchLevel(row.ps_match_level, p)
+  const weaponLine = weaponClassLabel((row.discipline ?? 'shotgun').trim() || 'shotgun', locUi)
 
   return (
-    <article className="portal-home">
+    <article className="portal-home portal-match-public-detail">
       <Helmet>
         <title>{helmetTitle}</title>
       </Helmet>
 
-      <nav className="portal-page-context" aria-label={p.portalBreadcrumbAria}>
+      <nav
+        className="portal-page-context portal-match-public-detail__breadcrumbs"
+        aria-label={p.portalBreadcrumbAria}
+      >
         <ol className="portal-breadcrumbs">
           <li>
             <Link to={`/${locale}/matches`}>{p.navMatches}</Link>
           </li>
+          <li className="portal-breadcrumbs__current">
+            <span className="portal-match-public-detail__crumb-title" title={row.title}>
+              {row.title}
+            </span>
+          </li>
         </ol>
       </nav>
 
-      <header className="portal-home__hero">
-        <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{row.title}</h1>
-      </header>
-
-      <dl
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'auto 1fr',
-          gap: '0.35rem 1rem',
-          fontSize: '0.95rem',
-          margin: 0,
-        }}
+      <section
+        className={`portal-match-public-detail__masthead${hasCover ? ' portal-match-public-detail__masthead--has-cover' : ''}`}
       >
-        <dt>{p.matchDetailStartsLabel}</dt>
-        <dd style={{ margin: 0 }}>{formatPortalDate(row.starts_at, locale)}</dd>
-        <dt>{p.matchDetailEventKindLabel}</dt>
-        <dd style={{ margin: 0 }}>
-          {portalLabelMatchEventKind(row.match_event_kind, p) || p.matchDetailNotSpecifiedValue}
-        </dd>
-        <dt>{p.matchDetailPsLevelLabel}</dt>
-        <dd style={{ margin: 0 }}>
-          {portalLabelPsMatchLevel(row.ps_match_level, p) || p.matchDetailNotSpecifiedValue}
-        </dd>
-        {row.location_label ? (
-          <>
-            <dt>{p.matchDetailLocationLabel}</dt>
-            <dd style={{ margin: 0 }}>{row.location_label}</dd>
-          </>
-        ) : null}
-        <dt>{p.matchDetailDisciplineLabel}</dt>
-        <dd style={{ margin: 0 }}>{row.discipline}</dd>
-        {row.competitor_limit != null ? (
-          <>
-            <dt>{p.matchDetailLimitLabel}</dt>
-            <dd style={{ margin: 0 }}>{row.competitor_limit}</dd>
-          </>
-        ) : null}
-        <dt>{p.matchDetailPrematchLabel}</dt>
-        <dd style={{ margin: 0 }}>
-          {row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}
-        </dd>
-      </dl>
+        {hasCover ?
+          <figure className="portal-match-public-detail__cover">
+            <img src={coverUrl} alt="" loading="lazy" decoding="async" />
+          </figure>
+        : null}
+        <div className="portal-match-public-detail__masthead-main">
+          <header className="portal-home__hero portal-match-public-detail__title-block">
+            <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{row.title}</h1>
+          </header>
 
-      {row.description_md?.trim() ? (
-        <section className="portal-home__hero-lead" style={{ marginTop: '1.25rem', maxWidth: '50rem' }}>
+          <dl className="portal-match-public-detail__facts">
+            <dt>{p.matchDetailStartsLabel}</dt>
+            <dd>{formatPortalDate(row.starts_at, locale)}</dd>
+            {eventKindLine ?
+              <>
+                <dt>{p.matchDetailEventKindLabel}</dt>
+                <dd>{eventKindLine}</dd>
+              </>
+            : null}
+            {psLevelLine ?
+              <>
+                <dt>{p.matchDetailPsLevelLabel}</dt>
+                <dd>{psLevelLine}</dd>
+              </>
+            : null}
+            {row.location_label ?
+              <>
+                <dt>{p.matchDetailLocationLabel}</dt>
+                <dd>{row.location_label}</dd>
+              </>
+            : null}
+            <dt>{p.matchDetailDisciplineLabel}</dt>
+            <dd>{weaponLine}</dd>
+            {row.competitor_limit != null ?
+              <>
+                <dt>{p.matchDetailLimitLabel}</dt>
+                <dd>{row.competitor_limit}</dd>
+              </>
+            : null}
+            <dt>{p.matchDetailPrematchLabel}</dt>
+            <dd>{row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}</dd>
+          </dl>
+        </div>
+      </section>
+
+      {row.description_md?.trim() ?
+        <section className="portal-match-public-detail__description portal-home__hero-lead">
           <ReactMarkdown>{row.description_md}</ReactMarkdown>
         </section>
-      ) : null}
+      : null}
 
       {programmeLinks === undefined || programmeLinks.length > 0 || programmeError ?
-        <section style={{ marginTop: '1.75rem', maxWidth: '48rem' }} aria-labelledby="match-programme-heading">
-          <h2
-            id="match-programme-heading"
-            className="portal-home__hero-title"
-            style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.65rem', letterSpacing: '-0.02em' }}
-          >
+        <section className="portal-match-public-detail__section" aria-labelledby="match-programme-heading">
+          <h2 id="match-programme-heading" className="portal-match-public-detail__section-title">
             {p.matchDetailProgrammeHeading}
           </h2>
           {programmeLinks === undefined ?
-            <p style={{ margin: 0, fontSize: '0.95rem' }}>{p.matchesLoadingDetail}</p>
+            <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
           : programmeError ?
-            <p role="alert" style={{ margin: 0, fontSize: '0.95rem' }}>
+            <p role="alert" className="portal-match-public-detail__muted">
               {p.matchesLoadError}: {programmeError}
             </p>
           : (
-            <>
-              <ol style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                {programmeLinks.map((lnk, idx) => {
-                  const sid = lnk.share_stage_id?.trim()
-                  const title = programmeRowTitle(lnk)
-                  return (
-                    <li key={`${sid ?? ''}-${lnk.sort_order}-${idx}`}>
-                      {sid ?
-                        <a
-                          href={`/v/${encodeURIComponent(sid)}?lang=${locale}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${title} (${p.matchDetailProgrammeViewLink})`}
-                        >
-                          {title}
-                        </a>
-                      : (
-                        title
-                      )}
-                    </li>
-                  )
-                })}
-              </ol>
-              <p
-                style={{
-                  margin: '0.65rem 0 0',
-                  fontSize: '0.8125rem',
-                  lineHeight: 1.45,
-                  color: 'var(--text)',
-                }}
-              >
-                {p.matchDetailProgrammeFootnote}
-              </p>
-            </>
+            <ol className="portal-match-public-detail__programme">
+              {programmeLinks.map((lnk, idx) => {
+                const sid = lnk.share_stage_id?.trim()
+                const title = programmeRowTitle(lnk)
+                return (
+                  <li key={`${sid ?? ''}-${lnk.sort_order}-${idx}`}>
+                    {sid ?
+                      <a
+                        href={`/v/${encodeURIComponent(sid)}?lang=${locale}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {title}
+                      </a>
+                    : (
+                      title
+                    )}
+                  </li>
+                )
+              })}
+            </ol>
           )}
         </section>
       : null}
@@ -403,39 +406,30 @@ export function MatchPublicDetailPage() {
         prematchEnabled={Boolean(row.prematch_enabled)}
       />
 
-      <section
-        style={{ marginTop: '1.75rem', maxWidth: 'min(64rem, 100%)' }}
-        aria-labelledby="match-participants-heading"
-      >
-        <h2
-          id="match-participants-heading"
-          className="portal-home__hero-title"
-          style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.65rem', letterSpacing: '-0.02em' }}
-        >
+      <section className="portal-match-public-detail__section" aria-labelledby="match-participants-heading">
+        <h2 id="match-participants-heading" className="portal-match-public-detail__section-title">
           {p.matchDetailParticipantsHeading}
         </h2>
         {(row.participant_list_visibility ?? 'closed') !== 'open' ? (
-          <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55, color: 'var(--text)' }}>
-            {p.matchDetailParticipantsClosed}
-          </p>
+          <p className="portal-match-public-detail__prose">{p.matchDetailParticipantsClosed}</p>
         ) : roster === undefined ? (
-          <p style={{ margin: 0, fontSize: '0.95rem' }}>{p.matchesLoadingDetail}</p>
+          <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
         ) : rosterError ? (
-          <p role="alert" style={{ margin: 0, fontSize: '0.95rem' }}>
+          <p role="alert" className="portal-match-public-detail__muted">
             {p.matchesLoadError}: {rosterError}
           </p>
         ) : (roster ?? []).length === 0 ?
           openVisibilityActiveRegTotal !== undefined && openVisibilityActiveRegTotal > 0 ?
-            <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55 }}>
+            <p className="portal-match-public-detail__prose">
               {formatTemplate(p.matchDetailParticipantsOpenAwaitingConfirmation, {
                 count: openVisibilityActiveRegTotal,
               })}
             </p>
-          : <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55 }}>{p.matchDetailParticipantsOpenEmpty}</p>
+          : <p className="portal-match-public-detail__prose">{p.matchDetailParticipantsOpenEmpty}</p>
 
         : (
           <>
-            <div style={{ overflowX: 'auto' }}>
+            <div className="portal-match-public-detail__table-scroll">
               <table className="portal-match-public-participants-table">
                 <thead>
                   <tr>
@@ -451,7 +445,6 @@ export function MatchPublicDetailPage() {
                 </thead>
                 <tbody>
                   {(roster ?? []).map((r, i) => {
-                    const locUi = locale === 'uk' ? 'uk' : 'en'
                     const paid = Boolean(r.payment_received)
                     return (
                     <tr
@@ -485,16 +478,9 @@ export function MatchPublicDetailPage() {
                 </tbody>
               </table>
             </div>
-            <p
-              style={{
-                margin: '0.65rem 0 0',
-                fontSize: '0.8125rem',
-                lineHeight: 1.45,
-                color: 'var(--text)',
-              }}
-            >
-              {p.matchDetailParticipantsFootnote}
-            </p>
+            {p.matchDetailParticipantsFootnote.trim() ?
+              <p className="portal-match-public-detail__footnote">{p.matchDetailParticipantsFootnote}</p>
+            : null}
           </>
         )}
       </section>

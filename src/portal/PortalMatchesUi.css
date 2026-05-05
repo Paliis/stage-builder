@@ -36,6 +36,168 @@ a.portal-match-title-ellipsis:hover {
   white-space: normal;
 }
 
+/* Public match detail (published) -------------------------------------------- */
+
+.portal-match-public-detail {
+  gap: 1.65rem;
+}
+
+.portal-match-public-detail__breadcrumbs {
+  width: 100%;
+  max-width: min(52rem, 100%);
+  min-width: 0;
+}
+
+.portal-match-public-detail__crumb-title {
+  display: inline-block;
+  max-width: min(48ch, 78vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.portal-match-public-detail__masthead {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem 1.35rem;
+  width: 100%;
+  max-width: min(52rem, 100%);
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .portal-match-public-detail__masthead--has-cover {
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.portal-match-public-detail__cover {
+  margin: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: linear-gradient(165deg, #f1f5f9, #e2e8f0);
+  aspect-ratio: 16 / 10;
+}
+
+.portal-match-public-detail__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portal-match-public-detail__title-block {
+  padding-top: 0;
+  gap: 0.45rem;
+}
+
+.portal-match-public-detail__facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.28rem 0.95rem;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  font-size: 0.90625rem;
+  line-height: 1.45;
+  max-width: min(40rem, 100%);
+}
+
+.portal-match-public-detail__facts dt {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+  opacity: 0.88;
+}
+
+.portal-match-public-detail__facts dd {
+  margin: 0;
+  color: var(--text-h);
+  font-weight: 650;
+}
+
+.portal-match-public-detail__description {
+  margin: 0;
+  max-width: min(52rem, 100%);
+}
+
+.portal-match-public-detail__description :first-child {
+  margin-top: 0;
+}
+
+.portal-match-public-detail__description :last-child {
+  margin-bottom: 0;
+}
+
+.portal-match-public-detail__section {
+  width: 100%;
+  max-width: min(52rem, 100%);
+  min-width: 0;
+}
+
+.portal-match-public-detail__section-title {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1.12rem, 1.1vw + 0.95rem, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.22;
+  color: var(--text-h);
+}
+
+.portal-match-public-detail__programme {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.portal-match-public-detail__programme a {
+  color: var(--accent);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.portal-match-public-detail__programme a:hover {
+  text-decoration: underline;
+}
+
+.portal-match-public-detail__muted {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.portal-match-public-detail__prose {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.58;
+  color: var(--text);
+}
+
+.portal-match-public-detail__footnote {
+  margin: 0.55rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text);
+  opacity: 0.88;
+}
+
+.portal-match-public-detail__table-scroll {
+  overflow-x: auto;
+  margin-top: 0.35rem;
+  width: 100%;
+}
+
+@media (max-width: 639px) {
+  .portal-match-public-detail__masthead--has-cover .portal-match-public-detail__cover {
+    max-height: 11rem;
+  }
+}
+
 /* Organizer match roster: breadcrumbs + table toolbar ----------------------- */
 
 .portal-roster-page__hero {
