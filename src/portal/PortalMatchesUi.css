@@ -517,11 +517,35 @@ a.portal-match-title-ellipsis:hover {
   color: var(--text-h);
 }
 
-.portal-reg-modal__prefill {
+.portal-reg-modal__identity {
   margin: 0;
+  display: grid;
+  gap: 0.28rem;
   font-size: 0.875rem;
-  line-height: 1.55;
+  line-height: 1.5;
   color: var(--text);
+}
+
+.portal-reg-modal__identity-label {
+  font-weight: 750;
+  font-size: 0.82rem;
+  color: var(--text-h);
+}
+
+.portal-reg-modal__identity-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+}
+
+.portal-reg-modal__identity-value {
+  font-weight: 650;
+}
+
+.portal-reg-modal__identity-value--empty {
+  font-weight: 500;
+  opacity: 0.78;
 }
 
 .portal-reg-modal__profile-link {
@@ -553,6 +577,14 @@ a.portal-match-title-ellipsis:hover {
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
+}
+
+.portal-reg-modal__field-hint {
+  margin: 0.05rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 450;
+  line-height: 1.45;
+  opacity: 0.88;
 }
 
 .portal-reg-modal__select {

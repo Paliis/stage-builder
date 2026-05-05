@@ -71,6 +71,15 @@ function weaponClassForMatchDiscipline(raw: string): WeaponClassId {
   return (WEAPON_CLASS_ORDER as readonly string[]).includes(t) ? (t as WeaponClassId) : 'shotgun'
 }
 
+type ParticipantDefaultsRow = {
+  division?: string | null
+  classification_grade?: string | null
+  power_factor?: string | null
+  categories?: unknown
+  first_name?: string | null
+  last_name?: string | null
+}
+
 export function MatchPublicRegistrationSection({
   locale,
   matchUuid,
@@ -98,6 +107,8 @@ export function MatchPublicRegistrationSection({
   const [classification, setClassification] = useState('')
   const [powerFactor, setPowerFactor] = useState<'MAJOR' | 'MINOR' | ''>('')
   const [signupCategories, setSignupCategories] = useState<string[]>([])
+  const [cabinetFirstName, setCabinetFirstName] = useState('')
+  const [cabinetLastName, setCabinetLastName] = useState('')
 
   const [submitBusy, setSubmitBusy] = useState(false)
   const [mineBusy, setMineBusy] = useState(false)
@@ -114,6 +125,8 @@ export function MatchPublicRegistrationSection({
       setClassification('')
       setPowerFactor('')
       setSignupCategories([])
+      setCabinetFirstName('')
+      setCabinetLastName('')
       setFeedback(null)
     })
   }, [matchUuid])
@@ -157,6 +170,35 @@ export function MatchPublicRegistrationSection({
     queueMicrotask(() => void loadMine())
   }, [configured, loadMine, sessionLoading])
 
+  const applyParticipantDefaultsRow = useCallback((row: ParticipantDefaultsRow) => {
+    setCabinetFirstName(typeof row.first_name === 'string' ? row.first_name : '')
+    setCabinetLastName(typeof row.last_name === 'string' ? row.last_name : '')
+
+    setDivision((d) => {
+      const t = d.trim()
+      if (t) return d
+      const divRaw = typeof row.division === 'string' ? row.division : ''
+      return isValidDivisionForWeapon(matchWeaponClassId, divRaw) ? divRaw : ''
+    })
+    setClassification((c) => {
+      const t = c.trim()
+      if (t) return c
+      return typeof row.classification_grade === 'string' ? row.classification_grade : ''
+    })
+    setPowerFactor((pf) => {
+      if (pf !== '') return pf
+      const raw =
+        typeof row.power_factor === 'string' ?
+          row.power_factor.trim().toUpperCase()
+        : ''
+      return raw === 'MAJOR' ? 'MAJOR' : raw === 'MINOR' ? 'MINOR' : ''
+    })
+    setSignupCategories((prev) => {
+      if (prev.length > 0) return prev
+      return normalizeParticipantCategories(row.categories)
+    })
+  }, [matchWeaponClassId])
+
   useEffect(() => {
     if (!configured || sessionLoading || !user?.id) return
     if (mine === undefined) return
@@ -169,52 +211,23 @@ export function MatchPublicRegistrationSection({
     void (async () => {
       const { data, error } = await sb
         .from('participant_registration_defaults')
-        .select('division, classification_grade, power_factor, categories')
+        .select('division, classification_grade, power_factor, categories, first_name, last_name')
         .eq('user_id', user.id)
         .maybeSingle()
 
       if (defaultsPrefetchKeyRef.current !== pendingKey) return
       if (error || !data) return
 
-      const row = data as {
-        division?: string | null
-        classification_grade?: string | null
-        power_factor?: string | null
-        categories?: unknown
-      }
-
-      setDivision((d) => {
-        const t = d.trim()
-        if (t) return d
-        const divRaw = typeof row.division === 'string' ? row.division : ''
-        return isValidDivisionForWeapon(matchWeaponClassId, divRaw) ? divRaw : ''
-      })
-      setClassification((c) => {
-        const t = c.trim()
-        if (t) return c
-        return typeof row.classification_grade === 'string' ? row.classification_grade : ''
-      })
-      setPowerFactor((pf) => {
-        if (pf !== '') return pf
-        const raw =
-          typeof row.power_factor === 'string' ?
-            row.power_factor.trim().toUpperCase()
-          : ''
-        return raw === 'MAJOR' ? 'MAJOR' : raw === 'MINOR' ? 'MINOR' : ''
-      })
-      setSignupCategories((prev) => {
-        if (prev.length > 0) return prev
-        return normalizeParticipantCategories(row.categories)
-      })
+      applyParticipantDefaultsRow(data as ParticipantDefaultsRow)
     })()
   }, [
+    applyParticipantDefaultsRow,
     configured,
     sessionLoading,
     user?.id,
     mine,
     matchUuid,
     sb,
-    matchWeaponClassId,
   ])
 
   const spotFreeMap = useMemo(() => {
@@ -262,6 +275,16 @@ export function MatchPublicRegistrationSection({
     setFeedback(null)
     if (!pickedSquad && firstOpenSquad) setPickedSquad(firstOpenSquad)
     regDialogRef.current?.showModal()
+    if (configured) {
+      void (async () => {
+        const { data, error } = await sb
+          .from('participant_registration_defaults')
+          .select('division, classification_grade, power_factor, categories, first_name, last_name')
+          .eq('user_id', user.id)
+          .maybeSingle()
+        if (!error && data) applyParticipantDefaultsRow(data as ParticipantDefaultsRow)
+      })()
+    }
   }
 
   function closeRegistrationModal() {
@@ -331,18 +354,29 @@ export function MatchPublicRegistrationSection({
 
   function renderRegistrationModal(dlgRef: RefObject<HTMLDialogElement | null>) {
     if (!metrics?.length) return null
+    const nameParts = [cabinetLastName.trim(), cabinetFirstName.trim()].filter(Boolean)
+    const displayName = nameParts.length > 0 ? nameParts.join(' ') : ''
     return (
       <dialog ref={dlgRef} className="portal-reg-modal" aria-labelledby="match-reg-modal-heading">
         <div className="portal-reg-modal__panel">
           <h3 id="match-reg-modal-heading" className="portal-reg-modal__title">
             {p.matchDetailRegistrationModalTitle}
           </h3>
-          <p className="portal-reg-modal__prefill">
-            {p.matchDetailRegistrationModalPrefillNote}{' '}
-            <Link to={`/${locale}/account`} className="portal-reg-modal__profile-link">
-              {p.matchDetailRegistrationModalProfileLink}
-            </Link>
-          </p>
+          <div className="portal-reg-modal__identity" aria-label={p.matchDetailRegistrationRegisteredNameLabel}>
+            <span className="portal-reg-modal__identity-label">{p.matchDetailRegistrationRegisteredNameLabel}</span>
+            <div className="portal-reg-modal__identity-foot">
+              <span
+                className={
+                  displayName ? 'portal-reg-modal__identity-value' : 'portal-reg-modal__identity-value portal-reg-modal__identity-value--empty'
+                }
+              >
+                {displayName || p.matchDetailRegistrationRegisteredNameEmpty}
+              </span>
+              <Link to={`/${locale}/account`} className="portal-reg-modal__profile-link">
+                {p.matchDetailRegistrationEditInAccount}
+              </Link>
+            </div>
+          </div>
           <form
             className="portal-reg-modal__form"
             onSubmit={(ev) => void submitRegistration(ev)}
@@ -401,10 +435,10 @@ export function MatchPublicRegistrationSection({
                 value={classification}
                 onChange={(e) => setClassification(e.target.value)}
                 disabled={submitBusy}
-                required
                 autoComplete="off"
                 className="portal-reg-modal__control"
               />
+              <span className="portal-reg-modal__field-hint">{p.matchDetailRegistrationClassificationHint}</span>
             </label>
 
             <fieldset className="portal-reg-modal__categories">

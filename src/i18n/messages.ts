@@ -501,8 +501,12 @@ export type MessageTree = {
     matchDetailRegistrationCta: string
     matchDetailRegistrationModalTitle: string
     matchDetailRegistrationModalClose: string
-    matchDetailRegistrationModalPrefillNote: string
-    matchDetailRegistrationModalProfileLink: string
+    /** Participant name from shooter profile (account): shown read-only in registration modal. */
+    matchDetailRegistrationRegisteredNameLabel: string
+    matchDetailRegistrationRegisteredNameEmpty: string
+    matchDetailRegistrationEditInAccount: string
+    /** Shown under the classification grade field (modal + account). */
+    matchDetailRegistrationClassificationHint: string
     matchDetailRegistrationChooseDivision: string
     portalCompactAuthAria: string
     portalCompactAuthSignIn: string
@@ -636,6 +640,8 @@ export type MessageTree = {
     accountParticipantFieldRegionPlaceholder: string
     accountParticipantFieldFirstName: string
     accountParticipantFieldLastName: string
+    /** Optional PSC-style class (M/A/B/C/D/U); same column as match registration. */
+    accountParticipantFieldClassification: string
     accountParticipantAvatarLabel: string
     accountParticipantAvatarChange: string
     accountParticipantAvatarRemove: string
@@ -1496,9 +1502,11 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationCta: 'Зареєструватись',
     matchDetailRegistrationModalTitle: 'Подання заявки на матч',
     matchDetailRegistrationModalClose: 'Закрити',
-    matchDetailRegistrationModalPrefillNote:
-      'Типові значення з вашої картки стрільця; за потреби змініть їх перед надсиланням.',
-    matchDetailRegistrationModalProfileLink: 'Картка стрільця в обліковому записі',
+    matchDetailRegistrationRegisteredNameLabel: 'Прізвище та ім’я',
+    matchDetailRegistrationRegisteredNameEmpty: 'Не зазначено в обліковому записі.',
+    matchDetailRegistrationEditInAccount: 'Змінити в кабінеті',
+    matchDetailRegistrationClassificationHint:
+      'Грейд майстерності за правилами дисципліни (наприклад M, A, B, C, D) або U/порожньо без класу. Як у PractiScore чи протоколі змагань.',
     matchDetailRegistrationChooseDivision: 'Оберіть дивізіон.',
     portalCompactAuthAria: 'Режим входу',
     portalCompactAuthSignIn: 'Вхід',
@@ -1635,6 +1643,7 @@ export const ukMessages: MessageTree = {
     accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
     accountParticipantFieldFirstName: "Ім'я (для PractiScore)",
     accountParticipantFieldLastName: 'Прізвище (для PractiScore)',
+    accountParticipantFieldClassification: 'Класифікація',
     accountParticipantAvatarLabel: 'Фото профілю',
     accountParticipantAvatarChange: 'Обрати фото',
     accountParticipantAvatarRemove: 'Без фото',
@@ -2502,9 +2511,11 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationCta: 'Register',
     matchDetailRegistrationModalTitle: 'Match sign-up',
     matchDetailRegistrationModalClose: 'Close',
-    matchDetailRegistrationModalPrefillNote:
-      'Prefilled from your shooter profile; edit if needed before submitting.',
-    matchDetailRegistrationModalProfileLink: 'Edit profile defaults',
+    matchDetailRegistrationRegisteredNameLabel: 'Full name',
+    matchDetailRegistrationRegisteredNameEmpty: 'Not set on your account.',
+    matchDetailRegistrationEditInAccount: 'Edit in account',
+    matchDetailRegistrationClassificationHint:
+      'Your skill/class per the rulebook (e.g. M, A, B, C, D) or blank if unclassified—same as PractiScore / match paperwork.',
     matchDetailRegistrationChooseDivision: 'Choose a division.',
     portalCompactAuthAria: 'Sign-in mode',
     portalCompactAuthSignIn: 'Sign in',
@@ -2642,6 +2653,7 @@ export const enMessages: MessageTree = {
     accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
     accountParticipantFieldFirstName: 'First name (PractiScore)',
     accountParticipantFieldLastName: 'Last name (PractiScore)',
+    accountParticipantFieldClassification: 'Classification',
     accountParticipantAvatarLabel: 'Profile photo',
     accountParticipantAvatarChange: 'Choose photo',
     accountParticipantAvatarRemove: 'Remove photo',
