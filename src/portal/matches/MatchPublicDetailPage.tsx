@@ -444,7 +444,6 @@ export function MatchPublicDetailPage() {
         metricsError={regMetricsError}
         reloadMetrics={loadRegistrationMetrics}
         p={p}
-        prematchEnabled={Boolean(row.prematch_enabled)}
       />
 
       <section className="portal-match-public-detail__section" aria-labelledby="match-participants-heading">

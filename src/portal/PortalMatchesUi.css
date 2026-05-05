@@ -198,60 +198,19 @@ a.portal-match-title-ellipsis:hover {
   }
 }
 
-/* Public match registration (squads + sign-up modal) ------------------------ */
+/* Public match registration (minimal inline + modal only) -------------------- */
 
-.portal-reg-root {
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-}
-
-  margin: 0 0 0.4rem;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-h);
-}
-
-.portal-reg-phase-empty {
-  margin: 0 0 0.95rem;
-  font-size: 0.90625rem;
-  line-height: 1.52;
-  color: var(--text);
-}
-
-.portal-reg-phase-subtitle:not(:first-of-type) {
-  margin-top: 0.85rem;
-}
-
-.portal-reg-table-wrap {
-  overflow-x: auto;
-  margin: 0 0 0.85rem;
-}
-
-.portal-reg-table {
+.portal-reg-minimal {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.921875rem;
+  max-width: min(52rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
 }
 
-.portal-reg-table th,
-.portal-reg-table td {
-  padding: 0.5rem 0.55rem;
-  text-align: left;
-  vertical-align: top;
-  border-bottom: 1px solid var(--border);
-}
-
-.portal-reg-table thead th {
-  font-weight: 750;
-  color: var(--text-h);
-}
-
-.portal-reg-status-line {
-  margin: 0.55rem 0 0;
-  font-size: 0.9375rem;
+.portal-reg-inline-meta {
+  margin: 0;
+  font-size: 0.928125rem;
   line-height: 1.55;
 }
 

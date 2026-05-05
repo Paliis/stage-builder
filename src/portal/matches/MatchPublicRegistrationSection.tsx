@@ -44,7 +44,6 @@ type Props = {
   matchUuid: string
   matchDiscipline: string
   p: Portal
-  prematchEnabled: boolean
   metrics: RegistrationMetricRow[] | undefined
   metricsError: string | null
   reloadMetrics: () => Promise<void>
@@ -70,48 +69,11 @@ function weaponClassForMatchDiscipline(raw: string): WeaponClassId {
   return (WEAPON_CLASS_ORDER as readonly string[]).includes(t) ? (t as WeaponClassId) : 'shotgun'
 }
 
-function SquadFreeTable(props: {
-  rows: RegistrationMetricRow[]
-  colSquad: string
-  colFree: string
-  fullLabel: string
-}) {
-  const { rows, colSquad, colFree, fullLabel } = props
-  if (rows.length === 0) return null
-  return (
-    <div className="portal-reg-table-wrap">
-      <table className="portal-reg-table">
-        <thead>
-          <tr>
-            <th scope="col">{colSquad}</th>
-            <th scope="col">{colFree}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => {
-            const cap = Number(r.capacity)
-            const tk = num(r.squad_taken)
-            const free = Math.max(0, cap - tk)
-            const fullRow = free <= 0
-            return (
-              <tr key={r.squad_id}>
-                <td title={r.squad_label}>{formatSquadLabelNumberOnly(r.squad_label)}</td>
-                <td>{fullRow ? fullLabel : `${free} / ${cap}`}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
 export function MatchPublicRegistrationSection({
   locale,
   matchUuid,
   matchDiscipline,
   p,
-  prematchEnabled,
   metrics,
   metricsError,
   reloadMetrics,
@@ -263,13 +225,6 @@ export function MatchPublicRegistrationSection({
     return m
   }, [metrics])
 
-  const prematchMetrics = useMemo(
-    () => (metrics ?? []).filter((r) => phaseOf(r) === 'prematch'),
-    [metrics],
-  )
-
-  const mainMetrics = useMemo(() => (metrics ?? []).filter((r) => phaseOf(r) === 'main'), [metrics])
-
   const matchTotal =
     metrics && metrics.length > 0 ? num(metrics[0]!.match_total_registered) : undefined
   const matchLimit =
@@ -369,14 +324,6 @@ export function MatchPublicRegistrationSection({
       return
     }
     await refreshAll()
-  }
-
-  if (!configured) {
-    return (
-      <section className="portal-match-public-detail__section portal-reg-root" aria-labelledby="match-reg-heading">
-        <p>{p.matchesSupabaseUnset}</p>
-      </section>
-    )
   }
 
   function renderRegistrationModal(dlgRef: RefObject<HTMLDialogElement | null>) {
@@ -514,120 +461,109 @@ export function MatchPublicRegistrationSection({
     )
   }
 
+  const showGuestAuth = !sessionLoading && !user
+  const showRegisterCta =
+    Boolean(user) &&
+    !sessionLoading &&
+    mine !== undefined &&
+    mine === null &&
+    !matchFull &&
+    Boolean(metrics?.length)
+  const showPendingTools = Boolean(user && !sessionLoading && mine?.status === 'pending')
+  const showCancelledNote = Boolean(user && !sessionLoading && mine?.status === 'cancelled')
+
+  const showMatchFullNote =
+    Boolean(matchFull && metrics && metrics.length > 0 && mine?.status !== 'confirmed')
+
+  const hasAnyInline =
+    Boolean(metricsError) ||
+    (metrics !== undefined && metrics.length === 0) ||
+    showMatchFullNote ||
+    showGuestAuth ||
+    showRegisterCta ||
+    showPendingTools ||
+    showCancelledNote ||
+    Boolean(feedback)
+
+  if (!configured) {
+    return (
+      <>
+        {renderRegistrationModal(regDialogRef)}
+        <div className="portal-reg-minimal">
+          <p className="portal-match-public-detail__muted">{p.matchesSupabaseUnset}</p>
+        </div>
+      </>
+    )
+  }
+
+  if (!hasAnyInline) {
+    return <>{renderRegistrationModal(regDialogRef)}</>
+  }
+
   return (
     <>
       {renderRegistrationModal(regDialogRef)}
-      <section
-        className="portal-match-public-detail__section portal-reg-root"
-        aria-labelledby="match-reg-heading"
-      >
-        <h2 id="match-reg-heading" className="portal-match-public-detail__section-title">
-          {p.matchDetailRegistrationHeading}
-        </h2>
-
+      <div className="portal-reg-minimal">
         {metricsError ?
           <p role="alert" className="portal-match-public-detail__muted">
             {p.matchesLoadError}: {metricsError}
           </p>
-        : metrics === undefined ?
-          <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
-        : metrics.length === 0 ?
-          <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationNoSquads}</p>
-        : <>
-            {prematchEnabled ?
-              <>
-                <h3 className="portal-reg-phase-subtitle">{p.matchDetailRegistrationPrematchHeading}</h3>
-                {prematchMetrics.length === 0 ?
-                  <p className="portal-reg-phase-empty">{p.matchDetailRegistrationPrematchEmpty}</p>
-                : <SquadFreeTable
-                    rows={prematchMetrics}
-                    colSquad={p.matchDetailRegistrationColSquad}
-                    colFree={p.matchDetailRegistrationColFree}
-                    fullLabel={p.matchDetailRegistrationFull}
-                  />}
+        : null}
+        {metrics !== undefined && metrics.length === 0 ?
+          <p className="portal-match-public-detail__muted">{p.matchDetailRegistrationNoSquads}</p>
+        : null}
+        {showMatchFullNote ?
+          <p className="portal-match-public-detail__muted">{p.matchDetailRegistrationMatchFull}</p>
+        : null}
 
-                <h3 className="portal-reg-phase-subtitle">{p.matchDetailRegistrationMainHeading}</h3>
-                {mainMetrics.length === 0 ?
-                  <p className="portal-reg-phase-empty">{p.matchDetailRegistrationMainEmpty}</p>
-                : <SquadFreeTable
-                    rows={mainMetrics}
-                    colSquad={p.matchDetailRegistrationColSquad}
-                    colFree={p.matchDetailRegistrationColFree}
-                    fullLabel={p.matchDetailRegistrationFull}
-                  />}
-              </>
-            : <SquadFreeTable
-                rows={metrics}
-                colSquad={p.matchDetailRegistrationColSquad}
-                colFree={p.matchDetailRegistrationColFree}
-                fullLabel={p.matchDetailRegistrationFull}
-              />}
-
-            {matchFull ?
-              <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationMatchFull}</p>
+        {showGuestAuth ?
+          <>
+            <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationSignInIntro}</p>
+            <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
+            {import.meta.env.DEV ?
+              <p className="portal-reg-dev-auth-hint">
+                <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>
+              </p>
             : null}
-
-            {sessionLoading ?
-              <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
-            : user ?
-              <>
-                {mine === undefined ?
-                  <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
-                : mine ?
-                  <>
-                    <p className="portal-reg-status-line">
-                      <strong>{p.matchDetailRegistrationYourStatus}: </strong>
-                      <span className={portalMatchRegLabelClass(mine.status)}>
-                        {mine.status === 'confirmed' ?
-                          p.matchDetailRegistrationStatusConfirmed
-                        : mine.status === 'pending' ?
-                          p.matchDetailRegistrationStatusPending
-                        : mine.status === 'cancelled' ?
-                          p.matchDetailRegistrationStatusCancelled
-                        : mine.status}
-                      </span>
-                    </p>
-                    {mine.status === 'pending' ?
-                      <button
-                        type="button"
-                        className="portal-btn portal-btn--secondary portal-btn--compact"
-                        disabled={mineBusy}
-                        onClick={() => void cancelMine()}
-                      >
-                        {mineBusy ? p.matchDetailRegistrationCancelling : p.matchDetailRegistrationCancel}
-                      </button>
-                    : null}
-                  </>
-                : !matchFull ?
-                  <button
-                    type="button"
-                    className="portal-btn portal-btn--primary portal-reg-cta"
-                    onClick={openRegistrationModal}
-                  >
-                    {p.matchDetailRegistrationCta}
-                  </button>
-                : null}
-
-                {feedback ?
-                  <p role="status" className="portal-reg-feedback">
-                    {feedback}
-                  </p>
-                : null}
-              </>
-            :
-              <>
-                <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationSignInIntro}</p>
-                <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
-                {import.meta.env.DEV ?
-                  <p className="portal-reg-dev-auth-hint">
-                    <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>
-                  </p>
-                : null}
-              </>
-            }
           </>
-        }
-      </section>
+        : null}
+
+        {showPendingTools ?
+          <>
+            <p className="portal-reg-inline-meta">
+              <strong>{p.matchDetailRegistrationYourStatus}: </strong>
+              <span className={portalMatchRegLabelClass(mine!.status)}>{p.matchDetailRegistrationStatusPending}</span>
+            </p>
+            <button
+              type="button"
+              className="portal-btn portal-btn--secondary portal-btn--compact"
+              disabled={mineBusy}
+              onClick={() => void cancelMine()}
+            >
+              {mineBusy ? p.matchDetailRegistrationCancelling : p.matchDetailRegistrationCancel}
+            </button>
+          </>
+        : null}
+
+        {showCancelledNote ?
+          <p className="portal-reg-inline-meta">
+            <strong>{p.matchDetailRegistrationYourStatus}: </strong>
+            <span className={portalMatchRegLabelClass(mine!.status)}>{p.matchDetailRegistrationStatusCancelled}</span>
+          </p>
+        : null}
+
+        {showRegisterCta ?
+          <button type="button" className="portal-btn portal-btn--primary portal-reg-cta" onClick={openRegistrationModal}>
+            {p.matchDetailRegistrationCta}
+          </button>
+        : null}
+
+        {feedback ?
+          <p role="status" className="portal-reg-feedback">
+            {feedback}
+          </p>
+        : null}
+      </div>
     </>
   )
 }
