@@ -8,7 +8,7 @@ import { useSupabaseSession } from '../useSupabaseSession'
 import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import type { MessageTree } from '../../i18n/messages'
 import { formatPortalDate } from './matchPortalFormat'
-import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
+import { portalLabelMatchEventKind } from './matchPortalLabels'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
@@ -22,7 +22,6 @@ type OrganizerMatchRow = {
   status: string
   participant_list_visibility?: string | null
   match_event_kind?: string | null
-  ps_match_level?: string | null
 }
 
 export function OrganizerMatchesListPage() {
@@ -42,7 +41,7 @@ export function OrganizerMatchesListPage() {
     setError(null)
     const { data, error: qErr } = await sb
       .from('matches')
-      .select('id, title, starts_at, status, participant_list_visibility, match_event_kind, ps_match_level')
+      .select('id, title, starts_at, status, participant_list_visibility, match_event_kind')
       .eq('organizer_id', user.id)
       .order('starts_at', { ascending: true })
     if (qErr) {
@@ -223,8 +222,6 @@ export function OrganizerMatchesListPage() {
                     <dd>{f.starts}</dd>
                     <dt>{p.myMatchesColEventKind}</dt>
                     <dd>{f.eventKind}</dd>
-                    <dt>{p.myMatchesColPsLevel}</dt>
-                    <dd>{f.psLevel}</dd>
                     <dt>{p.myMatchesColStatus}</dt>
                     <dd>{f.status}</dd>
                     <dt>{p.myMatchesColList}</dt>
@@ -253,7 +250,6 @@ export function OrganizerMatchesListPage() {
                   <th className="portal-matches-organizer__table-col-title">{p.myMatchesColTitle}</th>
                   <th>{p.myMatchesColStarts}</th>
                   <th>{p.myMatchesColEventKind}</th>
-                  <th>{p.myMatchesColPsLevel}</th>
                   <th>{p.myMatchesColStatus}</th>
                   <th>{p.myMatchesColList}</th>
                   <th>{p.myMatchesManage}</th>
@@ -274,7 +270,6 @@ export function OrganizerMatchesListPage() {
                       </td>
                       <td>{f.starts}</td>
                       <td>{f.eventKind}</td>
-                      <td>{f.psLevel}</td>
                       <td>{f.status}</td>
                       <td>{f.listVis}</td>
                       <td>
@@ -306,7 +301,6 @@ function summarizeOrganizerMatchRow(p: Portal, r: OrganizerMatchRow, locale: Loc
   return {
     starts: formatPortalDate(r.starts_at, locale),
     eventKind: portalLabelMatchEventKind(r.match_event_kind ?? null, p) || p.portalMatchesHubListDash,
-    psLevel: portalLabelPsMatchLevel(r.ps_match_level ?? null, p) || p.portalMatchesHubListDash,
     status: matchStatusLabel(p, r.status),
     listVis: visibilityLabel(p, r.participant_list_visibility),
   }
