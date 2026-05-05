@@ -198,6 +198,212 @@ a.portal-match-title-ellipsis:hover {
   }
 }
 
+/* Public match registration (squads + sign-up modal) ------------------------ */
+
+.portal-reg-root {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.portal-reg-slot-summary {
+  margin: 0 0 1rem;
+  padding: 0;
+  font-size: 0.953125rem;
+  line-height: 1.48;
+  font-weight: 650;
+  color: var(--text-h);
+}
+
+.portal-reg-phase-subtitle {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+}
+
+.portal-reg-phase-empty {
+  margin: 0 0 0.95rem;
+  font-size: 0.90625rem;
+  line-height: 1.52;
+  color: var(--text);
+}
+
+.portal-reg-phase-subtitle:not(:first-of-type) {
+  margin-top: 0.85rem;
+}
+
+.portal-reg-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 0.85rem;
+}
+
+.portal-reg-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.921875rem;
+}
+
+.portal-reg-table th,
+.portal-reg-table td {
+  padding: 0.5rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+
+.portal-reg-table thead th {
+  font-weight: 750;
+  color: var(--text-h);
+}
+
+.portal-reg-status-line {
+  margin: 0.55rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.portal-reg-feedback {
+  margin: 0.65rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.52;
+  white-space: pre-wrap;
+}
+
+.portal-reg-cta {
+  margin-top: 0.55rem;
+}
+
+.portal-reg-dev-auth-hint {
+  margin: 0.55rem 0 0;
+  font-size: 0.88rem;
+}
+
+.portal-reg-modal {
+  margin: auto;
+  border: none;
+  border-radius: 1rem;
+  padding: 0;
+  max-width: min(27rem, 94vw);
+  width: calc(100% - 2rem);
+  background: var(--btn-bg);
+  color: var(--text);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.28);
+}
+
+.portal-reg-modal::backdrop {
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.portal-reg-modal__panel {
+  padding: 1.12rem 1.15rem 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.portal-reg-modal__title {
+  margin: 0;
+  font-size: 1.14rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-h);
+}
+
+.portal-reg-modal__prefill {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.portal-reg-modal__profile-link {
+  color: var(--accent);
+  font-weight: 650;
+  white-space: normal;
+}
+
+.portal-reg-modal__profile-link:hover {
+  text-decoration: underline;
+}
+
+.portal-reg-modal__form {
+  display: grid;
+  gap: 0.68rem;
+  font-size: 0.928125rem;
+}
+
+.portal-reg-modal__label {
+  display: grid;
+  gap: 0.28rem;
+  font-weight: 650;
+}
+
+.portal-reg-modal__control {
+  font: inherit;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.portal-reg-modal__select {
+  max-width: 100%;
+}
+
+.portal-reg-modal__select--narrow {
+  max-width: 12rem;
+}
+
+.portal-reg-modal__categories {
+  margin: 0;
+  padding: 0.5rem 0.62rem;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--surface), var(--border) 8%);
+}
+
+.portal-reg-modal__categories-legend {
+  padding: 0 0.25rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.portal-reg-modal__cat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.25rem 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.portal-reg-modal__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.portal-reg-modal__check input {
+  margin-top: 0.12rem;
+  flex-shrink: 0;
+}
+
+.portal-reg-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.2rem;
+}
+
 /* Organizer match roster: breadcrumbs + table toolbar ----------------------- */
 
 .portal-roster-page__hero {

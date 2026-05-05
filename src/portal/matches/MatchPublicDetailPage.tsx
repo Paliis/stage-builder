@@ -402,6 +402,7 @@ export function MatchPublicDetailPage() {
       <MatchPublicRegistrationSection
         locale={locale}
         matchUuid={row.id}
+        matchDiscipline={row.discipline}
         p={p}
         prematchEnabled={Boolean(row.prematch_enabled)}
       />

@@ -1,10 +1,26 @@
-import { type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  type FormEvent,
+  type RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Link } from 'react-router-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
-import type { MessageTree } from '../../i18n/messages'
+import type { Locale, MessageTree } from '../../i18n/messages'
+import { formatTemplate } from '../../i18n/format'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
-import { resolveShooterCategoriesForStorage } from '../shooterProfileCatalog'
+import {
+  type WeaponClassId,
+  resolveShooterCategoriesForStorage,
+  SHOOTER_CATEGORIES,
+  WEAPON_CLASS_ORDER,
+  divisionsForWeapon,
+  isValidDivisionForWeapon,
+} from '../shooterProfileCatalog'
 import { sortPrematchFirstByPhase } from './matchSquadsSort'
 import { portalMatchRegLabelClass } from './matchPortalRegStatusUi'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
@@ -33,10 +49,18 @@ export type OwnRegistrationRow = {
 }
 
 type Props = {
-  locale: string
+  locale: Locale
   matchUuid: string
+  matchDiscipline: string
   p: Portal
   prematchEnabled: boolean
+}
+
+const SHOOTER_CATEGORY_IDS = new Set(SHOOTER_CATEGORIES.map((c) => c.id))
+
+function normalizeParticipantCategories(raw: unknown): string[] {
+  if (!Array.isArray(raw)) return []
+  return raw.filter((x): x is string => typeof x === 'string' && SHOOTER_CATEGORY_IDS.has(x))
 }
 
 function phaseOf(m: MetricRow): 'main' | 'prematch' {
@@ -52,11 +76,63 @@ function num(v: number | string | undefined): number {
   return 0
 }
 
-export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchEnabled }: Props) {
+function weaponClassForMatchDiscipline(raw: string): WeaponClassId {
+  const t = raw.trim()
+  return (WEAPON_CLASS_ORDER as readonly string[]).includes(t) ? (t as WeaponClassId) : 'shotgun'
+}
+
+function SquadFreeTable(props: {
+  rows: MetricRow[]
+  colSquad: string
+  colFree: string
+  fullLabel: string
+}) {
+  const { rows, colSquad, colFree, fullLabel } = props
+  if (rows.length === 0) return null
+  return (
+    <div className="portal-reg-table-wrap">
+      <table className="portal-reg-table">
+        <thead>
+          <tr>
+            <th scope="col">{colSquad}</th>
+            <th scope="col">{colFree}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => {
+            const cap = Number(r.capacity)
+            const tk = num(r.squad_taken)
+            const free = Math.max(0, cap - tk)
+            const fullRow = free <= 0
+            return (
+              <tr key={r.squad_id}>
+                <td title={r.squad_label}>{formatSquadLabelNumberOnly(r.squad_label)}</td>
+                <td>{fullRow ? fullLabel : `${free} / ${cap}`}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+export function MatchPublicRegistrationSection({
+  locale,
+  matchUuid,
+  matchDiscipline,
+  p,
+  prematchEnabled,
+}: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const sb = useMemo(() => getSupabase(), [])
   const configured = isSupabaseConfigured()
   const pathnameRedirect = `/${locale}/matches/${matchUuid}`
+
+  const matchWeaponClassId = weaponClassForMatchDiscipline(matchDiscipline)
+  const divisionOptions = divisionsForWeapon(matchWeaponClassId)
+
+  const regDialogRef = useRef<HTMLDialogElement>(null)
 
   const [metrics, setMetrics] = useState<MetricRow[] | undefined>(undefined)
   const [metricsError, setMetricsError] = useState<string | null>(null)
@@ -67,12 +143,12 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
   const [division, setDivision] = useState('')
   const [classification, setClassification] = useState('')
   const [powerFactor, setPowerFactor] = useState<'MAJOR' | 'MINOR' | ''>('')
+  const [signupCategories, setSignupCategories] = useState<string[]>([])
 
   const [submitBusy, setSubmitBusy] = useState(false)
   const [mineBusy, setMineBusy] = useState(false)
   const [feedback, setFeedback] = useState<string | null>(null)
 
-  /** Dedupe prefilling participant defaults per (match,user) pair; cleared when `matchUuid` changes. */
   const defaultsPrefetchKeyRef = useRef<string | null>(null)
 
   useEffect(() => {
@@ -83,6 +159,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
       setDivision('')
       setClassification('')
       setPowerFactor('')
+      setSignupCategories([])
       setFeedback(null)
     })
   }, [matchUuid])
@@ -125,21 +202,24 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
       .maybeSingle()
 
     if (error) {
+      defaultsPrefetchKeyRef.current = null
       setMine(null)
       setFeedback(`${p.matchesLoadError}: ${error.message}`)
       return
     }
     const row = data as OwnRegistrationRow | null
+    if (!row) defaultsPrefetchKeyRef.current = null
     setMine(row)
     setFeedback(null)
     if (row?.squad_id) setPickedSquad(row.squad_id)
-    if (row?.division) setDivision(row.division)
+    if (row?.division && isValidDivisionForWeapon(matchWeaponClassId, row.division))
+      setDivision(row.division)
     if (row?.classification_grade) setClassification(row.classification_grade)
     if (row?.power_factor) {
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setPowerFactor(pf === 'MAJOR' ? 'MAJOR' : pf === 'MINOR' ? 'MINOR' : '')
     }
-  }, [configured, sb, matchUuid, user, p.matchesLoadError])
+  }, [configured, sb, matchUuid, user, p.matchesLoadError, matchWeaponClassId])
 
   useEffect(() => {
     if (sessionLoading || !configured) return
@@ -158,7 +238,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
     void (async () => {
       const { data, error } = await sb
         .from('participant_registration_defaults')
-        .select('division, classification_grade, power_factor')
+        .select('division, classification_grade, power_factor, categories')
         .eq('user_id', user.id)
         .maybeSingle()
 
@@ -169,12 +249,14 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
         division?: string | null
         classification_grade?: string | null
         power_factor?: string | null
+        categories?: unknown
       }
 
       setDivision((d) => {
         const t = d.trim()
         if (t) return d
-        return typeof row.division === 'string' ? row.division : ''
+        const divRaw = typeof row.division === 'string' ? row.division : ''
+        return isValidDivisionForWeapon(matchWeaponClassId, divRaw) ? divRaw : ''
       })
       setClassification((c) => {
         const t = c.trim()
@@ -189,8 +271,51 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
           : ''
         return raw === 'MAJOR' ? 'MAJOR' : raw === 'MINOR' ? 'MINOR' : ''
       })
+      setSignupCategories((prev) => {
+        if (prev.length > 0) return prev
+        return normalizeParticipantCategories(row.categories)
+      })
     })()
-  }, [configured, sessionLoading, user?.id, mine, matchUuid, sb])
+  }, [
+    configured,
+    sessionLoading,
+    user?.id,
+    mine,
+    matchUuid,
+    sb,
+    matchWeaponClassId,
+  ])
+
+  const capacityTotals = useMemo(() => {
+    if (!metrics?.length) return null
+    let totalCap = 0
+    let totalFree = 0
+    for (const row of metrics) {
+      const cap = Number(row.capacity)
+      const tk = num(row.squad_taken)
+      totalCap += cap
+      totalFree += Math.max(0, cap - tk)
+    }
+    return { totalCap, totalFree }
+  }, [metrics])
+
+  const spotFreeMap = useMemo(() => {
+    const m: Record<string, number> = {}
+    if (!metrics) return m
+    for (const row of metrics) {
+      const cap = Number(row.capacity)
+      const tk = num(row.squad_taken)
+      m[row.squad_id] = Math.max(0, cap - tk)
+    }
+    return m
+  }, [metrics])
+
+  const prematchMetrics = useMemo(
+    () => (metrics ?? []).filter((r) => phaseOf(r) === 'prematch'),
+    [metrics],
+  )
+
+  const mainMetrics = useMemo(() => (metrics ?? []).filter((r) => phaseOf(r) === 'main'), [metrics])
 
   const matchTotal =
     metrics && metrics.length > 0 ? num(metrics[0]!.match_total_registered) : undefined
@@ -204,27 +329,6 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
     matchLimit !== undefined &&
     matchLimit > 0 &&
     matchTotal >= matchLimit
-
-  const prematchMetrics = useMemo(
-    () => (metrics ?? []).filter((r) => phaseOf(r) === 'prematch'),
-    [metrics],
-  )
-
-  const mainMetrics = useMemo(
-    () => (metrics ?? []).filter((r) => phaseOf(r) === 'main'),
-    [metrics],
-  )
-
-  const spotFreeMap = useMemo(() => {
-    const m: Record<string, number> = {}
-    if (!metrics) return m
-    for (const row of metrics) {
-      const cap = Number(row.capacity)
-      const tk = num(row.squad_taken)
-      m[row.squad_id] = Math.max(0, cap - tk)
-    }
-    return m
-  }, [metrics])
 
   const firstOpenSquad = useMemo(() => {
     if (!metrics || matchFull) return ''
@@ -242,6 +346,17 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
     await loadMine()
   }
 
+  function openRegistrationModal() {
+    if (!user?.id || metrics === undefined || metrics.length === 0 || matchFull) return
+    setFeedback(null)
+    if (!pickedSquad && firstOpenSquad) setPickedSquad(firstOpenSquad)
+    regDialogRef.current?.showModal()
+  }
+
+  function closeRegistrationModal() {
+    regDialogRef.current?.close()
+  }
+
   async function submitRegistration(ev: FormEvent) {
     ev.preventDefault()
     setFeedback(null)
@@ -257,6 +372,10 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
       setFeedback(p.matchDetailRegistrationPickOpenSquad)
       return
     }
+    if (!division.trim() || !isValidDivisionForWeapon(matchWeaponClassId, division.trim())) {
+      setFeedback(p.matchDetailRegistrationChooseDivision)
+      return
+    }
     const div = division.trim()
     const cg = classification.trim()
 
@@ -268,7 +387,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
       division: div,
       classification_grade: cg,
       power_factor: powerFactor === '' ? null : powerFactor,
-      categories: resolveShooterCategoriesForStorage([]),
+      categories: resolveShooterCategoriesForStorage(signupCategories),
     })
     setSubmitBusy(false)
 
@@ -277,6 +396,7 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
       return
     }
 
+    closeRegistrationModal()
     setFeedback(p.matchDetailRegistrationDonePending)
     await refreshAll()
   }
@@ -300,339 +420,270 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
 
   if (!configured) {
     return (
-      <section style={{ marginTop: '1.75rem' }} aria-labelledby="match-reg-heading">
+      <section className="portal-match-public-detail__section portal-reg-root" aria-labelledby="match-reg-heading">
         <p>{p.matchesSupabaseUnset}</p>
       </section>
     )
   }
 
-  return (
-    <section style={{ marginTop: '1.75rem', maxWidth: '48rem' }} aria-labelledby="match-reg-heading">
-      <h2
-        id="match-reg-heading"
-        className="portal-home__hero-title"
-        style={{
-          fontSize: '1.2rem',
-          fontWeight: 800,
-          margin: '0 0 0.65rem',
-          letterSpacing: '-0.02em',
-        }}
-      >
-        {p.matchDetailRegistrationHeading}
-      </h2>
-
-      {metricsError ?
-        <p role="alert" style={{ fontSize: '0.95rem' }}>
-          {p.matchesLoadError}: {metricsError}
-        </p>
-      : metrics === undefined ?
-        <p style={{ fontSize: '0.95rem' }}>{p.matchesLoadingDetail}</p>
-      : metrics.length === 0 ?
-        <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.55 }}>
-          {p.matchDetailRegistrationNoSquads}
-        </p>
-      : <>
-          {prematchEnabled ?
-            <>
-              <h3
-                style={{
-                  fontSize: '1rem',
-                  fontWeight: 700,
-                  margin: '0 0 0.45rem',
-                  letterSpacing: '-0.02em',
-                }}
+  function renderRegistrationModal(dlgRef: RefObject<HTMLDialogElement | null>) {
+    if (!metrics?.length) return null
+    return (
+      <dialog ref={dlgRef} className="portal-reg-modal" aria-labelledby="match-reg-modal-heading">
+        <div className="portal-reg-modal__panel">
+          <h3 id="match-reg-modal-heading" className="portal-reg-modal__title">
+            {p.matchDetailRegistrationModalTitle}
+          </h3>
+          <p className="portal-reg-modal__prefill">
+            {p.matchDetailRegistrationModalPrefillNote}{' '}
+            <Link to={`/${locale}/account`} className="portal-reg-modal__profile-link">
+              {p.matchDetailRegistrationModalProfileLink}
+            </Link>
+          </p>
+          <form
+            className="portal-reg-modal__form"
+            onSubmit={(ev) => void submitRegistration(ev)}
+          >
+            <label className="portal-reg-modal__label">
+              {p.matchDetailRegistrationFieldSquad}
+              <select
+                required
+                value={pickedSquad}
+                onChange={(ev) => setPickedSquad(ev.target.value)}
+                disabled={submitBusy}
+                className="portal-reg-modal__control portal-reg-modal__select"
               >
-                {p.matchDetailRegistrationPrematchHeading}
-              </h3>
-              {prematchMetrics.length === 0 ?
-                <p style={{ margin: '0 0 1rem', fontSize: '0.92rem' }}>{p.matchDetailRegistrationPrematchEmpty}</p>
-              : <div style={{ overflowX: 'auto', marginBottom: '1rem' }}>
-                  <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
-                    <thead>
-                      <tr>
-                        <th
-                          scope="col"
-                          style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
-                        >
-                          {p.matchDetailRegistrationColSquad}
-                        </th>
-                        <th
-                          scope="col"
-                          style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
-                        >
-                          {p.matchDetailRegistrationColFree}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {prematchMetrics.map((r) => {
-                        const cap = Number(r.capacity)
-                        const tk = num(r.squad_taken)
-                        const free = Math.max(0, cap - tk)
-                        const fullRow = free <= 0
-                        return (
-                          <tr key={r.squad_id}>
-                            <td
-                              style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                              title={r.squad_label}
-                            >
-                              {formatSquadLabelNumberOnly(r.squad_label)}
-                            </td>
-                            <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                              {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              }
+                <option value="">{p.matchDetailRegistrationSelectSquad}</option>
+                {(metrics ?? []).map((r) => {
+                  const phaseLabel =
+                    phaseOf(r) === 'prematch' ?
+                      p.matchDetailRegistrationPhaseShortPrematch
+                    : p.matchDetailRegistrationPhaseShortMain
+                  return (
+                    <option
+                      key={r.squad_id}
+                      value={r.squad_id}
+                      disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
+                    >
+                      [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} (
+                      {spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
+                    </option>
+                  )
+                })}
+              </select>
+            </label>
 
-              <h3
-                style={{
-                  fontSize: '1rem',
-                  fontWeight: 700,
-                  margin: '0.35rem 0 0.45rem',
-                  letterSpacing: '-0.02em',
-                }}
+            <label className="portal-reg-modal__label">
+              {p.matchDetailRegistrationDivision}
+              <select
+                required
+                value={division}
+                onChange={(e) => setDivision(e.target.value)}
+                disabled={submitBusy || divisionOptions.length === 0}
+                className="portal-reg-modal__control portal-reg-modal__select"
               >
-                {p.matchDetailRegistrationMainHeading}
-              </h3>
-              {mainMetrics.length === 0 ?
-                <p style={{ margin: '0 0 1rem', fontSize: '0.92rem' }}>{p.matchDetailRegistrationMainEmpty}</p>
-              : <div style={{ overflowX: 'auto', marginBottom: '1rem' }}>
-                  <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
-                    <thead>
-                      <tr>
-                        <th
-                          scope="col"
-                          style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
-                        >
-                          {p.matchDetailRegistrationColSquad}
-                        </th>
-                        <th
-                          scope="col"
-                          style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
-                        >
-                          {p.matchDetailRegistrationColFree}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {mainMetrics.map((r) => {
-                        const cap = Number(r.capacity)
-                        const tk = num(r.squad_taken)
-                        const free = Math.max(0, cap - tk)
-                        const fullRow = free <= 0
-                        return (
-                          <tr key={r.squad_id}>
-                            <td
-                              style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                              title={r.squad_label}
-                            >
-                              {formatSquadLabelNumberOnly(r.squad_label)}
-                            </td>
-                            <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                              {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              }
-            </>
-          : (
-            <div style={{ overflowX: 'auto', marginBottom: '1rem' }}>
-              <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
-                    >
-                      {p.matchDetailRegistrationColSquad}
-                    </th>
-                    <th
-                      scope="col"
-                      style={{ padding: '0.5rem 0.55rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}
-                    >
-                      {p.matchDetailRegistrationColFree}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(metrics ?? []).map((r) => {
-                    const cap = Number(r.capacity)
-                    const tk = num(r.squad_taken)
-                    const free = Math.max(0, cap - tk)
-                    const fullRow = free <= 0
-                    return (
-                      <tr key={r.squad_id}>
-                        <td
-                          style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                          title={r.squad_label}
-                        >
-                          {formatSquadLabelNumberOnly(r.squad_label)}
-                        </td>
-                        <td style={{ padding: '0.5rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                          {fullRow ? p.matchDetailRegistrationFull : `${free} / ${cap}`}
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+                <option value="">{p.accountParticipantOptionNotSelected}</option>
+                {divisionOptions.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {locale === 'en' ? d.labelEn : d.labelUk}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="portal-reg-modal__label">
+              {p.matchDetailRegistrationClass}
+              <input
+                type="text"
+                value={classification}
+                onChange={(e) => setClassification(e.target.value)}
+                disabled={submitBusy}
+                required
+                autoComplete="off"
+                className="portal-reg-modal__control"
+              />
+            </label>
+
+            <fieldset className="portal-reg-modal__categories">
+              <legend className="portal-reg-modal__categories-legend">{p.accountParticipantFieldCategory}</legend>
+              <div className="portal-reg-modal__cat-grid" role="group">
+                {SHOOTER_CATEGORIES.map((c) => {
+                  const checked = signupCategories.includes(c.id)
+                  const lab = locale === 'en' ? c.labelEn : c.labelUk
+                  return (
+                    <label key={c.id} className="portal-reg-modal__check">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        disabled={submitBusy}
+                        onChange={(e) => {
+                          const next = e.target.checked
+                          setSignupCategories((prev) => {
+                            if (next) return [...prev, c.id].filter((x, i, a) => a.indexOf(x) === i)
+                            return prev.filter((id) => id !== c.id)
+                          })
+                        }}
+                      />
+                      <span>{lab}</span>
+                    </label>
+                  )
+                })}
+              </div>
+            </fieldset>
+
+            <label className="portal-reg-modal__label">
+              {p.matchDetailRegistrationPFOptional}
+              <select
+                value={powerFactor}
+                onChange={(ev) =>
+                  setPowerFactor(ev.target.value === '' ? '' : ev.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
+                }
+                disabled={submitBusy}
+                className="portal-reg-modal__control portal-reg-modal__select portal-reg-modal__select--narrow"
+              >
+                <option value="">{p.matchDetailRegistrationPFNone}</option>
+                <option value="MAJOR">{p.matchDetailRegistrationPFMajor}</option>
+                <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
+              </select>
+            </label>
+
+            <div className="portal-reg-modal__actions">
+              <button type="button" className="portal-btn portal-btn--secondary" disabled={submitBusy} onClick={closeRegistrationModal}>
+                {p.matchDetailRegistrationModalClose}
+              </button>
+              <button type="submit" className="portal-btn portal-btn--primary" disabled={submitBusy}>
+                {submitBusy ? p.matchDetailRegistrationSubmitting : p.matchDetailRegistrationSubmit}
+              </button>
             </div>
-          )}
+          </form>
+        </div>
+      </dialog>
+    )
+  }
 
-          {matchFull ?
-            <p style={{ margin: '0 0 0.75rem', fontSize: '0.95rem', color: 'var(--text)' }}>
-              {p.matchDetailRegistrationMatchFull}
-            </p>
-          : null}
+  return (
+    <>
+      {renderRegistrationModal(regDialogRef)}
+      <section
+        className="portal-match-public-detail__section portal-reg-root"
+        aria-labelledby="match-reg-heading"
+      >
+        <h2 id="match-reg-heading" className="portal-match-public-detail__section-title">
+          {p.matchDetailRegistrationHeading}
+        </h2>
 
-          {sessionLoading ?
-            <p style={{ fontSize: '0.95rem' }}>{p.matchesLoadingDetail}</p>
-          : user ?
-            <>
-              {mine === undefined ?
-                <p style={{ fontSize: '0.95rem' }}>{p.matchesLoadingDetail}</p>
-              : mine ?
-                <>
-                  <p style={{ margin: '0 0 0.5rem', fontSize: '0.95rem', lineHeight: 1.55 }}>
-                    <strong>{p.matchDetailRegistrationYourStatus}: </strong>
-                    <span className={portalMatchRegLabelClass(mine.status)}>
-                      {mine.status === 'confirmed' ?
-                        p.matchDetailRegistrationStatusConfirmed
-                      : mine.status === 'pending' ?
-                        p.matchDetailRegistrationStatusPending
-                      : mine.status === 'cancelled' ?
-                        p.matchDetailRegistrationStatusCancelled
-                      : mine.status}
-                    </span>
-                  </p>
-                  {mine.status === 'pending' ?
-                    <button type="button" disabled={mineBusy} onClick={() => void cancelMine()}>
-                      {mineBusy ? p.matchDetailRegistrationCancelling : p.matchDetailRegistrationCancel}
-                    </button>
-                  : null}
-                </>
-              :
-                <>
-                  {!matchFull ?
-                    <form
-                      onSubmit={(ev) => void submitRegistration(ev)}
-                      style={{
-                        marginTop: '0.65rem',
-                        display: 'grid',
-                        gap: '0.65rem',
-                        maxWidth: '22rem',
-                        fontSize: '0.93rem',
-                      }}
-                    >
-                      <label style={{ display: 'grid', gap: '0.25rem' }}>
-                        {p.matchDetailRegistrationFieldSquad}
-                        <select
-                          required
-                          value={pickedSquad}
-                          onChange={(ev) => setPickedSquad(ev.target.value)}
-                          disabled={submitBusy}
-                          style={{
-                            padding: '0.4rem',
-                            borderRadius: '6px',
-                            border: '1px solid var(--border)',
-                          }}
-                        >
-                          <option value="">{p.matchDetailRegistrationSelectSquad}</option>
-                          {metrics.map((r) => {
-                            const phaseLabel =
-                              phaseOf(r) === 'prematch' ?
-                                p.matchDetailRegistrationPhaseShortPrematch
-                              : p.matchDetailRegistrationPhaseShortMain
-                            return (
-                              <option
-                                key={r.squad_id}
-                                value={r.squad_id}
-                                disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
-                              >
-                                [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} ({spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
-                              </option>
-                            )
-                          })}
-                        </select>
-                      </label>
-                      <label style={{ display: 'grid', gap: '0.25rem' }}>
-                        {p.matchDetailRegistrationDivision}
-                        <input
-                          type="text"
-                          value={division}
-                          onChange={(e) => setDivision(e.target.value)}
-                          disabled={submitBusy}
-                          required
-                          autoComplete="off"
-                        />
-                      </label>
-                      <label style={{ display: 'grid', gap: '0.25rem' }}>
-                        {p.matchDetailRegistrationClass}
-                        <input
-                          type="text"
-                          value={classification}
-                          onChange={(e) => setClassification(e.target.value)}
-                          disabled={submitBusy}
-                          required
-                          autoComplete="off"
-                        />
-                      </label>
-                      <label style={{ display: 'grid', gap: '0.25rem' }}>
-                        {p.matchDetailRegistrationPFOptional}
-                        <select
-                          value={powerFactor}
-                          onChange={(ev) =>
-                            setPowerFactor(ev.target.value === '' ? '' : ev.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
-                          }
-                          disabled={submitBusy}
-                          style={{
-                            padding: '0.4rem',
-                            borderRadius: '6px',
-                            border: '1px solid var(--border)',
-                            maxWidth: '12rem',
-                          }}
-                        >
-                          <option value="">{p.matchDetailRegistrationPFNone}</option>
-                          <option value="MAJOR">{p.matchDetailRegistrationPFMajor}</option>
-                          <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
-                        </select>
-                      </label>
-                      <button type="submit" disabled={submitBusy}>
-                        {submitBusy ? p.matchDetailRegistrationSubmitting : p.matchDetailRegistrationSubmit}
-                      </button>
-                    </form>
-                  : null}
+        {metricsError ?
+          <p role="alert" className="portal-match-public-detail__muted">
+            {p.matchesLoadError}: {metricsError}
+          </p>
+        : metrics === undefined ?
+          <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
+        : metrics.length === 0 ?
+          <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationNoSquads}</p>
+        : <>
+            {capacityTotals ?
+              <p className="portal-reg-slot-summary" role="status">
+                {formatTemplate(p.matchDetailRegistrationCapacitySummary, {
+                  free: capacityTotals.totalFree,
+                  total: capacityTotals.totalCap,
+                })}
+              </p>
+            : null}
 
-                  {feedback ?
-                    <p role="status" style={{ margin: '0.65rem 0 0', fontSize: '0.9rem', whiteSpace: 'pre-wrap' }}>
-                      {feedback}
+            {prematchEnabled ?
+              <>
+                <h3 className="portal-reg-phase-subtitle">{p.matchDetailRegistrationPrematchHeading}</h3>
+                {prematchMetrics.length === 0 ?
+                  <p className="portal-reg-phase-empty">{p.matchDetailRegistrationPrematchEmpty}</p>
+                : <SquadFreeTable
+                    rows={prematchMetrics}
+                    colSquad={p.matchDetailRegistrationColSquad}
+                    colFree={p.matchDetailRegistrationColFree}
+                    fullLabel={p.matchDetailRegistrationFull}
+                  />}
+
+                <h3 className="portal-reg-phase-subtitle">{p.matchDetailRegistrationMainHeading}</h3>
+                {mainMetrics.length === 0 ?
+                  <p className="portal-reg-phase-empty">{p.matchDetailRegistrationMainEmpty}</p>
+                : <SquadFreeTable
+                    rows={mainMetrics}
+                    colSquad={p.matchDetailRegistrationColSquad}
+                    colFree={p.matchDetailRegistrationColFree}
+                    fullLabel={p.matchDetailRegistrationFull}
+                  />}
+              </>
+            : <SquadFreeTable
+                rows={metrics}
+                colSquad={p.matchDetailRegistrationColSquad}
+                colFree={p.matchDetailRegistrationColFree}
+                fullLabel={p.matchDetailRegistrationFull}
+              />}
+
+            {matchFull ?
+              <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationMatchFull}</p>
+            : null}
+
+            {sessionLoading ?
+              <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
+            : user ?
+              <>
+                {mine === undefined ?
+                  <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
+                : mine ?
+                  <>
+                    <p className="portal-reg-status-line">
+                      <strong>{p.matchDetailRegistrationYourStatus}: </strong>
+                      <span className={portalMatchRegLabelClass(mine.status)}>
+                        {mine.status === 'confirmed' ?
+                          p.matchDetailRegistrationStatusConfirmed
+                        : mine.status === 'pending' ?
+                          p.matchDetailRegistrationStatusPending
+                        : mine.status === 'cancelled' ?
+                          p.matchDetailRegistrationStatusCancelled
+                        : mine.status}
+                      </span>
                     </p>
-                  : null}
-                </>
-              }
-            </>
-          :
-            <>
-              <p style={{ margin: '0 0 0.55rem', fontSize: '0.95rem' }}>{p.matchDetailRegistrationSignInIntro}</p>
-              <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
-              {import.meta.env.DEV ?
-                <p style={{ margin: '0.55rem 0 0', fontSize: '0.88rem' }}>
-                  <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>
-                </p>
-              : null}
-            </>
-          }
-        </>
-      }
-    </section>
+                    {mine.status === 'pending' ?
+                      <button
+                        type="button"
+                        className="portal-btn portal-btn--secondary portal-btn--compact"
+                        disabled={mineBusy}
+                        onClick={() => void cancelMine()}
+                      >
+                        {mineBusy ? p.matchDetailRegistrationCancelling : p.matchDetailRegistrationCancel}
+                      </button>
+                    : null}
+                  </>
+                : !matchFull ?
+                  <button
+                    type="button"
+                    className="portal-btn portal-btn--primary portal-reg-cta"
+                    onClick={openRegistrationModal}
+                  >
+                    {p.matchDetailRegistrationCta}
+                  </button>
+                : null}
+
+                {feedback ?
+                  <p role="status" className="portal-reg-feedback">
+                    {feedback}
+                  </p>
+                : null}
+              </>
+            :
+              <>
+                <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationSignInIntro}</p>
+                <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
+                {import.meta.env.DEV ?
+                  <p className="portal-reg-dev-auth-hint">
+                    <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>
+                  </p>
+                : null}
+              </>
+            }
+          </>
+        }
+      </section>
+    </>
   )
 }

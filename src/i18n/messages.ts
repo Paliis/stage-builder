@@ -486,6 +486,14 @@ export type MessageTree = {
     matchDetailRegistrationCancelling: string
     matchDetailRegistrationPickOpenSquad: string
     matchDetailRegistrationErrorPrefix: string
+    /** Squad capacity aggregate — `{{free}}`, `{{total}}` placeholders. */
+    matchDetailRegistrationCapacitySummary: string
+    matchDetailRegistrationCta: string
+    matchDetailRegistrationModalTitle: string
+    matchDetailRegistrationModalClose: string
+    matchDetailRegistrationModalPrefillNote: string
+    matchDetailRegistrationModalProfileLink: string
+    matchDetailRegistrationChooseDivision: string
     portalCompactAuthAria: string
     portalCompactAuthSignIn: string
     portalCompactAuthSignUp: string
@@ -1466,6 +1474,14 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationCancelling: 'Скасування…',
     matchDetailRegistrationPickOpenSquad: 'Оберіть сквод із вільними місцями.',
     matchDetailRegistrationErrorPrefix: 'Помилка',
+    matchDetailRegistrationCapacitySummary: 'У скводах вільних місць: {{free}} з {{total}}.',
+    matchDetailRegistrationCta: 'Зареєструватись',
+    matchDetailRegistrationModalTitle: 'Подання заявки на матч',
+    matchDetailRegistrationModalClose: 'Закрити',
+    matchDetailRegistrationModalPrefillNote:
+      'Типові значення з вашої картки стрільця; за потреби змініть їх перед надсиланням.',
+    matchDetailRegistrationModalProfileLink: 'Картка стрільця в обліковому записі',
+    matchDetailRegistrationChooseDivision: 'Оберіть дивізіон.',
     portalCompactAuthAria: 'Режим входу',
     portalCompactAuthSignIn: 'Вхід',
     portalCompactAuthSignUp: 'Реєстрація',
@@ -2454,6 +2470,14 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationCancelling: 'Cancelling…',
     matchDetailRegistrationPickOpenSquad: 'Choose a squad with open seats.',
     matchDetailRegistrationErrorPrefix: 'Error',
+    matchDetailRegistrationCapacitySummary: 'Free seats across squads: {{free}} of {{total}}.',
+    matchDetailRegistrationCta: 'Register',
+    matchDetailRegistrationModalTitle: 'Match sign-up',
+    matchDetailRegistrationModalClose: 'Close',
+    matchDetailRegistrationModalPrefillNote:
+      'Prefilled from your shooter profile; edit if needed before submitting.',
+    matchDetailRegistrationModalProfileLink: 'Edit profile defaults',
+    matchDetailRegistrationChooseDivision: 'Choose a division.',
     portalCompactAuthAria: 'Sign-in mode',
     portalCompactAuthSignIn: 'Sign in',
     portalCompactAuthSignUp: 'Sign up',
