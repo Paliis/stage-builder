@@ -437,6 +437,7 @@ export type MessageTree = {
     /** Short line in masthead when the user’s registration is confirmed. */
     matchDetailRegistrationMastheadRegistered: string
     matchDetailPrematchLabel: string
+    /** Short label in public match detail facts (prematch row). */
     matchDetailPrematchValueYes: string
     matchDetailPrematchValueNo: string
     /** Public match card: linked exercises (match_stage_links). */
@@ -1429,8 +1430,8 @@ export const ukMessages: MessageTree = {
     matchDetailMastheadActionsAria: 'Реєстрація на матч',
     matchDetailRegistrationMastheadRegistered: 'Ви зареєстровані',
     matchDetailPrematchLabel: 'Прематч',
-    matchDetailPrematchValueYes: 'Так — окремі скводи напередодні',
-    matchDetailPrematchValueNo: 'ні',
+    matchDetailPrematchValueYes: 'Так',
+    matchDetailPrematchValueNo: 'Ні',
     matchDetailProgrammeHeading: 'Програма',
     matchDetailProgrammeViewLink: 'Схема / брифінг',
     matchDetailProgrammeFootnote: '',
@@ -2433,8 +2434,8 @@ export const enMessages: MessageTree = {
     matchDetailMastheadActionsAria: 'Match registration',
     matchDetailRegistrationMastheadRegistered: 'You are registered',
     matchDetailPrematchLabel: 'Prematch',
-    matchDetailPrematchValueYes: 'Yes — separate squads the day before',
-    matchDetailPrematchValueNo: 'no',
+    matchDetailPrematchValueYes: 'Yes',
+    matchDetailPrematchValueNo: 'No',
     matchDetailProgrammeHeading: 'Programme',
     matchDetailProgrammeViewLink: 'Course of fire',
     matchDetailProgrammeFootnote: '',

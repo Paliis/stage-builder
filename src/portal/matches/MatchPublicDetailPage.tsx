@@ -322,44 +322,53 @@ export function MatchPublicDetailPage() {
         <title>{helmetTitle}</title>
       </Helmet>
 
-      <nav
-        className="portal-page-context portal-match-public-detail__breadcrumbs"
-        aria-label={p.portalBreadcrumbAria}
-      >
-        <ol className="portal-breadcrumbs portal-match-public-detail__breadcrumbs-list">
-          <li>
-            <Link to={`/${locale}/matches`}>{p.navMatches}</Link>
-          </li>
-          <li className="portal-breadcrumbs__current">
-            <span className="portal-match-public-detail__crumb-title" title={row.title}>
-              {row.title}
-            </span>
-          </li>
-        </ol>
-      </nav>
-
       <section
         className={`portal-match-public-detail__masthead${hasCover ? ' portal-match-public-detail__masthead--has-cover' : ''}`}
       >
         <div className="portal-match-public-detail__masthead-sheet">
+          <nav
+            className="portal-page-context portal-match-public-detail__breadcrumbs"
+            aria-label={p.portalBreadcrumbAria}
+          >
+            <ol className="portal-breadcrumbs portal-match-public-detail__breadcrumbs-list">
+              <li>
+                <Link to={`/${locale}/matches`}>{p.navMatches}</Link>
+              </li>
+              <li className="portal-breadcrumbs__current">
+                <span className="portal-match-public-detail__crumb-title" title={row.title}>
+                  {row.title}
+                </span>
+              </li>
+            </ol>
+          </nav>
+
           <div
             className={`portal-match-public-detail__masthead-grid${hasCover ? ' portal-match-public-detail__masthead-grid--has-cover' : ''}`}
           >
             {hasCover ?
-              <figure className="portal-match-public-detail__cover">
-                <img src={coverUrl} alt="" loading="lazy" decoding="async" />
-              </figure>
+              <div className="portal-match-public-detail__masthead-cover-col">
+                <figure className="portal-match-public-detail__cover">
+                  <img src={coverUrl} alt="" loading="lazy" decoding="async" />
+                </figure>
+                <div
+                  className="portal-match-public-detail__masthead-cta-slot"
+                  ref={setMastheadCtaMount}
+                  aria-label={p.matchDetailMastheadActionsAria}
+                />
+              </div>
             : null}
             <div className="portal-match-public-detail__masthead-main">
               <header className="portal-home__hero portal-match-public-detail__title-block">
                 <h1 className="portal-home__hero-title portal-match-public-detail__hero-heading">{row.title}</h1>
               </header>
 
-              <div
-                className="portal-match-public-detail__masthead-cta-slot"
-                ref={setMastheadCtaMount}
-                aria-label={p.matchDetailMastheadActionsAria}
-              />
+              {!hasCover ?
+                <div
+                  className="portal-match-public-detail__masthead-cta-slot"
+                  ref={setMastheadCtaMount}
+                  aria-label={p.matchDetailMastheadActionsAria}
+                />
+              : null}
 
               <dl className="portal-match-public-detail__facts">
                 <dt>{p.matchDetailStartsLabel}</dt>
@@ -400,7 +409,9 @@ export function MatchPublicDetailPage() {
                   </>
                 : null}
                 <dt>{p.matchDetailPrematchLabel}</dt>
-                <dd>{row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}</dd>
+                <dd className="portal-match-public-detail__facts-dd--prematch">
+                  {row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}
+                </dd>
               </dl>
             </div>
           </div>
