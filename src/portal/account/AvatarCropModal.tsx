@@ -81,7 +81,7 @@ export function AvatarCropModal({
             aspect={1}
             cropShape="round"
             showGrid={false}
-            objectFit="cover"
+            objectFit="contain"
             minZoom={1}
             maxZoom={4}
             onCropChange={setCrop}

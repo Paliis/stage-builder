@@ -79,7 +79,7 @@ export function MatchCoverCropModal({
             aspect={COVER_ASPECT}
             cropShape="rect"
             showGrid
-            objectFit="cover"
+            objectFit="contain"
             minZoom={1}
             maxZoom={4}
             onCropChange={setCrop}
