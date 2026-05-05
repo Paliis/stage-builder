@@ -105,6 +105,16 @@ function countOnSquad(
   return n
 }
 
+/** Middle breadcrumb label: cap length so trash titles do not span the whole row; full text stays on `title`. */
+const BREADCRUMB_MATCH_TITLE_MAX = 50
+
+function truncateBreadcrumbMiddle(text: string, maxChars: number): string {
+  const t = text.trim()
+  const chars = Array.from(t)
+  if (chars.length <= maxChars) return t
+  return `${chars.slice(0, Math.max(0, maxChars - 1)).join('')}…`
+}
+
 function validSquadsForRegistration(
   reg: RosterRpcRow,
   rosterList: RosterRpcRow[],
@@ -445,7 +455,9 @@ export function OrganizerMatchRegistrationsPage() {
           {matchId && matchTitle?.trim() ?
             <li className="portal-breadcrumbs__trail portal-breadcrumbs__trail--stretch">
               <Link to={`/${locale}/matches/my/${matchId}`} title={matchTitle}>
-                <span className="portal-breadcrumbs__ellipsis">{matchTitle}</span>
+                <span className="portal-breadcrumbs__ellipsis">
+                  {truncateBreadcrumbMiddle(matchTitle, BREADCRUMB_MATCH_TITLE_MAX)}
+                </span>
               </Link>
             </li>
           : null}
@@ -453,7 +465,7 @@ export function OrganizerMatchRegistrationsPage() {
         </ol>
       </nav>
 
-      <header className="portal-home__hero">
+      <header className="portal-home__hero portal-roster-page__hero">
         <h1
           className="portal-home__hero-title portal-match-title-hero-wrap portal-match-title-hero-wrap--clamp-2"
           title={matchTitle?.trim() ? matchTitle : undefined}
@@ -473,54 +485,55 @@ export function OrganizerMatchRegistrationsPage() {
         <p>{p.matchOrgRosterEmpty}</p>
       : (
         <>
-          <div className="portal-roster-toolbar">
-            <div
-              className="portal-roster-toolbar__tabs"
-              role="tablist"
-              aria-label={locale === 'uk' ? 'Вигляд списку заявок' : 'Registration list view'}
-            >
-              <button
-                type="button"
-                role="tab"
-                className="portal-roster-tab"
-                aria-selected={rosterView === 'table'}
-                onClick={() => setRosterView('table')}
+          <div className="portal-roster-page__sheet">
+            <div className="portal-roster-toolbar">
+              <div
+                className="portal-roster-toolbar__tabs"
+                role="tablist"
+                aria-label={locale === 'uk' ? 'Вигляд списку заявок' : 'Registration list view'}
               >
-                {p.matchOrgRosterViewTable}
-              </button>
-              <button
-                type="button"
-                role="tab"
-                className="portal-roster-tab"
-                aria-selected={rosterView === 'board'}
-                onClick={() => {
-                  setPendingSquad({})
-                  setRosterView('board')
-                }}
-              >
-                {p.matchOrgRosterViewBoard}
-              </button>
-            </div>
-
-            {rosterView === 'table' ?
-              <div className="portal-roster-toolbar__actions">
                 <button
                   type="button"
-                  className={
-                    tableHasUnsavedDrafts && !saveTableBusy ? 'portal-btn portal-btn--primary portal-btn--compact'
-                    : 'portal-btn portal-btn--secondary portal-btn--compact'
-                  }
-                  disabled={!tableHasUnsavedDrafts || saveTableBusy}
-                  style={saveTableBusy ? { cursor: 'wait' } : undefined}
-                  onClick={() => void saveTablePage()}
+                  role="tab"
+                  className="portal-roster-tab"
+                  aria-selected={rosterView === 'table'}
+                  onClick={() => setRosterView('table')}
                 >
-                  {saveTableBusy ? p.matchOrgRosterSaving : p.matchOrgRosterSavePage}
+                  {p.matchOrgRosterViewTable}
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  className="portal-roster-tab"
+                  aria-selected={rosterView === 'board'}
+                  onClick={() => {
+                    setPendingSquad({})
+                    setRosterView('board')
+                  }}
+                >
+                  {p.matchOrgRosterViewBoard}
                 </button>
               </div>
-            : null}
-          </div>
 
-          {rosterView === 'board' ?
+              {rosterView === 'table' ?
+                <div className="portal-roster-toolbar__actions">
+                  <button
+                    type="button"
+                    className={
+                      tableHasUnsavedDrafts && !saveTableBusy ? 'portal-btn portal-btn--primary portal-btn--compact'
+                      : 'portal-btn portal-btn--secondary portal-btn--compact'
+                    }
+                    disabled={!tableHasUnsavedDrafts || saveTableBusy}
+                    style={saveTableBusy ? { cursor: 'wait' } : undefined}
+                    onClick={() => void saveTablePage()}
+                  >
+                    {saveTableBusy ? p.matchOrgRosterSaving : p.matchOrgRosterSavePage}
+                  </button>
+                </div>
+              : null}
+            </div>
+
+            {rosterView === 'board' ?
             squads.length > 0 ?
               <OrganizerMatchRosterBoard
                 locale={locale}
@@ -548,7 +561,7 @@ export function OrganizerMatchRegistrationsPage() {
 
           {rosterView === 'table' ?
             <>
-              <div style={{ overflowX: 'auto', marginTop: '0.65rem', maxWidth: 'min(48rem, 100%)' }}>
+              <div className="portal-roster-page__table-scroll">
           <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
             <thead>
               <tr>
@@ -716,6 +729,7 @@ export function OrganizerMatchRegistrationsPage() {
             </div>
             </>
           : null}
+          </div>
         </>
       )}
     </div>
