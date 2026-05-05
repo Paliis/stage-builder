@@ -18,6 +18,9 @@ export type OrganizerRosterReg = {
   squad_capacity: number
   status: string
   division: string
+  phone: string
+  weapon_details: string
+  competitor_region: string
   registration_created_at?: string | null
 }
 
@@ -196,6 +199,23 @@ export function OrganizerMatchRosterBoard({
                         </div>
                         <div className="portal-roster-board-card__division" title={divLine}>
                           {divLine}
+                        </div>
+                        <div
+                          className="portal-roster-board-card__extra"
+                          title={
+                            [reg.phone?.trim(), reg.competitor_region?.trim(), reg.weapon_details?.trim()]
+                              .filter(Boolean)
+                              .join(' · ') || undefined
+                          }
+                        >
+                          {(reg.phone ?? '').trim() ?
+                            <span className="portal-roster-board-card__phone">{reg.phone.trim()}</span>
+                          : null}
+                          {(reg.competitor_region ?? '').trim() || (reg.weapon_details ?? '').trim() ?
+                            <span className="portal-roster-board-card__meta">
+                              {[reg.competitor_region?.trim(), reg.weapon_details?.trim()].filter(Boolean).join(' · ')}
+                            </span>
+                          : null}
                         </div>
                       </div>
                       {tone ? null : (

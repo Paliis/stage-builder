@@ -505,6 +505,15 @@ export type MessageTree = {
     matchDetailRegistrationRegisteredNameEmpty: string
     matchDetailRegistrationEditInAccount: string
     matchDetailRegistrationChooseDivision: string
+    matchDetailRegistrationSectionContact: string
+    matchDetailRegistrationSectionMatch: string
+    matchDetailRegistrationSectionWeapon: string
+    matchDetailRegistrationPhone: string
+    matchDetailRegistrationPhoneInvalid: string
+    matchDetailRegistrationWeaponDetails: string
+    matchDetailRegistrationWeaponDetailsPlaceholder: string
+    matchDetailRegistrationProfileWeaponClass: string
+    matchDetailRegistrationProfileRegion: string
     portalCompactAuthAria: string
     portalCompactAuthSignIn: string
     portalCompactAuthSignUp: string
@@ -637,6 +646,9 @@ export type MessageTree = {
     accountParticipantFieldRegionPlaceholder: string
     accountParticipantFieldFirstName: string
     accountParticipantFieldLastName: string
+    accountParticipantFieldPhone: string
+    accountParticipantFieldWeaponDetails: string
+    accountParticipantWeaponDetailsPlaceholder: string
     accountParticipantAvatarLabel: string
     accountParticipantAvatarChange: string
     accountParticipantAvatarRemove: string
@@ -816,6 +828,9 @@ export type MessageTree = {
     matchOrgRosterEditMatch: string
     matchOrgRosterEmpty: string
     matchOrgRosterColName: string
+    matchOrgRosterColPhone: string
+    matchOrgRosterColRegion: string
+    matchOrgRosterColWeaponDetails: string
     matchOrgRosterColDivision: string
     matchOrgRosterColStatus: string
     matchOrgRosterColSquad: string
@@ -1500,6 +1515,15 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationRegisteredNameEmpty: 'Не зазначено в обліковому записі.',
     matchDetailRegistrationEditInAccount: 'Змінити в кабінеті',
     matchDetailRegistrationChooseDivision: 'Оберіть дивізіон.',
+    matchDetailRegistrationSectionContact: 'Контакт',
+    matchDetailRegistrationSectionMatch: 'Участь',
+    matchDetailRegistrationSectionWeapon: 'Про зброю та регіон',
+    matchDetailRegistrationPhone: 'Телефон',
+    matchDetailRegistrationPhoneInvalid: 'Вкажіть дійсний номер телефону (щонайменше 7 символів).',
+    matchDetailRegistrationWeaponDetails: 'Опис зброї',
+    matchDetailRegistrationWeaponDetailsPlaceholder: 'Марка, модель, калібр тощо',
+    matchDetailRegistrationProfileWeaponClass: 'Клас зброї в профілі',
+    matchDetailRegistrationProfileRegion: 'Регіон у профілі',
     portalCompactAuthAria: 'Режим входу',
     portalCompactAuthSignIn: 'Вхід',
     portalCompactAuthSignUp: 'Реєстрація',
@@ -1635,6 +1659,9 @@ export const ukMessages: MessageTree = {
     accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
     accountParticipantFieldFirstName: "Ім'я (для PractiScore)",
     accountParticipantFieldLastName: 'Прізвище (для PractiScore)',
+    accountParticipantFieldPhone: 'Телефон',
+    accountParticipantFieldWeaponDetails: 'Опис зброї',
+    accountParticipantWeaponDetailsPlaceholder: 'Марка, модель, калібр (за потреби)',
     accountParticipantAvatarLabel: 'Фото профілю',
     accountParticipantAvatarChange: 'Обрати фото',
     accountParticipantAvatarRemove: 'Без фото',
@@ -1828,6 +1855,9 @@ export const ukMessages: MessageTree = {
     matchOrgRosterEditMatch: 'Назад до картки матчу',
     matchOrgRosterEmpty: 'Заявок ще немає.',
     matchOrgRosterColName: 'Учасник',
+    matchOrgRosterColPhone: 'Телефон',
+    matchOrgRosterColRegion: 'Регіон',
+    matchOrgRosterColWeaponDetails: 'Зброя',
     matchOrgRosterColDivision: 'Дивізіон',
     matchOrgRosterColStatus: 'Статус',
     matchOrgRosterColSquad: 'Сквод',
@@ -2505,6 +2535,15 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationRegisteredNameEmpty: 'Not set on your account.',
     matchDetailRegistrationEditInAccount: 'Edit in account',
     matchDetailRegistrationChooseDivision: 'Choose a division.',
+    matchDetailRegistrationSectionContact: 'Contact',
+    matchDetailRegistrationSectionMatch: 'Participation',
+    matchDetailRegistrationSectionWeapon: 'Firearms & region',
+    matchDetailRegistrationPhone: 'Phone',
+    matchDetailRegistrationPhoneInvalid: 'Enter a valid phone number (at least 7 characters).',
+    matchDetailRegistrationWeaponDetails: 'Firearm description',
+    matchDetailRegistrationWeaponDetailsPlaceholder: 'Make, model, caliber',
+    matchDetailRegistrationProfileWeaponClass: 'Weapon class (profile)',
+    matchDetailRegistrationProfileRegion: 'Region (profile)',
     portalCompactAuthAria: 'Sign-in mode',
     portalCompactAuthSignIn: 'Sign in',
     portalCompactAuthSignUp: 'Sign up',
@@ -2641,6 +2680,9 @@ export const enMessages: MessageTree = {
     accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
     accountParticipantFieldFirstName: 'First name (PractiScore)',
     accountParticipantFieldLastName: 'Last name (PractiScore)',
+    accountParticipantFieldPhone: 'Phone',
+    accountParticipantFieldWeaponDetails: 'Firearm description',
+    accountParticipantWeaponDetailsPlaceholder: 'Make, model, caliber (optional)',
     accountParticipantAvatarLabel: 'Profile photo',
     accountParticipantAvatarChange: 'Choose photo',
     accountParticipantAvatarRemove: 'Remove photo',
@@ -2834,6 +2876,9 @@ export const enMessages: MessageTree = {
     matchOrgRosterEditMatch: 'Back to match draft',
     matchOrgRosterEmpty: 'No registrations yet.',
     matchOrgRosterColName: 'Shooter',
+    matchOrgRosterColPhone: 'Phone',
+    matchOrgRosterColRegion: 'Region',
+    matchOrgRosterColWeaponDetails: 'Firearm',
     matchOrgRosterColDivision: 'Division',
     matchOrgRosterColStatus: 'Status',
     matchOrgRosterColSquad: 'Squad',

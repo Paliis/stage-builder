@@ -73,6 +73,8 @@ const DEFAULT_SELECT = [
   'weapon_class',
   'first_name',
   'last_name',
+  'phone',
+  'weapon_details',
   'avatar_url',
 ].join(', ')
 
@@ -147,6 +149,8 @@ export function AccountParticipantHub({
   const [defWeaponClass, setDefWeaponClass] = useState('')
   const [defFirstName, setDefFirstName] = useState('')
   const [defLastName, setDefLastName] = useState('')
+  const [defPhone, setDefPhone] = useState('')
+  const [defWeaponDetails, setDefWeaponDetails] = useState('')
   const [defAvatarUrl, setDefAvatarUrl] = useState('')
   const [avatarBusy, setAvatarBusy] = useState(false)
   const [avatarErr, setAvatarErr] = useState<string | null>(null)
@@ -177,6 +181,8 @@ export function AccountParticipantHub({
       weapon_class?: string
       first_name?: string
       last_name?: string
+      phone?: string
+      weapon_details?: string
       avatar_url?: string
     } | null
     if (row) {
@@ -192,6 +198,8 @@ export function AccountParticipantHub({
       setDefCategories(normalizeCategoryList(row.categories))
       setDefFirstName(typeof row.first_name === 'string' ? row.first_name : '')
       setDefLastName(typeof row.last_name === 'string' ? row.last_name : '')
+      setDefPhone(typeof row.phone === 'string' ? row.phone : '')
+      setDefWeaponDetails(typeof row.weapon_details === 'string' ? row.weapon_details : '')
       setDefAvatarUrl(typeof row.avatar_url === 'string' ? row.avatar_url : '')
     }
   }, [sb, userId, p])
@@ -275,6 +283,8 @@ export function AccountParticipantHub({
       division: defDiv.trim(),
       classification_grade: '',
       power_factor: defPf === '' ? null : defPf,
+      phone: defPhone.trim(),
+      weapon_details: defWeaponDetails.trim(),
       region: defRegion.trim(),
       categories: resolveShooterCategoriesForStorage(defCategories),
       weapon_class: defWeaponClass.trim(),
@@ -293,6 +303,8 @@ export function AccountParticipantHub({
     userId,
     defDiv,
     defPf,
+    defPhone,
+    defWeaponDetails,
     defRegion,
     defCategories,
     defWeaponClass,
@@ -446,6 +458,16 @@ export function AccountParticipantHub({
                   autoComplete="family-name"
                 />
               </label>
+              <label className="portal-account__field portal-account__psc-grid--full">
+                {p.accountParticipantFieldPhone}
+                <input
+                  type="tel"
+                  value={defPhone}
+                  onChange={(e) => setDefPhone(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="tel"
+                />
+              </label>
               <div className="portal-account__avatar-row portal-account__psc-grid--full">
                 <span className="portal-account__field portal-account__avatar-label">{p.accountParticipantAvatarLabel}</span>
                 <div className="portal-account__avatar-controls">
@@ -552,6 +574,17 @@ export function AccountParticipantHub({
                   disabled={defSaving}
                   autoComplete="off"
                   placeholder={p.accountParticipantFieldRegionPlaceholder}
+                />
+              </label>
+              <label className="portal-account__field portal-account__psc-grid--full">
+                {p.accountParticipantFieldWeaponDetails}
+                <textarea
+                  value={defWeaponDetails}
+                  onChange={(e) => setDefWeaponDetails(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="off"
+                  rows={3}
+                  placeholder={p.accountParticipantWeaponDetailsPlaceholder}
                 />
               </label>
               <label className="portal-account__field">

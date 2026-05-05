@@ -32,6 +32,9 @@ type RosterRpcRow = {
   squad_capacity: number
   status: string
   division: string
+  phone: string
+  weapon_details: string
+  competitor_region: string
   registration_created_at?: string | null
 }
 
@@ -544,6 +547,24 @@ export function OrganizerMatchRegistrationsPage() {
                   scope="col"
                   style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
                 >
+                  {p.matchOrgRosterColPhone}
+                </th>
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                >
+                  {p.matchOrgRosterColRegion}
+                </th>
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', minWidth: '7rem' }}
+                >
+                  {p.matchOrgRosterColWeaponDetails}
+                </th>
+                <th
+                  scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
+                >
                   {p.matchOrgRosterColDivision}
                 </th>
                 <th
@@ -578,6 +599,24 @@ export function OrganizerMatchRegistrationsPage() {
                   <tr key={reg.registration_id} className={rowCue}>
                     <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                       {displayName(reg)}
+                    </td>
+                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>
+                      {(reg.phone ?? '').trim() || '—'}
+                    </td>
+                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
+                      {(reg.competitor_region ?? '').trim() || '—'}
+                    </td>
+                    <td
+                      style={{
+                        padding: '0.45rem 0.55rem',
+                        borderBottom: '1px solid var(--border)',
+                        maxWidth: '14rem',
+                        fontSize: '0.86rem',
+                        lineHeight: 1.45,
+                      }}
+                      title={(reg.weapon_details ?? '').trim() || undefined}
+                    >
+                      {(reg.weapon_details ?? '').trim() || '—'}
                     </td>
                     <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                       {reg.division}

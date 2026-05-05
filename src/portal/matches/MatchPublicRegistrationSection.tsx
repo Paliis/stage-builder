@@ -20,6 +20,7 @@ import {
   WEAPON_CLASS_ORDER,
   divisionsForWeapon,
   isValidDivisionForWeapon,
+  weaponClassLabel,
 } from '../shooterProfileCatalog'
 import {
   type RegistrationMetricRow,
@@ -76,6 +77,10 @@ type ParticipantDefaultsRow = {
   categories?: unknown
   first_name?: string | null
   last_name?: string | null
+  phone?: string | null
+  weapon_details?: string | null
+  region?: string | null
+  weapon_class?: string | null
 }
 
 export function MatchPublicRegistrationSection({
@@ -106,6 +111,10 @@ export function MatchPublicRegistrationSection({
   const [signupCategories, setSignupCategories] = useState<string[]>([])
   const [cabinetFirstName, setCabinetFirstName] = useState('')
   const [cabinetLastName, setCabinetLastName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [weaponDetails, setWeaponDetails] = useState('')
+  const [cabinetRegion, setCabinetRegion] = useState('')
+  const [cabinetWeaponClassId, setCabinetWeaponClassId] = useState('')
 
   const [submitBusy, setSubmitBusy] = useState(false)
   const [mineBusy, setMineBusy] = useState(false)
@@ -123,6 +132,10 @@ export function MatchPublicRegistrationSection({
       setSignupCategories([])
       setCabinetFirstName('')
       setCabinetLastName('')
+      setPhone('')
+      setWeaponDetails('')
+      setCabinetRegion('')
+      setCabinetWeaponClassId('')
       setFeedback(null)
     })
   }, [matchUuid])
@@ -168,6 +181,20 @@ export function MatchPublicRegistrationSection({
   const applyParticipantDefaultsRow = useCallback((row: ParticipantDefaultsRow) => {
     setCabinetFirstName(typeof row.first_name === 'string' ? row.first_name : '')
     setCabinetLastName(typeof row.last_name === 'string' ? row.last_name : '')
+    setCabinetRegion(typeof row.region === 'string' ? row.region : '')
+    const wcRaw = typeof row.weapon_class === 'string' ? row.weapon_class.trim() : ''
+    setCabinetWeaponClassId(
+      wcRaw && (WEAPON_CLASS_ORDER as readonly string[]).includes(wcRaw) ? wcRaw : '',
+    )
+
+    setPhone((prev) => {
+      if (prev.trim()) return prev
+      return typeof row.phone === 'string' ? row.phone : ''
+    })
+    setWeaponDetails((prev) => {
+      if (prev.trim()) return prev
+      return typeof row.weapon_details === 'string' ? row.weapon_details : ''
+    })
 
     setDivision((d) => {
       const t = d.trim()
@@ -201,7 +228,9 @@ export function MatchPublicRegistrationSection({
     void (async () => {
       const { data, error } = await sb
         .from('participant_registration_defaults')
-        .select('division, power_factor, categories, first_name, last_name')
+        .select(
+          'division, power_factor, categories, first_name, last_name, phone, weapon_details, region, weapon_class',
+        )
         .eq('user_id', user.id)
         .maybeSingle()
 
@@ -269,7 +298,9 @@ export function MatchPublicRegistrationSection({
       void (async () => {
         const { data, error } = await sb
           .from('participant_registration_defaults')
-          .select('division, power_factor, categories, first_name, last_name')
+          .select(
+            'division, power_factor, categories, first_name, last_name, phone, weapon_details, region, weapon_class',
+          )
           .eq('user_id', user.id)
           .maybeSingle()
         if (!error && data) applyParticipantDefaultsRow(data as ParticipantDefaultsRow)
@@ -300,6 +331,11 @@ export function MatchPublicRegistrationSection({
       setFeedback(p.matchDetailRegistrationChooseDivision)
       return
     }
+    const phoneTrim = phone.trim()
+    if (phoneTrim.length < 7) {
+      setFeedback(p.matchDetailRegistrationPhoneInvalid)
+      return
+    }
     const div = division.trim()
 
     setSubmitBusy(true)
@@ -309,6 +345,9 @@ export function MatchPublicRegistrationSection({
       competitor_user_id: user.id,
       division: div,
       classification_grade: '',
+      phone: phoneTrim,
+      weapon_details: weaponDetails.trim(),
+      competitor_region: cabinetRegion.trim(),
       power_factor: powerFactor === '' ? null : powerFactor,
       categories: resolveShooterCategoriesForStorage(signupCategories),
     })
@@ -345,77 +384,129 @@ export function MatchPublicRegistrationSection({
     if (!metrics?.length) return null
     const nameParts = [cabinetLastName.trim(), cabinetFirstName.trim()].filter(Boolean)
     const displayName = nameParts.length > 0 ? nameParts.join(' ') : ''
+    const weaponClassLine =
+      cabinetWeaponClassId ?
+        weaponClassLabel(cabinetWeaponClassId as WeaponClassId, locale)
+      : '—'
+    const regionLine = cabinetRegion.trim() || '—'
     return (
       <dialog ref={dlgRef} className="portal-reg-modal" aria-labelledby="match-reg-modal-heading">
         <div className="portal-reg-modal__panel">
           <h3 id="match-reg-modal-heading" className="portal-reg-modal__title">
             {p.matchDetailRegistrationModalTitle}
           </h3>
-          <div className="portal-reg-modal__identity" aria-label={p.matchDetailRegistrationRegisteredNameLabel}>
-            <span className="portal-reg-modal__identity-label">{p.matchDetailRegistrationRegisteredNameLabel}</span>
-            <div className="portal-reg-modal__identity-foot">
-              <span
-                className={
-                  displayName ? 'portal-reg-modal__identity-value' : 'portal-reg-modal__identity-value portal-reg-modal__identity-value--empty'
-                }
-              >
-                {displayName || p.matchDetailRegistrationRegisteredNameEmpty}
-              </span>
-              <Link to={`/${locale}/account`} className="portal-reg-modal__profile-link">
-                {p.matchDetailRegistrationEditInAccount}
-              </Link>
-            </div>
-          </div>
           <form
             className="portal-reg-modal__form"
             onSubmit={(ev) => void submitRegistration(ev)}
           >
-            <label className="portal-reg-modal__label">
-              {p.matchDetailRegistrationFieldSquad}
-              <select
-                required
-                value={pickedSquad}
-                onChange={(ev) => setPickedSquad(ev.target.value)}
-                disabled={submitBusy}
-                className="portal-reg-modal__control portal-reg-modal__select"
-              >
-                <option value="">{p.matchDetailRegistrationSelectSquad}</option>
-                {(metrics ?? []).map((r) => {
-                  const phaseLabel =
-                    phaseOf(r) === 'prematch' ?
-                      p.matchDetailRegistrationPhaseShortPrematch
-                    : p.matchDetailRegistrationPhaseShortMain
-                  return (
-                    <option
-                      key={r.squad_id}
-                      value={r.squad_id}
-                      disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
-                    >
-                      [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} (
-                      {spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
-                    </option>
-                  )
-                })}
-              </select>
-            </label>
+            <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionContact}>
+              <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionContact}</h4>
+              <div className="portal-reg-modal__identity" aria-label={p.matchDetailRegistrationRegisteredNameLabel}>
+                <span className="portal-reg-modal__identity-label">{p.matchDetailRegistrationRegisteredNameLabel}</span>
+                <div className="portal-reg-modal__identity-foot">
+                  <span
+                    className={
+                      displayName ?
+                        'portal-reg-modal__identity-value'
+                      : 'portal-reg-modal__identity-value portal-reg-modal__identity-value--empty'
+                    }
+                  >
+                    {displayName || p.matchDetailRegistrationRegisteredNameEmpty}
+                  </span>
+                  <Link to={`/${locale}/account`} className="portal-reg-modal__profile-link">
+                    {p.matchDetailRegistrationEditInAccount}
+                  </Link>
+                </div>
+              </div>
+              <label className="portal-reg-modal__label">
+                {p.matchDetailRegistrationPhone}
+                <input
+                  type="tel"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  disabled={submitBusy}
+                  autoComplete="tel"
+                  className="portal-reg-modal__control"
+                />
+              </label>
+            </section>
 
-            <label className="portal-reg-modal__label">
-              {p.matchDetailRegistrationDivision}
-              <select
-                required
-                value={division}
-                onChange={(e) => setDivision(e.target.value)}
-                disabled={submitBusy || divisionOptions.length === 0}
-                className="portal-reg-modal__control portal-reg-modal__select"
-              >
-                <option value="">{p.accountParticipantOptionNotSelected}</option>
-                {divisionOptions.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {locale === 'en' ? d.labelEn : d.labelUk}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionMatch}>
+              <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionMatch}</h4>
+              <label className="portal-reg-modal__label">
+                {p.matchDetailRegistrationFieldSquad}
+                <select
+                  required
+                  value={pickedSquad}
+                  onChange={(ev) => setPickedSquad(ev.target.value)}
+                  disabled={submitBusy}
+                  className="portal-reg-modal__control portal-reg-modal__select"
+                >
+                  <option value="">{p.matchDetailRegistrationSelectSquad}</option>
+                  {(metrics ?? []).map((r) => {
+                    const phaseLabel =
+                      phaseOf(r) === 'prematch' ?
+                        p.matchDetailRegistrationPhaseShortPrematch
+                      : p.matchDetailRegistrationPhaseShortMain
+                    return (
+                      <option
+                        key={r.squad_id}
+                        value={r.squad_id}
+                        disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
+                      >
+                        [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} (
+                        {spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
+                      </option>
+                    )
+                  })}
+                </select>
+              </label>
+
+              <label className="portal-reg-modal__label">
+                {p.matchDetailRegistrationDivision}
+                <select
+                  required
+                  value={division}
+                  onChange={(e) => setDivision(e.target.value)}
+                  disabled={submitBusy || divisionOptions.length === 0}
+                  className="portal-reg-modal__control portal-reg-modal__select"
+                >
+                  <option value="">{p.accountParticipantOptionNotSelected}</option>
+                  {divisionOptions.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {locale === 'en' ? d.labelEn : d.labelUk}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </section>
+
+            <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionWeapon}>
+              <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionWeapon}</h4>
+              <div className="portal-reg-modal__readonly-list">
+                <div className="portal-reg-modal__readonly-row">
+                  <span className="portal-reg-modal__readonly-k">{p.matchDetailRegistrationProfileWeaponClass}</span>
+                  <span className="portal-reg-modal__readonly-v">{weaponClassLine}</span>
+                </div>
+                <div className="portal-reg-modal__readonly-row">
+                  <span className="portal-reg-modal__readonly-k">{p.matchDetailRegistrationProfileRegion}</span>
+                  <span className="portal-reg-modal__readonly-v">{regionLine}</span>
+                </div>
+              </div>
+              <label className="portal-reg-modal__label">
+                {p.matchDetailRegistrationWeaponDetails}
+                <textarea
+                  value={weaponDetails}
+                  onChange={(e) => setWeaponDetails(e.target.value)}
+                  disabled={submitBusy}
+                  autoComplete="off"
+                  rows={3}
+                  placeholder={p.matchDetailRegistrationWeaponDetailsPlaceholder}
+                  className="portal-reg-modal__control portal-reg-modal__textarea"
+                />
+              </label>
+            </section>
 
             <fieldset className="portal-reg-modal__categories">
               <legend className="portal-reg-modal__categories-legend">{p.accountParticipantFieldCategory}</legend>
