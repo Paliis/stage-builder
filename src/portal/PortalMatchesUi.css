@@ -1105,11 +1105,12 @@ a.portal-match-title-ellipsis:hover {
 .portal-matches-page__toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.85rem;
   justify-content: space-between;
   width: 100%;
   max-width: 52rem;
+  margin-inline: auto;
   margin-bottom: 1.5rem;
 }
 
@@ -1117,18 +1118,21 @@ a.portal-match-title-ellipsis:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem 0.75rem;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
-/* Organizer list: breadcrumb (matches hub = previous step) + compact portal-home link */
+/* Organizer list: breadcrumb only (matches hub = previous step) */
 
 .portal-matches-organizer__list-head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.35rem 1rem;
   width: 100%;
   max-width: 52rem;
+  margin-inline: auto;
   margin-bottom: 0.35rem;
 }
 
@@ -1137,19 +1141,16 @@ a.portal-match-title-ellipsis:hover {
   min-width: 0;
 }
 
-.portal-matches-organizer__portal-home {
-  font-size: 0.8125rem;
-  font-weight: 650;
-  color: var(--accent);
-  text-decoration: none;
-  flex-shrink: 0;
+.portal-matches-organizer__page-intro {
+  width: 100%;
+  max-width: 52rem;
+  margin-inline: auto;
+  margin-bottom: 0.25rem;
+  padding: 0.5rem 0 0;
 }
 
-.portal-matches-organizer__portal-home:hover {
-  text-decoration: underline;
-}
-
-.portal-page-context + .portal-home__hero .portal-matches-page__toolbar {
+.portal-page-context + .portal-home__hero .portal-matches-page__toolbar,
+.portal-matches-organizer__page-intro .portal-matches-page__toolbar {
   margin-bottom: 0.65rem;
 }
 
@@ -1221,13 +1222,6 @@ a.portal-match-title-ellipsis:hover {
   font-weight: 650;
 }
 
-.portal-matches-organizer__primary-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  padding-top: 0.2rem;
-}
-
 .portal-matches-organizer__secondary {
   display: flex;
   flex-wrap: wrap;
@@ -1250,11 +1244,21 @@ a.portal-match-title-ellipsis:hover {
   border-radius: 2px;
 }
 
+.portal-matches-organizer__manage-links {
+  margin-top: 0.25rem;
+}
+
+.portal-matches-organizer__manage-links--table-end {
+  justify-content: flex-end;
+}
+
 /* Organizer: desktop table ------------------------------------------- */
 
 .portal-matches-organizer__table-shell {
   display: none;
   width: 100%;
+  max-width: 52rem;
+  margin-inline: auto;
   overflow-x: auto;
   border-radius: 1rem;
   border: 1px solid var(--border);
@@ -1283,6 +1287,13 @@ a.portal-match-title-ellipsis:hover {
   max-width: none;
 }
 
+.portal-matches-organizer__table th.portal-matches-organizer__table-col-actions,
+.portal-matches-organizer__table td.portal-matches-organizer__table-col-actions {
+  width: 10rem;
+  min-width: 0;
+  vertical-align: top;
+}
+
 
 .portal-matches-organizer__table thead th {
   text-align: left;
@@ -1291,6 +1302,10 @@ a.portal-match-title-ellipsis:hover {
   font-weight: 800;
   color: var(--text-h);
   background: color-mix(in srgb, var(--surface), var(--border) 12%);
+}
+
+.portal-matches-organizer__table thead th.portal-matches-organizer__table-col-actions {
+  text-align: right;
 }
 
 .portal-matches-organizer__table tbody td {
@@ -1308,38 +1323,6 @@ a.portal-match-title-ellipsis:hover {
 
 .portal-matches-organizer__table tbody tr:nth-child(even) td {
   background: color-mix(in srgb, var(--btn-bg), var(--accent-bg) 18%);
-}
-
-.portal-matches-organizer__cell-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.35rem;
-  min-width: 0;
-  width: 100%;
-}
-
-.portal-matches-organizer__cell-actions .portal-btn--compact {
-  width: 100%;
-  max-width: 11rem;
-  align-self: flex-end;
-}
-
-.portal-matches-organizer__cell-actions-secondary {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.35rem 0.85rem;
-  font-size: 0.8125rem;
-  font-weight: 650;
-}
-
-.portal-matches-organizer__cell-actions-secondary a {
-  color: var(--accent);
-}
-
-.portal-matches-organizer__cell-actions-secondary a:hover {
-  text-decoration: underline;
 }
 
 .portal-matches-organizer__hint {

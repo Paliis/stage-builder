@@ -139,9 +139,6 @@ export function OrganizerMatchesListPage() {
               <li className="portal-breadcrumbs__current">{p.myMatchesTitle}</li>
             </ol>
           </nav>
-          <Link className="portal-matches-organizer__portal-home" to={`/${locale}`}>
-            {p.myMatchesBackHome}
-          </Link>
         </div>
         <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
           <h1 className="portal-home__hero-title">{p.myMatchesTitle}</h1>
@@ -171,12 +168,9 @@ export function OrganizerMatchesListPage() {
             <li className="portal-breadcrumbs__current">{p.myMatchesTitle}</li>
           </ol>
         </nav>
-        <Link className="portal-matches-organizer__portal-home" to={`/${locale}`}>
-          {p.myMatchesBackHome}
-        </Link>
       </div>
 
-      <header className="portal-home__hero" style={{ marginBottom: '0.25rem' }}>
+      <header className="portal-home__hero portal-matches-organizer__page-intro">
         <div className="portal-matches-page__toolbar">
           <h1 className="portal-home__hero-title" style={{ margin: 0 }}>
             {p.myMatchesTitle}
@@ -211,7 +205,6 @@ export function OrganizerMatchesListPage() {
               const f = summarizeOrganizerMatchRow(p, r, locale)
               const rosterPath = `/${locale}/matches/my/${r.id}/roster`
               const editPath = `/${locale}/matches/my/${r.id}`
-              const publicPath = `/${locale}/matches/${r.id}`
               return (
                 <li key={r.id} className="portal-matches-organizer__card">
                   <h2 className="portal-matches-organizer__card-title" title={r.title}>
@@ -227,17 +220,13 @@ export function OrganizerMatchesListPage() {
                     <dt>{p.myMatchesColList}</dt>
                     <dd>{f.listVis}</dd>
                   </dl>
-                  <div className="portal-matches-organizer__primary-row">
-                    <Link className="portal-btn portal-btn--primary portal-btn--block" to={editPath}>
-                      {p.myMatchesManage}
-                    </Link>
-                    <nav className="portal-matches-organizer__secondary" aria-label={p.myMatchesQuickLinksAria}>
-                      <Link to={rosterPath}>{p.myMatchesRoster}</Link>
-                      {r.status === 'published' ?
-                        <Link to={publicPath}>{p.myMatchesViewPublic}</Link>
-                      : null}
-                    </nav>
-                  </div>
+                  <nav
+                    className="portal-matches-organizer__secondary portal-matches-organizer__manage-links"
+                    aria-label={p.myMatchesQuickLinksAria}
+                  >
+                    <Link to={editPath}>{p.myMatchesEdit}</Link>
+                    <Link to={rosterPath}>{p.myMatchesRoster}</Link>
+                  </nav>
                 </li>
               )
             })}
@@ -252,7 +241,7 @@ export function OrganizerMatchesListPage() {
                   <th>{p.myMatchesColEventKind}</th>
                   <th>{p.myMatchesColStatus}</th>
                   <th>{p.myMatchesColList}</th>
-                  <th>{p.myMatchesManage}</th>
+                  <th className="portal-matches-organizer__table-col-actions">{p.myMatchesColActions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -260,7 +249,6 @@ export function OrganizerMatchesListPage() {
                   const f = summarizeOrganizerMatchRow(p, r, locale)
                   const rosterPath = `/${locale}/matches/my/${r.id}/roster`
                   const editPath = `/${locale}/matches/my/${r.id}`
-                  const publicPath = `/${locale}/matches/${r.id}`
                   return (
                     <tr key={r.id}>
                       <td className="portal-matches-organizer__table-col-title">
@@ -272,18 +260,14 @@ export function OrganizerMatchesListPage() {
                       <td>{f.eventKind}</td>
                       <td>{f.status}</td>
                       <td>{f.listVis}</td>
-                      <td>
-                        <div className="portal-matches-organizer__cell-actions">
-                          <Link className="portal-btn portal-btn--primary portal-btn--compact" to={editPath}>
-                            {p.myMatchesManage}
-                          </Link>
-                          <div className="portal-matches-organizer__cell-actions-secondary">
-                            <Link to={rosterPath}>{p.myMatchesRoster}</Link>
-                            {r.status === 'published' ?
-                              <Link to={publicPath}>{p.myMatchesViewPublic}</Link>
-                            : null}
-                          </div>
-                        </div>
+                      <td className="portal-matches-organizer__table-col-actions">
+                        <nav
+                          className="portal-matches-organizer__secondary portal-matches-organizer__manage-links portal-matches-organizer__manage-links--table-end"
+                          aria-label={p.myMatchesQuickLinksAria}
+                        >
+                          <Link to={editPath}>{p.myMatchesEdit}</Link>
+                          <Link to={rosterPath}>{p.myMatchesRoster}</Link>
+                        </nav>
                       </td>
                     </tr>
                   )

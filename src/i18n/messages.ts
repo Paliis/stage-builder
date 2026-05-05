@@ -679,6 +679,8 @@ export type MessageTree = {
     myMatchesColPsLevel: string
     myMatchesColStatus: string
     myMatchesColList: string
+    /** Organizer desktop table / mobile cards: edit match + registrations column header */
+    myMatchesColActions: string
     myMatchesRoster: string
     myMatchesEdit: string
     myMatchesViewPublic: string
@@ -688,9 +690,6 @@ export type MessageTree = {
     myMatchesLoadError: string
     myMatchesEmpty: string
     myMatchesBackHome: string
-    /** Organizer list: primary action → match edit hub. */
-    myMatchesManage: string
-    /** Mobile card: secondary link group (roster, public). */
     myMatchesQuickLinksAria: string
     matchOrgStatusDraft: string
     matchOrgStatusPublished: string
@@ -1679,6 +1678,7 @@ export const ukMessages: MessageTree = {
     myMatchesColPsLevel: 'Рівень',
     myMatchesColStatus: 'Статус',
     myMatchesColList: 'Список учасників',
+    myMatchesColActions: 'Дії',
     myMatchesRoster: 'Заявки',
     myMatchesEdit: 'Редагувати',
     myMatchesViewPublic: 'Картка',
@@ -1687,9 +1687,8 @@ export const ukMessages: MessageTree = {
     myMatchesLoading: 'Завантаження…',
     myMatchesLoadError: 'Помилка',
     myMatchesEmpty: 'Ще немає матчів. Створи перший.',
-      myMatchesBackHome: 'На головну порталу',
-      myMatchesManage: 'Керувати',
-      myMatchesQuickLinksAria: 'Додаткові дії для цього матчу',
+    myMatchesBackHome: 'На головну порталу',
+    myMatchesQuickLinksAria: 'Дії для цього матчу',
     matchOrgStatusDraft: 'Чернетка',
     matchOrgStatusPublished: 'Опубліковано',
     matchOrgStatusCancelled: 'Скасовано',
@@ -2686,6 +2685,7 @@ export const enMessages: MessageTree = {
     myMatchesColPsLevel: 'Level',
     myMatchesColStatus: 'Status',
     myMatchesColList: 'Participant list',
+    myMatchesColActions: 'Actions',
     myMatchesRoster: 'Registrations',
     myMatchesEdit: 'Edit',
     myMatchesViewPublic: 'Public page',
@@ -2694,9 +2694,8 @@ export const enMessages: MessageTree = {
     myMatchesLoading: 'Loading…',
     myMatchesLoadError: 'Error',
     myMatchesEmpty: 'No matches yet. Create one.',
-      myMatchesBackHome: 'Portal home',
-      myMatchesManage: 'Manage',
-      myMatchesQuickLinksAria: 'Additional actions for this match',
+    myMatchesBackHome: 'Portal home',
+    myMatchesQuickLinksAria: 'Actions for this match',
     matchOrgStatusDraft: 'Draft',
     matchOrgStatusPublished: 'Published',
     matchOrgStatusCancelled: 'Cancelled',
