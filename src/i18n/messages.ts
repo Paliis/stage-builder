@@ -791,16 +791,10 @@ export type MessageTree = {
     matchOrgRosterColDivision: string
     matchOrgRosterColStatus: string
     matchOrgRosterColSquad: string
-    matchOrgRosterColPayment: string
-    matchOrgRosterPaymentReceived: string
-    matchOrgRosterPaymentYes: string
-    matchOrgRosterPaymentNo: string
-    matchOrgRosterColPaymentNote: string
-    matchOrgRosterPaymentNotePlaceholder: string
-    matchOrgRosterSavePaymentNote: string
+    matchOrgRosterStatusOptionPending: string
+    matchOrgRosterStatusOptionConfirmed: string
     matchOrgRosterApply: string
     matchOrgRosterSaving: string
-    matchOrgRosterConfirm: string
     matchOrgRosterColActions: string
     matchOrgRosterNoFreeSlot: string
     matchOrgRosterViewTable: string
@@ -1791,16 +1785,10 @@ export const ukMessages: MessageTree = {
     matchOrgRosterColDivision: 'Дивізіон',
     matchOrgRosterColStatus: 'Статус',
     matchOrgRosterColSquad: 'Сквод',
-    matchOrgRosterColPayment: 'Оплата',
-    matchOrgRosterPaymentReceived: 'Оплачено',
-    matchOrgRosterPaymentYes: 'Так',
-    matchOrgRosterPaymentNo: 'Ні',
-    matchOrgRosterColPaymentNote: 'Примітка',
-    matchOrgRosterPaymentNotePlaceholder: 'Факт оплати, спосіб, коментар…',
-    matchOrgRosterSavePaymentNote: 'Зберегти оплату',
+    matchOrgRosterStatusOptionPending: 'очікує',
+    matchOrgRosterStatusOptionConfirmed: 'підтверджено',
     matchOrgRosterApply: 'Застосувати',
     matchOrgRosterSaving: 'Збереження…',
-    matchOrgRosterConfirm: 'Підтвердити участь',
     matchOrgRosterColActions: 'Дії',
     matchOrgRosterNoFreeSlot: 'Немає доступного скводу з місцем або зміни потребують збереження картки.',
     matchOrgRosterViewTable: 'Таблиця',
@@ -2785,16 +2773,10 @@ export const enMessages: MessageTree = {
     matchOrgRosterColDivision: 'Division',
     matchOrgRosterColStatus: 'Status',
     matchOrgRosterColSquad: 'Squad',
-    matchOrgRosterColPayment: 'Payment',
-    matchOrgRosterPaymentReceived: 'Paid',
-    matchOrgRosterPaymentYes: 'Yes',
-    matchOrgRosterPaymentNo: 'No',
-    matchOrgRosterColPaymentNote: 'Note',
-    matchOrgRosterPaymentNotePlaceholder: 'Payment fact, method, comment…',
-    matchOrgRosterSavePaymentNote: 'Save payment',
+    matchOrgRosterStatusOptionPending: 'Awaiting',
+    matchOrgRosterStatusOptionConfirmed: 'Confirmed',
     matchOrgRosterApply: 'Apply',
     matchOrgRosterSaving: 'Saving…',
-    matchOrgRosterConfirm: 'Confirm entry',
     matchOrgRosterColActions: 'Actions',
     matchOrgRosterNoFreeSlot:
       'No squad with spare capacity—or save the match card first after changing squad settings.',
