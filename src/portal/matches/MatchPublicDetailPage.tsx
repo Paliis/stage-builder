@@ -342,6 +342,10 @@ export function MatchPublicDetailPage() {
             </ol>
           </nav>
 
+          <header className="portal-home__hero portal-match-public-detail__title-block portal-match-public-detail__masthead-title-row">
+            <h1 className="portal-home__hero-title portal-match-public-detail__hero-heading">{row.title}</h1>
+          </header>
+
           <div
             className={`portal-match-public-detail__masthead-grid${hasCover ? ' portal-match-public-detail__masthead-grid--has-cover' : ''}`}
           >
@@ -358,10 +362,6 @@ export function MatchPublicDetailPage() {
               </div>
             : null}
             <div className="portal-match-public-detail__masthead-main">
-              <header className="portal-home__hero portal-match-public-detail__title-block">
-                <h1 className="portal-home__hero-title portal-match-public-detail__hero-heading">{row.title}</h1>
-              </header>
-
               {!hasCover ?
                 <div
                   className="portal-match-public-detail__masthead-cta-slot"
@@ -409,9 +409,7 @@ export function MatchPublicDetailPage() {
                   </>
                 : null}
                 <dt>{p.matchDetailPrematchLabel}</dt>
-                <dd className="portal-match-public-detail__facts-dd--prematch">
-                  {row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}
-                </dd>
+                <dd>{row.prematch_enabled ? p.matchDetailPrematchValueYes : p.matchDetailPrematchValueNo}</dd>
               </dl>
             </div>
           </div>

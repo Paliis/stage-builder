@@ -87,7 +87,19 @@ a.portal-match-title-ellipsis:hover {
   margin-inline: auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: 0.75rem;
+}
+
+.portal-match-public-detail__masthead-title-row {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.portal-match-public-detail__masthead-title-row.portal-home__hero {
+  align-items: flex-start;
+  text-align: left;
 }
 
 .portal-match-public-detail__masthead-grid {
@@ -121,13 +133,6 @@ a.portal-match-title-ellipsis:hover {
 
   .portal-match-public-detail__masthead-main {
     text-align: left;
-  }
-
-  .portal-match-public-detail__masthead-grid--has-cover .portal-match-public-detail__title-block {
-    align-items: flex-start;
-    text-align: left;
-    width: 100%;
-    max-width: 100%;
   }
 
   .portal-match-public-detail__masthead-grid--has-cover .portal-match-public-detail__facts {
@@ -220,13 +225,6 @@ a.portal-match-title-ellipsis:hover {
   align-items: stretch;
 }
 
-.portal-match-public-detail__masthead-main > .portal-home__hero {
-  align-items: flex-start;
-  text-align: left;
-  width: 100%;
-  max-width: 100%;
-}
-
 .portal-match-public-detail__masthead-cta-slot {
   min-width: 0;
   width: 100%;
@@ -300,13 +298,9 @@ a.portal-match-title-ellipsis:hover {
   padding: 0;
   font-size: 0.90625rem;
   line-height: 1.45;
-  max-width: min(40rem, 100%);
+  max-width: 100%;
   margin-inline: 0;
   text-align: left;
-}
-
-.portal-match-public-detail__facts-dd--prematch {
-  text-align: center;
 }
 
 .portal-match-public-detail__facts dt {
