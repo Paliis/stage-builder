@@ -15,6 +15,7 @@ import { dispatchParticipantAvatarUpdated } from '../useParticipantAvatarUrl'
 import { AvatarCropModal } from './AvatarCropModal'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
+import { portalMatchRegLabelClass } from '../matches/matchPortalRegStatusUi'
 import './AccountParticipantHub.css'
 
 type Portal = MessageTree['portal']
@@ -374,7 +375,9 @@ export function AccountParticipantHub({
                           )}
                         </td>
                         <td className="portal-account__hub-td-nowrap">{when}</td>
-                        <td>{regStatusLabel(r.status)}</td>
+                        <td>
+                          <span className={portalMatchRegLabelClass(r.status)}>{regStatusLabel(r.status)}</span>
+                        </td>
                         <td>
                           {m?.status === 'published' ?
                             <Link to={`/${locale}/matches/${m!.id}`} className="portal-account__hub-action-link">

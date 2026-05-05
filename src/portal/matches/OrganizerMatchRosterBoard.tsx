@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import type { Locale, MessageTree } from '../../i18n/messages'
 
 import '../PortalMatchesUi.css'
+import { portalMatchRegCardCueClass, portalMatchRegLabelClass } from './matchPortalRegStatusUi'
 
 type Portal = MessageTree['portal']
 
@@ -36,7 +37,6 @@ export type OrganizerMatchRosterBoardProps = {
   rosterActive: OrganizerRosterReg[]
   inactiveRegistrations: OrganizerRosterReg[]
   savingRegId: string | null
-  onSetRegistrationStatus: (registrationId: string, status: 'pending' | 'confirmed') => Promise<void>
   onMoveRegistration: (registrationId: string, targetSquadId: string) => Promise<void>
   squadPhaseLabel: (phase: string) => string
   registrationStatusLabel: (status: string) => string
@@ -56,7 +56,6 @@ export function OrganizerMatchRosterBoard({
   rosterActive,
   inactiveRegistrations,
   savingRegId,
-  onSetRegistrationStatus,
   onMoveRegistration,
   squadPhaseLabel,
   registrationStatusLabel,
@@ -170,12 +169,20 @@ export function OrganizerMatchRosterBoard({
                   const divLine =
                     reg.classification_grade ? `${reg.division} (${reg.classification_grade})` : reg.division
 
+                  const tone: 'pending' | 'confirmed' | null =
+                    reg.status === 'confirmed' ? 'confirmed'
+                    : reg.status === 'pending' ? 'pending'
+                    : null
+
                   return (
                     <article
                       key={reg.registration_id}
+                      aria-label={`${displayShooterName(reg)}, ${divLine}, ${registrationStatusLabel(reg.status)}`}
                       className={`portal-roster-board-card${
-                        isDrag ? ' portal-roster-board-card--dragging' : ''
-                      }${saving ? ' portal-roster-board-card--saving' : ''}`}
+                        tone ? ` ${portalMatchRegCardCueClass(tone)}` : ''
+                      }${isDrag ? ' portal-roster-board-card--dragging' : ''}${
+                        saving ? ' portal-roster-board-card--saving' : ''
+                      }`}
                       draggable={!saving}
                       onDragStart={(e) => {
                         e.dataTransfer.setData(DND_MIME, reg.registration_id)
@@ -188,29 +195,11 @@ export function OrganizerMatchRosterBoard({
                         <span className="portal-roster-board-card__name">{displayShooterName(reg)}</span>
                         <span className="portal-roster-board-card__division">{divLine}</span>
                       </div>
-                      {reg.status === 'pending' || reg.status === 'confirmed' ?
-                        <div className="portal-roster-board-card__status">
-                          <span className="portal-roster-board-card__status-label">
-                            {p.matchOrgRosterColStatus}
+                      {tone ? null : (
+                        <div className="portal-roster-board-card__other-status">
+                          <span className={portalMatchRegLabelClass(reg.status)}>
+                            {registrationStatusLabel(reg.status)}
                           </span>
-                          <select
-                            draggable={false}
-                            className="portal-roster-board-card__select"
-                            aria-label={p.matchOrgRosterColStatus}
-                            disabled={saving}
-                            value={reg.status === 'confirmed' ? 'confirmed' : 'pending'}
-                            onChange={(e) => {
-                              const v = e.target.value as 'pending' | 'confirmed'
-                              void onSetRegistrationStatus(reg.registration_id, v)
-                            }}
-                          >
-                            <option value="pending">{p.matchOrgRosterStatusOptionPending}</option>
-                            <option value="confirmed">{p.matchOrgRosterStatusOptionConfirmed}</option>
-                          </select>
-                        </div>
-                      : (
-                        <div style={{ opacity: 0.82, marginTop: '0.18rem', fontSize: '0.74rem' }}>
-                          {registrationStatusLabel(reg.status)}
                         </div>
                       )}
                     </article>
@@ -238,7 +227,9 @@ export function OrganizerMatchRosterBoard({
           <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.88rem', lineHeight: 1.6 }}>
             {inactiveRegistrations.map((reg) => (
               <li key={reg.registration_id}>
-                {displayShooterName(reg)} — {registrationStatusLabel(reg.status)} ({reg.squad_label})
+                {displayShooterName(reg)} —{' '}
+                <span className={portalMatchRegLabelClass(reg.status)}>{registrationStatusLabel(reg.status)}</span> (
+                {reg.squad_label})
               </li>
             ))}
           </ul>

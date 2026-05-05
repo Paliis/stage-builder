@@ -6,6 +6,8 @@ import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { resolveShooterCategoriesForStorage } from '../shooterProfileCatalog'
 import { sortPrematchFirstByPhase } from './matchSquadsSort'
+import { portalMatchRegLabelClass } from './matchPortalRegStatusUi'
+import '../PortalMatchesUi.css'
 
 type Portal = MessageTree['portal']
 
@@ -492,13 +494,15 @@ export function MatchPublicRegistrationSection({ locale, matchUuid, p, prematchE
                 <>
                   <p style={{ margin: '0 0 0.5rem', fontSize: '0.95rem', lineHeight: 1.55 }}>
                     <strong>{p.matchDetailRegistrationYourStatus}: </strong>
-                    {mine.status === 'confirmed' ?
-                      p.matchDetailRegistrationStatusConfirmed
-                    : mine.status === 'pending' ?
-                      p.matchDetailRegistrationStatusPending
-                    : mine.status === 'cancelled' ?
-                      p.matchDetailRegistrationStatusCancelled
-                    : mine.status}
+                    <span className={portalMatchRegLabelClass(mine.status)}>
+                      {mine.status === 'confirmed' ?
+                        p.matchDetailRegistrationStatusConfirmed
+                      : mine.status === 'pending' ?
+                        p.matchDetailRegistrationStatusPending
+                      : mine.status === 'cancelled' ?
+                        p.matchDetailRegistrationStatusCancelled
+                      : mine.status}
+                    </span>
                   </p>
                   {mine.status === 'pending' ?
                     <button type="button" disabled={mineBusy} onClick={() => void cancelMine()}>

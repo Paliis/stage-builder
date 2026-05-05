@@ -187,7 +187,7 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-roster-board__column {
-  --board-slot: 4.25rem;
+  --board-slot: 3.65rem;
   flex: 0 0 clamp(13.75rem, 15.5vw, 19rem);
   min-width: 13rem;
   max-height: min(92vh, 960px);
@@ -304,31 +304,111 @@ a.portal-match-title-ellipsis:hover {
   text-align: right;
 }
 
-.portal-roster-board-card__status {
-  margin-top: 0.26rem;
-  display: flex;
-  align-items: center;
-  gap: 0.32rem;
-  width: 100%;
-  min-width: 0;
+.portal-roster-board-card__other-status {
+  margin-top: 0.22rem;
 }
 
-.portal-roster-board-card__status-label {
-  flex-shrink: 0;
-  font-size: 0.66rem;
-  opacity: 0.85;
+/* Registration status cues (confirmed = green tint, pending = amber) ------------- */
+
+.portal-match-reg-cue-confirmed {
+  border-left: 3px solid color-mix(in srgb, rgb(22 163 74) 75%, transparent);
+  background-color: color-mix(in srgb, rgb(34 197 94) 11%, var(--btn-bg));
 }
 
-.portal-roster-board-card__select {
-  flex: 1 1 auto;
-  min-width: 0;
-  box-sizing: border-box;
-  padding: 0.2rem 0.3rem;
-  font-size: 0.71rem;
-  border-radius: 5px;
+.portal-match-reg-cue-pending {
+  border-left: 3px solid color-mix(in srgb, rgb(202 138 4) 82%, transparent);
+  background-color: color-mix(in srgb, rgb(234 179 8) 13%, var(--btn-bg));
+}
+
+.portal-roster-board-card.portal-match-reg-cue-confirmed.portal-roster-board-card--dragging,
+.portal-roster-board-card.portal-match-reg-cue-pending.portal-roster-board-card--dragging {
+  border-left-width: 3px;
+}
+
+.portal-match-reg-select {
   border: 1px solid var(--border);
-  background: var(--btn-bg);
+  background-color: var(--btn-bg);
   color: var(--text);
+}
+
+.portal-match-reg-select--confirmed {
+  border-color: color-mix(in srgb, rgb(22 163 74) 42%, var(--border));
+  background-color: color-mix(in srgb, rgb(34 197 94) 16%, var(--btn-bg));
+}
+
+.portal-match-reg-select--pending {
+  border-color: color-mix(in srgb, rgb(202 138 4) 46%, var(--border));
+  background-color: color-mix(in srgb, rgb(253 224 71) 22%, var(--btn-bg));
+}
+
+@media (prefers-color-scheme: dark) {
+  .portal-match-reg-select--confirmed {
+    background-color: color-mix(in srgb, rgb(34 197 94) 12%, var(--btn-bg));
+  }
+
+  .portal-match-reg-select--pending {
+    background-color: color-mix(in srgb, rgb(234 179 8) 10%, var(--btn-bg));
+  }
+
+  .portal-match-reg-cue-confirmed {
+    background-color: color-mix(in srgb, rgb(34 197 94) 8%, var(--btn-bg));
+  }
+
+  .portal-match-reg-cue-pending {
+    background-color: color-mix(in srgb, rgb(234 179 8) 10%, var(--btn-bg));
+  }
+}
+
+.portal-match-roster-tr--confirmed td {
+  background-color: color-mix(in srgb, rgb(34 197 94) 8%, var(--btn-bg));
+}
+
+.portal-match-roster-tr--pending td {
+  background-color: color-mix(in srgb, rgb(253 224 71) 12%, var(--btn-bg));
+}
+
+.portal-match-roster-tr--faint-confirmed td {
+  background-color: color-mix(in srgb, rgb(34 197 94) 5%, var(--btn-bg));
+}
+
+.portal-match-roster-tr--faint-pending td {
+  background-color: color-mix(in srgb, rgb(253 224 71) 8%, var(--btn-bg));
+}
+
+.portal-match-reg-public-roster-row td {
+  background-color: color-mix(in srgb, rgb(34 197 94) 5%, var(--btn-bg));
+}
+
+.portal-match-reg-label {
+  display: inline-block;
+  padding: 0.1rem 0.42rem;
+  border-radius: 999px;
+  font-size: 0.88em;
+  font-weight: 550;
+  line-height: 1.35;
+  vertical-align: baseline;
+}
+
+.portal-match-reg-label--confirmed {
+  background-color: color-mix(in srgb, rgb(34 197 94) 20%, var(--btn-bg));
+  outline: 1px solid color-mix(in srgb, rgb(22 163 74) 35%, transparent);
+}
+
+.portal-match-reg-label--pending {
+  background-color: color-mix(in srgb, rgb(253 224 71) 28%, var(--btn-bg));
+  outline: 1px solid color-mix(in srgb, rgb(202 138 4) 42%, transparent);
+}
+
+.portal-match-reg-label--muted {
+  background-color: color-mix(in srgb, var(--text) 7%, var(--btn-bg));
+  outline: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .portal-match-reg-label--pending {
+    background-color: color-mix(in srgb, rgb(234 179 8) 14%, var(--btn-bg));
+  }
 }
 
 .portal-roster-board__empty {

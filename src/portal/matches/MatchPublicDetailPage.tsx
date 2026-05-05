@@ -480,7 +480,10 @@ export function MatchPublicDetailPage() {
                 </thead>
                 <tbody>
                   {(roster ?? []).map((r, i) => (
-                    <tr key={`${r.squad_phase ?? ''}-${r.squad_sort}-${r.squad_label}-${i}`}>
+                    <tr
+                      key={`${r.squad_phase ?? ''}-${r.squad_sort}-${r.squad_label}-${i}`}
+                      className="portal-match-reg-public-roster-row"
+                    >
                       <td style={{ padding: '0.5rem 0.6rem', borderBottom: '1px solid var(--border)' }}>
                         {r.squad_label}
                       </td>

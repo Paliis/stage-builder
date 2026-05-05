@@ -10,6 +10,11 @@ import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { sortSquadsPrematchFirst } from './matchSquadsSort'
 import { OrganizerMatchRosterBoard } from './OrganizerMatchRosterBoard'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
+import {
+  portalMatchRegLabelClass,
+  portalMatchRegRowClass,
+  portalMatchRegSelectClass,
+} from './matchPortalRegStatusUi'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
@@ -324,44 +329,6 @@ export function OrganizerMatchRegistrationsPage() {
     await reload()
   }
 
-  async function saveRegistrationStatus(registrationId: string, nextStatus: 'pending' | 'confirmed') {
-    setSaveError(null)
-    if (!configured || !user?.id || !matchId) return
-    const row = (roster ?? []).find((r) => r.registration_id === registrationId)
-    if (!row || !countsActiveStatuses(row.status) || row.status === nextStatus) return
-
-    const sb = getSupabase()
-    setSaveRegId(registrationId)
-    const patch =
-      nextStatus === 'confirmed' ?
-        {
-          status: 'confirmed' as const,
-          confirmed_at: new Date().toISOString(),
-          confirmed_by: user.id,
-        }
-      : {
-          status: 'pending' as const,
-          confirmed_at: null,
-          confirmed_by: null,
-        }
-    const { error } = await sb
-      .from('match_registrations')
-      .update(patch)
-      .eq('id', registrationId)
-      .eq('match_id', matchId)
-    setSaveRegId(null)
-    if (error) {
-      setSaveError(error.message)
-      return
-    }
-    setPendingSquad((prev) => {
-      const n = { ...prev }
-      delete n[registrationId]
-      return n
-    })
-    await reload()
-  }
-
   const inactiveBlock = useMemo(() => ({ padding: '0.35rem 0.45rem', opacity: 0.85 }), [])
 
   if (!configured) {
@@ -554,9 +521,6 @@ export function OrganizerMatchRegistrationsPage() {
                 countAfterHypotheticalMove={(movingRegId, targetSquadId, countedSquadId) =>
                   countOnSquad(rosterList, pendingSquad, countedSquadId, movingRegId, targetSquadId)
                 }
-                onSetRegistrationStatus={async (registrationId, nextStatus) => {
-                  await saveRegistrationStatus(registrationId, nextStatus)
-                }}
                 onMoveRegistration={async (registrationId, targetSquadId) =>
                   saveReg(registrationId, targetSquadId)
                 }
@@ -608,8 +572,10 @@ export function OrganizerMatchRegistrationsPage() {
                 const statusControlValue =
                   inactive ? statusStored : (statusDraft[reg.registration_id] ?? statusStored)
 
+                const rowCue = portalMatchRegRowClass(inactive, reg.status, statusControlValue)
+
                 return (
-                  <tr key={reg.registration_id}>
+                  <tr key={reg.registration_id} className={rowCue}>
                     <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                       {displayName(reg)}
                     </td>
@@ -631,7 +597,9 @@ export function OrganizerMatchRegistrationsPage() {
                       }}
                     >
                       {inactive ?
-                        <span style={{ fontSize: '0.88rem' }}>{registrationStatusLabel(p, reg.status)}</span>
+                        <span className={portalMatchRegLabelClass(reg.status)} style={{ fontSize: '0.88rem' }}>
+                          {registrationStatusLabel(p, reg.status)}
+                        </span>
                       : (
                         <>
                           <label
@@ -662,15 +630,13 @@ export function OrganizerMatchRegistrationsPage() {
                                 [reg.registration_id]: v,
                               }))
                             }}
+                            className={portalMatchRegSelectClass(statusControlValue)}
                             style={{
                               width: '100%',
                               maxWidth: '14rem',
                               padding: '0.35rem 0.45rem',
                               fontSize: '0.86rem',
                               borderRadius: '6px',
-                              border: '1px solid var(--border)',
-                              background: 'var(--btn-bg)',
-                              color: 'var(--text)',
                             }}
                           >
                             <option value="pending">{p.matchOrgRosterStatusOptionPending}</option>
