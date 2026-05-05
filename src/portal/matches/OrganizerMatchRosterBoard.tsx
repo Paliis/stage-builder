@@ -191,9 +191,13 @@ export function OrganizerMatchRosterBoard({
                       }}
                       onDragEnd={() => setDraggingId(null)}
                     >
-                      <div className="portal-roster-board-card__row" title={`${displayShooterName(reg)} · ${divLine}`}>
-                        <span className="portal-roster-board-card__name">{displayShooterName(reg)}</span>
-                        <span className="portal-roster-board-card__division">{divLine}</span>
+                      <div className="portal-roster-board-card__main">
+                        <div className="portal-roster-board-card__name" title={displayShooterName(reg)}>
+                          {displayShooterName(reg)}
+                        </div>
+                        <div className="portal-roster-board-card__division" title={divLine}>
+                          {divLine}
+                        </div>
                       </div>
                       {tone ? null : (
                         <div className="portal-roster-board-card__other-status">
