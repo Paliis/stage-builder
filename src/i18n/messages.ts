@@ -791,6 +791,9 @@ export type MessageTree = {
     matchOrgRosterColDivision: string
     matchOrgRosterColStatus: string
     matchOrgRosterColSquad: string
+    matchOrgRosterColPaymentNote: string
+    matchOrgRosterPaymentNotePlaceholder: string
+    matchOrgRosterSavePaymentNote: string
     matchOrgRosterApply: string
     matchOrgRosterSaving: string
     matchOrgRosterConfirm: string
@@ -1784,6 +1787,9 @@ export const ukMessages: MessageTree = {
     matchOrgRosterColDivision: 'Дивізіон',
     matchOrgRosterColStatus: 'Статус',
     matchOrgRosterColSquad: 'Сквод',
+    matchOrgRosterColPaymentNote: 'Примітка про оплату',
+    matchOrgRosterPaymentNotePlaceholder: 'Факт оплати, спосіб, коментар…',
+    matchOrgRosterSavePaymentNote: 'Зберегти примітку',
     matchOrgRosterApply: 'Застосувати',
     matchOrgRosterSaving: 'Збереження…',
     matchOrgRosterConfirm: 'Підтвердити участь',
@@ -2771,6 +2777,9 @@ export const enMessages: MessageTree = {
     matchOrgRosterColDivision: 'Division',
     matchOrgRosterColStatus: 'Status',
     matchOrgRosterColSquad: 'Squad',
+    matchOrgRosterColPaymentNote: 'Payment note',
+    matchOrgRosterPaymentNotePlaceholder: 'Payment fact, method, comment…',
+    matchOrgRosterSavePaymentNote: 'Save note',
     matchOrgRosterApply: 'Apply',
     matchOrgRosterSaving: 'Saving…',
     matchOrgRosterConfirm: 'Confirm entry',
