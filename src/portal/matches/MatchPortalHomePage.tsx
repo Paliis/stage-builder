@@ -37,16 +37,7 @@ export function MatchPortalHomePage() {
       <PortalPublishedMatchesSection />
 
       {footerOrganizerSlot ?
-        <div
-          style={{
-            marginTop: '1.5rem',
-            paddingTop: '1.35rem',
-            borderTop: '1px solid var(--border)',
-            maxWidth: '52rem',
-          }}
-        >
-          {footerOrganizerSlot}
-        </div>
+        <div className="portal-home__footer-cta">{footerOrganizerSlot}</div>
       : null}
     </div>
   )

@@ -38,12 +38,10 @@ a.portal-match-title-ellipsis:hover {
 
 /* Public match detail (published) -------------------------------------------- */
 
-/* Stretch full width so nested grids and % widths resolve; center via max-width + margin-inline on blocks. */
+/* Same column width as shell header/footer; stretch children inside that column */
 .portal-home.portal-match-public-detail {
   align-items: stretch;
   min-width: 0;
-  width: 100%;
-  max-width: 100%;
 }
 
 .portal-match-public-detail {
@@ -728,7 +726,7 @@ a.portal-match-title-ellipsis:hover {
 /* Wider content area when using squad board (multiple columns + 10-slot columns) */
 
 .portal-roster-page__sheet--board {
-  max-width: min(72rem, 100%);
+  max-width: min(var(--portal-layout-max-width, 72rem), 100%);
 }
 
 /* Organizer squad board (DnD roster columns, tuned for squads up to ~10 shooters) --------- */
