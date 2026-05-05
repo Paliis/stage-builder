@@ -10,7 +10,6 @@ import {
 import { Link } from 'react-router-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import type { Locale, MessageTree } from '../../i18n/messages'
-import { formatTemplate } from '../../i18n/format'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
 import {
@@ -21,23 +20,15 @@ import {
   divisionsForWeapon,
   isValidDivisionForWeapon,
 } from '../shooterProfileCatalog'
-import { sortPrematchFirstByPhase } from './matchSquadsSort'
+import {
+  type RegistrationMetricRow,
+  registrationMetricNum,
+} from './matchPortalRegistrationMetrics'
 import { portalMatchRegLabelClass } from './matchPortalRegStatusUi'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import '../PortalMatchesUi.css'
 
 type Portal = MessageTree['portal']
-
-type MetricRow = {
-  squad_id: string
-  squad_label: string
-  squad_sort: number
-  capacity: number
-  squad_taken: number | string
-  match_total_registered: number | string
-  match_competitor_limit: number
-  squad_phase?: string | null
-}
 
 export type OwnRegistrationRow = {
   id: string
@@ -54,6 +45,9 @@ type Props = {
   matchDiscipline: string
   p: Portal
   prematchEnabled: boolean
+  metrics: RegistrationMetricRow[] | undefined
+  metricsError: string | null
+  reloadMetrics: () => Promise<void>
 }
 
 const SHOOTER_CATEGORY_IDS = new Set(SHOOTER_CATEGORIES.map((c) => c.id))
@@ -63,17 +57,12 @@ function normalizeParticipantCategories(raw: unknown): string[] {
   return raw.filter((x): x is string => typeof x === 'string' && SHOOTER_CATEGORY_IDS.has(x))
 }
 
-function phaseOf(m: MetricRow): 'main' | 'prematch' {
+function phaseOf(m: RegistrationMetricRow): 'main' | 'prematch' {
   return m.squad_phase === 'prematch' ? 'prematch' : 'main'
 }
 
 function num(v: number | string | undefined): number {
-  if (typeof v === 'number' && Number.isFinite(v)) return v
-  if (typeof v === 'string') {
-    const n = Number(v)
-    if (Number.isFinite(n)) return n
-  }
-  return 0
+  return registrationMetricNum(v)
 }
 
 function weaponClassForMatchDiscipline(raw: string): WeaponClassId {
@@ -82,7 +71,7 @@ function weaponClassForMatchDiscipline(raw: string): WeaponClassId {
 }
 
 function SquadFreeTable(props: {
-  rows: MetricRow[]
+  rows: RegistrationMetricRow[]
   colSquad: string
   colFree: string
   fullLabel: string
@@ -123,6 +112,9 @@ export function MatchPublicRegistrationSection({
   matchDiscipline,
   p,
   prematchEnabled,
+  metrics,
+  metricsError,
+  reloadMetrics,
 }: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const sb = useMemo(() => getSupabase(), [])
@@ -133,9 +125,6 @@ export function MatchPublicRegistrationSection({
   const divisionOptions = divisionsForWeapon(matchWeaponClassId)
 
   const regDialogRef = useRef<HTMLDialogElement>(null)
-
-  const [metrics, setMetrics] = useState<MetricRow[] | undefined>(undefined)
-  const [metricsError, setMetricsError] = useState<string | null>(null)
 
   const [mine, setMine] = useState<OwnRegistrationRow | null | undefined>(undefined)
 
@@ -163,29 +152,6 @@ export function MatchPublicRegistrationSection({
       setFeedback(null)
     })
   }, [matchUuid])
-
-  const loadMetrics = useCallback(async () => {
-    await Promise.resolve()
-    setMetrics(undefined)
-    setMetricsError(null)
-    const { data, error } = await sb.rpc('fetch_public_match_registration_metrics', {
-      p_match_id: matchUuid,
-    })
-    if (error) {
-      const hintRpcMissing =
-        error.message.includes('does not exist') || error.code === '42883' || error.code === 'PGRST202'
-      setMetricsError(hintRpcMissing ? `${error.message}. ${p.matchDetailApplyMigrationHint}` : error.message)
-      setMetrics([])
-      return
-    }
-    const rows = sortPrematchFirstByPhase<MetricRow>((data ?? []) as MetricRow[], (m) => num(m.squad_sort))
-    setMetrics(rows)
-  }, [sb, matchUuid, p.matchDetailApplyMigrationHint])
-
-  useEffect(() => {
-    if (!configured) return
-    queueMicrotask(() => void loadMetrics())
-  }, [configured, loadMetrics])
 
   const loadMine = useCallback(async () => {
     await Promise.resolve()
@@ -286,19 +252,6 @@ export function MatchPublicRegistrationSection({
     matchWeaponClassId,
   ])
 
-  const capacityTotals = useMemo(() => {
-    if (!metrics?.length) return null
-    let totalCap = 0
-    let totalFree = 0
-    for (const row of metrics) {
-      const cap = Number(row.capacity)
-      const tk = num(row.squad_taken)
-      totalCap += cap
-      totalFree += Math.max(0, cap - tk)
-    }
-    return { totalCap, totalFree }
-  }, [metrics])
-
   const spotFreeMap = useMemo(() => {
     const m: Record<string, number> = {}
     if (!metrics) return m
@@ -342,7 +295,7 @@ export function MatchPublicRegistrationSection({
   }, [firstOpenSquad, pickedSquad])
 
   async function refreshAll() {
-    await loadMetrics()
+    await reloadMetrics()
     await loadMine()
   }
 
@@ -581,15 +534,6 @@ export function MatchPublicRegistrationSection({
         : metrics.length === 0 ?
           <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationNoSquads}</p>
         : <>
-            {capacityTotals ?
-              <p className="portal-reg-slot-summary" role="status">
-                {formatTemplate(p.matchDetailRegistrationCapacitySummary, {
-                  free: capacityTotals.totalFree,
-                  total: capacityTotals.totalCap,
-                })}
-              </p>
-            : null}
-
             {prematchEnabled ?
               <>
                 <h3 className="portal-reg-phase-subtitle">{p.matchDetailRegistrationPrematchHeading}</h3>

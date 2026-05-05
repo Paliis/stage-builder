@@ -430,6 +430,8 @@ export type MessageTree = {
     matchDetailLocationLabel: string
     matchDetailDisciplineLabel: string
     matchDetailLimitLabel: string
+    /** Shown next to competitor limit once squad metrics load — `{{limit}}`, `{{free}}` (squads aggregate). */
+    matchDetailLimitWithFree: string
     matchDetailPrematchLabel: string
     matchDetailPrematchValueYes: string
     matchDetailPrematchValueNo: string
@@ -486,8 +488,6 @@ export type MessageTree = {
     matchDetailRegistrationCancelling: string
     matchDetailRegistrationPickOpenSquad: string
     matchDetailRegistrationErrorPrefix: string
-    /** Squad capacity aggregate — `{{free}}`, `{{total}}` placeholders. */
-    matchDetailRegistrationCapacitySummary: string
     matchDetailRegistrationCta: string
     matchDetailRegistrationModalTitle: string
     matchDetailRegistrationModalClose: string
@@ -1415,6 +1415,7 @@ export const ukMessages: MessageTree = {
     matchDetailLocationLabel: 'Локація',
     matchDetailDisciplineLabel: 'Дисципліна',
     matchDetailLimitLabel: 'Ліміт учасників',
+    matchDetailLimitWithFree: '{{limit}} (вільно {{free}})',
     matchDetailPrematchLabel: 'Прематч',
     matchDetailPrematchValueYes: 'Так — окремі скводи напередодні',
     matchDetailPrematchValueNo: 'ні',
@@ -1474,7 +1475,6 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationCancelling: 'Скасування…',
     matchDetailRegistrationPickOpenSquad: 'Оберіть сквод із вільними місцями.',
     matchDetailRegistrationErrorPrefix: 'Помилка',
-    matchDetailRegistrationCapacitySummary: 'У скводах вільних місць: {{free}} з {{total}}.',
     matchDetailRegistrationCta: 'Зареєструватись',
     matchDetailRegistrationModalTitle: 'Подання заявки на матч',
     matchDetailRegistrationModalClose: 'Закрити',
@@ -2410,6 +2410,7 @@ export const enMessages: MessageTree = {
     matchDetailLocationLabel: 'Location',
     matchDetailDisciplineLabel: 'Discipline',
     matchDetailLimitLabel: 'Competitor limit',
+    matchDetailLimitWithFree: '{{limit}} ({{free}} free)',
     matchDetailPrematchLabel: 'Prematch',
     matchDetailPrematchValueYes: 'Yes — separate squads the day before',
     matchDetailPrematchValueNo: 'no',
@@ -2470,7 +2471,6 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationCancelling: 'Cancelling…',
     matchDetailRegistrationPickOpenSquad: 'Choose a squad with open seats.',
     matchDetailRegistrationErrorPrefix: 'Error',
-    matchDetailRegistrationCapacitySummary: 'Free seats across squads: {{free}} of {{total}}.',
     matchDetailRegistrationCta: 'Register',
     matchDetailRegistrationModalTitle: 'Match sign-up',
     matchDetailRegistrationModalClose: 'Close',

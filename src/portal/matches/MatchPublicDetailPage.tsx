@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
@@ -11,6 +11,12 @@ import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import { categoryLabel, weaponClassLabel } from '../shooterProfileCatalog'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
+import {
+  type RegistrationMetricRow,
+  normalizeRegistrationMetricRows,
+  registrationMetricNum,
+  sumSquadSeatsTotals,
+} from './matchPortalRegistrationMetrics'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
@@ -85,6 +91,8 @@ export function MatchPublicDetailPage() {
   const [openVisibilityActiveRegTotal, setOpenVisibilityActiveRegTotal] = useState<number | undefined>(undefined)
   const [programmeLinks, setProgrammeLinks] = useState<PublicStageLinkRow[] | undefined>(undefined)
   const [programmeError, setProgrammeError] = useState<string | null>(null)
+  const [regMetrics, setRegMetrics] = useState<RegistrationMetricRow[] | undefined>(undefined)
+  const [regMetricsError, setRegMetricsError] = useState<string | null>(null)
 
   const validId = matchId && MATCH_ID_UUID_RE.test(matchId)
   const configured = isSupabaseConfigured()
@@ -122,9 +130,36 @@ export function MatchPublicDetailPage() {
     }
   }, [matchId, validId, configured])
 
+  const loadRegistrationMetrics = useCallback(async () => {
+    await Promise.resolve()
+    if (!validId || !configured || !row?.id) {
+      setRegMetrics(undefined)
+      setRegMetricsError(null)
+      return
+    }
+    const sb = getSupabase()
+    setRegMetrics(undefined)
+    setRegMetricsError(null)
+    const { data, error } = await sb.rpc('fetch_public_match_registration_metrics', {
+      p_match_id: row.id,
+    })
+    if (error) {
+      const hintRpcMissing =
+        error.message.includes('does not exist') || error.code === '42883' || error.code === 'PGRST202'
+      setRegMetricsError(hintRpcMissing ? `${error.message}. ${p.matchDetailApplyMigrationHint}` : error.message)
+      setRegMetrics([])
+      return
+    }
+    setRegMetricsError(null)
+    setRegMetrics(normalizeRegistrationMetricRows(data))
+  }, [validId, configured, row?.id, p.matchDetailApplyMigrationHint])
+
+  useEffect(() => {
+    queueMicrotask(() => void loadRegistrationMetrics())
+  }, [loadRegistrationMetrics])
+
   useEffect(() => {
     let cancelled = false
-    let cancelledMetrics = false
     void (async () => {
       await Promise.resolve()
       if (cancelled) return
@@ -142,23 +177,6 @@ export function MatchPublicDetailPage() {
         setOpenVisibilityActiveRegTotal(undefined)
         return
       }
-      const sbM = getSupabase()
-      setOpenVisibilityActiveRegTotal(undefined)
-      void sbM.rpc('fetch_public_match_registration_metrics', { p_match_id: row.id }).then(({ data: mdata, error: mErr }) => {
-        if (cancelledMetrics) return
-        if (mErr || !mdata?.length) {
-          setOpenVisibilityActiveRegTotal(undefined)
-          return
-        }
-        const raw = (mdata[0] as { match_total_registered?: number | string }).match_total_registered
-        const n =
-          typeof raw === 'number' ?
-            raw
-          : typeof raw === 'string' ?
-            Number(raw)
-          : NaN
-        setOpenVisibilityActiveRegTotal(Number.isFinite(n) ? n : undefined)
-      })
       const sb = getSupabase()
       setRoster(undefined)
       setRosterError(null)
@@ -174,9 +192,19 @@ export function MatchPublicDetailPage() {
     })()
     return () => {
       cancelled = true
-      cancelledMetrics = true
     }
   }, [validId, configured, row?.id, row?.participant_list_visibility])
+
+  useEffect(() => {
+    const vis = row?.participant_list_visibility ?? 'closed'
+    if (!row?.id || vis !== 'open' || !regMetrics?.length) {
+      setOpenVisibilityActiveRegTotal(undefined)
+      return
+    }
+    const raw = regMetrics[0]?.match_total_registered
+    const n = registrationMetricNum(raw)
+    setOpenVisibilityActiveRegTotal(Number.isFinite(n) && n >= 0 ? n : undefined)
+  }, [row?.id, row?.participant_list_visibility, regMetrics])
 
   useEffect(() => {
     let cancelled = false
@@ -347,7 +375,16 @@ export function MatchPublicDetailPage() {
             {row.competitor_limit != null ?
               <>
                 <dt>{p.matchDetailLimitLabel}</dt>
-                <dd>{row.competitor_limit}</dd>
+                <dd>
+                  {regMetrics === undefined ?
+                    row.competitor_limit
+                  : regMetrics.length === 0 ?
+                    row.competitor_limit
+                  : formatTemplate(p.matchDetailLimitWithFree, {
+                      limit: row.competitor_limit,
+                      free: sumSquadSeatsTotals(regMetrics).totalFree,
+                    })}
+                </dd>
               </>
             : null}
             <dt>{p.matchDetailPrematchLabel}</dt>
@@ -403,6 +440,9 @@ export function MatchPublicDetailPage() {
         locale={locale}
         matchUuid={row.id}
         matchDiscipline={row.discipline}
+        metrics={regMetrics}
+        metricsError={regMetricsError}
+        reloadMetrics={loadRegistrationMetrics}
         p={p}
         prematchEnabled={Boolean(row.prematch_enabled)}
       />
