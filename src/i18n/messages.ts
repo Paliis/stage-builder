@@ -1442,7 +1442,7 @@ export const ukMessages: MessageTree = {
     matchDetailParticipantsOpenAwaitingConfirmation:
       'Підтверджені учасники з’являться тут після затвердження організатором. Активних записів у скводах зараз: {{count}}.',
     matchDetailParticipantsFootnote:
-      'Лише підтверджені учасники; ім’я з профілю, категорія та оплата — із заявки.',
+      'Лише підтверджені заявки. Ім’я — з профілю. Колонка «Підтвердження» — позначка «внесок отримано» організатором (окремо від статусу заявки «очікує / підтверджено» у вашому розділі Заявки). Категорія — із заявки.',
     matchDetailParticipantsColSquad: 'Сквод',
     matchDetailParticipantsColPhase: 'День',
     matchDetailParticipantsColName: 'Ім’я',
@@ -2446,7 +2446,7 @@ export const enMessages: MessageTree = {
     matchDetailParticipantsOpenAwaitingConfirmation:
       'Confirmed shooters appear here after the organizer approves them. Active sign-ups in squads now: {{count}}.',
     matchDetailParticipantsFootnote:
-      'Confirmed entries only; name from profile, category and payment from the sign-up.',
+      'Confirmed registrations only; name from profile. Confirmation here means the organizer marked the entry fee received (not the same as pending/confirmed roster status on the Applications screen). Category from sign-up.',
     matchDetailParticipantsColSquad: 'Squad',
     matchDetailParticipantsColPhase: 'Day',
     matchDetailParticipantsColName: 'Name',

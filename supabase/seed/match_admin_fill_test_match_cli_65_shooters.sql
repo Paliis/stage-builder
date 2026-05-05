@@ -182,7 +182,8 @@ BEGIN
       status,
       payment_note,
       confirmed_at,
-      confirmed_by
+      confirmed_by,
+      payment_received
     )
     VALUES (
       mid,
@@ -195,7 +196,8 @@ BEGIN
       'confirmed',
       'seed: bulk fill CLI match to 65',
       now(),
-      org_id
+      org_id,
+      true
     );
   END LOOP;
 
@@ -206,3 +208,9 @@ BEGIN
 
   RAISE NOTICE 'Added % shooters to match_id = % (active target %).', need, mid, tgt;
 END $$;
+
+-- Уже наявні рядки від попередніх запусків сидера мали payment_received = false — виправити для публічної таблиці.
+UPDATE public.match_registrations
+SET payment_received = true
+WHERE payment_note = 'seed: bulk fill CLI match to 65'
+  AND status = 'confirmed';
