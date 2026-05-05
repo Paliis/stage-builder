@@ -343,7 +343,9 @@ export function MatchPublicDetailPage() {
           </nav>
 
           <header className="portal-home__hero portal-match-public-detail__title-block portal-match-public-detail__masthead-title-row">
-            <h1 className="portal-home__hero-title portal-match-public-detail__hero-heading">{row.title}</h1>
+            <h1 className="portal-home__hero-title portal-match-public-detail__hero-heading" title={row.title}>
+              {row.title}
+            </h1>
           </header>
 
           <div

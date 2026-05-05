@@ -293,8 +293,15 @@ a.portal-match-title-ellipsis:hover {
   max-width: 100%;
   writing-mode: horizontal-tb;
   text-orientation: mixed;
-  overflow-wrap: break-word;
-  word-break: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .portal-match-public-detail__facts {
@@ -1264,20 +1271,22 @@ a.portal-match-title-ellipsis:hover {
 .portal-matches-organizer__table {
   table-layout: fixed;
   width: 100%;
-  min-width: 44rem;
+  min-width: 0;
   border-collapse: collapse;
   font-size: 0.90625rem;
 }
 
 .portal-matches-organizer__table th.portal-matches-organizer__table-col-title,
 .portal-matches-organizer__table td.portal-matches-organizer__table-col-title {
-  width: 18%;
-  max-width: 14rem;
+  width: 26%;
+  min-width: 0;
+  max-width: none;
 }
+
 
 .portal-matches-organizer__table thead th {
   text-align: left;
-  padding: 0.7rem 0.85rem;
+  padding: 0.55rem 0.6rem;
   border-bottom: 1px solid var(--border);
   font-weight: 800;
   color: var(--text-h);
@@ -1285,10 +1294,12 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-matches-organizer__table tbody td {
-  padding: 0.65rem 0.85rem;
+  padding: 0.55rem 0.6rem;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
   color: var(--text);
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .portal-matches-organizer__table tbody tr:last-child td {
@@ -1302,9 +1313,16 @@ a.portal-match-title-ellipsis:hover {
 .portal-matches-organizer__cell-actions {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 0.45rem;
-  min-width: 9.5rem;
+  align-items: stretch;
+  gap: 0.35rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.portal-matches-organizer__cell-actions .portal-btn--compact {
+  width: 100%;
+  max-width: 11rem;
+  align-self: flex-end;
 }
 
 .portal-matches-organizer__cell-actions-secondary {
