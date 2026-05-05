@@ -43,7 +43,8 @@ type PublicRosterRow = {
   display_name: string
   division: string
   categories: unknown
-  payment_received: boolean | null
+  /** Same values as organizer Applications: `pending` | `confirmed` */
+  registration_status: string | null
 }
 
 type PublicStageLinkRow = {
@@ -499,7 +500,7 @@ export function MatchPublicDetailPage() {
                 </thead>
                 <tbody>
                   {(roster ?? []).map((r, i) => {
-                    const paid = Boolean(r.payment_received)
+                    const rosterAccepted = String(r.registration_status ?? '').toLowerCase() === 'confirmed'
                     return (
                     <tr
                       key={`${r.squad_phase ?? ''}-${r.squad_sort}-${r.squad_label}-${i}`}
@@ -519,11 +520,12 @@ export function MatchPublicDetailPage() {
                       <td>
                         <span
                           className={
-                            paid ? 'portal-match-reg-label portal-match-reg-label--confirmed'
+                            rosterAccepted ?
+                              'portal-match-reg-label portal-match-reg-label--confirmed'
                             : 'portal-match-reg-label portal-match-reg-label--pending'
                           }
                         >
-                          {paid ? p.matchDetailParticipantsPaymentConfirmed : p.matchDetailParticipantsPaymentPending}
+                          {rosterAccepted ? p.matchDetailParticipantsPaymentConfirmed : p.matchDetailParticipantsPaymentPending}
                         </span>
                       </td>
                     </tr>

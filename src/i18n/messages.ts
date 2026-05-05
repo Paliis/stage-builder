@@ -454,7 +454,7 @@ export type MessageTree = {
     matchDetailParticipantsColName: string
     matchDetailParticipantsColDivision: string
     matchDetailParticipantsColCategory: string
-    /** Short header for payment_received column on public participant table */
+    /** Last column header: roster status pending|confirmed — same DB field as organizer Applications. */
     matchDetailParticipantsColPaymentConfirmation: string
     matchDetailParticipantsPaymentConfirmed: string
     matchDetailParticipantsPaymentPending: string
@@ -1442,7 +1442,7 @@ export const ukMessages: MessageTree = {
     matchDetailParticipantsOpenAwaitingConfirmation:
       'Підтверджені учасники з’являться тут після затвердження організатором. Активних записів у скводах зараз: {{count}}.',
     matchDetailParticipantsFootnote:
-      'Лише підтверджені заявки. Ім’я — з профілю. Колонка «Підтвердження» — позначка «внесок отримано» організатором (окремо від статусу заявки «очікує / підтверджено» у вашому розділі Заявки). Категорія — із заявки.',
+      'Показано активні заявки («очікує» або «підтверджено» до ростеру); ім’я — з профілю учасника, коли вказано. Колонка «Підтвердження» — той самий статус заявки, що в розділі організатора «Заявки». Категорія — із заявки.',
     matchDetailParticipantsColSquad: 'Сквод',
     matchDetailParticipantsColPhase: 'День',
     matchDetailParticipantsColName: 'Ім’я',
@@ -2446,7 +2446,7 @@ export const enMessages: MessageTree = {
     matchDetailParticipantsOpenAwaitingConfirmation:
       'Confirmed shooters appear here after the organizer approves them. Active sign-ups in squads now: {{count}}.',
     matchDetailParticipantsFootnote:
-      'Confirmed registrations only; name from profile. Confirmation here means the organizer marked the entry fee received (not the same as pending/confirmed roster status on the Applications screen). Category from sign-up.',
+      'Listed sign-ups are active (waiting or confirmed on the roster); name from shooter profile when set. Confirmation matches organizer Applications status. Category from sign-up.',
     matchDetailParticipantsColSquad: 'Squad',
     matchDetailParticipantsColPhase: 'Day',
     matchDetailParticipantsColName: 'Name',
