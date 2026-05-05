@@ -12,11 +12,19 @@ import { OrganizerMatchSquadsPanel } from './OrganizerMatchSquadsPanel'
 import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import { MatchCoverCropModal } from './MatchCoverCropModal'
+import { cropRectRegionToJpeg, measureImageNaturalSize } from '../cropPixelsToJpeg'
 import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
 const MATCH_COVER_MAX_BYTES = 5 * 1024 * 1024
+/** Published match list / masthead previews use this aspect (see `MatchCoverCropModal`). */
+const MATCH_COVER_LIST_ASPECT = 16 / 10
+/**
+ * Relative tolerance vs `MATCH_COVER_LIST_ASPECT`; within this band we upload without opening the crop UI
+ * so finished 16∶10 artwork matches the organizer’s file pixel-for-pixel.
+ */
+const MATCH_COVER_ASPECT_SKIP_CROP_TOL = 0.022
 
 type MatchDraft = {
   title: string
@@ -418,6 +426,21 @@ export function OrganizerMatchEditPage() {
       coverCropObjectUrlRef.current = null
     }
     const url = URL.createObjectURL(file)
+    try {
+      const { width, height } = await measureImageNaturalSize(url)
+      if (width > 0 && height > 0) {
+        const ar = width / height
+        if (Math.abs(ar - MATCH_COVER_LIST_ASPECT) / MATCH_COVER_LIST_ASPECT <= MATCH_COVER_ASPECT_SKIP_CROP_TOL) {
+          const blob = await cropRectRegionToJpeg(url, { x: 0, y: 0, width, height })
+          URL.revokeObjectURL(url)
+          setCoverUploadErr(null)
+          await uploadCoverJpegBlob(blob)
+          return
+        }
+      }
+    } catch {
+      // Fall through: open cropper (e.g. decode failure).
+    }
     coverCropObjectUrlRef.current = url
     setCoverCropSrc(url)
   }

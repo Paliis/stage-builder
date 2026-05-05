@@ -7,6 +7,9 @@ import 'react-easy-crop/react-easy-crop.css'
 
 type Portal = MessageTree['portal']
 
+const ZOOM_MIN = 0.22
+const ZOOM_MAX = 4
+
 export function AvatarCropModal({
   imageSrc,
   onCancel,
@@ -81,9 +84,9 @@ export function AvatarCropModal({
             aspect={1}
             cropShape="round"
             showGrid={false}
-            objectFit="contain"
-            minZoom={1}
-            maxZoom={4}
+            objectFit="cover"
+            minZoom={ZOOM_MIN}
+            maxZoom={ZOOM_MAX}
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={onCropComplete}
@@ -96,8 +99,8 @@ export function AvatarCropModal({
             <span>{p.accountParticipantAvatarCropZoom}</span>
             <input
               type="range"
-              min={1}
-              max={4}
+              min={ZOOM_MIN}
+              max={ZOOM_MAX}
               step={0.02}
               value={zoom}
               onChange={(e) => setZoom(Number(e.target.value))}

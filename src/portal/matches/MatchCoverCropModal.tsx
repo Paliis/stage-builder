@@ -2,13 +2,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Cropper, { type Area, type Point } from 'react-easy-crop'
 import type { MessageTree } from '../../i18n/messages'
-import { cropPixelsToJpeg } from '../cropPixelsToJpeg'
+import { cropRectRegionToJpeg } from '../cropPixelsToJpeg'
 import '../account/AccountParticipantHub.css'
 import 'react-easy-crop/react-easy-crop.css'
 
 type Portal = MessageTree['portal']
 
 const COVER_ASPECT = 16 / 10
+const ZOOM_MIN = 0.22
+const ZOOM_MAX = 4
 
 export function MatchCoverCropModal({
   imageSrc,
@@ -42,7 +44,7 @@ export function MatchCoverCropModal({
     setErr(null)
     setBusy(true)
     try {
-      const blob = await cropPixelsToJpeg(imageSrc, croppedPixels)
+      const blob = await cropRectRegionToJpeg(imageSrc, croppedPixels)
       await onApply(blob)
     } catch {
       setErr(p.matchOrgCoverCropErrCrop)
@@ -79,9 +81,9 @@ export function MatchCoverCropModal({
             aspect={COVER_ASPECT}
             cropShape="rect"
             showGrid
-            objectFit="contain"
-            minZoom={1}
-            maxZoom={4}
+            objectFit="cover"
+            minZoom={ZOOM_MIN}
+            maxZoom={ZOOM_MAX}
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropAreaChange={(_a, pixels) => setCroppedPixels(pixels)}
@@ -93,8 +95,8 @@ export function MatchCoverCropModal({
             <span>{p.matchOrgCoverCropZoom}</span>
             <input
               type="range"
-              min={1}
-              max={4}
+              min={ZOOM_MIN}
+              max={ZOOM_MAX}
               step={0.02}
               value={zoom}
               onChange={(e) => setZoom(Number(e.target.value))}

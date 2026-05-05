@@ -9,6 +9,11 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   })
 }
 
+export async function measureImageNaturalSize(imageSrc: string): Promise<{ width: number; height: number }> {
+  const image = await loadImage(imageSrc)
+  return { width: image.naturalWidth, height: image.naturalHeight }
+}
+
 function clampCropToImage(image: HTMLImageElement, crop: Area): Area {
   const w = image.naturalWidth
   const h = image.naturalHeight
@@ -21,7 +26,9 @@ function clampCropToImage(image: HTMLImageElement, crop: Area): Area {
   return { x, y, width: cw, height: ch }
 }
 
-/** Renders the cropped region from the source image (browser only). */
+/**
+ * Avatar / square preview: fills a square from the cropped rect (same behavior as legacy export).
+ */
 export async function cropPixelsToJpeg(
   imageSrc: string,
   pixelCrop: Area,
@@ -48,6 +55,37 @@ export async function cropPixelsToJpeg(
     out,
     out,
   )
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob((b) => resolve(b), 'image/jpeg', quality),
+  )
+  if (!blob) throw new Error('JPEG encode failed')
+  return blob
+}
+
+/**
+ * Match list cover (16∶10 rectangle): preserves crop aspect; scales down only if pixels exceed bounds.
+ */
+export async function cropRectRegionToJpeg(
+  imageSrc: string,
+  pixelCrop: Area,
+  maxLongEdgePx = 2048,
+  quality = 0.88,
+): Promise<Blob> {
+  const image = await loadImage(imageSrc)
+  const safe = clampCropToImage(image, pixelCrop)
+  let w = Math.round(safe.width)
+  let h = Math.round(safe.height)
+  const long = Math.max(w, h)
+  const scale = long > maxLongEdgePx ? maxLongEdgePx / long : 1
+  const outW = Math.max(1, Math.round(w * scale))
+  const outH = Math.max(1, Math.round(h * scale))
+
+  const canvas = document.createElement('canvas')
+  canvas.width = outW
+  canvas.height = outH
+  const ctx = canvas.getContext('2d')
+  if (!ctx) throw new Error('Canvas 2D unavailable')
+  ctx.drawImage(image, Math.round(safe.x), Math.round(safe.y), w, h, 0, 0, outW, outH)
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob((b) => resolve(b), 'image/jpeg', quality),
   )
