@@ -38,8 +38,9 @@ a.portal-match-title-ellipsis:hover {
 
 /* Public match detail (published) -------------------------------------------- */
 
+/* Stretch full width so nested grids and % widths resolve; center via max-width + margin-inline on blocks. */
 .portal-home.portal-match-public-detail {
-  align-items: center;
+  align-items: stretch;
 }
 
 .portal-match-public-detail {
@@ -50,6 +51,7 @@ a.portal-match-title-ellipsis:hover {
   width: 100%;
   max-width: min(52rem, 100%);
   min-width: 0;
+  margin-inline: auto;
   display: flex;
   justify-content: center;
 }
@@ -78,6 +80,7 @@ a.portal-match-title-ellipsis:hover {
   width: 100%;
   max-width: min(52rem, 100%);
   min-width: 0;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -94,12 +97,12 @@ a.portal-match-title-ellipsis:hover {
 
 @media (min-width: 760px) {
   .portal-match-public-detail__masthead-grid--has-cover {
-    grid-template-columns: auto minmax(0, 1fr) minmax(10.5rem, 13rem);
+    grid-template-columns: auto minmax(16rem, 1fr) minmax(10.5rem, 13rem);
     align-items: start;
   }
 
   .portal-match-public-detail__masthead-grid:not(.portal-match-public-detail__masthead-grid--has-cover) {
-    grid-template-columns: minmax(0, 1fr) minmax(10.5rem, 13rem);
+    grid-template-columns: minmax(16rem, 1fr) minmax(10.5rem, 13rem);
   }
 
   .portal-match-public-detail__masthead-actions {
@@ -208,6 +211,12 @@ a.portal-match-title-ellipsis:hover {
   text-align: center;
 }
 
+/* Hero title inherits .portal-match-title-hero-wrap (overflow-wrap:anywhere) — too aggressive when the grid column collapses; keep normal word breaks here. */
+.portal-match-public-detail__masthead-main .portal-match-title-hero-wrap {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
 .portal-match-public-detail__facts {
   display: grid;
   grid-template-columns: 1fr;
@@ -245,7 +254,7 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-match-public-detail__description {
-  margin: 0;
+  margin: 0 auto;
   max-width: min(52rem, 100%);
 }
 
@@ -261,6 +270,7 @@ a.portal-match-title-ellipsis:hover {
   width: 100%;
   max-width: min(52rem, 100%);
   min-width: 0;
+  margin-inline: auto;
 }
 
 .portal-match-public-detail__section-title {
@@ -329,6 +339,7 @@ a.portal-match-title-ellipsis:hover {
 .portal-reg-minimal {
   width: 100%;
   max-width: min(52rem, 100%);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
