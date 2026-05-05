@@ -791,6 +791,10 @@ export type MessageTree = {
     matchOrgRosterColDivision: string
     matchOrgRosterColStatus: string
     matchOrgRosterColSquad: string
+    matchOrgRosterColPayment: string
+    matchOrgRosterPaymentReceived: string
+    matchOrgRosterPaymentYes: string
+    matchOrgRosterPaymentNo: string
     matchOrgRosterColPaymentNote: string
     matchOrgRosterPaymentNotePlaceholder: string
     matchOrgRosterSavePaymentNote: string
@@ -1787,9 +1791,13 @@ export const ukMessages: MessageTree = {
     matchOrgRosterColDivision: 'Дивізіон',
     matchOrgRosterColStatus: 'Статус',
     matchOrgRosterColSquad: 'Сквод',
-    matchOrgRosterColPaymentNote: 'Примітка про оплату',
+    matchOrgRosterColPayment: 'Оплата',
+    matchOrgRosterPaymentReceived: 'Оплачено',
+    matchOrgRosterPaymentYes: 'Так',
+    matchOrgRosterPaymentNo: 'Ні',
+    matchOrgRosterColPaymentNote: 'Примітка',
     matchOrgRosterPaymentNotePlaceholder: 'Факт оплати, спосіб, коментар…',
-    matchOrgRosterSavePaymentNote: 'Зберегти примітку',
+    matchOrgRosterSavePaymentNote: 'Зберегти оплату',
     matchOrgRosterApply: 'Застосувати',
     matchOrgRosterSaving: 'Збереження…',
     matchOrgRosterConfirm: 'Підтвердити участь',
@@ -2777,9 +2785,13 @@ export const enMessages: MessageTree = {
     matchOrgRosterColDivision: 'Division',
     matchOrgRosterColStatus: 'Status',
     matchOrgRosterColSquad: 'Squad',
-    matchOrgRosterColPaymentNote: 'Payment note',
+    matchOrgRosterColPayment: 'Payment',
+    matchOrgRosterPaymentReceived: 'Paid',
+    matchOrgRosterPaymentYes: 'Yes',
+    matchOrgRosterPaymentNo: 'No',
+    matchOrgRosterColPaymentNote: 'Note',
     matchOrgRosterPaymentNotePlaceholder: 'Payment fact, method, comment…',
-    matchOrgRosterSavePaymentNote: 'Save note',
+    matchOrgRosterSavePaymentNote: 'Save payment',
     matchOrgRosterApply: 'Apply',
     matchOrgRosterSaving: 'Saving…',
     matchOrgRosterConfirm: 'Confirm entry',

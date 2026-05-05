@@ -30,6 +30,7 @@ type RosterRpcRow = {
   registration_created_at?: string | null
   /** From roster RPC (`payment_note`), optional until migration applied. */
   payment_note?: string | null
+  payment_received?: boolean
 }
 
 type SquadPick = {
@@ -130,6 +131,20 @@ function paymentNoteDirtyVsServer(reg: RosterRpcRow, draft: Record<string, strin
   return d !== s
 }
 
+function paymentReceivedDirtyVsServer(reg: RosterRpcRow, draft: Record<string, boolean>): boolean {
+  const d = !!(draft[reg.registration_id] ?? false)
+  const s = !!(reg.payment_received ?? false)
+  return d !== s
+}
+
+function paymentFieldsDirtyVsServer(
+  reg: RosterRpcRow,
+  noteDraft: Record<string, string>,
+  receivedDraft: Record<string, boolean>,
+): boolean {
+  return paymentNoteDirtyVsServer(reg, noteDraft) || paymentReceivedDirtyVsServer(reg, receivedDraft)
+}
+
 export function OrganizerMatchRegistrationsPage() {
   const { locale, tree } = useI18n()
   const p = tree.portal
@@ -147,6 +162,7 @@ export function OrganizerMatchRegistrationsPage() {
 
   const [pendingSquad, setPendingSquad] = useState<Record<string, string>>({})
   const [paymentNoteDraft, setPaymentNoteDraft] = useState<Record<string, string>>({})
+  const [paymentReceivedDraft, setPaymentReceivedDraft] = useState<Record<string, boolean>>({})
   const [saveRegId, setSaveRegId] = useState<string | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [rosterView, setRosterView] = useState<'table' | 'board'>('table')
@@ -205,6 +221,13 @@ export function OrganizerMatchRegistrationsPage() {
       }
       return m
     })
+    setPaymentReceivedDraft(() => {
+      const m: Record<string, boolean> = {}
+      for (const r of roster) {
+        m[r.registration_id] = !!(r.payment_received ?? false)
+      }
+      return m
+    })
   }, [roster])
 
   useEffect(() => {
@@ -252,6 +275,7 @@ export function OrganizerMatchRegistrationsPage() {
     const sb = getSupabase()
     setSaveRegId(registrationId)
     const noteRaw = (paymentNoteDraft[registrationId] ?? '').trim()
+    const paid = !!(paymentReceivedDraft[registrationId] ?? false)
 
     const { error } = await sb
       .from('match_registrations')
@@ -260,6 +284,7 @@ export function OrganizerMatchRegistrationsPage() {
         confirmed_at: new Date().toISOString(),
         confirmed_by: user.id,
         payment_note: noteRaw.length > 0 ? noteRaw : null,
+        payment_received: paid,
       })
       .eq('id', registrationId)
       .eq('match_id', matchId)
@@ -277,15 +302,19 @@ export function OrganizerMatchRegistrationsPage() {
     await reload()
   }
 
-  async function savePaymentNoteReg(registrationId: string) {
+  async function savePaymentFieldsReg(registrationId: string) {
     setSaveError(null)
     if (!configured || !matchId) return
     const noteRaw = (paymentNoteDraft[registrationId] ?? '').trim()
+    const paid = !!(paymentReceivedDraft[registrationId] ?? false)
     const sb = getSupabase()
     setSaveRegId(registrationId)
     const { error } = await sb
       .from('match_registrations')
-      .update({ payment_note: noteRaw.length > 0 ? noteRaw : null })
+      .update({
+        payment_note: noteRaw.length > 0 ? noteRaw : null,
+        payment_received: paid,
+      })
       .eq('id', registrationId)
       .eq('match_id', matchId)
       .eq('status', 'confirmed')
@@ -468,6 +497,13 @@ export function OrganizerMatchRegistrationsPage() {
                 inactiveRegistrations={rosterInactiveBoard}
                 savingRegId={saveRegId}
                 paymentNoteDraft={paymentNoteDraft}
+                paymentReceivedDraft={paymentReceivedDraft}
+                onPaymentReceivedChange={(id, paid) =>
+                  setPaymentReceivedDraft((prev) => ({
+                    ...prev,
+                    [id]: paid,
+                  }))
+                }
                 onPaymentNoteChange={(id, note) =>
                   setPaymentNoteDraft((prev) => ({
                     ...prev,
@@ -485,7 +521,7 @@ export function OrganizerMatchRegistrationsPage() {
                   await confirmReg(registrationId)
                 }}
                 onSavePaymentNote={async (registrationId) => {
-                  await savePaymentNoteReg(registrationId)
+                  await savePaymentFieldsReg(registrationId)
                 }}
                 onMoveRegistration={async (registrationId, targetSquadId) =>
                   saveReg(registrationId, targetSquadId)
@@ -521,7 +557,7 @@ export function OrganizerMatchRegistrationsPage() {
                   scope="col"
                   style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
                 >
-                  {p.matchOrgRosterColPaymentNote}
+                  {p.matchOrgRosterColPayment}
                 </th>
                 <th
                   scope="col"
@@ -571,12 +607,72 @@ export function OrganizerMatchRegistrationsPage() {
                       }}
                     >
                       {inactive ?
-                        <span style={{ fontSize: '0.86rem', opacity: (reg.payment_note ?? '').trim() ? 0.93 : 0.55 }}>
-                          {(reg.payment_note ?? '').trim() || '—'}
-                        </span>
+                        <div style={{ fontSize: '0.82rem', lineHeight: 1.45 }}>
+                          <div>
+                            <span style={{ opacity: 0.78 }}>{p.matchOrgRosterPaymentReceived}: </span>
+                            {(reg.payment_received ?? false) ?
+                              p.matchOrgRosterPaymentYes
+                            : p.matchOrgRosterPaymentNo}
+                          </div>
+                          {(reg.payment_note ?? '').trim() ?
+                            <div style={{ marginTop: '0.35rem', opacity: 0.9 }}>
+                              {(reg.payment_note ?? '').trim()}
+                            </div>
+                          : null}
+                        </div>
                       : (
                         <>
+                          <div style={{ marginBottom: '0.45rem' }}>
+                            <label
+                              htmlFor={`pay-received-${reg.registration_id}`}
+                              style={{
+                                display: 'block',
+                                fontSize: '0.76rem',
+                                opacity: 0.88,
+                                marginBottom: '0.22rem',
+                              }}
+                            >
+                              {p.matchOrgRosterPaymentReceived}
+                            </label>
+                            <select
+                              id={`pay-received-${reg.registration_id}`}
+                              aria-label={p.matchOrgRosterPaymentReceived}
+                              disabled={saveRegId === reg.registration_id}
+                              value={(paymentReceivedDraft[reg.registration_id] ?? false) ? 'yes' : 'no'}
+                              onChange={(e) =>
+                                setPaymentReceivedDraft((prev) => ({
+                                  ...prev,
+                                  [reg.registration_id]: e.target.value === 'yes',
+                                }))
+                              }
+                              style={{
+                                maxWidth: '12rem',
+                                width: '100%',
+                                padding: '0.3rem 0.45rem',
+                                fontSize: '0.84rem',
+                                borderRadius: '6px',
+                                border: '1px solid var(--border)',
+                                background: 'var(--btn-bg)',
+                                color: 'var(--text)',
+                              }}
+                            >
+                              <option value="no">{p.matchOrgRosterPaymentNo}</option>
+                              <option value="yes">{p.matchOrgRosterPaymentYes}</option>
+                            </select>
+                          </div>
+                          <label
+                            htmlFor={`pay-note-${reg.registration_id}`}
+                            style={{
+                              display: 'block',
+                              fontSize: '0.76rem',
+                              opacity: 0.88,
+                              marginBottom: '0.22rem',
+                            }}
+                          >
+                            {p.matchOrgRosterColPaymentNote}
+                          </label>
                           <textarea
+                            id={`pay-note-${reg.registration_id}`}
                             rows={3}
                             aria-label={p.matchOrgRosterColPaymentNote}
                             placeholder={p.matchOrgRosterPaymentNotePlaceholder}
@@ -604,12 +700,13 @@ export function OrganizerMatchRegistrationsPage() {
                               minHeight: '3.35rem',
                             }}
                           />
-                          {reg.status === 'confirmed' && paymentNoteDirtyVsServer(reg, paymentNoteDraft) ?
+                          {reg.status === 'confirmed'
+                          && paymentFieldsDirtyVsServer(reg, paymentNoteDraft, paymentReceivedDraft) ?
                             <div style={{ marginTop: '0.35rem' }}>
                               <button
                                 type="button"
                                 disabled={saveRegId === reg.registration_id}
-                                onClick={() => void savePaymentNoteReg(reg.registration_id)}
+                                onClick={() => void savePaymentFieldsReg(reg.registration_id)}
                                 style={{
                                   padding: '0.3rem 0.6rem',
                                   borderRadius: '6px',
