@@ -1656,21 +1656,100 @@ a.portal-match-title-ellipsis:hover {
   }
 }
 
-/** ─── Organizer: match create / edit form ─── */
+/** ─── Organizer: match create / edit (wide layout + surfaces like public match page) ─── */
+
+.portal-home.portal-match-org-edit-page {
+  align-items: stretch;
+  min-width: 0;
+}
+
+.portal-match-org-edit__shell {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 960px) {
+  .portal-match-org-edit__shell {
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 19.5rem);
+    align-items: start;
+    gap: 1.4rem;
+  }
+
+  .portal-match-org-edit__aside.portal-match-org-quick {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .portal-match-org-edit__primary {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+.portal-match-org-edit__primary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  min-width: 0;
+}
+
 .portal-match-org-edit__hero {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
 }
 
 .portal-match-org-edit__title {
-  font-size: clamp(1.35rem, 1.1vw + 1.05rem, 1.75rem);
+  font-size: clamp(1.35rem, 1.1vw + 1.05rem, 1.85rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.18;
-  max-width: 40rem;
+  max-width: none;
+}
+
+/* Shared with public detail “surface” card */
+.portal-match-org-edit__card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 1.15rem 1.35rem 1.35rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--btn-bg), var(--accent-bg) 14%) 0%,
+    var(--btn-bg) min(42%, 8.5rem)
+  );
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 10px 28px rgba(15, 23, 42, 0.07);
+}
+
+.portal-match-org-edit__card--programme {
+  padding-top: 1.2rem;
+  padding-bottom: 1.45rem;
+}
+
+.portal-match-org-edit__card--programme > section {
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.portal-match-org-edit__card--programme > section:first-child {
+  margin-top: 0 !important;
+}
+
+.portal-match-org-edit__card--programme > section + section {
+  margin-top: 1.35rem !important;
+  padding-top: 1.25rem !important;
+  border-top: 1px dashed color-mix(in srgb, var(--border) 90%, transparent);
 }
 
 .portal-match-org-form {
-  max-width: 28rem;
+  width: 100%;
+  max-width: none;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -1741,10 +1820,18 @@ a.portal-match-title-ellipsis:hover {
   line-height: 1.5;
 }
 
-.portal-match-org-form__section {
-  margin: 1.35rem 0 0;
-  padding: 1.1rem 0 0;
-  border-top: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+.portal-match-org-edit__card .portal-match-org-form__section {
+  margin-top: 1.35rem;
+  margin-bottom: 0;
+  padding: 0.92rem 1rem 1rem;
+  border-radius: 0.72rem;
+  border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+  background: color-mix(in srgb, var(--btn-bg) 94%, transparent);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+.portal-match-org-edit__card .portal-match-org-form__section:first-of-type {
+  margin-top: 1.45rem;
 }
 
 .portal-match-org-form__section-heading {
@@ -1851,7 +1938,9 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-match-org-form__alert {
-  max-width: 28rem;
+  max-width: none;
+  width: 100%;
+  box-sizing: border-box;
   margin: 0 0 1rem;
   padding: 0.65rem 0.85rem;
   border-radius: 0.55rem;
@@ -1869,30 +1958,44 @@ a.portal-match-title-ellipsis:hover {
   margin-left: auto;
 }
 
-.portal-match-org-form__alert--above-form {
-  margin-bottom: 0.85rem;
-}
-
-/* Sticky quick actions: save, roster, PractiScore export, public link */
-.portal-match-org-quick {
-  position: sticky;
-  top: calc(var(--portal-shell-strip-h, 3.75rem) + 0.35rem);
-  z-index: 6;
-  max-width: 28rem;
-  margin: 0 0 1.35rem;
-  padding: 0.82rem 0.92rem 0.95rem;
-  border-radius: 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
-  background: color-mix(in srgb, var(--surface) 96%, transparent);
-  backdrop-filter: blur(10px);
+/* Quick actions sidebar (desktop) / toolbar (narrow) */
+.portal-match-org-edit__aside.portal-match-org-quick {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0.88rem 0.92rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--btn-bg), var(--accent-bg) 13%) 0%,
+    var(--btn-bg) min(52%, 7rem)
+  );
   box-shadow:
-    0 1px 0 color-mix(in srgb, var(--text-h) 5%, transparent),
-    0 10px 32px rgba(15, 23, 42, 0.07);
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 8px 22px rgba(15, 23, 42, 0.06);
+  position: relative;
+  top: auto;
+  z-index: auto;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .portal-match-org-quick {
-    backdrop-filter: none;
+@media (min-width: 960px) {
+  .portal-match-org-edit__aside.portal-match-org-quick {
+    position: sticky;
+    top: calc(var(--portal-shell-strip-h, 3.75rem) + 0.6rem);
+    z-index: 4;
+    padding: 1rem;
+  }
+
+  .portal-match-org-quick__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.42rem;
+  }
+
+  .portal-match-org-quick__btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -1946,8 +2049,8 @@ a.portal-match-title-ellipsis:hover {
 
 .portal-match-org-quick__psc-hint {
   margin: 0.5rem 0 0;
-  font-size: 0.75rem;
-  line-height: 1.45;
+  font-size: 0.73rem;
+  line-height: 1.48;
   color: color-mix(in srgb, var(--text) 72%, transparent);
-  max-width: 36rem;
+  max-width: none;
 }

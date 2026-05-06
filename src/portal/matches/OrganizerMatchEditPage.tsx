@@ -546,7 +546,7 @@ export function OrganizerMatchEditPage() {
     (draft.prematch_enabled ? draft.planned_prematch_squad_count * draft.shooters_per_prematch_squad : 0)
 
   return (
-    <div className="portal-home">
+    <div className="portal-home portal-match-org-edit-page">
       <Helmet>
         <title>{helmet}</title>
       </Helmet>
@@ -564,20 +564,11 @@ export function OrganizerMatchEditPage() {
         <h1 className="portal-home__hero-title portal-match-title-hero-wrap portal-match-org-edit__title">{pageTitle}</h1>
       </header>
 
-      {squadSyncBanner ?
-        <div className="portal-match-org-form__alert portal-match-org-form__alert--above-form" role="alert">
-          {formatTemplate(p.matchOrgSquadSyncBanner, { detail: squadSyncBanner })}
-          <button
-            type="button"
-            className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__alert-dismiss"
-            onClick={() => setSquadSyncBanner(null)}
-          >
-            {p.matchOrgSquadSyncBannerDismiss}
-          </button>
-        </div>
-      : null}
-
-      <section className="portal-match-org-quick" aria-label={p.matchOrgQuickActionsAria}>
+      <div className="portal-match-org-edit__shell">
+      <aside
+        className="portal-match-org-quick portal-match-org-edit__aside"
+        aria-label={p.matchOrgQuickActionsAria}
+      >
         <div className="portal-match-org-quick__head">
           <h2 className="portal-match-org-quick__title">{p.matchOrgQuickActionsHeading}</h2>
           {isNew ?
@@ -634,8 +625,23 @@ export function OrganizerMatchEditPage() {
         {!isNew && validEditId && matchId ?
           <p className="portal-match-org-quick__psc-hint">{p.matchOrgExportPscHint}</p>
         : null}
-      </section>
+      </aside>
 
+      <div className="portal-match-org-edit__primary">
+      {squadSyncBanner ?
+        <div className="portal-match-org-form__alert portal-match-org-edit__banner" role="alert">
+          {formatTemplate(p.matchOrgSquadSyncBanner, { detail: squadSyncBanner })}
+          <button
+            type="button"
+            className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__alert-dismiss"
+            onClick={() => setSquadSyncBanner(null)}
+          >
+            {p.matchOrgSquadSyncBannerDismiss}
+          </button>
+        </div>
+      : null}
+
+      <div className="portal-match-org-edit__card">
       <form id="match-org-edit-form" className="portal-match-org-form" onSubmit={(e) => void handleSubmit(e)}>
         <label className="portal-match-org-form__field">
           <span className="portal-match-org-form__label">{p.matchOrgFieldTitle}</span>
@@ -918,9 +924,10 @@ export function OrganizerMatchEditPage() {
         </section>
 
       </form>
+      </div>
 
-        {!isNew && validEditId && matchId ?
-        <>
+      {!isNew && validEditId && matchId ?
+        <div className="portal-match-org-edit__card portal-match-org-edit__card--programme">
           <OrganizerMatchStagesPanel locale={locale} matchId={matchId} p={p} />
           <OrganizerMatchSquadsPanel
             locale={locale}
@@ -932,8 +939,11 @@ export function OrganizerMatchEditPage() {
             shootersPerMainSquad={draft.shooters_per_main_squad}
             shootersPerPrematchSquad={draft.shooters_per_prematch_squad}
           />
-        </>
+        </div>
       : null}
+      </div>
+      </div>
+
       {coverCropSrc ?
         <MatchCoverCropModal
           imageSrc={coverCropSrc}
