@@ -606,7 +606,7 @@ export function OrganizerMatchEditPage() {
 
           {!isNew && draft.status === 'published' && matchId ?
             <Link
-              className="portal-btn portal-btn--ghost portal-btn--compact portal-match-org-quick__btn"
+              className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-quick__btn"
               to={`/${locale}/matches/${encodeURIComponent(matchId)}`}
             >
               {p.myMatchesViewPublic}
@@ -620,10 +620,6 @@ export function OrganizerMatchEditPage() {
 
         {!isNew && validEditId && matchId && pscErr ?
           <p role="alert" className="portal-match-org-quick__error">{pscErr}</p>
-        : null}
-
-        {!isNew && validEditId && matchId ?
-          <p className="portal-match-org-quick__psc-hint">{p.matchOrgExportPscHint}</p>
         : null}
       </aside>
 
