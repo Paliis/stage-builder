@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
@@ -245,7 +245,7 @@ export function PlatformOrganizersPage() {
     )
   }
 
-  if (sessionLoading || adminLoading) {
+  if (sessionLoading) {
     return (
       <div className="portal-home">
         <Helmet>
@@ -257,15 +257,16 @@ export function PlatformOrganizersPage() {
   }
 
   if (!user) {
+    return <Navigate replace to={`/${locale}/account?mode=signup`} />
+  }
+
+  if (adminLoading) {
     return (
       <div className="portal-home">
         <Helmet>
           <title>{p.organizersAdminHelmetTitle}</title>
         </Helmet>
-        <p>{p.organizersNeedSignIn}</p>
-        <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
-          <Link to={`/${locale}`}>{p.organizersBackHome}</Link>
-        </nav>
+        <p>{p.organizersLoading}</p>
       </div>
     )
   }

@@ -12,6 +12,8 @@ type Props = {
   locale: string
   /** Path only, e.g. `/uk/matches/…` — after email confirm, user is sent to `auth/email-callback?next=…` */
   pathnameForRedirect: string
+  /** Initial tab when the form mounts (e.g. `?mode=signup` on account page). */
+  defaultAuthMode?: 'signin' | 'signup'
 }
 
 /** Client minimum; align with Supabase Dashboard → Auth password policy if you change it. */
@@ -52,9 +54,14 @@ function PasswordVisibilityIcon({ passwordVisible }: { passwordVisible: boolean 
   )
 }
 
-export function PortalCompactEmailAuth({ p, locale, pathnameForRedirect }: Props) {
+export function PortalCompactEmailAuth({
+  p,
+  locale,
+  pathnameForRedirect,
+  defaultAuthMode = 'signin',
+}: Props) {
   const fieldId = useId()
-  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>(() => defaultAuthMode)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)

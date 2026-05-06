@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useI18n } from '../../i18n/useI18n'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
+import { usePlatformIsAdmin } from '../usePlatformIsAdmin'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { isMatchPortalEnabled } from '../featureFlags'
 import { AccountParticipantHub } from './AccountParticipantHub'
@@ -15,10 +16,13 @@ import './PortalAccountPage.css'
 export function PortalAccountPage() {
   const { locale, tree } = useI18n()
   const p = tree.portal
+  const [searchParams] = useSearchParams()
   const { loading: sessionLoading, user } = useSupabaseSession()
   const { loading: profileLoading, profile, moderationNote, refresh: refreshOrganizerProfile } =
     useOrganizerSelfServiceProfile(user?.id)
   const pathnameRedirect = `/${locale}/account`
+  const compactEmailAuthDefaultMode = searchParams.get('mode') === 'signup' ? 'signup' : 'signin'
+  const platformAdmin = usePlatformIsAdmin(user?.id, isMatchPortalEnabled())
   const [applyBusy, setApplyBusy] = useState(false)
   const [applyError, setApplyError] = useState<string | null>(null)
   const [applyContact, setApplyContact] = useState('')
@@ -102,9 +106,6 @@ export function PortalAccountPage() {
               <h1 id="account-shooter-heading" className="portal-account__cabinet-title">
                 {p.accountShooterCabinetHeading}
               </h1>
-              <span className="portal-shell__badge portal-shell__badge--participant" title={p.accountBadgeParticipantHint}>
-                {p.accountBadgeParticipant}
-              </span>
             </div>
             <AccountParticipantHub
               locale={locale}
@@ -122,61 +123,61 @@ export function PortalAccountPage() {
               </h3>
 
               {profileLoading ?
-                <p style={{ margin: '0 0 0.5rem', fontSize: '0.94rem', opacity: 0.75 }}>{p.accountBadgeLoading}</p>
-              : profile === 'active' ?
-                <>
-                  <div className="portal-shell__badges" style={{ marginBottom: '0.65rem' }}>
-                    <span className="portal-shell__badge portal-shell__badge--organizer">{p.accountBadgeOrganizerActive}</span>
-                  </div>
-                  <p className="portal-account__section-lead" style={{ marginBottom: '0.65rem' }}>
-                    {p.accountOrganizerActiveLead}
-                  </p>
-                  <p style={{ margin: 0, fontSize: '0.94rem', lineHeight: 1.55 }}>
-                    <Link to={`/${locale}/matches/my`}>{p.accountPageGoOrganizer}</Link>
-                    {' — '}
-                    <span>{p.accountPageOrganizerExplain}</span>
-                  </p>
-                </>
-              : profile === 'pending' ?
-                <div
-                  className="portal-account__organizer-muted portal-account__organizer-muted--pending"
-                  role="status"
-                >
-                  <div className="portal-shell__badges" style={{ marginBottom: '0.45rem' }}>
-                    <span className="portal-shell__badge portal-shell__badge--pending">{p.accountBadgeOrganizerPending}</span>
-                  </div>
-                  <p style={{ margin: '0 0 0.35rem', fontWeight: 700, fontSize: '0.95rem' }}>
-                    {p.accountOrganizerApplyPendingTitle}
-                  </p>
-                  <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyPendingBody}</p>
-                </div>
-              : profile === 'blocked' ?
-                <div
-                  className="portal-account__organizer-muted portal-account__organizer-muted--blocked"
-                  role="status"
-                >
-                  <div className="portal-shell__badges" style={{ marginBottom: '0.45rem' }}>
-                    <span className="portal-shell__badge portal-shell__badge--blocked">{p.accountBadgeOrganizerBlocked}</span>
-                  </div>
-                  <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.52 }}>{p.accountOrganizerApplyBlockedBody}</p>
-                  {moderationNote ?
-                    <span className="portal-account__moderation-quote">
-                      <strong style={{ display: 'block', marginBottom: '0.35rem' }}>{p.accountOrganizerModerationHeading}</strong>
-                      {moderationNote}
-                    </span>
-                  : null}
-                </div>
+                <p className="portal-account__organizer-profile-loading">{p.matchesLoadingDetail}</p>
               : (
-                <>
-                  <p className="portal-account__section-lead" style={{ marginBottom: '0.5rem' }}>
-                    {p.accountOrganizerApplyTeaser}
-                  </p>
+                <div className="portal-account__organizer-stack">
+                  {(profile === 'active' || platformAdmin === true) ?
+                    <div className="portal-account__organizer-action-row">
+                      {profile === 'active' ?
+                        <Link
+                          className="portal-btn portal-btn--primary portal-btn--block-xs"
+                          to={`/${locale}/matches/my`}
+                        >
+                          {p.matchesPortalOrganizerLink}
+                        </Link>
+                      : null}
+                      {platformAdmin === true ?
+                        <Link
+                          className="portal-btn portal-btn--secondary portal-btn--block-xs"
+                          to={`/${locale}/admin/organizers`}
+                          title={p.organizersAdminTitle}
+                        >
+                          {p.accountPlatformOrganizerApplicationsCta}
+                        </Link>
+                      : null}
+                    </div>
+                  : null}
+                  {profile === 'pending' ?
+                    <div
+                      className="portal-account__organizer-muted portal-account__organizer-muted--pending"
+                      role="status"
+                    >
+                      <p className="portal-account__organizer-status-line">{p.accountOrganizerApplyPendingBody}</p>
+                    </div>
+                  : null}
+                  {profile === 'blocked' ?
+                    <div
+                      className="portal-account__organizer-muted portal-account__organizer-muted--blocked"
+                      role="status"
+                    >
+                      <p className="portal-account__organizer-status-line">{p.accountOrganizerApplyBlockedBody}</p>
+                      {moderationNote ?
+                        <span className="portal-account__moderation-quote">
+                          <strong style={{ display: 'block', marginBottom: '0.35rem' }}>{p.accountOrganizerModerationHeading}</strong>
+                          {moderationNote}
+                        </span>
+                      : null}
+                    </div>
+                  : null}
+                  {profile === 'missing' ?
+                    <>
+                  <p className="portal-account__organizer-apply-teaser">{p.accountOrganizerApplyTeaser}</p>
                   {!applyFormExpanded ?
                     <div className="portal-account__apply-collapsed-actions">
                       <button
                         type="button"
-                        className="portal-account__apply-expand"
-                        disabled={profileLoading || applyBusy}
+                        className="portal-btn portal-btn--primary portal-btn--block-xs"
+                        disabled={applyBusy}
                         onClick={() => {
                           setApplyFormExpanded(true)
                           setApplyError(null)
@@ -277,15 +278,16 @@ export function PortalAccountPage() {
                       <button
                         type="button"
                         disabled={applyBusy}
-                        className="portal-shell__account-sign-out portal-shell__account-sign-out--block"
-                        style={{ marginTop: 0 }}
+                        className="portal-btn portal-btn--primary portal-btn--compact portal-btn--block-xs portal-account__organizer-apply-submit"
                         onClick={() => void submitOrganizerApplication()}
                       >
                         {applyBusy ? p.accountOrganizerApplySubmitting : p.accountOrganizerApplyButton}
                       </button>
                     </div>
                   }
-                </>
+                    </>
+                  : null}
+                </div>
               )}
             </section>
             </div>
@@ -310,7 +312,12 @@ export function PortalAccountPage() {
           <h2 id="account-auth-heading" className="portal-account__auth-heading">
             {p.accountAuthHeading}
           </h2>
-          <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
+          <PortalCompactEmailAuth
+            p={p}
+            locale={locale}
+            pathnameForRedirect={pathnameRedirect}
+            defaultAuthMode={compactEmailAuthDefaultMode}
+          />
         </section>
       }
     </div>
