@@ -454,7 +454,8 @@ export type MessageTree = {
     matchDetailParticipantsClosed: string
     matchDetailParticipantsOpenEmpty: string
     matchDetailParticipantsOpenAwaitingConfirmation: string
-    matchDetailParticipantsFootnote: string
+    /** Narrow column: row index (1…n) for quick count. */
+    matchDetailParticipantsColIndex: string
     matchDetailParticipantsColSquad: string
     matchDetailParticipantsColPhase: string
     matchDetailParticipantsColName: string
@@ -560,7 +561,6 @@ export type MessageTree = {
     organizersLoadError: string
     organizersColEmail: string
     organizersColDisplayName: string
-    organizersColMatches: string
     organizersColStatus: string
     organizersStatusPending: string
     organizersStatusActive: string
@@ -569,42 +569,35 @@ export type MessageTree = {
     organizersSaving: string
     organizersBackHome: string
     organizersFilterAll: string
-    organizersFilterApplications: string
     organizersFilterPendingAll: string
-    organizersColBadge: string
+    organizersFiltersAria: string
     organizersColContact: string
-    organizersColPastMatches: string
+    /** Sub-labels inside the candidate-application column (mirror account organizer form). */
+    organizersCandidateAppContactCaption: string
+    organizersCandidateAppPastCaption: string
     organizersColModeration: string
-    organizersBadgeApplication: string
-    organizersBadgePendingExtra: string
     organizersModerationNoteLabel: string
     organizersModerationNotePlaceholder: string
     organizersApplicationEmpty: string
     organizersModerationNoteTooLong: string
-    /** Header + `/:locale/account`: explicit session & role badges. */
+    /** Shown in the moderation column when status is not Blocked — explains note is block-only (product/DB rule). */
+    organizersModerationUnavailableHint: string
+    /** Header + `/:locale/account`: аватар, вхід, вихід (без бейджів ролей). */
     accountHeaderAria: string
     accountHeaderChecking: string
     accountHeaderSignIn: string
     accountHeaderProfile: string
     /** `aria-label` on header profile icon — include {{email}}. */
     accountHeaderProfileIconAria: string
-    accountBadgeParticipant: string
-    accountBadgeParticipantHint: string
-    accountBadgeOrganizerActive: string
-    accountBadgeOrganizerBlocked: string
-    /** Account page — organizer application pending approval. */
-    accountBadgeOrganizerPending: string
-    accountBadgeLoading: string
     accountPageHelmet: string
     accountPageTitle: string
     accountAuthHeading: string
     accountSummaryHeading: string
     accountSummaryLogin: string
     accountShooterCabinetHeading: string
-    accountPageGoOrganizer: string
-    accountPageOrganizerExplain: string
     accountOrganizerSectionHeading: string
-    accountOrganizerActiveLead: string
+    /** Account: link to `/admin/organizers` for `portal_platform_admins`. */
+    accountPlatformOrganizerApplicationsCta: string
     accountOrganizerApplyTeaser: string
     accountOrganizerApplyToggleExpand: string
     accountOrganizerApplyToggleCollapse: string
@@ -612,7 +605,6 @@ export type MessageTree = {
     accountOrganizerApplyIntro: string
     accountOrganizerApplyButton: string
     accountOrganizerApplySubmitting: string
-    accountOrganizerApplyPendingTitle: string
     accountOrganizerApplyPendingBody: string
     accountOrganizerApplyBlockedBody: string
     accountOrganizerApplyErrorPrefix: string
@@ -730,6 +722,10 @@ export type MessageTree = {
     matchOrgFieldStartsTitle: string
     matchOrgFieldLocation: string
     matchOrgFieldLocationPlaceholder: string
+    /** Shown under location field — URLs render as links on public match pages. */
+    matchOrgFieldLocationHint: string
+    /** Save blocked when trimmed location exceeds `MATCH_LOCATION_LABEL_MAX_LEN`. */
+    matchOrgFieldLocationTooLong: string
     matchOrgFieldCoverImage: string
     matchOrgCoverUpload: string
     matchOrgCoverRemove: string
@@ -745,13 +741,13 @@ export type MessageTree = {
     matchOrgCoverCropErrCrop: string
     matchOrgFieldEventKind: string
     matchOrgFieldPsLevel: string
-    /** Section title above event type / match level fields. */
+    /** Section title above event type / PractiScore level fields (training, match, or classification). */
     matchOrgSectionCatalogHeading: string
     /** Section title for squad / capacity fields on organizer match edit. */
     matchOrgSectionPlanHeading: string
     /** Section for description, status, participant list on organizer match edit. */
     matchOrgSectionPublishHeading: string
-    /** Short line under catalog section title. */
+    /** Deprecated in UI — lead under catalog section removed; kept for docs / compatibility. */
     matchOrgTaxonomyOptionalLead: string
     /** Deprecated in UI — kept for i18n compatibility; hints removed from organizer form. */
     matchOrgEventKindHint: string
@@ -768,20 +764,31 @@ export type MessageTree = {
     matchPsLevelL4: string
     matchPsLevelL5: string
     matchOrgDerivedCapacityLine: string
+    /** Read-only capacity column on organizer plan grid (tooltip / aria use matchOrgDerivedCapacityLine). */
+    matchOrgFieldDerivedTotalShooters: string
     matchOrgFieldShootersMain: string
     matchOrgFieldShootersPrematch: string
     matchOrgFieldDescription: string
     /** Shown below description textarea on organizer match edit. */
     matchOrgFieldDescriptionHint: string
+    /** BBCode shortcuts above organizer description (visual editor). */
+    matchOrgBbcodeToolbarAria: string
+    matchOrgBbcodeBoldTitle: string
+    matchOrgBbcodeItalicTitle: string
+    matchOrgBbcodeUnderlineTitle: string
+    matchOrgBbcodeUrlTitle: string
+    matchOrgBbcodeQuoteTitle: string
+    matchOrgBbcodeListTitle: string
+    /** Inserted inner text for [list][*]… when selection empty. */
+    matchOrgBbcodeListItemPlaceholder: string
+    /** Inserted inner text for empty [url]…[/url]. */
+    matchOrgBbcodeUrlPlaceholder: string
     matchOrgFieldStatus: string
     matchOrgFieldParticipantList: string
     matchOrgParticipantsListOpen: string
     matchOrgParticipantsListClosed: string
-    matchOrgParticipantsListFootnote: string
     matchOrgRegistrationsSummary: string
     matchOrgRegistrationsNoneYet: string
-    /** One line on organizer match edit; replaces long MVP shotgun note body. */
-    matchOrgDisciplineShotgunNote: string
     matchOrgExportPsc: string
     matchOrgExportPscBusy: string
     matchOrgExportPscHint: string
@@ -1481,8 +1488,7 @@ export const ukMessages: MessageTree = {
       'Публічний список поки порожній (підтверджених заявок ще немає).',
     matchDetailParticipantsOpenAwaitingConfirmation:
       'Підтверджені учасники з’являться тут після затвердження організатором. Активних записів у скводах зараз: {{count}}.',
-    matchDetailParticipantsFootnote:
-      'Показано активні заявки («очікує» або «підтверджено» до ростеру); ім’я — з профілю учасника, коли вказано. Колонка «Підтвердження» — той самий статус заявки, що в розділі організатора «Заявки». Категорія — із заявки.',
+    matchDetailParticipantsColIndex: '№',
     matchDetailParticipantsColSquad: 'Сквод',
     matchDetailParticipantsColPhase: 'День',
     matchDetailParticipantsColName: 'Ім’я',
@@ -1581,14 +1587,13 @@ export const ukMessages: MessageTree = {
     organizersAdminHelmetTitle: 'Організатори матчів — адмін порталу',
     organizersAdminTitle: 'Організатори матчів',
     organizersAdminIntro:
-      'Лише для власника порталу. Заявки — рядки зі статусом «Новий» без створених матчів (фільтр «Заявки»). При «Заблокованому» можна лишити короткий коментар — автор побачить його в обліковому записі. «Активний» створює та змінює матчі.',
+      'Лише для власника порталу. Текст самої заявки кандидата (контакт і поле «Посилання / коментар» з кабінету) показано в стовпці «Заявка кандидата». Останній стовпець — не заявка: це службова примітка платформи; її можна зберегти лише для «Заблокований», і тоді автор бачить її в кабінеті. Фільтр «Усі «Нові»» показує лише користувачів зі статусом «Новий». Зміни зберігаються автоматично.',
     organizersNeedSignIn: 'Увійдіть у Supabase Auth, щоб відкрити цю сторінку.',
     organizersForbidden: 'Немає прав власника порталу. Доступ налаштовується в таблиці portal_platform_admins.',
     organizersLoading: 'Завантаження…',
     organizersLoadError: 'Не вдалося завантажити список',
     organizersColEmail: 'Email',
     organizersColDisplayName: 'Ім’я в додатку',
-    organizersColMatches: 'Матчів',
     organizersColStatus: 'Статус',
     organizersStatusPending: 'Новий',
     organizersStatusActive: 'Активний',
@@ -1597,55 +1602,46 @@ export const ukMessages: MessageTree = {
     organizersSaving: 'Збереження…',
     organizersBackHome: 'На головну порталу',
     organizersFilterAll: 'Усі',
-    organizersFilterApplications: 'Заявки (без матчів)',
     organizersFilterPendingAll: 'Усі «Нові»',
-    organizersColBadge: 'Тип',
-    organizersColContact: 'Контакт у заявці',
-    organizersColPastMatches: 'Минулі матчі / посилання',
-    organizersColModeration: 'Коментар / причина',
-    organizersBadgeApplication: 'Заявка',
-    organizersBadgePendingExtra: 'На розгляді (є матчі)',
+    organizersFiltersAria: 'Фільтр списку організаторів',
+    organizersColContact: 'Заявка кандидата',
+    organizersCandidateAppContactCaption: 'Контакт',
+    organizersCandidateAppPastCaption: 'Посилання / коментар з форми',
+    organizersColModeration: 'Примітка платформи («Заблокований»)',
     organizersModerationNoteLabel:
       'Коментар для автора заявки при статусі «Заблокований» (опційно; показується в обліковому записі).',
     organizersModerationNotePlaceholder:
       'Коротка причина або що змінити перед повторною спробою (до 600 символів)',
     organizersApplicationEmpty: '—',
     organizersModerationNoteTooLong: 'Коментар занадто довгий (макс. 600 символів)',
+    organizersModerationUnavailableHint:
+      'Це поле для примітки модератора після блоку, не текст заявки. Текст кандидата — у колонці «Заявка кандидата».',
     accountHeaderAria: 'Обліковий запис порталу',
     accountHeaderChecking: 'Перевірка сесії…',
     accountHeaderSignIn: 'Увійти',
     accountHeaderProfile: 'Профіль',
     accountHeaderProfileIconAria: 'Обліковий запис. Залогінено як {{email}}',
-    accountBadgeParticipant: 'Учасник',
-    accountBadgeParticipantHint: 'Роль у порталі',
-    accountBadgeOrganizerActive: 'Організатор',
-    accountBadgeOrganizerBlocked: 'Організатор (обмежено)',
-    accountBadgeOrganizerPending: 'Організатор — на розгляді',
-    accountBadgeLoading: '…',
     accountPageHelmet: 'Кабінет стрільця — Shooters Tools',
     accountPageTitle: 'Кабінет стрільця',
     accountAuthHeading: 'Вхід',
     accountSummaryHeading: 'Поточний вхід',
     accountSummaryLogin: 'Логін:',
     accountShooterCabinetHeading: 'Кабінет стрільця',
-    accountPageGoOrganizer: 'Мої матчі (організатор)',
-    accountPageOrganizerExplain: 'керування чернетками, опублікованими матчами та заявками.',
     accountOrganizerSectionHeading: 'Організатор матчів',
-    accountOrganizerActiveLead: 'У вас є права створювати та вести матчі в цьому порталі.',
+    accountPlatformOrganizerApplicationsCta: 'Заявки організаторів',
     accountOrganizerApplyTeaser:
-      'Організаторську роль видає платформа після заявки. Якщо вам потрібен доступ до «Моїх матчів», розгорніть форму — для більшості стрільців цей блок можна просто проігнорувати.',
-    accountOrganizerApplyToggleExpand: 'Подати заявку на організатора',
+      'Роль організатора — після перевірки заявки платформою.',
+    accountOrganizerApplyToggleExpand: 'Подати заявку',
     accountOrganizerApplyToggleCollapse: 'Згорнути',
-    accountOrganizerApplyHeading: 'Стати організатором матчів',
+    accountOrganizerApplyHeading: 'Заявка на організатора',
     accountOrganizerApplyIntro:
-      'Подайте заявку: у профілі створюється статус «на розгляді». Контакт і посилання — опційно, допоможуть модератору швидше відповісти. Власник порталу затверджує доступ у розділі «Організатори матчів».',
-    accountOrganizerApplyButton: 'Подати заявку',
+      'Контакт і посилання на досвід — за бажанням. Статус оновиться на цій сторінці.',
+    accountOrganizerApplyButton: 'Надіслати заявку',
     accountOrganizerApplySubmitting: 'Надсилання…',
-    accountOrganizerApplyPendingTitle: 'Заява вже подана',
     accountOrganizerApplyPendingBody:
-      'Статус «Новий» у модерації платформи. Після затвердження з’явиться доступ до створення матчів; ми надішлемо лише статус у цьому кабінеті (email-сповіщень може ще не бути).',
+      'Заявку на роль організатора розглядає платформа. Після затвердження нижче з’явиться кнопка переходу до кабінету організатора.',
     accountOrganizerApplyBlockedBody:
-      'Для вашого облікового запису призупинено статус організатора з боку платформи. Нову заявку подати не можна — зверніться до підтримки порталу.',
+      'Доступ організатора обмежено. Нову заявку не подати — зверніться до підтримки.',
     accountOrganizerApplyErrorPrefix: 'Не вдалося подати заявку',
     accountOrganizerApplyDuplicateFriendly:
       'Профіль організатора для цього акаунта вже є в системі — можливо, заявку вже підано або платформа створила запис раніше. Якщо статус так і лишився лише учасника, перевірте сторінку пізніше або напишіть у підтримку.',
@@ -1741,10 +1737,10 @@ export const ukMessages: MessageTree = {
     matchOrgParticipantsOpenShort: 'Відкритий',
     matchOrgParticipantsClosedShort: 'Закритий',
     matchOrgCreateTitle: 'Новий матч',
-    matchOrgEditTitle: 'Редагування матчу',
+    matchOrgEditTitle: 'Редагування події',
     matchOrgCreateHelmet: 'Новий матч — Shooters Tools',
-    matchOrgEditHelmetEdit: 'Редагування матчу — Shooters Tools',
-    matchOrgEditHelmetLoading: 'Матч — завантаження',
+    matchOrgEditHelmetEdit: 'Редагування події — Shooters Tools',
+    matchOrgEditHelmetLoading: 'Подія — завантаження',
     matchOrgSave: 'Зберегти',
     matchOrgSaveSaving: 'Збереження…',
     matchOrgBackList: 'До списку матчів',
@@ -1757,6 +1753,9 @@ export const ukMessages: MessageTree = {
     matchOrgFieldStartsTitle: 'Відображається у локальній зоні браузера.',
     matchOrgFieldLocation: 'Локація',
     matchOrgFieldLocationPlaceholder: 'Населений пункт, полігон, адреса…',
+    matchOrgFieldLocationHint:
+      'У цьому полі можна дати короткий текст (місто, полігон) і/або вставити посилання на карти чи сайт — на сторінці події посилання стане активним. Не більше {{max}} символів на рядок локації.',
+    matchOrgFieldLocationTooLong: 'Локація завелика — скороти текст або посилання (максимум {{max}} символів).',
     matchOrgFieldCoverImage: 'Обкладинка',
     matchOrgCoverUpload: 'Завантажити зображення',
     matchOrgCoverRemove: 'Прибрати',
@@ -1772,9 +1771,9 @@ export const ukMessages: MessageTree = {
     matchOrgCoverCropApply: 'Застосувати',
     matchOrgCoverCropErrCrop: 'Не вдалося обробити зображення. Спробуйте інший файл.',
     matchOrgFieldEventKind: 'Тип події',
-    matchOrgFieldPsLevel: 'Рівень матчу',
-    matchOrgSectionCatalogHeading: 'У каталозі на сайті',
-    matchOrgSectionPlanHeading: 'Місця та скводи',
+    matchOrgFieldPsLevel: 'Рівень',
+    matchOrgSectionCatalogHeading: 'Параметри події',
+    matchOrgSectionPlanHeading: 'Налаштуйте кількість скводів та місць',
     matchOrgSectionPublishHeading: 'Текст і видимість',
     matchOrgTaxonomyOptionalLead:
       'За потреби. Якщо лишити порожніми, на картці буде не вказано. Не замінює поле «Назва».',
@@ -1790,21 +1789,29 @@ export const ukMessages: MessageTree = {
     matchPsLevelL3: 'Рівень III',
     matchPsLevelL4: 'Рівень IV',
     matchPsLevelL5: 'Рівень V',
-    matchOrgDerivedCapacityLine: 'Разом місць на матчі: {{total}} (після збереження записується як ліміт учасників).',
-    matchOrgFieldShootersMain: 'Стрільці в скводі (основний день)',
+    matchOrgDerivedCapacityLine:
+      'Разом місць на події: {{total}} (після збереження записується як ліміт учасників).',
+    matchOrgFieldDerivedTotalShooters: 'Загальна кількість стрільців',
+    matchOrgFieldShootersMain: 'Стрільці в скводі',
     matchOrgFieldShootersPrematch: 'Стрільці в скводі (прематч)',
-    matchOrgFieldDescription: 'Опис для картки матчу',
+    matchOrgFieldDescription: 'Опис для картки події',
     matchOrgFieldDescriptionHint: 'Форматування: Markdown або BBCode; посилання в тексті стануть активними.',
+    matchOrgBbcodeToolbarAria: 'Вставити тег BBCode в описі',
+    matchOrgBbcodeBoldTitle: 'Напівжирний BBCode — [b]…[/b]',
+    matchOrgBbcodeItalicTitle: 'Курсив BBCode — [i]…[/i]',
+    matchOrgBbcodeUnderlineTitle: 'Підкреслення BBCode — [u]…[/u]',
+    matchOrgBbcodeUrlTitle: 'Посилання BBCode — [url]…[/url]',
+    matchOrgBbcodeQuoteTitle: 'Цитата BBCode — [quote]…[/quote]',
+    matchOrgBbcodeListTitle: 'Маркірований список BBCode — [list][*]…[/list]',
+    matchOrgBbcodeListItemPlaceholder: 'пункт',
+    matchOrgBbcodeUrlPlaceholder: 'https://',
     matchOrgFieldStatus: 'Статус',
     matchOrgFieldParticipantList: 'Список учасників',
     matchOrgParticipantsListOpen: 'Відкритий',
     matchOrgParticipantsListClosed: 'Закритий',
-    matchOrgParticipantsListFootnote:
-      'На публічній картці в таблиці з’являються лише підтверджені учасники; інші статуси — у твоєму списку заявок.',
     matchOrgRegistrationsSummary:
-      'Заявки цього матчу (організатор): {{confirmed}} підтверджено · {{pending}} очікує підтвердження. Публічна таблиця учасників показує лише підтверджених.',
+      'Заявки цього матчу (організатор): {{confirmed}} підтверджено · {{pending}} очікує підтвердження.',
     matchOrgRegistrationsNoneYet: 'Заявок на цей матч поки немає.',
-    matchOrgDisciplineShotgunNote: 'Зараз дисципліна матчу фіксована: shotgun.',
     matchOrgExportPsc: 'Завантажити .psc (PractiScore)',
     matchOrgExportPscBusy: 'Готуємо файл…',
     matchOrgExportPscHint:
@@ -1815,17 +1822,17 @@ export const ukMessages: MessageTree = {
     matchOrgExportPscErrNoStages: 'Додай хоча б одну вправу (посилання share) перед експортом.',
     matchOrgExportPscErrSession: 'Увійди в обліковий запис і онови сторінку.',
     matchOrgFieldPrematch: 'Прематч',
-    matchOrgFieldPlannedMainSquads: 'Скводів (основний день)',
-    matchOrgFieldPlannedPrematchSquads: 'Скводів (прематч)',
+    matchOrgFieldPlannedMainSquads: 'Кількість скводів',
+    matchOrgFieldPlannedPrematchSquads: 'Кількість скводів (прематч)',
     matchOrgPlannedMainInvalid: 'Число скводів на основний день має бути цілим числом ≥ 1.',
     matchOrgPlannedPrematchInvalid: 'З увімкненим прематчем потрібно ціле число скводів для прематчу ≥ 1.',
     matchOrgEditBadId: 'Некоректне посилання для редагування.',
     matchOrgEditNotFound: 'Матч не знайдено або він не належить до твого облікового запису.',
     matchOrgTitleRequired: 'Заповни назву.',
     matchOrgShootersInvalid: 'Кількість стрільців у скводі має бути цілим числом ≥ 1.',
-    matchOrgStagesHeading: 'Вправи програми',
+    matchOrgStagesHeading: 'Завантаж вправи події',
     matchOrgStagesIntro:
-      'Створи сцену в Stage Builder. Назва в програмі береться з поля заголовку брифінгу («Заголовок документа» — як для PDF); якщо його порожньо — з назви впра ви на плані. Знімок із share фіксує текст на момент публікації або «Оновити до останньої».',
+      'Створи вправу в Stage Builder, отримай посилання для перегляду й додай його в поле нижче. Назва в програмі матчу збігається з назвою вправи з PDF-брифінгу.',
     matchOrgStagesOpenEditor: 'Відкрити Stage Builder (нова вкладка)',
     matchOrgStagesPasteLabel: 'Посилання перегляду або id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… або s…',
@@ -2508,8 +2515,7 @@ export const enMessages: MessageTree = {
       'The public list is empty (no confirmed registrations yet).',
     matchDetailParticipantsOpenAwaitingConfirmation:
       'Confirmed shooters appear here after the organizer approves them. Active sign-ups in squads now: {{count}}.',
-    matchDetailParticipantsFootnote:
-      'Listed sign-ups are active (waiting or confirmed on the roster); name from shooter profile when set. Confirmation matches organizer Applications status. Category from sign-up.',
+    matchDetailParticipantsColIndex: '#',
     matchDetailParticipantsColSquad: 'Squad',
     matchDetailParticipantsColPhase: 'Day',
     matchDetailParticipantsColName: 'Name',
@@ -2610,7 +2616,7 @@ export const enMessages: MessageTree = {
     organizersAdminHelmetTitle: 'Match organizers — platform admin',
     organizersAdminTitle: 'Match organizers',
     organizersAdminIntro:
-      'Platform owners only. “Applications only” highlights pending users without matches. When blocking, an optional note is shown on the applicant’s account page. “Active” creates and edits matches.',
+      'Platform owners only. The applicant’s own text from the account form—optional contact plus the “past matches / comment” field—is shown under “Applicant application”. The last column is not application text: it is an internal platform note you can store only when Blocked; then the applicant sees it on their account. “All pending” shows users with Pending status only. Changes save automatically.',
     organizersNeedSignIn: 'Sign in with Supabase Auth to open this page.',
     organizersForbidden:
       'No platform owner privileges. Managed in portal_platform_admins.',
@@ -2618,7 +2624,6 @@ export const enMessages: MessageTree = {
     organizersLoadError: 'Could not load the list',
     organizersColEmail: 'Email',
     organizersColDisplayName: 'Display name',
-    organizersColMatches: 'Matches',
     organizersColStatus: 'Status',
     organizersStatusPending: 'Pending',
     organizersStatusActive: 'Active',
@@ -2627,55 +2632,46 @@ export const enMessages: MessageTree = {
     organizersSaving: 'Saving…',
     organizersBackHome: 'Portal home',
     organizersFilterAll: 'All',
-    organizersFilterApplications: 'Applications only',
     organizersFilterPendingAll: 'All pending',
-    organizersColBadge: 'Type',
-    organizersColContact: 'Application contact',
-    organizersColPastMatches: 'Past events / links',
-    organizersColModeration: 'Moderator note',
-    organizersBadgeApplication: 'Application',
-    organizersBadgePendingExtra: 'Pending (has matches)',
+    organizersFiltersAria: 'Organizer list filter',
+    organizersColContact: 'Applicant application',
+    organizersCandidateAppContactCaption: 'Contact',
+    organizersCandidateAppPastCaption: 'Links / comment from form',
+    organizersColModeration: 'Platform note (Blocked)',
     organizersModerationNoteLabel:
       'Note for the applicant when blocking (optional — shown on their account page).',
     organizersModerationNotePlaceholder:
       'Short reason or what they should fix (max 600 characters)',
     organizersApplicationEmpty: '—',
     organizersModerationNoteTooLong: 'Note is too long (max 600 characters)',
+    organizersModerationUnavailableHint:
+      'This is for a moderator note after you block—not the applicant’s application text. Applicant text is in “Applicant application”.',
     accountHeaderAria: 'Portal account',
     accountHeaderChecking: 'Checking session…',
     accountHeaderSignIn: 'Sign in',
     accountHeaderProfile: 'Account',
     accountHeaderProfileIconAria: 'Account. Signed in as {{email}}',
-    accountBadgeParticipant: 'Participant',
-    accountBadgeParticipantHint: 'Your role on the portal',
-    accountBadgeOrganizerActive: 'Organizer',
-    accountBadgeOrganizerBlocked: 'Organizer (restricted)',
-    accountBadgeOrganizerPending: 'Organizer — pending approval',
-    accountBadgeLoading: '…',
     accountPageHelmet: 'Shooter cabinet — Shooters Tools',
     accountPageTitle: 'Shooter cabinet',
     accountAuthHeading: 'Sign in',
     accountSummaryHeading: 'Signed in',
     accountSummaryLogin: 'Login:',
     accountShooterCabinetHeading: 'Shooter hub',
-    accountPageGoOrganizer: 'My matches (organizer)',
-    accountPageOrganizerExplain: 'manage drafts, published matches and registrations.',
     accountOrganizerSectionHeading: 'Match organizer',
-    accountOrganizerActiveLead: 'You can create and manage matches on this portal.',
+    accountPlatformOrganizerApplicationsCta: 'Organizer applications',
     accountOrganizerApplyTeaser:
-      'Organizer access is granted by the platform after you apply. If you need «My matches», expand the form below — most shooters can skip this.',
-    accountOrganizerApplyToggleExpand: 'Apply to become an organizer',
+      'Organizer status is granted after the platform reviews your application.',
+    accountOrganizerApplyToggleExpand: 'Apply',
     accountOrganizerApplyToggleCollapse: 'Collapse',
-    accountOrganizerApplyHeading: 'Apply to organise matches',
+    accountOrganizerApplyHeading: 'Organizer application',
     accountOrganizerApplyIntro:
-      'Submit your request: your profile is marked pending for review. Contact and links are optional but help moderators. The platform owner grants access in the organizers admin page.',
-    accountOrganizerApplyButton: 'Submit application',
+      'Contact and links to prior events are optional. Status updates appear on this page.',
+    accountOrganizerApplyButton: 'Send application',
     accountOrganizerApplySubmitting: 'Submitting…',
-    accountOrganizerApplyPendingTitle: 'Application received',
     accountOrganizerApplyPendingBody:
-      'Your status is “Pending” until the platform approves it. After approval you can create matches; you will see updates on this account page when we add notifications.',
+      'Your organizer application is under review. After approval, the organizer dashboard button will appear below.',
     accountOrganizerApplyBlockedBody:
-      'Organizer access has been revoked for your account by the platform. You cannot submit a new application — contact portal support.',
+      'Organizer access is restricted. You cannot apply again — contact portal support.',
     accountOrganizerApplyErrorPrefix: 'Could not submit application',
     accountOrganizerApplyDuplicateFriendly:
       'Your account already has an organizer profile in the database — perhaps you already applied, or an admin added it earlier. Refresh this page after a minute; contact support if the status seems wrong.',
@@ -2770,10 +2766,10 @@ export const enMessages: MessageTree = {
     matchOrgParticipantsOpenShort: 'Open',
     matchOrgParticipantsClosedShort: 'Closed',
     matchOrgCreateTitle: 'New match',
-    matchOrgEditTitle: 'Edit match',
+    matchOrgEditTitle: 'Edit event',
     matchOrgCreateHelmet: 'New match — Shooters Tools',
-    matchOrgEditHelmetEdit: 'Edit match — Shooters Tools',
-    matchOrgEditHelmetLoading: 'Match — loading',
+    matchOrgEditHelmetEdit: 'Edit event — Shooters Tools',
+    matchOrgEditHelmetLoading: 'Event — loading',
     matchOrgSave: 'Save',
     matchOrgSaveSaving: 'Saving…',
     matchOrgBackList: 'Back to my matches',
@@ -2786,6 +2782,9 @@ export const enMessages: MessageTree = {
     matchOrgFieldStartsTitle: 'Shown in your browser’s local time zone.',
     matchOrgFieldLocation: 'Location',
     matchOrgFieldLocationPlaceholder: 'Venue, city, range…',
+    matchOrgFieldLocationHint:
+      'Short venue text (city, range) and/or a Maps or club link — links become clickable on the public page. Location line is limited to {{max}} characters.',
+    matchOrgFieldLocationTooLong: 'Location is too long — shorten the text or link (max {{max}} characters).',
     matchOrgFieldCoverImage: 'Cover image',
     matchOrgCoverUpload: 'Upload image',
     matchOrgCoverRemove: 'Remove',
@@ -2801,9 +2800,9 @@ export const enMessages: MessageTree = {
     matchOrgCoverCropApply: 'Apply',
     matchOrgCoverCropErrCrop: 'Could not process the image. Try another file.',
     matchOrgFieldEventKind: 'Event type',
-    matchOrgFieldPsLevel: 'Match level',
-    matchOrgSectionCatalogHeading: 'Hub catalog',
-    matchOrgSectionPlanHeading: 'Capacity and squads',
+    matchOrgFieldPsLevel: 'Level',
+    matchOrgSectionCatalogHeading: 'Event parameters',
+    matchOrgSectionPlanHeading: 'Set up squads and capacity',
     matchOrgSectionPublishHeading: 'Copy and visibility',
     matchOrgTaxonomyOptionalLead:
       'Optional. Leave both empty to show as not set on the card. Does not replace the title.',
@@ -2819,21 +2818,28 @@ export const enMessages: MessageTree = {
     matchPsLevelL3: 'Level III',
     matchPsLevelL4: 'Level IV',
     matchPsLevelL5: 'Level V',
-    matchOrgDerivedCapacityLine: 'Total capacity: {{total}} (stored as competitor limit after save).',
-    matchOrgFieldShootersMain: 'Shooters per squad (main match day)',
+    matchOrgDerivedCapacityLine: 'Total capacity: {{total}} (stored as the event competitor limit after save).',
+    matchOrgFieldDerivedTotalShooters: 'Total shooters',
+    matchOrgFieldShootersMain: 'Shooters per squad',
     matchOrgFieldShootersPrematch: 'Shooters per squad (prematch)',
-    matchOrgFieldDescription: 'Card description',
+    matchOrgFieldDescription: 'Event card description',
     matchOrgFieldDescriptionHint: 'Use Markdown or BBCode; plain URLs become clickable.',
+    matchOrgBbcodeToolbarAria: 'Insert BBCode in the description',
+    matchOrgBbcodeBoldTitle: 'Bold BBCode — [b]…[/b]',
+    matchOrgBbcodeItalicTitle: 'Italic BBCode — [i]…[/i]',
+    matchOrgBbcodeUnderlineTitle: 'Underline BBCode — [u]…[/u]',
+    matchOrgBbcodeUrlTitle: 'Link BBCode — [url]…[/url]',
+    matchOrgBbcodeQuoteTitle: 'Quote BBCode — [quote]…[/quote]',
+    matchOrgBbcodeListTitle: 'List BBCode — [list][*]…[/list]',
+    matchOrgBbcodeListItemPlaceholder: 'item',
+    matchOrgBbcodeUrlPlaceholder: 'https://',
     matchOrgFieldStatus: 'Status',
     matchOrgFieldParticipantList: 'Participants list',
     matchOrgParticipantsListOpen: 'Open',
     matchOrgParticipantsListClosed: 'Closed',
-    matchOrgParticipantsListFootnote:
-      'Confirmed shooters appear on the public card table; pending entries stay only in your organizer roster.',
     matchOrgRegistrationsSummary:
-      'Registrations on this match: {{confirmed}} confirmed · {{pending}} awaiting confirmation (the public Participants table lists confirmed only).',
+      'Registrations on this match (organizer): {{confirmed}} confirmed · {{pending}} awaiting confirmation.',
     matchOrgRegistrationsNoneYet: 'No registrations for this match yet.',
-    matchOrgDisciplineShotgunNote: 'Discipline is currently fixed to shotgun.',
     matchOrgExportPsc: 'Download .psc (PractiScore)',
     matchOrgExportPscBusy: 'Preparing file…',
     matchOrgExportPscHint:
@@ -2844,17 +2850,17 @@ export const enMessages: MessageTree = {
     matchOrgExportPscErrNoStages: 'Link at least one stage (share URL) before exporting.',
     matchOrgExportPscErrSession: 'Sign in and refresh the page.',
     matchOrgFieldPrematch: 'Prematch',
-    matchOrgFieldPlannedMainSquads: 'Squads (main match day)',
-    matchOrgFieldPlannedPrematchSquads: 'Squads (prematch)',
+    matchOrgFieldPlannedMainSquads: 'Number of squads',
+    matchOrgFieldPlannedPrematchSquads: 'Number of squads (prematch)',
     matchOrgPlannedMainInvalid: 'Main-day squad count must be an integer ≥ 1.',
     matchOrgPlannedPrematchInvalid: 'With prematch enabled, prematch squad count must be an integer ≥ 1.',
     matchOrgEditBadId: 'Invalid edit link.',
     matchOrgEditNotFound: 'Match not found or not owned by you.',
     matchOrgTitleRequired: 'Please enter a title.',
     matchOrgShootersInvalid: 'Shooters per squad must be an integer ≥ 1.',
-    matchOrgStagesHeading: 'Programme exercises',
+    matchOrgStagesHeading: 'Load event exercises',
     matchOrgStagesIntro:
-      'Build the stage in Stage Builder. Names in this list use the briefing «Document title» (same as PDF) first; if empty, the plan’s stage name. The share snapshot freezes that wording until you re-publish view or tap «Update to latest».',
+      'Create the exercise in Stage Builder, copy the view link, and paste it in the field below. The title in the match programme matches the exercise title from the PDF briefing.',
     matchOrgStagesOpenEditor: 'Open Stage Builder (new tab)',
     matchOrgStagesPasteLabel: 'View URL or share id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… or s…',

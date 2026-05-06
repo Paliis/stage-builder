@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useSupabaseSession } from '../useSupabaseSession'
+import '../PortalMatchesUi.css'
 import '../PortalHome.css'
 import './PlatformOrganizersPage.css'
 
@@ -20,7 +21,7 @@ type OrganizerRow = {
   organizer_moderation_note?: string | null
 }
 
-type FilterMode = 'all' | 'applications' | 'pending_all'
+type FilterMode = 'all' | 'pending_all'
 
 const MOD_NOTE_MAX = 600
 
@@ -29,23 +30,40 @@ function normalizeStatus(s: string): OrganizerStatus | null {
   return null
 }
 
-function isApplicationPending(row: OrganizerRow): boolean {
-  return normalizeStatus(row.organizer_status) === 'pending' && Number(row.matches_count) === 0
-}
-
 function sortRows(a: OrganizerRow, b: OrganizerRow): number {
-  const appA = isApplicationPending(a)
-  const appB = isApplicationPending(b)
-  if (appA !== appB) return appA ? -1 : 1
   return (a.email ?? '').localeCompare(b.email ?? '', undefined, { sensitivity: 'base' })
 }
 
-function CellEllipsis({ text, emptyLabel }: { text: string | null | undefined; emptyLabel: string }) {
-  const s = typeof text === 'string' ? text.trim() : ''
-  if (!s.length) return <span className="portal-org-admin__cell-empty">{emptyLabel}</span>
+function OrganizerCandidateApplicationCell({
+  contact,
+  pastMatches,
+  emptyLabel,
+  contactCaption,
+  pastCaption,
+}: {
+  contact: string | null | undefined
+  pastMatches: string | null | undefined
+  emptyLabel: string
+  contactCaption: string
+  pastCaption: string
+}) {
+  const c = typeof contact === 'string' ? contact.trim() : ''
+  const pm = typeof pastMatches === 'string' ? pastMatches.trim() : ''
+  if (!c.length && !pm.length) return <span className="portal-org-admin__cell-empty">{emptyLabel}</span>
   return (
-    <div className="portal-org-admin__cell-clamp" title={s}>
-      {s}
+    <div className="portal-org-admin__candidate-stack">
+      {c.length ?
+        <div className="portal-org-admin__candidate-chunk">
+          <div className="portal-org-admin__candidate-caption">{contactCaption}</div>
+          <div className="portal-org-admin__candidate-body">{c}</div>
+        </div>
+      : null}
+      {pm.length ?
+        <div className="portal-org-admin__candidate-chunk">
+          <div className="portal-org-admin__candidate-caption">{pastCaption}</div>
+          <div className="portal-org-admin__candidate-body">{pm}</div>
+        </div>
+      : null}
     </div>
   )
 }
@@ -64,6 +82,7 @@ export function PlatformOrganizersPage() {
   const [savingId, setSavingId] = useState<string | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [filterMode, setFilterMode] = useState<FilterMode>('all')
+  const moderationSaveTimers = useRef<Record<string, number>>({})
 
   const loadRows = useCallback(async () => {
     if (!configured) return
@@ -120,11 +139,19 @@ export function PlatformOrganizersPage() {
     }
   }, [configured, sessionLoading, user?.id, loadRows])
 
+  useEffect(() => {
+    return () => {
+      for (const id of Object.keys(moderationSaveTimers.current)) {
+        window.clearTimeout(moderationSaveTimers.current[id])
+      }
+      moderationSaveTimers.current = {}
+    }
+  }, [])
+
   const filteredRows = useMemo(() => {
     return rows
       .filter((row) => {
         const st = normalizeStatus(row.organizer_status)
-        if (filterMode === 'applications') return isApplicationPending(row)
         if (filterMode === 'pending_all') return st === 'pending'
         return true
       })
@@ -162,41 +189,46 @@ export function PlatformOrganizersPage() {
     return { saved, selected, moderationDraft, moderationSaved }
   }
 
-  const rowIsDirty = (row: OrganizerRow): boolean => {
-    const { saved, selected, moderationDraft, moderationSaved } = deriveUiState(row)
-    if (selected !== saved) return true
-    if (selected === 'blocked' && moderationDraft.trim() !== moderationSaved) return true
-    return false
+  const persistOrganizer = useCallback(
+    async (userId: string, nextStatus: OrganizerStatus, noteWhenBlocked: string) => {
+      if (!configured) return
+      const moderationTrim = noteWhenBlocked.trim()
+      if (nextStatus === 'blocked' && moderationTrim.length > MOD_NOTE_MAX) {
+        setSaveError(p.organizersModerationNoteTooLong)
+        return
+      }
+      setSaveError(null)
+      setSavingId(userId)
+      const sb = getSupabase()
+      const { error } = await sb.rpc('platform_set_match_organizer_status', {
+        p_target_user: userId,
+        p_status: nextStatus,
+        p_moderation_note: nextStatus === 'blocked' ? moderationTrim || null : null,
+      })
+      setSavingId(null)
+      if (error) {
+        setSaveError(error.message)
+        return
+      }
+      await loadRows()
+    },
+    [configured, loadRows, p.organizersModerationNoteTooLong],
+  )
+
+  const clearModerationDebounce = (userId: string) => {
+    const t = moderationSaveTimers.current[userId]
+    if (t !== undefined) {
+      window.clearTimeout(t)
+      delete moderationSaveTimers.current[userId]
+    }
   }
 
-  const onSaveRow = async (row: OrganizerRow) => {
-    if (!configured) return
-    if (!rowIsDirty(row)) return
-    const { selected, moderationDraft } = deriveUiState(row)
-
-    const moderationTrim = moderationDraft.trim()
-    if (moderationTrim.length > MOD_NOTE_MAX) {
-      setSaveError(p.organizersModerationNoteTooLong)
-      return
-    }
-
-    setSaveError(null)
-    setSavingId(row.user_id)
-    const sb = getSupabase()
-
-    const { error } = await sb.rpc('platform_set_match_organizer_status', {
-      p_target_user: row.user_id,
-      p_status: selected,
-      p_moderation_note: selected === 'blocked' ? moderationTrim || null : null,
-    })
-
-    setSavingId(null)
-    if (error) {
-      setSaveError(error.message)
-      return
-    }
-
-    await loadRows()
+  const scheduleModerationNotePersist = (userId: string, draft: string) => {
+    clearModerationDebounce(userId)
+    moderationSaveTimers.current[userId] = window.setTimeout(() => {
+      delete moderationSaveTimers.current[userId]
+      void persistOrganizer(userId, 'blocked', draft)
+    }, 480)
   }
 
   if (!configured) {
@@ -253,163 +285,171 @@ export function PlatformOrganizersPage() {
   }
 
   return (
-    <div className="portal-home">
+    <div className="portal-home portal-org-admin-page">
       <Helmet>
         <title>{p.organizersAdminHelmetTitle}</title>
       </Helmet>
       <nav className="portal-page-context portal-page-context--solo-link" aria-label={p.portalBreadcrumbAria}>
         <Link to={`/${locale}`}>{p.organizersBackHome}</Link>
       </nav>
-      <div className="portal-home__hero">
-        <h1 className="portal-home__hero-title">{p.organizersAdminTitle}</h1>
-        <p className="portal-org-admin__intro">{p.organizersAdminIntro}</p>
-      </div>
 
-      {listError ? (
-        <p role="alert">
-          {p.organizersLoadError}: {listError}
-        </p>
-      ) : null}
-      {saveError ? (
-        <p role="alert">
-          {p.organizersLoadError}: {saveError}
-        </p>
-      ) : null}
+      <section className="portal-org-admin__surface" aria-labelledby="portal-org-admin-heading">
+        <header className="portal-home__hero portal-org-admin__hero">
+          <h1 id="portal-org-admin-heading" className="portal-home__hero-title">
+            {p.organizersAdminTitle}
+          </h1>
+          <p className="portal-org-admin__intro">{p.organizersAdminIntro}</p>
+        </header>
 
-      <div className="portal-org-admin__filters" role="group" aria-label="Filter">
-        {(
-          [
-            ['all', p.organizersFilterAll],
-            ['applications', p.organizersFilterApplications],
-            ['pending_all', p.organizersFilterPendingAll],
-          ] as const
-        ).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            className={
-              filterMode === key ? 'portal-org-admin__filter portal-org-admin__filter--on' : 'portal-org-admin__filter'
-            }
-            onClick={() => setFilterMode(key)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+        {listError || saveError ?
+          <div className="portal-org-admin__alerts">
+            {listError ?
+              <p className="portal-org-admin__alert portal-org-admin__alert--error" role="alert">
+                {p.organizersLoadError}: {listError}
+              </p>
+            : null}
+            {saveError ?
+              <p className="portal-org-admin__alert portal-org-admin__alert--error" role="alert">
+                {p.organizersLoadError}: {saveError}
+              </p>
+            : null}
+          </div>
+        : null}
 
-      <div className="portal-org-admin">
-        <table className="portal-org-admin__table">
-          <thead>
-            <tr>
-              <th>{p.organizersColEmail}</th>
-              <th>{p.organizersColDisplayName}</th>
-              <th>{p.organizersColMatches}</th>
-              <th>{p.organizersColBadge}</th>
-              <th>{p.organizersColContact}</th>
-              <th>{p.organizersColPastMatches}</th>
-              <th>{p.organizersColStatus}</th>
-              <th>{p.organizersColModeration}</th>
-              <th aria-label={p.organizersSave} />
-            </tr>
-          </thead>
-          <tbody>
-            {filteredRows.map((row) => {
-              const saved = normalizeStatus(row.organizer_status) ?? 'pending'
-              const { selected, moderationDraft, moderationSaved } = deriveUiState(row)
-              const dirty = rowIsDirty(row)
-              const busy = savingId === row.user_id
-              const badge =
-                normalizeStatus(row.organizer_status) === 'pending' && Number(row.matches_count) === 0 ?
-                  p.organizersBadgeApplication
-                : normalizeStatus(row.organizer_status) === 'pending' && Number(row.matches_count) > 0 ?
-                  p.organizersBadgePendingExtra
-                : '—'
+        <div className="portal-org-admin__filters" role="group" aria-label={p.organizersFiltersAria}>
+          {(
+            [
+              ['all', p.organizersFilterAll],
+              ['pending_all', p.organizersFilterPendingAll],
+            ] as const
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              className={
+                filterMode === key ?
+                  'portal-btn portal-btn--compact portal-btn--secondary portal-org-admin__filter-chip--active'
+                : 'portal-btn portal-btn--compact portal-btn--secondary'
+              }
+              onClick={() => setFilterMode(key)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
 
-              return (
-                <tr key={row.user_id}>
-                  <td>{row.email ?? '—'}</td>
-                  <td>{row.display_name?.trim() ? row.display_name : '—'}</td>
-                  <td>{Number(row.matches_count)}</td>
-                  <td>
-                    <span className="portal-org-admin__badge">{badge}</span>
-                  </td>
-                  <td className="portal-org-admin__cell-wide">
-                    <CellEllipsis text={row.organizer_application_contact} emptyLabel={p.organizersApplicationEmpty} />
-                  </td>
-                  <td className="portal-org-admin__cell-wide">
-                    <CellEllipsis
-                      text={row.organizer_application_past_matches}
-                      emptyLabel={p.organizersApplicationEmpty}
-                    />
-                  </td>
-                  <td>
-                    <select
-                      className="portal-org-admin__select"
-                      value={selected}
-                      onChange={(e) => {
-                        const v = normalizeStatus(e.target.value)
-                        if (!v) return
-                        setSaveError(null)
-                        setSelectByUser((prev) => ({ ...prev, [row.user_id]: v }))
-                        if (v === 'blocked') {
-                          const prevNote =
-                            normalizeStatus(row.organizer_status) === 'blocked' ?
-                              (typeof row.organizer_moderation_note === 'string' ? row.organizer_moderation_note : '')
-                                .trim()
-                            : ''
-                          setModerationDraftByUser((prev) => ({
-                            ...prev,
-                            [row.user_id]: prev[row.user_id] ?? prevNote,
-                          }))
-                        }
-                      }}
-                      aria-label={p.organizersColStatus}
-                    >
-                      {(['pending', 'active', 'blocked'] as const).map((opt) => (
-                        <option key={opt} value={opt}>
-                          {statusLabel(opt)}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="portal-org-admin__note-cell">
-                    {selected === 'blocked' ?
-                      <textarea
-                        className="portal-org-admin__textarea"
-                        rows={2}
-                        maxLength={MOD_NOTE_MAX}
-                        value={moderationDraft}
+        <div className="portal-org-admin__table-shell">
+          <table className="portal-org-admin__table">
+            <thead>
+              <tr>
+                <th className="portal-org-admin__col-email">{p.organizersColEmail}</th>
+                <th className="portal-org-admin__col-name">{p.organizersColDisplayName}</th>
+                <th className="portal-org-admin__col-status">{p.organizersColStatus}</th>
+                <th className="portal-org-admin__col-contact">{p.organizersColContact}</th>
+                <th className="portal-org-admin__col-mod">{p.organizersColModeration}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRows.map((row) => {
+                const saved = normalizeStatus(row.organizer_status) ?? 'pending'
+                const { selected, moderationDraft, moderationSaved } = deriveUiState(row)
+                const busy = savingId === row.user_id
+                const prevBlockedNote =
+                  saved === 'blocked' ?
+                    (typeof row.organizer_moderation_note === 'string' ? row.organizer_moderation_note : '').trim()
+                  : ''
+
+                return (
+                  <tr key={row.user_id} aria-busy={busy}>
+                    <td className="portal-org-admin__col-email">{row.email ?? '—'}</td>
+                    <td className="portal-org-admin__col-name">
+                      {row.display_name?.trim() ? row.display_name : '—'}
+                    </td>
+                    <td className="portal-org-admin__col-status">
+                      <select
+                        className="portal-org-admin__select"
+                        value={selected}
+                        disabled={busy}
                         onChange={(e) => {
+                          const v = normalizeStatus(e.target.value)
+                          if (!v) return
                           setSaveError(null)
-                          setModerationDraftByUser((prev) => ({ ...prev, [row.user_id]: e.target.value }))
+                          clearModerationDebounce(row.user_id)
+                          const prevDraft = moderationDraftByUser[row.user_id]
+                          const noteForBlocked =
+                            v === 'blocked' ? (prevDraft !== undefined ? prevDraft : prevBlockedNote) : ''
+                          if (v === 'blocked') {
+                            setModerationDraftByUser((prev) => ({
+                              ...prev,
+                              [row.user_id]: noteForBlocked,
+                            }))
+                          } else {
+                            setModerationDraftByUser((prev) => {
+                              const next = { ...prev }
+                              delete next[row.user_id]
+                              return next
+                            })
+                          }
+                          setSelectByUser((prev) => ({ ...prev, [row.user_id]: v }))
+                          void persistOrganizer(row.user_id, v, v === 'blocked' ? noteForBlocked : '')
                         }}
-                        placeholder={p.organizersModerationNotePlaceholder}
-                        aria-label={p.organizersModerationNoteLabel}
+                        aria-label={p.organizersColStatus}
+                      >
+                        {(['pending', 'active', 'blocked'] as const).map((opt) => (
+                          <option key={opt} value={opt}>
+                            {statusLabel(opt)}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="portal-org-admin__col-contact">
+                      <OrganizerCandidateApplicationCell
+                        contact={row.organizer_application_contact}
+                        pastMatches={row.organizer_application_past_matches}
+                        emptyLabel={p.organizersApplicationEmpty}
+                        contactCaption={p.organizersCandidateAppContactCaption}
+                        pastCaption={p.organizersCandidateAppPastCaption}
                       />
-                    : saved === 'blocked' && moderationSaved ?
-                      <div className="portal-org-admin__note-readonly" title={moderationSaved}>
-                        {moderationSaved}
-                      </div>
-                    : (
-                      <span className="portal-org-admin__cell-empty">{p.organizersApplicationEmpty}</span>
-                    )}
-                  </td>
-                  <td className="portal-org-admin__actions">
-                    <button
-                      type="button"
-                      className="portal-org-admin__save-btn"
-                      disabled={!dirty || busy}
-                      onClick={() => void onSaveRow(row)}
-                    >
-                      {busy ? p.organizersSaving : p.organizersSave}
-                    </button>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
+                    </td>
+                    <td className="portal-org-admin__note-cell portal-org-admin__col-mod">
+                      {selected === 'blocked' ?
+                        <textarea
+                          className="portal-org-admin__textarea"
+                          rows={2}
+                          maxLength={MOD_NOTE_MAX}
+                          value={moderationDraft}
+                          disabled={busy}
+                          onChange={(e) => {
+                            const val = e.target.value
+                            setSaveError(null)
+                            setModerationDraftByUser((prev) => ({ ...prev, [row.user_id]: val }))
+                            scheduleModerationNotePersist(row.user_id, val)
+                          }}
+                          onBlur={(e) => {
+                            clearModerationDebounce(row.user_id)
+                            if (selected !== 'blocked') return
+                            const d = e.currentTarget.value
+                            if (d.trim() === prevBlockedNote.trim()) return
+                            void persistOrganizer(row.user_id, 'blocked', d)
+                          }}
+                          placeholder={p.organizersModerationNotePlaceholder}
+                          aria-label={p.organizersModerationNoteLabel}
+                        />
+                      : saved === 'blocked' && moderationSaved ?
+                        <div className="portal-org-admin__note-readonly" title={moderationSaved}>
+                          {moderationSaved}
+                        </div>
+                      : (
+                        <p className="portal-org-admin__mod-hint">{p.organizersModerationUnavailableHint}</p>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   )
 }
