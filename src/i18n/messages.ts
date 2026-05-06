@@ -465,6 +465,8 @@ export type MessageTree = {
     matchDetailParticipantsColPaymentConfirmation: string
     matchDetailParticipantsPaymentConfirmed: string
     matchDetailParticipantsPaymentPending: string
+    /** Optional short footnote below public participants table; empty hides block. */
+    matchDetailParticipantsFootnote: string
     /** When RPC migration not applied yet */
     matchDetailApplyMigrationHint: string
     matchDetailRegistrationHeading: string
@@ -581,13 +583,21 @@ export type MessageTree = {
     organizersModerationNoteTooLong: string
     /** Shown in the moderation column when status is not Blocked — explains note is block-only (product/DB rule). */
     organizersModerationUnavailableHint: string
-    /** Header + `/:locale/account`: аватар, вхід, вихід (без бейджів ролей). */
+    /** Header + `/:locale/account`: profile, sign-in/out; optional role badges when enabled in shell. */
     accountHeaderAria: string
     accountHeaderChecking: string
     accountHeaderSignIn: string
     accountHeaderProfile: string
     /** `aria-label` on header profile icon — include {{email}}. */
     accountHeaderProfileIconAria: string
+    /** Header badge: shooter role (logged-in participant hub). `title` on badge. */
+    accountBadgeParticipantHint: string
+    accountBadgeParticipant: string
+    /** Header badge placeholder while resolving organizer profile. */
+    accountBadgeLoading: string
+    accountBadgeOrganizerActive: string
+    accountBadgeOrganizerBlocked: string
+    accountBadgeOrganizerPending: string
     accountPageHelmet: string
     accountPageTitle: string
     accountAuthHeading: string
@@ -786,6 +796,10 @@ export type MessageTree = {
     matchOrgFieldParticipantList: string
     matchOrgParticipantsListOpen: string
     matchOrgParticipantsListClosed: string
+    /** Hint under organizer «Participant list visibility» selector. */
+    matchOrgParticipantsListFootnote: string
+    /** Optional discipline-specific note near participant list controls (shotgun/IPSC). */
+    matchOrgDisciplineShotgunNote: string
     matchOrgRegistrationsSummary: string
     matchOrgRegistrationsNoneYet: string
     matchOrgExportPsc: string
@@ -1496,6 +1510,7 @@ export const ukMessages: MessageTree = {
     matchDetailParticipantsColPaymentConfirmation: 'Підтвердження',
     matchDetailParticipantsPaymentConfirmed: 'Підтверджено',
     matchDetailParticipantsPaymentPending: 'Очікується',
+    matchDetailParticipantsFootnote: '',
     matchDetailApplyMigrationHint:
       'Застосуй останні міграції Supabase з каталогу supabase/migrations (зокрема `20260504140000_public_match_registration_metrics.sql` та `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Реєстрація',
@@ -1619,6 +1634,12 @@ export const ukMessages: MessageTree = {
     accountHeaderSignIn: 'Увійти',
     accountHeaderProfile: 'Профіль',
     accountHeaderProfileIconAria: 'Обліковий запис. Залогінено як {{email}}',
+    accountBadgeParticipantHint: 'Обліковий запис з доступом до кабінету учасника та матчів порталу.',
+    accountBadgeParticipant: 'Стрілець',
+    accountBadgeLoading: '…',
+    accountBadgeOrganizerActive: 'Організатор',
+    accountBadgeOrganizerBlocked: 'Організатора заблоковано',
+    accountBadgeOrganizerPending: 'Заявка організатора',
     accountPageHelmet: 'Кабінет стрільця — Shooters Tools',
     accountPageTitle: 'Кабінет стрільця',
     accountAuthHeading: 'Вхід',
@@ -1807,6 +1828,10 @@ export const ukMessages: MessageTree = {
     matchOrgFieldParticipantList: 'Список учасників',
     matchOrgParticipantsListOpen: 'Відкритий',
     matchOrgParticipantsListClosed: 'Закритий',
+    matchOrgParticipantsListFootnote:
+      'Відкритий список показує підтверджених учасників на публічній сторінці матчу. Закритий — лише організатор бачить заявки в адміністративному кабінеті.',
+    matchOrgDisciplineShotgunNote:
+      'У дисциплінах на базі shotgun перевір експорт, стартові позиції та обмеження за правилами змагання перед публікацією.',
     matchOrgRegistrationsSummary:
       'Заявки цього матчу (організатор): {{confirmed}} підтверджено · {{pending}} очікує підтвердження.',
     matchOrgRegistrationsNoneYet: 'Заявок на цей матч поки немає.',
@@ -2522,6 +2547,7 @@ export const enMessages: MessageTree = {
     matchDetailParticipantsColPaymentConfirmation: 'Confirmation',
     matchDetailParticipantsPaymentConfirmed: 'Confirmed',
     matchDetailParticipantsPaymentPending: 'Pending',
+    matchDetailParticipantsFootnote: '',
     matchDetailApplyMigrationHint:
       'Apply the latest migrations from supabase/migrations (including `20260504140000_public_match_registration_metrics.sql` and `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Registration',
@@ -2648,6 +2674,12 @@ export const enMessages: MessageTree = {
     accountHeaderSignIn: 'Sign in',
     accountHeaderProfile: 'Account',
     accountHeaderProfileIconAria: 'Account. Signed in as {{email}}',
+    accountBadgeParticipantHint: 'Signed-in account with access to participant tools and portal matches.',
+    accountBadgeParticipant: 'Shooter',
+    accountBadgeLoading: '…',
+    accountBadgeOrganizerActive: 'Organizer',
+    accountBadgeOrganizerBlocked: 'Organizer blocked',
+    accountBadgeOrganizerPending: 'Organizer application',
     accountPageHelmet: 'Shooter cabinet — Shooters Tools',
     accountPageTitle: 'Shooter cabinet',
     accountAuthHeading: 'Sign in',
@@ -2834,6 +2866,10 @@ export const enMessages: MessageTree = {
     matchOrgFieldParticipantList: 'Participants list',
     matchOrgParticipantsListOpen: 'Open',
     matchOrgParticipantsListClosed: 'Closed',
+    matchOrgParticipantsListFootnote:
+      'Open list shows confirmed participants on the public match page. Closed — only the organizer sees applications.',
+    matchOrgDisciplineShotgunNote:
+      'For shotgun-style disciplines, double-check exports, stages, and any rule-specific constraints before publishing.',
     matchOrgRegistrationsSummary:
       'Registrations on this match (organizer): {{confirmed}} confirmed · {{pending}} awaiting confirmation.',
     matchOrgRegistrationsNoneYet: 'No registrations for this match yet.',
