@@ -718,6 +718,11 @@ export type MessageTree = {
     matchOrgSave: string
     matchOrgSaveSaving: string
     matchOrgBackList: string
+    /** Sticky organizer toolbar on match edit (save / roster / PSC). */
+    matchOrgQuickActionsHeading: string
+    matchOrgQuickActionsAria: string
+    /** Shown above quick actions while creating an unsaved match. */
+    matchOrgQuickActionsNewHint: string
     matchOrgFieldTitle: string
     /** Visible label above start date/time picker. */
     matchOrgFieldStarts: string
@@ -1743,6 +1748,10 @@ export const ukMessages: MessageTree = {
     matchOrgSave: 'Зберегти',
     matchOrgSaveSaving: 'Збереження…',
     matchOrgBackList: 'До списку матчів',
+    matchOrgQuickActionsHeading: 'Швидкі дії',
+    matchOrgQuickActionsAria: 'Збереження, заявки та експорт PractiScore',
+    matchOrgQuickActionsNewHint:
+      'Після першого збереження з’явиться доступ до заявок і завантаження .psc.',
     matchOrgFieldTitle: 'Назва',
     matchOrgFieldStarts: 'Дата й час початку',
     matchOrgFieldStartsTitle: 'Відображається у локальній зоні браузера.',
@@ -2768,6 +2777,10 @@ export const enMessages: MessageTree = {
     matchOrgSave: 'Save',
     matchOrgSaveSaving: 'Saving…',
     matchOrgBackList: 'Back to my matches',
+    matchOrgQuickActionsHeading: 'Quick actions',
+    matchOrgQuickActionsAria: 'Save, registrations, PractiScore export',
+    matchOrgQuickActionsNewHint:
+      'After the first save, registrations and downloading the .psc file become available.',
     matchOrgFieldTitle: 'Title',
     matchOrgFieldStarts: 'Start date and time',
     matchOrgFieldStartsTitle: 'Shown in your browser’s local time zone.',

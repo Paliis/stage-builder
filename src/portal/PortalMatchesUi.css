@@ -1838,42 +1838,6 @@ a.portal-match-title-ellipsis:hover {
   margin-bottom: 0;
 }
 
-.portal-match-org-form__actions {
-  margin: 1.35rem 0 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  align-items: center;
-}
-
-.portal-match-org-form__submit {
-  min-width: 8.5rem;
-}
-
-.portal-match-org-form__public-link {
-  margin: 0.75rem 0 0;
-  font-size: 0.9rem;
-}
-
-.portal-match-org-form__public-link a {
-  color: var(--accent);
-  font-weight: 650;
-}
-
-.portal-match-org-form__export {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px dashed color-mix(in srgb, var(--border) 90%, transparent);
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  align-items: flex-start;
-}
-
-.portal-match-org-form__export-btn {
-  max-width: 100%;
-}
-
 .portal-match-org-form__error {
   margin: 0 0 0.5rem;
   font-weight: 650;
@@ -1903,4 +1867,87 @@ a.portal-match-title-ellipsis:hover {
 
 .portal-match-org-form__alert-dismiss {
   margin-left: auto;
+}
+
+.portal-match-org-form__alert--above-form {
+  margin-bottom: 0.85rem;
+}
+
+/* Sticky quick actions: save, roster, PractiScore export, public link */
+.portal-match-org-quick {
+  position: sticky;
+  top: calc(var(--portal-shell-strip-h, 3.75rem) + 0.35rem);
+  z-index: 6;
+  max-width: 28rem;
+  margin: 0 0 1.35rem;
+  padding: 0.82rem 0.92rem 0.95rem;
+  border-radius: 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--text-h) 5%, transparent),
+    0 10px 32px rgba(15, 23, 42, 0.07);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-match-org-quick {
+    backdrop-filter: none;
+  }
+}
+
+.portal-match-org-quick__head {
+  margin-bottom: 0.6rem;
+}
+
+.portal-match-org-quick__title {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--text-h) 88%, transparent);
+}
+
+.portal-match-org-quick__hint {
+  margin: 0.32rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text) 76%, transparent);
+}
+
+.portal-match-org-quick__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.45rem;
+}
+
+.portal-match-org-quick__btn {
+  flex: 0 1 auto;
+}
+
+@media (max-width: 540px) {
+  .portal-match-org-quick__btn:not(.portal-btn--primary) {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: min(100%, 9.5rem);
+  }
+
+  .portal-match-org-quick__btn.portal-btn--primary {
+    flex: 1 1 100%;
+  }
+}
+
+.portal-match-org-quick__error {
+  margin: 0.6rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.portal-match-org-quick__psc-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text) 72%, transparent);
+  max-width: 36rem;
 }

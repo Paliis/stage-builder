@@ -565,7 +565,7 @@ export function OrganizerMatchEditPage() {
       </header>
 
       {squadSyncBanner ?
-        <div className="portal-match-org-form__alert" role="alert">
+        <div className="portal-match-org-form__alert portal-match-org-form__alert--above-form" role="alert">
           {formatTemplate(p.matchOrgSquadSyncBanner, { detail: squadSyncBanner })}
           <button
             type="button"
@@ -577,7 +577,66 @@ export function OrganizerMatchEditPage() {
         </div>
       : null}
 
-      <form className="portal-match-org-form" onSubmit={(e) => void handleSubmit(e)}>
+      <section className="portal-match-org-quick" aria-label={p.matchOrgQuickActionsAria}>
+        <div className="portal-match-org-quick__head">
+          <h2 className="portal-match-org-quick__title">{p.matchOrgQuickActionsHeading}</h2>
+          {isNew ?
+            <p className="portal-match-org-quick__hint">{p.matchOrgQuickActionsNewHint}</p>
+          : null}
+        </div>
+        <div className="portal-match-org-quick__toolbar">
+          <button
+            form="match-org-edit-form"
+            type="submit"
+            disabled={saving}
+            className="portal-btn portal-btn--primary portal-btn--compact portal-match-org-quick__btn"
+          >
+            {saving ? p.matchOrgSaveSaving : p.matchOrgSave}
+          </button>
+
+          {!isNew && validEditId && matchId ?
+            <>
+              <Link
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-quick__btn"
+                to={`/${locale}/matches/my/${matchId}/roster`}
+              >
+                {p.matchOrgRosterManageLink}
+              </Link>
+              <button
+                type="button"
+                disabled={pscBusy}
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-quick__btn"
+                onClick={() => void handleDownloadMatchPsc()}
+              >
+                {pscBusy ? p.matchOrgExportPscBusy : p.matchOrgExportPsc}
+              </button>
+            </>
+          : null}
+
+          {!isNew && draft.status === 'published' && matchId ?
+            <Link
+              className="portal-btn portal-btn--ghost portal-btn--compact portal-match-org-quick__btn"
+              to={`/${locale}/matches/${encodeURIComponent(matchId)}`}
+            >
+              {p.myMatchesViewPublic}
+            </Link>
+          : null}
+        </div>
+
+        {saveError ?
+          <p role="alert" className="portal-match-org-quick__error">{saveError}</p>
+        : null}
+
+        {!isNew && validEditId && matchId && pscErr ?
+          <p role="alert" className="portal-match-org-quick__error">{pscErr}</p>
+        : null}
+
+        {!isNew && validEditId && matchId ?
+          <p className="portal-match-org-quick__psc-hint">{p.matchOrgExportPscHint}</p>
+        : null}
+      </section>
+
+      <form id="match-org-edit-form" className="portal-match-org-form" onSubmit={(e) => void handleSubmit(e)}>
         <label className="portal-match-org-form__field">
           <span className="portal-match-org-form__label">{p.matchOrgFieldTitle}</span>
           <input
@@ -857,43 +916,6 @@ export function OrganizerMatchEditPage() {
             <p className="portal-match-org-form__hint">{p.matchOrgDisciplineShotgunNote}</p>
           </div>
         </section>
-
-        {saveError ?
-          <p role="alert" className="portal-match-org-form__error">
-            {saveError}
-          </p>
-        : null}
-
-        <div className="portal-match-org-form__actions">
-          <button type="submit" disabled={saving} className="portal-btn portal-btn--primary portal-match-org-form__submit">
-            {saving ? p.matchOrgSaveSaving : p.matchOrgSave}
-          </button>
-        </div>
-
-        {!isNew && draft.status === 'published' ?
-          <p className="portal-match-org-form__public-link">
-            <Link to={`/${locale}/matches/${matchId}`}>{p.myMatchesViewPublic}</Link>
-          </p>
-        : null}
-
-        {!isNew && validEditId && matchId ?
-          <div className="portal-match-org-form__export">
-            <button
-              type="button"
-              disabled={pscBusy}
-              className="portal-btn portal-btn--secondary portal-match-org-form__export-btn"
-              onClick={() => void handleDownloadMatchPsc()}
-            >
-              {pscBusy ? p.matchOrgExportPscBusy : p.matchOrgExportPsc}
-            </button>
-            {pscErr ?
-              <p role="alert" className="portal-match-org-form__error portal-match-org-form__error--compact">
-                {pscErr}
-              </p>
-            : null}
-            <p className="portal-match-org-form__hint">{p.matchOrgExportPscHint}</p>
-          </div>
-        : null}
 
       </form>
 
