@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import { MatchDescriptionRichText } from './matchDescriptionRichText'
@@ -83,13 +83,21 @@ export function MatchPublicDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [roster, setRoster] = useState<PublicRosterRow[] | null | undefined>(undefined)
   const [rosterError, setRosterError] = useState<string | null>(null)
-  /** pending+confirmed total from public metrics — used when participant list is open but таблиця confirmed-only порожня. */
-  const [openVisibilityActiveRegTotal, setOpenVisibilityActiveRegTotal] = useState<number | undefined>(undefined)
+  /** pending+confirmed total from public metrics — when list is open but confirmed-only table empty. */
   const [programmeLinks, setProgrammeLinks] = useState<PublicStageLinkRow[] | undefined>(undefined)
   const [programmeError, setProgrammeError] = useState<string | null>(null)
   const [regMetrics, setRegMetrics] = useState<RegistrationMetricRow[] | undefined>(undefined)
   const [regMetricsError, setRegMetricsError] = useState<string | null>(null)
   const [mastheadCtaMount, setMastheadCtaMount] = useState<HTMLElement | null>(null)
+
+  /** Derived: total registrants from metrics when roster is open visibility (for empty confirmed table hint). */
+  const openVisibilityActiveRegTotal = useMemo(() => {
+    const vis = row?.participant_list_visibility ?? 'closed'
+    if (!row?.id || vis !== 'open' || !regMetrics?.length) return undefined
+    const raw = regMetrics[0]?.match_total_registered
+    const n = registrationMetricNum(raw)
+    return Number.isFinite(n) && n >= 0 ? n : undefined
+  }, [row?.id, row?.participant_list_visibility, regMetrics])
 
   const validId = matchId && MATCH_ID_UUID_RE.test(matchId)
   const configured = isSupabaseConfigured()
@@ -104,7 +112,6 @@ export function MatchPublicDetailPage() {
       setRow(undefined)
       setRoster(undefined)
       setRosterError(null)
-      setOpenVisibilityActiveRegTotal(undefined)
       const { data, error: qErr } = await sb
         .from('matches')
         .select(
@@ -149,7 +156,7 @@ export function MatchPublicDetailPage() {
     }
     setRegMetricsError(null)
     setRegMetrics(normalizeRegistrationMetricRows(data))
-  }, [validId, configured, row?.id, p.matchDetailApplyMigrationHint])
+  }, [validId, configured, row, p.matchDetailApplyMigrationHint])
 
   useEffect(() => {
     queueMicrotask(() => void loadRegistrationMetrics())
@@ -164,14 +171,12 @@ export function MatchPublicDetailPage() {
       if (!validId || !configured || !row?.id) {
         setRoster(undefined)
         setRosterError(null)
-        setOpenVisibilityActiveRegTotal(undefined)
         return
       }
       const vis = row.participant_list_visibility ?? 'closed'
       if (vis !== 'open') {
         setRoster(null)
         setRosterError(null)
-        setOpenVisibilityActiveRegTotal(undefined)
         return
       }
       const sb = getSupabase()
@@ -191,17 +196,6 @@ export function MatchPublicDetailPage() {
       cancelled = true
     }
   }, [validId, configured, row?.id, row?.participant_list_visibility])
-
-  useEffect(() => {
-    const vis = row?.participant_list_visibility ?? 'closed'
-    if (!row?.id || vis !== 'open' || !regMetrics?.length) {
-      setOpenVisibilityActiveRegTotal(undefined)
-      return
-    }
-    const raw = regMetrics[0]?.match_total_registered
-    const n = registrationMetricNum(raw)
-    setOpenVisibilityActiveRegTotal(Number.isFinite(n) && n >= 0 ? n : undefined)
-  }, [row?.id, row?.participant_list_visibility, regMetrics])
 
   useEffect(() => {
     let cancelled = false
