@@ -1588,7 +1588,7 @@ export const ukMessages: MessageTree = {
     organizersAdminTitle: 'Організатори матчів',
     organizersAdminIntro:
       'Лише для власника порталу. Текст самої заявки кандидата (контакт і поле «Посилання / коментар» з кабінету) показано в стовпці «Заявка кандидата». Останній стовпець — не заявка: це службова примітка платформи; її можна зберегти лише для «Заблокований», і тоді автор бачить її в кабінеті. Фільтр «Усі «Нові»» показує лише користувачів зі статусом «Новий». Зміни зберігаються автоматично.',
-    organizersNeedSignIn: 'Увійдіть у Supabase Auth, щоб відкрити цю сторінку.',
+    organizersNeedSignIn: 'Увійдіть у свій обліковий запис порталу, щоб переглянути цю сторінку.',
     organizersForbidden: 'Немає прав власника порталу. Доступ налаштовується в таблиці portal_platform_admins.',
     organizersLoading: 'Завантаження…',
     organizersLoadError: 'Не вдалося завантажити список',
@@ -2617,7 +2617,7 @@ export const enMessages: MessageTree = {
     organizersAdminTitle: 'Match organizers',
     organizersAdminIntro:
       'Platform owners only. The applicant’s own text from the account form—optional contact plus the “past matches / comment” field—is shown under “Applicant application”. The last column is not application text: it is an internal platform note you can store only when Blocked; then the applicant sees it on their account. “All pending” shows users with Pending status only. Changes save automatically.',
-    organizersNeedSignIn: 'Sign in with Supabase Auth to open this page.',
+    organizersNeedSignIn: 'Sign in to your portal account to view this page.',
     organizersForbidden:
       'No platform owner privileges. Managed in portal_platform_admins.',
     organizersLoading: 'Loading…',
