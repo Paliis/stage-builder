@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
-import ReactMarkdown from 'react-markdown'
+import { MatchDescriptionRichText } from './matchDescriptionRichText'
+import { matchDescriptionLooksLikeBbCode } from './matchDescriptionLooksLikeBbCode'
 import { formatTemplate } from '../../i18n/format'
 import { useI18n } from '../../i18n/useI18n'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
@@ -417,7 +418,15 @@ export function MatchPublicDetailPage() {
 
       {row.description_md?.trim() ?
         <section className="portal-match-public-detail__surface portal-match-public-detail__description portal-home__hero-lead">
-          <ReactMarkdown>{row.description_md}</ReactMarkdown>
+          <div
+            className={
+              matchDescriptionLooksLikeBbCode(row.description_md) ?
+                'portal-match-description portal-match-description--bbcode'
+              : 'portal-match-description portal-match-description--md'
+            }
+          >
+            <MatchDescriptionRichText source={row.description_md} />
+          </div>
         </section>
       : null}
 

@@ -369,6 +369,47 @@ a.portal-match-title-ellipsis:hover {
 .portal-match-public-detail__description {
   margin: 0;
   max-width: 100%;
+  min-width: 0;
+}
+
+/** Rich text inside public match card: long tokens + URLs stay inside layout */
+.portal-match-description {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.55;
+}
+
+.portal-match-description a {
+  word-break: break-all;
+}
+
+.portal-match-description--bbcode {
+  white-space: pre-line;
+}
+
+.portal-match-description--md > * {
+  min-width: 0;
+}
+
+.portal-match-description__code {
+  font-family:
+    ui-monospace,
+    'Cascadia Code',
+    'Source Code Pro',
+    Menlo,
+    Consolas,
+    monospace;
+  font-size: 0.93em;
+  padding: 0.12em 0.35em;
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, var(--text-h) 6%, transparent);
+}
+
+.portal-match-description__bbcode-list {
+  margin: 0.4em 0 0;
+  padding-inline-start: 1.35rem;
 }
 
 .portal-match-public-detail__description :first-child {
