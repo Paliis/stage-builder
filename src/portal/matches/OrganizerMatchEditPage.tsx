@@ -509,8 +509,10 @@ export function OrganizerMatchEditPage() {
             <li className="portal-breadcrumbs__current">{isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle}</li>
           </ol>
         </nav>
-        <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
-          <h1 className="portal-home__hero-title">{isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle}</h1>
+        <header className="portal-home__hero portal-match-org-edit__hero">
+          <h1 className="portal-home__hero-title portal-match-title-hero-wrap portal-match-org-edit__title">
+            {isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle}
+          </h1>
         </header>
         <OrganizerMatchInactivePanel
           locale={locale}
@@ -558,102 +560,68 @@ export function OrganizerMatchEditPage() {
         </ol>
       </nav>
 
-      <header className="portal-home__hero">
-        <h1 className="portal-home__hero-title portal-match-title-hero-wrap">{pageTitle}</h1>
+      <header className="portal-home__hero portal-match-org-edit__hero">
+        <h1 className="portal-home__hero-title portal-match-title-hero-wrap portal-match-org-edit__title">{pageTitle}</h1>
       </header>
 
       {squadSyncBanner ?
-        <p role="alert" style={{ margin: '0 0 1rem', maxWidth: '32rem', fontSize: '0.9rem' }}>
+        <div className="portal-match-org-form__alert" role="alert">
           {formatTemplate(p.matchOrgSquadSyncBanner, { detail: squadSyncBanner })}
           <button
             type="button"
+            className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__alert-dismiss"
             onClick={() => setSquadSyncBanner(null)}
-            style={{
-              marginLeft: '0.75rem',
-              padding: '0.2rem 0.45rem',
-              cursor: 'pointer',
-              borderRadius: '6px',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-            }}
           >
             {p.matchOrgSquadSyncBannerDismiss}
           </button>
-        </p>
+        </div>
       : null}
 
-      <form
-        onSubmit={(e) => void handleSubmit(e)}
-        style={{ maxWidth: '32rem', display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.95rem' }}
-      >
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldTitle}</span>
+      <form className="portal-match-org-form" onSubmit={(e) => void handleSubmit(e)}>
+        <label className="portal-match-org-form__field">
+          <span className="portal-match-org-form__label">{p.matchOrgFieldTitle}</span>
           <input
             type="text"
             required
+            className="portal-match-org-form__control"
             value={draft.title}
             onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
             autoComplete="off"
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-            }}
           />
         </label>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldStarts}</span>
+        <label className="portal-match-org-form__field">
+          <span className="portal-match-org-form__label">{p.matchOrgFieldStarts}</span>
           <input
             type="datetime-local"
             required
+            className="portal-match-org-form__control portal-match-org-form__control--datetime"
+            title={p.matchOrgFieldStartsTitle}
             value={draft.starts_at_local}
             onChange={(e) => setDraft((d) => ({ ...d, starts_at_local: e.target.value }))}
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-            }}
           />
         </label>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldLocation}</span>
+        <label className="portal-match-org-form__field">
+          <span className="portal-match-org-form__label">{p.matchOrgFieldLocation}</span>
           <input
             type="text"
+            className="portal-match-org-form__control"
+            placeholder={p.matchOrgFieldLocationPlaceholder}
             value={draft.location_label}
             onChange={(e) => setDraft((d) => ({ ...d, location_label: e.target.value }))}
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-            }}
           />
         </label>
 
         {!isNew && validEditId ?
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-            <span style={{ fontWeight: 650 }}>{p.matchOrgFieldCoverImage}</span>
+          <div className="portal-match-org-form__cover-block">
+            <span className="portal-match-org-form__label">{p.matchOrgFieldCoverImage}</span>
             {draft.cover_image_url.trim() ?
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.65rem', alignItems: 'center' }}>
+              <div className="portal-match-org-form__cover-row">
                 <img
                   src={draft.cover_image_url.trim()}
                   alt=""
-                  style={{
-                    width: '100%',
-                    maxWidth: '14rem',
-                    borderRadius: '0.5rem',
-                    border: '1px solid var(--border)',
-                    aspectRatio: '16 / 10',
-                    objectFit: 'cover',
-                  }}
+                  className="portal-match-org-form__cover-preview"
                 />
                 <button
                   type="button"
@@ -668,7 +636,7 @@ export function OrganizerMatchEditPage() {
                 </button>
               </div>
             : null}
-            <label style={{ display: 'inline-flex', flexDirection: 'column', gap: '0.35rem', cursor: 'pointer', width: 'fit-content' }}>
+            <label className="portal-match-org-form__cover-upload">
               <input
                 type="file"
                 accept="image/jpeg,image/jpg,image/png,image/webp"
@@ -676,340 +644,254 @@ export function OrganizerMatchEditPage() {
                 onChange={(e) => void handleCoverFileChange(e)}
                 style={{ display: 'none' }}
               />
-              <span className="portal-btn portal-btn--secondary portal-btn--compact">
-                {p.matchOrgCoverUpload}
-              </span>
+              <span className="portal-btn portal-btn--secondary portal-btn--compact">{p.matchOrgCoverUpload}</span>
             </label>
             {coverUploadErr ?
-              <p role="alert" style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text)' }}>
+              <p role="alert" className="portal-match-org-form__hint portal-match-org-form__hint--error">
                 {coverUploadErr}
               </p>
             : null}
           </div>
         : (
-          <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>{p.matchOrgCoverHintNew}</p>
+          <p className="portal-match-org-form__hint">{p.matchOrgCoverHintNew}</p>
         )}
 
-        <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>
-          {p.matchOrgTaxonomyOptionalLead}
-        </p>
+        <section className="portal-match-org-form__section" aria-labelledby="match-org-catalog-heading">
+          <h2 id="match-org-catalog-heading" className="portal-match-org-form__section-heading">
+            {p.matchOrgSectionCatalogHeading}
+          </h2>
+          <p className="portal-match-org-form__hint portal-match-org-form__hint--section">{p.matchOrgTaxonomyOptionalLead}</p>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldEventKind}</span>
-          <select
-            value={draft.match_event_kind}
-            onChange={(e) =>
-              setDraft((d) => ({
-                ...d,
-                match_event_kind: e.target.value as MatchDraft['match_event_kind'],
-              }))
-            }
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-              font: 'inherit',
-              maxWidth: '22rem',
-            }}
-          >
-            <option value="">{p.matchOrgEventKindUnset}</option>
-            <option value="training">{p.matchEventKindTraining}</option>
-            <option value="match">{p.matchEventKindMatch}</option>
-            <option value="classification">{p.matchEventKindClassification}</option>
-          </select>
-          <span style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>
-            {p.matchOrgEventKindHint}
-          </span>
-        </label>
+          <label className="portal-match-org-form__field">
+            <span className="portal-match-org-form__label">{p.matchOrgFieldEventKind}</span>
+            <select
+              className="portal-match-org-form__control portal-match-org-form__control--select"
+              value={draft.match_event_kind}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  match_event_kind: e.target.value as MatchDraft['match_event_kind'],
+                }))
+              }
+            >
+              <option value="">{p.matchOrgEventKindUnset}</option>
+              <option value="training">{p.matchEventKindTraining}</option>
+              <option value="match">{p.matchEventKindMatch}</option>
+              <option value="classification">{p.matchEventKindClassification}</option>
+            </select>
+          </label>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldPsLevel}</span>
-          <select
-            value={draft.ps_match_level}
-            onChange={(e) =>
-              setDraft((d) => ({
-                ...d,
-                ps_match_level: e.target.value as MatchDraft['ps_match_level'],
-              }))
-            }
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-              font: 'inherit',
-              maxWidth: '22rem',
-            }}
-          >
-            <option value="">{p.matchOrgPsLevelUnset}</option>
-            <option value="L1">{p.matchPsLevelL1}</option>
-            <option value="L2">{p.matchPsLevelL2}</option>
-            <option value="L3">{p.matchPsLevelL3}</option>
-            <option value="L4">{p.matchPsLevelL4}</option>
-            <option value="L5">{p.matchPsLevelL5}</option>
-          </select>
-          <span style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.88 }}>
-            {p.matchOrgPsLevelHint}
-          </span>
-        </label>
+          <label className="portal-match-org-form__field">
+            <span className="portal-match-org-form__label">{p.matchOrgFieldPsLevel}</span>
+            <select
+              className="portal-match-org-form__control portal-match-org-form__control--select"
+              value={draft.ps_match_level}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  ps_match_level: e.target.value as MatchDraft['ps_match_level'],
+                }))
+              }
+            >
+              <option value="">{p.matchOrgPsLevelUnset}</option>
+              <option value="L1">{p.matchPsLevelL1}</option>
+              <option value="L2">{p.matchPsLevelL2}</option>
+              <option value="L3">{p.matchPsLevelL3}</option>
+              <option value="L4">{p.matchPsLevelL4}</option>
+              <option value="L5">{p.matchPsLevelL5}</option>
+            </select>
+          </label>
+        </section>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldShootersMain}</span>
-          <input
-            type="number"
-            min={1}
-            required
-            value={draft.shooters_per_main_squad}
-            onChange={(e) =>
-              setDraft((d) => ({
-                ...d,
-                shooters_per_main_squad: Math.max(1, Number(e.target.value) || 1),
-              }))
-            }
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-              maxWidth: '8rem',
-            }}
-          />
-        </label>
+        <section className="portal-match-org-form__section" aria-labelledby="match-org-plan-heading">
+          <h2 id="match-org-plan-heading" className="portal-match-org-form__section-heading">
+            {p.matchOrgSectionPlanHeading}
+          </h2>
 
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={draft.prematch_enabled}
-            onChange={(e) =>
-              setDraft((d) => ({
-                ...d,
-                prematch_enabled: e.target.checked,
-                planned_prematch_squad_count: e.target.checked ? Math.max(1, d.planned_prematch_squad_count) : 0,
-              }))
-            }
-            style={{ width: '1rem', height: '1rem' }}
-          />
-          <span>{p.matchOrgFieldPrematch}</span>
-        </label>
+          <label className="portal-match-org-form__field portal-match-org-form__field--narrow">
+            <span className="portal-match-org-form__label">{p.matchOrgFieldShootersMain}</span>
+            <input
+              type="number"
+              min={1}
+              required
+              className="portal-match-org-form__control portal-match-org-form__control--number"
+              value={draft.shooters_per_main_squad}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  shooters_per_main_squad: Math.max(1, Number(e.target.value) || 1),
+                }))
+              }
+            />
+          </label>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldPlannedMainSquads}</span>
-          <input
-            type="number"
-            min={1}
-            required
-            value={draft.planned_main_squad_count}
-            onChange={(e) =>
-              setDraft((d) => ({
-                ...d,
-                planned_main_squad_count: Math.max(1, Number(e.target.value) || 1),
-              }))
-            }
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-              maxWidth: '8rem',
-            }}
-          />
-        </label>
+          <label className="portal-match-org-form__checkbox">
+            <input
+              type="checkbox"
+              checked={draft.prematch_enabled}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  prematch_enabled: e.target.checked,
+                  planned_prematch_squad_count:
+                    e.target.checked ? Math.max(1, d.planned_prematch_squad_count) : 0,
+                }))
+              }
+            />
+            <span>{p.matchOrgFieldPrematch}</span>
+          </label>
 
-        {draft.prematch_enabled ?
-          <>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              <span>{p.matchOrgFieldPlannedPrematchSquads}</span>
-              <input
-                type="number"
-                min={1}
-                required
-                value={draft.planned_prematch_squad_count || 1}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    planned_prematch_squad_count: Math.max(1, Number(e.target.value) || 1),
-                  }))
-                }
-                style={{
-                  padding: '0.4rem 0.5rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--border)',
-                  background: 'var(--btn-bg)',
-                  color: 'var(--text)',
-                  maxWidth: '8rem',
-                }}
-              />
-            </label>
+          <label className="portal-match-org-form__field portal-match-org-form__field--narrow">
+            <span className="portal-match-org-form__label">{p.matchOrgFieldPlannedMainSquads}</span>
+            <input
+              type="number"
+              min={1}
+              required
+              className="portal-match-org-form__control portal-match-org-form__control--number"
+              value={draft.planned_main_squad_count}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  planned_main_squad_count: Math.max(1, Number(e.target.value) || 1),
+                }))
+              }
+            />
+          </label>
 
-            <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              <span>{p.matchOrgFieldShootersPrematch}</span>
-              <input
-                type="number"
-                min={1}
-                required
-                value={draft.shooters_per_prematch_squad}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    shooters_per_prematch_squad: Math.max(1, Number(e.target.value) || 1),
-                  }))
-                }
-                style={{
-                  padding: '0.4rem 0.5rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--border)',
-                  background: 'var(--btn-bg)',
-                  color: 'var(--text)',
-                  maxWidth: '8rem',
-                }}
-              />
-            </label>
-          </>
-        : null}
+          {draft.prematch_enabled ?
+            <>
+              <label className="portal-match-org-form__field portal-match-org-form__field--narrow">
+                <span className="portal-match-org-form__label">{p.matchOrgFieldPlannedPrematchSquads}</span>
+                <input
+                  type="number"
+                  min={1}
+                  required
+                  className="portal-match-org-form__control portal-match-org-form__control--number"
+                  value={draft.planned_prematch_squad_count || 1}
+                  onChange={(e) =>
+                    setDraft((d) => ({
+                      ...d,
+                      planned_prematch_squad_count: Math.max(1, Number(e.target.value) || 1),
+                    }))
+                  }
+                />
+              </label>
 
-        <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.5 }}>
-          {formatTemplate(p.matchOrgDerivedCapacityLine, { total: String(derivedCompetitorLimit) })}
-        </p>
+              <label className="portal-match-org-form__field portal-match-org-form__field--narrow">
+                <span className="portal-match-org-form__label">{p.matchOrgFieldShootersPrematch}</span>
+                <input
+                  type="number"
+                  min={1}
+                  required
+                  className="portal-match-org-form__control portal-match-org-form__control--number"
+                  value={draft.shooters_per_prematch_squad}
+                  onChange={(e) =>
+                    setDraft((d) => ({
+                      ...d,
+                      shooters_per_prematch_squad: Math.max(1, Number(e.target.value) || 1),
+                    }))
+                  }
+                />
+              </label>
+            </>
+          : null}
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldDescription}</span>
-          <textarea
-            rows={6}
-            value={draft.description_md}
-            onChange={(e) => setDraft((d) => ({ ...d, description_md: e.target.value }))}
-            style={{
-              padding: '0.45rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-              fontFamily: 'inherit',
-              resize: 'vertical',
-            }}
-          />
-        </label>
+          <p className="portal-match-org-form__capacity">
+            {formatTemplate(p.matchOrgDerivedCapacityLine, { total: String(derivedCompetitorLimit) })}
+          </p>
+        </section>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldStatus}</span>
-          <select
-            value={draft.status}
-            onChange={(e) => setDraft((d) => ({ ...d, status: e.target.value }))}
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-              maxWidth: '14rem',
-            }}
-          >
-            <option value="draft">{p.matchOrgStatusDraft}</option>
-            <option value="published">{p.matchOrgStatusPublished}</option>
-            <option value="cancelled">{p.matchOrgStatusCancelled}</option>
-            <option value="completed">{p.matchOrgStatusCompleted}</option>
-          </select>
-        </label>
+        <section className="portal-match-org-form__section" aria-labelledby="match-org-pub-heading">
+          <h2 id="match-org-pub-heading" className="portal-match-org-form__section-heading">
+            {p.matchOrgSectionPublishHeading}
+          </h2>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span>{p.matchOrgFieldParticipantList}</span>
-          <select
-            value={draft.participant_list_visibility}
-            onChange={(e) =>
-              setDraft((d) => ({
-                ...d,
-                participant_list_visibility: e.target.value === 'open' ? 'open' : 'closed',
-              }))
-            }
-            style={{
-              padding: '0.4rem 0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--btn-bg)',
-              color: 'var(--text)',
-              maxWidth: '14rem',
-            }}
-          >
-            <option value="closed">{p.matchOrgParticipantsListClosed}</option>
-            <option value="open">{p.matchOrgParticipantsListOpen}</option>
-          </select>
-        </label>
+          <label className="portal-match-org-form__field">
+            <span className="portal-match-org-form__label">{p.matchOrgFieldDescription}</span>
+            <textarea
+              id="match-org-description"
+              rows={6}
+              className="portal-match-org-form__control portal-match-org-form__control--textarea"
+              aria-describedby="match-org-description-hint"
+              value={draft.description_md}
+              onChange={(e) => setDraft((d) => ({ ...d, description_md: e.target.value }))}
+            />
+          </label>
+          <p id="match-org-description-hint" className="portal-match-org-form__hint">
+            {p.matchOrgFieldDescriptionHint}
+          </p>
 
-        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.9 }}>
-          {p.matchOrgParticipantListFootnote}
-        </p>
+          <label className="portal-match-org-form__field">
+            <span className="portal-match-org-form__label">{p.matchOrgFieldStatus}</span>
+            <select
+              className="portal-match-org-form__control portal-match-org-form__control--select"
+              value={draft.status}
+              onChange={(e) => setDraft((d) => ({ ...d, status: e.target.value }))}
+            >
+              <option value="draft">{p.matchOrgStatusDraft}</option>
+              <option value="published">{p.matchOrgStatusPublished}</option>
+              <option value="cancelled">{p.matchOrgStatusCancelled}</option>
+              <option value="completed">{p.matchOrgStatusCompleted}</option>
+            </select>
+          </label>
 
-        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.9 }}>
-          {p.matchOrgDisciplineShotgunNote}
-        </p>
+          <label className="portal-match-org-form__field">
+            <span className="portal-match-org-form__label">{p.matchOrgFieldParticipantList}</span>
+            <select
+              className="portal-match-org-form__control portal-match-org-form__control--select portal-match-org-form__control--participant"
+              value={draft.participant_list_visibility}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  participant_list_visibility: e.target.value === 'open' ? 'open' : 'closed',
+                }))
+              }
+            >
+              <option value="closed">{p.matchOrgParticipantsListClosed}</option>
+              <option value="open">{p.matchOrgParticipantsListOpen}</option>
+            </select>
+          </label>
 
-        {saveError ? (
-          <p role="alert" style={{ margin: 0 }}>
+          <div className="portal-match-org-form__footnotes">
+            <p className="portal-match-org-form__hint">{p.matchOrgParticipantsListFootnote}</p>
+            <p className="portal-match-org-form__hint">{p.matchOrgDisciplineShotgunNote}</p>
+          </div>
+        </section>
+
+        {saveError ?
+          <p role="alert" className="portal-match-org-form__error">
             {saveError}
           </p>
-        ) : null}
+        : null}
 
-        <button
-          type="submit"
-          disabled={saving}
-          style={{
-            alignSelf: 'flex-start',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.5rem',
-            border: '1px solid var(--border)',
-            background: 'var(--text-h)',
-            color: 'var(--btn-bg)',
-            cursor: saving ? 'not-allowed' : 'pointer',
-            opacity: saving ? 0.7 : 1,
-          }}
-        >
-          {saving ? p.matchOrgSaveSaving : p.matchOrgSave}
-        </button>
+        <div className="portal-match-org-form__actions">
+          <button type="submit" disabled={saving} className="portal-btn portal-btn--primary portal-match-org-form__submit">
+            {saving ? p.matchOrgSaveSaving : p.matchOrgSave}
+          </button>
+        </div>
 
-        {!isNew && draft.status === 'published' ? (
-          <p style={{ margin: 0 }}>
+        {!isNew && draft.status === 'published' ?
+          <p className="portal-match-org-form__public-link">
             <Link to={`/${locale}/matches/${matchId}`}>{p.myMatchesViewPublic}</Link>
           </p>
-        ) : null}
+        : null}
 
         {!isNew && validEditId && matchId ?
-          <div
-            style={{
-              marginTop: '0.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.35rem',
-              alignItems: 'flex-start',
-            }}
-          >
+          <div className="portal-match-org-form__export">
             <button
               type="button"
               disabled={pscBusy}
+              className="portal-btn portal-btn--secondary portal-match-org-form__export-btn"
               onClick={() => void handleDownloadMatchPsc()}
-              style={{
-                padding: '0.45rem 0.95rem',
-                borderRadius: '0.5rem',
-                border: '1px solid var(--border)',
-                background: 'var(--btn-bg)',
-                color: 'var(--text)',
-                cursor: pscBusy ? 'not-allowed' : 'pointer',
-                opacity: pscBusy ? 0.75 : 1,
-              }}
             >
               {pscBusy ? p.matchOrgExportPscBusy : p.matchOrgExportPsc}
             </button>
-            {pscErr ? (
-              <p role="alert" style={{ margin: 0, fontSize: '0.9rem' }}>
+            {pscErr ?
+              <p role="alert" className="portal-match-org-form__error portal-match-org-form__error--compact">
                 {pscErr}
               </p>
-            ) : null}
-            <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.45, opacity: 0.9 }}>
-              {p.matchOrgExportPscHint}
-            </p>
+            : null}
+            <p className="portal-match-org-form__hint">{p.matchOrgExportPscHint}</p>
           </div>
         : null}
 

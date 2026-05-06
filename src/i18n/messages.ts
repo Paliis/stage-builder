@@ -719,8 +719,12 @@ export type MessageTree = {
     matchOrgSaveSaving: string
     matchOrgBackList: string
     matchOrgFieldTitle: string
+    /** Visible label above start date/time picker. */
     matchOrgFieldStarts: string
+    /** Explains timezone for `datetime-local` (shown as `title` + screen reader). */
+    matchOrgFieldStartsTitle: string
     matchOrgFieldLocation: string
+    matchOrgFieldLocationPlaceholder: string
     matchOrgFieldCoverImage: string
     matchOrgCoverUpload: string
     matchOrgCoverRemove: string
@@ -736,11 +740,17 @@ export type MessageTree = {
     matchOrgCoverCropErrCrop: string
     matchOrgFieldEventKind: string
     matchOrgFieldPsLevel: string
-    /** Short line above event type / PS level block. */
+    /** Section title above event type / match level fields. */
+    matchOrgSectionCatalogHeading: string
+    /** Section title for squad / capacity fields on organizer match edit. */
+    matchOrgSectionPlanHeading: string
+    /** Section for description, status, participant list on organizer match edit. */
+    matchOrgSectionPublishHeading: string
+    /** Short line under catalog section title. */
     matchOrgTaxonomyOptionalLead: string
-    /** Help under event type `<select>` (organizer match edit). */
+    /** Deprecated in UI — kept for i18n compatibility; hints removed from organizer form. */
     matchOrgEventKindHint: string
-    /** Help under PractiScore level `<select>`. */
+    /** Deprecated in UI — PractiScore / .psc nuance covered near export button. */
     matchOrgPsLevelHint: string
     matchOrgEventKindUnset: string
     matchEventKindTraining: string
@@ -756,13 +766,16 @@ export type MessageTree = {
     matchOrgFieldShootersMain: string
     matchOrgFieldShootersPrematch: string
     matchOrgFieldDescription: string
+    /** Shown below description textarea on organizer match edit. */
+    matchOrgFieldDescriptionHint: string
     matchOrgFieldStatus: string
     matchOrgFieldParticipantList: string
     matchOrgParticipantsListOpen: string
     matchOrgParticipantsListClosed: string
-    matchOrgParticipantListFootnote: string
+    matchOrgParticipantsListFootnote: string
     matchOrgRegistrationsSummary: string
     matchOrgRegistrationsNoneYet: string
+    /** One line on organizer match edit; replaces long MVP shotgun note body. */
     matchOrgDisciplineShotgunNote: string
     matchOrgExportPsc: string
     matchOrgExportPscBusy: string
@@ -1731,12 +1744,14 @@ export const ukMessages: MessageTree = {
     matchOrgSaveSaving: 'Збереження…',
     matchOrgBackList: 'До списку матчів',
     matchOrgFieldTitle: 'Назва',
-    matchOrgFieldStarts: 'Початок (локальний час браузера)',
-    matchOrgFieldLocation: 'Локація (текст)',
-    matchOrgFieldCoverImage: 'Обкладинка (для переліку матчів)',
+    matchOrgFieldStarts: 'Дата й час початку',
+    matchOrgFieldStartsTitle: 'Відображається у локальній зоні браузера.',
+    matchOrgFieldLocation: 'Локація',
+    matchOrgFieldLocationPlaceholder: 'Населений пункт, полігон, адреса…',
+    matchOrgFieldCoverImage: 'Обкладинка',
     matchOrgCoverUpload: 'Завантажити зображення',
     matchOrgCoverRemove: 'Прибрати',
-    matchOrgCoverHintNew: 'Після збереження матчу тут можна додати зображення для картки в переліку подій.',
+    matchOrgCoverHintNew: 'Після збереження можна додати зображення для картки в списку матчів.',
     matchOrgCoverErrType: 'Дозволені лише JPEG, PNG або WebP.',
     matchOrgCoverErrSize: 'Файл завеликий (макс. 5 МБ).',
     matchOrgCoverUploading: 'Завантаження…',
@@ -1748,13 +1763,14 @@ export const ukMessages: MessageTree = {
     matchOrgCoverCropApply: 'Застосувати',
     matchOrgCoverCropErrCrop: 'Не вдалося обробити зображення. Спробуйте інший файл.',
     matchOrgFieldEventKind: 'Тип події',
-    matchOrgFieldPsLevel: 'Рівень матчу (PractiScore)',
+    matchOrgFieldPsLevel: 'Рівень матчу',
+    matchOrgSectionCatalogHeading: 'У каталозі на сайті',
+    matchOrgSectionPlanHeading: 'Місця та скводи',
+    matchOrgSectionPublishHeading: 'Текст і видимість',
     matchOrgTaxonomyOptionalLead:
-      'Необов’язково: обидва поля нижче можна лишити порожніми (на картці матчу тоді буде «не вказано»).',
-    matchOrgEventKindHint:
-      'Для каталогу та картки на сайті: тренування, змагання чи класифікаційний етап. Не замінює поле «Назва».',
-    matchOrgPsLevelHint:
-      'Офіційна шкала PractiScore (Level I–V). У експорті .psc — поле match_level; якщо не обрано, ключ у файл не додається.',
+      'За потреби. Якщо лишити порожніми, на картці буде не вказано. Не замінює поле «Назва».',
+    matchOrgEventKindHint: '',
+    matchOrgPsLevelHint: '',
     matchOrgEventKindUnset: '— не обрано —',
     matchEventKindTraining: 'Тренування',
     matchEventKindMatch: 'Матч',
@@ -1765,20 +1781,21 @@ export const ukMessages: MessageTree = {
     matchPsLevelL3: 'Рівень III',
     matchPsLevelL4: 'Рівень IV',
     matchPsLevelL5: 'Рівень V',
-    matchOrgDerivedCapacityLine: 'Разом місце на матчі (розраховано автоматично й зберігається як ліміт учасників): {{total}}.',
-    matchOrgFieldShootersMain: 'Стрільці в скводі — основний день',
-    matchOrgFieldShootersPrematch: 'Стрільці в скводі — прематч',
-    matchOrgFieldDescription: 'Опис (Markdown або BBCode)',
-    matchOrgFieldStatus: 'Статус матчу',
-    matchOrgFieldParticipantList: 'Список учасників на картці',
-    matchOrgParticipantsListOpen: 'Відкритий (лише підтверджені)',
+    matchOrgDerivedCapacityLine: 'Разом місць на матчі: {{total}} (після збереження записується як ліміт учасників).',
+    matchOrgFieldShootersMain: 'Стрільці в скводі (основний день)',
+    matchOrgFieldShootersPrematch: 'Стрільці в скводі (прематч)',
+    matchOrgFieldDescription: 'Опис для картки матчу',
+    matchOrgFieldDescriptionHint: 'Форматування: Markdown або BBCode; посилання в тексті стануть активними.',
+    matchOrgFieldStatus: 'Статус',
+    matchOrgFieldParticipantList: 'Список учасників',
+    matchOrgParticipantsListOpen: 'Відкритий',
     matchOrgParticipantsListClosed: 'Закритий',
-    matchOrgParticipantListFootnote:
-      'На публічній картці в блоці «Учасники» відображаються лише ті заявки, які мають статус «підтверджено». «Очікує підтвердження» залишається тільки в твоєму списку заявок організатора.',
+    matchOrgParticipantsListFootnote:
+      'На публічній картці в таблиці з’являються лише підтверджені учасники; інші статуси — у твоєму списку заявок.',
     matchOrgRegistrationsSummary:
       'Заявки цього матчу (організатор): {{confirmed}} підтверджено · {{pending}} очікує підтвердження. Публічна таблиця учасників показує лише підтверджених.',
     matchOrgRegistrationsNoneYet: 'Заявок на цей матч поки немає.',
-    matchOrgDisciplineShotgunNote: 'Дисципліна MVP: shotgun (налаштовується лише на рівні коду БД).',
+    matchOrgDisciplineShotgunNote: 'Зараз дисципліна матчу фіксована: shotgun.',
     matchOrgExportPsc: 'Завантажити .psc (PractiScore)',
     matchOrgExportPscBusy: 'Готуємо файл…',
     matchOrgExportPscHint:
@@ -1788,9 +1805,9 @@ export const ukMessages: MessageTree = {
       'Немає відповіді від сервера експорту. Локально: перевір ключ у `.env` і `npm run dev`, або `npm run dev:vercel`; на хмарі — деплой (див. підказку).',
     matchOrgExportPscErrNoStages: 'Додай хоча б одну вправу (посилання share) перед експортом.',
     matchOrgExportPscErrSession: 'Увійди в обліковий запис і онови сторінку.',
-    matchOrgFieldPrematch: 'Прематч (стрільба суддів та організаційних стрільців напередодні)',
-    matchOrgFieldPlannedMainSquads: 'Запланована кількість скводів — основний день',
-    matchOrgFieldPlannedPrematchSquads: 'Запланована кількість скводів — прематч',
+    matchOrgFieldPrematch: 'Прематч',
+    matchOrgFieldPlannedMainSquads: 'Скводів (основний день)',
+    matchOrgFieldPlannedPrematchSquads: 'Скводів (прематч)',
     matchOrgPlannedMainInvalid: 'Число скводів на основний день має бути цілим числом ≥ 1.',
     matchOrgPlannedPrematchInvalid: 'З увімкненим прематчем потрібно ціле число скводів для прематчу ≥ 1.',
     matchOrgEditBadId: 'Некоректне посилання для редагування.',
@@ -2752,9 +2769,11 @@ export const enMessages: MessageTree = {
     matchOrgSaveSaving: 'Saving…',
     matchOrgBackList: 'Back to my matches',
     matchOrgFieldTitle: 'Title',
-    matchOrgFieldStarts: 'Start (browser local time)',
-    matchOrgFieldLocation: 'Location (text)',
-    matchOrgFieldCoverImage: 'Cover image (match list)',
+    matchOrgFieldStarts: 'Start date and time',
+    matchOrgFieldStartsTitle: 'Shown in your browser’s local time zone.',
+    matchOrgFieldLocation: 'Location',
+    matchOrgFieldLocationPlaceholder: 'Venue, city, range…',
+    matchOrgFieldCoverImage: 'Cover image',
     matchOrgCoverUpload: 'Upload image',
     matchOrgCoverRemove: 'Remove',
     matchOrgCoverHintNew: 'Save the match first, then you can add a list card image here.',
@@ -2769,13 +2788,14 @@ export const enMessages: MessageTree = {
     matchOrgCoverCropApply: 'Apply',
     matchOrgCoverCropErrCrop: 'Could not process the image. Try another file.',
     matchOrgFieldEventKind: 'Event type',
-    matchOrgFieldPsLevel: 'Match level (PractiScore)',
+    matchOrgFieldPsLevel: 'Match level',
+    matchOrgSectionCatalogHeading: 'Hub catalog',
+    matchOrgSectionPlanHeading: 'Capacity and squads',
+    matchOrgSectionPublishHeading: 'Copy and visibility',
     matchOrgTaxonomyOptionalLead:
-      'Optional: you can leave both fields below empty (the public match page will show “Not specified”).',
-    matchOrgEventKindHint:
-      'For the public hub and match card: training, match, or classification. Does not replace the title field.',
-    matchOrgPsLevelHint:
-      'Official PractiScore scale (Level I–V). Exported in .psc as match_level; if unset, the key is omitted from the file.',
+      'Optional. Leave both empty to show as not set on the card. Does not replace the title.',
+    matchOrgEventKindHint: '',
+    matchOrgPsLevelHint: '',
     matchOrgEventKindUnset: '— not set —',
     matchEventKindTraining: 'Training',
     matchEventKindMatch: 'Match',
@@ -2786,22 +2806,21 @@ export const enMessages: MessageTree = {
     matchPsLevelL3: 'Level III',
     matchPsLevelL4: 'Level IV',
     matchPsLevelL5: 'Level V',
-    matchOrgDerivedCapacityLine:
-      'Total planned capacity (stored as competitor limit after save): {{total}}.',
-    matchOrgFieldShootersMain: 'Shooters per squad — main match day',
-    matchOrgFieldShootersPrematch: 'Shooters per squad — prematch',
-    matchOrgFieldDescription: 'Description (Markdown or BBCode)',
-    matchOrgFieldStatus: 'Match status',
-    matchOrgFieldParticipantList: 'Participant list on public card',
-    matchOrgParticipantsListOpen: 'Open (confirmed only)',
+    matchOrgDerivedCapacityLine: 'Total capacity: {{total}} (stored as competitor limit after save).',
+    matchOrgFieldShootersMain: 'Shooters per squad (main match day)',
+    matchOrgFieldShootersPrematch: 'Shooters per squad (prematch)',
+    matchOrgFieldDescription: 'Card description',
+    matchOrgFieldDescriptionHint: 'Use Markdown or BBCode; plain URLs become clickable.',
+    matchOrgFieldStatus: 'Status',
+    matchOrgFieldParticipantList: 'Participants list',
+    matchOrgParticipantsListOpen: 'Open',
     matchOrgParticipantsListClosed: 'Closed',
-    matchOrgParticipantListFootnote:
-      'On the public match card, the «Participants» table lists only confirmed entries. Pending sign-ups stay visible in your organizer roster until you confirm them.',
+    matchOrgParticipantsListFootnote:
+      'Confirmed shooters appear on the public card table; pending entries stay only in your organizer roster.',
     matchOrgRegistrationsSummary:
       'Registrations on this match: {{confirmed}} confirmed · {{pending}} awaiting confirmation (the public Participants table lists confirmed only).',
     matchOrgRegistrationsNoneYet: 'No registrations for this match yet.',
-    matchOrgDisciplineShotgunNote:
-      'MVP discipline is shotgun only (stored in DB; not selectable in UI yet).',
+    matchOrgDisciplineShotgunNote: 'Discipline is currently fixed to shotgun.',
     matchOrgExportPsc: 'Download .psc (PractiScore)',
     matchOrgExportPscBusy: 'Preparing file…',
     matchOrgExportPscHint:
@@ -2811,9 +2830,9 @@ export const enMessages: MessageTree = {
       'Export server unreachable. Local: confirm key in `.env` and try `npm run dev`, or `npm run dev:vercel`; in the cloud deploy (see hint).',
     matchOrgExportPscErrNoStages: 'Link at least one stage (share URL) before exporting.',
     matchOrgExportPscErrSession: 'Sign in and refresh the page.',
-    matchOrgFieldPrematch: 'Prematch (RO/staff shooters the day before match day)',
-    matchOrgFieldPlannedMainSquads: 'Planned squads — main match day',
-    matchOrgFieldPlannedPrematchSquads: 'Planned squads — prematch day',
+    matchOrgFieldPrematch: 'Prematch',
+    matchOrgFieldPlannedMainSquads: 'Squads (main match day)',
+    matchOrgFieldPlannedPrematchSquads: 'Squads (prematch)',
     matchOrgPlannedMainInvalid: 'Main-day squad count must be an integer ≥ 1.',
     matchOrgPlannedPrematchInvalid: 'With prematch enabled, prematch squad count must be an integer ≥ 1.',
     matchOrgEditBadId: 'Invalid edit link.',
