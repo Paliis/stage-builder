@@ -833,6 +833,101 @@ a.portal-match-title-ellipsis:hover {
   overflow-x: auto;
   margin-top: 0.65rem;
   width: 100%;
+  min-width: 0;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+/* Prevent ultra-narrow crushed columns on phones; scroll horizontally instead. */
+.portal-roster-page__reg-table {
+  width: max(100%, 64rem);
+  min-width: 64rem;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  table-layout: auto;
+}
+
+.portal-roster-page__reg-table th,
+.portal-roster-page__reg-table td {
+  text-align: left;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.portal-roster-page__reg-table th {
+  font-weight: 700;
+}
+
+.portal-roster-page__reg-th--nowrap {
+  white-space: nowrap;
+}
+
+.portal-roster-page__reg-th--weapon {
+  min-width: 7rem;
+}
+
+.portal-roster-page__reg-td--phone {
+  white-space: nowrap;
+}
+
+.portal-roster-page__reg-td--muted {
+  font-size: 0.86rem;
+}
+
+.portal-roster-page__reg-td--weapon {
+  max-width: 14rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  overflow-wrap: break-word;
+}
+
+.portal-roster-page__reg-td--status {
+  min-width: 10rem;
+}
+
+.portal-roster-page__reg-td--squad {
+  min-width: 12rem;
+}
+
+.portal-roster-page__reg-select--status,
+.portal-roster-page__reg-select--squad {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.35rem 0.45rem;
+  border-radius: 6px;
+  font: inherit;
+  line-height: 1.35;
+}
+
+.portal-roster-page__reg-select--status {
+  max-width: 14rem;
+  font-size: 0.86rem;
+}
+
+.portal-roster-page__reg-select--squad {
+  max-width: 22rem;
+  font-size: 0.86rem;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text);
+}
+
+@media (max-width: 519px) {
+  .portal-roster-toolbar__actions {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .portal-roster-toolbar__actions .portal-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Board: shorten column footprint a touch on narrow viewports while keeping horizontal scroll */
+  .portal-roster-board__strip {
+    padding-bottom: 0.42rem;
+  }
 }
 
 .portal-roster-page__breadcrumbs {
@@ -965,6 +1060,7 @@ a.portal-match-title-ellipsis:hover {
   overflow-x: auto;
   padding-bottom: 0.35rem;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .portal-roster-board__column {

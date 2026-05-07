@@ -541,57 +541,23 @@ export function OrganizerMatchRegistrationsPage() {
           {rosterView === 'table' ?
             <>
               <div className="portal-roster-page__table-scroll">
-          <table style={{ borderCollapse: 'collapse', fontSize: '0.92rem', width: '100%' }}>
+          <table className="portal-roster-page__reg-table">
             <thead>
               <tr>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                >
-                  {p.matchOrgRosterColName}
-                </th>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                >
+                <th scope="col">{p.matchOrgRosterColName}</th>
+                <th scope="col" className="portal-roster-page__reg-th--nowrap">
                   {p.matchOrgRosterColPhone}
                 </th>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}
-                >
+                <th scope="col" className="portal-roster-page__reg-th--nowrap">
                   {p.matchOrgRosterColPaymentOption}
                 </th>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                >
-                  {p.matchOrgRosterColRegion}
-                </th>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', minWidth: '7rem' }}
-                >
+                <th scope="col">{p.matchOrgRosterColRegion}</th>
+                <th scope="col" className="portal-roster-page__reg-th--weapon">
                   {p.matchOrgRosterColWeaponDetails}
                 </th>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                >
-                  {p.matchOrgRosterColDivision}
-                </th>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                >
-                  {p.matchOrgRosterColStatus}
-                </th>
-                <th
-                  scope="col"
-                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
-                >
-                  {p.matchOrgRosterColSquad}
-                </th>
+                <th scope="col">{p.matchOrgRosterColDivision}</th>
+                <th scope="col">{p.matchOrgRosterColStatus}</th>
+                <th scope="col">{p.matchOrgRosterColSquad}</th>
               </tr>
             </thead>
             <tbody>
@@ -610,41 +576,20 @@ export function OrganizerMatchRegistrationsPage() {
 
                 return (
                   <tr key={reg.registration_id} className={rowCue}>
-                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                      {displayName(reg)}
-                    </td>
-                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>
-                      {(reg.phone ?? '').trim() || '—'}
-                    </td>
-                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', fontSize: '0.86rem' }}>
+                    <td>{displayName(reg)}</td>
+                    <td className="portal-roster-page__reg-td--phone">{(reg.phone ?? '').trim() || '—'}</td>
+                    <td className="portal-roster-page__reg-td--muted">
                       {participantPaymentOptionLabel(p, parseParticipantPaymentOption(reg.participant_payment_option))}
                     </td>
-                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                      {(reg.competitor_region ?? '').trim() || '—'}
-                    </td>
+                    <td>{(reg.competitor_region ?? '').trim() || '—'}</td>
                     <td
-                      style={{
-                        padding: '0.45rem 0.55rem',
-                        borderBottom: '1px solid var(--border)',
-                        maxWidth: '14rem',
-                        fontSize: '0.86rem',
-                        lineHeight: 1.45,
-                      }}
+                      className="portal-roster-page__reg-td--weapon"
                       title={(reg.weapon_details ?? '').trim() || undefined}
                     >
                       {(reg.weapon_details ?? '').trim() || '—'}
                     </td>
-                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
-                      {reg.division}
-                    </td>
-                    <td
-                      style={{
-                        padding: '0.45rem 0.55rem',
-                        borderBottom: '1px solid var(--border)',
-                        minWidth: '10rem',
-                        verticalAlign: 'top',
-                      }}
-                    >
+                    <td>{reg.division}</td>
+                    <td className="portal-roster-page__reg-td--status">
                       {inactive ?
                         <span className={portalMatchRegLabelClass(reg.status)} style={{ fontSize: '0.88rem' }}>
                           {registrationStatusLabel(p, reg.status)}
@@ -679,14 +624,7 @@ export function OrganizerMatchRegistrationsPage() {
                                 [reg.registration_id]: v,
                               }))
                             }}
-                            className={portalMatchRegSelectClass(statusControlValue)}
-                            style={{
-                              width: '100%',
-                              maxWidth: '14rem',
-                              padding: '0.35rem 0.45rem',
-                              fontSize: '0.86rem',
-                              borderRadius: '6px',
-                            }}
+                            className={`${portalMatchRegSelectClass(statusControlValue)} portal-roster-page__reg-select--status`}
                           >
                             <option value="pending">{p.matchOrgRosterStatusOptionPending}</option>
                             <option value="confirmed">{p.matchOrgRosterStatusOptionConfirmed}</option>
@@ -694,7 +632,7 @@ export function OrganizerMatchRegistrationsPage() {
                         </>
                       )}
                     </td>
-                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', minWidth: '12rem' }}>
+                    <td className="portal-roster-page__reg-td--squad">
                       {inactive ?
                         <span style={inactiveBlock} title={reg.squad_label}>
                           {formatSquadLabelNumberOnly(reg.squad_label)} ({squadPhaseLabel(p, reg.squad_phase)})
@@ -714,15 +652,7 @@ export function OrganizerMatchRegistrationsPage() {
                               [reg.registration_id]: e.target.value,
                             }))
                           }
-                          style={{
-                            width: '100%',
-                            maxWidth: '22rem',
-                            padding: '0.35rem 0.45rem',
-                            borderRadius: '6px',
-                            border: '1px solid var(--border)',
-                            background: 'var(--btn-bg)',
-                            color: 'var(--text)',
-                          }}
+                          className="portal-roster-page__reg-select--squad"
                         >
                           {options.map((opt) => {
                             const taken = countOnSquadForLabel(
