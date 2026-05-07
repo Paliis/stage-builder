@@ -250,18 +250,27 @@
   color: var(--text-h);
 }
 
-.portal-account__hub-td-title {
-  max-width: 14rem;
+/* Hug date / status / actions to content so headers line up above cells (extra width goes to match title). */
+.portal-account__hub-th-date,
+.portal-account__hub-td-nowrap,
+.portal-account__hub-th-status,
+.portal-account__hub-td-status,
+.portal-account__hub-th-actions,
+.portal-account__hub-td-actions {
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
-.portal-account__hub-td-nowrap {
-  white-space: nowrap;
+.portal-account__hub-td-title {
+  max-width: 14rem;
 }
 
 .portal-account__hub-table-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.45rem 0.7rem;
 }
 

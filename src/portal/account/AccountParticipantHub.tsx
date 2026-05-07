@@ -395,9 +395,9 @@ export function AccountParticipantHub({
                 <thead>
                   <tr>
                     <th>{p.accountMyRegistrationsColMatch}</th>
-                    <th>{p.accountMyRegistrationsColDate}</th>
-                    <th>{p.accountMyRegistrationsColStatus}</th>
-                    <th>{p.accountMyRegistrationsColActions}</th>
+                    <th className="portal-account__hub-th-date">{p.accountMyRegistrationsColDate}</th>
+                    <th className="portal-account__hub-th-status">{p.accountMyRegistrationsColStatus}</th>
+                    <th className="portal-account__hub-th-actions">{p.accountMyRegistrationsColActions}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -424,12 +424,12 @@ export function AccountParticipantHub({
                           )}
                         </td>
                         <td className="portal-account__hub-td-nowrap">{when}</td>
-                        <td>
+                        <td className="portal-account__hub-td-status">
                           <span className={`${portalMatchRegLabelClass(r.status)} portal-account__hub-status`}>
                             {regStatusLabel(r.status)}
                           </span>
                         </td>
-                        <td>
+                        <td className="portal-account__hub-td-actions">
                           {canCancel ?
                             <div className="portal-account__hub-table-actions">
                               <button
