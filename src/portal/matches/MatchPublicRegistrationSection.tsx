@@ -24,7 +24,6 @@ import {
   type RegistrationMetricRow,
   registrationMetricNum,
 } from './matchPortalRegistrationMetrics'
-import { portalMatchRegLabelClass } from './matchPortalRegStatusUi'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import { type ParticipantPaymentOption } from './matchPortalParticipantPayment'
 import '../PortalMatchesUi.css'
@@ -738,7 +737,7 @@ export function MatchPublicRegistrationSection({
         <>
           <p className="portal-reg-inline-meta">
             <strong>{p.matchDetailRegistrationYourStatus}: </strong>
-            <span className={portalMatchRegLabelClass(mine!.status)}>{p.matchDetailRegistrationStatusPending}</span>
+            {p.matchDetailRegistrationStatusPending}
           </p>
           <button
             type="button"
@@ -754,7 +753,7 @@ export function MatchPublicRegistrationSection({
       {showCancelledNote ?
         <p className="portal-reg-inline-meta">
           <strong>{p.matchDetailRegistrationYourStatus}: </strong>
-          <span className={portalMatchRegLabelClass(mine!.status)}>{p.matchDetailRegistrationStatusCancelled}</span>
+          {p.matchDetailRegistrationStatusCancelled}
         </p>
       : null}
 
@@ -771,7 +770,7 @@ export function MatchPublicRegistrationSection({
       {showRegisteredMasthead ?
         <p className="portal-reg-inline-meta" role="status">
           <strong>{p.matchDetailRegistrationYourStatus}: </strong>
-          <span className={portalMatchRegLabelClass('confirmed')}>{p.matchDetailRegistrationMastheadRegistered}</span>
+          {p.matchDetailRegistrationMastheadRegistered}
         </p>
       : null}
     </>
