@@ -311,10 +311,12 @@ a.portal-match-title-ellipsis:hover {
 
 .portal-match-public-detail__facts {
   display: grid;
-  grid-template-columns: 1fr;
+  /* dt | dd on one row (mobile + desktop); wide masthead tweaks below @760px */
+  grid-template-columns: minmax(7.5rem, max-content) minmax(0, 1fr);
   justify-items: start;
   align-items: baseline;
-  gap: 0.45rem 0.95rem;
+  column-gap: 0.55rem;
+  row-gap: 0.36rem;
   margin: 0;
   padding: 0;
   font-size: 0.90625rem;
