@@ -50,7 +50,7 @@
 |----|--------|--------|-----|----------|
 | **MA-C01** | Прив’язка вправи до матчу (share `/v/:id`, метадані) | partial | BL-027 | UI **`OrganizerMatchEditPage`**, таблиця **`match_stage_links`**, міграції share group; залишаться стабільні PSC-поля (**MA-C03**) |
 | **MA-C02** | Оновлення прив’язки до останнього view у групі (RPC / кнопка в UI) | partial | BL-027 | RPC **`organizer_refresh_match_stage_link_latest`** + кнопки в UI; регресії / edge cases — за потреби |
-| **MA-C03** | Стабільні поля для мапінгу в `match_stages[]` PSC (поппери, папір, тощо) | candidate | BL-027 | Залежить від MA-C01 |
+| **MA-C03** | Стабільні поля для мапінгу в `match_stages[]` PSC (поппери, папір, тощо) | candidate | BL-027 | Довідник полів і **§8.6** черга кроків 1→7 — [MATCH_EXPORT_PSC_STAGE_FIELDS.md](./MATCH_EXPORT_PSC_STAGE_FIELDS.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md §8.6](./MATCH_REGISTRATION_AND_PSC_PLAN.md#86-покроковий-план-mac03--mad01--mad02-узгоджена-черга); у коді уже `PscStageMetrics` + парсинг share |
 
 ---
 
@@ -58,8 +58,8 @@
 
 | ID | Задача | Статус | BL | Примітки |
 |----|--------|--------|-----|----------|
-| **MA-D01** | Мапер портальної моделі → `match_def.json` + порожні scores, ZIP | partial | BL-028 | `buildPortalPractiscoreZip`, API експорту |
-| **MA-D02** | Регресія / фікстури порівняння з еталонним `.psc` | partial | BL-028 | Vitest на **`buildPortalPractiscoreZip`**; порівняння зібраного ZIP з **`practiscore-roundtrip-test.psc`** у CI — за потреби |
+| **MA-D01** | Мапер портальної моделі → `match_def.json` + порожні scores, ZIP | partial | BL-028 | Є v1 (`buildPortalPractiscoreZip`, `/api/match-export-psc`); наступний обов’язковий код — **крок 1 §8.6** fallback без `psc_metrics` |
+| **MA-D02** | Регресія / фікстури порівняння з еталонним `.psc` | partial | BL-028 | Є Vitest збірки; **кроки 2 і 5 §8.6** — multi-stage й еталонний `.psc` |
 | **MA-D03** | Поля **`match_event_kind`** / **`ps_match_level`** у видачі PS (рівень `L1`–`L5`) | done | — | Див. `matchTaxonomy`, міграція `20260511100000_*` |
 
 ---
@@ -114,6 +114,7 @@
 |------|--------|
 | 2026-05-06 | Узгодження з тестами: **MA-D02** → **partial** (Vitest на збірку ZIP; повний diff з еталоном у CI — за потреби). |
 | 2026-05-07 | Синхронізація статусів з кодом: **MA-B02**, **MA-C01**, **MA-C02** → **partial** (публічний ростер / прив’язка вправ і refresh уже в проді-коді; епік C–PSC уточнюється). |
+| 2026-05-06 | PSC: додано [MATCH_REGISTRATION §8.6](./MATCH_REGISTRATION_AND_PSC_PLAN.md#86-покроковий-план-mac03--mad01--mad02-узгоджена-черга) і [MATCH_EXPORT_PSC_STAGE_FIELDS.md](./MATCH_EXPORT_PSC_STAGE_FIELDS.md); примітки в рядках **MA-C03**, **MA-D01**, **MA-D02**. |
 | 2026-05-06 | Ростер (таблиця): один **«Зберегти»** для всіх змін статусу та скводу; колонку «Дії» прибрано. Дошка скводів — зміни скводів/статусу як і раніше зберігаються одразу. |
 | 2026-05-01 | MA-B01: редактор **`payment_note`** у табличному та дошковому режимах ростера; підтвердження записує текст примітки з форми замість заглушки. |
 | 2026-05-04 | Каталог матчів: обкладинка (`cover_image_url`), кеш імені організатора для хабу (`portal_organizer_display_name`), бакет Storage `match-covers`; UX хабу — sticky календар на desktop, список вище календаря на мобільному. Міграція `20260515120000_match_portal_cover_and_organizer_display.sql`. |

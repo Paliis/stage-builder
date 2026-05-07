@@ -167,7 +167,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | Активації | [BL-004_ACTIVATIONS.md](./BL-004_ACTIVATIONS.md) |
 | BLE-таймер (дослідження) | [BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md) |
 | Штрафні зони / видимість (чернетка правил) | [VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md) |
-| Матчі, реєстрація, експорт PSC | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md), [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md), [SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md) |
+| Матчі, реєстрація, експорт PSC | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_EXPORT_PSC_STAGE_FIELDS.md](./MATCH_EXPORT_PSC_STAGE_FIELDS.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md), [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md), [SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md) |
 | Сітка поля / PDF (план) | [PLAN_FIELD_PDF_GRID.md](./PLAN_FIELD_PDF_GRID.md) |
 
 ---
@@ -185,7 +185,8 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | **BACKLOG.md** | Таблиця BL-001…, стратегічний беклог, процес грумінгу |
 | **BACKLOG_MATCHES.md** | Модуль «Матчі»: беклог **`MA-<фаза><NN>`** (фази A–F + R), зв’язок із **BL-025**… |
 | **MATCH_PORTAL_PRODUCT_PLAN.md** | Модуль матчів: пронумерований план, беклог BL-033+ |
-| **MATCH_REGISTRATION_AND_PSC_PLAN.md** | Матчі, реєстрація, експорт у PractiScore (`.psc`) |
+| **MATCH_REGISTRATION_AND_PSC_PLAN.md** | Матчі, реєстрація, експорт у PractiScore (`.psc`); покроково **§8.6** (MA-C03 / MA-D01 / MA-D02) |
+| **MATCH_EXPORT_PSC_STAGE_FIELDS.md** | Поля `match_stages[]`: що береться з share / що з шаблону PSC |
 | **MATCH_ADMIN_ARCHITECTURE.md** | Архітектура модуля матчів; прогалини (техніка, ліцензії, операторські реєстрації, продукти); UX-орієнтир [practicarms.ua](https://practicarms.ua/) (§8) |
 | **USER_FEEDBACK.md** | Чернетка збору відгуків |
 | **PUBLISH_POLICY.md** | Політика публікації share |
