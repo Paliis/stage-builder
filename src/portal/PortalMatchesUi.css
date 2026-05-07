@@ -529,7 +529,7 @@ a.portal-match-title-ellipsis:hover {
   border: none;
   border-radius: 1rem;
   padding: 0;
-  max-width: min(34rem, 94vw);
+  max-width: min(40rem, 94vw);
   width: calc(100% - 2rem);
   background: var(--btn-bg);
   color: var(--text);
@@ -541,7 +541,7 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-reg-modal__panel {
-  padding: 1.22rem 1.22rem 1.1rem;
+  padding: 1.22rem 1.35rem 1.1rem;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -617,6 +617,20 @@ a.portal-match-title-ellipsis:hover {
   display: grid;
   gap: 1rem;
   font-size: 0.928125rem;
+  line-height: 1.48;
+}
+
+.portal-reg-modal__grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.72rem 1rem;
+  align-items: start;
+}
+
+@media (max-width: 540px) {
+  .portal-reg-modal__grid-2 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .portal-reg-modal__section {

@@ -510,6 +510,7 @@ export type MessageTree = {
     matchDetailRegistrationRegisteredNameEmpty: string
     matchDetailRegistrationEditInAccount: string
     matchDetailRegistrationChooseDivision: string
+    matchDetailRegistrationNameRequired: string
     matchDetailRegistrationSectionContact: string
     matchDetailRegistrationSectionMatch: string
     matchDetailRegistrationSectionWeapon: string
@@ -1555,6 +1556,7 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationRegisteredNameEmpty: 'Не зазначено в обліковому записі.',
     matchDetailRegistrationEditInAccount: 'Змінити в кабінеті',
     matchDetailRegistrationChooseDivision: 'Оберіть дивізіон.',
+    matchDetailRegistrationNameRequired: 'Вкажіть прізвище та ім’я.',
     matchDetailRegistrationSectionContact: 'Контакт',
     matchDetailRegistrationSectionMatch: 'Участь',
     matchDetailRegistrationSectionWeapon: 'Про зброю та регіон',
@@ -2593,6 +2595,7 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationRegisteredNameEmpty: 'Not set on your account.',
     matchDetailRegistrationEditInAccount: 'Edit in account',
     matchDetailRegistrationChooseDivision: 'Choose a division.',
+    matchDetailRegistrationNameRequired: 'Enter last name and first name.',
     matchDetailRegistrationSectionContact: 'Contact',
     matchDetailRegistrationSectionMatch: 'Participation',
     matchDetailRegistrationSectionWeapon: 'Firearms & region',
