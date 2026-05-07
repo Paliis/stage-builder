@@ -107,7 +107,7 @@ export function MatchPublicRegistrationSection({
 
   const [pickedSquad, setPickedSquad] = useState('')
   const [division, setDivision] = useState('')
-  const [powerFactor, setPowerFactor] = useState<'MAJOR' | 'MINOR'>('MINOR')
+  const [powerFactor, setPowerFactor] = useState<'MAJOR' | 'MINOR'>('MAJOR')
   const [signupCategories, setSignupCategories] = useState<string[]>([])
   const [cabinetFirstName, setCabinetFirstName] = useState('')
   const [cabinetLastName, setCabinetLastName] = useState('')
@@ -127,7 +127,7 @@ export function MatchPublicRegistrationSection({
       setMine(undefined)
       setPickedSquad('')
       setDivision('')
-      setPowerFactor('MINOR')
+      setPowerFactor('MAJOR')
       setSignupCategories([])
       setCabinetFirstName('')
       setCabinetLastName('')
@@ -170,7 +170,7 @@ export function MatchPublicRegistrationSection({
       setDivision(row.division)
     if (row) {
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
-      setPowerFactor(pf === 'MAJOR' ? 'MAJOR' : 'MINOR')
+      setPowerFactor(pf === 'MINOR' ? 'MINOR' : 'MAJOR')
     }
   }, [configured, sb, matchUuid, user, p.matchesLoadError, matchDiscipline])
 
@@ -197,14 +197,13 @@ export function MatchPublicRegistrationSection({
           divRaw
         : ''
     })
-    setPowerFactor((prev) => {
+    setPowerFactor(() => {
       const raw =
         typeof row.power_factor === 'string' ?
           row.power_factor.trim().toUpperCase()
         : ''
-      if (raw === 'MAJOR') return 'MAJOR'
       if (raw === 'MINOR') return 'MINOR'
-      return prev
+      return 'MAJOR'
     })
     setSignupCategories((prev) => {
       if (prev.length > 0) return prev
@@ -643,7 +642,6 @@ export function MatchPublicRegistrationSection({
                 <label className="portal-reg-modal__label">
                   {p.matchDetailRegistrationPowerFactor}
                   <select
-                    required
                     value={powerFactor}
                     onChange={(ev) =>
                       setPowerFactor(ev.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')

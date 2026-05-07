@@ -526,8 +526,6 @@ export type MessageTree = {
     matchDetailRegistrationSectionMatch: string
     matchDetailRegistrationPhone: string
     matchDetailRegistrationPhoneInvalid: string
-    matchDetailRegistrationWeaponDetails: string
-    matchDetailRegistrationWeaponDetailsPlaceholder: string
     matchDetailRegistrationProfileWeaponClass: string
     matchDetailRegistrationProfileRegion: string
     portalCompactAuthAria: string
@@ -665,9 +663,6 @@ export type MessageTree = {
     accountParticipantWeaponClassRequired: string
     accountParticipantDivisionRequired: string
     accountParticipantCategoryRequired: string
-    accountParticipantWeaponDetailsRequired: string
-    accountParticipantFieldWeaponDetails: string
-    accountParticipantWeaponDetailsPlaceholder: string
     accountParticipantAvatarLabel: string
     accountParticipantAvatarChange: string
     accountParticipantAvatarRemove: string
@@ -1587,8 +1582,6 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationPhone: 'Телефон',
     matchDetailRegistrationPhoneInvalid:
       'Некоректний номер телефону: потрібно 7–15 цифр; можна пробіли, дефіс і дужки; знак «+» лише на початку.',
-    matchDetailRegistrationWeaponDetails: 'Опис зброї',
-    matchDetailRegistrationWeaponDetailsPlaceholder: 'Марка, модель, калібр тощо',
     matchDetailRegistrationProfileWeaponClass: 'Клас зброї в профілі',
     matchDetailRegistrationProfileRegion: 'Регіон у профілі',
     portalCompactAuthAria: 'Режим входу',
@@ -1728,9 +1721,6 @@ export const ukMessages: MessageTree = {
     accountParticipantWeaponClassRequired: 'Оберіть клас зброї.',
     accountParticipantDivisionRequired: 'Оберіть дивізіон для обраного класу зброї.',
     accountParticipantCategoryRequired: 'Оберіть щонайменше одну категорію.',
-    accountParticipantWeaponDetailsRequired: 'Заповніть опис зброї.',
-    accountParticipantFieldWeaponDetails: 'Опис зброї',
-    accountParticipantWeaponDetailsPlaceholder: 'Марка, модель, калібр (за потреби)',
     accountParticipantAvatarLabel: 'Фото профілю',
     accountParticipantAvatarChange: 'Обрати фото',
     accountParticipantAvatarRemove: 'Без фото',
@@ -2643,8 +2633,6 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationPhone: 'Phone',
     matchDetailRegistrationPhoneInvalid:
       'Invalid phone number: enter 7–15 digits; spaces, hyphens, and parentheses allowed; «+» only at the beginning.',
-    matchDetailRegistrationWeaponDetails: 'Firearm description',
-    matchDetailRegistrationWeaponDetailsPlaceholder: 'Make, model, caliber',
     matchDetailRegistrationProfileWeaponClass: 'Weapon class (profile)',
     matchDetailRegistrationProfileRegion: 'Region (profile)',
     portalCompactAuthAria: 'Sign-in mode',
@@ -2785,9 +2773,6 @@ export const enMessages: MessageTree = {
     accountParticipantWeaponClassRequired: 'Choose a weapon class.',
     accountParticipantDivisionRequired: 'Choose a division for the selected weapon class.',
     accountParticipantCategoryRequired: 'Choose at least one category.',
-    accountParticipantWeaponDetailsRequired: 'Enter the firearm description.',
-    accountParticipantFieldWeaponDetails: 'Firearm description',
-    accountParticipantWeaponDetailsPlaceholder: 'Make, model, caliber (optional)',
     accountParticipantAvatarLabel: 'Profile photo',
     accountParticipantAvatarChange: 'Choose photo',
     accountParticipantAvatarRemove: 'Remove photo',

@@ -75,7 +75,6 @@ const DEFAULT_SELECT = [
   'first_name',
   'last_name',
   'phone',
-  'weapon_details',
   'avatar_url',
 ].join(', ')
 
@@ -144,14 +143,13 @@ export function AccountParticipantHub({
   )
 
   const [defDiv, setDefDiv] = useState('')
-  const [defPf, setDefPf] = useState<'MAJOR' | 'MINOR'>('MINOR')
+  const [defPf, setDefPf] = useState<'MAJOR' | 'MINOR'>('MAJOR')
   const [defRegion, setDefRegion] = useState('')
   const [defCategories, setDefCategories] = useState<string[]>([])
   const [defWeaponClass, setDefWeaponClass] = useState('')
   const [defFirstName, setDefFirstName] = useState('')
   const [defLastName, setDefLastName] = useState('')
   const [defPhone, setDefPhone] = useState('')
-  const [defWeaponDetails, setDefWeaponDetails] = useState('')
   const [defAvatarUrl, setDefAvatarUrl] = useState('')
   const [avatarBusy, setAvatarBusy] = useState(false)
   const [avatarErr, setAvatarErr] = useState<string | null>(null)
@@ -183,7 +181,6 @@ export function AccountParticipantHub({
       first_name?: string
       last_name?: string
       phone?: string
-      weapon_details?: string
       avatar_url?: string
     } | null
     if (row) {
@@ -194,24 +191,22 @@ export function AccountParticipantHub({
       const rawDiv = typeof row.division === 'string' ? row.division : ''
       setDefDiv(wc && isValidDivisionForWeapon(wc, rawDiv) ? rawDiv : '')
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
-      setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : 'MINOR')
+      setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : 'MAJOR')
       setDefRegion(typeof row.region === 'string' ? row.region : '')
       setDefCategories(normalizeCategoryList(row.categories))
       setDefFirstName(typeof row.first_name === 'string' ? row.first_name : '')
       setDefLastName(typeof row.last_name === 'string' ? row.last_name : '')
       setDefPhone(typeof row.phone === 'string' ? row.phone : '')
-      setDefWeaponDetails(typeof row.weapon_details === 'string' ? row.weapon_details : '')
       setDefAvatarUrl(typeof row.avatar_url === 'string' ? row.avatar_url : '')
     } else {
       setDefWeaponClass('')
       setDefDiv('')
-      setDefPf('MINOR')
+      setDefPf('MAJOR')
       setDefRegion('')
       setDefCategories([])
       setDefFirstName('')
       setDefLastName('')
       setDefPhone('')
-      setDefWeaponDetails('')
       setDefAvatarUrl('')
     }
   }, [sb, userId, p])
@@ -320,12 +315,6 @@ export function AccountParticipantHub({
       setDefFeedback(p.accountParticipantCategoryRequired)
       return
     }
-    const wd = defWeaponDetails.trim()
-    if (!wd) {
-      setDefSaving(false)
-      setDefFeedback(p.accountParticipantWeaponDetailsRequired)
-      return
-    }
 
     const { error } = await sb.from('participant_registration_defaults').upsert({
       user_id: userId,
@@ -333,7 +322,7 @@ export function AccountParticipantHub({
       classification_grade: '',
       power_factor: defPf,
       phone: phoneTrimAcc,
-      weapon_details: wd,
+      weapon_details: '',
       region: defRegion.trim(),
       categories: resolveShooterCategoriesForStorage(defCategories),
       weapon_class: wc,
@@ -353,7 +342,6 @@ export function AccountParticipantHub({
     defDiv,
     defPf,
     defPhone,
-    defWeaponDetails,
     defRegion,
     defCategories,
     defWeaponClass,
@@ -631,18 +619,6 @@ export function AccountParticipantHub({
                 {!defWeaponClass && p.accountParticipantDivisionSelectWeaponFirst ?
                   <span className="portal-account__field-hint">{p.accountParticipantDivisionSelectWeaponFirst}</span>
                 : null}
-              </label>
-              <label className="portal-account__field portal-account__psc-grid--full">
-                {p.accountParticipantFieldWeaponDetails}
-                <textarea
-                  required
-                  value={defWeaponDetails}
-                  onChange={(e) => setDefWeaponDetails(e.target.value)}
-                  disabled={defSaving}
-                  autoComplete="off"
-                  rows={3}
-                  placeholder={p.accountParticipantWeaponDetailsPlaceholder}
-                />
               </label>
               <label className="portal-account__field">
                 {p.matchDetailRegistrationPowerFactor}
