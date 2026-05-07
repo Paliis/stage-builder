@@ -425,7 +425,9 @@ export function AccountParticipantHub({
                         </td>
                         <td className="portal-account__hub-td-nowrap">{when}</td>
                         <td>
-                          <span className={portalMatchRegLabelClass(r.status)}>{regStatusLabel(r.status)}</span>
+                          <span className={`${portalMatchRegLabelClass(r.status)} portal-account__hub-status`}>
+                            {regStatusLabel(r.status)}
+                          </span>
                         </td>
                         <td>
                           {(m?.status === 'published' || canCancel) ?
