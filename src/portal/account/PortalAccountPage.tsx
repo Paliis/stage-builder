@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { useI18n } from '../../i18n/useI18n'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
+import { isSafePortalReturnPath } from '../safePortalReturnPath'
 import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import { usePlatformIsAdmin } from '../usePlatformIsAdmin'
 import { useSupabaseSession } from '../useSupabaseSession'
@@ -17,11 +18,24 @@ export function PortalAccountPage() {
   const { locale, tree } = useI18n()
   const p = tree.portal
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const { loading: sessionLoading, user } = useSupabaseSession()
   const { loading: profileLoading, profile, moderationNote, refresh: refreshOrganizerProfile } =
     useOrganizerSelfServiceProfile(user?.id)
-  const pathnameRedirect = `/${locale}/account`
+  const nextParam = searchParams.get('next')?.trim() ?? ''
+  /** After email confirm / sign-in, redirect here when `next` query is present and safe. */
+  const pathnameForAuthRedirect = useMemo(() => {
+    return nextParam && isSafePortalReturnPath(nextParam, locale) ?
+        nextParam
+      : `/${locale}/account`
+  }, [nextParam, locale])
   const compactEmailAuthDefaultMode = searchParams.get('mode') === 'signup' ? 'signup' : 'signin'
+
+  useEffect(() => {
+    if (sessionLoading || !user?.id || !nextParam) return
+    if (!isSafePortalReturnPath(nextParam, locale)) return
+    navigate(nextParam, { replace: true })
+  }, [sessionLoading, user?.id, nextParam, locale, navigate])
   const platformAdmin = usePlatformIsAdmin(user?.id, isMatchPortalEnabled())
   const [applyBusy, setApplyBusy] = useState(false)
   const [applyError, setApplyError] = useState<string | null>(null)
@@ -315,7 +329,7 @@ export function PortalAccountPage() {
           <PortalCompactEmailAuth
             p={p}
             locale={locale}
-            pathnameForRedirect={pathnameRedirect}
+            pathnameForRedirect={pathnameForAuthRedirect}
             defaultAuthMode={compactEmailAuthDefaultMode}
           />
         </section>

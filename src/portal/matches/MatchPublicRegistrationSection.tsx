@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import type { Locale, MessageTree } from '../../i18n/messages'
-import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
 import {
   type WeaponClassId,
@@ -612,7 +611,20 @@ export function MatchPublicRegistrationSection({
       {showGuestAuth ?
         <>
           <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationSignInIntro}</p>
-          <PortalCompactEmailAuth p={p} locale={locale} pathnameForRedirect={pathnameRedirect} />
+          <div className="portal-match-guest-auth-cta">
+            <Link
+              to={`/${locale}/account?next=${encodeURIComponent(pathnameRedirect)}`}
+              className="portal-btn portal-btn--primary portal-btn--compact"
+            >
+              {p.portalCompactAuthSubmitSignIn}
+            </Link>
+            <Link
+              to={`/${locale}/account?mode=signup&next=${encodeURIComponent(pathnameRedirect)}`}
+              className="portal-btn portal-btn--secondary portal-btn--compact"
+            >
+              {p.portalCompactAuthSubmitSignUp}
+            </Link>
+          </div>
           {import.meta.env.DEV ?
             <p className="portal-reg-dev-auth-hint">
               <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>

@@ -286,6 +286,25 @@ a.portal-match-title-ellipsis:hover {
   background: color-mix(in srgb, var(--surface, #fff), var(--btn-bg) 42%);
 }
 
+.portal-match-guest-auth-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.portal-match-public-detail__masthead-cover-col .portal-match-guest-auth-cta {
+  justify-content: center;
+}
+
+.portal-match-guest-auth-cta .portal-btn {
+  display: inline-flex;
+  justify-content: center;
+  text-decoration: none;
+  align-items: center;
+}
+
 .portal-match-public-detail__masthead-actions-inner--success {
   border-color: color-mix(in srgb, #16a34a, var(--border) 35%);
   background: color-mix(in srgb, var(--surface, #fff), #16a34a 09%);
