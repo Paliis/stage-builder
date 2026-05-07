@@ -4,6 +4,10 @@ import type { Locale, MessageTree } from '../../i18n/messages'
 import '../PortalMatchesUi.css'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import { portalMatchRegCardCueClass, portalMatchRegLabelClass } from './matchPortalRegStatusUi'
+import {
+  participantPaymentOptionLabel,
+  parseParticipantPaymentOption,
+} from './matchPortalParticipantPayment'
 
 type Portal = MessageTree['portal']
 
@@ -21,6 +25,7 @@ export type OrganizerRosterReg = {
   phone: string
   weapon_details: string
   competitor_region: string
+  participant_payment_option: string
   registration_created_at?: string | null
 }
 
@@ -203,7 +208,15 @@ export function OrganizerMatchRosterBoard({
                         <div
                           className="portal-roster-board-card__extra"
                           title={
-                            [reg.phone?.trim(), reg.competitor_region?.trim(), reg.weapon_details?.trim()]
+                            [
+                              reg.phone?.trim(),
+                              participantPaymentOptionLabel(
+                                p,
+                                parseParticipantPaymentOption(reg.participant_payment_option),
+                              ),
+                              reg.competitor_region?.trim(),
+                              reg.weapon_details?.trim(),
+                            ]
                               .filter(Boolean)
                               .join(' · ') || undefined
                           }
@@ -211,11 +224,18 @@ export function OrganizerMatchRosterBoard({
                           {(reg.phone ?? '').trim() ?
                             <span className="portal-roster-board-card__phone">{reg.phone.trim()}</span>
                           : null}
-                          {(reg.competitor_region ?? '').trim() || (reg.weapon_details ?? '').trim() ?
-                            <span className="portal-roster-board-card__meta">
-                              {[reg.competitor_region?.trim(), reg.weapon_details?.trim()].filter(Boolean).join(' · ')}
-                            </span>
-                          : null}
+                          <span className="portal-roster-board-card__meta">
+                            {participantPaymentOptionLabel(
+                              p,
+                              parseParticipantPaymentOption(reg.participant_payment_option),
+                            )}
+                            {(reg.competitor_region ?? '').trim() || (reg.weapon_details ?? '').trim() ?
+                              <>
+                                {' · '}
+                                {[reg.competitor_region?.trim(), reg.weapon_details?.trim()].filter(Boolean).join(' · ')}
+                              </>
+                            : null}
+                          </span>
                         </div>
                       </div>
                       {tone ? null : (

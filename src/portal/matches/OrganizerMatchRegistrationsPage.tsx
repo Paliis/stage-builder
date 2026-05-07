@@ -16,6 +16,10 @@ import {
   portalMatchRegRowClass,
   portalMatchRegSelectClass,
 } from './matchPortalRegStatusUi'
+import {
+  participantPaymentOptionLabel,
+  parseParticipantPaymentOption,
+} from './matchPortalParticipantPayment'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
@@ -35,6 +39,7 @@ type RosterRpcRow = {
   phone: string
   weapon_details: string
   competitor_region: string
+  participant_payment_option: string
   registration_created_at?: string | null
 }
 
@@ -553,6 +558,12 @@ export function OrganizerMatchRegistrationsPage() {
                 </th>
                 <th
                   scope="col"
+                  style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}
+                >
+                  {p.matchOrgRosterColPaymentOption}
+                </th>
+                <th
+                  scope="col"
                   style={{ textAlign: 'left', padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}
                 >
                   {p.matchOrgRosterColRegion}
@@ -604,6 +615,9 @@ export function OrganizerMatchRegistrationsPage() {
                     </td>
                     <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>
                       {(reg.phone ?? '').trim() || '—'}
+                    </td>
+                    <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)', fontSize: '0.86rem' }}>
+                      {participantPaymentOptionLabel(p, parseParticipantPaymentOption(reg.participant_payment_option))}
                     </td>
                     <td style={{ padding: '0.45rem 0.55rem', borderBottom: '1px solid var(--border)' }}>
                       {(reg.competitor_region ?? '').trim() || '—'}

@@ -26,6 +26,7 @@ import {
 } from './matchPortalRegistrationMetrics'
 import { portalMatchRegLabelClass } from './matchPortalRegStatusUi'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
+import { type ParticipantPaymentOption } from './matchPortalParticipantPayment'
 import '../PortalMatchesUi.css'
 
 type Portal = MessageTree['portal']
@@ -110,6 +111,7 @@ export function MatchPublicRegistrationSection({
   const [cabinetLastName, setCabinetLastName] = useState('')
   const [phone, setPhone] = useState('')
   const [cabinetRegion, setCabinetRegion] = useState('')
+  const [participantPayment, setParticipantPayment] = useState<ParticipantPaymentOption>('bank_transfer')
 
   const [submitBusy, setSubmitBusy] = useState(false)
   const [mineBusy, setMineBusy] = useState(false)
@@ -129,6 +131,7 @@ export function MatchPublicRegistrationSection({
       setCabinetLastName('')
       setPhone('')
       setCabinetRegion('')
+      setParticipantPayment('bank_transfer')
       setFeedback(null)
     })
   }, [matchUuid])
@@ -395,6 +398,7 @@ export function MatchPublicRegistrationSection({
       competitor_region: cabinetRegion.trim(),
       power_factor: powerFactor,
       categories: resolveShooterCategoriesForStorage(signupCategories),
+      participant_payment_option: participantPayment,
     })
     setSubmitBusy(false)
 
@@ -512,34 +516,53 @@ export function MatchPublicRegistrationSection({
 
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionMatch}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionMatch}</h4>
-              <label className="portal-reg-modal__label">
-                {p.matchDetailRegistrationFieldSquad}
-                <select
-                  required
-                  value={pickedSquad}
-                  onChange={(ev) => setPickedSquad(ev.target.value)}
-                  disabled={submitBusy}
-                  className="portal-reg-modal__control portal-reg-modal__select"
-                >
-                  <option value="">{p.matchDetailRegistrationSelectSquad}</option>
-                  {(metrics ?? []).map((r) => {
-                    const phaseLabel =
-                      phaseOf(r) === 'prematch' ?
-                        p.matchDetailRegistrationPhaseShortPrematch
-                      : p.matchDetailRegistrationPhaseShortMain
-                    return (
-                      <option
-                        key={r.squad_id}
-                        value={r.squad_id}
-                        disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
-                      >
-                        [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} (
-                        {spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
-                      </option>
-                    )
-                  })}
-                </select>
-              </label>
+              <div className="portal-reg-modal__grid-2">
+                <label className="portal-reg-modal__label">
+                  {p.matchDetailRegistrationFieldSquad}
+                  <select
+                    required
+                    value={pickedSquad}
+                    onChange={(ev) => setPickedSquad(ev.target.value)}
+                    disabled={submitBusy}
+                    className="portal-reg-modal__control portal-reg-modal__select"
+                  >
+                    <option value="">{p.matchDetailRegistrationSelectSquad}</option>
+                    {(metrics ?? []).map((r) => {
+                      const phaseLabel =
+                        phaseOf(r) === 'prematch' ?
+                          p.matchDetailRegistrationPhaseShortPrematch
+                        : p.matchDetailRegistrationPhaseShortMain
+                      return (
+                        <option
+                          key={r.squad_id}
+                          value={r.squad_id}
+                          disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
+                        >
+                          [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} (
+                          {spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
+                        </option>
+                      )
+                    })}
+                  </select>
+                </label>
+                <label className="portal-reg-modal__label">
+                  {p.matchDetailRegistrationParticipantPayment}
+                  <select
+                    required
+                    value={participantPayment}
+                    onChange={(ev) =>
+                      setParticipantPayment(
+                        ev.target.value === 'on_site' ? 'on_site' : 'bank_transfer',
+                      )
+                    }
+                    disabled={submitBusy}
+                    className="portal-reg-modal__control portal-reg-modal__select"
+                  >
+                    <option value="bank_transfer">{p.matchDetailRegistrationPaymentBankTransfer}</option>
+                    <option value="on_site">{p.matchDetailRegistrationPaymentOnSite}</option>
+                  </select>
+                </label>
+              </div>
 
               <div className="portal-reg-modal__grid-2">
                 <label className="portal-reg-modal__label">

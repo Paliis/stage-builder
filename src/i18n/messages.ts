@@ -490,6 +490,9 @@ export type MessageTree = {
     matchDetailRegistrationPFOptional: string
     /** Required PF label on public match signup (no “optional”). */
     matchDetailRegistrationPowerFactor: string
+    matchDetailRegistrationParticipantPayment: string
+    matchDetailRegistrationPaymentBankTransfer: string
+    matchDetailRegistrationPaymentOnSite: string
     matchDetailRegistrationPFNone: string
     matchDetailRegistrationPFMajor: string
     matchDetailRegistrationPFMinor: string
@@ -870,6 +873,7 @@ export type MessageTree = {
     matchOrgRosterEmpty: string
     matchOrgRosterColName: string
     matchOrgRosterColPhone: string
+    matchOrgRosterColPaymentOption: string
     matchOrgRosterColRegion: string
     matchOrgRosterColWeaponDetails: string
     matchOrgRosterColDivision: string
@@ -1536,6 +1540,9 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationDivision: 'Дивізіон',
     matchDetailRegistrationPFOptional: 'Power factor (необов’язково)',
     matchDetailRegistrationPowerFactor: 'Фактор потужності',
+    matchDetailRegistrationParticipantPayment: 'Оплата',
+    matchDetailRegistrationPaymentBankTransfer: 'По реквізитам',
+    matchDetailRegistrationPaymentOnSite: 'На місці',
     matchDetailRegistrationPFNone: '—',
     matchDetailRegistrationPFMajor: 'Major',
     matchDetailRegistrationPFMinor: 'Minor',
@@ -1917,6 +1924,7 @@ export const ukMessages: MessageTree = {
     matchOrgRosterEmpty: 'Заявок ще немає.',
     matchOrgRosterColName: 'Учасник',
     matchOrgRosterColPhone: 'Телефон',
+    matchOrgRosterColPaymentOption: 'Оплата',
     matchOrgRosterColRegion: 'Регіон',
     matchOrgRosterColWeaponDetails: 'Зброя',
     matchOrgRosterColDivision: 'Дивізіон',
@@ -2576,6 +2584,9 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationDivision: 'Division',
     matchDetailRegistrationPFOptional: 'Power factor (optional)',
     matchDetailRegistrationPowerFactor: 'Power factor',
+    matchDetailRegistrationParticipantPayment: 'Payment',
+    matchDetailRegistrationPaymentBankTransfer: 'Bank transfer',
+    matchDetailRegistrationPaymentOnSite: 'On site',
     matchDetailRegistrationPFNone: '—',
     matchDetailRegistrationPFMajor: 'Major',
     matchDetailRegistrationPFMinor: 'Minor',
@@ -2955,6 +2966,7 @@ export const enMessages: MessageTree = {
     matchOrgRosterEmpty: 'No registrations yet.',
     matchOrgRosterColName: 'Shooter',
     matchOrgRosterColPhone: 'Phone',
+    matchOrgRosterColPaymentOption: 'Payment',
     matchOrgRosterColRegion: 'Region',
     matchOrgRosterColWeaponDetails: 'Firearm',
     matchOrgRosterColDivision: 'Division',
