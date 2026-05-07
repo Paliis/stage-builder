@@ -506,6 +506,8 @@ export type MessageTree = {
     matchDetailRegistrationCancel: string
     matchDetailRegistrationCancelling: string
     matchDetailRegistrationPickOpenSquad: string
+    /** Update returned no row (race or policy): user should refresh. */
+    matchDetailRegistrationReopenFailed: string
     matchDetailRegistrationErrorPrefix: string
     matchDetailRegistrationCta: string
     matchDetailRegistrationModalTitle: string
@@ -1557,6 +1559,8 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationCancel: 'Скасувати заявку',
     matchDetailRegistrationCancelling: 'Скасування…',
     matchDetailRegistrationPickOpenSquad: 'Оберіть сквод із вільними місцями.',
+    matchDetailRegistrationReopenFailed:
+      'Не вдалося поновити скасовану заявку. Оновіть сторінку та спробуйте ще раз.',
     matchDetailRegistrationErrorPrefix: 'Помилка',
     matchDetailRegistrationCta: 'Зареєструватись',
     matchDetailRegistrationModalTitle: 'Подання заявки на матч',
@@ -2601,6 +2605,8 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationCancel: 'Cancel registration',
     matchDetailRegistrationCancelling: 'Cancelling…',
     matchDetailRegistrationPickOpenSquad: 'Choose a squad with open seats.',
+    matchDetailRegistrationReopenFailed:
+      'Could not reopen your cancelled registration. Refresh the page and try again.',
     matchDetailRegistrationErrorPrefix: 'Error',
     matchDetailRegistrationCta: 'Register',
     matchDetailRegistrationModalTitle: 'Match sign-up',

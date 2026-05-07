@@ -213,7 +213,7 @@ export function MatchPublicRegistrationSection({
   useEffect(() => {
     if (!configured || sessionLoading || !user?.id) return
     if (mine === undefined) return
-    if (mine !== null) return
+    if (mine?.status === 'pending' || mine?.status === 'confirmed') return
 
     const pendingKey = `${matchUuid}:${user.id}`
     if (defaultsPrefetchKeyRef.current === pendingKey) return
@@ -385,12 +385,9 @@ export function MatchPublicRegistrationSection({
       return
     }
     const div = division.trim()
+    const reopenRegistrationId = mine?.status === 'cancelled' ? mine.id : null
 
-    setSubmitBusy(true)
-    const { error } = await sb.from('match_registrations').insert({
-      match_id: matchUuid,
-      squad_id: pickedSquad,
-      competitor_user_id: user.id,
+    const rowPayload = {
       division: div,
       classification_grade: '',
       phone: phoneTrim,
@@ -399,12 +396,46 @@ export function MatchPublicRegistrationSection({
       power_factor: powerFactor,
       categories: resolveShooterCategoriesForStorage(signupCategories),
       participant_payment_option: participantPayment,
-    })
-    setSubmitBusy(false)
+    }
 
-    if (error) {
-      setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${error.message}`)
-      return
+    setSubmitBusy(true)
+    if (reopenRegistrationId) {
+      const { data: reopenedRow, error: reopenErr } = await sb
+        .from('match_registrations')
+        .update({
+          status: 'pending',
+          squad_id: pickedSquad,
+          payment_received: false,
+          payment_note: null,
+          ...rowPayload,
+        })
+        .eq('id', reopenRegistrationId)
+        .eq('competitor_user_id', user.id)
+        .eq('status', 'cancelled')
+        .select('id')
+        .maybeSingle()
+      setSubmitBusy(false)
+      if (reopenErr) {
+        setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${reopenErr.message}`)
+        return
+      }
+      if (!reopenedRow) {
+        setFeedback(p.matchDetailRegistrationReopenFailed)
+        await refreshAll()
+        return
+      }
+    } else {
+      const { error } = await sb.from('match_registrations').insert({
+        match_id: matchUuid,
+        squad_id: pickedSquad,
+        competitor_user_id: user.id,
+        ...rowPayload,
+      })
+      setSubmitBusy(false)
+      if (error) {
+        setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${error.message}`)
+        return
+      }
     }
 
     const { error: defErr } = await sb.from('participant_registration_defaults').upsert(
@@ -654,7 +685,7 @@ export function MatchPublicRegistrationSection({
     Boolean(user) &&
     !sessionLoading &&
     mine !== undefined &&
-    mine === null &&
+    (mine === null || mine.status === 'cancelled') &&
     !matchFull &&
     Boolean(metrics?.length)
   const showPendingTools = Boolean(user && !sessionLoading && mine?.status === 'pending')
