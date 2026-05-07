@@ -1977,7 +1977,7 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-match-org-stages-table-wrap > table {
-  min-width: 38rem;
+  min-width: 30rem;
   margin-bottom: 0;
 }
 
@@ -2214,6 +2214,8 @@ a.portal-match-title-ellipsis:hover {
   gap: 0.35rem;
   align-items: center;
   margin: 0.42rem 0 0;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .portal-match-org-form__sr-only {
@@ -2238,6 +2240,7 @@ a.portal-match-title-ellipsis:hover {
 
 .portal-match-org-form__control--textarea {
   resize: vertical;
+  min-width: 0;
   min-height: 7.5rem;
   line-height: 1.5;
 }
@@ -2458,6 +2461,15 @@ a.portal-match-title-ellipsis:hover {
 
   .portal-match-org-form__field--narrow {
     max-width: none;
+  }
+
+  .portal-match-org-form__control--participant,
+  .portal-match-org-form__control--datetime {
+    max-width: 100%;
+  }
+
+  .portal-match-org-edit__card .portal-match-org-form__section {
+    padding-inline: 0.78rem;
   }
 }
 
