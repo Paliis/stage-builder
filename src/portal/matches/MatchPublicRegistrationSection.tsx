@@ -165,13 +165,16 @@ export function MatchPublicRegistrationSection({
     setMine(row)
     setFeedback(null)
     if (row?.squad_id) setPickedSquad(row.squad_id)
-    if (row?.division && isValidDivisionForWeapon(matchWeaponClassId, row.division))
+    if (
+      row?.division &&
+      isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), row.division)
+    )
       setDivision(row.division)
     if (row?.power_factor) {
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setPowerFactor(pf === 'MAJOR' ? 'MAJOR' : pf === 'MINOR' ? 'MINOR' : '')
     }
-  }, [configured, sb, matchUuid, user, p.matchesLoadError, matchWeaponClassId])
+  }, [configured, sb, matchUuid, user, p.matchesLoadError, matchDiscipline])
 
   useEffect(() => {
     if (sessionLoading || !configured) return
@@ -200,7 +203,9 @@ export function MatchPublicRegistrationSection({
       const t = d.trim()
       if (t) return d
       const divRaw = typeof row.division === 'string' ? row.division : ''
-      return isValidDivisionForWeapon(matchWeaponClassId, divRaw) ? divRaw : ''
+      return isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), divRaw) ?
+          divRaw
+        : ''
     })
     setPowerFactor((pf) => {
       if (pf !== '') return pf
@@ -214,7 +219,7 @@ export function MatchPublicRegistrationSection({
       if (prev.length > 0) return prev
       return normalizeParticipantCategories(row.categories)
     })
-  }, [matchWeaponClassId])
+  }, [matchDiscipline])
 
   useEffect(() => {
     if (!configured || sessionLoading || !user?.id) return
@@ -327,7 +332,10 @@ export function MatchPublicRegistrationSection({
       setFeedback(p.matchDetailRegistrationPickOpenSquad)
       return
     }
-    if (!division.trim() || !isValidDivisionForWeapon(matchWeaponClassId, division.trim())) {
+    if (
+      !division.trim() ||
+      !isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), division.trim())
+    ) {
       setFeedback(p.matchDetailRegistrationChooseDivision)
       return
     }

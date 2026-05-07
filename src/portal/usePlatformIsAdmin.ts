@@ -7,15 +7,15 @@ export function usePlatformIsAdmin(userId: string | undefined, enabled = true): 
 
   useEffect(() => {
     if (!enabled) {
-      setState(false)
+      queueMicrotask(() => setState(false))
       return
     }
     if (!isSupabaseConfigured()) {
-      setState(false)
+      queueMicrotask(() => setState(false))
       return
     }
     if (!userId) {
-      setState(false)
+      queueMicrotask(() => setState(false))
       return
     }
 

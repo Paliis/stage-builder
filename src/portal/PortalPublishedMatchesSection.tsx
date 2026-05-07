@@ -16,6 +16,7 @@ import {
 } from './matches/matchPortalBrowseUtils'
 import type { MatchEventKind, PsMatchLevel } from '../domain/matchTaxonomy'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matches/matchPortalLabels'
+import { stripHttpUrlsFromPlainText } from './matches/plainTextAutolinkHelpers'
 import { isMatchPortalEnabled } from './featureFlags'
 import type { WeaponClassId } from './shooterProfileCatalog'
 import { WEAPON_CLASS_ORDER, weaponClassLabel } from './shooterProfileCatalog'
@@ -452,6 +453,7 @@ export function PortalPublishedMatchesSection() {
                   const hasCover = Boolean(coverUrl)
                   const weaponKey = (m.discipline ?? 'shotgun').trim() || 'shotgun'
                   const weaponLine = weaponClassLabel(weaponKey, locale)
+                  const locationListLine = stripHttpUrlsFromPlainText(m.location_label ?? '')
                   return (
                     <li
                       key={m.id}
@@ -481,10 +483,10 @@ export function PortalPublishedMatchesSection() {
                           : null}
                           <p className="portal-match-hub__published-card-meta">
                             <time dateTime={m.starts_at}>{formatPortalDate(m.starts_at, locale)}</time>
-                            {m.location_label?.trim() ?
+                            {locationListLine ?
                               <>
                                 {' · '}
-                                {m.location_label.trim()}
+                                {locationListLine}
                               </>
                             : null}
                             {' · '}

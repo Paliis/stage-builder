@@ -209,13 +209,15 @@ export function OrganizerMatchRegistrationsPage() {
 
   useEffect(() => {
     if (roster === undefined) return
-    setStatusDraft(() => {
-      const m: Record<string, 'pending' | 'confirmed'> = {}
-      for (const r of roster) {
-        if (!countsActiveStatuses(r.status)) continue
-        m[r.registration_id] = r.status === 'confirmed' ? 'confirmed' : 'pending'
-      }
-      return m
+    queueMicrotask(() => {
+      setStatusDraft(() => {
+        const m: Record<string, 'pending' | 'confirmed'> = {}
+        for (const r of roster) {
+          if (!countsActiveStatuses(r.status)) continue
+          m[r.registration_id] = r.status === 'confirmed' ? 'confirmed' : 'pending'
+        }
+        return m
+      })
     })
   }, [roster])
 

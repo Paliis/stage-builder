@@ -1,65 +1,14 @@
 import { Fragment, createElement, type ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { matchDescriptionLooksLikeBbCode } from './matchDescriptionLooksLikeBbCode'
+import { normalizeHref, plainTextToAutolinkNodes } from './plainTextAutolinkHelpers'
 
 const SUPPORTED = new Set(['b', 'i', 'u', 'url', 'quote', 'code', 'list'])
-
-/** Stops URLs at delimiter chars; literals `[`/`]` matched without needless escapes per eslint. */
-const URL_RE = /https?:\/\/[^\s<>[\]"']+|www\.[^\s<>[\]"']+/gi
-
-function normalizeHref(raw: string): string | null {
-  const t = raw.trim()
-  if (!t) return null
-  const withProto =
-    t.startsWith('http://') || t.startsWith('https://') ? t : `https://${t}`
-  try {
-    const u = new URL(withProto)
-    if (u.protocol !== 'http:' && u.protocol !== 'https:') return null
-    return u.href
-  } catch {
-    return null
-  }
-}
 
 let keySeq = 0
 function nextKey(prefix: string): string {
   return `${prefix}-${keySeq++}`
-}
-
-function linkifyPlainText(text: string): ReactNode[] {
-  if (!text) return []
-  const parts: ReactNode[] = []
-  let last = 0
-  const re = new RegExp(URL_RE.source, URL_RE.flags)
-  let m: RegExpExecArray | null
-  while ((m = re.exec(text)) !== null) {
-    if (m.index > last) {
-      parts.push(text.slice(last, m.index))
-    }
-    const raw = m[0]
-    const href = normalizeHref(raw)
-    if (href) {
-      parts.push(
-        createElement(
-          'a',
-          {
-            key: nextKey('a'),
-            href,
-            target: '_blank',
-            rel: 'noopener noreferrer',
-          },
-          raw,
-        ),
-      )
-    } else {
-      parts.push(raw)
-    }
-    last = m.index + raw.length
-  }
-  if (last < text.length) {
-    parts.push(text.slice(last))
-  }
-  return parts
 }
 
 function findBalancedEnd(src: string, start: number, rawTagName: string): number {
@@ -113,7 +62,7 @@ function parseBbCodeNodes(src: string): ReactNode[] {
       const end = next === -1 ? src.length : next
       const chunk = src.slice(i, end)
       if (chunk) {
-        out.push(...linkifyPlainText(chunk))
+        out.push(...plainTextToAutolinkNodes(chunk))
       }
       i = end
       continue
@@ -121,7 +70,7 @@ function parseBbCodeNodes(src: string): ReactNode[] {
 
     const close = src.indexOf(']', i)
     if (close === -1) {
-      out.push(...linkifyPlainText(src.slice(i)))
+      out.push(...plainTextToAutolinkNodes(src.slice(i)))
       break
     }
 
@@ -129,7 +78,7 @@ function parseBbCodeNodes(src: string): ReactNode[] {
     i = close + 1
 
     if (tagFull.startsWith('/')) {
-      out.push(...linkifyPlainText(`[${tagFull}]`))
+      out.push(...plainTextToAutolinkNodes(`[${tagFull}]`))
       continue
     }
 
@@ -139,13 +88,13 @@ function parseBbCodeNodes(src: string): ReactNode[] {
     const attr = eq === -1 ? undefined : tagFull.slice(eq + 1).trim()
 
     if (!SUPPORTED.has(tagName)) {
-      out.push(...linkifyPlainText(`[${tagFull}]`))
+      out.push(...plainTextToAutolinkNodes(`[${tagFull}]`))
       continue
     }
 
     const endOpen = findBalancedEnd(src, i, tagName)
     if (endOpen === -1) {
-      out.push(...linkifyPlainText(`[${tagFull}]`))
+      out.push(...plainTextToAutolinkNodes(`[${tagFull}]`))
       continue
     }
 
@@ -243,5 +192,5 @@ export function MatchDescriptionRichText({ source }: { source: string }) {
       ...parseBbCodeNodes(source),
     )
   }
-  return createElement(ReactMarkdown, null, source)
+  return createElement(ReactMarkdown, { remarkPlugins: [remarkGfm] }, source)
 }

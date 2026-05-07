@@ -73,8 +73,8 @@ export async function cropRectRegionToJpeg(
 ): Promise<Blob> {
   const image = await loadImage(imageSrc)
   const safe = clampCropToImage(image, pixelCrop)
-  let w = Math.round(safe.width)
-  let h = Math.round(safe.height)
+  const w = Math.round(safe.width)
+  const h = Math.round(safe.height)
   const long = Math.max(w, h)
   const scale = long > maxLongEdgePx ? maxLongEdgePx / long : 1
   const outW = Math.max(1, Math.round(w * scale))
