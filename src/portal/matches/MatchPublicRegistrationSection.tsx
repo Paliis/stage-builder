@@ -385,7 +385,7 @@ export function MatchPublicRegistrationSection({
       return
     }
     const div = division.trim()
-    const reopenRegistrationId = mine?.status === 'cancelled' ? mine.id : null
+    const staleCancelledRegistrationId = mine?.status === 'cancelled' ? mine.id : null
 
     const rowPayload = {
       division: div,
@@ -400,41 +400,36 @@ export function MatchPublicRegistrationSection({
 
     setSubmitBusy(true)
     try {
-      if (reopenRegistrationId) {
-        const { data: reopenedRow, error: reopenErr } = await sb
+      if (staleCancelledRegistrationId) {
+        const { data: removed, error: delErr } = await sb
           .from('match_registrations')
-          .update({
-            status: 'pending',
-            squad_id: pickedSquad,
-            payment_received: false,
-            payment_note: null,
-            ...rowPayload,
-          })
-          .eq('id', reopenRegistrationId)
+          .delete()
+          .eq('id', staleCancelledRegistrationId)
           .eq('competitor_user_id', user.id)
           .eq('status', 'cancelled')
           .select('id')
           .maybeSingle()
-        if (reopenErr) {
-          setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${reopenErr.message}`)
+        if (delErr) {
+          setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${delErr.message}`)
           return
         }
-        if (!reopenedRow) {
+        if (!removed) {
           setFeedback(p.matchDetailRegistrationReopenFailed)
           await refreshAll()
           return
         }
-      } else {
-        const { error } = await sb.from('match_registrations').insert({
-          match_id: matchUuid,
-          squad_id: pickedSquad,
-          competitor_user_id: user.id,
-          ...rowPayload,
-        })
-        if (error) {
-          setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${error.message}`)
-          return
-        }
+      }
+
+      const { error } = await sb.from('match_registrations').insert({
+        match_id: matchUuid,
+        squad_id: pickedSquad,
+        competitor_user_id: user.id,
+        ...rowPayload,
+      })
+      if (error) {
+        setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${error.message}`)
+        await refreshAll()
+        return
       }
 
       const { error: defErr } = await sb.from('participant_registration_defaults').upsert(
@@ -466,14 +461,22 @@ export function MatchPublicRegistrationSection({
     if (!mine || mine.status !== 'pending' || !user?.id) return
     setMineBusy(true)
     setFeedback(null)
-    const { error } = await sb
+    const { data: deleted, error } = await sb
       .from('match_registrations')
-      .update({ status: 'cancelled' })
+      .delete()
       .eq('id', mine.id)
       .eq('competitor_user_id', user.id)
+      .eq('status', 'pending')
+      .select('id')
+      .maybeSingle()
     setMineBusy(false)
     if (error) {
       setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${error.message}`)
+      return
+    }
+    if (!deleted) {
+      setFeedback(p.matchDetailRegistrationWithdrawFailed)
+      await refreshAll()
       return
     }
     await refreshAll()

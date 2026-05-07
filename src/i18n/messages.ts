@@ -506,8 +506,10 @@ export type MessageTree = {
     matchDetailRegistrationCancel: string
     matchDetailRegistrationCancelling: string
     matchDetailRegistrationPickOpenSquad: string
-    /** Update returned no row (race or policy): user should refresh. */
+    /** DELETE / cleanup returned no row (race or missing migration GRANT DELETE). */
     matchDetailRegistrationReopenFailed: string
+    /** Competitor DELETE (withdraw) removed zero rows — refresh or policies/DB need update. */
+    matchDetailRegistrationWithdrawFailed: string
     matchDetailRegistrationErrorPrefix: string
     matchDetailRegistrationCta: string
     matchDetailRegistrationModalTitle: string
@@ -1560,7 +1562,9 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationCancelling: 'Скасування…',
     matchDetailRegistrationPickOpenSquad: 'Оберіть сквод із вільними місцями.',
     matchDetailRegistrationReopenFailed:
-      'Заявку не вдалося поновити (сервер не оновив запис — часто через не накладену останню міграцію БД або змінені дані). Оновіть сторінку й спробуйте ще раз.',
+      'Не вдалося очистити стару скасовану заявку (немає прав DELETE у БД або запис уже змінився). Оновіть сторінку й спробуйте ще раз.',
+    matchDetailRegistrationWithdrawFailed:
+      'Не вдалося скасувати заявку (немає прав видалення в БД або статус уже інший). Оновіть сторінку.',
     matchDetailRegistrationErrorPrefix: 'Помилка',
     matchDetailRegistrationCta: 'Зареєструватись',
     matchDetailRegistrationModalTitle: 'Подання заявки на матч',
@@ -2606,7 +2610,9 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationCancelling: 'Cancelling…',
     matchDetailRegistrationPickOpenSquad: 'Choose a squad with open seats.',
     matchDetailRegistrationReopenFailed:
-      'Could not reopen your cancelled registration (the server did not update the row — often missing the latest DB migration or data changed). Refresh and try again.',
+      'Could not remove your cancelled signup row (missing DELETE permission or the row changed). Refresh and try again.',
+    matchDetailRegistrationWithdrawFailed:
+      'Could not cancel signup — deletion blocked by policies or status changed. Refresh and try again.',
     matchDetailRegistrationErrorPrefix: 'Error',
     matchDetailRegistrationCta: 'Register',
     matchDetailRegistrationModalTitle: 'Match sign-up',
