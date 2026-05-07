@@ -176,6 +176,15 @@
   color: var(--text-h);
 }
 
+.portal-account__field-label {
+  display: block;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  line-height: 1.35;
+  min-width: 0;
+}
+
 .portal-account__field input,
 .portal-account__field select,
 .portal-account__field textarea {
@@ -299,6 +308,83 @@
     grid-template-columns: 1fr;
   }
 
+  .portal-account__field {
+    display: grid;
+    grid-template-columns: minmax(7rem, 40%) minmax(0, 1fr);
+    align-items: center;
+    column-gap: 0.55rem;
+    row-gap: 0.28rem;
+  }
+
+  .portal-account__field > .portal-account__field-label {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    padding-inline-end: 0.15rem;
+  }
+
+  .portal-account__field > input,
+  .portal-account__field > select {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .portal-account__field > .portal-account__field-hint {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0;
+  }
+
+  .portal-account__avatar-row {
+    display: grid;
+    grid-template-columns: minmax(7rem, 40%) minmax(0, 1fr);
+    column-gap: 0.55rem;
+    row-gap: 0.45rem;
+    align-items: start;
+  }
+
+  .portal-account__avatar-row > .portal-account__field-label {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 0.35rem;
+  }
+
+  .portal-account__avatar-row > .portal-account__avatar-controls {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .portal-account__avatar-row > .portal-account__avatar-error,
+  .portal-account__avatar-row > .portal-account__field-hint {
+    grid-column: 1 / -1;
+    margin-inline: 0;
+  }
+
+  .portal-account__categories-fieldset {
+    display: grid;
+    grid-template-columns: minmax(7rem, 40%) minmax(0, 1fr);
+    column-gap: 0.55rem;
+    row-gap: 0.35rem;
+    align-items: start;
+  }
+
+  .portal-account__categories-legend {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    padding-top: 0.2rem;
+    max-width: 100%;
+  }
+
+  .portal-account__categories-fieldset > .portal-account__categories-grid {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+  }
+
   .portal-account__hub-table-wrap {
     overflow-x: visible;
   }
@@ -331,11 +417,11 @@
     margin-bottom: 0;
   }
 
-  .portal-account__hub-table tbody td {
+  .portal-account__hub-table tbody td[data-label] {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.28rem;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.45rem 0.6rem;
     width: 100%;
     padding: 0.52rem 0;
     border: none;
@@ -345,6 +431,48 @@
     box-sizing: border-box;
   }
 
+  .portal-account__hub-table tbody td.portal-account__hub-td-title[data-label] {
+    align-items: flex-start;
+  }
+
+  .portal-account__hub-table tbody td:not(.portal-account__hub-td-title)[data-label] {
+    align-items: center;
+  }
+
+  .portal-account__hub-table tbody td[data-label]::before {
+    content: attr(data-label) '\00a0:';
+    flex: 0 1 40%;
+    max-width: 9.5rem;
+    min-width: 5.25rem;
+    font-weight: 750;
+    font-size: 0.69rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--text-h);
+    opacity: 0.9;
+    line-height: 1.35;
+    white-space: normal;
+    word-break: break-word;
+    padding-top: 0.08rem;
+  }
+
+  .portal-account__hub-table tbody td.portal-account__hub-td-title[data-label]::before {
+    padding-top: 0.18rem;
+  }
+
+  .portal-account__hub-table tbody td[data-label] > * {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .portal-account__hub-table tbody td.portal-account__hub-td-status[data-label] > .portal-account__hub-status {
+    flex: 0 0 auto;
+  }
+
+  .portal-account__hub-td-actions:empty {
+    display: none;
+  }
+
   .portal-account__hub-table tbody td:first-of-type {
     border-top: none;
     padding-top: 0;
@@ -352,21 +480,6 @@
 
   .portal-account__hub-table tbody td:last-of-type {
     padding-bottom: 0;
-  }
-
-  .portal-account__hub-table tbody td[data-label]::before {
-    content: attr(data-label);
-    font-weight: 750;
-    font-size: 0.69rem;
-    letter-spacing: 0.045em;
-    text-transform: uppercase;
-    color: var(--text-h);
-    opacity: 0.9;
-    line-height: 1.35;
-  }
-
-  .portal-account__hub-td-actions:empty {
-    display: none;
   }
 
   .portal-account__hub-th-date,
@@ -393,11 +506,14 @@
   }
 
   .portal-account__hub-table-actions {
-    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
   }
 
   .portal-account__hub-table-actions .portal-btn {
     width: 100%;
+    min-width: 0;
   }
 }
 

@@ -480,7 +480,7 @@ export function AccountParticipantHub({
           >
             <div className="portal-account__psc-grid">
               <label className="portal-account__field">
-                {p.accountParticipantFieldFirstName}
+                <span className="portal-account__field-label">{p.accountParticipantFieldFirstName}</span>
                 <input
                   type="text"
                   required
@@ -491,7 +491,7 @@ export function AccountParticipantHub({
                 />
               </label>
               <label className="portal-account__field">
-                {p.accountParticipantFieldLastName}
+                <span className="portal-account__field-label">{p.accountParticipantFieldLastName}</span>
                 <input
                   type="text"
                   required
@@ -502,7 +502,7 @@ export function AccountParticipantHub({
                 />
               </label>
               <label className="portal-account__field">
-                {p.accountParticipantFieldPhone}
+                <span className="portal-account__field-label">{p.accountParticipantFieldPhone}</span>
                 <input
                   type="tel"
                   required
@@ -514,7 +514,7 @@ export function AccountParticipantHub({
                 />
               </label>
               <label className="portal-account__field">
-                {p.accountParticipantFieldRegion}
+                <span className="portal-account__field-label">{p.accountParticipantFieldRegion}</span>
                 <input
                   type="text"
                   value={defRegion}
@@ -525,7 +525,9 @@ export function AccountParticipantHub({
                 />
               </label>
               <div className="portal-account__avatar-row portal-account__psc-grid--full">
-                <span className="portal-account__field portal-account__avatar-label">{p.accountParticipantAvatarLabel}</span>
+                <span className="portal-account__field-label portal-account__avatar-label">
+                  {p.accountParticipantAvatarLabel}
+                </span>
                 <div className="portal-account__avatar-controls">
                   {defAvatarUrl ?
                     <img
@@ -585,7 +587,7 @@ export function AccountParticipantHub({
                 </p>
               </div>
               <label className="portal-account__field">
-                {p.accountParticipantFieldWeaponClass}
+                <span className="portal-account__field-label">{p.accountParticipantFieldWeaponClass}</span>
                 <select
                   required
                   value={defWeaponClass}
@@ -605,7 +607,7 @@ export function AccountParticipantHub({
                 </select>
               </label>
               <label className="portal-account__field">
-                {p.matchDetailRegistrationDivision}
+                <span className="portal-account__field-label">{p.matchDetailRegistrationDivision}</span>
                 <select
                   required
                   value={defDiv}
@@ -624,7 +626,7 @@ export function AccountParticipantHub({
                 : null}
               </label>
               <label className="portal-account__field">
-                {p.matchDetailRegistrationPowerFactor}
+                <span className="portal-account__field-label">{p.matchDetailRegistrationPowerFactor}</span>
                 <select
                   value={defPf}
                   onChange={(e) =>
