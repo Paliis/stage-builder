@@ -556,6 +556,11 @@ a.portal-match-title-ellipsis:hover {
   color: var(--text-h);
 }
 
+.portal-reg-modal:not(.portal-reg-modal--guest-auth) .portal-reg-modal__title {
+  text-align: center;
+  text-wrap: balance;
+}
+
 .portal-reg-modal__guest-auth-lead {
   margin: 0;
   font-size: 0.9rem;
@@ -633,19 +638,6 @@ a.portal-match-title-ellipsis:hover {
   }
 }
 
-.portal-reg-modal__grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.72rem 1rem;
-  align-items: start;
-}
-
-@media (max-width: 720px) {
-  .portal-reg-modal__grid-3 {
-    grid-template-columns: 1fr;
-  }
-}
-
 .portal-reg-modal__section {
   display: grid;
   gap: 0.72rem;
@@ -663,6 +655,8 @@ a.portal-match-title-ellipsis:hover {
   text-transform: uppercase;
   color: var(--text-h);
   opacity: 0.92;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .portal-reg-modal__readonly-list {
@@ -708,12 +702,22 @@ a.portal-match-title-ellipsis:hover {
   font-weight: 650;
 }
 
+.portal-reg-modal__label--center {
+  text-align: center;
+  justify-items: stretch;
+}
+
+.portal-reg-modal__label--center .portal-reg-modal__control,
+.portal-reg-modal__label--center .portal-reg-modal__select {
+  text-align: center;
+}
+
 .portal-reg-modal__control {
   font: inherit;
   padding: 0.45rem 0.55rem;
   border-radius: 0.5rem;
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--btn-bg);
   color: var(--text);
 }
 
@@ -738,6 +742,8 @@ a.portal-match-title-ellipsis:hover {
   font-size: 0.84rem;
   font-weight: 700;
   color: var(--text-h);
+  text-align: center;
+  width: 100%;
 }
 
 .portal-reg-modal__cat-grid {

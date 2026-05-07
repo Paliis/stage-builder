@@ -104,7 +104,7 @@ export function MatchPublicRegistrationSection({
 
   const [pickedSquad, setPickedSquad] = useState('')
   const [division, setDivision] = useState('')
-  const [powerFactor, setPowerFactor] = useState<'MAJOR' | 'MINOR' | ''>('')
+  const [powerFactor, setPowerFactor] = useState<'MAJOR' | 'MINOR'>('MINOR')
   const [signupCategories, setSignupCategories] = useState<string[]>([])
   const [cabinetFirstName, setCabinetFirstName] = useState('')
   const [cabinetLastName, setCabinetLastName] = useState('')
@@ -123,7 +123,7 @@ export function MatchPublicRegistrationSection({
       setMine(undefined)
       setPickedSquad('')
       setDivision('')
-      setPowerFactor('')
+      setPowerFactor('MINOR')
       setSignupCategories([])
       setCabinetFirstName('')
       setCabinetLastName('')
@@ -163,9 +163,9 @@ export function MatchPublicRegistrationSection({
       isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), row.division)
     )
       setDivision(row.division)
-    if (row?.power_factor) {
+    if (row) {
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
-      setPowerFactor(pf === 'MAJOR' ? 'MAJOR' : pf === 'MINOR' ? 'MINOR' : '')
+      setPowerFactor(pf === 'MAJOR' ? 'MAJOR' : 'MINOR')
     }
   }, [configured, sb, matchUuid, user, p.matchesLoadError, matchDiscipline])
 
@@ -192,13 +192,14 @@ export function MatchPublicRegistrationSection({
           divRaw
         : ''
     })
-    setPowerFactor((pf) => {
-      if (pf !== '') return pf
+    setPowerFactor((prev) => {
       const raw =
         typeof row.power_factor === 'string' ?
           row.power_factor.trim().toUpperCase()
         : ''
-      return raw === 'MAJOR' ? 'MAJOR' : raw === 'MINOR' ? 'MINOR' : ''
+      if (raw === 'MAJOR') return 'MAJOR'
+      if (raw === 'MINOR') return 'MINOR'
+      return prev
     })
     setSignupCategories((prev) => {
       if (prev.length > 0) return prev
@@ -392,7 +393,7 @@ export function MatchPublicRegistrationSection({
       phone: phoneTrim,
       weapon_details: '',
       competitor_region: cabinetRegion.trim(),
-      power_factor: powerFactor === '' ? null : powerFactor,
+      power_factor: powerFactor,
       categories: resolveShooterCategoriesForStorage(signupCategories),
     })
     setSubmitBusy(false)
@@ -413,7 +414,7 @@ export function MatchPublicRegistrationSection({
         region: cabinetRegion.trim(),
         weapon_class: matchWeaponClassId,
         categories: resolveShooterCategoriesForStorage(signupCategories),
-        power_factor: powerFactor === '' ? null : powerFactor,
+        power_factor: powerFactor,
       },
       { onConflict: 'user_id' },
     )
@@ -456,7 +457,7 @@ export function MatchPublicRegistrationSection({
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionContact}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionContact}</h4>
               <div className="portal-reg-modal__grid-2">
-                <label className="portal-reg-modal__label">
+                <label className="portal-reg-modal__label portal-reg-modal__label--center">
                   {p.accountParticipantFieldLastName}
                   <input
                     type="text"
@@ -468,7 +469,7 @@ export function MatchPublicRegistrationSection({
                     className="portal-reg-modal__control"
                   />
                 </label>
-                <label className="portal-reg-modal__label">
+                <label className="portal-reg-modal__label portal-reg-modal__label--center">
                   {p.accountParticipantFieldFirstName}
                   <input
                     type="text"
@@ -481,53 +482,67 @@ export function MatchPublicRegistrationSection({
                   />
                 </label>
               </div>
-              <label className="portal-reg-modal__label">
-                {p.matchDetailRegistrationPhone}
-                <input
-                  type="tel"
-                  required
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  disabled={submitBusy}
-                  autoComplete="tel"
-                  className="portal-reg-modal__control"
-                />
-              </label>
+              <div className="portal-reg-modal__grid-2">
+                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                  {p.matchDetailRegistrationPhone}
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    disabled={submitBusy}
+                    autoComplete="tel"
+                    className="portal-reg-modal__control"
+                  />
+                </label>
+                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                  {p.accountParticipantFieldRegion}
+                  <input
+                    type="text"
+                    value={cabinetRegion}
+                    onChange={(e) => setCabinetRegion(e.target.value)}
+                    disabled={submitBusy}
+                    autoComplete="address-level1"
+                    placeholder={p.accountParticipantFieldRegionPlaceholder}
+                    className="portal-reg-modal__control"
+                  />
+                </label>
+              </div>
             </section>
 
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionMatch}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionMatch}</h4>
-              <div className="portal-reg-modal__grid-3">
-                <label className="portal-reg-modal__label">
-                  {p.matchDetailRegistrationFieldSquad}
-                  <select
-                    required
-                    value={pickedSquad}
-                    onChange={(ev) => setPickedSquad(ev.target.value)}
-                    disabled={submitBusy}
-                    className="portal-reg-modal__control portal-reg-modal__select"
-                  >
-                    <option value="">{p.matchDetailRegistrationSelectSquad}</option>
-                    {(metrics ?? []).map((r) => {
-                      const phaseLabel =
-                        phaseOf(r) === 'prematch' ?
-                          p.matchDetailRegistrationPhaseShortPrematch
-                        : p.matchDetailRegistrationPhaseShortMain
-                      return (
-                        <option
-                          key={r.squad_id}
-                          value={r.squad_id}
-                          disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
-                        >
-                          [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} (
-                          {spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
-                        </option>
-                      )
-                    })}
-                  </select>
-                </label>
+              <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                {p.matchDetailRegistrationFieldSquad}
+                <select
+                  required
+                  value={pickedSquad}
+                  onChange={(ev) => setPickedSquad(ev.target.value)}
+                  disabled={submitBusy}
+                  className="portal-reg-modal__control portal-reg-modal__select"
+                >
+                  <option value="">{p.matchDetailRegistrationSelectSquad}</option>
+                  {(metrics ?? []).map((r) => {
+                    const phaseLabel =
+                      phaseOf(r) === 'prematch' ?
+                        p.matchDetailRegistrationPhaseShortPrematch
+                      : p.matchDetailRegistrationPhaseShortMain
+                    return (
+                      <option
+                        key={r.squad_id}
+                        value={r.squad_id}
+                        disabled={(spotFreeMap[r.squad_id] ?? 0) <= 0}
+                      >
+                        [{phaseLabel}] {formatSquadLabelNumberOnly(r.squad_label)} (
+                        {spotFreeMap[r.squad_id] ?? 0}/{Number(r.capacity)})
+                      </option>
+                    )
+                  })}
+                </select>
+              </label>
 
-                <label className="portal-reg-modal__label">
+              <div className="portal-reg-modal__grid-2">
+                <label className="portal-reg-modal__label portal-reg-modal__label--center">
                   {p.matchDetailRegistrationDivision}
                   <select
                     required
@@ -545,38 +560,22 @@ export function MatchPublicRegistrationSection({
                   </select>
                 </label>
 
-                <label className="portal-reg-modal__label">
-                  {p.matchDetailRegistrationPFOptional}
+                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                  {p.matchDetailRegistrationPowerFactor}
                   <select
+                    required
                     value={powerFactor}
                     onChange={(ev) =>
-                      setPowerFactor(ev.target.value === '' ? '' : ev.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
+                      setPowerFactor(ev.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
                     }
                     disabled={submitBusy}
                     className="portal-reg-modal__control portal-reg-modal__select"
                   >
-                    <option value="">{p.matchDetailRegistrationPFNone}</option>
                     <option value="MAJOR">{p.matchDetailRegistrationPFMajor}</option>
                     <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
                   </select>
                 </label>
               </div>
-            </section>
-
-            <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionWeapon}>
-              <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionWeapon}</h4>
-              <label className="portal-reg-modal__label">
-                {p.accountParticipantFieldRegion}
-                <input
-                  type="text"
-                  value={cabinetRegion}
-                  onChange={(e) => setCabinetRegion(e.target.value)}
-                  disabled={submitBusy}
-                  autoComplete="address-level1"
-                  placeholder={p.accountParticipantFieldRegionPlaceholder}
-                  className="portal-reg-modal__control"
-                />
-              </label>
             </section>
 
             <fieldset className="portal-reg-modal__categories">

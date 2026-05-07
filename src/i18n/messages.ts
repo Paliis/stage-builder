@@ -488,6 +488,8 @@ export type MessageTree = {
     matchDetailRegistrationSelectSquad: string
     matchDetailRegistrationDivision: string
     matchDetailRegistrationPFOptional: string
+    /** Required PF label on public match signup (no “optional”). */
+    matchDetailRegistrationPowerFactor: string
     matchDetailRegistrationPFNone: string
     matchDetailRegistrationPFMajor: string
     matchDetailRegistrationPFMinor: string
@@ -513,7 +515,6 @@ export type MessageTree = {
     matchDetailRegistrationNameRequired: string
     matchDetailRegistrationSectionContact: string
     matchDetailRegistrationSectionMatch: string
-    matchDetailRegistrationSectionWeapon: string
     matchDetailRegistrationPhone: string
     matchDetailRegistrationPhoneInvalid: string
     matchDetailRegistrationWeaponDetails: string
@@ -1534,6 +1535,7 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationSelectSquad: 'Оберіть сквод',
     matchDetailRegistrationDivision: 'Дивізіон',
     matchDetailRegistrationPFOptional: 'Power factor (необов’язково)',
+    matchDetailRegistrationPowerFactor: 'Фактор потужності',
     matchDetailRegistrationPFNone: '—',
     matchDetailRegistrationPFMajor: 'Major',
     matchDetailRegistrationPFMinor: 'Minor',
@@ -1559,7 +1561,6 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationNameRequired: 'Вкажіть прізвище та ім’я.',
     matchDetailRegistrationSectionContact: 'Контакт',
     matchDetailRegistrationSectionMatch: 'Участь',
-    matchDetailRegistrationSectionWeapon: 'Регіон',
     matchDetailRegistrationPhone: 'Телефон',
     matchDetailRegistrationPhoneInvalid: 'Вкажіть дійсний номер телефону (щонайменше 7 символів).',
     matchDetailRegistrationWeaponDetails: 'Опис зброї',
@@ -2573,6 +2574,7 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationSelectSquad: 'Select a squad',
     matchDetailRegistrationDivision: 'Division',
     matchDetailRegistrationPFOptional: 'Power factor (optional)',
+    matchDetailRegistrationPowerFactor: 'Power factor',
     matchDetailRegistrationPFNone: '—',
     matchDetailRegistrationPFMajor: 'Major',
     matchDetailRegistrationPFMinor: 'Minor',
@@ -2598,7 +2600,6 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationNameRequired: 'Enter last name and first name.',
     matchDetailRegistrationSectionContact: 'Contact',
     matchDetailRegistrationSectionMatch: 'Participation',
-    matchDetailRegistrationSectionWeapon: 'Region',
     matchDetailRegistrationPhone: 'Phone',
     matchDetailRegistrationPhoneInvalid: 'Enter a valid phone number (at least 7 characters).',
     matchDetailRegistrationWeaponDetails: 'Firearm description',
