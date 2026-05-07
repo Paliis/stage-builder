@@ -349,12 +349,12 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
       : null}
 
       {ordered.length > 0 ?
+        <div className="portal-match-org-stages-table-wrap">
         <table
           style={{
             width: '100%',
             borderCollapse: 'collapse',
             fontSize: '0.82rem',
-            marginBottom: '1rem',
           }}
         >
           <thead>
@@ -419,6 +419,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
             })}
           </tbody>
         </table>
+        </div>
       : null}
     </section>
   )
