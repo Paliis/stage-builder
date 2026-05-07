@@ -144,7 +144,7 @@ export function AccountParticipantHub({
   )
 
   const [defDiv, setDefDiv] = useState('')
-  const [defPf, setDefPf] = useState<'MAJOR' | 'MINOR' | ''>('')
+  const [defPf, setDefPf] = useState<'MAJOR' | 'MINOR'>('MINOR')
   const [defRegion, setDefRegion] = useState('')
   const [defCategories, setDefCategories] = useState<string[]>([])
   const [defWeaponClass, setDefWeaponClass] = useState('')
@@ -194,7 +194,7 @@ export function AccountParticipantHub({
       const rawDiv = typeof row.division === 'string' ? row.division : ''
       setDefDiv(wc && isValidDivisionForWeapon(wc, rawDiv) ? rawDiv : '')
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
-      setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : '')
+      setDefPf(pf === 'MAJOR' || pf === 'MINOR' ? pf : 'MINOR')
       setDefRegion(typeof row.region === 'string' ? row.region : '')
       setDefCategories(normalizeCategoryList(row.categories))
       setDefFirstName(typeof row.first_name === 'string' ? row.first_name : '')
@@ -205,7 +205,7 @@ export function AccountParticipantHub({
     } else {
       setDefWeaponClass('')
       setDefDiv('')
-      setDefPf('')
+      setDefPf('MINOR')
       setDefRegion('')
       setDefCategories([])
       setDefFirstName('')
@@ -290,24 +290,55 @@ export function AccountParticipantHub({
     if (!sb) return
     setDefSaving(true)
     setDefFeedback(null)
+    const fn = defFirstName.trim()
+    const ln = defLastName.trim()
     const phoneTrimAcc = defPhone.trim()
-    if (phoneTrimAcc !== '' && !isValidParticipantPhone(phoneTrimAcc)) {
+    if (!fn || !ln) {
+      setDefSaving(false)
+      setDefFeedback(p.matchDetailRegistrationNameRequired)
+      return
+    }
+    if (!isValidParticipantPhone(phoneTrimAcc)) {
       setDefSaving(false)
       setDefFeedback(p.accountParticipantPhoneInvalid)
       return
     }
+    const wc = defWeaponClass.trim()
+    if (!wc || !(WEAPON_CLASS_ORDER as readonly string[]).includes(wc)) {
+      setDefSaving(false)
+      setDefFeedback(p.accountParticipantWeaponClassRequired)
+      return
+    }
+    const divTrim = defDiv.trim()
+    if (!isValidDivisionForWeapon(wc, divTrim)) {
+      setDefSaving(false)
+      setDefFeedback(p.accountParticipantDivisionRequired)
+      return
+    }
+    if (defCategories.length === 0) {
+      setDefSaving(false)
+      setDefFeedback(p.accountParticipantCategoryRequired)
+      return
+    }
+    const wd = defWeaponDetails.trim()
+    if (!wd) {
+      setDefSaving(false)
+      setDefFeedback(p.accountParticipantWeaponDetailsRequired)
+      return
+    }
+
     const { error } = await sb.from('participant_registration_defaults').upsert({
       user_id: userId,
-      division: defDiv.trim(),
+      division: divTrim,
       classification_grade: '',
-      power_factor: defPf === '' ? null : defPf,
-      phone: defPhone.trim(),
-      weapon_details: defWeaponDetails.trim(),
+      power_factor: defPf,
+      phone: phoneTrimAcc,
+      weapon_details: wd,
       region: defRegion.trim(),
       categories: resolveShooterCategoriesForStorage(defCategories),
-      weapon_class: defWeaponClass.trim(),
-      first_name: defFirstName.trim(),
-      last_name: defLastName.trim(),
+      weapon_class: wc,
+      first_name: fn,
+      last_name: ln,
       avatar_url: defAvatarUrl.trim(),
     })
     setDefSaving(false)
@@ -461,6 +492,7 @@ export function AccountParticipantHub({
                 {p.accountParticipantFieldFirstName}
                 <input
                   type="text"
+                  required
                   value={defFirstName}
                   onChange={(e) => setDefFirstName(e.target.value)}
                   disabled={defSaving}
@@ -471,6 +503,7 @@ export function AccountParticipantHub({
                 {p.accountParticipantFieldLastName}
                 <input
                   type="text"
+                  required
                   value={defLastName}
                   onChange={(e) => setDefLastName(e.target.value)}
                   disabled={defSaving}
@@ -481,6 +514,7 @@ export function AccountParticipantHub({
                 {p.accountParticipantFieldPhone}
                 <input
                   type="tel"
+                  required
                   maxLength={28}
                   value={defPhone}
                   onChange={(e) => setDefPhone(e.target.value)}
@@ -562,6 +596,7 @@ export function AccountParticipantHub({
               <label className="portal-account__field">
                 {p.accountParticipantFieldWeaponClass}
                 <select
+                  required
                   value={defWeaponClass}
                   onChange={(e) => {
                     const v = e.target.value
@@ -581,6 +616,7 @@ export function AccountParticipantHub({
               <label className="portal-account__field">
                 {p.matchDetailRegistrationDivision}
                 <select
+                  required
                   value={defDiv}
                   onChange={(e) => setDefDiv(e.target.value)}
                   disabled={defSaving || !defWeaponClass}
@@ -599,6 +635,7 @@ export function AccountParticipantHub({
               <label className="portal-account__field portal-account__psc-grid--full">
                 {p.accountParticipantFieldWeaponDetails}
                 <textarea
+                  required
                   value={defWeaponDetails}
                   onChange={(e) => setDefWeaponDetails(e.target.value)}
                   disabled={defSaving}
@@ -608,20 +645,19 @@ export function AccountParticipantHub({
                 />
               </label>
               <label className="portal-account__field">
-                {p.matchDetailRegistrationPFOptional}
+                {p.matchDetailRegistrationPowerFactor}
                 <select
                   value={defPf}
                   onChange={(e) =>
-                    setDefPf(e.target.value === '' ? '' : e.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
+                    setDefPf(e.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
                   }
                   disabled={defSaving}
                 >
-                  <option value="">{p.matchDetailRegistrationPFNone}</option>
                   <option value="MAJOR">{p.matchDetailRegistrationPFMajor}</option>
                   <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
                 </select>
               </label>
-              <fieldset className="portal-account__categories-fieldset">
+              <fieldset className="portal-account__categories-fieldset" aria-required="true">
                 <legend className="portal-account__categories-legend">{p.accountParticipantFieldCategory}</legend>
                 <div className="portal-account__categories-grid" role="group">
                   {SHOOTER_CATEGORIES.map((c) => {

@@ -10,6 +10,7 @@ import {
 import { createPortal } from 'react-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { isValidParticipantPhone } from '../../lib/isValidParticipantPhone'
+import { participantDefaultsCompleteForMatchPrefill } from '../../lib/participantDefaultsPrefillGate'
 import type { Locale, MessageTree } from '../../i18n/messages'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
@@ -78,6 +79,7 @@ type ParticipantDefaultsRow = {
   last_name?: string | null
   phone?: string | null
   region?: string | null
+  weapon_class?: string | null
 }
 
 export function MatchPublicRegistrationSection({
@@ -223,13 +225,15 @@ export function MatchPublicRegistrationSection({
       const { data, error } = await sb
         .from('participant_registration_defaults')
         .select(
-          'division, power_factor, categories, first_name, last_name, phone, region',
+          'division, power_factor, categories, first_name, last_name, phone, region, weapon_class',
         )
         .eq('user_id', user.id)
         .maybeSingle()
 
       if (defaultsPrefetchKeyRef.current !== pendingKey) return
       if (error || !data) return
+      if (!participantDefaultsCompleteForMatchPrefill(data as ParticipantDefaultsRow, matchWeaponClassId))
+        return
 
       applyParticipantDefaultsRow(data as ParticipantDefaultsRow)
     })()
@@ -240,6 +244,7 @@ export function MatchPublicRegistrationSection({
     user?.id,
     mine,
     matchUuid,
+    matchWeaponClassId,
     sb,
   ])
 
@@ -293,11 +298,16 @@ export function MatchPublicRegistrationSection({
         const { data, error } = await sb
           .from('participant_registration_defaults')
           .select(
-            'division, power_factor, categories, first_name, last_name, phone, region',
+            'division, power_factor, categories, first_name, last_name, phone, region, weapon_class',
           )
           .eq('user_id', user.id)
           .maybeSingle()
-        if (!error && data) applyParticipantDefaultsRow(data as ParticipantDefaultsRow)
+        if (
+          !error &&
+          data &&
+          participantDefaultsCompleteForMatchPrefill(data as ParticipantDefaultsRow, matchWeaponClassId)
+        )
+          applyParticipantDefaultsRow(data as ParticipantDefaultsRow)
       })()
     }
   }
@@ -382,6 +392,10 @@ export function MatchPublicRegistrationSection({
     const phoneTrim = phone.trim()
     if (!isValidParticipantPhone(phoneTrim)) {
       setFeedback(p.matchDetailRegistrationPhoneInvalid)
+      return
+    }
+    if (signupCategories.length === 0) {
+      setFeedback(p.matchDetailRegistrationCategoryRequired)
       return
     }
     const div = division.trim()
@@ -644,7 +658,7 @@ export function MatchPublicRegistrationSection({
               </div>
             </section>
 
-            <fieldset className="portal-reg-modal__categories">
+            <fieldset className="portal-reg-modal__categories" aria-required="true">
               <legend className="portal-reg-modal__categories-legend">{p.accountParticipantFieldCategory}</legend>
               <div className="portal-reg-modal__cat-grid" role="group">
                 {SHOOTER_CATEGORIES.map((c) => {
