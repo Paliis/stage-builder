@@ -633,6 +633,19 @@ a.portal-match-title-ellipsis:hover {
   }
 }
 
+.portal-reg-modal__grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.72rem 1rem;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .portal-reg-modal__grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
 .portal-reg-modal__section {
   display: grid;
   gap: 0.72rem;

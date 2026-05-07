@@ -19,7 +19,6 @@ import {
   WEAPON_CLASS_ORDER,
   divisionsForWeapon,
   isValidDivisionForWeapon,
-  weaponClassLabel,
 } from '../shooterProfileCatalog'
 import {
   type RegistrationMetricRow,
@@ -77,9 +76,7 @@ type ParticipantDefaultsRow = {
   first_name?: string | null
   last_name?: string | null
   phone?: string | null
-  weapon_details?: string | null
   region?: string | null
-  weapon_class?: string | null
 }
 
 export function MatchPublicRegistrationSection({
@@ -112,9 +109,7 @@ export function MatchPublicRegistrationSection({
   const [cabinetFirstName, setCabinetFirstName] = useState('')
   const [cabinetLastName, setCabinetLastName] = useState('')
   const [phone, setPhone] = useState('')
-  const [weaponDetails, setWeaponDetails] = useState('')
   const [cabinetRegion, setCabinetRegion] = useState('')
-  const [cabinetWeaponClassId, setCabinetWeaponClassId] = useState('')
 
   const [submitBusy, setSubmitBusy] = useState(false)
   const [mineBusy, setMineBusy] = useState(false)
@@ -133,9 +128,7 @@ export function MatchPublicRegistrationSection({
       setCabinetFirstName('')
       setCabinetLastName('')
       setPhone('')
-      setWeaponDetails('')
       setCabinetRegion('')
-      setCabinetWeaponClassId('')
       setFeedback(null)
     })
   }, [matchUuid])
@@ -185,18 +178,10 @@ export function MatchPublicRegistrationSection({
     setCabinetFirstName(typeof row.first_name === 'string' ? row.first_name : '')
     setCabinetLastName(typeof row.last_name === 'string' ? row.last_name : '')
     setCabinetRegion(typeof row.region === 'string' ? row.region : '')
-    const wcRaw = typeof row.weapon_class === 'string' ? row.weapon_class.trim() : ''
-    setCabinetWeaponClassId(
-      wcRaw && (WEAPON_CLASS_ORDER as readonly string[]).includes(wcRaw) ? wcRaw : '',
-    )
 
     setPhone((prev) => {
       if (prev.trim()) return prev
       return typeof row.phone === 'string' ? row.phone : ''
-    })
-    setWeaponDetails((prev) => {
-      if (prev.trim()) return prev
-      return typeof row.weapon_details === 'string' ? row.weapon_details : ''
     })
 
     setDivision((d) => {
@@ -234,7 +219,7 @@ export function MatchPublicRegistrationSection({
       const { data, error } = await sb
         .from('participant_registration_defaults')
         .select(
-          'division, power_factor, categories, first_name, last_name, phone, weapon_details, region, weapon_class',
+          'division, power_factor, categories, first_name, last_name, phone, region',
         )
         .eq('user_id', user.id)
         .maybeSingle()
@@ -304,7 +289,7 @@ export function MatchPublicRegistrationSection({
         const { data, error } = await sb
           .from('participant_registration_defaults')
           .select(
-            'division, power_factor, categories, first_name, last_name, phone, weapon_details, region, weapon_class',
+            'division, power_factor, categories, first_name, last_name, phone, region',
           )
           .eq('user_id', user.id)
           .maybeSingle()
@@ -405,7 +390,7 @@ export function MatchPublicRegistrationSection({
       division: div,
       classification_grade: '',
       phone: phoneTrim,
-      weapon_details: weaponDetails.trim(),
+      weapon_details: '',
       competitor_region: cabinetRegion.trim(),
       power_factor: powerFactor === '' ? null : powerFactor,
       categories: resolveShooterCategoriesForStorage(signupCategories),
@@ -417,9 +402,6 @@ export function MatchPublicRegistrationSection({
       return
     }
 
-    const wcRaw = cabinetWeaponClassId.trim()
-    const weaponClassStored =
-      wcRaw && (WEAPON_CLASS_ORDER as readonly string[]).includes(wcRaw) ? wcRaw : ''
     const { error: defErr } = await sb.from('participant_registration_defaults').upsert(
       {
         user_id: user.id,
@@ -428,9 +410,8 @@ export function MatchPublicRegistrationSection({
         division: div,
         classification_grade: '',
         phone: phoneTrim,
-        weapon_details: weaponDetails.trim(),
         region: cabinetRegion.trim(),
-        weapon_class: weaponClassStored,
+        weapon_class: matchWeaponClassId,
         categories: resolveShooterCategoriesForStorage(signupCategories),
         power_factor: powerFactor === '' ? null : powerFactor,
       },
@@ -516,7 +497,7 @@ export function MatchPublicRegistrationSection({
 
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionMatch}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionMatch}</h4>
-              <div className="portal-reg-modal__grid-2">
+              <div className="portal-reg-modal__grid-3">
                 <label className="portal-reg-modal__label">
                   {p.matchDetailRegistrationFieldSquad}
                   <select
@@ -563,51 +544,37 @@ export function MatchPublicRegistrationSection({
                     ))}
                   </select>
                 </label>
+
+                <label className="portal-reg-modal__label">
+                  {p.matchDetailRegistrationPFOptional}
+                  <select
+                    value={powerFactor}
+                    onChange={(ev) =>
+                      setPowerFactor(ev.target.value === '' ? '' : ev.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
+                    }
+                    disabled={submitBusy}
+                    className="portal-reg-modal__control portal-reg-modal__select"
+                  >
+                    <option value="">{p.matchDetailRegistrationPFNone}</option>
+                    <option value="MAJOR">{p.matchDetailRegistrationPFMajor}</option>
+                    <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
+                  </select>
+                </label>
               </div>
             </section>
 
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionWeapon}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionWeapon}</h4>
-              <div className="portal-reg-modal__grid-2">
-                <label className="portal-reg-modal__label">
-                  {p.accountParticipantFieldWeaponClass}
-                  <select
-                    value={cabinetWeaponClassId}
-                    onChange={(e) => setCabinetWeaponClassId(e.target.value)}
-                    disabled={submitBusy}
-                    className="portal-reg-modal__control portal-reg-modal__select"
-                  >
-                    <option value="">{p.accountParticipantOptionNotSelected}</option>
-                    {WEAPON_CLASS_ORDER.map((id) => (
-                      <option key={id} value={id}>
-                        {weaponClassLabel(id as WeaponClassId, locale)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="portal-reg-modal__label">
-                  {p.accountParticipantFieldRegion}
-                  <input
-                    type="text"
-                    value={cabinetRegion}
-                    onChange={(e) => setCabinetRegion(e.target.value)}
-                    disabled={submitBusy}
-                    autoComplete="address-level1"
-                    placeholder={p.accountParticipantFieldRegionPlaceholder}
-                    className="portal-reg-modal__control"
-                  />
-                </label>
-              </div>
               <label className="portal-reg-modal__label">
-                {p.matchDetailRegistrationWeaponDetails}
-                <textarea
-                  value={weaponDetails}
-                  onChange={(e) => setWeaponDetails(e.target.value)}
+                {p.accountParticipantFieldRegion}
+                <input
+                  type="text"
+                  value={cabinetRegion}
+                  onChange={(e) => setCabinetRegion(e.target.value)}
                   disabled={submitBusy}
-                  autoComplete="off"
-                  rows={3}
-                  placeholder={p.matchDetailRegistrationWeaponDetailsPlaceholder}
-                  className="portal-reg-modal__control portal-reg-modal__textarea"
+                  autoComplete="address-level1"
+                  placeholder={p.accountParticipantFieldRegionPlaceholder}
+                  className="portal-reg-modal__control"
                 />
               </label>
             </section>
@@ -638,22 +605,6 @@ export function MatchPublicRegistrationSection({
                 })}
               </div>
             </fieldset>
-
-            <label className="portal-reg-modal__label">
-              {p.matchDetailRegistrationPFOptional}
-              <select
-                value={powerFactor}
-                onChange={(ev) =>
-                  setPowerFactor(ev.target.value === '' ? '' : ev.target.value === 'MAJOR' ? 'MAJOR' : 'MINOR')
-                }
-                disabled={submitBusy}
-                className="portal-reg-modal__control portal-reg-modal__select portal-reg-modal__select--narrow"
-              >
-                <option value="">{p.matchDetailRegistrationPFNone}</option>
-                <option value="MAJOR">{p.matchDetailRegistrationPFMajor}</option>
-                <option value="MINOR">{p.matchDetailRegistrationPFMinor}</option>
-              </select>
-            </label>
 
             <div className="portal-reg-modal__actions">
               <button type="button" className="portal-btn portal-btn--secondary" disabled={submitBusy} onClick={closeRegistrationModal}>
