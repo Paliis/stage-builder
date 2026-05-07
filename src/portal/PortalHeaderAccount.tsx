@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { formatTemplate } from '../i18n/format'
 import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient'
 import type { MessageTree } from '../i18n/messages'
-import { useOrganizerPortalStatus } from './useOrganizerPortalStatus'
 import { useSupabaseSession } from './useSupabaseSession'
 import { useParticipantAvatarUrl } from './useParticipantAvatarUrl'
 import './PortalShell.css'
@@ -28,10 +27,9 @@ function ProfileAccountIconSvg() {
   )
 }
 
-/** Header cluster: badges (single row) + profile icon + sign-out — email only in tooltip / aria. */
+/** Header cluster: profile icon + sign-out — email only in tooltip / aria. */
 export function PortalHeaderAccount({ locale, p, onAfterSignOut, suppressGuestSignInLink }: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
-  const organizer = useOrganizerPortalStatus(user?.id)
   const participantAvatarUrl = useParticipantAvatarUrl(user?.id)
 
   const onSignOut = useCallback(async () => {
@@ -71,20 +69,6 @@ export function PortalHeaderAccount({ locale, p, onAfterSignOut, suppressGuestSi
 
   return (
     <div className="portal-shell__account" role="group" aria-label={p.accountHeaderAria}>
-      <div className="portal-shell__badges">
-        <span className="portal-shell__badge portal-shell__badge--participant" title={p.accountBadgeParticipantHint}>
-          {p.accountBadgeParticipant}
-        </span>
-        {organizer === 'loading' ?
-          <span className="portal-shell__badge portal-shell__badge--muted">{p.accountBadgeLoading}</span>
-        : organizer === 'active' ?
-          <span className="portal-shell__badge portal-shell__badge--organizer">{p.accountBadgeOrganizerActive}</span>
-        : organizer === 'blocked' ?
-          <span className="portal-shell__badge portal-shell__badge--blocked">{p.accountBadgeOrganizerBlocked}</span>
-        : organizer === 'pending' ?
-          <span className="portal-shell__badge portal-shell__badge--pending">{p.accountBadgeOrganizerPending}</span>
-        : null}
-      </div>
       <Link
         to={accountPath}
         className={

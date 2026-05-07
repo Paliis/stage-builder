@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import { MatchDescriptionRichText } from './matchDescriptionRichText'
+import { PlainTextAutolink } from './plainTextAutolink'
 import { matchDescriptionLooksLikeBbCode } from './matchDescriptionLooksLikeBbCode'
 import { formatTemplate } from '../../i18n/format'
 import { useI18n } from '../../i18n/useI18n'
@@ -308,6 +309,98 @@ export function MatchPublicDetailPage() {
   const programmeDisplayTitles =
     programmeLinks !== undefined && !programmeError ? programmeListDisplayTitles(programmeLinks, p) : null
 
+  function renderParticipantsSectionBody(match: MatchDetailRow) {
+    const vis = match.participant_list_visibility ?? 'closed'
+    if (vis !== 'open') {
+      return <p className="portal-match-public-detail__prose">{p.matchDetailParticipantsClosed}</p>
+    }
+    if (roster === undefined) {
+      return <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
+    }
+    if (rosterError) {
+      return (
+        <p role="alert" className="portal-match-public-detail__muted">
+          {p.matchesLoadError}: {rosterError}
+        </p>
+      )
+    }
+    const rosterList = roster ?? []
+    if (rosterList.length === 0) {
+      if (openVisibilityActiveRegTotal !== undefined && openVisibilityActiveRegTotal > 0) {
+        return (
+          <p className="portal-match-public-detail__prose">
+            {formatTemplate(p.matchDetailParticipantsOpenAwaitingConfirmation, {
+              count: openVisibilityActiveRegTotal,
+            })}
+          </p>
+        )
+      }
+      return <p className="portal-match-public-detail__prose">{p.matchDetailParticipantsOpenEmpty}</p>
+    }
+    return (
+      <>
+        <div className="portal-match-public-detail__table-scroll">
+          <table className="portal-match-public-participants-table">
+            <thead>
+              <tr>
+                <th scope="col" className="portal-match-public-participants-table__idx">
+                  {p.matchDetailParticipantsColIndex}
+                </th>
+                {match.prematch_enabled ?
+                  <th scope="col">{p.matchDetailParticipantsColPhase}</th>
+                : null}
+                <th scope="col">{p.matchDetailParticipantsColSquad}</th>
+                <th scope="col">{p.matchDetailParticipantsColName}</th>
+                <th scope="col">{p.matchDetailParticipantsColDivision}</th>
+                <th scope="col">{p.matchDetailParticipantsColCategory}</th>
+                <th scope="col">{p.matchDetailParticipantsColPaymentConfirmation}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rosterList.map((r, i) => {
+                const rosterAccepted = String(r.registration_status ?? '').toLowerCase() === 'confirmed'
+                return (
+                  <tr
+                    key={`${r.squad_phase ?? ''}-${r.squad_sort}-${r.squad_label}-${i}`}
+                    className={
+                      rosterAccepted ?
+                        'portal-match-reg-public-roster-row portal-match-reg-public-roster-row--confirmed'
+                      : 'portal-match-reg-public-roster-row portal-match-reg-public-roster-row--pending'
+                    }
+                  >
+                    <td className="portal-match-public-participants-table__idx">{i + 1}</td>
+                    {match.prematch_enabled ?
+                      <td>
+                        {r.squad_phase === 'prematch' ?
+                          p.matchDetailRegistrationPhaseShortPrematch
+                        : p.matchDetailRegistrationPhaseShortMain}
+                      </td>
+                    : null}
+                    <td title={r.squad_label}>{formatSquadLabelNumberOnly(r.squad_label)}</td>
+                    <td>{r.display_name}</td>
+                    <td>{r.division}</td>
+                    <td>{rosterCategoriesDisplay(r.categories, locUi)}</td>
+                    <td>
+                      <span
+                        className={
+                          rosterAccepted ?
+                            'portal-match-reg-label portal-match-reg-label--confirmed'
+                          : 'portal-match-reg-label portal-match-reg-label--pending'
+                        }
+                      >
+                        {rosterAccepted ? p.matchDetailParticipantsPaymentConfirmed : p.matchDetailParticipantsPaymentPending}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </>
+    )
+  }
+
   return (
     <article className="portal-home portal-match-public-detail">
       <Helmet>
@@ -382,7 +475,9 @@ export function MatchPublicDetailPage() {
                 {row.location_label ?
                   <>
                     <dt>{p.matchDetailLocationLabel}</dt>
-                    <dd>{row.location_label}</dd>
+                    <dd>
+                      <PlainTextAutolink text={row.location_label} />
+                    </dd>
                   </>
                 : null}
                 <dt>{p.matchDetailDisciplineLabel}</dt>
@@ -482,80 +577,7 @@ export function MatchPublicDetailPage() {
         <h2 id="match-participants-heading" className="portal-match-public-detail__section-title">
           {p.matchDetailParticipantsHeading}
         </h2>
-        {(row.participant_list_visibility ?? 'closed') !== 'open' ? (
-          <p className="portal-match-public-detail__prose">{p.matchDetailParticipantsClosed}</p>
-        ) : roster === undefined ? (
-          <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
-        ) : rosterError ? (
-          <p role="alert" className="portal-match-public-detail__muted">
-            {p.matchesLoadError}: {rosterError}
-          </p>
-        ) : (roster ?? []).length === 0 ?
-          openVisibilityActiveRegTotal !== undefined && openVisibilityActiveRegTotal > 0 ?
-            <p className="portal-match-public-detail__prose">
-              {formatTemplate(p.matchDetailParticipantsOpenAwaitingConfirmation, {
-                count: openVisibilityActiveRegTotal,
-              })}
-            </p>
-          : <p className="portal-match-public-detail__prose">{p.matchDetailParticipantsOpenEmpty}</p>
-
-        : (
-          <>
-            <div className="portal-match-public-detail__table-scroll">
-              <table className="portal-match-public-participants-table">
-                <thead>
-                  <tr>
-                    <th scope="col">{p.matchDetailParticipantsColSquad}</th>
-                    {row.prematch_enabled ?
-                      <th scope="col">{p.matchDetailParticipantsColPhase}</th>
-                    : null}
-                    <th scope="col">{p.matchDetailParticipantsColName}</th>
-                    <th scope="col">{p.matchDetailParticipantsColDivision}</th>
-                    <th scope="col">{p.matchDetailParticipantsColCategory}</th>
-                    <th scope="col">{p.matchDetailParticipantsColPaymentConfirmation}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(roster ?? []).map((r, i) => {
-                    const rosterAccepted = String(r.registration_status ?? '').toLowerCase() === 'confirmed'
-                    return (
-                    <tr
-                      key={`${r.squad_phase ?? ''}-${r.squad_sort}-${r.squad_label}-${i}`}
-                      className="portal-match-reg-public-roster-row"
-                    >
-                      <td title={r.squad_label}>{formatSquadLabelNumberOnly(r.squad_label)}</td>
-                      {row.prematch_enabled ?
-                        <td>
-                          {r.squad_phase === 'prematch' ?
-                            p.matchDetailRegistrationPhaseShortPrematch
-                          : p.matchDetailRegistrationPhaseShortMain}
-                        </td>
-                      : null}
-                      <td>{r.display_name}</td>
-                      <td>{r.division}</td>
-                      <td>{rosterCategoriesDisplay(r.categories, locUi)}</td>
-                      <td>
-                        <span
-                          className={
-                            rosterAccepted ?
-                              'portal-match-reg-label portal-match-reg-label--confirmed'
-                            : 'portal-match-reg-label portal-match-reg-label--pending'
-                          }
-                        >
-                          {rosterAccepted ? p.matchDetailParticipantsPaymentConfirmed : p.matchDetailParticipantsPaymentPending}
-                        </span>
-                      </td>
-                    </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
-            {p.matchDetailParticipantsFootnote.trim() ?
-              <p className="portal-match-public-detail__footnote">{p.matchDetailParticipantsFootnote}</p>
-            : null}
-          </>
-        )}
+        {renderParticipantsSectionBody(row)}
       </section>
     </article>
   )

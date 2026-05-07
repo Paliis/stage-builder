@@ -370,55 +370,6 @@ html.portal-shell__nav-drawer-lock .portal-shell__header-strip {
   color: var(--text-muted, #64748b);
 }
 
-.portal-shell__badges {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  gap: 0.25rem;
-  align-items: center;
-  min-width: 0;
-}
-
-.portal-shell__badge {
-  display: inline-block;
-  flex-shrink: 0;
-  padding: 0.12rem 0.38rem;
-  border-radius: 0.35rem;
-  font-size: 0.7rem;
-  font-weight: 750;
-  letter-spacing: 0.02em;
-  border: 1px solid var(--border);
-  line-height: 1.25;
-  white-space: nowrap;
-}
-
-.portal-shell__badge--participant {
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--text-h);
-  border-color: rgba(59, 130, 246, 0.28);
-}
-
-.portal-shell__badge--organizer {
-  background: rgba(34, 197, 94, 0.14);
-  color: #047857;
-  border-color: rgba(34, 197, 94, 0.35);
-}
-
-.portal-shell__badge--blocked {
-  background: rgba(239, 68, 68, 0.1);
-  color: #b91c1c;
-  border-color: rgba(239, 68, 68, 0.35);
-}
-
-.portal-shell__badge--pending {
-  background: rgba(251, 191, 36, 0.16);
-  color: #92400e;
-  border-color: rgba(251, 191, 36, 0.42);
-}
-
-.portal-shell__badge--muted {
-  opacity: 0.65;
-}
-
 .portal-shell__account-signin-link,
 .portal-shell__account-profile-link {
   font-weight: 650;

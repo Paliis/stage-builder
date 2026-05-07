@@ -391,23 +391,24 @@ export function AccountParticipantHub({
                           <span className={portalMatchRegLabelClass(r.status)}>{regStatusLabel(r.status)}</span>
                         </td>
                         <td>
-                          {m?.status === 'published' ?
-                            <Link to={`/${locale}/matches/${m!.id}`} className="portal-account__hub-action-link">
-                              {p.accountMyRegistrationsOpenMatch}
-                            </Link>
-                          : null}
-                          {canCancel ?
-                            <>
-                              {m?.status === 'published' ? ' · ' : null}
-                              <button
-                                type="button"
-                                className="portal-account__link-btn"
-                                disabled={busyId === r.id}
-                                onClick={() => void cancelReg(r.id)}
-                              >
-                                {busyId === r.id ? p.accountMyRegistrationsCancelling : p.accountMyRegistrationsCancel}
-                              </button>
-                            </>
+                          {(m?.status === 'published' || canCancel) ?
+                            <div className="portal-account__hub-table-actions">
+                              {m?.status === 'published' ?
+                                <Link to={`/${locale}/matches/${m!.id}`} className="portal-account__hub-action-link">
+                                  {p.accountMyRegistrationsOpenMatch}
+                                </Link>
+                              : null}
+                              {canCancel ?
+                                <button
+                                  type="button"
+                                  className="portal-btn portal-btn--secondary portal-btn--compact"
+                                  disabled={busyId === r.id}
+                                  onClick={() => void cancelReg(r.id)}
+                                >
+                                  {busyId === r.id ? p.accountMyRegistrationsCancelling : p.accountMyRegistrationsCancel}
+                                </button>
+                              : null}
+                            </div>
                           : null}
                         </td>
                       </tr>
@@ -497,7 +498,7 @@ export function AccountParticipantHub({
                     />
                     <button
                       type="button"
-                      className="portal-btn portal-btn--secondary portal-account__avatar-btn"
+                      className="portal-btn portal-btn--secondary portal-btn--compact portal-account__avatar-btn"
                       disabled={defSaving || avatarBusy || !!avatarCropSrc}
                       onClick={() => avatarInputRef.current?.click()}
                     >
@@ -506,7 +507,7 @@ export function AccountParticipantHub({
                     {defAvatarUrl ?
                       <button
                         type="button"
-                        className="portal-account__link-btn"
+                        className="portal-btn portal-btn--ghost portal-btn--compact"
                         disabled={defSaving || avatarBusy || !!avatarCropSrc}
                         onClick={() => {
                           setDefAvatarUrl('')
@@ -631,7 +632,7 @@ export function AccountParticipantHub({
                 {defFeedback}
               </p>
             : null}
-            <button type="submit" className="portal-btn portal-btn--secondary portal-account__hub-save" disabled={defSaving}>
+            <button type="submit" className="portal-btn portal-btn--primary portal-account__hub-save" disabled={defSaving}>
               {defSaving ? p.accountParticipantDefaultsSaving : p.accountParticipantDefaultsSave}
             </button>
           </form>

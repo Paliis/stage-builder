@@ -152,8 +152,7 @@
 }
 
 .portal-account__avatar-btn {
-  font-size: 0.875rem;
-  padding: 0.45rem 0.75rem;
+  flex-shrink: 0;
 }
 
 .portal-account__avatar-error {
@@ -173,7 +172,8 @@
 }
 
 .portal-account__field input,
-.portal-account__field select {
+.portal-account__field select,
+.portal-account__field textarea {
   width: 100%;
   box-sizing: border-box;
   padding: 0.5rem 0.6rem;
@@ -186,15 +186,22 @@
   line-height: 1.35;
 }
 
+.portal-account__field textarea {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
 .portal-account__field input:focus,
-.portal-account__field select:focus {
+.portal-account__field select:focus,
+.portal-account__field textarea:focus {
   outline: none;
   border-color: var(--accent-border);
   box-shadow: 0 0 0 2px var(--accent-bg);
 }
 
 .portal-account__field input:disabled,
-.portal-account__field select:disabled {
+.portal-account__field select:disabled,
+.portal-account__field textarea:disabled {
   opacity: 0.65;
   cursor: not-allowed;
 }
@@ -210,7 +217,8 @@
 
 .portal-account__hub-save {
   width: fit-content;
-  margin-top: 0.2rem;
+  max-width: 100%;
+  margin-top: 0.35rem;
 }
 
 .portal-account__hub-table-wrap {
@@ -246,9 +254,22 @@
   white-space: nowrap;
 }
 
+.portal-account__hub-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.65rem;
+}
+
 .portal-account__hub-action-link {
-  margin-right: 0.45rem;
   font-weight: 650;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.portal-account__hub-action-link:hover {
+  text-decoration-thickness: from-font;
 }
 
 .portal-account__hub-inline-link {

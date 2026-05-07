@@ -1,4 +1,5 @@
 import { type ChangeEvent, type FormEvent, useEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { Helmet } from 'react-helmet-async'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
@@ -8,12 +9,13 @@ import { useSupabaseSession } from '../useSupabaseSession'
 import { useOrganizerSelfServiceProfile } from '../useOrganizerSelfServiceProfile'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { OrganizerMatchStagesPanel } from './OrganizerMatchStagesPanel'
-import { OrganizerMatchSquadsPanel } from './OrganizerMatchSquadsPanel'
 import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import { MatchCoverCropModal } from './MatchCoverCropModal'
 import { cropRectRegionToJpeg, measureImageNaturalSize } from '../cropPixelsToJpeg'
+import { wrapBbCode } from './bbCodeTextareaWrap'
 import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
+import { MATCH_LOCATION_LABEL_MAX_LEN } from './matchLocationLabel'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
@@ -61,6 +63,42 @@ function localFromIso(iso: string): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
 
+type PlanQtyKey = 'shooters_main' | 'planned_main' | 'shooters_prematch' | 'planned_prematch'
+
+function parsePlanQty(raw: string, fallback: number, min = 1): number {
+  const t = raw.trim()
+  if (t === '') return fallback
+  const n = Math.floor(Number(t))
+  if (!Number.isFinite(n)) return fallback
+  return Math.max(min, n)
+}
+
+function effectivePlanQty(s: string | undefined, fallback: number, min = 1): number {
+  if (s === undefined) return fallback
+  return parsePlanQty(s, fallback, min)
+}
+
+function mergePlanQtyIntoDraft(
+  d: MatchDraft,
+  q: Partial<Record<PlanQtyKey, string>>,
+): MatchDraft {
+  return {
+    ...d,
+    shooters_per_main_squad:
+      q.shooters_main !== undefined ? parsePlanQty(q.shooters_main, d.shooters_per_main_squad) : d.shooters_per_main_squad,
+    planned_main_squad_count:
+      q.planned_main !== undefined ? parsePlanQty(q.planned_main, d.planned_main_squad_count) : d.planned_main_squad_count,
+    shooters_per_prematch_squad:
+      q.shooters_prematch !== undefined
+        ? parsePlanQty(q.shooters_prematch, d.shooters_per_prematch_squad)
+        : d.shooters_per_prematch_squad,
+    planned_prematch_squad_count:
+      q.planned_prematch !== undefined
+        ? parsePlanQty(q.planned_prematch, Math.max(1, d.planned_prematch_squad_count || 1))
+        : d.planned_prematch_squad_count,
+  }
+}
+
 export function OrganizerMatchEditPage() {
   const { locale, tree } = useI18n()
   const p = tree.portal
@@ -103,6 +141,8 @@ export function OrganizerMatchEditPage() {
   const [coverUploadErr, setCoverUploadErr] = useState<string | null>(null)
   const coverCropObjectUrlRef = useRef<string | null>(null)
   const [coverCropSrc, setCoverCropSrc] = useState<string | null>(null)
+  const [planQtyStr, setPlanQtyStr] = useState<Partial<Record<PlanQtyKey, string>>>({})
+  const descriptionRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
     return () => {
@@ -118,6 +158,7 @@ export function OrganizerMatchEditPage() {
       setLoadState('loaded')
       setLoadError(null)
       setSaveError(null)
+      setPlanQtyStr({})
       setDraft({
         title: '',
         description_md: '',
@@ -173,7 +214,7 @@ export function OrganizerMatchEditPage() {
           title: data.title ?? '',
           description_md: data.description_md ?? '',
           starts_at_local: localFromIso(data.starts_at),
-          location_label: data.location_label ?? '',
+          location_label: (data.location_label ?? '').slice(0, MATCH_LOCATION_LABEL_MAX_LEN),
           cover_image_url: typeof data.cover_image_url === 'string' ? data.cover_image_url : '',
           match_event_kind:
             typeof data.match_event_kind === 'string' && isMatchEventKind(data.match_event_kind)
@@ -191,6 +232,7 @@ export function OrganizerMatchEditPage() {
           shooters_per_main_squad: Math.max(1, Number(data.shooters_per_main_squad) || 18),
           shooters_per_prematch_squad: Math.max(1, Number(data.shooters_per_prematch_squad) || 18),
         })
+        setPlanQtyStr({})
         setLoadState('loaded')
       })
     return () => {
@@ -211,6 +253,17 @@ export function OrganizerMatchEditPage() {
   ])
 
   useEffect(() => {
+    if (draft.prematch_enabled) return
+    setPlanQtyStr((s) => {
+      if (s.shooters_prematch === undefined && s.planned_prematch === undefined) return s
+      const next = { ...s }
+      delete next.shooters_prematch
+      delete next.planned_prematch
+      return next
+    })
+  }, [draft.prematch_enabled])
+
+  useEffect(() => {
     const msg = (location.state as { squadSyncWarning?: string } | null)?.squadSyncWarning
     if (typeof msg === 'string' && msg.trim()) setSquadSyncBanner(msg.trim())
   }, [location.state])
@@ -220,55 +273,70 @@ export function OrganizerMatchEditPage() {
     setSaveError(null)
     if (!configured || !user?.id || saving) return
     if (organizerProfile !== 'active') return
-    const title = draft.title.trim()
+
+    const merged = mergePlanQtyIntoDraft(draft, planQtyStr)
+    const title = merged.title.trim()
     if (!title) {
       setSaveError(p.matchOrgTitleRequired)
       return
     }
-    const plannedMain = Math.floor(Number(draft.planned_main_squad_count))
+    const locationTrimmed = merged.location_label.trim()
+    if (locationTrimmed.length > MATCH_LOCATION_LABEL_MAX_LEN) {
+      setSaveError(
+        formatTemplate(p.matchOrgFieldLocationTooLong, {
+          max: String(MATCH_LOCATION_LABEL_MAX_LEN),
+        }),
+      )
+      return
+    }
+
+    const plannedMain = Math.floor(Number(merged.planned_main_squad_count))
     if (!Number.isFinite(plannedMain) || plannedMain < 1) {
       setSaveError(p.matchOrgPlannedMainInvalid)
       return
     }
-    let plannedPrematch = Math.floor(Number(draft.planned_prematch_squad_count))
-    if (!draft.prematch_enabled) {
+    let plannedPrematch = Math.floor(Number(merged.planned_prematch_squad_count))
+    if (!merged.prematch_enabled) {
       plannedPrematch = 0
     } else if (!Number.isFinite(plannedPrematch) || plannedPrematch < 1) {
       setSaveError(p.matchOrgPlannedPrematchInvalid)
       return
     }
 
-    const shootersMain = Math.floor(Number(draft.shooters_per_main_squad))
+    const shootersMain = Math.floor(Number(merged.shooters_per_main_squad))
     if (!Number.isFinite(shootersMain) || shootersMain < 1) {
       setSaveError(p.matchOrgShootersInvalid)
       return
     }
-    let shootersPrematch = Math.floor(Number(draft.shooters_per_prematch_squad))
-    if (!draft.prematch_enabled) {
+    let shootersPrematch = Math.floor(Number(merged.shooters_per_prematch_squad))
+    if (!merged.prematch_enabled) {
       shootersPrematch = Math.max(1, shootersPrematch)
     } else if (!Number.isFinite(shootersPrematch) || shootersPrematch < 1) {
       setSaveError(p.matchOrgShootersInvalid)
       return
     }
 
+    setPlanQtyStr({})
+    setDraft(merged)
+
     const row = {
       organizer_id: user.id,
       title,
-      description_md: draft.description_md.trim() ? draft.description_md : null,
-      starts_at: isoFromDatetimeLocal(draft.starts_at_local),
-      location_label: draft.location_label.trim() ? draft.location_label.trim() : null,
-      cover_image_url: draft.cover_image_url.trim() ? draft.cover_image_url.trim() : null,
+      description_md: merged.description_md.trim() ? merged.description_md : null,
+      starts_at: isoFromDatetimeLocal(merged.starts_at_local),
+      location_label: locationTrimmed ? locationTrimmed : null,
+      cover_image_url: merged.cover_image_url.trim() ? merged.cover_image_url.trim() : null,
       discipline: 'shotgun' as const,
-      status: draft.status,
-      participant_list_visibility: draft.participant_list_visibility,
+      status: merged.status,
+      participant_list_visibility: merged.participant_list_visibility,
       match_event_kind:
-        draft.match_event_kind && isMatchEventKind(draft.match_event_kind)
-          ? draft.match_event_kind
+        merged.match_event_kind && isMatchEventKind(merged.match_event_kind)
+          ? merged.match_event_kind
           : null,
       ps_match_level:
-        draft.ps_match_level && isPsMatchLevel(draft.ps_match_level) ? draft.ps_match_level : null,
+        merged.ps_match_level && isPsMatchLevel(merged.ps_match_level) ? merged.ps_match_level : null,
       ps_match_subtype: 'ipsc',
-      prematch_enabled: draft.prematch_enabled,
+      prematch_enabled: merged.prematch_enabled,
       planned_main_squad_count: plannedMain,
       planned_prematch_squad_count: plannedPrematch,
       shooters_per_main_squad: shootersMain,
@@ -314,6 +382,21 @@ export function OrganizerMatchEditPage() {
     if (syncErr) {
       setSaveError(organizerSquadSyncErrorMessage(syncErr.message, p))
     }
+  }
+
+  function applyDescBbcode(open: string, close: string, emptyInner = '') {
+    const el = descriptionRef.current
+    if (!el) return
+    const start = el.selectionStart
+    const end = el.selectionEnd
+    const { text, selStart, selEnd } = wrapBbCode(draft.description_md, start, end, open, close, emptyInner)
+    flushSync(() => {
+      setDraft((d) => ({ ...d, description_md: text }))
+    })
+    requestAnimationFrame(() => {
+      el.focus()
+      el.setSelectionRange(selStart, selEnd)
+    })
   }
 
   async function handleDownloadMatchPsc() {
@@ -541,9 +624,19 @@ export function OrganizerMatchEditPage() {
   const pageTitle = isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle
   const helmet = isNew ? p.matchOrgCreateHelmet : p.matchOrgEditHelmetEdit
 
+  const smActive = effectivePlanQty(planQtyStr.shooters_main, draft.shooters_per_main_squad)
+  const pmActive = effectivePlanQty(planQtyStr.planned_main, draft.planned_main_squad_count)
+  const spActive = effectivePlanQty(planQtyStr.shooters_prematch, draft.shooters_per_prematch_squad)
+  const ppActive = effectivePlanQty(
+    planQtyStr.planned_prematch,
+    Math.max(1, draft.planned_prematch_squad_count || 1),
+  )
   const derivedCompetitorLimit =
-    draft.planned_main_squad_count * draft.shooters_per_main_squad +
-    (draft.prematch_enabled ? draft.planned_prematch_squad_count * draft.shooters_per_prematch_squad : 0)
+    smActive * pmActive + (draft.prematch_enabled ? ppActive * spActive : 0)
+
+  const derivedCapacityFull = formatTemplate(p.matchOrgDerivedCapacityLine, {
+    total: String(derivedCompetitorLimit),
+  })
 
   return (
     <div className="portal-home portal-match-org-edit-page">
@@ -669,21 +762,35 @@ export function OrganizerMatchEditPage() {
             type="text"
             className="portal-match-org-form__control"
             placeholder={p.matchOrgFieldLocationPlaceholder}
+            maxLength={MATCH_LOCATION_LABEL_MAX_LEN}
+            autoComplete="off"
             value={draft.location_label}
-            onChange={(e) => setDraft((d) => ({ ...d, location_label: e.target.value }))}
+            onChange={(e) =>
+              setDraft((d) => ({
+                ...d,
+                location_label: e.target.value.slice(0, MATCH_LOCATION_LABEL_MAX_LEN),
+              }))
+            }
           />
         </label>
+        <p className="portal-match-org-form__hint">
+          {formatTemplate(p.matchOrgFieldLocationHint, {
+            max: String(MATCH_LOCATION_LABEL_MAX_LEN),
+          })}
+        </p>
 
         {!isNew && validEditId ?
           <div className="portal-match-org-form__cover-block">
             <span className="portal-match-org-form__label">{p.matchOrgFieldCoverImage}</span>
-            {draft.cover_image_url.trim() ?
-              <div className="portal-match-org-form__cover-row">
+            <div className="portal-match-org-form__cover-row">
+              {draft.cover_image_url.trim() ?
                 <img
                   src={draft.cover_image_url.trim()}
                   alt=""
                   className="portal-match-org-form__cover-preview"
                 />
+              : <div className="portal-match-org-form__cover-placeholder" aria-hidden />}
+              {draft.cover_image_url.trim() ?
                 <button
                   type="button"
                   className="portal-btn portal-btn--secondary portal-btn--compact"
@@ -695,18 +802,18 @@ export function OrganizerMatchEditPage() {
                 >
                   {p.matchOrgCoverRemove}
                 </button>
-              </div>
-            : null}
-            <label className="portal-match-org-form__cover-upload">
-              <input
-                type="file"
-                accept="image/jpeg,image/jpg,image/png,image/webp"
-                disabled={saving || Boolean(coverCropSrc)}
-                onChange={(e) => void handleCoverFileChange(e)}
-                style={{ display: 'none' }}
-              />
-              <span className="portal-btn portal-btn--secondary portal-btn--compact">{p.matchOrgCoverUpload}</span>
-            </label>
+              : <label className="portal-match-org-form__cover-upload">
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    disabled={saving || Boolean(coverCropSrc)}
+                    onChange={(e) => void handleCoverFileChange(e)}
+                    style={{ display: 'none' }}
+                  />
+                  <span className="portal-btn portal-btn--secondary portal-btn--compact">{p.matchOrgCoverUpload}</span>
+                </label>
+              }
+            </div>
             {coverUploadErr ?
               <p role="alert" className="portal-match-org-form__hint portal-match-org-form__hint--error">
                 {coverUploadErr}
@@ -721,47 +828,50 @@ export function OrganizerMatchEditPage() {
           <h2 id="match-org-catalog-heading" className="portal-match-org-form__section-heading">
             {p.matchOrgSectionCatalogHeading}
           </h2>
-          <p className="portal-match-org-form__hint portal-match-org-form__hint--section">{p.matchOrgTaxonomyOptionalLead}</p>
 
-          <label className="portal-match-org-form__field">
-            <span className="portal-match-org-form__label">{p.matchOrgFieldEventKind}</span>
-            <select
-              className="portal-match-org-form__control portal-match-org-form__control--select"
-              value={draft.match_event_kind}
-              onChange={(e) =>
-                setDraft((d) => ({
-                  ...d,
-                  match_event_kind: e.target.value as MatchDraft['match_event_kind'],
-                }))
-              }
-            >
-              <option value="">{p.matchOrgEventKindUnset}</option>
-              <option value="training">{p.matchEventKindTraining}</option>
-              <option value="match">{p.matchEventKindMatch}</option>
-              <option value="classification">{p.matchEventKindClassification}</option>
-            </select>
-          </label>
+          <div className="portal-match-org-form__cols-2">
+            <label className="portal-match-org-form__field">
+              <span className="portal-match-org-form__label portal-match-org-form__label--squads-panel">
+                {p.matchOrgFieldEventKind}
+              </span>
+              <select
+                className="portal-match-org-form__control portal-match-org-form__control--select"
+                value={draft.match_event_kind}
+                onChange={(e) =>
+                  setDraft((d) => ({
+                    ...d,
+                    match_event_kind: e.target.value as MatchDraft['match_event_kind'],
+                  }))
+                }
+              >
+                <option value="">{p.matchOrgEventKindUnset}</option>
+                <option value="training">{p.matchEventKindTraining}</option>
+                <option value="match">{p.matchEventKindMatch}</option>
+                <option value="classification">{p.matchEventKindClassification}</option>
+              </select>
+            </label>
 
-          <label className="portal-match-org-form__field">
-            <span className="portal-match-org-form__label">{p.matchOrgFieldPsLevel}</span>
-            <select
-              className="portal-match-org-form__control portal-match-org-form__control--select"
-              value={draft.ps_match_level}
-              onChange={(e) =>
-                setDraft((d) => ({
-                  ...d,
-                  ps_match_level: e.target.value as MatchDraft['ps_match_level'],
-                }))
-              }
-            >
-              <option value="">{p.matchOrgPsLevelUnset}</option>
-              <option value="L1">{p.matchPsLevelL1}</option>
-              <option value="L2">{p.matchPsLevelL2}</option>
-              <option value="L3">{p.matchPsLevelL3}</option>
-              <option value="L4">{p.matchPsLevelL4}</option>
-              <option value="L5">{p.matchPsLevelL5}</option>
-            </select>
-          </label>
+            <label className="portal-match-org-form__field">
+              <span className="portal-match-org-form__label portal-match-org-form__label--squads-panel">{p.matchOrgFieldPsLevel}</span>
+              <select
+                className="portal-match-org-form__control portal-match-org-form__control--select"
+                value={draft.ps_match_level}
+                onChange={(e) =>
+                  setDraft((d) => ({
+                    ...d,
+                    ps_match_level: e.target.value as MatchDraft['ps_match_level'],
+                  }))
+                }
+              >
+                <option value="">{p.matchOrgPsLevelUnset}</option>
+                <option value="L1">{p.matchPsLevelL1}</option>
+                <option value="L2">{p.matchPsLevelL2}</option>
+                <option value="L3">{p.matchPsLevelL3}</option>
+                <option value="L4">{p.matchPsLevelL4}</option>
+                <option value="L5">{p.matchPsLevelL5}</option>
+              </select>
+            </label>
+          </div>
         </section>
 
         <section className="portal-match-org-form__section" aria-labelledby="match-org-plan-heading">
@@ -769,97 +879,220 @@ export function OrganizerMatchEditPage() {
             {p.matchOrgSectionPlanHeading}
           </h2>
 
-          <label className="portal-match-org-form__field portal-match-org-form__field--narrow">
-            <span className="portal-match-org-form__label">{p.matchOrgFieldShootersMain}</span>
+          <div
+            className={
+              draft.prematch_enabled ?
+                'portal-match-org-form__plan-grid portal-match-org-form__plan-grid--prematch'
+              : 'portal-match-org-form__plan-grid'
+            }
+          >
+            <label
+              className="portal-match-org-form__plan-label portal-match-org-form__plan-lbl--shooters portal-match-org-form__label--squads-panel"
+              htmlFor="match-org-inp-shooters-main"
+            >
+              {p.matchOrgFieldShootersMain}
+            </label>
+            <label
+              className="portal-match-org-form__plan-label portal-match-org-form__plan-lbl--squads portal-match-org-form__label--squads-panel"
+              htmlFor="match-org-inp-planned-main"
+            >
+              {p.matchOrgFieldPlannedMainSquads}
+            </label>
+
+            <span
+              id="match-org-lbl-derived-total-shooters"
+              className="portal-match-org-form__plan-lbl--capacity portal-match-org-form__label--squads-panel"
+            >
+              {p.matchOrgFieldDerivedTotalShooters}
+            </span>
+
             <input
+              id="match-org-inp-shooters-main"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              className="portal-match-org-form__plan-inp-main-shooters portal-match-org-form__control portal-match-org-form__control--number"
+              value={
+                planQtyStr.shooters_main !== undefined ?
+                  planQtyStr.shooters_main
+                : String(draft.shooters_per_main_squad)
+              }
+              onChange={(e) => {
+                const raw = e.target.value.replace(/\D/g, '')
+                setPlanQtyStr((s) => ({ ...s, shooters_main: raw }))
+                if (raw.trim() === '') return
+                const n = Math.floor(Number(raw))
+                if (Number.isFinite(n) && n >= 1) {
+                  setDraft((d) => ({ ...d, shooters_per_main_squad: n }))
+                }
+              }}
+              onBlur={() => {
+                setPlanQtyStr((s) => {
+                  if (s.shooters_main === undefined) return s
+                  const raw = s.shooters_main
+                  setDraft((d) => ({
+                    ...d,
+                    shooters_per_main_squad: parsePlanQty(raw, d.shooters_per_main_squad),
+                  }))
+                  const next = { ...s }
+                  delete next.shooters_main
+                  return next
+                })
+              }}
+            />
+
+            <input
+              id="match-org-inp-planned-main"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              className="portal-match-org-form__plan-inp-main-squads portal-match-org-form__control portal-match-org-form__control--number"
+              value={
+                planQtyStr.planned_main !== undefined ?
+                  planQtyStr.planned_main
+                : String(draft.planned_main_squad_count)
+              }
+              onChange={(e) => {
+                const raw = e.target.value.replace(/\D/g, '')
+                setPlanQtyStr((s) => ({ ...s, planned_main: raw }))
+                if (raw.trim() === '') return
+                const n = Math.floor(Number(raw))
+                if (Number.isFinite(n) && n >= 1) {
+                  setDraft((d) => ({ ...d, planned_main_squad_count: n }))
+                }
+              }}
+              onBlur={() => {
+                setPlanQtyStr((s) => {
+                  if (s.planned_main === undefined) return s
+                  const raw = s.planned_main
+                  setDraft((d) => ({
+                    ...d,
+                    planned_main_squad_count: parsePlanQty(raw, d.planned_main_squad_count),
+                  }))
+                  const next = { ...s }
+                  delete next.planned_main
+                  return next
+                })
+              }}
+            />
+
+            <input
+              id="match-org-inp-derived-total-shooters"
+              readOnly
+              tabIndex={-1}
               type="number"
-              min={1}
-              required
-              className="portal-match-org-form__control portal-match-org-form__control--number"
-              value={draft.shooters_per_main_squad}
-              onChange={(e) =>
-                setDraft((d) => ({
-                  ...d,
-                  shooters_per_main_squad: Math.max(1, Number(e.target.value) || 1),
-                }))
-              }
+              inputMode="numeric"
+              aria-labelledby="match-org-lbl-derived-total-shooters"
+              aria-live="polite"
+              title={derivedCapacityFull}
+              className="portal-match-org-form__plan-inp-derived portal-match-org-form__control portal-match-org-form__control--number"
+              value={derivedCompetitorLimit}
             />
-          </label>
 
-          <label className="portal-match-org-form__checkbox">
-            <input
-              type="checkbox"
-              checked={draft.prematch_enabled}
-              onChange={(e) =>
-                setDraft((d) => ({
-                  ...d,
-                  prematch_enabled: e.target.checked,
-                  planned_prematch_squad_count:
-                    e.target.checked ? Math.max(1, d.planned_prematch_squad_count) : 0,
-                }))
-              }
-            />
-            <span>{p.matchOrgFieldPrematch}</span>
-          </label>
+            <label className="portal-match-org-form__checkbox portal-match-org-form__checkbox--plan-row portal-match-org-form__plan-chk-prem">
+              <input
+                type="checkbox"
+                checked={draft.prematch_enabled}
+                onChange={(e) =>
+                  setDraft((d) => ({
+                    ...d,
+                    prematch_enabled: e.target.checked,
+                    planned_prematch_squad_count:
+                      e.target.checked ? Math.max(1, d.planned_prematch_squad_count) : 0,
+                  }))
+                }
+              />
+              <span>{p.matchOrgFieldPrematch}</span>
+            </label>
 
-          <label className="portal-match-org-form__field portal-match-org-form__field--narrow">
-            <span className="portal-match-org-form__label">{p.matchOrgFieldPlannedMainSquads}</span>
-            <input
-              type="number"
-              min={1}
-              required
-              className="portal-match-org-form__control portal-match-org-form__control--number"
-              value={draft.planned_main_squad_count}
-              onChange={(e) =>
-                setDraft((d) => ({
-                  ...d,
-                  planned_main_squad_count: Math.max(1, Number(e.target.value) || 1),
-                }))
-              }
-            />
-          </label>
-
-          {draft.prematch_enabled ?
-            <>
-              <label className="portal-match-org-form__field portal-match-org-form__field--narrow">
-                <span className="portal-match-org-form__label">{p.matchOrgFieldPlannedPrematchSquads}</span>
+            {draft.prematch_enabled ?
+              <>
+                <label
+                  className="portal-match-org-form__plan-label portal-match-org-form__plan-lbl--prematch-shooters portal-match-org-form__label--squads-panel"
+                  htmlFor="match-org-inp-shooters-prematch"
+                >
+                  {p.matchOrgFieldShootersPrematch}
+                </label>
+                <label
+                  className="portal-match-org-form__plan-label portal-match-org-form__plan-lbl--prematch-squads portal-match-org-form__label--squads-panel"
+                  htmlFor="match-org-inp-prematch-squads"
+                >
+                  {p.matchOrgFieldPlannedPrematchSquads}
+                </label>
                 <input
-                  type="number"
-                  min={1}
-                  required
-                  className="portal-match-org-form__control portal-match-org-form__control--number"
-                  value={draft.planned_prematch_squad_count || 1}
-                  onChange={(e) =>
-                    setDraft((d) => ({
-                      ...d,
-                      planned_prematch_squad_count: Math.max(1, Number(e.target.value) || 1),
-                    }))
+                  id="match-org-inp-shooters-prematch"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  className="portal-match-org-form__plan-inp-prematch-shooters portal-match-org-form__control portal-match-org-form__control--number"
+                  value={
+                    planQtyStr.shooters_prematch !== undefined ?
+                      planQtyStr.shooters_prematch
+                    : String(draft.shooters_per_prematch_squad)
                   }
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/\D/g, '')
+                    setPlanQtyStr((s) => ({ ...s, shooters_prematch: raw }))
+                    if (raw.trim() === '') return
+                    const n = Math.floor(Number(raw))
+                    if (Number.isFinite(n) && n >= 1) {
+                      setDraft((d) => ({ ...d, shooters_per_prematch_squad: n }))
+                    }
+                  }}
+                  onBlur={() => {
+                    setPlanQtyStr((s) => {
+                      if (s.shooters_prematch === undefined) return s
+                      const raw = s.shooters_prematch
+                      setDraft((d) => ({
+                        ...d,
+                        shooters_per_prematch_squad: parsePlanQty(raw, d.shooters_per_prematch_squad),
+                      }))
+                      const next = { ...s }
+                      delete next.shooters_prematch
+                      return next
+                    })
+                  }}
                 />
-              </label>
-
-              <label className="portal-match-org-form__field portal-match-org-form__field--narrow">
-                <span className="portal-match-org-form__label">{p.matchOrgFieldShootersPrematch}</span>
                 <input
-                  type="number"
-                  min={1}
-                  required
-                  className="portal-match-org-form__control portal-match-org-form__control--number"
-                  value={draft.shooters_per_prematch_squad}
-                  onChange={(e) =>
-                    setDraft((d) => ({
-                      ...d,
-                      shooters_per_prematch_squad: Math.max(1, Number(e.target.value) || 1),
-                    }))
+                  id="match-org-inp-prematch-squads"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  className="portal-match-org-form__plan-inp-prematch-squads portal-match-org-form__control portal-match-org-form__control--number"
+                  value={
+                    planQtyStr.planned_prematch !== undefined ?
+                      planQtyStr.planned_prematch
+                    : String(Math.max(1, draft.planned_prematch_squad_count || 1))
                   }
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/\D/g, '')
+                    setPlanQtyStr((s) => ({ ...s, planned_prematch: raw }))
+                    if (raw.trim() === '') return
+                    const n = Math.floor(Number(raw))
+                    if (Number.isFinite(n) && n >= 1) {
+                      setDraft((d) => ({ ...d, planned_prematch_squad_count: n }))
+                    }
+                  }}
+                  onBlur={() => {
+                    setPlanQtyStr((s) => {
+                      if (s.planned_prematch === undefined) return s
+                      const raw = s.planned_prematch
+                      setDraft((d) => ({
+                        ...d,
+                        planned_prematch_squad_count: parsePlanQty(
+                          raw,
+                          Math.max(1, d.planned_prematch_squad_count || 1),
+                        ),
+                      }))
+                      const next = { ...s }
+                      delete next.planned_prematch
+                      return next
+                    })
+                  }}
                 />
-              </label>
-            </>
-          : null}
-
-          <p className="portal-match-org-form__capacity">
-            {formatTemplate(p.matchOrgDerivedCapacityLine, { total: String(derivedCompetitorLimit) })}
-          </p>
+              </>
+            : null}
+          </div>
         </section>
 
         <section className="portal-match-org-form__section" aria-labelledby="match-org-pub-heading">
@@ -870,6 +1103,7 @@ export function OrganizerMatchEditPage() {
           <label className="portal-match-org-form__field">
             <span className="portal-match-org-form__label">{p.matchOrgFieldDescription}</span>
             <textarea
+              ref={descriptionRef}
               id="match-org-description"
               rows={6}
               className="portal-match-org-form__control portal-match-org-form__control--textarea"
@@ -877,10 +1111,66 @@ export function OrganizerMatchEditPage() {
               value={draft.description_md}
               onChange={(e) => setDraft((d) => ({ ...d, description_md: e.target.value }))}
             />
+            <div
+              className="portal-match-org-form__bbcode-bar"
+              role="toolbar"
+              aria-label={p.matchOrgBbcodeToolbarAria}
+            >
+              <button
+                type="button"
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__bbcode-btn"
+                title={p.matchOrgBbcodeBoldTitle}
+                onClick={() => applyDescBbcode('[b]', '[/b]')}
+              >
+                B
+              </button>
+              <button
+                type="button"
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__bbcode-btn"
+                title={p.matchOrgBbcodeItalicTitle}
+                onClick={() => applyDescBbcode('[i]', '[/i]')}
+              >
+                I
+              </button>
+              <button
+                type="button"
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__bbcode-btn"
+                title={p.matchOrgBbcodeUnderlineTitle}
+                onClick={() => applyDescBbcode('[u]', '[/u]')}
+              >
+                U
+              </button>
+              <button
+                type="button"
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__bbcode-btn"
+                title={p.matchOrgBbcodeUrlTitle}
+                onClick={() => applyDescBbcode('[url]', '[/url]', p.matchOrgBbcodeUrlPlaceholder)}
+              >
+                URL
+              </button>
+              <button
+                type="button"
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__bbcode-btn"
+                title={p.matchOrgBbcodeQuoteTitle}
+                onClick={() => applyDescBbcode('[quote]', '[/quote]')}
+              >
+                «
+              </button>
+              <button
+                type="button"
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-form__bbcode-btn"
+                title={p.matchOrgBbcodeListTitle}
+                onClick={() =>
+                  applyDescBbcode('[list][*]', '[/list]', p.matchOrgBbcodeListItemPlaceholder)
+                }
+              >
+                •
+              </button>
+            </div>
+            <span id="match-org-description-hint" className="portal-match-org-form__sr-only">
+              {p.matchOrgFieldDescriptionHint}
+            </span>
           </label>
-          <p id="match-org-description-hint" className="portal-match-org-form__hint">
-            {p.matchOrgFieldDescriptionHint}
-          </p>
 
           <label className="portal-match-org-form__field">
             <span className="portal-match-org-form__label">{p.matchOrgFieldStatus}</span>
@@ -912,11 +1202,6 @@ export function OrganizerMatchEditPage() {
               <option value="open">{p.matchOrgParticipantsListOpen}</option>
             </select>
           </label>
-
-          <div className="portal-match-org-form__footnotes">
-            <p className="portal-match-org-form__hint">{p.matchOrgParticipantsListFootnote}</p>
-            <p className="portal-match-org-form__hint">{p.matchOrgDisciplineShotgunNote}</p>
-          </div>
         </section>
 
       </form>
@@ -925,16 +1210,6 @@ export function OrganizerMatchEditPage() {
       {!isNew && validEditId && matchId ?
         <div className="portal-match-org-edit__card portal-match-org-edit__card--programme">
           <OrganizerMatchStagesPanel locale={locale} matchId={matchId} p={p} />
-          <OrganizerMatchSquadsPanel
-            locale={locale}
-            matchId={matchId}
-            p={p}
-            prematchEnabled={draft.prematch_enabled}
-            plannedMainSquads={draft.planned_main_squad_count}
-            plannedPrematchSquads={draft.planned_prematch_squad_count}
-            shootersPerMainSquad={draft.shooters_per_main_squad}
-            shootersPerPrematchSquad={draft.shooters_per_prematch_squad}
-          />
         </div>
       : null}
       </div>

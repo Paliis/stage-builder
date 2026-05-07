@@ -308,17 +308,8 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
           />
           <button
             type="submit"
+            className="portal-btn portal-btn--primary portal-btn--compact"
             disabled={addBusy || !paste.trim()}
-            style={{
-              padding: '0.45rem 0.85rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--text-h)',
-              color: 'var(--btn-bg)',
-              cursor: addBusy ? 'not-allowed' : 'pointer',
-              fontSize: '0.88rem',
-              opacity: addBusy ? 0.75 : 1,
-            }}
           >
             {addBusy ? p.matchOrgStagesAdding : p.matchOrgStagesAdd}
           </button>
@@ -329,18 +320,9 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         <div style={{ marginBottom: '0.75rem' }}>
           <button
             type="button"
+            className="portal-btn portal-btn--secondary portal-btn--compact"
             disabled={refreshAllBusy || addBusy || anyRowBusy}
             onClick={() => void refreshAllRows()}
-            style={{
-              padding: '0.4rem 0.75rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--border)',
-              background: 'var(--surface)',
-              color: 'var(--text)',
-              cursor: refreshAllBusy || addBusy || anyRowBusy ? 'not-allowed' : 'pointer',
-              fontSize: '0.86rem',
-              opacity: refreshAllBusy || addBusy || anyRowBusy ? 0.7 : 1,
-            }}
           >
             {refreshAllBusy ? p.matchOrgStagesRefreshAllBusy : p.matchOrgStagesRefreshAll}
           </button>
@@ -400,33 +382,33 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
                       <button
                         type="button"
+                        className="portal-btn portal-btn--secondary portal-btn--compact"
                         disabled={busy !== undefined || idx === 0}
                         onClick={() => void moveRow(r.id, -1)}
-                        style={{ fontSize: '0.78rem', padding: '0.2rem 0.45rem' }}
                       >
                         {p.matchOrgStagesMoveUp}
                       </button>
                       <button
                         type="button"
+                        className="portal-btn portal-btn--secondary portal-btn--compact"
                         disabled={busy !== undefined || idx === ordered.length - 1}
                         onClick={() => void moveRow(r.id, 1)}
-                        style={{ fontSize: '0.78rem', padding: '0.2rem 0.45rem' }}
                       >
                         {p.matchOrgStagesMoveDown}
                       </button>
                       <button
                         type="button"
+                        className="portal-btn portal-btn--secondary portal-btn--compact"
                         disabled={busy !== undefined}
                         onClick={() => void refreshRow(r.id)}
-                        style={{ fontSize: '0.78rem', padding: '0.2rem 0.45rem' }}
                       >
                         {busy === 'refresh' ? p.matchOrgStagesRefreshing : p.matchOrgStagesRefreshLatest}
                       </button>
                       <button
                         type="button"
+                        className="portal-btn portal-btn--secondary portal-btn--compact"
                         disabled={busy !== undefined}
                         onClick={() => void removeRow(r.id)}
-                        style={{ fontSize: '0.78rem', padding: '0.2rem 0.45rem' }}
                       >
                         {p.matchOrgStagesRemove}
                       </button>

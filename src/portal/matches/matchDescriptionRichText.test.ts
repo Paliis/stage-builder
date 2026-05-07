@@ -47,4 +47,10 @@ describe('MatchDescriptionRichText', () => {
     const h = renderDesc('**bold**')
     expect(h).toContain('<strong')
   })
+
+  it('linkifies bare URLs in Markdown path (GFM autolink)', () => {
+    expect(matchDescriptionLooksLikeBbCode('see https://example.com/x')).toBe(false)
+    const h = renderDesc('see https://example.com/x')
+    expect(h).toContain('<a href="https://example.com/x"')
+  })
 })
