@@ -61,8 +61,11 @@
 
 .portal-org-admin__table-shell {
   width: 100%;
+  min-width: 0;
   margin-top: 1.1rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   border-radius: 1rem;
   border: 1px solid var(--border);
   background: var(--btn-bg);
@@ -80,7 +83,7 @@
 .portal-org-admin__table thead th.portal-org-admin__col-email,
 .portal-org-admin__table tbody td.portal-org-admin__col-email {
   width: 12%;
-  min-width: 0;
+  min-width: 13.5rem;
 }
 
 .portal-org-admin__table thead th.portal-org-admin__col-name,
@@ -121,7 +124,7 @@
   border-bottom: 1px solid var(--border);
   vertical-align: top;
   color: var(--text);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   word-break: normal;
 }
 
@@ -218,128 +221,4 @@
 .portal-org-admin__textarea:disabled {
   opacity: 0.65;
   cursor: not-allowed;
-}
-
-.portal-org-admin__stack-val {
-  display: block;
-  min-width: 0;
-  overflow-wrap: break-word;
-  word-break: normal;
-}
-
-/* Phones/small tablets: stacked organizer rows (no ultra-wide horizontal table drag). */
-@media (max-width: 767px) {
-  .portal-org-admin__table-shell {
-    overflow-x: visible;
-    margin-top: 1rem;
-  }
-
-  .portal-org-admin__table {
-    width: 100%;
-    min-width: 0;
-    table-layout: auto;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-
-  .portal-org-admin__table thead.portal-org-admin__table-head {
-    display: none;
-  }
-
-  .portal-org-admin__table tbody {
-    display: block;
-    width: 100%;
-  }
-
-  .portal-org-admin__table tbody tr {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    margin-bottom: 0.82rem;
-    padding: 0.68rem 0.78rem;
-    border-radius: 0.82rem;
-    border: 1px solid color-mix(in srgb, var(--border), transparent 12%);
-    background: color-mix(in srgb, var(--surface), var(--btn-bg) 22%);
-    box-sizing: border-box;
-    width: 100%;
-  }
-
-  .portal-org-admin__table tbody tr:last-child {
-    margin-bottom: 0;
-  }
-
-  .portal-org-admin__table tbody td {
-    /* Label (::before) on its own row, full-width value beneath — avoids 1-character columns on narrow phones. */
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.34rem;
-    width: 100%;
-    padding: 0.48rem 0;
-    border: none !important;
-    border-top: 1px solid color-mix(in srgb, var(--border), transparent 35%) !important;
-    background: transparent !important;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    word-break: normal;
-  }
-
-  .portal-org-admin__table tbody td:first-of-type {
-    border-top: none !important;
-    padding-top: 0;
-  }
-
-  .portal-org-admin__table tbody td:last-of-type {
-    padding-bottom: 0;
-  }
-
-  .portal-org-admin__table tbody td[data-label]::before {
-    content: attr(data-label) '\00a0:';
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    flex-shrink: 0;
-    font-weight: 750;
-    font-size: 0.71rem;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: var(--text-h);
-    opacity: 0.9;
-    line-height: 1.38;
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-break: normal;
-    margin: 0;
-    padding: 0;
-  }
-
-  .portal-org-admin__table tbody td > * {
-    flex: none;
-    align-self: stretch;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    word-break: normal;
-  }
-
-  .portal-org-admin__note-cell {
-    min-width: 0;
-  }
-
-  .portal-org-admin__select {
-    max-width: none;
-  }
-
-  .portal-org-admin__candidate-stack {
-    flex: none !important;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-  }
-
-  .portal-org-admin__note-readonly {
-    max-height: none;
-  }
 }
