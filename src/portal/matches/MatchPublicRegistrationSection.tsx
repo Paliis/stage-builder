@@ -678,11 +678,6 @@ export function MatchPublicRegistrationSection({
     (!mastheadActionsMount && showMastheadUi) ||
     Boolean(feedback)
 
-  const mastheadInnerMods =
-    showRegisteredMasthead ? ' portal-match-public-detail__masthead-actions-inner--success'
-    : showPendingTools || showCancelledNote ? ' portal-match-public-detail__masthead-actions-inner--attention'
-    : ''
-
   const mastheadBody = (
     <>
       {showGuestRegisterCta ?
@@ -732,8 +727,9 @@ export function MatchPublicRegistrationSection({
       : null}
 
       {showRegisteredMasthead ?
-        <p className="portal-match-public-detail__masthead-registered-head" role="status">
-          {p.matchDetailRegistrationMastheadRegistered}
+        <p className="portal-reg-inline-meta" role="status">
+          <strong>{p.matchDetailRegistrationYourStatus}: </strong>
+          <span className={portalMatchRegLabelClass('confirmed')}>{p.matchDetailRegistrationMastheadRegistered}</span>
         </p>
       : null}
     </>
@@ -742,7 +738,7 @@ export function MatchPublicRegistrationSection({
   const mastheadPortal =
     mastheadActionsMount && showMastheadUi ?
       createPortal(
-        <div className={`portal-match-public-detail__masthead-actions-inner${mastheadInnerMods}`}>{mastheadBody}</div>,
+        <div className="portal-match-public-detail__masthead-actions-inner">{mastheadBody}</div>,
         mastheadActionsMount,
       )
     : null
@@ -789,7 +785,7 @@ export function MatchPublicRegistrationSection({
         : null}
 
         {!mastheadActionsMount && showMastheadUi ?
-          <div className={`portal-match-public-detail__masthead-actions-inner${mastheadInnerMods}`}>
+          <div className="portal-match-public-detail__masthead-actions-inner">
             {mastheadBody}
           </div>
         : null}
