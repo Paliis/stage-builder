@@ -341,7 +341,7 @@ export function PlatformOrganizersPage() {
 
         <div className="portal-org-admin__table-shell">
           <table className="portal-org-admin__table">
-            <thead>
+            <thead className="portal-org-admin__table-head">
               <tr>
                 <th className="portal-org-admin__col-email">{p.organizersColEmail}</th>
                 <th className="portal-org-admin__col-name">{p.organizersColDisplayName}</th>
@@ -362,11 +362,15 @@ export function PlatformOrganizersPage() {
 
                 return (
                   <tr key={row.user_id} aria-busy={busy}>
-                    <td className="portal-org-admin__col-email">{row.email ?? '—'}</td>
-                    <td className="portal-org-admin__col-name">
-                      {row.display_name?.trim() ? row.display_name : '—'}
+                    <td className="portal-org-admin__col-email" data-label={p.organizersColEmail}>
+                      <span className="portal-org-admin__stack-val">{row.email ?? '—'}</span>
                     </td>
-                    <td className="portal-org-admin__col-status">
+                    <td className="portal-org-admin__col-name" data-label={p.organizersColDisplayName}>
+                      <span className="portal-org-admin__stack-val">
+                        {row.display_name?.trim() ? row.display_name : '—'}
+                      </span>
+                    </td>
+                    <td className="portal-org-admin__col-status" data-label={p.organizersColStatus}>
                       <select
                         className="portal-org-admin__select"
                         value={selected}
@@ -403,7 +407,7 @@ export function PlatformOrganizersPage() {
                         ))}
                       </select>
                     </td>
-                    <td className="portal-org-admin__col-contact">
+                    <td className="portal-org-admin__col-contact" data-label={p.organizersColContact}>
                       <OrganizerCandidateApplicationCell
                         contact={row.organizer_application_contact}
                         pastMatches={row.organizer_application_past_matches}
@@ -412,7 +416,7 @@ export function PlatformOrganizersPage() {
                         pastCaption={p.organizersCandidateAppPastCaption}
                       />
                     </td>
-                    <td className="portal-org-admin__note-cell portal-org-admin__col-mod">
+                    <td className="portal-org-admin__note-cell portal-org-admin__col-mod" data-label={p.organizersColModeration}>
                       {selected === 'blocked' ?
                         <textarea
                           className="portal-org-admin__textarea"

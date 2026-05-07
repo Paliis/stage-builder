@@ -219,3 +219,115 @@
   opacity: 0.65;
   cursor: not-allowed;
 }
+
+.portal-org-admin__stack-val {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Phones/small tablets: stacked organizer rows (no ultra-wide horizontal table drag). */
+@media (max-width: 767px) {
+  .portal-org-admin__table-shell {
+    overflow-x: visible;
+    margin-top: 1rem;
+  }
+
+  .portal-org-admin__table {
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .portal-org-admin__table thead.portal-org-admin__table-head {
+    display: none;
+  }
+
+  .portal-org-admin__table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .portal-org-admin__table tbody tr {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 0.82rem;
+    padding: 0.68rem 0.78rem;
+    border-radius: 0.82rem;
+    border: 1px solid color-mix(in srgb, var(--border), transparent 12%);
+    background: color-mix(in srgb, var(--surface), var(--btn-bg) 22%);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .portal-org-admin__table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .portal-org-admin__table tbody td {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 0.45rem 0.62rem;
+    width: 100%;
+    padding: 0.48rem 0;
+    border: none !important;
+    border-top: 1px solid color-mix(in srgb, var(--border), transparent 35%) !important;
+    background: transparent !important;
+    box-sizing: border-box;
+  }
+
+  .portal-org-admin__table tbody td:first-of-type {
+    border-top: none !important;
+    padding-top: 0;
+  }
+
+  .portal-org-admin__table tbody td:last-of-type {
+    padding-bottom: 0;
+  }
+
+  .portal-org-admin__table tbody td[data-label]::before {
+    content: attr(data-label) '\00a0:';
+    flex: 0 1 40%;
+    max-width: 10rem;
+    min-width: 5.25rem;
+    font-weight: 750;
+    font-size: 0.69rem;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+    color: var(--text-h);
+    opacity: 0.9;
+    line-height: 1.35;
+    word-break: break-word;
+    padding-top: 0.1rem;
+  }
+
+  .portal-org-admin__table tbody td[data-label] > * {
+    flex: 1 1 auto;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .portal-org-admin__note-cell {
+    min-width: 0;
+  }
+
+  .portal-org-admin__select {
+    max-width: none;
+  }
+
+  .portal-org-admin__candidate-stack {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .portal-org-admin__note-readonly {
+    max-height: none;
+  }
+}

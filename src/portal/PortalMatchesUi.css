@@ -472,6 +472,14 @@ a.portal-match-title-ellipsis:hover {
   }
 }
 
+@media (max-width: 639px) {
+  .portal-match-public-detail__masthead-sheet,
+  .portal-match-public-detail__surface {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 /* Public match registration (minimal inline + modal only) -------------------- */
 
 .portal-reg-minimal {
@@ -628,7 +636,7 @@ a.portal-match-title-ellipsis:hover {
   align-items: start;
 }
 
-@media (max-width: 540px) {
+@media (max-width: 639px) {
   .portal-reg-modal__grid-2 {
     grid-template-columns: 1fr;
   }
@@ -747,6 +755,12 @@ a.portal-match-title-ellipsis:hover {
   margin-top: 0.4rem;
 }
 
+@media (max-width: 639px) {
+  .portal-reg-modal__cat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .portal-reg-modal__check {
   display: flex;
   align-items: flex-start;
@@ -768,6 +782,37 @@ a.portal-match-title-ellipsis:hover {
   gap: 0.5rem;
   justify-content: flex-end;
   margin-top: 0.2rem;
+}
+
+@media (max-width: 639px) {
+  .portal-reg-modal {
+    width: calc(100% - 1rem);
+    max-width: min(40rem, calc(100vw - 1rem));
+    box-sizing: border-box;
+  }
+
+  .portal-reg-modal__panel {
+    padding: 1rem 0.88rem 1rem;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .portal-reg-modal__identity-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .portal-reg-modal__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 0.45rem;
+  }
+
+  .portal-reg-modal__actions .portal-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* Organizer match roster: breadcrumbs + table toolbar ----------------------- */
