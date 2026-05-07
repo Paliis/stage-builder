@@ -222,7 +222,6 @@
 
 .portal-org-admin__stack-val {
   display: block;
-  flex: 1 1 0%;
   min-width: 0;
   overflow-wrap: break-word;
   word-break: normal;
@@ -270,11 +269,11 @@
   }
 
   .portal-org-admin__table tbody td {
+    /* Label (::before) on its own row, full-width value beneath — avoids 1-character columns on narrow phones. */
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    gap: 0.45rem 0.62rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.34rem;
     width: 100%;
     padding: 0.48rem 0;
     border: none !important;
@@ -282,6 +281,7 @@
     background: transparent !important;
     box-sizing: border-box;
     overflow-wrap: break-word;
+    word-break: normal;
   }
 
   .portal-org-admin__table tbody td:first-of-type {
@@ -295,23 +295,29 @@
 
   .portal-org-admin__table tbody td[data-label]::before {
     content: attr(data-label) '\00a0:';
-    /* Do not shrink — otherwise the value column collapses and `overflow-wrap:anywhere` shreds text. */
-    flex: 0 0 auto;
-    width: min(9.25rem, 40%);
-    max-width: 10.5rem;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
     font-weight: 750;
-    font-size: 0.69rem;
-    letter-spacing: 0.035em;
+    font-size: 0.71rem;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--text-h);
     opacity: 0.9;
-    line-height: 1.35;
-    word-break: break-word;
-    padding-top: 0.1rem;
+    line-height: 1.38;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+    margin: 0;
+    padding: 0;
   }
 
-  .portal-org-admin__table tbody td[data-label] > * {
-    flex: 1 1 0%;
+  .portal-org-admin__table tbody td > * {
+    flex: none;
+    align-self: stretch;
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
     overflow-wrap: break-word;
@@ -327,9 +333,10 @@
   }
 
   .portal-org-admin__candidate-stack {
-    flex: 1 1 auto;
-    min-width: 0;
+    flex: none !important;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .portal-org-admin__note-readonly {
