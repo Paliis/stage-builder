@@ -102,6 +102,7 @@
 | [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md) | Матчі: фази A–F, PSC |
 | [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md) | Матчі: короткий продуктовий план кроків |
 | [SUPABASE_AUTH_EMAIL.md](./SUPABASE_AUTH_EMAIL.md) | Supabase Auth: шаблони листів, SMTP, ім’я відправника |
+| [SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md) | Матчі: листи про нові заявки організатора (Edge Function, Resend, webhook) |
 | [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md) | Share / посилання на вправу |
 | [USER_FEEDBACK.md](./USER_FEEDBACK.md) | Чернетка ідей до грумінгу |
 
@@ -112,3 +113,4 @@
 | Дата | Зміни |
 |------|--------|
 | 2026-05-01 | Перша версія: карта розділів SB/SH/PT/MT/RH/IN, шаблони фраз, зв’язок BL та MA. |
+| 2026-05-07 | Додано посилання на **SUPABASE_ORGANIZER_APPLICATION_ALERTS**; узгоджено з оновленням **BACKLOG** / **BACKLOG_MATCHES** / **MATCH_PORTAL_PRODUCT_PLAN** (епік матчів **partial**). |

@@ -65,10 +65,10 @@
 
 | ID | Тема | Коротко | Статус | Пріоритет |
 |----|------|---------|--------|-----------|
-| **BL-025** | Match Admin: дані та заявки | Фундамент матчів; MVP shotgun. Див. **MA-A\*** у [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md). | candidate | P2 |
-| **BL-026** | Підтвердження заявок і примітка про оплату | **MA-B\*** | candidate | P2 |
-| **BL-027** | Прив’язка вправ Stage Builder до матчу | **MA-C\*** | candidate | P2 |
-| **BL-028** | Експорт `.psc` з портала | **MA-D\*** | candidate | P2 |
+| **BL-025** | Match Admin: дані та заявки | Фундамент матчів; MVP shotgun. Див. **MA-A\*** у [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md). | partial | P2 |
+| **BL-026** | Підтвердження заявок і примітка про оплату | **MA-B\*** (B01 done, B02 partial) | partial | P2 |
+| **BL-027** | Прив’язка вправ Stage Builder до матчу | **MA-C\*** — C01/C02 partial у коді та БД | partial | P2 |
+| **BL-028** | Експорт `.psc` з портала | **MA-D\*** — D01 partial, D03 done | partial | P2 |
 | **BL-033** | Каталог: тип події та рівень PS | **MA-R01** ✓ | **done** | P3 |
 | **BL-034** | Seed демо-матчу | **MA-R02** ✓ | **done** | P3 |
 | **BL-035** | Документація / підказки типу та рівня | **MA-R03** ✓ | **done** | — |
@@ -213,3 +213,4 @@
 | 2026-04-09 | **BL-001:** статус **in progress**; у [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md) — **поточний контекст** і **покроковий план імплементації** (етапи A–F). |
 | 2026-05-01 | **BL-033**–**BL-035** (каталог, seed, онбординг) закриті в коді/docs — [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md). Додано **[BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)** — окремий беклог модуля «Матчі» (`MA-<фаза><NN>`); розділ «Матчі» у цьому файлі скорочено до посилань. |
 | 2026-05-01 | Додано **[PLANNING_INDEX.md](./PLANNING_INDEX.md)** — єдина карта планування та беклогів по розділах продукту (коди SB/PT/MT/…, шаблони фраз). |
+| 2026-05-07 | **BL-025**–**BL-028**: статус **partial** (матчі в коді й на проді за прапорцем; MA-статуси — див. [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)). **CI:** `eslint` узгоджено з актуальною кодовою базою порталу. |

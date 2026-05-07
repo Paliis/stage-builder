@@ -18,6 +18,9 @@
 | **6** | Хаб **`/{locale}/matches`**: для **незалогінених** приховано нижній блок з кнопкою «Увійдіть… організатора»; посилання в кабінет організатора / акаунт показуються лише після входу (**`MatchPortalHomePage`**). |
 | **7** | Сторінка **`/{locale}/account`**: оновлені стилі форми входу (**`PortalCompactEmailAuth`**); без дубля «Вийти» для гостя; у шапці приховано «Увійти», якщо вже на сторінці акаунту (**`PortalHeaderAccount`**). |
 | **8** | Форма email/password: мінімум **8** символів, підказка, перемикач видимості пароля; листи Auth — у **[SUPABASE_AUTH_EMAIL.md](./SUPABASE_AUTH_EMAIL.md)** (шаблони + SMTP у Dashboard). |
+| **9** | Каталог організаторів платформи **`/{locale}/admin/organizers`**, самоподача з **`/{locale}/account`**; для гостя з адмінки — редірект на реєстрацію; нові заявки — **[SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md)** (Edge Function + Resend + Database Webhook). |
+| **10** | Публічний ростер: `participant_list_visibility`, RPC **`fetch_public_match_roster`**. Прив’язка вправ: **`match_stage_links`**, RPC **`organizer_refresh_match_stage_link_latest`** + кнопки в кабінеті організатора (див. **MA-B02**, **MA-C01**, **MA-C02** у [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md) — **partial**). |
+| **11** | Публічна картка матчу: безпечний рендер опису з Markdown (**`MatchDescriptionRichText`**, поле **`description_md`**). |
 
 ---
 
@@ -41,7 +44,7 @@
 | **1** | Локально: `npm run build`, тести на browse-utils. | **Деплой:** переконайся, що **Vercel production** зібрана з `main` після merge; **smoke на проді** (твій акаунт / URL) — агент не має доступу до твого прод-роуту. |
 | **2** | Файл seed оновлено (`match` + `L2` для тестового матчу). | Якщо seed-матч **вже** був у БД до зміни — зроби **`UPDATE matches SET …`** у SQL Editor або видали тестовий матч і перезапусти seed. **Хмара:** `npm run supabase:seed:match-all` лише якщо є `supabase link` і дозволено писати в проєкт. |
 | **3–4** | UI каталогу й «Мої матчі». | За великого каталогу (>500 майбутніх матчів) можливі **пагінація / індекси** — поки не потрібно. |
-| **5** | — | Великий епік; див. **BL-026**–**BL-028** і фази в **MATCH_REGISTRATION_AND_PSC_PLAN**. |
+| **5** | Частково: підтвердження заявок (**MA-B01**), публічний ростер і прив’язка вправ з refresh (**MA-B02**, **MA-C01**, **MA-C02** — **partial**); експорт `.psc` у розробці (**MA-D\***). | Залишаються стабільні PSC-поля (**MA-C03**), PDF-збірка, результати, поліровка UX — див. **BL-026**–**BL-028** і фази **B–F** у **MATCH_REGISTRATION_AND_PSC_PLAN**. |
 | **6** | §5 у цьому файлі + **підказки в `OrganizerMatchEditPage`** (`matchOrgTaxonomyOptionalLead`, `matchOrgEventKindHint`, `matchOrgPsLevelHint`). | — |
 
 ---
@@ -67,6 +70,7 @@
 | 2026-05-01 | Перша версія: зроблені кроки 1–5 (тип події, рівні PS, картка, міграція); план кроків 1–6; BL-033–035. |
 | 2026-05-04 | Обкладинка в редакторі матчу: JPEG після кропу зберігає повний фрейм **16∶10** (раніше — помилково квадрат); модалка кропу відображає кадр як картку (**object-fit cover**, можна від’їхати масштабом униз до **≈0,22×**). Завантаження файлу вже зі співвідношенням **16∶10** (допуск **~2,2%**) — **без** повторного кропу, піксель-у-піксель до макету. |
 | 2026-05-01 | Підказки в **OrganizerMatchEditPage**: `matchOrgTaxonomyOptionalLead`, `matchOrgEventKindHint`, `matchOrgPsLevelHint`. |
+| 2026-05-07 | Оновлено «Що вже зроблено» (каталог організаторів, сповіщення заявок, ростер, прив’язка вправ, rich description); §2.1 крок **5** — частковий прогрес епіку; синхронізація з [BACKLOG.md](./BACKLOG.md) (**BL-025**–**BL-028** **partial**) та [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md). |
 
 ---
 
