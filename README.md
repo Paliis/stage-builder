@@ -23,6 +23,7 @@
 - **Очистити вправу** — іконка кошика внизу справа на 2D-карті; після підтвердження скидаються план, брифінг і чернетка (файли `.stage.json` на диску не змінюються).
 - **PWA** — сервіс-воркер, офлайн-режим, встановлення на домашній екран.
 - **Двомовність** — повний інтерфейс UK / EN.
+- **Модуль матчів (портал)** — каталог **`/:locale/matches`**, кабінет організатора, реєстрація, експорт **`.psc`**; показ у збірці лише якщо **`VITE_ENABLE_MATCH_PORTAL=1`** (прод може лишатися без маршрутів матчів). Докладно: **[docs/MATCH_PORTAL_PRODUCT_PLAN.md](docs/MATCH_PORTAL_PRODUCT_PLAN.md)**, карта задач **[docs/PLANNING_INDEX.md](docs/PLANNING_INDEX.md)** (розділ **MT**).
 
 Габарити мішеней узгоджені з доменною логікою (`src/domain`): IPSC B2, Appendix C3, Ø110 мм кераміка тощо.
 
@@ -77,6 +78,8 @@ src/
 ├── domain/           # моделі, геометрія, розрахунки, парсинг *.stage.json
 ├── application/      # Zustand-стори (сцена, брифінг)
 ├── presentation/     # React-компоненти (план, 3D, тулбар, міні-карта, PDF)
+├── portal/           # портал Shooters Tools: shell, матчі, RO Helper, Hit Factor, акаунт
+├── server/           # serverless-хендлери (share, PSC export) — збірка в api/*.js
 └── i18n/             # повідомлення UK / EN
 ```
 
@@ -89,6 +92,7 @@ src/
 - **Беклог ідей** (грумінг, пріоритети): **[docs/BACKLOG.md](docs/BACKLOG.md)**; **карта планування по розділах** (Матчі, Портал, Редактор…): **[docs/PLANNING_INDEX.md](docs/PLANNING_INDEX.md)**
 - **Видимість / безпека 2D** (чернетка правил для BL-010 / BL-013): **[docs/VISIBILITY_AND_SAFETY_RULES.md](docs/VISIBILITY_AND_SAFETY_RULES.md)**
 - **Повний опис функціоналу** (можливості для користувачів і логіка редактора): **[docs/FUNCTIONALITY.md](docs/FUNCTIONALITY.md)**
+- **Зведений план модуля «Матчі»** (каталог, PSC, організатори): **[docs/MATCH_PORTAL_PRODUCT_PLAN.md](docs/MATCH_PORTAL_PRODUCT_PLAN.md)**, беклог **MA‑*** — **[docs/BACKLOG_MATCHES.md](docs/BACKLOG_MATCHES.md)**
 - **Технічна документація для розробників** (архітектура, домен, формат `*.stage.json`, PWA, CI): **[docs/TECH.md](docs/TECH.md)**
 
 ## Версійність продукту

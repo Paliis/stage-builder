@@ -195,15 +195,16 @@ RLS у Supabase обов’язковий перед production.
 | Автоматична **регресія** експорту (порівняння ZIP з еталоном у CI) | **Частково** — unit-тести на збірку ZIP; порівняння з **`practiscore-roundtrip-test.psc`** end-to-end у CI — **MA-D02** |
 | Ручний імпорт експорту з порталу у **PractiScore 2** (зафіксована версія застосунку) | **TBD / періодично** при зміні мапера або версії PS |
 
-### 8.2 Хвиля A — критичний шлях до MVP «MD завантажує .psc» (BL-028 + фаза D)
+### 8.2 Хвиля A — ітерації після першої версії експорту (BL-028 + фаза D)
 
-1. **Контракт і мапер:** визначити DTO/типи в `src/` (наприк `contracts/matchExport.ts` або `types/matchPscExport.ts`): матч + скводи + підтверджені заявки + впорядковані `match_stage_links` + мінімальні поля з `snapshot_meta` / share для `match_stages[]` у PS.
-2. **Серверний endpoint:** `POST /api/matches/:matchId/export-psc` (або Edge Function) — перевірка сесії, що викликаючий = **організатор цього матчу** (JWT → Supabase; узгодити з існуючим `publish-share` / Vercel patterns).
-3. **Збірка ZIP:** `match_def.json` + порожній `match_scores.json` (як у плані §6 і фікстурі `scripts/practiscore/fixtures/`), shotgun-пресет для «важких» блоків (`match_procs`, `match_dqs`, …) — клон/шаблон від перевіреного зразка.
-4. **UI:** кнопка «Завантажити .psc» на сторінці організатора (лише для активного організатора й власника матчу), обробка помилок і порожніх передумов (немає стрільців / немає вправ — зрозумілі повідомлення).
-5. **Верифікація:** ручний імпорт у **PractiScore 2**; оновити рядок **«PractiScore 2»** у таблиці §8.1 (версію застосунку) після першого прийнятного прогону.
+**Уже в репозиторії (перша версія):** **`POST /api/match-export-psc`** із тілом **`{ "matchId": "<uuid>" }`** і заголовком **`Authorization: Bearer <access_token>`** (сесія Supabase); хендлер **`matchExportPscApiHandler.ts`**, збірка **`api/match-export-psc.js`**; кнопка завантаження в кабінеті організатора; **`buildPortalPractiscoreZip`** + Vitest (**`buildPortalPractiscoreZip.test.ts`**). Див. [TECH.md](./TECH.md) та чекліст §8.5 п. 4.
 
-*Паралельно можна гоїти мапер на статичному JSON*, не чекаючи повного UI фази C, якщо структура вправ стабільна.
+**Наступні кроки (узгодити з **MA-D01**, **MA-C03**, опційно **`contracts/`**):**
+
+1. **Узгоджений DTO / типи в `src/`** (за потреби **`contracts/matchExport.ts`** або **`types/matchPscExport.ts`**) — канон «матч порталу → фрагменти `match_def`» для документації та регрес-тестів.
+2. **Збірка ZIP:** уточнення **`match_stages[]`**, shotgun-пресети для «важких» блоків (`match_procs`, `match_dqs`, …) відносно цільової версії PractiScore 2.
+3. **UX/API:** зрозуміліші помилки якщо немає підтверджених стрільців / вправ; edge cases **`squad_phase`**, прематчу, payload share.
+4. **Верифікація:** регулярний ручний імпорт у **PractiScore 2**; зафіксувати версію застосунку в §8.1 після прийнятного прогону.
 
 ### 8.3 Хвиля B — надійність і реліз
 
@@ -230,4 +231,4 @@ RLS у Supabase обов’язковий перед production.
 
 *Документ можна грумити разом із [BACKLOG.md](./BACKLOG.md); для трекінгу окремих задач — **BL-025–BL-028**. Останній зріз статусів **MA-\*** — [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md).*
 
-*Історія: 2026-05-06 — §8.1 узгоджено з кодом (`/api/match-export-psc`, `buildPortalPractiscoreZip`, тести); уточнено шлях модуля `src/portal/matches`.*
+*Історія: 2026-05-06 — §8.1 узгоджено з кодом (`/api/match-export-psc`, `buildPortalPractiscoreZip`, тести); уточнено шлях модуля `src/portal/matches`. 2026-05-06 (друга редакція): §8.2 переформатовано під **вже реалізований** endpoint і наступні ітерації.*

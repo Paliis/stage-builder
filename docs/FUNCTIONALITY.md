@@ -2,6 +2,8 @@
 
 Документ описує **що вміє продукт** з точки зору користувача та логіки редактора. Технічні деталі реалізації — у [TECH.md](./TECH.md). Загальний **бізнес- і технічний** огляд (аудиторія, цінність, стек, шари) — у [PRODUCT.md](./PRODUCT.md). Зведений контекст усього проєкту та індекс усіх `docs/` — [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md).
 
+**Межі цього файлу:** нижче — переважно **Stage Builder** (редактор вправ). Окремий модуль **порталу — «Матчі»** (каталог, реєстрація, кабінет організатора, експорт `.psc` за **`VITE_ENABLE_MATCH_PORTAL`**) не розгорнуто тут; короткий зріз маршрутів і env — [PROJECT_CONTEXT.md §3.3](./PROJECT_CONTEXT.md), зведений план — [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), карта задач — [PLANNING_INDEX.md](./PLANNING_INDEX.md) (код **MT**).
+
 ---
 
 ## 1. Призначення
@@ -222,4 +224,5 @@
 | [VERSIONING.md](./VERSIONING.md) | Продуктові етапи V0 / V1 / V2 та перелік змін між ними |
 | [USER_FEEDBACK.md](./USER_FEEDBACK.md) | Ідеї та зворотний зв’язок |
 | [PLAN_FIELD_PDF_GRID.md](./PLAN_FIELD_PDF_GRID.md) | План: довільне поле (ліміти), сітка 1 м, 3D під PDF, підказка в брифі |
+| [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md) | Модуль матчів порталу: зроблено / далі (окремо від цього опису редактора) |
 | [README.md](../README.md) | Швидкий старт, посилання на прод, стек |

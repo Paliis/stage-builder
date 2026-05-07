@@ -43,8 +43,7 @@
 2. **Відкрити готову вправу** — імпорт JSON; застарілі типи мішеней підставляються автоматично (див. FUNCTIONALITY / TECH).
 3. **Продовжити пізніше** — чернетка сцени й брифінгу в `localStorage` між візитами (окремо від файлу на диску).
 4. **Оновити застосунок** — PWA: банер «є нова версія», оновлення за згодою користувача (без примусового перезавантаження).
-
-### A.6. Монетизація та підтримка
+5. **Реєстрація на матчі / кабінет організатора** — за **увімкненого** на збірці **`VITE_ENABLE_MATCH_PORTAL`**: маршрути **`/:locale/matches/…`**, акаунт, адмінка платформи для заявок організаторів; зведення — [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md).
 
 Проєкт позиціонується як **безкоштовний** для користувачів кінцевого застосунку. Канали зворотного зв’язку та опційної підтримки — у [README.md](../README.md) (email, Telegram, Monobank). Збір ідей для розвитку — [USER_FEEDBACK.md](./USER_FEEDBACK.md).
 
@@ -52,7 +51,7 @@
 
 - Оцінка **мінімальних пострілів** у UI — **орієнтовна**, не заміна правил змагання.
 - **Кути безпеки** на плані — візуальна підказка, не юридично значуща перевірка.
-- Синхронізація між пристроями **лише** через експорт/імпорт файлу або власні процеси користувача — хмарного акаунта в продукті немає.
+- Синхронізація між пристроями **лише** через експорт/імпорт файлу **`*.stage.json`** або власні процеси користувача — **хмари для проєктів редактора** (як єдиного сховища всіх вправ) у продукті **немає**; **Supabase share** — окремий напрям (**BL-001**). **Акаунт порталу** (email через Supabase Auth) потрібен для **реєстрації на матчі** та особистих налаштувань стрільця й **не** замінює файл вправи або хмару для Stage Builder.
 
 ---
 
@@ -80,8 +79,9 @@
 | **Application** | `src/application/` | Zustand: сцена (`stageStore`), брифінг (`briefingStore`), чернетка сесії (`sessionDraft`), персист чернетки |
 | **Presentation** | `src/presentation/` | План, 3D, тулбар, міні-карта, PDF-експорт, PWA-банер, аналітика |
 | **i18n** | `src/i18n/` | Повідомлення UK/EN |
+| **Портал і модулі** | `src/portal/` | `PortalShell`, home, Hit Factor, RO Helper (lazy), **акаунт** (`/:locale/account`), модуль **«Матчі»** (`src/portal/matches/*`, маршрути під **`isMatchPortalEnabled()`** — див. [MATCH_REGISTRATION_AND_PSC_PLAN.md §1.4](./MATCH_REGISTRATION_AND_PSC_PLAN.md)) |
 
-Точка входу: `src/main.tsx` → гідратація чернетки, PWA, `I18nProvider`, `App`.
+**Точка входу SPA:** `src/main.tsx` — гідратація чернетки для редактора, PWA, **`I18nProvider`**, **`BrowserRouter`**: локалізований портал, **`App`** на **`/stage-builder`**, маршрути share **`/v/*`**, **`/e/*`** (див. [TECH.md](./TECH.md)).
 
 ### B.3. Дані та формати
 
@@ -119,10 +119,12 @@
 | [PLANNING_INDEX.md](./PLANNING_INDEX.md) | Єдина карта планування: розділи (Редактор, Портал, Матчі, …), **BL** / **MA-***, як посилатися на задачу |
 | [BACKLOG.md](./BACKLOG.md) | Ідеї майбутніх фіч, грумінг, пріоритети, відкладені епіки |
 | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md) | Модуль «Матчі»: беклог **MA-** за фазами (A–F + R) |
+| [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) | Архітектура модуля матчів (SPA, PSC API, межі з редактором) |
+| [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md) | Узгоджені класи кнопок (`.portal-btn`) для екранів матчів |
 | [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md) | Модуль матчів: зведений план кроків і беклог (тип події, PSC, каталог) |
 | [README.md](../README.md) | Швидкий старт, посилання на прод, структура `src/` |
 | [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md) | Зведений бізнес + техніка, маршрути, env, реєстр усіх документів у `docs/` |
 
 ---
 
-*English (short): Stage Builder is a free browser-based IPSC-style stage designer with a metric 2D plan, 3D preview, bilingual UI, JSON project files, PDF briefing export, and PWA offline support. Business-wise it targets match staff, clubs, and shooters; technically it uses React 19, TypeScript, Vite, Canvas 2D, Three.js/R3F, Zustand+zundo, and is deployed on Vercel with GitHub Actions CI.*
+*English (short): Stage Builder is a free browser-based IPSC-style stage designer with a metric 2D plan, 3D preview, bilingual UI, JSON project files, PDF briefing export, and PWA offline support. The same deployment also hosts the **Shooters Tools** portal (RO Helper, Hit Factor, optional **match registration** module behind `VITE_ENABLE_MATCH_PORTAL`). Business-wise it targets match staff, clubs, and shooters; technically it uses React 19, TypeScript, Vite, Canvas 2D, Three.js/R3F, Zustand+zundo, and is deployed on Vercel with GitHub Actions CI.*
