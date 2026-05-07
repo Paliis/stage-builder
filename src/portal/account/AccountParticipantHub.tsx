@@ -392,7 +392,7 @@ export function AccountParticipantHub({
           :
             <div className="portal-account__hub-table-wrap">
               <table className="portal-account__hub-table">
-                <thead>
+                <thead className="portal-account__hub-table-head">
                   <tr>
                     <th>{p.accountMyRegistrationsColMatch}</th>
                     <th className="portal-account__hub-th-date">{p.accountMyRegistrationsColDate}</th>
@@ -408,7 +408,10 @@ export function AccountParticipantHub({
                     const canCancel = r.status === 'pending'
                     return (
                       <tr key={r.id}>
-                        <td className="portal-account__hub-td-title">
+                        <td
+                          className="portal-account__hub-td-title"
+                          data-label={p.accountMyRegistrationsColMatch}
+                        >
                           {m?.status === 'published' ?
                             <Link
                               className="portal-match-title-ellipsis"
@@ -423,13 +426,18 @@ export function AccountParticipantHub({
                             </span>
                           )}
                         </td>
-                        <td className="portal-account__hub-td-nowrap">{when}</td>
-                        <td className="portal-account__hub-td-status">
+                        <td className="portal-account__hub-td-nowrap" data-label={p.accountMyRegistrationsColDate}>
+                          {when}
+                        </td>
+                        <td className="portal-account__hub-td-status" data-label={p.accountMyRegistrationsColStatus}>
                           <span className={`${portalMatchRegLabelClass(r.status)} portal-account__hub-status`}>
                             {regStatusLabel(r.status)}
                           </span>
                         </td>
-                        <td className="portal-account__hub-td-actions">
+                        <td
+                          className="portal-account__hub-td-actions"
+                          data-label={p.accountMyRegistrationsColActions}
+                        >
                           {canCancel ?
                             <div className="portal-account__hub-table-actions">
                               <button
