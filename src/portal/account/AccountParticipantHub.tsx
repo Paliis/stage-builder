@@ -201,6 +201,17 @@ export function AccountParticipantHub({
       setDefPhone(typeof row.phone === 'string' ? row.phone : '')
       setDefWeaponDetails(typeof row.weapon_details === 'string' ? row.weapon_details : '')
       setDefAvatarUrl(typeof row.avatar_url === 'string' ? row.avatar_url : '')
+    } else {
+      setDefWeaponClass('')
+      setDefDiv('')
+      setDefPf('')
+      setDefRegion('')
+      setDefCategories([])
+      setDefFirstName('')
+      setDefLastName('')
+      setDefPhone('')
+      setDefWeaponDetails('')
+      setDefAvatarUrl('')
     }
   }, [sb, userId, p])
 
@@ -459,7 +470,7 @@ export function AccountParticipantHub({
                   autoComplete="family-name"
                 />
               </label>
-              <label className="portal-account__field portal-account__psc-grid--full">
+              <label className="portal-account__field">
                 {p.accountParticipantFieldPhone}
                 <input
                   type="tel"
@@ -467,6 +478,17 @@ export function AccountParticipantHub({
                   onChange={(e) => setDefPhone(e.target.value)}
                   disabled={defSaving}
                   autoComplete="tel"
+                />
+              </label>
+              <label className="portal-account__field">
+                {p.accountParticipantFieldRegion}
+                <input
+                  type="text"
+                  value={defRegion}
+                  onChange={(e) => setDefRegion(e.target.value)}
+                  disabled={defSaving}
+                  autoComplete="address-level1"
+                  placeholder={p.accountParticipantFieldRegionPlaceholder}
                 />
               </label>
               <div className="portal-account__avatar-row portal-account__psc-grid--full">
@@ -565,17 +587,6 @@ export function AccountParticipantHub({
                 {!defWeaponClass && p.accountParticipantDivisionSelectWeaponFirst ?
                   <span className="portal-account__field-hint">{p.accountParticipantDivisionSelectWeaponFirst}</span>
                 : null}
-              </label>
-              <label className="portal-account__field">
-                {p.accountParticipantFieldRegion}
-                <input
-                  type="text"
-                  value={defRegion}
-                  onChange={(e) => setDefRegion(e.target.value)}
-                  disabled={defSaving}
-                  autoComplete="off"
-                  placeholder={p.accountParticipantFieldRegionPlaceholder}
-                />
               </label>
               <label className="portal-account__field portal-account__psc-grid--full">
                 {p.accountParticipantFieldWeaponDetails}

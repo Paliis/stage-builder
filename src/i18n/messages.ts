@@ -1692,7 +1692,8 @@ export const ukMessages: MessageTree = {
     accountMyRegistrationsCancelling: 'Скасування…',
     accountMyRegistrationsMatchUnavailable: '(картка недоступна)',
     accountParticipantDefaultsHeading: 'Профіль стрільця',
-    accountParticipantProfileSectionLead: '',
+    accountParticipantProfileSectionLead:
+      'Телефон, регіон та інші поля нижче підставляються у заявку на матч; натисніть «Зберегти», щоб оновити дані.',
     accountParticipantFieldRegion: 'Регіон / область',
     accountParticipantFieldRegionPlaceholder: 'Наприклад: UA або область',
     accountParticipantFieldFirstName: "Ім'я (для PractiScore)",
@@ -2732,7 +2733,8 @@ export const enMessages: MessageTree = {
     accountMyRegistrationsCancelling: 'Cancelling…',
     accountMyRegistrationsMatchUnavailable: '(match unavailable)',
     accountParticipantDefaultsHeading: 'Shooter profile',
-    accountParticipantProfileSectionLead: '',
+    accountParticipantProfileSectionLead:
+      'Phone, region, and the fields below prefill your match sign-ups — click Save to update.',
     accountParticipantFieldRegion: 'Region / state',
     accountParticipantFieldRegionPlaceholder: 'e.g. UA or your state',
     accountParticipantFieldFirstName: 'First name (PractiScore)',
