@@ -56,6 +56,7 @@ npm run supabase:migration-list
 
 - Не коміть **`.env`**, **`service_role`**, пароль БД.
 - Конфіг лінку зберігається під `supabase/.temp/` (ігнорується Git).
+- Сповіщення email про заявки організатора (Resend + Edge Function + Database Webhook): **[SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](../docs/SUPABASE_ORGANIZER_APPLICATION_ALERTS.md)**.
 
 ---
 
