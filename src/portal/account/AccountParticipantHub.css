@@ -12,7 +12,8 @@
   padding: 1.08rem 1.2rem 1.18rem;
   border-radius: 0.875rem;
   border: 1px solid color-mix(in srgb, var(--border), transparent 25%);
-  background: var(--surface);
+  /* Match `.portal-reg-modal`: panel is --btn-bg, inputs stay --surface for contrast. */
+  background: var(--btn-bg);
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.04),
     0 6px 20px rgba(15, 23, 42, 0.05);
@@ -131,7 +132,8 @@
   height: 4.5rem;
   border-radius: 50%;
   border: 1px dashed var(--border);
-  background: color-mix(in srgb, var(--surface), var(--btn-bg) 35%);
+  /* Same “field” surface as inputs now that the card uses --btn-bg. */
+  background: var(--surface);
 }
 
 .portal-account__avatar-actions {
