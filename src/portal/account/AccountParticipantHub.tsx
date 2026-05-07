@@ -430,23 +430,16 @@ export function AccountParticipantHub({
                           </span>
                         </td>
                         <td>
-                          {(m?.status === 'published' || canCancel) ?
+                          {canCancel ?
                             <div className="portal-account__hub-table-actions">
-                              {m?.status === 'published' ?
-                                <Link to={`/${locale}/matches/${m!.id}`} className="portal-account__hub-action-link">
-                                  {p.accountMyRegistrationsOpenMatch}
-                                </Link>
-                              : null}
-                              {canCancel ?
-                                <button
-                                  type="button"
-                                  className="portal-btn portal-btn--secondary portal-btn--compact"
-                                  disabled={busyId === r.id}
-                                  onClick={() => void cancelReg(r.id)}
-                                >
-                                  {busyId === r.id ? p.accountMyRegistrationsCancelling : p.accountMyRegistrationsCancel}
-                                </button>
-                              : null}
+                              <button
+                                type="button"
+                                className="portal-btn portal-btn--secondary portal-btn--compact"
+                                disabled={busyId === r.id}
+                                onClick={() => void cancelReg(r.id)}
+                              >
+                                {busyId === r.id ? p.accountMyRegistrationsCancelling : p.accountMyRegistrationsCancel}
+                              </button>
                             </div>
                           : null}
                         </td>

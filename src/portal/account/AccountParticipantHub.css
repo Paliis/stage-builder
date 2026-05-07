@@ -279,17 +279,6 @@
   vertical-align: middle;
 }
 
-.portal-account__hub-action-link {
-  font-weight: 650;
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 0.12em;
-}
-
-.portal-account__hub-action-link:hover {
-  text-decoration-thickness: from-font;
-}
-
 .portal-account__hub-inline-link {
   font-weight: 650;
   color: var(--accent-border, #2563eb);

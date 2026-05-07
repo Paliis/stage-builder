@@ -647,7 +647,6 @@ export type MessageTree = {
     accountMyRegistrationsStatusPending: string
     accountMyRegistrationsStatusConfirmed: string
     accountMyRegistrationsStatusCancelled: string
-    accountMyRegistrationsOpenMatch: string
     accountMyRegistrationsCancel: string
     accountMyRegistrationsCancelling: string
     accountMyRegistrationsMatchUnavailable: string
@@ -1704,7 +1703,6 @@ export const ukMessages: MessageTree = {
     accountMyRegistrationsStatusPending: 'очікує підтвердження',
     accountMyRegistrationsStatusConfirmed: 'підтверджено',
     accountMyRegistrationsStatusCancelled: 'скасовано',
-    accountMyRegistrationsOpenMatch: 'Картка',
     accountMyRegistrationsCancel: 'Скасувати заявку',
     accountMyRegistrationsCancelling: 'Скасування…',
     accountMyRegistrationsMatchUnavailable: '(картка недоступна)',
@@ -2756,7 +2754,6 @@ export const enMessages: MessageTree = {
     accountMyRegistrationsStatusPending: 'awaiting confirmation',
     accountMyRegistrationsStatusConfirmed: 'confirmed',
     accountMyRegistrationsStatusCancelled: 'cancelled',
-    accountMyRegistrationsOpenMatch: 'Open',
     accountMyRegistrationsCancel: 'Cancel sign-up',
     accountMyRegistrationsCancelling: 'Cancelling…',
     accountMyRegistrationsMatchUnavailable: '(match unavailable)',
