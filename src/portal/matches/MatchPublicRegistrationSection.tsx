@@ -457,7 +457,7 @@ export function MatchPublicRegistrationSection({
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionContact}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionContact}</h4>
               <div className="portal-reg-modal__grid-2">
-                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                <label className="portal-reg-modal__label">
                   {p.accountParticipantFieldLastName}
                   <input
                     type="text"
@@ -469,7 +469,7 @@ export function MatchPublicRegistrationSection({
                     className="portal-reg-modal__control"
                   />
                 </label>
-                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                <label className="portal-reg-modal__label">
                   {p.accountParticipantFieldFirstName}
                   <input
                     type="text"
@@ -483,7 +483,7 @@ export function MatchPublicRegistrationSection({
                 </label>
               </div>
               <div className="portal-reg-modal__grid-2">
-                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                <label className="portal-reg-modal__label">
                   {p.matchDetailRegistrationPhone}
                   <input
                     type="tel"
@@ -495,7 +495,7 @@ export function MatchPublicRegistrationSection({
                     className="portal-reg-modal__control"
                   />
                 </label>
-                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                <label className="portal-reg-modal__label">
                   {p.accountParticipantFieldRegion}
                   <input
                     type="text"
@@ -512,7 +512,7 @@ export function MatchPublicRegistrationSection({
 
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionMatch}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionMatch}</h4>
-              <label className="portal-reg-modal__label portal-reg-modal__label--center">
+              <label className="portal-reg-modal__label">
                 {p.matchDetailRegistrationFieldSquad}
                 <select
                   required
@@ -542,7 +542,7 @@ export function MatchPublicRegistrationSection({
               </label>
 
               <div className="portal-reg-modal__grid-2">
-                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                <label className="portal-reg-modal__label">
                   {p.matchDetailRegistrationDivision}
                   <select
                     required
@@ -560,7 +560,7 @@ export function MatchPublicRegistrationSection({
                   </select>
                 </label>
 
-                <label className="portal-reg-modal__label portal-reg-modal__label--center">
+                <label className="portal-reg-modal__label">
                   {p.matchDetailRegistrationPowerFactor}
                   <select
                     required
