@@ -2,7 +2,7 @@
 
 **План у структурі розділів продукту:** **[PLANNING_INDEX.md](./PLANNING_INDEX.md)** → **Матчі**; детальні задачі — **[BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)** (`MA-*`).
 
-**Статус:** план реалізації (квітень 2026). **Передумога:** перевірено імпорт згенерованого `.psc` у **PractiScore 2** v1.7.36 (Android); формат = **ZIP** з `match_def.json` + `match_scores.json`.
+**Статус:** план реалізації; **останнє узгодження з кодом:** травень 2026. **Передумога:** перевірено імпорт згенерованого `.psc` у **PractiScore 2** v1.7.36 (Android); формат = **ZIP** з `match_def.json` + `match_scores.json`.
 
 **Зв’язок:** [PORTAL_PLAN.md](./PORTAL_PLAN.md) (архітектура, Supabase), [TECH.md](./TECH.md); **короткий пронумерований план кроків і беклог (остання серія):** [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md); **архітектура модуля матчів і прогалини (техніка / право / продукт):** [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) (зокрема **§8 — UX-орієнтир [practicarms.ua](https://practicarms.ua/)** під центр реєстрації). Інструменти для експериментів з `.psc`: `scripts/practiscore/`.
 
@@ -64,7 +64,7 @@
 
 ## 2. Архітектурні принципи
 
-1. **Modular monolith** (як у [PORTAL_PLAN.md](./PORTAL_PLAN.md)): новий модуль маршрутів `features/match-admin` (назва умовна), без імпорту внутрішніх файлів Stage Builder в реєстрацію — лише **контракти** (`contracts/matchExport.ts` або аналог).
+1. **Modular monolith** (як у [PORTAL_PLAN.md](./PORTAL_PLAN.md)): модуль матчів у коді — **`src/portal/matches/*`** + загальний портальний шар (**`PortalShell`**); без імпорту внутрішніх файлів Stage Builder у реєстрацію — зв’язок із вправами через **`shared_stages` / share id**. Окремий файл **`contracts/matchExport.ts`** поки не заведено — логіка зборки PSC у **`src/server/practiscore/buildPortalPractiscoreZip.ts`** (+ handler **`matchExportPscApiHandler`**).
 2. **Supabase:** Postgres (матч, заявки, скводи), RLS за `organizer_id` / ролями; **Auth** для організатора та стрільця; за потреби **Edge Function** для генерації `.psc` (не віддавати секрети на клієнт).
 3. **Версіонування схем:** реєстраційні DTO і фрагмент `match_def` — з полем `schema_version`, щоб мігрувати без зламу старих записів.
 4. **PSC як адаптер:** окремий шар `psc/` (Node або Python на CI/Edge): **вхід** — канонічна модель матчу порталу; **вихід** — bytes `.psc`. Клонер `psc_clone_test.py` залишається для регресій «як у зразку».
@@ -188,12 +188,12 @@ RLS у Supabase обов’язковий перед production.
 |------|------|
 | MVP-дисципліна shotgun, модель таблиць, ланцюжок міграцій (організатори платформи, roster RPC, скводи, прематч, `share_group_id`, defaults стрільця тощо) | **Є** — [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
 | RLS і RPC для публічної картки без витоку `auth.users` | **Є** у міграціях |
-| UI порталу: каталог/календар, публічна картка, реєстрація, кабінет організатора (редагування матчу, скводи, заявки, вправи) | **Є** за `VITE_ENABLE_MATCH_PORTAL` — `src/portal/matches/*`, маршрути в `src/main.tsx` |
-| Канонічний **TypeScript-контракт** «матч порталу → JSON PS» | **Немає** |
-| **Генерація `.psc` на сервері** (не лише `scripts/practiscore/`) | **Немає** — головний залишок **BL-028** |
+| UI порталу: каталог/календар, публічна картка, реєстрація, кабінет організатора (редагування матчу, скводи, заявки, вправи) | **Є** за `VITE_ENABLE_MATCH_PORTAL` — `src/portal/matches/*`, маршрути в `src/main.tsx`; стандарти кнопок — [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md) |
+| **TypeScript зборка** «дані матчу + payload share → ZIP PSC» | **Є (v1):** `buildPortalPractiscoreZip`, Vitest **`buildPortalPractiscoreZip.test.ts`**; окремого канонічного **`contracts/*.ts`** під документовану схему **немає** — **BL-028** / **MA-D01** лишаються **partial** |
+| **Генерація `.psc` на сервері** (`POST /api/match-export-psc`, bearer Supabase) | **Є (v1)** — **`matchExportPscApiHandler.ts`**, зібраний **`api/match-export-psc.js`**; ітерації сумісності з PS і повнота **`match_stages[]`** — далі (**MA-D01**, **MA-C03**) |
 | Збірний **PDF усіх вправ** (фаза E) | **Немає** |
-| Автоматична **регресія** експорту в CI | **Немає** (лише ручний імпорт у PS) |
-| Ручний імпорт експорту з порталу у **PractiScore 2** (зафіксована версія застосунку) | **TBD** після першого прийнятного `.psc` з production/staging |
+| Автоматична **регресія** експорту (порівняння ZIP з еталоном у CI) | **Частково** — unit-тести на збірку ZIP; порівняння з **`practiscore-roundtrip-test.psc`** end-to-end у CI — **MA-D02** |
+| Ручний імпорт експорту з порталу у **PractiScore 2** (зафіксована версія застосунку) | **TBD / періодично** при зміні мапера або версії PS |
 
 ### 8.2 Хвиля A — критичний шлях до MVP «MD завантажує .psc» (BL-028 + фаза D)
 
@@ -228,4 +228,6 @@ RLS у Supabase обов’язковий перед production.
 
 ---
 
-*Документ можна грумити разом із [BACKLOG.md](./BACKLOG.md); для трекінгу окремих задач — **BL-025–BL-028**.*
+*Документ можна грумити разом із [BACKLOG.md](./BACKLOG.md); для трекінгу окремих задач — **BL-025–BL-028**. Останній зріз статусів **MA-\*** — [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md).*
+
+*Історія: 2026-05-06 — §8.1 узгоджено з кодом (`/api/match-export-psc`, `buildPortalPractiscoreZip`, тести); уточнено шлях модуля `src/portal/matches`.*

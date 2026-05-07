@@ -157,7 +157,7 @@
 | **Stage Library** | Шаблони вправ | Auth, storage | Середня–висока | Free: публічні; PRO: приватні колекції | Після auth |
 | **Профілі / колекції / шеринг** | Синхронізація між пристроями | Auth, БД, політики | Висока | Free з лімітами; PRO розширено | Коли є запит на «мої вправи» |
 
-**Модуль «Матчі» (стан 2026-05):** у проді за прапорцем **`VITE_ENABLE_MATCH_PORTAL`**; публічний каталог, реєстрація, кабінет організатора, експорт **`.psc`**, каталог організаторів платформи та сповіщення про заявки — зведено в [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [PLANNING_INDEX.md](./PLANNING_INDEX.md) (код **MT**).
+**Модуль «Матчі» (стан 2026-05):** у проді за прапорцем **`VITE_ENABLE_MATCH_PORTAL`**; публічний каталог, реєстрація, кабінет організатора, експорт **`.psc`** (**`POST /api/match-export-psc`**), каталог організаторів платформи та сповіщення про заявки — зведено в [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [PLANNING_INDEX.md](./PLANNING_INDEX.md) (код **MT**). Кнопки та модифікатори UI матчів — [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md).
 
 ---
 
@@ -215,6 +215,7 @@
 - [RO_HELPER_V0.md](./RO_HELPER_V0.md) — RO Helper v0: контент, UX, IPSC + ФПСУ, аналітика, чекліст
 - [RO_HELPER_CONTENT_TZ.md](./RO_HELPER_CONTENT_TZ.md) — ТЗ на підготовку статей (пайплайн, промпт, критерії приймання)
 - [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md) — матчі, реєстрація стрільців, експорт PractiScore (`.psc`): фази та модель даних
+- [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md) — стилі кнопок у модулі матчів порталу
 - [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) — архітектура модуля матчів, прогалини (код, ліцензії, реєстрація бізнесу, лінійка продуктів)
 
 ---

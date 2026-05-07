@@ -20,7 +20,7 @@
 | **8** | Форма email/password: мінімум **8** символів, підказка, перемикач видимості пароля; листи Auth — у **[SUPABASE_AUTH_EMAIL.md](./SUPABASE_AUTH_EMAIL.md)** (шаблони + SMTP у Dashboard). |
 | **9** | Каталог організаторів платформи **`/{locale}/admin/organizers`**, самоподача з **`/{locale}/account`**; для гостя з адмінки — редірект на реєстрацію; нові заявки — **[SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md)** (Edge Function + Resend + Database Webhook). |
 | **10** | Публічний ростер: `participant_list_visibility`, RPC **`fetch_public_match_roster`**. Прив’язка вправ: **`match_stage_links`**, RPC **`organizer_refresh_match_stage_link_latest`** + кнопки в кабінеті організатора (див. **MA-B02**, **MA-C01**, **MA-C02** у [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md) — **partial**). |
-| **11** | Публічна картка матчу: безпечний рендер опису з Markdown (**`MatchDescriptionRichText`**, поле **`description_md`**). |
+| **11** | Поле **`location_label`** на картці з **`PlainTextAutolink`**; опис **`description_md`**: редактор з **`wrapBbCode`**, на публічній сторінці — **`MatchDescriptionRichText`** або BBCode-розгортання; стилі кнопок матчів — [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md). |
 
 ---
 
@@ -70,6 +70,7 @@
 | 2026-05-01 | Перша версія: зроблені кроки 1–5 (тип події, рівні PS, картка, міграція); план кроків 1–6; BL-033–035. |
 | 2026-05-04 | Обкладинка в редакторі матчу: JPEG після кропу зберігає повний фрейм **16∶10** (раніше — помилково квадрат); модалка кропу відображає кадр як картку (**object-fit cover**, можна від’їхати масштабом униз до **≈0,22×**). Завантаження файлу вже зі співвідношенням **16∶10** (допуск **~2,2%**) — **без** повторного кропу, піксель-у-піксель до макету. |
 | 2026-05-01 | Підказки в **OrganizerMatchEditPage**: `matchOrgTaxonomyOptionalLead`, `matchOrgEventKindHint`, `matchOrgPsLevelHint`. |
+| 2026-05-06 | П. **11**: `location_label`, BBCode-хелпер у редакторі, посилання на [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md). |
 | 2026-05-07 | Оновлено «Що вже зроблено» (каталог організаторів, сповіщення заявок, ростер, прив’язка вправ, rich description); §2.1 крок **5** — частковий прогрес епіку; синхронізація з [BACKLOG.md](./BACKLOG.md) (**BL-025**–**BL-028** **partial**) та [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md). |
 
 ---

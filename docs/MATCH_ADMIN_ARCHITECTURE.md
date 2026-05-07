@@ -1,6 +1,6 @@
 # Архітектура модуля матчів і прогалини (техніка, право, продукт)
 
-**Статус:** чернетка (квітень 2026). **Зв’язок:** [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [PORTAL_PLAN.md](./PORTAL_PLAN.md), [TECH.md](./TECH.md).
+**Статус:** чорновик, **останнє вирівнювання з кодом:** травень 2026. **Зв’язок:** [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [PORTAL_PLAN.md](./PORTAL_PLAN.md), [TECH.md](./TECH.md).
 
 **MVP-дисципліна матчів:** **IPSC Shotgun** (рушниця) — зафіксовано у [MATCH_REGISTRATION_AND_PSC_PLAN §1.3](./MATCH_REGISTRATION_AND_PSC_PLAN.md#13-mvp-ipsc-shotgun).
 
@@ -21,7 +21,7 @@ flowchart TB
   end
   subgraph edge [Vercel]
     MW[middleware OG bots]
-    API[Serverless POST export-psc]
+    API[POST /api/match-export-psc]
   end
   subgraph supa [Supabase]
     PG[(Postgres + RLS)]
@@ -39,9 +39,9 @@ flowchart TB
 | Шар | Відповідальність |
 |-----|-------------------|
 | **`features/stage-builder`** (існує) | Редактор `*.stage.json`, PDF; без залежності від таблиць матчів |
-| **`features/match-admin`** (новий) | Сторінки матчу, заявки, скводи, підтвердження організатором |
-| **`contracts/` або `types/matchExport.ts`** | DTO матчу порталу → вхід адаптера PSC; версія схеми |
-| **`server/psc/` / `api/match-export-*`** | Збірка `match_def.json` + `match_scores.json`, ZIP → `.psc` (ключі лише на сервері) |
+| **`src/portal/matches/`** (+ акаунт / адмінка) | У проді-коді: матчі, заявки, скводи, публічна картка, експорт (клієнт викликає API); узгодження UI кнопок — [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md) |
+| **`src/server/practiscore/buildPortalPractiscoreZip.ts`** (+ handler) | Фактичний вхід адаптера PSC; окремий **`contracts/matchExport.ts`** у документації — побажання, не файл у репо |
+| **`api/match-export-psc`** (Vercel + dev-плагін) | Збірка `match_def.json` + `match_scores.json`, ZIP → `.psc` (**`SUPABASE_SERVICE_ROLE_KEY`** на сервері) |
 | **Supabase** | Таблиці матчів, RLS: `organizer_id`, роль `competitor`; існуюча **`shared_stages`** без зламів |
 
 **Межі:** модуль матчів **не імпортує** з `stageStore`; для прив’язки вправи — або `share_id` і RPC/metadata, або snapshot JSON у storage — через контракт, описаний у плані реєстрації.
@@ -52,7 +52,7 @@ flowchart TB
 
 | Тема | Рішення |
 |------|---------|
-| URL | Публічна картка матчу **`/:locale/matches/:id`** — лише за прямим посиланням (без списку та без пункту в меню); коли з’явиться каталог — можна додати **`/:locale/matches`**. Узгоджено з канонічним роутингом ([TECH.md](./TECH.md)) |
+| URL | Публічний хаб **`/:locale/matches`** (каталог, календар) + картка **`/:locale/matches/:id`** (**лише якщо** `VITE_ENABLE_MATCH_PORTAL`). Узгоджено з [TECH.md](./TECH.md). |
 | Існуючі **`/stage-builder`**, **`/v/*`**, **`/e/*`** | Не змінювати; матч лише може містити посилання на share вправу |
 | i18n | UK/EN для форм і статусів заявки з першого релізу модуля |
 
@@ -73,9 +73,9 @@ flowchart TB
 | Таблиці `matches`, `squads`, `registrations` + міграції | **Є:** ланцюжок у `supabase/migrations/` — див. [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
 | RLS політики під ролі | **Є** (організатор / стрілець / anon; уточнення залежить від наступних міграцій — тримати узгодженим з SUPABASE_MATCH_ADMIN) |
 | UI маршрути match portal + форми | **Є** за прапором збірки — `src/portal/matches/*` |
-| Генератор `.psc` у production (TypeScript/Python на сервері), не лише Python-скрипт для розробника | **Частково:** `POST /api/match-export-psc` + шаблон із round-trip фікстури; уточнення під конкретну версію PS і метадані вправ — далі |
-| Єдиний **контракт** «матч порталу → JSON PS» у `src/` | **Немає** (лише текст у плані) |
-| Тести сумісності PSC з версією PS | Лише ручний імпорт на пристрої |
+| Генератор `.psc` у production (TypeScript на сервері), не лише скрипт `scripts/practiscore/` | **Є (v1):** `POST /api/match-export-psc`, `buildPortalPractiscoreZip`; узгодження з версією PS і повнота `match_stages[]` — **MA-D01** / **MA-C03** |
+| Єдиний **іменований контракт** «матч порталу → JSON PS» у `contracts/` | **Немає** — типи й збірка зосереджені у **`buildPortalPractiscoreZip.ts`** і навколо нього |
+| Тести сумісності PSC з версією PS | Vitest на ZIP/JSON збірку; повний регрес із еталонним `.psc` у CI — **MA-D02**; на пристрої — ручний імпорт |
 | Окремий **staging**/`schema_version` для мігрованих матчів | Закладено (`matches.schema_version` у першій міграції MVP) |
 
 ---
@@ -110,7 +110,7 @@ flowchart TB
 |------------------|-------|-----------------|
 | **Stage Builder** | Free, core | Залишити базовий цикл без касту (як у [PORTAL_PLAN.md](./PORTAL_PLAN.md)) |
 | **RO Helper, Hit Factor** | Free довідники | Без змін у цій архітектурі |
-| **Match Admin (реєстрація + PSC)** | Немає | MVP: один інструмент для MD без paywall або з м’яким лімітом (рішення продукту пізніше) |
+| **Match Admin (реєстрація + PSC)** | **MVP у репозиторії** за `VITE_ENABLE_MATCH_PORTAL` (див. беклог **BL-025**–**BL-028**) | Paywall / ліміти — рішення продукту пізніше |
 | **PRO / freemium** | У дорожній карті | Можливі: хмарна історія вправ (окремий епік), квоти — **не блокувати** завантаження `.psc` для базового сценарію організатора, якщо хочете adoption |
 
 **Рішення pending:** чи входить «матчі» у free forever для організаторів локальних клубів і коли увімкнути монетизацію — зафіксувати окремо від першого технічного релізу.
@@ -131,11 +131,11 @@ flowchart TB
 
 ## 9. Підсумок: пріоритет «закрити прогалини»
 
-1. **Техніка:** міграції Supabase → RLS → мінімальний UI → серверний PSC.  
+1. **Техніка:** ~~міграції / RLS / UI~~ — є; лишаються **PDF bundle**, **ітерації PSC**, **канон контракту** за потреби (`contracts/`), регрес-тест еталону.  
 2. **Право/операційка:** при публічному запуску модуля з ПД — оновити privacy/terms; при комерції — облік ФОП/ТОВ (юрист + бухгалтер).  
 3. **Продукт:** одна сторінка рішень: free vs PRO для модуля матчів.  
 4. **Репозиторій:** за open source або ліцензія для партнерів — додати **`LICENSE`**.
 
 ---
 
-*Оновлення цього документа — при першому merged модулі матчів, при зміні моделі монетизації або при оновленні UX-орієнтирів.*
+*Оновлено 2026-05-06: шляхи `src/portal/matches`, експорт `/api/match-export-psc`, каталог **`/:locale/matches`**, статус рядка Match Admin.*

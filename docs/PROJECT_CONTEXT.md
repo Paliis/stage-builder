@@ -4,7 +4,7 @@
 
 **Призначення цього файлу:** один документ для **онбордингу**, **LLM-контексту**, партнерів і розробників — зведений **бізнес-** і **технічний** знімок стану репозиторію та посилання на детальні джерела. Деталі поведінки редактора — [FUNCTIONALITY.md](./FUNCTIONALITY.md); глибока технічна реалізація — [TECH.md](./TECH.md); продуктовий огляд — [PRODUCT.md](./PRODUCT.md).
 
-**Останнє оновлення документа:** квітень 2026.
+**Останнє оновлення документа:** травень 2026 (зведення статусів матчів та PSC-експорту з узгодженням коду).
 
 ---
 
@@ -73,7 +73,7 @@
 | **Application** | `src/application/` | `stageStore`, `briefingStore`, чернетка сесії, PWA gate |
 | **Presentation** | `src/presentation/` | `StageCanvas`, `StageView3D`, тулбар, міні-карта, PDF, банери |
 | **i18n** | `src/i18n/` | UK/EN у `messages.ts` |
-| **Портал** | `src/portal/` | `PortalShell`, `PortalHome`, футер, демо RO Helper |
+| **Портал** | `src/portal/` | `PortalShell`, головна, **`src/portal/matches/*`** (реєстрація, PSC ZIP через **`POST /api/match-export-psc`**), акаунт, адмінка організаторів; стилі кнопок — [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md) |
 | **RO Helper** | `src/ro-helper/` | Markdown, glob контенту, ФПСУ; **Quick Cite**; клієнтський **Helmet** (title/description); lazy-чанк з `src/portal/roHelperLazyRoutes.ts` |
 | **Server / SEO** | `src/server/`, `src/seo/`, `src/lib/` | Публікація share, канонічний origin, Supabase client |
 
@@ -143,7 +143,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | Активації | [BL-004_ACTIVATIONS.md](./BL-004_ACTIVATIONS.md) |
 | BLE-таймер (дослідження) | [BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md) |
 | Штрафні зони / видимість (чернетка правил) | [VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md) |
-| Матчі, реєстрація, експорт PSC | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md), [SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md) |
+| Матчі, реєстрація, експорт PSC | [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md), [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md), [SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md) |
 | Сітка поля / PDF (план) | [PLAN_FIELD_PDF_GRID.md](./PLAN_FIELD_PDF_GRID.md) |
 
 ---

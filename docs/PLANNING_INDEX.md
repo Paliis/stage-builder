@@ -44,7 +44,7 @@
 | **SB** | **Редактор** / Stage Builder | [PRODUCT.md](./PRODUCT.md), [FUNCTIONALITY.md](./FUNCTIONALITY.md), [TECH.md](./TECH.md) | [BACKLOG.md](./BACKLOG.md) — рядки **BL-*** (редактор, геометрія, PDF, …) |
 | **SH** | **Share** / хмарне посилання на вправу | [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md), [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md) | **BL-001** + план у тому ж файлі (етапи A–F у специфікації) |
 | **PT** | **Портал** (shell, бренд, URL, модулі, freemium) | [PORTAL_PLAN.md](./PORTAL_PLAN.md), [DESIGN_SYSTEM_V0.md](./DESIGN_SYSTEM_V0.md) | Стратегічні рядки **[BACKLOG.md](./BACKLOG.md)** + чорнові ідеї [USER_FEEDBACK.md](./USER_FEEDBACK.md) |
-| **MT** | **Матчі** (реєстрація, PSC, кабінет організатора) | [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md) | **[BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)** (`MA-<фаза><NN>`) + епік у [BACKLOG.md](./BACKLOG.md) (**BL-025** … **BL-028**, **BL-033** …) |
+| **MT** | **Матчі** (реєстрація, PSC, кабінет організатора) | [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md), [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md), [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md), [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md) | **[BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)** (`MA-<фаза><NN>`) + епік у [BACKLOG.md](./BACKLOG.md) (**BL-025** … **BL-028**, **BL-033** …) |
 | **RH** | **RO Helper** | [RO_HELPER_V0.md](./RO_HELPER_V0.md), [RO_HELPER_CONTENT_TZ.md](./RO_HELPER_CONTENT_TZ.md) | Контент і матриці в `docs/RO_*`; ідеї — [USER_FEEDBACK.md](./USER_FEEDBACK.md); за потреби окремі `BL-*` у [BACKLOG.md](./BACKLOG.md) |
 | **IN** | Інфра / якість / реліз | [TECH.md](./TECH.md), [VERSIONING.md](./VERSIONING.md) | CI, деплой — зазвичай без окремого беклогу; фічі — **BL-*** |
 
@@ -101,6 +101,7 @@
 | [PORTAL_PLAN.md](./PORTAL_PLAN.md) | Стратегія порталу |
 | [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md) | Матчі: фази A–F, PSC |
 | [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md) | Матчі: короткий продуктовий план кроків |
+| [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md) | Матчі: класи `.portal-btn` і правила для організатора / публічних екранів |
 | [SUPABASE_AUTH_EMAIL.md](./SUPABASE_AUTH_EMAIL.md) | Supabase Auth: шаблони листів, SMTP, ім’я відправника |
 | [SUPABASE_ORGANIZER_APPLICATION_ALERTS.md](./SUPABASE_ORGANIZER_APPLICATION_ALERTS.md) | Матчі: листи про нові заявки організатора (Edge Function, Resend, webhook) |
 | [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md) | Share / посилання на вправу |
@@ -113,4 +114,5 @@
 | Дата | Зміни |
 |------|--------|
 | 2026-05-01 | Перша версія: карта розділів SB/SH/PT/MT/RH/IN, шаблони фраз, зв’язок BL та MA. |
+| 2026-05-06 | Узгодження описів із кодом (експорт PSC, архітектурні docs); карта **MT** доповнена [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md); §5 — той самий файл. |
 | 2026-05-07 | Додано посилання на **SUPABASE_ORGANIZER_APPLICATION_ALERTS**; узгоджено з оновленням **BACKLOG** / **BACKLOG_MATCHES** / **MATCH_PORTAL_PRODUCT_PLAN** (епік матчів **partial**). |
