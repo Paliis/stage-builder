@@ -539,6 +539,20 @@ a.portal-match-title-ellipsis:hover {
   text-wrap: balance;
 }
 
+/* Shown at top of registration form: native <dialog> covers page feedback behind the backdrop. */
+.portal-reg-modal__alert {
+  margin: 0;
+  padding: 0.58rem 0.72rem;
+  border-radius: 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--destructive-text, #b00020) 38%, var(--border));
+  background: color-mix(in srgb, var(--destructive-text, #b00020) 7%, transparent);
+  font-size: 0.9rem;
+  line-height: 1.48;
+  font-weight: 650;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
 .portal-reg-modal--guest-auth .portal-reg-modal__title {
   text-align: center;
 }

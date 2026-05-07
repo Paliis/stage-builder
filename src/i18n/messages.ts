@@ -1560,7 +1560,7 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationCancelling: 'Скасування…',
     matchDetailRegistrationPickOpenSquad: 'Оберіть сквод із вільними місцями.',
     matchDetailRegistrationReopenFailed:
-      'Не вдалося поновити скасовану заявку. Оновіть сторінку та спробуйте ще раз.',
+      'Заявку не вдалося поновити (сервер не оновив запис — часто через не накладену останню міграцію БД або змінені дані). Оновіть сторінку й спробуйте ще раз.',
     matchDetailRegistrationErrorPrefix: 'Помилка',
     matchDetailRegistrationCta: 'Зареєструватись',
     matchDetailRegistrationModalTitle: 'Подання заявки на матч',
@@ -2606,7 +2606,7 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationCancelling: 'Cancelling…',
     matchDetailRegistrationPickOpenSquad: 'Choose a squad with open seats.',
     matchDetailRegistrationReopenFailed:
-      'Could not reopen your cancelled registration. Refresh the page and try again.',
+      'Could not reopen your cancelled registration (the server did not update the row — often missing the latest DB migration or data changed). Refresh and try again.',
     matchDetailRegistrationErrorPrefix: 'Error',
     matchDetailRegistrationCta: 'Register',
     matchDetailRegistrationModalTitle: 'Match sign-up',

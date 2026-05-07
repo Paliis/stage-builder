@@ -399,65 +399,67 @@ export function MatchPublicRegistrationSection({
     }
 
     setSubmitBusy(true)
-    if (reopenRegistrationId) {
-      const { data: reopenedRow, error: reopenErr } = await sb
-        .from('match_registrations')
-        .update({
-          status: 'pending',
+    try {
+      if (reopenRegistrationId) {
+        const { data: reopenedRow, error: reopenErr } = await sb
+          .from('match_registrations')
+          .update({
+            status: 'pending',
+            squad_id: pickedSquad,
+            payment_received: false,
+            payment_note: null,
+            ...rowPayload,
+          })
+          .eq('id', reopenRegistrationId)
+          .eq('competitor_user_id', user.id)
+          .eq('status', 'cancelled')
+          .select('id')
+          .maybeSingle()
+        if (reopenErr) {
+          setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${reopenErr.message}`)
+          return
+        }
+        if (!reopenedRow) {
+          setFeedback(p.matchDetailRegistrationReopenFailed)
+          await refreshAll()
+          return
+        }
+      } else {
+        const { error } = await sb.from('match_registrations').insert({
+          match_id: matchUuid,
           squad_id: pickedSquad,
-          payment_received: false,
-          payment_note: null,
+          competitor_user_id: user.id,
           ...rowPayload,
         })
-        .eq('id', reopenRegistrationId)
-        .eq('competitor_user_id', user.id)
-        .eq('status', 'cancelled')
-        .select('id')
-        .maybeSingle()
+        if (error) {
+          setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${error.message}`)
+          return
+        }
+      }
+
+      const { error: defErr } = await sb.from('participant_registration_defaults').upsert(
+        {
+          user_id: user.id,
+          first_name: firstNameTrim,
+          last_name: lastNameTrim,
+          division: div,
+          classification_grade: '',
+          phone: phoneTrim,
+          region: cabinetRegion.trim(),
+          weapon_class: matchWeaponClassId,
+          categories: resolveShooterCategoriesForStorage(signupCategories),
+          power_factor: powerFactor,
+        },
+        { onConflict: 'user_id' },
+      )
+      if (defErr) console.warn('participant_registration_defaults upsert:', defErr.message)
+
+      closeRegistrationModal()
+      setFeedback(p.matchDetailRegistrationDonePending)
+      await refreshAll()
+    } finally {
       setSubmitBusy(false)
-      if (reopenErr) {
-        setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${reopenErr.message}`)
-        return
-      }
-      if (!reopenedRow) {
-        setFeedback(p.matchDetailRegistrationReopenFailed)
-        await refreshAll()
-        return
-      }
-    } else {
-      const { error } = await sb.from('match_registrations').insert({
-        match_id: matchUuid,
-        squad_id: pickedSquad,
-        competitor_user_id: user.id,
-        ...rowPayload,
-      })
-      setSubmitBusy(false)
-      if (error) {
-        setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${error.message}`)
-        return
-      }
     }
-
-    const { error: defErr } = await sb.from('participant_registration_defaults').upsert(
-      {
-        user_id: user.id,
-        first_name: firstNameTrim,
-        last_name: lastNameTrim,
-        division: div,
-        classification_grade: '',
-        phone: phoneTrim,
-        region: cabinetRegion.trim(),
-        weapon_class: matchWeaponClassId,
-        categories: resolveShooterCategoriesForStorage(signupCategories),
-        power_factor: powerFactor,
-      },
-      { onConflict: 'user_id' },
-    )
-    if (defErr) console.warn('participant_registration_defaults upsert:', defErr.message)
-
-    closeRegistrationModal()
-    setFeedback(p.matchDetailRegistrationDonePending)
-    await refreshAll()
   }
 
   async function cancelMine() {
@@ -487,8 +489,14 @@ export function MatchPublicRegistrationSection({
           </h3>
           <form
             className="portal-reg-modal__form"
+            aria-describedby={feedback ? 'match-reg-modal-alert' : undefined}
             onSubmit={(ev) => void submitRegistration(ev)}
           >
+            {feedback ?
+              <p id="match-reg-modal-alert" role="alert" className="portal-reg-modal__alert">
+                {feedback}
+              </p>
+            : null}
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionContact}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionContact}</h4>
               <div className="portal-reg-modal__grid-2">
