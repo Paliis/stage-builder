@@ -222,9 +222,10 @@
 
 .portal-org-admin__stack-val {
   display: block;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 /* Phones/small tablets: stacked organizer rows (no ultra-wide horizontal table drag). */
@@ -280,6 +281,7 @@
     border-top: 1px solid color-mix(in srgb, var(--border), transparent 35%) !important;
     background: transparent !important;
     box-sizing: border-box;
+    overflow-wrap: break-word;
   }
 
   .portal-org-admin__table tbody td:first-of-type {
@@ -293,9 +295,10 @@
 
   .portal-org-admin__table tbody td[data-label]::before {
     content: attr(data-label) '\00a0:';
-    flex: 0 1 40%;
-    max-width: 10rem;
-    min-width: 5.25rem;
+    /* Do not shrink — otherwise the value column collapses and `overflow-wrap:anywhere` shreds text. */
+    flex: 0 0 auto;
+    width: min(9.25rem, 40%);
+    max-width: 10.5rem;
     font-weight: 750;
     font-size: 0.69rem;
     letter-spacing: 0.035em;
@@ -308,9 +311,11 @@
   }
 
   .portal-org-admin__table tbody td[data-label] > * {
-    flex: 1 1 auto;
+    flex: 1 1 0%;
     min-width: 0;
     box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
   .portal-org-admin__note-cell {
