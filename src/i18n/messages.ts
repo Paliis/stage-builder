@@ -844,8 +844,6 @@ export type MessageTree = {
     matchOrgStagesMoveUp: string
     matchOrgStagesMoveDown: string
     matchOrgStagesRemove: string
-    matchOrgStagesRefreshLatest: string
-    matchOrgStagesRefreshing: string
     matchOrgStagesRefreshAll: string
     matchOrgStagesRefreshAllBusy: string
     matchOrgStagesErrorGeneric: string
@@ -1892,8 +1890,6 @@ export const ukMessages: MessageTree = {
     matchOrgStagesMoveUp: 'Вгору',
     matchOrgStagesMoveDown: 'Вниз',
     matchOrgStagesRemove: 'Прибрати',
-    matchOrgStagesRefreshLatest: 'Оновити до останньої',
-    matchOrgStagesRefreshing: 'Оновлення…',
     matchOrgStagesRefreshAll: 'Оновити всі вправи до останніх',
     matchOrgStagesRefreshAllBusy: 'Оновлення всіх вправ…',
     matchOrgStagesErrorGeneric: 'Операцію не виконано. Перезавантаж сторінку або перевір міграції.',
@@ -2942,8 +2938,6 @@ export const enMessages: MessageTree = {
     matchOrgStagesMoveUp: 'Up',
     matchOrgStagesMoveDown: 'Down',
     matchOrgStagesRemove: 'Remove',
-    matchOrgStagesRefreshLatest: 'Update to latest',
-    matchOrgStagesRefreshing: 'Updating…',
     matchOrgStagesRefreshAll: 'Update all exercises to latest',
     matchOrgStagesRefreshAllBusy: 'Updating all exercises…',
     matchOrgStagesErrorGeneric: 'Something went wrong. Reload or verify migrations.',

@@ -35,7 +35,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   const [addBusy, setAddBusy] = useState(false)
   const [addError, setAddError] = useState<string | null>(null)
   const [refreshAllBusy, setRefreshAllBusy] = useState(false)
-  const [busyById, setBusyById] = useState<Record<string, 'refresh' | 'delete' | 'move' | undefined>>({})
+  const [busyById, setBusyById] = useState<Record<string, 'delete' | 'move' | undefined>>({})
 
   const reload = useCallback(async () => {
     setLoadError(null)
@@ -69,7 +69,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
     void reload()
   }, [reload])
 
-  const setRowBusyKind = useCallback((id: string, kind: 'refresh' | 'delete' | 'move' | undefined) => {
+  const setRowBusyKind = useCallback((id: string, kind: 'delete' | 'move' | undefined) => {
     setBusyById((prev) => {
       const next = { ...prev }
       if (kind === undefined) delete next[id]
@@ -175,21 +175,6 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
       await reload()
     } finally {
       setAddBusy(false)
-    }
-  }
-
-  async function refreshRow(linkId: string) {
-    setAddError(null)
-    setRowBusyKind(linkId, 'refresh')
-    try {
-      const errMsg = await runRefreshRpc(linkId)
-      if (errMsg) {
-        setAddError(errMsg)
-        return
-      }
-      await reload()
-    } finally {
-      setRowBusyKind(linkId, undefined)
     }
   }
 
@@ -395,14 +380,6 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
                         onClick={() => void moveRow(r.id, 1)}
                       >
                         {p.matchOrgStagesMoveDown}
-                      </button>
-                      <button
-                        type="button"
-                        className="portal-btn portal-btn--secondary portal-btn--compact"
-                        disabled={busy !== undefined}
-                        onClick={() => void refreshRow(r.id)}
-                      >
-                        {busy === 'refresh' ? p.matchOrgStagesRefreshing : p.matchOrgStagesRefreshLatest}
                       </button>
                       <button
                         type="button"
