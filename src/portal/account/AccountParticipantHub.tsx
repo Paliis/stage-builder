@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale, MessageTree } from '../../i18n/messages'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
+import { isValidParticipantPhone } from '../../lib/isValidParticipantPhone'
 import { formatPortalDate } from '../matches/matchPortalFormat'
 import {
   resolveShooterCategoriesForStorage,
@@ -289,6 +290,12 @@ export function AccountParticipantHub({
     if (!sb) return
     setDefSaving(true)
     setDefFeedback(null)
+    const phoneTrimAcc = defPhone.trim()
+    if (phoneTrimAcc !== '' && !isValidParticipantPhone(phoneTrimAcc)) {
+      setDefSaving(false)
+      setDefFeedback(p.accountParticipantPhoneInvalid)
+      return
+    }
     const { error } = await sb.from('participant_registration_defaults').upsert({
       user_id: userId,
       division: defDiv.trim(),
@@ -474,6 +481,7 @@ export function AccountParticipantHub({
                 {p.accountParticipantFieldPhone}
                 <input
                   type="tel"
+                  maxLength={28}
                   value={defPhone}
                   onChange={(e) => setDefPhone(e.target.value)}
                   disabled={defSaving}

@@ -659,6 +659,7 @@ export type MessageTree = {
     accountParticipantFieldFirstName: string
     accountParticipantFieldLastName: string
     accountParticipantFieldPhone: string
+    accountParticipantPhoneInvalid: string
     accountParticipantFieldWeaponDetails: string
     accountParticipantWeaponDetailsPlaceholder: string
     accountParticipantAvatarLabel: string
@@ -1577,7 +1578,8 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationSectionContact: 'Контакт',
     matchDetailRegistrationSectionMatch: 'Участь',
     matchDetailRegistrationPhone: 'Телефон',
-    matchDetailRegistrationPhoneInvalid: 'Вкажіть дійсний номер телефону (щонайменше 7 символів).',
+    matchDetailRegistrationPhoneInvalid:
+      'Некоректний номер телефону: потрібно 7–15 цифр; можна пробіли, дефіс і дужки; знак «+» лише на початку.',
     matchDetailRegistrationWeaponDetails: 'Опис зброї',
     matchDetailRegistrationWeaponDetailsPlaceholder: 'Марка, модель, калібр тощо',
     matchDetailRegistrationProfileWeaponClass: 'Клас зброї в профілі',
@@ -1714,6 +1716,8 @@ export const ukMessages: MessageTree = {
     accountParticipantFieldFirstName: "Ім'я (для PractiScore)",
     accountParticipantFieldLastName: 'Прізвище (для PractiScore)',
     accountParticipantFieldPhone: 'Телефон',
+    accountParticipantPhoneInvalid:
+      'Некоректний номер телефону: потрібно 7–15 цифр; можна пробіли, дефіс і дужки; знак «+» лише на початку.',
     accountParticipantFieldWeaponDetails: 'Опис зброї',
     accountParticipantWeaponDetailsPlaceholder: 'Марка, модель, калібр (за потреби)',
     accountParticipantAvatarLabel: 'Фото профілю',
@@ -2625,7 +2629,8 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationSectionContact: 'Contact',
     matchDetailRegistrationSectionMatch: 'Participation',
     matchDetailRegistrationPhone: 'Phone',
-    matchDetailRegistrationPhoneInvalid: 'Enter a valid phone number (at least 7 characters).',
+    matchDetailRegistrationPhoneInvalid:
+      'Invalid phone number: enter 7–15 digits; spaces, hyphens, and parentheses allowed; «+» only at the beginning.',
     matchDetailRegistrationWeaponDetails: 'Firearm description',
     matchDetailRegistrationWeaponDetailsPlaceholder: 'Make, model, caliber',
     matchDetailRegistrationProfileWeaponClass: 'Weapon class (profile)',
@@ -2763,6 +2768,8 @@ export const enMessages: MessageTree = {
     accountParticipantFieldFirstName: 'First name (PractiScore)',
     accountParticipantFieldLastName: 'Last name (PractiScore)',
     accountParticipantFieldPhone: 'Phone',
+    accountParticipantPhoneInvalid:
+      'Invalid phone number: enter 7–15 digits; spaces, hyphens, and parentheses allowed; «+» only at the beginning.',
     accountParticipantFieldWeaponDetails: 'Firearm description',
     accountParticipantWeaponDetailsPlaceholder: 'Make, model, caliber (optional)',
     accountParticipantAvatarLabel: 'Profile photo',

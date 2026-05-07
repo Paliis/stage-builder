@@ -9,6 +9,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
+import { isValidParticipantPhone } from '../../lib/isValidParticipantPhone'
 import type { Locale, MessageTree } from '../../i18n/messages'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
@@ -379,7 +380,7 @@ export function MatchPublicRegistrationSection({
       return
     }
     const phoneTrim = phone.trim()
-    if (phoneTrim.length < 7) {
+    if (!isValidParticipantPhone(phoneTrim)) {
       setFeedback(p.matchDetailRegistrationPhoneInvalid)
       return
     }
@@ -533,6 +534,7 @@ export function MatchPublicRegistrationSection({
                   <input
                     type="tel"
                     required
+                    maxLength={28}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     disabled={submitBusy}
