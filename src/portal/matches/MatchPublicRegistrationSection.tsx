@@ -714,9 +714,9 @@ export function MatchPublicRegistrationSection({
       : null}
 
       {showRegisteredMasthead ?
-        <span className="portal-match-registered-badge" role="status" aria-live="polite">
+        <p className="portal-match-public-detail__masthead-registered-head" role="status">
           {p.matchDetailRegistrationMastheadRegistered}
-        </span>
+        </p>
       : null}
     </>
   )
