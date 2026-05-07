@@ -701,7 +701,6 @@ export type MessageTree = {
     myMatchesEdit: string
     myMatchesViewPublic: string
     myMatchesNeedSignIn: string
-    myMatchesDevSignInHint: string
     myMatchesLoading: string
     myMatchesLoadError: string
     myMatchesEmpty: string
@@ -1746,7 +1745,6 @@ export const ukMessages: MessageTree = {
     myMatchesEdit: 'Редагувати',
     myMatchesViewPublic: 'Картка матчу',
     myMatchesNeedSignIn: 'Увійди, щоб керувати своїми матчами.',
-    myMatchesDevSignInHint: 'Тест входу (dev)',
     myMatchesLoading: 'Завантаження…',
     myMatchesLoadError: 'Помилка',
     myMatchesEmpty: 'Ще немає матчів. Створи перший.',
@@ -2786,7 +2784,6 @@ export const enMessages: MessageTree = {
     myMatchesEdit: 'Edit',
     myMatchesViewPublic: 'Match card',
     myMatchesNeedSignIn: 'Sign in to manage your matches.',
-    myMatchesDevSignInHint: 'Auth smoke (dev)',
     myMatchesLoading: 'Loading…',
     myMatchesLoadError: 'Error',
     myMatchesEmpty: 'No matches yet. Create one.',

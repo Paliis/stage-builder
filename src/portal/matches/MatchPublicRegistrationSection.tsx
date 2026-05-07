@@ -671,11 +671,6 @@ export function MatchPublicRegistrationSection({
           >
             {p.matchDetailRegistrationCta}
           </button>
-          {import.meta.env.DEV ?
-            <p className="portal-reg-dev-auth-hint">
-              <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>
-            </p>
-          : null}
         </>
       : null}
 

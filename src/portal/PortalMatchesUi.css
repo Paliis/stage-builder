@@ -524,11 +524,6 @@ a.portal-match-title-ellipsis:hover {
   margin-top: 0.55rem;
 }
 
-.portal-reg-dev-auth-hint {
-  margin: 0.55rem 0 0;
-  font-size: 0.88rem;
-}
-
 .portal-reg-modal {
   margin: auto;
   border: none;

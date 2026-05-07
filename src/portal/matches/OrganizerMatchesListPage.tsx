@@ -100,11 +100,6 @@ export function OrganizerMatchesListPage() {
         </Helmet>
         <div className="portal-matches-organizer__panel">
           <p className="portal-matches-organizer__hint">{p.myMatchesNeedSignIn}</p>
-          {import.meta.env.DEV ? (
-            <p className="portal-matches-organizer__hint">
-              <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>
-            </p>
-          ) : null}
           <Link className="portal-btn portal-btn--secondary" to={`/${locale}`}>
             {p.myMatchesBackHome}
           </Link>
