@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import type { Locale, MessageTree } from '../../i18n/messages'
+import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
 import {
   type WeaponClassId,
@@ -101,6 +102,7 @@ export function MatchPublicRegistrationSection({
   const divisionOptions = divisionsForWeapon(matchWeaponClassId)
 
   const regDialogRef = useRef<HTMLDialogElement>(null)
+  const guestAuthDialogRef = useRef<HTMLDialogElement>(null)
 
   const [mine, setMine] = useState<OwnRegistrationRow | null | undefined>(undefined)
 
@@ -314,6 +316,51 @@ export function MatchPublicRegistrationSection({
 
   function closeRegistrationModal() {
     regDialogRef.current?.close()
+  }
+
+  const closeGuestAuthModal = useCallback(() => {
+    guestAuthDialogRef.current?.close()
+  }, [])
+
+  const openGuestAuthModal = useCallback(() => {
+    setFeedback(null)
+    guestAuthDialogRef.current?.showModal()
+  }, [])
+
+  useEffect(() => {
+    if (sessionLoading || !user?.id) return
+    guestAuthDialogRef.current?.close()
+  }, [sessionLoading, user?.id])
+
+  function renderGuestAuthModal(dlgRef: RefObject<HTMLDialogElement | null>) {
+    if (!configured) return null
+    return (
+      <dialog
+        ref={dlgRef}
+        className="portal-reg-modal portal-reg-modal--guest-auth"
+        aria-labelledby="match-guest-auth-heading"
+      >
+        <div className="portal-reg-modal__panel">
+          <h3 id="match-guest-auth-heading" className="portal-reg-modal__title">
+            {p.matchDetailGuestAuthModalTitle}
+          </h3>
+          <p className="portal-match-public-detail__prose portal-reg-modal__guest-auth-lead">
+            {p.matchDetailRegistrationSignInIntro}
+          </p>
+          <PortalCompactEmailAuth
+            p={p}
+            locale={locale}
+            pathnameForRedirect={pathnameRedirect}
+            defaultAuthMode="signup"
+          />
+          <div className="portal-reg-modal__actions portal-reg-modal__actions--guest-auth-footer">
+            <button type="button" className="portal-btn portal-btn--secondary" onClick={closeGuestAuthModal}>
+              {p.matchDetailRegistrationModalClose}
+            </button>
+          </div>
+        </div>
+      </dialog>
+    )
   }
 
   async function submitRegistration(ev: FormEvent) {
@@ -572,7 +619,14 @@ export function MatchPublicRegistrationSection({
     )
   }
 
-  const showGuestAuth = !sessionLoading && !user
+  /** Guest sees the same «Зареєструватись» as logged-in shooters when squads exist and capacity allows. */
+  const showGuestRegisterCta =
+    !sessionLoading &&
+    !user &&
+    metrics !== undefined &&
+    !matchFull &&
+    Boolean(metrics?.length)
+
   const showRegisterCta =
     Boolean(user) &&
     !sessionLoading &&
@@ -585,7 +639,7 @@ export function MatchPublicRegistrationSection({
   const showRegisteredMasthead = Boolean(user && !sessionLoading && mine?.status === 'confirmed')
 
   const showMastheadUi =
-    showGuestAuth ||
+    showGuestRegisterCta ||
     showRegisterCta ||
     showPendingTools ||
     showCancelledNote ||
@@ -608,23 +662,15 @@ export function MatchPublicRegistrationSection({
 
   const mastheadBody = (
     <>
-      {showGuestAuth ?
+      {showGuestRegisterCta ?
         <>
-          <p className="portal-match-public-detail__prose">{p.matchDetailRegistrationSignInIntro}</p>
-          <div className="portal-match-guest-auth-cta">
-            <Link
-              to={`/${locale}/account?next=${encodeURIComponent(pathnameRedirect)}`}
-              className="portal-btn portal-btn--primary portal-btn--compact"
-            >
-              {p.portalCompactAuthSubmitSignIn}
-            </Link>
-            <Link
-              to={`/${locale}/account?mode=signup&next=${encodeURIComponent(pathnameRedirect)}`}
-              className="portal-btn portal-btn--secondary portal-btn--compact"
-            >
-              {p.portalCompactAuthSubmitSignUp}
-            </Link>
-          </div>
+          <button
+            type="button"
+            className="portal-btn portal-btn--primary portal-reg-cta portal-match-public-detail__masthead-cta"
+            onClick={openGuestAuthModal}
+          >
+            {p.matchDetailRegistrationCta}
+          </button>
           {import.meta.env.DEV ?
             <p className="portal-reg-dev-auth-hint">
               <Link to={`/${locale}/dev/supabase-auth-smoke`}>{p.myMatchesDevSignInHint}</Link>
@@ -668,9 +714,9 @@ export function MatchPublicRegistrationSection({
       : null}
 
       {showRegisteredMasthead ?
-        <p className="portal-match-public-detail__masthead-registered-head" role="status">
+        <span className="portal-match-registered-badge" role="status" aria-live="polite">
           {p.matchDetailRegistrationMastheadRegistered}
-        </p>
+        </span>
       : null}
     </>
   )
@@ -687,6 +733,7 @@ export function MatchPublicRegistrationSection({
     return (
       <>
         {renderRegistrationModal(regDialogRef)}
+        {renderGuestAuthModal(guestAuthDialogRef)}
         {mastheadPortal}
         <div className="portal-match-public-detail__surface portal-reg-minimal">
           <p className="portal-match-public-detail__muted">{p.matchesSupabaseUnset}</p>
@@ -699,6 +746,7 @@ export function MatchPublicRegistrationSection({
     return (
       <>
         {renderRegistrationModal(regDialogRef)}
+        {renderGuestAuthModal(guestAuthDialogRef)}
         {mastheadPortal}
       </>
     )
@@ -707,6 +755,7 @@ export function MatchPublicRegistrationSection({
   return (
     <>
       {renderRegistrationModal(regDialogRef)}
+      {renderGuestAuthModal(guestAuthDialogRef)}
       {mastheadPortal}
       <div className="portal-match-public-detail__surface portal-reg-minimal">
         {metricsError ?

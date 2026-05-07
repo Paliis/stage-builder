@@ -482,6 +482,8 @@ export type MessageTree = {
     matchDetailRegistrationFull: string
     matchDetailRegistrationMatchFull: string
     matchDetailRegistrationSignInIntro: string
+    /** Title for email/password modal when guest clicks “Зареєструватись” on a public match. */
+    matchDetailGuestAuthModalTitle: string
     matchDetailRegistrationFieldSquad: string
     matchDetailRegistrationSelectSquad: string
     matchDetailRegistrationDivision: string
@@ -1527,6 +1529,7 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationFull: 'Повний',
     matchDetailRegistrationMatchFull: 'Ліміт учасників матчу вже заповнений; нові заявки тимчасово недоступні.',
     matchDetailRegistrationSignInIntro: 'Увійдіть або створіть обліковий запис, щоб подати заявку на участь.',
+    matchDetailGuestAuthModalTitle: 'Увійдіть або зареєструйтеся',
     matchDetailRegistrationFieldSquad: 'Сквод',
     matchDetailRegistrationSelectSquad: 'Оберіть сквод',
     matchDetailRegistrationDivision: 'Дивізіон',
@@ -2565,6 +2568,7 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationMatchFull:
       'The competitor limit for this match is reached; new sign-ups are not available right now.',
     matchDetailRegistrationSignInIntro: 'Sign in or create an account to register for this match.',
+    matchDetailGuestAuthModalTitle: 'Sign in or register',
     matchDetailRegistrationFieldSquad: 'Squad',
     matchDetailRegistrationSelectSquad: 'Select a squad',
     matchDetailRegistrationDivision: 'Division',

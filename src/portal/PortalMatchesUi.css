@@ -286,25 +286,6 @@ a.portal-match-title-ellipsis:hover {
   background: color-mix(in srgb, var(--surface, #fff), var(--btn-bg) 42%);
 }
 
-.portal-match-guest-auth-cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.portal-match-public-detail__masthead-cover-col .portal-match-guest-auth-cta {
-  justify-content: center;
-}
-
-.portal-match-guest-auth-cta .portal-btn {
-  display: inline-flex;
-  justify-content: center;
-  text-decoration: none;
-  align-items: center;
-}
-
 .portal-match-public-detail__masthead-actions-inner--success {
   border-color: color-mix(in srgb, #16a34a, var(--border) 35%);
   background: color-mix(in srgb, var(--surface, #fff), #16a34a 09%);
@@ -315,13 +296,32 @@ a.portal-match-title-ellipsis:hover {
   background: color-mix(in srgb, var(--surface, #fff), #eab308 0.08%);
 }
 
-.portal-match-public-detail__masthead-registered-head {
+.portal-match-registered-badge {
+  display: inline-flex;
+  align-items: center;
   margin: 0;
-  font-size: 1.05rem;
+  padding: 0.4rem 0.88rem;
+  border-radius: 999px;
+  font-size: 0.9375rem;
   font-weight: 800;
   line-height: 1.38;
-  color: var(--text-h);
   letter-spacing: -0.018em;
+  color: color-mix(in srgb, var(--text-h), #166534 6%);
+  border: 1px solid color-mix(in srgb, #16a34a, var(--border) 40%);
+  background: color-mix(in srgb, var(--surface, #fff), #16a34a 11%);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+@media (max-width: 759px) {
+  .portal-match-public-detail__masthead-cover-col .portal-match-registered-badge {
+    align-self: center;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+.portal-match-public-detail__masthead-cover-col .portal-match-registered-badge {
+  max-width: 100%;
 }
 
 .portal-match-public-detail__masthead-cta {
@@ -578,6 +578,22 @@ a.portal-match-title-ellipsis:hover {
   letter-spacing: -0.02em;
   line-height: 1.25;
   color: var(--text-h);
+}
+
+.portal-reg-modal__guest-auth-lead {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.portal-reg-modal--guest-auth .portal-compact-auth {
+  margin-inline: auto;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.portal-reg-modal__actions--guest-auth-footer {
+  margin-top: 0.5rem;
 }
 
 .portal-reg-modal__identity {
