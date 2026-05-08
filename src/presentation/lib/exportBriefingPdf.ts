@@ -40,12 +40,15 @@ async function generateQrDataUrl(url: string): Promise<string> {
 }
 
 const TABLE_FONT_SIZE = 9
-const TABLE_CELL_PADDING = { top: 2.2, right: 3, bottom: 2.2, left: 3 }
+const TABLE_CELL_PADDING = { top: 2.2, right: 4, bottom: 2.2, left: 4 }
 /** Мінімальний зазор під заголовком перед знімком. */
 const GAP_TITLE_IMAGE = 2
 /** Після знімка: бренд-текст (під картинкою), потім зазор перед таблицею. */
 const GAP_IMAGE_BRAND = 2
-const GAP_BRAND_TABLE = 5
+/** Зазор між блоком «згенеровано…» і таблицею брифінгу (мм). */
+const GAP_BRAND_TABLE = 9
+/** Додатковий відступ зліва/справа для переносу рядка під знімком (мм від країв контенту). */
+const BRAND_LINE_HORIZONTAL_INSET_MM = 10
 const GAP_TABLE_FOOTER = 3
 /** Відступ знімка від країв колонки PDF (1 = майже на всю ширину). */
 const IMAGE_SHRINK = 1
@@ -113,15 +116,16 @@ function measureBrandBlockHeightMm(
   pdf: BriefingPdfExportStrings,
   publicSiteUrl: string,
 ): number {
+  const brandMaxW = Math.max(20, contentW - 2 * BRAND_LINE_HORIZONTAL_INSET_MM)
   const combined = `${pdf.generatedBy}  ${publicSiteUrl}`
   let fs = 6
   doc.setFont(PDF_FONT_FAMILY, 'normal')
   doc.setFontSize(fs)
-  let lines = doc.splitTextToSize(combined, contentW) as string[]
+  let lines = doc.splitTextToSize(combined, brandMaxW) as string[]
   while (lines.length > 1 && fs >= 5) {
     fs -= 0.5
     doc.setFontSize(fs)
-    lines = doc.splitTextToSize(combined, contentW) as string[]
+    lines = doc.splitTextToSize(combined, brandMaxW) as string[]
   }
   const lineH = 3
   const h = lines.length * lineH + 1
@@ -141,15 +145,16 @@ function drawPdfBrandCenteredBelowImage(
   publicSiteUrl: string,
 ): void {
   const contentW = pageW - margin * 2
+  const brandMaxW = Math.max(20, contentW - 2 * BRAND_LINE_HORIZONTAL_INSET_MM)
   const combined = `${pdf.generatedBy}  ${publicSiteUrl}`
   doc.setFont(PDF_FONT_FAMILY, 'normal')
   let fs = 6
   doc.setFontSize(fs)
-  let lines = doc.splitTextToSize(combined, contentW) as string[]
+  let lines = doc.splitTextToSize(combined, brandMaxW) as string[]
   while (lines.length > 1 && fs >= 5) {
     fs -= 0.5
     doc.setFontSize(fs)
-    lines = doc.splitTextToSize(combined, contentW) as string[]
+    lines = doc.splitTextToSize(combined, brandMaxW) as string[]
   }
   doc.setTextColor(100, 116, 139)
   const cx = pageW / 2
