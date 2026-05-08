@@ -73,7 +73,7 @@ const HEADER_LOGO_GAP_MM = 5
  */
 const HEADER_LOGO_TOP_NUDGE_MM = -5
 /** Додатковий зсув угору лише для растру ФПСУ (прозорість / нижній «повітря» в PNG). */
-const HEADER_LOGO_FPSU_EXTRA_Y_MM = -2.5
+const HEADER_LOGO_FPSU_EXTRA_Y_MM = -0.9
 /** Приблизний cap height від baseline першого рядка назви матчу (`MATCH_TITLE_FONT_PT`). */
 const HEADER_LOGO_CAP_ASCENT_MATCH_MM = 4.1
 /** Приблизний cap height для першого рядка лише з document title (`DOC_TITLE_FONT_PT`). */
