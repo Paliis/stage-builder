@@ -3,6 +3,13 @@ import type { StageBriefing } from '../../domain/stageBriefing'
 /** Висота рядку логотипів у PDF (мм); ширина пропорційна зображенню. */
 export const PDF_BRIEFING_LOGO_ROW_MM = 22
 
+export type BriefingPdfLogoPrepared = {
+  dataUrl: string
+  wMm: number
+  hMm: number
+  kind: 'fpsu' | 'ipsc'
+}
+
 /** Якщо ширина ≥ висоти × поріг — аркуш «UA+LAT»: беремо ліву половину (україномовна емблема). */
 const FPSU_DUAL_SHEET_ASPECT_THRESHOLD = 1.2
 /**
@@ -70,17 +77,15 @@ export async function loadBriefingLogoRaster(which: 'fpsu' | 'ipsc'): Promise<{ 
   return null
 }
 
-export async function prepareBriefingPdfLogos(
-  briefing: StageBriefing,
-): Promise<Array<{ dataUrl: string; wMm: number; hMm: number }>> {
-  const rasters: Array<{ dataUrl: string; aspect: number }> = []
+export async function prepareBriefingPdfLogos(briefing: StageBriefing): Promise<BriefingPdfLogoPrepared[]> {
+  const rasters: Array<{ dataUrl: string; aspect: number; kind: 'fpsu' | 'ipsc' }> = []
   if (briefing.pdfLogoFpsu) {
     const r = await loadBriefingLogoRaster('fpsu')
-    if (r) rasters.push(r)
+    if (r) rasters.push({ ...r, kind: 'fpsu' })
   }
   if (briefing.pdfLogoIpsc) {
     const r = await loadBriefingLogoRaster('ipsc')
-    if (r) rasters.push(r)
+    if (r) rasters.push({ ...r, kind: 'ipsc' })
   }
 
   const targetHMm = PDF_BRIEFING_LOGO_ROW_MM
@@ -88,5 +93,6 @@ export async function prepareBriefingPdfLogos(
     dataUrl: r.dataUrl,
     hMm: targetHMm,
     wMm: targetHMm * r.aspect,
+    kind: r.kind,
   }))
 }

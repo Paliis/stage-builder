@@ -6,7 +6,10 @@ import type { StageBriefing } from '../../domain/stageBriefing'
 import { briefingTableRows, type BriefingPdfLabels } from '../../domain/stageBriefing'
 import type { StageCategory } from '../../domain/models'
 import { CANONICAL_PRODUCTION_ORIGIN } from '../../seo/canonicalProductionOrigin'
-import { PDF_BRIEFING_LOGO_ROW_MM, prepareBriefingPdfLogos } from './pdfBriefingLogos'
+import {
+  prepareBriefingPdfLogos,
+  type BriefingPdfLogoPrepared,
+} from './pdfBriefingLogos'
 import { registerPdfFonts, PDF_FONT_FAMILY } from './pdfFonts'
 
 /** Default link in PDF footer / QR when caller does not pass `qrTargetUrl` (matches portal editor path). */
@@ -43,7 +46,7 @@ async function generateQrDataUrl(url: string): Promise<string> {
 const TABLE_FONT_SIZE = 9
 const TABLE_CELL_PADDING = { top: 2.2, right: 4, bottom: 2.2, left: 4 }
 /** Мінімальний зазор під заголовком перед знімком. */
-const GAP_TITLE_IMAGE = 2
+const GAP_TITLE_IMAGE = 3
 /** Після знімка: бренд-текст (під картинкою), потім зазор перед таблицею. */
 const GAP_IMAGE_BRAND = 2
 /** Зазор між блоком «згенеровано…» і таблицею брифінгу (мм). */
@@ -65,13 +68,16 @@ const SNAPSHOT_FRAME_RADIUS_MM = 0.9
 /** Зазор між двома логотипами у заголовку PDF (мм). */
 const HEADER_LOGO_GAP_MM = 5
 /**
- * Зсув блоку логотипів угору від верхнього поля (від’ємне = вище на сторінці в jsPDF).
+ * Додатковий підйом через верхнє поле: береться разом із вирівнюванням під перший рядок тексту (`Math.min`).
+ * У jsPDF менший `y` — вище на сторінці.
  */
-const HEADER_LOGO_TOP_NUDGE_MM = -2
-/**
- * Додатковий зсув **першого** лого (типово ФПСУ) — у растрі часто є нижній «повітря», візуально опускає знак.
- */
-const HEADER_LOGO_FIRST_EXTRA_NUDGE_MM = -2.2
+const HEADER_LOGO_TOP_NUDGE_MM = -5
+/** Додатковий зсув угору лише для растру ФПСУ (прозорість / нижній «повітря» в PNG). */
+const HEADER_LOGO_FPSU_EXTRA_Y_MM = -2.5
+/** Приблизний cap height від baseline першого рядка назви матчу (`MATCH_TITLE_FONT_PT`). */
+const HEADER_LOGO_CAP_ASCENT_MATCH_MM = 4.1
+/** Приблизний cap height для першого рядка лише з document title (`DOC_TITLE_FONT_PT`). */
+const HEADER_LOGO_CAP_ASCENT_DOCONLY_MM = 5.3
 /** Зазор між блоком логотипів і центральним текстом (мм). */
 const GAP_LOGO_TO_CENTER_TEXT_MM = 4
 const MATCH_TITLE_FONT_PT = 11
@@ -79,7 +85,25 @@ const LINE_MM_MATCH = 5
 const GAP_AFTER_MATCH_MM = 2
 const DOC_TITLE_FONT_PT = 13
 const LINE_MM_DOC_TITLE = 6
-const TITLE_TAIL_PAD_MM = 2
+const TITLE_TAIL_PAD_MM = 4
+
+function computeBriefingPdfLogoTopBaseMm(margin: number, briefing: StageBriefing): number {
+  const matchTrim = briefing.matchName.trim()
+  const firstTextBaseline = matchTrim ? margin + 4 : margin + 5
+  const capAscent = matchTrim ? HEADER_LOGO_CAP_ASCENT_MATCH_MM : HEADER_LOGO_CAP_ASCENT_DOCONLY_MM
+  const alignedTop = firstTextBaseline - capAscent
+  const liftedTop = margin + HEADER_LOGO_TOP_NUDGE_MM
+  return Math.max(0.5, Math.min(liftedTop, alignedTop))
+}
+
+function logoExtraYMm(L: BriefingPdfLogoPrepared): number {
+  return L.kind === 'fpsu' ? HEADER_LOGO_FPSU_EXTRA_Y_MM : 0
+}
+
+function computeLogoStripBottomMm(logoTopBase: number, logos: BriefingPdfLogoPrepared[]): number {
+  if (logos.length === 0) return logoTopBase
+  return Math.max(...logos.map((L) => logoTopBase + logoExtraYMm(L) + L.hMm))
+}
 
 function computeLogoStripWidthMm(logos: Array<{ wMm: number }>): number {
   if (logos.length === 0) return 0
@@ -90,7 +114,7 @@ function computeLogoStripWidthMm(logos: Array<{ wMm: number }>): number {
 function measureBriefingPdfHeaderBottomMm(
   doc: InstanceType<typeof jsPDF>,
   briefing: StageBriefing,
-  logos: Array<{ dataUrl: string; wMm: number; hMm: number }>,
+  logos: BriefingPdfLogoPrepared[],
   headerRightEdge: number,
   margin: number,
 ): number {
@@ -98,14 +122,9 @@ function measureBriefingPdfHeaderBottomMm(
   const centerLeft = margin + stripW + (stripW > 0 ? GAP_LOGO_TO_CENTER_TEXT_MM : 0)
   const centerTextMaxW = Math.max(16, headerRightEdge - centerLeft)
 
-  const logoTopBase = margin + HEADER_LOGO_TOP_NUDGE_MM
-  let logoBottom = margin
-  if (logos.length > 0) {
-    const onlyFpsu = briefing.pdfLogoFpsu && !briefing.pdfLogoIpsc && logos.length === 1
-    logoBottom = onlyFpsu
-      ? logoTopBase + HEADER_LOGO_FIRST_EXTRA_NUDGE_MM + PDF_BRIEFING_LOGO_ROW_MM
-      : logoTopBase + PDF_BRIEFING_LOGO_ROW_MM
-  }
+  const logoTopBase = computeBriefingPdfLogoTopBaseMm(margin, briefing)
+  const logoBottom =
+    logos.length === 0 ? margin : computeLogoStripBottomMm(logoTopBase, logos)
 
   const matchTrim = briefing.matchName.trim()
   let titleFirstBaseline: number
@@ -136,7 +155,7 @@ function measureBriefingPdfHeaderBottomMm(
 function drawBriefingPdfHeader(
   doc: InstanceType<typeof jsPDF>,
   briefing: StageBriefing,
-  logos: Array<{ dataUrl: string; wMm: number; hMm: number }>,
+  logos: BriefingPdfLogoPrepared[],
   headerRightEdge: number,
   margin: number,
 ): void {
@@ -145,13 +164,12 @@ function drawBriefingPdfHeader(
   const centerCx = (centerLeft + headerRightEdge) / 2
   const centerMaxW = Math.max(16, headerRightEdge - centerLeft)
 
+  const logoTopBase = computeBriefingPdfLogoTopBaseMm(margin, briefing)
+
   if (logos.length > 0) {
     let x = margin
-    const logoTopBase = margin + HEADER_LOGO_TOP_NUDGE_MM
-    logos.forEach((L, i) => {
-      const extraFirst =
-        i === 0 && briefing.pdfLogoFpsu ? HEADER_LOGO_FIRST_EXTRA_NUDGE_MM : 0
-      const y = logoTopBase + extraFirst
+    logos.forEach((L) => {
+      const y = logoTopBase + logoExtraYMm(L)
       doc.addImage(L.dataUrl, 'PNG', x, y, L.wMm, L.hMm)
       x += L.wMm + HEADER_LOGO_GAP_MM
     })
