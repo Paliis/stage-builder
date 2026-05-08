@@ -141,7 +141,7 @@
 
 ## PDF брифінгу
 
-- **`exportBriefingPdf.ts`** + **`pdfBriefingLogos.ts`** — заголовок PDF: лого зліва (`fpsu.png`, `ipsc.png`; fallback `.svg`); базова висота слоту лого — **`PDF_BRIEFING_LOGO_ROW_MM`** (~22 мм); ФПСУ у PDF трохи **вищий** за базу (`FPSU_LOGO_HEIGHT_FACTOR` у коді — компенсація прозорих полів навколо кола поруч із IPSC); широкий ФПСУ UA+LAT — ліва половина, горизонтальний inset і зріз низу; між лого й QR — назва матчу / заголовок; QR; таблиця; знімок; бренд. **`pdfFonts.ts`** — Roboto.
+- **`exportBriefingPdf.ts`** + **`pdfBriefingLogos.ts`** — заголовок PDF: лого зліва (`fpsu.png`, `ipsc.png`; fallback `.svg`); базова висота слоту лого — **`PDF_BRIEFING_LOGO_ROW_MM`** (~22 мм); для ФПСУ можливий легкий множник висоти (`FPSU_LOGO_HEIGHT_FACTOR`). Широкий файл UA+LAT (aspect ≥ порога в коді) — ліва половина аркуша + inset і зріз низу; квадратний **`fpsu.png`** у репо йде без цієї гілки. Між лого й QR — назва матчу / заголовок; QR; таблиця; знімок; бренд. **`fpsu.png`** у репозиторії — кроп UPSF з practical-shooting.org.ua (`cropped-UPSF_Logo_512-270x270`). **`pdfFonts.ts`** — Roboto.
 - **`a4PrintLayout.ts`** — розміри A4 в мм/px, співвідношення для знімка плану в UI (узгоджено з PDF).
 
 ## PWA та встановлення

@@ -4,10 +4,10 @@ import type { StageBriefing } from '../../domain/stageBriefing'
 export const PDF_BRIEFING_LOGO_ROW_MM = 22
 
 /**
- * ФПСУ в растрі має більше прозорого поля навколо кола, ніж IPSC у щиті — без підсилення знак виглядає дрібнішим при однаковій висоті bbox.
- * Множник застосовується лише до `hMm`/`wMm` ФПСУ у PDF.
+ * ФПСУ в растрі інколи має зайве поле навколо знака (або інший bbox, ніж у IPSC).
+ * Для квадратного `fpsu.png` без нижнього штриху множник лишається ~1.
  */
-const FPSU_LOGO_HEIGHT_FACTOR = 1.38
+const FPSU_LOGO_HEIGHT_FACTOR = 1.05
 
 export type BriefingPdfLogoPrepared = {
   dataUrl: string
