@@ -23,7 +23,6 @@ export type OrganizerRosterReg = {
   status: string
   division: string
   phone: string
-  weapon_details: string
   competitor_region: string
   participant_payment_option: string
   registration_created_at?: string | null
@@ -215,7 +214,6 @@ export function OrganizerMatchRosterBoard({
                                 parseParticipantPaymentOption(reg.participant_payment_option),
                               ),
                               reg.competitor_region?.trim(),
-                              reg.weapon_details?.trim(),
                             ]
                               .filter(Boolean)
                               .join(' · ') || undefined
@@ -229,10 +227,10 @@ export function OrganizerMatchRosterBoard({
                               p,
                               parseParticipantPaymentOption(reg.participant_payment_option),
                             )}
-                            {(reg.competitor_region ?? '').trim() || (reg.weapon_details ?? '').trim() ?
+                            {(reg.competitor_region ?? '').trim() ?
                               <>
                                 {' · '}
-                                {[reg.competitor_region?.trim(), reg.weapon_details?.trim()].filter(Boolean).join(' · ')}
+                                {reg.competitor_region.trim()}
                               </>
                             : null}
                           </span>

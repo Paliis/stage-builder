@@ -878,7 +878,6 @@ export type MessageTree = {
     matchOrgRosterColPhone: string
     matchOrgRosterColPaymentOption: string
     matchOrgRosterColRegion: string
-    matchOrgRosterColWeaponDetails: string
     matchOrgRosterColDivision: string
     matchOrgRosterColStatus: string
     matchOrgRosterColSquad: string
@@ -1933,7 +1932,6 @@ export const ukMessages: MessageTree = {
     matchOrgRosterColPhone: 'Телефон',
     matchOrgRosterColPaymentOption: 'Оплата',
     matchOrgRosterColRegion: 'Регіон',
-    matchOrgRosterColWeaponDetails: 'Зброя',
     matchOrgRosterColDivision: 'Дивізіон',
     matchOrgRosterColStatus: 'Статус',
     matchOrgRosterColSquad: 'Сквод',
@@ -2979,7 +2977,6 @@ export const enMessages: MessageTree = {
     matchOrgRosterColPhone: 'Phone',
     matchOrgRosterColPaymentOption: 'Payment',
     matchOrgRosterColRegion: 'Region',
-    matchOrgRosterColWeaponDetails: 'Firearm',
     matchOrgRosterColDivision: 'Division',
     matchOrgRosterColStatus: 'Status',
     matchOrgRosterColSquad: 'Squad',

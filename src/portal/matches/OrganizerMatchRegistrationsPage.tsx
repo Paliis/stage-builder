@@ -37,7 +37,6 @@ type RosterRpcRow = {
   status: string
   division: string
   phone: string
-  weapon_details: string
   competitor_region: string
   participant_payment_option: string
   registration_created_at?: string | null
@@ -552,9 +551,6 @@ export function OrganizerMatchRegistrationsPage() {
                   {p.matchOrgRosterColPaymentOption}
                 </th>
                 <th scope="col">{p.matchOrgRosterColRegion}</th>
-                <th scope="col" className="portal-roster-page__reg-th--weapon">
-                  {p.matchOrgRosterColWeaponDetails}
-                </th>
                 <th scope="col">{p.matchOrgRosterColDivision}</th>
                 <th scope="col">{p.matchOrgRosterColStatus}</th>
                 <th scope="col">{p.matchOrgRosterColSquad}</th>
@@ -582,12 +578,6 @@ export function OrganizerMatchRegistrationsPage() {
                       {participantPaymentOptionLabel(p, parseParticipantPaymentOption(reg.participant_payment_option))}
                     </td>
                     <td>{(reg.competitor_region ?? '').trim() || '—'}</td>
-                    <td
-                      className="portal-roster-page__reg-td--weapon"
-                      title={(reg.weapon_details ?? '').trim() || undefined}
-                    >
-                      {(reg.weapon_details ?? '').trim() || '—'}
-                    </td>
                     <td>{reg.division}</td>
                     <td className="portal-roster-page__reg-td--status">
                       {inactive ?

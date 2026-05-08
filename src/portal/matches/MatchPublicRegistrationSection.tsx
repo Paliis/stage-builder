@@ -404,7 +404,6 @@ export function MatchPublicRegistrationSection({
       division: div,
       classification_grade: '',
       phone: phoneTrim,
-      weapon_details: '',
       competitor_region: cabinetRegion.trim(),
       power_factor: powerFactor,
       categories: resolveShooterCategoriesForStorage(signupCategories),

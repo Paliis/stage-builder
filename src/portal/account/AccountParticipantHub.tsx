@@ -322,7 +322,6 @@ export function AccountParticipantHub({
       classification_grade: '',
       power_factor: defPf,
       phone: phoneTrimAcc,
-      weapon_details: '',
       region: defRegion.trim(),
       categories: resolveShooterCategoriesForStorage(defCategories),
       weapon_class: wc,

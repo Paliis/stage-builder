@@ -869,23 +869,12 @@ a.portal-match-title-ellipsis:hover {
   white-space: nowrap;
 }
 
-.portal-roster-page__reg-th--weapon {
-  min-width: 7rem;
-}
-
 .portal-roster-page__reg-td--phone {
   white-space: nowrap;
 }
 
 .portal-roster-page__reg-td--muted {
   font-size: 0.86rem;
-}
-
-.portal-roster-page__reg-td--weapon {
-  max-width: 14rem;
-  font-size: 0.86rem;
-  line-height: 1.45;
-  overflow-wrap: break-word;
 }
 
 .portal-roster-page__reg-td--status {
