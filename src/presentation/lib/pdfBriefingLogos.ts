@@ -28,7 +28,7 @@ async function rasterizeLogoFromUrl(
     const iw = img.naturalWidth || 1
     const ih = img.naturalHeight || 1
     let sx = 0
-    let sy = 0
+    const sy = 0
     let sw = iw
     let sh = ih
     const fpsuDualSheet = which === 'fpsu' && iw / ih >= FPSU_DUAL_SHEET_ASPECT_THRESHOLD
