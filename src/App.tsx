@@ -1347,7 +1347,17 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       onDimensionWorldPick={readOnly ? undefined : handleDimensionWorldPick}
                       onRemovePlanDimensionLine={readOnly ? undefined : removePlanDimensionLine}
                     />
-                    {!readOnly ? (
+                    <div className="app__plan-map-corner-stack">
+                      <StageMinimap
+                      fieldWidthM={fieldSizeM.x}
+                      fieldHeightM={fieldSizeM.y}
+                      targets={targets}
+                      props={props}
+                      viewportWorld={planViewportWorld}
+                      ariaLabel={tree.view.minimapAria}
+                      onWorldPick={(wx, wy) => planCanvasRef.current?.centerOnWorldPoint(wx, wy)}
+                      />
+                      {!readOnly ? (
                     <div className="app__plan-map-actions" role="toolbar" aria-label={tree.view.planMapActionsAria}>
                       <button
                         type="button"
@@ -1556,15 +1566,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       </button>
                     </div>
                     ) : null}
-                    <StageMinimap
-                      fieldWidthM={fieldSizeM.x}
-                      fieldHeightM={fieldSizeM.y}
-                      targets={targets}
-                      props={props}
-                      viewportWorld={planViewportWorld}
-                      ariaLabel={tree.view.minimapAria}
-                      onWorldPick={(wx, wy) => planCanvasRef.current?.centerOnWorldPoint(wx, wy)}
-                    />
+                    </div>
                   </div>
                 ) : (
                   <div className="app__stage-print-frame">
