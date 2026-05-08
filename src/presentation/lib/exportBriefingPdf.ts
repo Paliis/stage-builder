@@ -64,6 +64,14 @@ const SNAPSHOT_FRAME_RADIUS_MM = 0.9
 
 /** Зазор між двома логотипами у заголовку PDF (мм). */
 const HEADER_LOGO_GAP_MM = 5
+/**
+ * Зсув блоку логотипів угору від верхнього поля (від’ємне = вище на сторінці в jsPDF).
+ */
+const HEADER_LOGO_TOP_NUDGE_MM = -2
+/**
+ * Додатковий зсув **першого** лого (типово ФПСУ) — у растрі часто є нижній «повітря», візуально опускає знак.
+ */
+const HEADER_LOGO_FIRST_EXTRA_NUDGE_MM = -2.2
 /** Зазор між блоком логотипів і центральним текстом (мм). */
 const GAP_LOGO_TO_CENTER_TEXT_MM = 4
 const MATCH_TITLE_FONT_PT = 11
@@ -90,7 +98,14 @@ function measureBriefingPdfHeaderBottomMm(
   const centerLeft = margin + stripW + (stripW > 0 ? GAP_LOGO_TO_CENTER_TEXT_MM : 0)
   const centerTextMaxW = Math.max(16, headerRightEdge - centerLeft)
 
-  const logoBottom = logos.length > 0 ? margin + PDF_BRIEFING_LOGO_ROW_MM : margin
+  const logoTopBase = margin + HEADER_LOGO_TOP_NUDGE_MM
+  let logoBottom = margin
+  if (logos.length > 0) {
+    const onlyFpsu = briefing.pdfLogoFpsu && !briefing.pdfLogoIpsc && logos.length === 1
+    logoBottom = onlyFpsu
+      ? logoTopBase + HEADER_LOGO_FIRST_EXTRA_NUDGE_MM + PDF_BRIEFING_LOGO_ROW_MM
+      : logoTopBase + PDF_BRIEFING_LOGO_ROW_MM
+  }
 
   const matchTrim = briefing.matchName.trim()
   let titleFirstBaseline: number
@@ -132,11 +147,14 @@ function drawBriefingPdfHeader(
 
   if (logos.length > 0) {
     let x = margin
-    const logoTop = margin
-    for (const L of logos) {
-      doc.addImage(L.dataUrl, 'PNG', x, logoTop, L.wMm, L.hMm)
+    const logoTopBase = margin + HEADER_LOGO_TOP_NUDGE_MM
+    logos.forEach((L, i) => {
+      const extraFirst =
+        i === 0 && briefing.pdfLogoFpsu ? HEADER_LOGO_FIRST_EXTRA_NUDGE_MM : 0
+      const y = logoTopBase + extraFirst
+      doc.addImage(L.dataUrl, 'PNG', x, y, L.wMm, L.hMm)
       x += L.wMm + HEADER_LOGO_GAP_MM
-    }
+    })
   }
 
   const matchTrim = briefing.matchName.trim()
