@@ -71,6 +71,8 @@ const StageView3DLazy = lazy(() =>
 )
 
 const ONBOARDING_LS_KEY = 'stage-builder-onboarding-collapsed'
+const VIEW3D_LS_SHADOWS = 'stage-builder-view3d-shadows'
+const VIEW3D_LS_GRAYSCALE = 'stage-builder-view3d-grayscale'
 
 function parseFieldSizeInputMeters(raw: string): number | null {
   const t = raw.trim().replace(',', '.')
@@ -148,6 +150,20 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const [viewMode, setViewMode] = useState<'2d' | '3d'>(() => (shareReadOnly ? '3d' : '2d'))
   const [planViewportWorld, setPlanViewportWorld] = useState<WorldViewportRect | null>(null)
   const [camera3d, setCamera3d] = useState<CameraMode3D>('overview')
+  const [view3dShadowsOn, setView3dShadowsOn] = useState(() => {
+    try {
+      return localStorage.getItem(VIEW3D_LS_SHADOWS) !== '0'
+    } catch {
+      return true
+    }
+  })
+  const [view3dGrayscale, setView3dGrayscale] = useState(() => {
+    try {
+      return localStorage.getItem(VIEW3D_LS_GRAYSCALE) === '1'
+    } catch {
+      return false
+    }
+  })
   const [pdfBusy, setPdfBusy] = useState(false)
   const [onboardingCollapsed] = useState(() => {
     try {
@@ -812,6 +828,22 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setOnboardingShownOnce(true)
     }
   }, [onboardingCollapsed, onboardingShownOnce])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(VIEW3D_LS_SHADOWS, view3dShadowsOn ? '1' : '0')
+    } catch {
+      /* приватний режим */
+    }
+  }, [view3dShadowsOn])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(VIEW3D_LS_GRAYSCALE, view3dGrayscale ? '1' : '0')
+    } catch {
+      /* приватний режим */
+    }
+  }, [view3dGrayscale])
 
   useEffect(() => {
     if (!mobileMenuOpen) return
@@ -1532,6 +1564,28 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                   </div>
                 ) : (
                   <div className="app__stage-print-frame">
+                    {viewMode === '3d' ? (
+                      <div className="app__view3d-render-tools" role="toolbar" aria-label={tree.view.view3dRenderToolsAria}>
+                        <button
+                          type="button"
+                          className={`app__view3d-render-tool${view3dShadowsOn ? ' app__view3d-render-tool--on' : ''}`}
+                          aria-pressed={view3dShadowsOn}
+                          onClick={() => setView3dShadowsOn((v) => !v)}
+                          title={tree.view.view3dShadowsToggleTitle}
+                        >
+                          {tree.view.view3dShadowsToggle}
+                        </button>
+                        <button
+                          type="button"
+                          className={`app__view3d-render-tool${view3dGrayscale ? ' app__view3d-render-tool--on' : ''}`}
+                          aria-pressed={view3dGrayscale}
+                          onClick={() => setView3dGrayscale((v) => !v)}
+                          title={tree.view.view3dBwToggleTitle}
+                        >
+                          {tree.view.view3dBwToggle}
+                        </button>
+                      </div>
+                    ) : null}
                     <Suspense
                       fallback={
                         <div className="app__view-3d-suspense" role="status" aria-live="polite">
@@ -1539,7 +1593,14 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                         </div>
                       }
                     >
-                      <StageView3DLazy ref={view3dRef} targets={targets} props={props} cameraMode={camera3d} />
+                      <StageView3DLazy
+                        ref={view3dRef}
+                        targets={targets}
+                        props={props}
+                        cameraMode={camera3d}
+                        shadowsEnabled={view3dShadowsOn}
+                        grayscaleForPdf={view3dGrayscale}
+                      />
                     </Suspense>
                   </div>
                 )}

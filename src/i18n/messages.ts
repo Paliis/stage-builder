@@ -177,6 +177,12 @@ export type MessageTree = {
     minimapAria: string
     /** Підказка під час lazy-load чанку Three.js / R3F */
     loading3d: string
+    /** Плаваючі перемикачі біля 3D-кадру (знімок для PDF). */
+    view3dRenderToolsAria: string
+    view3dShadowsToggle: string
+    view3dShadowsToggleTitle: string
+    view3dBwToggle: string
+    view3dBwToggleTitle: string
     /** Кнопка режиму вимірювання на 2D-плані */
     measureTool: string
     measureToolTitle: string
@@ -1220,7 +1226,7 @@ export const ukMessages: MessageTree = {
     threeDControls:
       '\u041e\u0431\u0435\u0440\u0442\u0430\u043d\u043d\u044f \u2014 \u043f\u0435\u0440\u0435\u0442\u044f\u0433\u0443\u0432\u0430\u043d\u043d\u044f\u043c \u043c\u0438\u0448\u0435\u044e; \u043c\u0430\u0441\u0448\u0442\u0430\u0431 \u2014 \u043a\u043e\u043b\u0456\u0449\u0430\u0442\u043a\u043e\u043c \u0430\u0431\u043e \u0437\u0432\u0435\u0434\u0435\u043d\u043d\u044f\u043c \u043f\u0430\u043b\u044c\u0446\u0456\u0432. \u0414\u043e\u0434\u0430\u0432\u0430\u0442\u0438 \u0442\u0430 \u0440\u0443\u0445\u0430\u0442\u0438 \u043e\u0431\u2019\u0454\u043a\u0442\u0438 \u043a\u0440\u0430\u0449\u0435 \u0432 \u0440\u0435\u0436\u0438\u043c\u0456 \u00ab\u041f\u043b\u0430\u043d 2D\u00bb (\u043f\u0440\u0438\u0432\u2019\u044f\u0437\u043a\u0430 \u0434\u043e \u0441\u0456\u0442\u043a\u0438).',
     threeDControlsDetail:
-      'Режим «Як у PDF» показує той самий кадр, що потрапить у документ (рамка — межі кадру). Знімок для PDF має ті ж пропорції. У PDF: QR у верхньому правому куті сторінки; посилання та «згенеровано…» — по центру під знімком.',
+      'Режим «Як у PDF» показує той самий кадр, що потрапить у документ (рамка — межі кадру). Знімок для PDF має ті ж пропорції. У PDF: QR у верхньому правому куті сторінки; посилання та «згенеровано…» — по центру під знімком. Справа від кадру — «Тіні» та «ЧБ»: впливають на прев’ю та PNG у PDF.',
     plan2dControls:
       '\u041c\u0430\u0441\u0448\u0442\u0430\u0431 \u2014 \u043a\u043e\u043b\u0456\u0449\u0430\u0442\u043a\u043e \u0430\u0431\u043e pinch. \u041f\u0435\u0440\u0435\u0442\u044f\u0433\u043d\u0456\u0442\u044c \u043f\u043e\u0440\u043e\u0436\u043d\u0454 \u043c\u0456\u0441\u0446\u0435 \u2014 \u0437\u0441\u0443\u0432 \u043f\u043b\u0430\u043d\u0443. \u041a\u043b\u0456\u043a \u043f\u043e \u043e\u0431\u2019\u0454\u043a\u0442\u0443 \u2014 \u0432\u0438\u0434\u0456\u043b\u0435\u043d\u043d\u044f, \u043f\u0435\u0440\u0435\u0442\u044f\u0433\u0443\u0432\u0430\u043d\u043d\u044f \u2014 \u0440\u0443\u0445. \u00ab\u21bb\u00bb \u0431\u0456\u043b\u044f \u043e\u0431\u2019\u0454\u043a\u0442\u0430 \u2014 \u043f\u043e\u0432\u043e\u0440\u043e\u0442 \u043a\u0440\u043e\u043a\u0430\u043c\u0438. Delete \u0430\u0431\u043e Backspace \u2014 \u0432\u0438\u0434\u0430\u043b\u0438\u0442\u0438.',
     plan2dControlsDetail:
@@ -1230,6 +1236,14 @@ export const ukMessages: MessageTree = {
     minimapAria:
       '\u041c\u0456\u043d\u0456-\u043a\u0430\u0440\u0442\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438: \u0441\u0438\u043d\u0456 \u0442\u043e\u0447\u043a\u0438-\u043f\u0430\u043f\u0456\u0440 \u0456 \u043c\u0435\u0442\u0430\u043b, \u043f\u043e\u043c\u0430\u0440\u0430\u043d\u0436\u0435\u0432\u0456 \u043a\u0432\u0430\u0434\u0440\u0430\u0442\u0438-\u0440\u0435\u043a\u0432\u0456\u0437\u0438\u0442, \u0440\u043e\u0436\u0435\u0432\u0430 \u0440\u0430\u043c\u043a\u0430-\u0432\u0438\u0434\u0438\u043c\u0438\u0439 \u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442. \u041a\u043b\u0430\u0446\u043d\u0456\u0442\u044c, \u0449\u043e\u0431 \u043f\u043e\u043a\u0430\u0437\u0430\u0442\u0438 \u0446\u044e \u0442\u043e\u0447\u043a\u0443 \u0432 \u0446\u0435\u043d\u0442\u0440\u0456 \u043f\u043b\u0430\u043d\u0443.',
     loading3d: '\u0417\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f 3D\u2026',
+    view3dRenderToolsAria:
+      '\u041f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0438 \u043f\u0435\u0440\u0435\u0433\u043b\u044f\u0434\u0443 3D \u0434\u043b\u044f PDF (\u0442\u0456\u043d\u0456, \u0427\u0411)',
+    view3dShadowsToggle: '\u0422\u0456\u043d\u0456',
+    view3dShadowsToggleTitle:
+      '\u0423\u0432\u0456\u043c\u043a\u043d\u0443\u0442\u0438 \u0430\u0431\u043e \u0432\u0438\u043c\u043a\u043d\u0443\u0442\u0438 \u0442\u0456\u043d\u0456 \u043d\u0430 \u0441\u0446\u0435\u043d\u0456. \u0412\u0438\u043c\u043a\u043d\u0435\u043d\u043d\u044f \u2014 \u043f\u043b\u043e\u0449\u0456\u0448\u0438\u0439 \u043a\u0430\u0434\u0440 \u0434\u043b\u044f PDF \u0456 \u0434\u0440\u0443\u043a\u0443.',
+    view3dBwToggle: '\u0427\u0411',
+    view3dBwToggleTitle:
+      '\u0427\u043e\u0440\u043d\u043e-\u0431\u0456\u043b\u0438\u0439 \u0437\u043d\u0456\u043c\u043e\u043a \u0443 PDF \u0456 \u043f\u0440\u0435\u0432\u2019\u044e \u0443 3D.',
     measureTool: '\u0412\u0438\u043c\u0456\u0440',
     measureToolTitle:
       '\u0412\u0438\u043c\u0456\u0440\u044e\u0432\u0430\u043d\u043d\u044f \u0432\u0456\u0434\u0441\u0442\u0430\u043d\u0456: \u0434\u0432\u0430 \u043a\u043b\u0456\u043a\u0438 \u043f\u043e \u043f\u043b\u0430\u043d\u0443. \u041d\u0430\u0441\u0442\u0443\u043f\u043d\u0438\u0439 \u043a\u043b\u0456\u043a \u2014 \u043d\u043e\u0432\u0430 \u043f\u0430\u0440\u0430. Esc \u2014 \u0441\u043a\u0438\u043d\u0443\u0442\u0438 \u043b\u0456\u043d\u0456\u044e. \u041a\u043b\u0430\u0432\u0456\u0448\u0430 M.',
@@ -2280,7 +2294,7 @@ export const enMessages: MessageTree = {
     threeDControls:
       'Drag to orbit; scroll or pinch to zoom. Add and move objects in \u00ab2D plan\u00bb (grid snap).',
     threeDControlsDetail:
-      'Use «PDF frame» to preview the same crop as the briefing snapshot (dashed outline). The exported PNG uses the same proportions. In the PDF the QR sits in the page top-right; the brand line and URL are centered below the image.',
+      'Use «PDF frame» to preview the same crop as the briefing snapshot (dashed outline). The exported PNG uses the same proportions. In the PDF the QR sits in the page top-right; the brand line and URL are centered below the image. «Shadows» and «B&W» beside the view affect the preview and the PNG in the PDF.',
     plan2dControls:
       'Wheel or pinch to zoom. Drag empty space to pan. Click an object to select, drag to move, purple \u21bb to rotate in steps. Delete or Backspace removes the selection.',
     plan2dControlsDetail:
@@ -2290,6 +2304,12 @@ export const enMessages: MessageTree = {
     minimapAria:
       'Stage minimap: blue dots are targets, orange squares are props; pink frame is the current view. Click to center the plan on that point.',
     loading3d: 'Loading 3D\u2026',
+    view3dRenderToolsAria: '3D snapshot options for PDF (shadows, grayscale)',
+    view3dShadowsToggle: 'Shadows',
+    view3dShadowsToggleTitle:
+      'Turn shadows on or off in the 3D scene. Off gives a flatter snapshot for PDF and printing.',
+    view3dBwToggle: 'B&W',
+    view3dBwToggleTitle: 'Grayscale snapshot for the PDF and on-screen 3D preview.',
     measureTool: 'Measure',
     measureToolTitle:
       'Distance: two clicks on the plan. Next click starts a new pair. Esc clears the line. M key toggles.',

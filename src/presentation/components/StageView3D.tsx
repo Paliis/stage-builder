@@ -16,7 +16,11 @@ import {
 import * as THREE from 'three'
 import { PerspectiveCamera, type Scene, type WebGLRenderer } from 'three'
 import { useStageStore } from '../../application/stageStore'
-import { pdfSnapshotPixelSize, stageViewportAspectRatio } from '../../domain/a4PrintLayout'
+import {
+  PDF_SNAPSHOT_EXPORT_SCALE,
+  pdfSnapshotPixelSize,
+  stageViewportAspectRatio,
+} from '../../domain/a4PrintLayout'
 import type { OrbitControls as OrbitControlsType } from 'three-stdlib'
 import {
   activationEntityLabelWorldYM,
@@ -147,7 +151,7 @@ function useStageFieldM(): StageFieldM {
  * Тіні directional light: типовий ortho ±5 m ламає карту тіней на полі 30×40 m (зсув, «хвости»).
  * Розгортаємо shadow camera під реальний розмір площадки + запас і тюнимо bias.
  */
-function StageSunLight() {
+function StageSunLight({ castShadowEnabled }: { castShadowEnabled: boolean }) {
   const dirRef = useRef<THREE.DirectionalLight>(null)
   const { widthM, heightM } = useStageFieldM()
 
@@ -170,7 +174,7 @@ function StageSunLight() {
   }, [widthM, heightM])
 
   return (
-    <directionalLight ref={dirRef} castShadow position={[42, 68, 32]} intensity={1.12}>
+    <directionalLight ref={dirRef} castShadow={castShadowEnabled} position={[42, 68, 32]} intensity={1.12}>
       <orthographicCamera attach="shadow-camera" args={[-50, 50, 50, -50, 0.25, 280]} />
     </directionalLight>
   )
@@ -186,6 +190,10 @@ type StageView3DProps = {
   targets: readonly Target[]
   props: readonly Prop[]
   cameraMode: CameraMode3D
+  /** За замовчуванням увімкнено; вимкнення — плоскіший рендер для знімка PDF / друку. */
+  shadowsEnabled?: boolean
+  /** Чорно-білий прев’ю та той самий вигляд у PNG для PDF. */
+  grayscaleForPdf?: boolean
 }
 
 /** Зміщення камери відносно точки огляду (узгоджено з попередніми фіксованими координатами для центру поля). */
@@ -1761,9 +1769,12 @@ type R3fCanvasProps = ComponentProps<typeof Canvas>
  */
 function StageView3DCanvasSized({
   canvasProps,
+  measureClassName,
   children,
 }: {
   canvasProps: Omit<R3fCanvasProps, 'children'>
+  /** Додаткові класи на обгортку поруч із канвасом (напр. ЧБ-фільтр для прев’ю). */
+  measureClassName?: string
   children: ReactNode
 }) {
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -1788,7 +1799,10 @@ function StageView3DCanvasSized({
   }, [])
 
   return (
-    <div ref={wrapRef} className="app__r3f-canvas-measure">
+    <div
+      ref={wrapRef}
+      className={measureClassName ? `app__r3f-canvas-measure ${measureClassName}` : 'app__r3f-canvas-measure'}
+    >
       <Canvas
         {...canvasProps}
         style={{
@@ -1804,8 +1818,23 @@ function StageView3DCanvasSized({
   )
 }
 
+function snapshotToGrayscalePngDataUrl(sourceCanvas: HTMLCanvasElement, w: number, h: number): string | null {
+  try {
+    const c = document.createElement('canvas')
+    c.width = w
+    c.height = h
+    const ctx = c.getContext('2d')
+    if (!ctx) return null
+    ctx.filter = 'grayscale(100%)'
+    ctx.drawImage(sourceCanvas, 0, 0, w, h)
+    return c.toDataURL('image/png')
+  } catch {
+    return null
+  }
+}
+
 export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(function StageView3D(
-  { targets, props, cameraMode },
+  { targets, props, cameraMode, shadowsEnabled = true, grayscaleForPdf = false },
   ref,
 ) {
   const glRef = useRef<WebGLRenderer | null>(null)
@@ -1823,55 +1852,71 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
     gl.shadowMap.type = THREE.PCFSoftShadowMap
   }, [])
 
+  useEffect(() => {
+    const gl = glRef.current
+    if (gl) gl.shadowMap.enabled = shadowsEnabled
+  }, [shadowsEnabled])
+
   const canvasProps: Omit<R3fCanvasProps, 'children'> = useMemo(
     () => ({
       className: 'stage-canvas-3d app__r3f-canvas-wrap',
-      shadows: true,
+      shadows: shadowsEnabled,
       camera: { position: [11, 14.5, 18], fov: 48, near: 0.15, far: 240 },
       gl: { preserveDrawingBuffer: true, antialias: true, alpha: false },
       dpr: [1, 1.75] as [number, number],
       onCreated: onGlCreated,
     }),
-    [onGlCreated],
+    [onGlCreated, shadowsEnabled],
   )
 
-  useImperativeHandle(ref, () => ({
-    capturePngDataUrl: () => {
-      const gl = glRef.current
-      const scene = sceneRef.current
-      const camera = cameraRef.current
-      if (!gl?.domElement || !scene || !camera) return null
-      const { x: fw, y: fh } = useStageStore.getState().fieldSizeM
-      const { width: w, height: h } = pdfSnapshotPixelSize(fw, fh, 2)
-      const prevW = gl.domElement.width
-      const prevH = gl.domElement.height
-      const prevPR = gl.getPixelRatio()
-      const prevAspect = camera.aspect
-      try {
-        /** Лише розмір буфера й aspect під PNG; FOV не змінюємо — інакше кадр у PDF не збігається з тим, що на екрані. */
-        camera.aspect = w / h
-        camera.updateProjectionMatrix()
-        gl.setPixelRatio(1)
-        gl.setSize(w, h, false)
-        gl.render(scene, camera)
-        return gl.domElement.toDataURL('image/png')
-      } catch {
-        return null
-      } finally {
-        camera.aspect = prevAspect
-        camera.updateProjectionMatrix()
-        gl.setPixelRatio(prevPR)
-        gl.setSize(prevW, prevH, false)
-      }
-    },
-  }))
+  useImperativeHandle(
+    ref,
+    () => ({
+      capturePngDataUrl: () => {
+        const gl = glRef.current
+        const scene = sceneRef.current
+        const camera = cameraRef.current
+        if (!gl?.domElement || !scene || !camera) return null
+        const { x: fw, y: fh } = useStageStore.getState().fieldSizeM
+        const { width: w, height: h } = pdfSnapshotPixelSize(fw, fh, PDF_SNAPSHOT_EXPORT_SCALE)
+        const prevW = gl.domElement.width
+        const prevH = gl.domElement.height
+        const prevPR = gl.getPixelRatio()
+        const prevAspect = camera.aspect
+        try {
+          /** Лише розмір буфера й aspect під PNG; FOV не змінюємо — інакше кадр у PDF не збігається з тим, що на екрані. */
+          camera.aspect = w / h
+          camera.updateProjectionMatrix()
+          gl.setPixelRatio(1)
+          gl.setSize(w, h, false)
+          gl.render(scene, camera)
+          let dataUrl = gl.domElement.toDataURL('image/png')
+          if (grayscaleForPdf) {
+            const gray = snapshotToGrayscalePngDataUrl(gl.domElement, w, h)
+            if (gray) dataUrl = gray
+          }
+          return dataUrl
+        } catch {
+          return null
+        } finally {
+          camera.aspect = prevAspect
+          camera.updateProjectionMatrix()
+          gl.setPixelRatio(prevPR)
+          gl.setSize(prevW, prevH, false)
+        }
+      },
+    }),
+    [grayscaleForPdf],
+  )
+
+  const measureExtraClass = grayscaleForPdf ? 'app__r3f-canvas-measure--grayscale' : undefined
 
   return (
     <StageView3DCanvasShell cameraMode={cameraMode} pdfAspect={pdfAspect}>
-      <StageView3DCanvasSized canvasProps={canvasProps}>
+      <StageView3DCanvasSized canvasProps={canvasProps} measureClassName={measureExtraClass}>
         <StageNavigator mode={cameraMode} />
-        <ambientLight intensity={0.52} />
-        <StageSunLight />
+        <ambientLight intensity={shadowsEnabled ? 0.52 : 0.68} />
+        <StageSunLight castShadowEnabled={shadowsEnabled} />
         <Ground />
         <PerimeterWoodWall />
         <PenaltyZonesFaultLines3D />

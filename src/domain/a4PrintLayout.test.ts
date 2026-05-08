@@ -4,6 +4,7 @@ import {
   mmToCssPx96,
   pdfSnapshotPixelSize,
   PDF_CONTENT_INNER_WIDTH_PX,
+  PDF_SNAPSHOT_EXPORT_SCALE,
   stagePlanAspectRatio,
   stageViewportAspectRatio,
 } from './a4PrintLayout'
@@ -41,5 +42,11 @@ describe('pdfSnapshotPixelSize', () => {
     const b = pdfSnapshotPixelSize(50, 30, 1)
     expect(a.width).toBe(b.width)
     expect(a.height).not.toBe(b.height)
+  })
+
+  it('PDF_SNAPSHOT_EXPORT_SCALE drives briefing PNG width', () => {
+    expect(PDF_SNAPSHOT_EXPORT_SCALE).toBeGreaterThanOrEqual(2)
+    const { width } = pdfSnapshotPixelSize(30, 40, PDF_SNAPSHOT_EXPORT_SCALE)
+    expect(width).toBe(Math.round(PDF_CONTENT_INNER_WIDTH_PX * PDF_SNAPSHOT_EXPORT_SCALE))
   })
 })

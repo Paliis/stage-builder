@@ -34,6 +34,12 @@ export function stageViewportAspectRatio(fieldWidthM: number, fieldHeightM: numb
   return fieldWidthM / (fieldHeightM / STAGE_CARD_UI_DEPTH_FACTOR)
 }
 
+/**
+ * Масштаб рендеру PNG для PDF (ширина ≈ колонка контенту × цей коефіцієнт).
+ * Трохи вище «екранних» 2× — краща читабельність на друку без різкого стрибка розміру файлу.
+ */
+export const PDF_SNAPSHOT_EXPORT_SCALE = 2.25
+
 /** Розміри буфера для PNG у брифінг (ширина колонки PDF × exportScale; висота з поточного поля). */
 export function pdfSnapshotPixelSize(
   fieldWidthM: number,
