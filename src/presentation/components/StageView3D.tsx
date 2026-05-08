@@ -18,8 +18,8 @@ import { PerspectiveCamera, type Scene, type WebGLRenderer } from 'three'
 import { useStageStore } from '../../application/stageStore'
 import {
   PDF_SNAPSHOT_EXPORT_SCALE,
+  briefingPdfSnapshotAspectRatio,
   pdfSnapshotPixelSize,
-  stageViewportAspectRatio,
 } from '../../domain/a4PrintLayout'
 import type { OrbitControls as OrbitControlsType } from 'three-stdlib'
 import {
@@ -1841,7 +1841,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
   const sceneRef = useRef<Scene | null>(null)
   const cameraRef = useRef<PerspectiveCamera | null>(null)
   const { widthM, heightM } = useStageFieldM()
-  const pdfAspect = stageViewportAspectRatio(widthM, heightM)
+  const pdfAspect = briefingPdfSnapshotAspectRatio(widthM, heightM)
 
   const onGlCreated = useCallback((state: RootState) => {
     const { gl, scene, camera } = state

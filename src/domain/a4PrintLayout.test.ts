@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { STAGE_CARD_UI_DEPTH_FACTOR } from './field'
 import {
+  briefingPdfSnapshotAspectRatio,
   mmToCssPx96,
   pdfSnapshotPixelSize,
+  PDF_BRIEFING_SNAPSHOT_MIN_ASPECT,
   PDF_CONTENT_INNER_WIDTH_PX,
   PDF_SNAPSHOT_EXPORT_SCALE,
   stagePlanAspectRatio,
@@ -29,11 +31,24 @@ describe('stageViewportAspectRatio', () => {
   })
 })
 
+describe('briefingPdfSnapshotAspectRatio', () => {
+  it('raises narrow viewport aspect to PDF briefing minimum', () => {
+    expect(stageViewportAspectRatio(30, 40)).toBeLessThan(PDF_BRIEFING_SNAPSHOT_MIN_ASPECT)
+    expect(briefingPdfSnapshotAspectRatio(30, 40)).toBe(PDF_BRIEFING_SNAPSHOT_MIN_ASPECT)
+  })
+
+  it('keeps wide-field viewport aspect unchanged', () => {
+    const a = stageViewportAspectRatio(50, 30)
+    expect(a).toBeGreaterThan(PDF_BRIEFING_SNAPSHOT_MIN_ASPECT)
+    expect(briefingPdfSnapshotAspectRatio(50, 30)).toBeCloseTo(a)
+  })
+})
+
 describe('pdfSnapshotPixelSize', () => {
-  it('keeps width from PDF column and derives height from viewport aspect', () => {
+  it('keeps width from PDF column and derives height from briefing PDF aspect', () => {
     const { width, height } = pdfSnapshotPixelSize(30, 40, 2)
     expect(width).toBe(Math.round(PDF_CONTENT_INNER_WIDTH_PX * 2))
-    const aspect = stageViewportAspectRatio(30, 40)
+    const aspect = briefingPdfSnapshotAspectRatio(30, 40)
     expect(height).toBe(Math.round(width / aspect))
   })
 

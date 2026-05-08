@@ -27,11 +27,23 @@ export function stagePlanAspectRatio(fieldWidthM: number, fieldHeightM: number):
 }
 
 /**
- * Співвідношення width/height для PNG 3D у PDF — узгоджено з карткою перегляду в UI
- * (див. STAGE_CARD_UI_DEPTH_FACTOR), без надмірно «високого портрета» з половиною неба.
+ * Співвідношення width/height viewport карти в UI (див. STAGE_CARD_UI_DEPTH_FACTOR),
+ * без надмірно «високого портрета» з половиною неба. Для PNG у брифінговому PDF використовуй
+ * {@link briefingPdfSnapshotAspectRatio}.
  */
 export function stageViewportAspectRatio(fieldWidthM: number, fieldHeightM: number): number {
   return fieldWidthM / (fieldHeightM / STAGE_CARD_UI_DEPTH_FACTOR)
+}
+
+/**
+ * Нижня межа width/height для PNG у брифінговому PDF: ширший за «вузький портрет» карти,
+ * щоб кадр був горизонтальнішим і краще заповнював колонку A4 (узгоджено з режимом камери «як у PDF»).
+ */
+export const PDF_BRIEFING_SNAPSHOT_MIN_ASPECT = 1.45
+
+/** Aspect для знімка в PDF: не вужче за {@link PDF_BRIEFING_SNAPSHOT_MIN_ASPECT}; для широких полів — як viewport карти. */
+export function briefingPdfSnapshotAspectRatio(fieldWidthM: number, fieldHeightM: number): number {
+  return Math.max(stageViewportAspectRatio(fieldWidthM, fieldHeightM), PDF_BRIEFING_SNAPSHOT_MIN_ASPECT)
 }
 
 /**
@@ -47,7 +59,7 @@ export function pdfSnapshotPixelSize(
   exportScale = 2,
 ): { width: number; height: number } {
   const width = Math.round(PDF_CONTENT_INNER_WIDTH_PX * exportScale)
-  const vAspect = stageViewportAspectRatio(fieldWidthM, fieldHeightM)
+  const vAspect = briefingPdfSnapshotAspectRatio(fieldWidthM, fieldHeightM)
   const height = Math.round(width / vAspect)
   return { width, height }
 }
