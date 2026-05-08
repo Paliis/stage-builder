@@ -1,7 +1,13 @@
 import type { StageBriefing } from '../../domain/stageBriefing'
 
-/** Висота рядку логотипів у PDF (мм); ширина пропорційна зображенню. */
+/** Висота рядку логотипів у PDF (мм); базова висота для IPSC і нижня межа для ФПСУ. */
 export const PDF_BRIEFING_LOGO_ROW_MM = 22
+
+/**
+ * ФПСУ в растрі має більше прозорого поля навколо кола, ніж IPSC у щиті — без підсилення знак виглядає дрібнішим при однаковій висоті bbox.
+ * Множник застосовується лише до `hMm`/`wMm` ФПСУ у PDF.
+ */
+const FPSU_LOGO_HEIGHT_FACTOR = 1.38
 
 export type BriefingPdfLogoPrepared = {
   dataUrl: string
@@ -64,7 +70,7 @@ async function rasterizeLogoFromUrl(
 
 /**
  * Растр лого з `public/briefing-logos/` — спочатку `.png`, інакше `.svg`.
- * ФПСУ (широкий UA+LAT): ліва половина з горизонтальним inset і сильний зріз низу («UA ВЕРСІЯ»). ФПСУ та IPSC — однакова висота в мм (`PDF_BRIEFING_LOGO_ROW_MM`).
+ * ФПСУ (широкий UA+LAT): ліва половина з горизонтальним inset і зріз низу. Висота на друку для ФПСУ може бути вищою за базову — див. `FPSU_LOGO_HEIGHT_FACTOR` у `prepareBriefingPdfLogos`.
  */
 export async function loadBriefingLogoRaster(which: 'fpsu' | 'ipsc'): Promise<{ dataUrl: string; aspect: number } | null> {
   const rawBase = import.meta.env.BASE_URL || '/'
@@ -88,11 +94,14 @@ export async function prepareBriefingPdfLogos(briefing: StageBriefing): Promise<
     if (r) rasters.push({ ...r, kind: 'ipsc' })
   }
 
-  const targetHMm = PDF_BRIEFING_LOGO_ROW_MM
-  return rasters.map((r) => ({
-    dataUrl: r.dataUrl,
-    hMm: targetHMm,
-    wMm: targetHMm * r.aspect,
-    kind: r.kind,
-  }))
+  const baseHm = PDF_BRIEFING_LOGO_ROW_MM
+  return rasters.map((r) => {
+    const hMm = r.kind === 'fpsu' ? baseHm * FPSU_LOGO_HEIGHT_FACTOR : baseHm
+    return {
+      dataUrl: r.dataUrl,
+      hMm,
+      wMm: hMm * r.aspect,
+      kind: r.kind,
+    }
+  })
 }
