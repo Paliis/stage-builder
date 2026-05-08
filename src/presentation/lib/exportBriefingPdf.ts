@@ -43,8 +43,8 @@ async function generateQrDataUrl(url: string): Promise<string> {
   })
 }
 
-const TABLE_FONT_SIZE = 9
-const TABLE_CELL_PADDING = { top: 2.2, right: 4, bottom: 2.2, left: 4 }
+const TABLE_FONT_SIZE = 10
+const TABLE_CELL_PADDING = { top: 2.8, right: 4.5, bottom: 2.8, left: 4.5 }
 /** Мінімальний зазор під заголовком перед знімком. */
 const GAP_TITLE_IMAGE = 3
 /** Після знімка: бренд-текст (під картинкою), потім зазор перед таблицею. */
@@ -230,12 +230,12 @@ function buildTableOpts(
     },
     columnStyles: {
       0: {
-        cellWidth: contentW * 0.34,
+        cellWidth: contentW * 0.31,
         fontStyle: 'bold',
         fillColor: [249, 250, 251],
       },
       1: {
-        cellWidth: contentW * 0.66,
+        cellWidth: contentW * 0.69,
       },
     },
   }
