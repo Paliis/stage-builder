@@ -1700,42 +1700,46 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         </div>
 
         <div className="app__briefing-grid">
-          <label className="app__field">
-            {tree.briefing.matchName}
-            <input
-              readOnly={readOnly}
-              value={briefing.matchName}
-              onChange={(e) => setBriefing({ matchName: e.target.value })}
-            />
-          </label>
-          <label className="app__field">
-            {tree.briefing.documentTitle}
-            <input
-              readOnly={readOnly}
-              value={briefing.documentTitle}
-              onChange={(e) => setBriefing({ documentTitle: e.target.value })}
-            />
-          </label>
-          <label className="app__field">
-            {tree.briefing.exerciseType}
-            <select
-              disabled={readOnly}
-              value={briefing.exerciseType}
-              onChange={(e) => setBriefing({ exerciseType: e.target.value as StageCategory })}
-            >
-              <option value="short">{t('briefing.category.short')}</option>
-              <option value="medium">{t('briefing.category.medium')}</option>
-              <option value="long">{t('briefing.category.long')}</option>
-            </select>
-          </label>
-          <label className="app__field">
-            {tree.briefing.recommendedShots}
-            <input
-              readOnly={readOnly}
-              value={briefing.recommendedShots}
-              onChange={(e) => setBriefing({ recommendedShots: e.target.value })}
-            />
-          </label>
+          <div className="app__briefing-grid-row app__briefing-grid-row--titles">
+            <label className="app__field">
+              {tree.briefing.matchName}
+              <input
+                readOnly={readOnly}
+                value={briefing.matchName}
+                onChange={(e) => setBriefing({ matchName: e.target.value })}
+              />
+            </label>
+            <label className="app__field">
+              {tree.briefing.documentTitle}
+              <input
+                readOnly={readOnly}
+                value={briefing.documentTitle}
+                onChange={(e) => setBriefing({ documentTitle: e.target.value })}
+              />
+            </label>
+          </div>
+          <div className="app__briefing-grid-row app__briefing-grid-row--type-shots" aria-label={tree.briefing.typeShotsRowAria}>
+            <label className="app__field app__field--briefing-slot">
+              {tree.briefing.exerciseType}
+              <select
+                disabled={readOnly}
+                value={briefing.exerciseType}
+                onChange={(e) => setBriefing({ exerciseType: e.target.value as StageCategory })}
+              >
+                <option value="short">{t('briefing.category.short')}</option>
+                <option value="medium">{t('briefing.category.medium')}</option>
+                <option value="long">{t('briefing.category.long')}</option>
+              </select>
+            </label>
+            <label className="app__field app__field--briefing-slot">
+              {tree.briefing.recommendedShots}
+              <input
+                readOnly={readOnly}
+                value={briefing.recommendedShots}
+                onChange={(e) => setBriefing({ recommendedShots: e.target.value })}
+              />
+            </label>
+          </div>
           <label className="app__field app__field--wide">
             {tree.briefing.targetsText}
             <textarea
