@@ -14,9 +14,9 @@ export type BriefingPdfLogoPrepared = {
 const FPSU_DUAL_SHEET_ASPECT_THRESHOLD = 1.2
 /**
  * Частина **повної** висоти аркуша, що відрізається знизу після вибору лівої половини
- * (ряд «UA ВЕРСІЯ» / декоративний низ часто вищий за 17 %).
+ * (підпис під колом / службовий рядок). Занадто велике значення обрізає літери на колі емблеми.
  */
-const FPSU_DUAL_CAPTION_BOTTOM_TRIM_RATIO = 0.36
+const FPSU_DUAL_CAPTION_BOTTOM_TRIM_RATIO = 0.17
 /** Усередині лівої половини прибираємо горизонтальні поля, щоб коло ФПСУ займало більшу частину ширини в PDF. */
 const FPSU_DUAL_HORIZONTAL_INSET_RATIO = 0.1
 
