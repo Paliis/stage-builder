@@ -3,8 +3,10 @@ import type { StageBriefing } from '../../domain/stageBriefing'
 /** Висота рядку логотипів у PDF (мм); ширина пропорційна зображенню. */
 export const PDF_BRIEFING_LOGO_ROW_MM = 14
 
-/** Якщо ширина ≥ висоти × поріг — вважаємо аркушем «дві версії» і беремо ліву половину (UA для ФПСУ). */
+/** Якщо ширина ≥ висоти × поріг — аркуш «UA+LAT»: беремо ліву половину (україномовна емблема). */
 const FPSU_DUAL_SHEET_ASPECT_THRESHOLD = 1.2
+/** Частина висоти зображення знизу (підпис «UA ВЕРСІЯ» тощо), що відкидається після обрізки лівої половини. */
+const FPSU_DUAL_CAPTION_BOTTOM_TRIM_RATIO = 0.17
 
 async function rasterizeLogoFromUrl(
   url: string,
@@ -24,8 +26,13 @@ async function rasterizeLogoFromUrl(
     let sy = 0
     let sw = iw
     let sh = ih
-    if (which === 'fpsu' && iw / ih >= FPSU_DUAL_SHEET_ASPECT_THRESHOLD) {
+    const fpsuDualSheet = which === 'fpsu' && iw / ih >= FPSU_DUAL_SHEET_ASPECT_THRESHOLD
+    if (fpsuDualSheet) {
       sw = Math.floor(iw / 2)
+    }
+    if (which === 'fpsu' && fpsuDualSheet) {
+      const trimBottom = Math.floor(sh * FPSU_DUAL_CAPTION_BOTTOM_TRIM_RATIO)
+      sh = Math.max(1, sh - trimBottom)
     }
     const canvas = document.createElement('canvas')
     canvas.width = sw
@@ -41,7 +48,7 @@ async function rasterizeLogoFromUrl(
 
 /**
  * Растр лого з `public/briefing-logos/` — спочатку `.png`, інакше `.svg`.
- * ФПСУ: якщо файл широкий (UA+LAT на одному аркуші), для PDF береться ліва половина (україномовна версія).
+ * ФПСУ: широкий файл UA+LAT — ліва половина + обрізка низу з підписом «UA ВЕРСІЯ». ФПСУ та IPSC у PDF мають однакову висоту (`PDF_BRIEFING_LOGO_ROW_MM` мм).
  */
 export async function loadBriefingLogoRaster(which: 'fpsu' | 'ipsc'): Promise<{ dataUrl: string; aspect: number } | null> {
   const rawBase = import.meta.env.BASE_URL || '/'
@@ -57,26 +64,20 @@ export async function loadBriefingLogoRaster(which: 'fpsu' | 'ipsc'): Promise<{ 
 export async function prepareBriefingPdfLogos(
   briefing: StageBriefing,
 ): Promise<Array<{ dataUrl: string; wMm: number; hMm: number }>> {
-  const out: Array<{ dataUrl: string; wMm: number; hMm: number }> = []
+  const rasters: Array<{ dataUrl: string; aspect: number }> = []
   if (briefing.pdfLogoFpsu) {
     const r = await loadBriefingLogoRaster('fpsu')
-    if (r) {
-      out.push({
-        dataUrl: r.dataUrl,
-        wMm: PDF_BRIEFING_LOGO_ROW_MM * r.aspect,
-        hMm: PDF_BRIEFING_LOGO_ROW_MM,
-      })
-    }
+    if (r) rasters.push(r)
   }
   if (briefing.pdfLogoIpsc) {
     const r = await loadBriefingLogoRaster('ipsc')
-    if (r) {
-      out.push({
-        dataUrl: r.dataUrl,
-        wMm: PDF_BRIEFING_LOGO_ROW_MM * r.aspect,
-        hMm: PDF_BRIEFING_LOGO_ROW_MM,
-      })
-    }
+    if (r) rasters.push(r)
   }
-  return out
+
+  const targetHMm = PDF_BRIEFING_LOGO_ROW_MM
+  return rasters.map((r) => ({
+    dataUrl: r.dataUrl,
+    hMm: targetHMm,
+    wMm: targetHMm * r.aspect,
+  }))
 }
