@@ -42,6 +42,9 @@ type RosterRpcRow = {
   registration_created_at?: string | null
 }
 
+/** Поля, які достатні для відображення імені (таблиця й дошка скводів). */
+type RosterDisplayNameFields = Pick<RosterRpcRow, 'display_name' | 'competitor_user_id'>
+
 type SquadPick = {
   id: string
   label: string
@@ -676,7 +679,7 @@ export function OrganizerMatchRegistrationsPage() {
   )
 }
 
-function displayName(reg: RosterRpcRow): string {
+function displayName(reg: RosterDisplayNameFields): string {
   const n = (reg.display_name ?? '').trim()
   if (n) return n
   return `${reg.competitor_user_id.slice(0, 8)}…`
