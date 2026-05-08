@@ -4,10 +4,6 @@ import type { Locale, MessageTree } from '../../i18n/messages'
 import '../PortalMatchesUi.css'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import { portalMatchRegCardCueClass, portalMatchRegLabelClass } from './matchPortalRegStatusUi'
-import {
-  participantPaymentOptionLabel,
-  parseParticipantPaymentOption,
-} from './matchPortalParticipantPayment'
 
 type Portal = MessageTree['portal']
 
@@ -24,7 +20,6 @@ export type OrganizerRosterReg = {
   division: string
   phone: string
   competitor_region: string
-  participant_payment_option: string
   registration_created_at?: string | null
 }
 
@@ -204,37 +199,25 @@ export function OrganizerMatchRosterBoard({
                         <div className="portal-roster-board-card__division" title={divLine}>
                           {divLine}
                         </div>
-                        <div
-                          className="portal-roster-board-card__extra"
-                          title={
-                            [
-                              reg.phone?.trim(),
-                              participantPaymentOptionLabel(
-                                p,
-                                parseParticipantPaymentOption(reg.participant_payment_option),
-                              ),
-                              reg.competitor_region?.trim(),
-                            ]
-                              .filter(Boolean)
-                              .join(' · ') || undefined
-                          }
-                        >
-                          {(reg.phone ?? '').trim() ?
-                            <span className="portal-roster-board-card__phone">{reg.phone.trim()}</span>
-                          : null}
-                          <span className="portal-roster-board-card__meta">
-                            {participantPaymentOptionLabel(
-                              p,
-                              parseParticipantPaymentOption(reg.participant_payment_option),
-                            )}
-                            {(reg.competitor_region ?? '').trim() ?
-                              <>
-                                {' · '}
-                                {reg.competitor_region.trim()}
-                              </>
+                        {(reg.phone ?? '').trim() || (reg.competitor_region ?? '').trim() ?
+                          <div
+                            className="portal-roster-board-card__extra"
+                            title={
+                              [reg.phone?.trim(), reg.competitor_region?.trim()].filter(Boolean).join(' · ') ||
+                              undefined
+                            }
+                          >
+                            {(reg.phone ?? '').trim() ?
+                              <span className="portal-roster-board-card__phone">{reg.phone.trim()}</span>
                             : null}
-                          </span>
-                        </div>
+                            {(reg.competitor_region ?? '').trim() ?
+                              <span className="portal-roster-board-card__meta">
+                                {(reg.phone ?? '').trim() ? ' · ' : null}
+                                {reg.competitor_region.trim()}
+                              </span>
+                            : null}
+                          </div>
+                        : null}
                       </div>
                       {tone ? null : (
                         <div className="portal-roster-board-card__other-status">
