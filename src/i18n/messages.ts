@@ -272,6 +272,8 @@ export type MessageTree = {
   }
   common: {
     exportFail: string
+    /** Після деплою: сторінка вже без актуального chunk для динамічного import(PDF). */
+    exportPdfStaleChunkHint: string
     langSwitcher: string
     langUk: string
     langEn: string
@@ -1344,6 +1346,8 @@ export const ukMessages: MessageTree = {
   },
   common: {
     exportFail: '\u041d\u0435 \u0432\u0434\u0430\u043b\u043e\u0441\u044f \u0437\u0456\u0431\u0440\u0430\u0442\u0438 PDF',
+    exportPdfStaleChunkHint:
+      '\u0421\u0430\u0439\u0442 \u0449\u043e\u0439\u043d\u043e \u043e\u043d\u043e\u0432\u0438\u043b\u0438, \u0430 \u0432\u043a\u043b\u0430\u0434\u043a\u0430 \u043c\u0430\u0454 \u0441\u0442\u0430\u0440\u0438\u0439 \u043a\u043e\u0434. \u0417\u0440\u043e\u0431\u0456\u0442\u044c \u043f\u043e\u0432\u043d\u0435 \u043f\u0435\u0440\u0435\u0437\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f (Ctrl+Shift+R \u0430\u0431\u043e Ctrl+F5). \u042f\u043a\u0449\u043e \u0454 \u0431\u0430\u043d\u0435\u0440 \u043e\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044f \u0434\u043e\u0434\u0430\u0442\u043a\u0443 — \u043d\u0430\u0442\u0438\u0441\u043d\u0456\u0442\u044c \u00ab\u041e\u043d\u043e\u0432\u0438\u0442\u0438\u00bb.',
     langSwitcher: '\u041c\u043e\u0432\u0430',
     langUk: '\u0423\u041a',
     langEn: 'EN',
@@ -2410,6 +2414,8 @@ export const enMessages: MessageTree = {
   },
   common: {
     exportFail: 'Could not build PDF',
+    exportPdfStaleChunkHint:
+      'The site was updated but this tab still has an old bundle. Hard refresh (Ctrl+Shift+R or Ctrl+F5). If you see a PWA update banner, tap Update.',
     langSwitcher: 'Language',
     langUk: 'UK',
     langEn: 'EN',

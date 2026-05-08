@@ -81,6 +81,16 @@ function parseFieldSizeInputMeters(raw: string): number | null {
   return Number.isFinite(v) ? v : null
 }
 
+/** Після деплою chunk із гешем може зникнути з CDN — вкладка зі старим entry все ще посилається на нього. */
+function isStaleBundledChunkError(e: unknown): boolean {
+  const msg = e instanceof Error ? e.message : String(e)
+  return (
+    /Failed to fetch dynamically imported module/i.test(msg) ||
+    /error loading dynamically imported module/i.test(msg) ||
+    /Importing a module script failed/i.test(msg)
+  )
+}
+
 export type AppProps = {
   /** Opened via `/v/:shareId` — scene and briefing are read-only. */
   shareReadOnly?: boolean
@@ -792,7 +802,13 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       })
     } catch (e) {
       console.error(e)
-      window.alert(e instanceof Error ? e.message : tree.common.exportFail)
+      window.alert(
+        isStaleBundledChunkError(e)
+          ? tree.common.exportPdfStaleChunkHint
+          : e instanceof Error
+            ? e.message
+            : tree.common.exportFail,
+      )
     } finally {
       setPdfBusy(false)
     }
