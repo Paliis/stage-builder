@@ -64,7 +64,8 @@ const SNAPSHOT_FRAME_RADIUS_MM = 0.9
 
 /** Зазор між двома логотипами у заголовку PDF (мм). */
 const HEADER_LOGO_GAP_MM = 5
-const GAP_UNDER_HEADER_LOGOS_MM = 4
+/** Зазор між блоком логотипів і центральним текстом (мм). */
+const GAP_LOGO_TO_CENTER_TEXT_MM = 4
 const MATCH_TITLE_FONT_PT = 11
 const LINE_MM_MATCH = 5
 const GAP_AFTER_MATCH_MM = 2
@@ -72,78 +73,95 @@ const DOC_TITLE_FONT_PT = 13
 const LINE_MM_DOC_TITLE = 6
 const TITLE_TAIL_PAD_MM = 2
 
+function computeLogoStripWidthMm(logos: Array<{ wMm: number }>): number {
+  if (logos.length === 0) return 0
+  const gap = HEADER_LOGO_GAP_MM
+  return logos.reduce((sum, L) => sum + L.wMm, 0) + gap * (logos.length - 1)
+}
+
 function measureBriefingPdfHeaderBottomMm(
   doc: InstanceType<typeof jsPDF>,
   briefing: StageBriefing,
-  logoCount: number,
-  headerTextMaxW: number,
+  logos: Array<{ dataUrl: string; wMm: number; hMm: number }>,
+  headerRightEdge: number,
   margin: number,
 ): number {
-  let y = margin
-  if (logoCount > 0) {
-    y += PDF_BRIEFING_LOGO_ROW_MM + GAP_UNDER_HEADER_LOGOS_MM
-  }
+  const stripW = computeLogoStripWidthMm(logos)
+  const centerLeft = margin + stripW + (stripW > 0 ? GAP_LOGO_TO_CENTER_TEXT_MM : 0)
+  const centerTextMaxW = Math.max(16, headerRightEdge - centerLeft)
+
+  const logoBottom = logos.length > 0 ? margin + PDF_BRIEFING_LOGO_ROW_MM : margin
+
   const matchTrim = briefing.matchName.trim()
+  let titleFirstBaseline: number
   if (matchTrim) {
     doc.setFont(PDF_FONT_FAMILY, 'bold')
     doc.setFontSize(MATCH_TITLE_FONT_PT)
-    const lines = doc.splitTextToSize(matchTrim, headerTextMaxW) as string[]
-    y += 4 + lines.length * LINE_MM_MATCH + GAP_AFTER_MATCH_MM
+    const ml = doc.splitTextToSize(matchTrim, centerTextMaxW) as string[]
+    titleFirstBaseline = margin + 4 + ml.length * LINE_MM_MATCH + GAP_AFTER_MATCH_MM
+  } else {
+    titleFirstBaseline = margin + 5
   }
   doc.setFont(PDF_FONT_FAMILY, 'bold')
   doc.setFontSize(DOC_TITLE_FONT_PT)
-  const titleLines = doc.splitTextToSize(briefing.documentTitle, headerTextMaxW) as string[]
-  y += 5 + titleLines.length * LINE_MM_DOC_TITLE + TITLE_TAIL_PAD_MM
+  const titleLines = doc.splitTextToSize(briefing.documentTitle, centerTextMaxW) as string[]
+  const lastTitleBaseline =
+    titleLines.length === 0
+      ? titleFirstBaseline
+      : titleFirstBaseline + (titleLines.length - 1) * LINE_MM_DOC_TITLE
+  const textExtentBottom = lastTitleBaseline + 4
+
   doc.setFont(PDF_FONT_FAMILY, 'normal')
   doc.setFontSize(10)
   doc.setTextColor(0, 0, 0)
-  return y
+
+  return Math.max(logoBottom, textExtentBottom) + TITLE_TAIL_PAD_MM
 }
 
 function drawBriefingPdfHeader(
   doc: InstanceType<typeof jsPDF>,
   briefing: StageBriefing,
   logos: Array<{ dataUrl: string; wMm: number; hMm: number }>,
-  headerTextMaxW: number,
-  pageW: number,
-  margin: number,
   headerRightEdge: number,
+  margin: number,
 ): void {
-  let y = margin
+  const stripW = computeLogoStripWidthMm(logos)
+  const centerLeft = margin + stripW + (stripW > 0 ? GAP_LOGO_TO_CENTER_TEXT_MM : 0)
+  const centerCx = (centerLeft + headerRightEdge) / 2
+  const centerMaxW = Math.max(16, headerRightEdge - centerLeft)
+
   if (logos.length > 0) {
-    const cx = (margin + headerRightEdge) / 2
-    const gap = HEADER_LOGO_GAP_MM
-    const totalW = logos.reduce((sum, L) => sum + L.wMm, 0) + gap * (logos.length - 1)
-    let x = cx - totalW / 2
+    let x = margin
     const logoTop = margin
     for (const L of logos) {
       doc.addImage(L.dataUrl, 'PNG', x, logoTop, L.wMm, L.hMm)
-      x += L.wMm + gap
+      x += L.wMm + HEADER_LOGO_GAP_MM
     }
-    y += PDF_BRIEFING_LOGO_ROW_MM + GAP_UNDER_HEADER_LOGOS_MM
   }
 
   const matchTrim = briefing.matchName.trim()
+  let baseline: number
   if (matchTrim) {
     doc.setFont(PDF_FONT_FAMILY, 'bold')
     doc.setFontSize(MATCH_TITLE_FONT_PT)
     doc.setTextColor(17, 24, 39)
-    const lines = doc.splitTextToSize(matchTrim, headerTextMaxW) as string[]
-    let baseline = y + 4
+    const lines = doc.splitTextToSize(matchTrim, centerMaxW) as string[]
+    baseline = margin + 4
     for (const line of lines) {
-      doc.text(line, pageW / 2, baseline, { align: 'center' })
+      doc.text(line, centerCx, baseline, { align: 'center' })
       baseline += LINE_MM_MATCH
     }
-    y = baseline + GAP_AFTER_MATCH_MM
+    baseline += GAP_AFTER_MATCH_MM
+  } else {
+    baseline = margin + 5
   }
 
   doc.setFont(PDF_FONT_FAMILY, 'bold')
   doc.setFontSize(DOC_TITLE_FONT_PT)
   doc.setTextColor(17, 24, 39)
-  const titleLines = doc.splitTextToSize(briefing.documentTitle, headerTextMaxW) as string[]
-  let baseline = y + 5
+  const titleLines = doc.splitTextToSize(briefing.documentTitle, centerMaxW) as string[]
   for (const line of titleLines) {
-    doc.text(line, pageW / 2, baseline, { align: 'center' })
+    doc.text(line, centerCx, baseline, { align: 'center' })
     baseline += LINE_MM_DOC_TITLE
   }
   doc.setFont(PDF_FONT_FAMILY, 'normal')
@@ -305,12 +323,12 @@ export async function exportBriefingPdf(opts: {
   const tableH = measureTableHeight(tableBody, margin, contentW, tableMarginBottomMm)
 
   const preparedLogos = await prepareBriefingPdfLogos(briefing)
-  const headerTextMaxW = contentW - (qrDataUrl ? QR_SIZE + QR_GAP_MM : 0)
+  const headerRightEdge = qrDataUrl ? pageW - margin - QR_SIZE - QR_GAP_MM : pageW - margin
   const headerBottomMm = measureBriefingPdfHeaderBottomMm(
     doc,
     briefing,
-    preparedLogos.length,
-    headerTextMaxW,
+    preparedLogos,
+    headerRightEdge,
     margin,
   )
 
@@ -324,8 +342,7 @@ export async function exportBriefingPdf(opts: {
   const maxImgH =
     pageH - margin - imageStartY - brandBelowImageH - tableH - GAP_TABLE_FOOTER
 
-  const headerRightEdge = qrDataUrl ? pageW - margin - QR_SIZE - QR_GAP_MM : pageW - margin
-  drawBriefingPdfHeader(doc, briefing, preparedLogos, headerTextMaxW, pageW, margin, headerRightEdge)
+  drawBriefingPdfHeader(doc, briefing, preparedLogos, headerRightEdge, margin)
 
   if (qrDataUrl) {
     drawPdfQrPageCorner(doc, qrDataUrl, pageW, margin)
