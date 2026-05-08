@@ -1,12 +1,17 @@
 import type { StageBriefing } from '../../domain/stageBriefing'
 
 /** Висота рядку логотипів у PDF (мм); ширина пропорційна зображенню. */
-export const PDF_BRIEFING_LOGO_ROW_MM = 14
+export const PDF_BRIEFING_LOGO_ROW_MM = 22
 
 /** Якщо ширина ≥ висоти × поріг — аркуш «UA+LAT»: беремо ліву половину (україномовна емблема). */
 const FPSU_DUAL_SHEET_ASPECT_THRESHOLD = 1.2
-/** Частина висоти зображення знизу (підпис «UA ВЕРСІЯ» тощо), що відкидається після обрізки лівої половини. */
-const FPSU_DUAL_CAPTION_BOTTOM_TRIM_RATIO = 0.17
+/**
+ * Частина **повної** висоти аркуша, що відрізається знизу після вибору лівої половини
+ * (ряд «UA ВЕРСІЯ» / декоративний низ часто вищий за 17 %).
+ */
+const FPSU_DUAL_CAPTION_BOTTOM_TRIM_RATIO = 0.36
+/** Усередині лівої половини прибираємо горизонтальні поля, щоб коло ФПСУ займало більшу частину ширини в PDF. */
+const FPSU_DUAL_HORIZONTAL_INSET_RATIO = 0.1
 
 async function rasterizeLogoFromUrl(
   url: string,
@@ -28,11 +33,15 @@ async function rasterizeLogoFromUrl(
     let sh = ih
     const fpsuDualSheet = which === 'fpsu' && iw / ih >= FPSU_DUAL_SHEET_ASPECT_THRESHOLD
     if (fpsuDualSheet) {
-      sw = Math.floor(iw / 2)
-    }
-    if (which === 'fpsu' && fpsuDualSheet) {
-      const trimBottom = Math.floor(sh * FPSU_DUAL_CAPTION_BOTTOM_TRIM_RATIO)
-      sh = Math.max(1, sh - trimBottom)
+      const halfW = Math.floor(iw / 2)
+      const inset = Math.min(
+        Math.floor(halfW * FPSU_DUAL_HORIZONTAL_INSET_RATIO),
+        Math.max(0, Math.floor(halfW / 2) - 4),
+      )
+      sx = inset
+      sw = Math.max(1, halfW - 2 * inset)
+      const trimBottom = Math.floor(ih * FPSU_DUAL_CAPTION_BOTTOM_TRIM_RATIO)
+      sh = Math.max(1, ih - trimBottom)
     }
     const canvas = document.createElement('canvas')
     canvas.width = sw
@@ -48,7 +57,7 @@ async function rasterizeLogoFromUrl(
 
 /**
  * Растр лого з `public/briefing-logos/` — спочатку `.png`, інакше `.svg`.
- * ФПСУ: широкий файл UA+LAT — ліва половина + обрізка низу з підписом «UA ВЕРСІЯ». ФПСУ та IPSC у PDF мають однакову висоту (`PDF_BRIEFING_LOGO_ROW_MM` мм).
+ * ФПСУ (широкий UA+LAT): ліва половина з горизонтальним inset і сильний зріз низу («UA ВЕРСІЯ»). ФПСУ та IPSC — однакова висота в мм (`PDF_BRIEFING_LOGO_ROW_MM`).
  */
 export async function loadBriefingLogoRaster(which: 'fpsu' | 'ipsc'): Promise<{ dataUrl: string; aspect: number } | null> {
   const rawBase = import.meta.env.BASE_URL || '/'

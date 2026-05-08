@@ -141,7 +141,7 @@
 
 ## PDF брифінгу
 
-- **`exportBriefingPdf.ts`** + **`pdfBriefingLogos.ts`** — заголовок PDF: лого зліва (`public/briefing-logos/fpsu.png`, `ipsc.png`; fallback `.svg`); для широкого аркуша ФПСУ UA+LAT — **ліва половина** й обрізка низу з підписом «UA ВЕРСІЯ»; **ФПСУ та IPSC однакової висоти** у мм; між лого й QR — назва матчу / заголовок документа; QR; таблиця; знімок; бренд. **`pdfFonts.ts`** — Roboto.
+- **`exportBriefingPdf.ts`** + **`pdfBriefingLogos.ts`** — заголовок PDF: лого зліва (`fpsu.png`, `ipsc.png`; fallback `.svg`); висота рядка лого — **`PDF_BRIEFING_LOGO_ROW_MM`** (~22 мм); широкий ФПСУ UA+LAT — ліва половина, горизонтальний inset і зріз низу («UA ВЕРСІЯ»); ФПСУ та IPSC однакової висоти в мм; між лого й QR — назва матчу / заголовок; QR; таблиця; знімок; бренд. **`pdfFonts.ts`** — Roboto.
 - **`a4PrintLayout.ts`** — розміри A4 в мм/px, співвідношення для знімка плану в UI (узгоджено з PDF).
 
 ## PWA та встановлення
