@@ -1568,8 +1568,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       <div className="app__view3d-render-tools" role="toolbar" aria-label={tree.view.view3dRenderToolsAria}>
                         <button
                           type="button"
-                          className={`app__view3d-render-tool${view3dShadowsOn ? ' app__view3d-render-tool--on' : ''}`}
-                          aria-pressed={view3dShadowsOn}
+                          className={`app__view3d-render-tool${!view3dShadowsOn ? ' app__view3d-render-tool--on' : ''}`}
+                          aria-pressed={!view3dShadowsOn}
                           onClick={() => setView3dShadowsOn((v) => !v)}
                           title={tree.view.view3dShadowsToggleTitle}
                         >

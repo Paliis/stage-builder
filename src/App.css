@@ -1415,24 +1415,26 @@
   min-height: 0;
 }
 
-/** Перемикачі «Тіні» / «ЧБ» для прев’ю та PNG у PDF (обирають лише події над кнопками). */
+/** Перемикачі «Без тіней» / «Чорно-біле» для прев’ю та PNG у PDF (події лише над кнопками). */
 .app__view3d-render-tools {
   position: absolute;
-  right: 0.4rem;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 0.35rem;
+  top: 0.35rem;
   z-index: 24;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 0.35rem;
+  max-width: calc(100% - 0.7rem);
   pointer-events: none;
 }
 
 .app__view3d-render-tool {
   pointer-events: auto;
   min-height: 2.05rem;
-  min-width: 2.75rem;
-  padding: 0.28rem 0.42rem;
+  min-width: 0;
+  padding: 0.28rem 0.5rem;
   border-radius: 8px;
   border: 1px solid rgba(51, 65, 85, 0.45);
   background: rgba(248, 250, 252, 0.94);
