@@ -328,6 +328,20 @@ function pointInPolygon(wx: number, wy: number, poly: Vec2[]): boolean {
   return inside
 }
 
+/** Мінімальна відстань від точки до сторін полігона (м² до порівняння з порогом). */
+function minDistPointToPolygonEdgesSq(px: number, py: number, poly: Vec2[]): number {
+  const n = poly.length
+  if (n < 2) return Infinity
+  let best = Infinity
+  for (let i = 0; i < n; i++) {
+    const a = poly[i]!
+    const b = poly[(i + 1) % n]!
+    const d = distancePointToSegmentSq(px, py, a.x, a.y, b.x, b.y)
+    if (d < best) best = d
+  }
+  return best
+}
+
 function pickTargetAt(
   targets: readonly Target[],
   wx: number,
@@ -335,14 +349,14 @@ function pickTargetAt(
   touchPadM: number,
 ): Target | null {
   const ordered = targetsDrawOrder(targets)
+  const pad = PICK_MARGIN_M + touchPadM
+  const padSq = pad * pad
   for (let i = ordered.length - 1; i >= 0; i--) {
     const g = ordered[i]
     if (!g) continue
-    const { poly, boundsR } = targetFootprintWorld(g)
+    const { poly } = targetFootprintWorld(g)
     if (pointInPolygon(wx, wy, poly)) return g
-    const near =
-      Math.hypot(wx - g.position.x, wy - g.position.y) <= boundsR + PICK_MARGIN_M + touchPadM
-    if (near) return g
+    if (minDistPointToPolygonEdgesSq(wx, wy, poly) <= padSq) return g
   }
   return null
 }

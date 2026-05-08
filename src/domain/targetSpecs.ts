@@ -198,9 +198,10 @@ export function targetFootprintLocalM(t: Target): Vec2[] {
       return rectLocal(hw, hh)
     }
     case 'popper':
-      return rectLocal(300 * MM * 0.5, 850 * MM * 0.5)
+      /** Той самий контур, що й на плані / лице — інакше хітбокс є широким bbox і краде кліки поруч. */
+      return popperSilhouetteLocal(false)
     case 'miniPopper':
-      return rectLocal(200 * MM * 0.5, 560 * MM * 0.5)
+      return popperSilhouetteLocal(true)
     case 'metalPlate':
     case 'metalPlateStand50':
     case 'metalPlateStand100': {
