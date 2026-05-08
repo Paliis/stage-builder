@@ -820,11 +820,11 @@ a.portal-match-title-ellipsis:hover {
 /* Organizer match roster: breadcrumbs + table toolbar ----------------------- */
 
 .portal-roster-page__hero {
-  max-width: min(48rem, 100%);
+  max-width: min(92rem, 100%);
 }
 
 .portal-roster-page__sheet {
-  max-width: min(48rem, 100%);
+  max-width: min(92rem, 100%);
   width: 100%;
   margin-top: 1rem;
 }
@@ -853,6 +853,12 @@ a.portal-match-title-ellipsis:hover {
   padding: 0.45rem 0.55rem;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
+}
+
+.portal-roster-page__reg-table th:first-child,
+.portal-roster-page__reg-table td:first-child {
+  min-width: 12rem;
+  overflow-wrap: anywhere;
 }
 
 .portal-roster-page__reg-table th {
