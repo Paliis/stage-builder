@@ -6,6 +6,7 @@ import type { StageBriefing } from '../../domain/stageBriefing'
 import { briefingTableRows, type BriefingPdfLabels } from '../../domain/stageBriefing'
 import type { StageCategory } from '../../domain/models'
 import { CANONICAL_PRODUCTION_ORIGIN } from '../../seo/canonicalProductionOrigin'
+import { PDF_BRIEFING_LOGO_ROW_MM, prepareBriefingPdfLogos } from './pdfBriefingLogos'
 import { registerPdfFonts, PDF_FONT_FAMILY } from './pdfFonts'
 
 /** Default link in PDF footer / QR when caller does not pass `qrTargetUrl` (matches portal editor path). */
@@ -60,6 +61,95 @@ const QR_CLEAR_BELOW_MM = 2
 /** Рамка навколо знімка сцени (мм), щоб у PDF було видно межі кадру як у прев’ю. */
 const SNAPSHOT_FRAME_LINE_MM = 0.35
 const SNAPSHOT_FRAME_RADIUS_MM = 0.9
+
+/** Зазор між двома логотипами у заголовку PDF (мм). */
+const HEADER_LOGO_GAP_MM = 5
+const GAP_UNDER_HEADER_LOGOS_MM = 4
+const MATCH_TITLE_FONT_PT = 11
+const LINE_MM_MATCH = 5
+const GAP_AFTER_MATCH_MM = 2
+const DOC_TITLE_FONT_PT = 13
+const LINE_MM_DOC_TITLE = 6
+const TITLE_TAIL_PAD_MM = 2
+
+function measureBriefingPdfHeaderBottomMm(
+  doc: InstanceType<typeof jsPDF>,
+  briefing: StageBriefing,
+  logoCount: number,
+  headerTextMaxW: number,
+  margin: number,
+): number {
+  let y = margin
+  if (logoCount > 0) {
+    y += PDF_BRIEFING_LOGO_ROW_MM + GAP_UNDER_HEADER_LOGOS_MM
+  }
+  const matchTrim = briefing.matchName.trim()
+  if (matchTrim) {
+    doc.setFont(PDF_FONT_FAMILY, 'bold')
+    doc.setFontSize(MATCH_TITLE_FONT_PT)
+    const lines = doc.splitTextToSize(matchTrim, headerTextMaxW) as string[]
+    y += 4 + lines.length * LINE_MM_MATCH + GAP_AFTER_MATCH_MM
+  }
+  doc.setFont(PDF_FONT_FAMILY, 'bold')
+  doc.setFontSize(DOC_TITLE_FONT_PT)
+  const titleLines = doc.splitTextToSize(briefing.documentTitle, headerTextMaxW) as string[]
+  y += 5 + titleLines.length * LINE_MM_DOC_TITLE + TITLE_TAIL_PAD_MM
+  doc.setFont(PDF_FONT_FAMILY, 'normal')
+  doc.setFontSize(10)
+  doc.setTextColor(0, 0, 0)
+  return y
+}
+
+function drawBriefingPdfHeader(
+  doc: InstanceType<typeof jsPDF>,
+  briefing: StageBriefing,
+  logos: Array<{ dataUrl: string; wMm: number; hMm: number }>,
+  headerTextMaxW: number,
+  pageW: number,
+  margin: number,
+  headerRightEdge: number,
+): void {
+  let y = margin
+  if (logos.length > 0) {
+    const cx = (margin + headerRightEdge) / 2
+    const gap = HEADER_LOGO_GAP_MM
+    const totalW = logos.reduce((sum, L) => sum + L.wMm, 0) + gap * (logos.length - 1)
+    let x = cx - totalW / 2
+    const logoTop = margin
+    for (const L of logos) {
+      doc.addImage(L.dataUrl, 'PNG', x, logoTop, L.wMm, L.hMm)
+      x += L.wMm + gap
+    }
+    y += PDF_BRIEFING_LOGO_ROW_MM + GAP_UNDER_HEADER_LOGOS_MM
+  }
+
+  const matchTrim = briefing.matchName.trim()
+  if (matchTrim) {
+    doc.setFont(PDF_FONT_FAMILY, 'bold')
+    doc.setFontSize(MATCH_TITLE_FONT_PT)
+    doc.setTextColor(17, 24, 39)
+    const lines = doc.splitTextToSize(matchTrim, headerTextMaxW) as string[]
+    let baseline = y + 4
+    for (const line of lines) {
+      doc.text(line, pageW / 2, baseline, { align: 'center' })
+      baseline += LINE_MM_MATCH
+    }
+    y = baseline + GAP_AFTER_MATCH_MM
+  }
+
+  doc.setFont(PDF_FONT_FAMILY, 'bold')
+  doc.setFontSize(DOC_TITLE_FONT_PT)
+  doc.setTextColor(17, 24, 39)
+  const titleLines = doc.splitTextToSize(briefing.documentTitle, headerTextMaxW) as string[]
+  let baseline = y + 5
+  for (const line of titleLines) {
+    doc.text(line, pageW / 2, baseline, { align: 'center' })
+    baseline += LINE_MM_DOC_TITLE
+  }
+  doc.setFont(PDF_FONT_FAMILY, 'normal')
+  doc.setFontSize(10)
+  doc.setTextColor(0, 0, 0)
+}
 
 function buildTableOpts(
   tableBody: string[][],
@@ -206,20 +296,7 @@ export async function exportBriefingPdf(opts: {
     qrDataUrl = null
   }
 
-  /* ── Заголовок; під QR лишаємо ширину, щоб назва не заходила під код. ── */
-  const titleMaxW = contentW - (qrDataUrl ? QR_SIZE + QR_GAP_MM : 0)
-  doc.setFont(PDF_FONT_FAMILY, 'bold')
-  doc.setFontSize(14)
-  const titleLines = doc.splitTextToSize(briefing.documentTitle, titleMaxW) as string[]
-  doc.text(titleLines, margin, margin + 5)
-  const titleH = titleLines.length * 6 + 4
-  const yAfterTitle = margin + titleH
-
-  if (qrDataUrl) {
-    drawPdfQrPageCorner(doc, qrDataUrl, pageW, margin)
-  }
-
-  /* ── Table data & measurement ── */
+  /* ── Table data & measurement (компактніший перший ряд: тип + постріли) ── */
   const rows = briefingTableRows(briefing, pdf.labels, pdf.categoryLabel, pdf.emptyCell)
   const tableBody = rows.map((r) => [r.label, r.value])
 
@@ -227,15 +304,32 @@ export async function exportBriefingPdf(opts: {
 
   const tableH = measureTableHeight(tableBody, margin, contentW, tableMarginBottomMm)
 
+  const preparedLogos = await prepareBriefingPdfLogos(briefing)
+  const headerTextMaxW = contentW - (qrDataUrl ? QR_SIZE + QR_GAP_MM : 0)
+  const headerBottomMm = measureBriefingPdfHeaderBottomMm(
+    doc,
+    briefing,
+    preparedLogos.length,
+    headerTextMaxW,
+    margin,
+  )
+
   const brandBlockH = qrDataUrl ? measureBrandBlockHeightMm(doc, contentW, pdf, qrEncodeUrl) : 0
   const brandBelowImageH = qrDataUrl ? GAP_IMAGE_BRAND + brandBlockH + GAP_BRAND_TABLE : GAP_BRAND_TABLE
 
-  const baseImageTop = yAfterTitle + GAP_TITLE_IMAGE
+  const baseImageTop = headerBottomMm + GAP_TITLE_IMAGE
   const imageStartY =
     qrDataUrl ? Math.max(baseImageTop, margin + QR_SIZE + QR_CLEAR_BELOW_MM) : baseImageTop
 
   const maxImgH =
     pageH - margin - imageStartY - brandBelowImageH - tableH - GAP_TABLE_FOOTER
+
+  const headerRightEdge = qrDataUrl ? pageW - margin - QR_SIZE - QR_GAP_MM : pageW - margin
+  drawBriefingPdfHeader(doc, briefing, preparedLogos, headerTextMaxW, pageW, margin, headerRightEdge)
+
+  if (qrDataUrl) {
+    drawPdfQrPageCorner(doc, qrDataUrl, pageW, margin)
+  }
 
   /* ── Image ── */
   let cursorY = imageStartY

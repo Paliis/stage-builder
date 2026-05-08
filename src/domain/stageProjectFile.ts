@@ -340,9 +340,24 @@ function parseBriefing(raw: unknown): StageBriefing {
     typeof exerciseType === 'string' && STAGE_CATEGORIES.has(exerciseType as StageCategory)
       ? (exerciseType as StageCategory)
       : d.exerciseType
-  const str = (k: keyof StageBriefing): string =>
+  type BriefingTextKey =
+    | 'matchName'
+    | 'documentTitle'
+    | 'targetsDescription'
+    | 'recommendedShots'
+    | 'allowedAmmo'
+    | 'maxPoints'
+    | 'startSignal'
+    | 'readyCondition'
+    | 'startPosition'
+    | 'procedure'
+    | 'safetyAngles'
+  const str = (k: BriefingTextKey): string =>
     typeof o[k] === 'string' ? (o[k] as string) : d[k]
+  const pdfLogoFpsu = typeof o.pdfLogoFpsu === 'boolean' ? o.pdfLogoFpsu : d.pdfLogoFpsu
+  const pdfLogoIpsc = typeof o.pdfLogoIpsc === 'boolean' ? o.pdfLogoIpsc : d.pdfLogoIpsc
   return {
+    matchName: str('matchName'),
     documentTitle: str('documentTitle'),
     exerciseType: ex,
     targetsDescription: str('targetsDescription'),
@@ -354,6 +369,8 @@ function parseBriefing(raw: unknown): StageBriefing {
     startPosition: str('startPosition'),
     procedure: str('procedure'),
     safetyAngles: str('safetyAngles'),
+    pdfLogoFpsu,
+    pdfLogoIpsc,
   }
 }
 

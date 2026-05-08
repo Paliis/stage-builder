@@ -2257,7 +2257,33 @@
 
 .app__briefing-autofill {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
   margin: 0.5rem 0 0.15rem;
+}
+
+.app__briefing-pdf-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.app__briefing-logo-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.app__briefing-logo-check input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent);
 }
 
 .app__btn-autofill {

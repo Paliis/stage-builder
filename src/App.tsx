@@ -124,6 +124,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
 
   const briefing = useBriefingStore(
     useShallow((s) => ({
+      matchName: s.matchName,
       documentTitle: s.documentTitle,
       exerciseType: s.exerciseType,
       targetsDescription: s.targetsDescription,
@@ -135,6 +136,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       startPosition: s.startPosition,
       procedure: s.procedure,
       safetyAngles: s.safetyAngles,
+      pdfLogoFpsu: s.pdfLogoFpsu,
+      pdfLogoIpsc: s.pdfLogoIpsc,
     })),
   )
   const setBriefing = useBriefingStore((s) => s.setBriefing)
@@ -280,6 +283,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
 
   const pdfLabels: BriefingPdfLabels = useMemo(
     () => ({
+      exerciseTypeAndShots: tree.pdf.rowExerciseTypeAndShots,
       exerciseType: tree.pdf.rowExerciseType,
       targets: tree.pdf.rowTargets,
       recommendedShots: tree.pdf.rowRecommendedShots,
@@ -1673,9 +1677,37 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
             {tree.briefing.applyFromScene}
           </button>
+          <div className="app__briefing-pdf-logos" role="group" aria-label={tree.briefing.pdfLogosGroupAria}>
+            <label className="app__briefing-logo-check">
+              <input
+                type="checkbox"
+                checked={briefing.pdfLogoFpsu}
+                disabled={readOnly}
+                onChange={(e) => setBriefing({ pdfLogoFpsu: e.target.checked })}
+              />
+              <span>{tree.briefing.logoPdfFpsu}</span>
+            </label>
+            <label className="app__briefing-logo-check">
+              <input
+                type="checkbox"
+                checked={briefing.pdfLogoIpsc}
+                disabled={readOnly}
+                onChange={(e) => setBriefing({ pdfLogoIpsc: e.target.checked })}
+              />
+              <span>{tree.briefing.logoPdfIpsc}</span>
+            </label>
+          </div>
         </div>
 
         <div className="app__briefing-grid">
+          <label className="app__field">
+            {tree.briefing.matchName}
+            <input
+              readOnly={readOnly}
+              value={briefing.matchName}
+              onChange={(e) => setBriefing({ matchName: e.target.value })}
+            />
+          </label>
           <label className="app__field">
             {tree.briefing.documentTitle}
             <input
@@ -1696,6 +1728,14 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               <option value="long">{t('briefing.category.long')}</option>
             </select>
           </label>
+          <label className="app__field">
+            {tree.briefing.recommendedShots}
+            <input
+              readOnly={readOnly}
+              value={briefing.recommendedShots}
+              onChange={(e) => setBriefing({ recommendedShots: e.target.value })}
+            />
+          </label>
           <label className="app__field app__field--wide">
             {tree.briefing.targetsText}
             <textarea
@@ -1704,14 +1744,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               value={briefing.targetsDescription}
               onChange={(e) => { autoGrow(e); setBriefing({ targetsDescription: e.target.value }) }}
               ref={(el) => { if (el) autoGrowRef(el) }}
-            />
-          </label>
-          <label className="app__field">
-            {tree.briefing.recommendedShots}
-            <input
-              readOnly={readOnly}
-              value={briefing.recommendedShots}
-              onChange={(e) => setBriefing({ recommendedShots: e.target.value })}
             />
           </label>
           <label className="app__field app__field--wide">

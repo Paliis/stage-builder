@@ -218,6 +218,10 @@ export type MessageTree = {
   }
   briefing: {
     summary: string
+    matchName: string
+    logoPdfFpsu: string
+    logoPdfIpsc: string
+    pdfLogosGroupAria: string
     documentTitle: string
     exerciseType: string
     targetsText: string
@@ -249,6 +253,7 @@ export type MessageTree = {
     activationNumberListMany: string
   }
   pdf: {
+    rowExerciseTypeAndShots: string
     rowExerciseType: string
     rowTargets: string
     rowRecommendedShots: string
@@ -1282,6 +1287,10 @@ export const ukMessages: MessageTree = {
   },
   briefing: {
     summary: '\u0422\u0435\u043a\u0441\u0442 \u0434\u043b\u044f PDF (\u0442\u0430\u0431\u043b\u0438\u0446\u044f \u0431\u0440\u0438\u0444\u0456\u043d\u0433\u0443)',
+    matchName: '\u041d\u0430\u0437\u0432\u0430 \u043c\u0430\u0442\u0447\u0443',
+    logoPdfFpsu: '\u041b\u043e\u0433\u043e \u0424\u041f\u0421\u0423 \u0443 PDF',
+    logoPdfIpsc: '\u041b\u043e\u0433\u043e IPSC \u0443 PDF',
+    pdfLogosGroupAria: '\u041b\u043e\u0433\u043e\u0442\u0438\u043f\u0438 \u0443 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u0443 PDF',
     documentTitle: '\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430',
     exerciseType: '\u0422\u0438\u043f \u0432\u043f\u0440\u0430\u0432\u0438',
     targetsText: '\u041c\u0456\u0448\u0435\u043d\u0456 (\u0442\u0435\u043a\u0441\u0442)',
@@ -1311,6 +1320,8 @@ export const ukMessages: MessageTree = {
     activationNumberListMany: '{{init}} \u0442\u0430 {{last}}',
   },
   pdf: {
+    rowExerciseTypeAndShots:
+      '\u0422\u0438\u043f \u0432\u043f\u0440\u0430\u0432\u0438 \xb7 \u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u0456 \u043f\u043e\u0441\u0442\u0440\u0456\u043b\u0456',
     rowExerciseType: '\u0422\u0438\u043f \u0432\u043f\u0440\u0430\u0432\u0438',
     rowTargets: '\u041c\u0456\u0448\u0435\u043d\u0456',
     rowRecommendedShots:
@@ -2346,6 +2357,10 @@ export const enMessages: MessageTree = {
   },
   briefing: {
     summary: 'PDF copy (briefing table)',
+    matchName: 'Match name',
+    logoPdfFpsu: 'FPSU logo on PDF',
+    logoPdfIpsc: 'IPSC logo on PDF',
+    pdfLogosGroupAria: 'PDF header logos',
     documentTitle: 'Document title',
     exerciseType: 'Exercise type',
     targetsText: 'Targets (text)',
@@ -2372,6 +2387,7 @@ export const enMessages: MessageTree = {
     activationNumberListMany: '{{init}}, and {{last}}',
   },
   pdf: {
+    rowExerciseTypeAndShots: 'Exercise type · Recommended shots',
     rowExerciseType: 'Exercise type',
     rowTargets: 'Targets',
     rowRecommendedShots: 'Recommended round count (indicative)',

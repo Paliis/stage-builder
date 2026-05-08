@@ -35,7 +35,9 @@ const DEFAULT_STAGE_NAME_UA = 'Нова вправа'
 function briefingDiffersFromDefault(b: StageBriefing): boolean {
   const d = defaultStageBriefing()
   if (b.exerciseType !== d.exerciseType) return true
-  const keys: (keyof StageBriefing)[] = [
+  if (b.pdfLogoFpsu !== d.pdfLogoFpsu || b.pdfLogoIpsc !== d.pdfLogoIpsc) return true
+  const stringKeys = [
+    'matchName',
     'documentTitle',
     'targetsDescription',
     'recommendedShots',
@@ -46,8 +48,8 @@ function briefingDiffersFromDefault(b: StageBriefing): boolean {
     'startPosition',
     'procedure',
     'safetyAngles',
-  ]
-  for (const k of keys) {
+  ] as const satisfies readonly (keyof StageBriefing)[]
+  for (const k of stringKeys) {
     if ((b[k] ?? '').trim() !== (d[k] ?? '').trim()) return true
   }
   return false
@@ -119,6 +121,7 @@ export function downloadSessionDraftEnvelopeAsFile(envelope: SessionDraftEnvelop
 function briefingSnapshot(): StageBriefing {
   const s = useBriefingStore.getState()
   return {
+    matchName: s.matchName,
     documentTitle: s.documentTitle,
     exerciseType: s.exerciseType,
     targetsDescription: s.targetsDescription,
@@ -130,6 +133,8 @@ function briefingSnapshot(): StageBriefing {
     startPosition: s.startPosition,
     procedure: s.procedure,
     safetyAngles: s.safetyAngles,
+    pdfLogoFpsu: s.pdfLogoFpsu,
+    pdfLogoIpsc: s.pdfLogoIpsc,
   }
 }
 
