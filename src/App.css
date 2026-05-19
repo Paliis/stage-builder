@@ -1250,6 +1250,18 @@
   color: #2a1c0f;
 }
 
+.app__buttons button.app__btn-secondary.app__tb-prop--decorationCar {
+  background: rgba(71, 85, 105, 0.28);
+  border-color: rgba(51, 65, 85, 0.42);
+  color: #1e293b;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--decorationCar:hover {
+  background: rgba(71, 85, 105, 0.4);
+  border-color: rgba(30, 41, 59, 0.52);
+  color: #0f172a;
+}
+
 .app__buttons button.app__btn-secondary.app__tb-prop--weaponRack {
   background: linear-gradient(
     135deg,

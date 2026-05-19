@@ -22791,6 +22791,7 @@ function inferPaperTargetsFromBriefing(targetsDescription) {
 // src/domain/stageBriefing.ts
 function defaultStageBriefing() {
   return {
+    matchName: "",
     documentTitle: "\u0412\u043F\u0440\u0430\u0432\u0430 \u21161",
     exerciseType: "short",
     targetsDescription: "",
@@ -22801,7 +22802,9 @@ function defaultStageBriefing() {
     readyCondition: "\u0417\u0430\u0440\u044F\u0434\u0436\u0435\u043D\u043E (\u041F\u043E\u043B\u043E\u0436\u0435\u043D\u043D\u044F 1)",
     startPosition: "",
     procedure: "\u0417\u0430 \u0441\u0438\u0433\u043D\u0430\u043B\u043E\u043C \u0442\u0430\u0439\u043C\u0435\u0440\u0430, \u0432\u0440\u0430\u0437\u0438\u0442\u0438 \u0432\u0441\u0456 \u043C\u0456\u0448\u0435\u043D\u0456, \u043D\u0435 \u0432\u0438\u0445\u043E\u0434\u044F\u0447\u0438 \u0437\u0430 \u043C\u0435\u0436\u0456 \u0448\u0442\u0440\u0430\u0444\u043D\u0438\u0445 \u043B\u0456\u043D\u0456\u0439. \u041C\u0435\u0442\u0430\u043B\u0435\u0432\u0456 \u043C\u0456\u0448\u0435\u043D\u0456 \u043C\u0430\u044E\u0442\u044C \u0432\u043F\u0430\u0441\u0442\u0438 \u0434\u043B\u044F \u0437\u0430\u043B\u0456\u043A\u0443. \u041A\u0435\u0440\u0430\u043C\u0456\u0447\u043D\u0456 \u043C\u0456\u0448\u0435\u043D\u0456 (\u044F\u043A\u0449\u043E \u0454) \u043C\u0430\u044E\u0442\u044C \u043C\u0430\u0442\u0438 \u044F\u0432\u043D\u0456 \u0441\u043B\u0456\u0434\u0438 \u0443\u0440\u0430\u0436\u0435\u043D\u043D\u044F.",
-    safetyAngles: "90/90/90"
+    safetyAngles: "90/90/90",
+    pdfLogoFpsu: false,
+    pdfLogoIpsc: false
   };
 }
 function parseBriefingOptionalPositiveInt(raw) {
@@ -22951,6 +22954,7 @@ var PROP_TYPES = [
   "woodTable",
   "woodChair",
   "weaponRackPyramid",
+  "decorationCar",
   "seesaw",
   "movingPlatform",
   "cooperTunnel",
@@ -23172,7 +23176,10 @@ function parseBriefing(raw) {
   const exerciseType = o.exerciseType;
   const ex = typeof exerciseType === "string" && STAGE_CATEGORIES.has(exerciseType) ? exerciseType : d.exerciseType;
   const str = (k) => typeof o[k] === "string" ? o[k] : d[k];
+  const pdfLogoFpsu = typeof o.pdfLogoFpsu === "boolean" ? o.pdfLogoFpsu : d.pdfLogoFpsu;
+  const pdfLogoIpsc = typeof o.pdfLogoIpsc === "boolean" ? o.pdfLogoIpsc : d.pdfLogoIpsc;
   return {
+    matchName: str("matchName"),
     documentTitle: str("documentTitle"),
     exerciseType: ex,
     targetsDescription: str("targetsDescription"),
@@ -23183,7 +23190,9 @@ function parseBriefing(raw) {
     readyCondition: str("readyCondition"),
     startPosition: str("startPosition"),
     procedure: str("procedure"),
-    safetyAngles: str("safetyAngles")
+    safetyAngles: str("safetyAngles"),
+    pdfLogoFpsu,
+    pdfLogoIpsc
   };
 }
 function parseStageProjectJson(text) {

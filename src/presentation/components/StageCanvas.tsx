@@ -29,6 +29,13 @@ import {
   refKey,
 } from '../../domain/activations'
 import {
+  computeDecorationCarGeometry,
+  decorationCarLocalToWorld,
+  DECORATION_CAR_DOOR_SEAM_CENTER_X_FRAC,
+  DECORATION_CAR_SIDE_GLASS_CENTER_X_FRAC,
+  DECORATION_CAR_SIDE_GLASS_LENGTH_FRAC,
+} from '../../domain/decorationCarGeometry'
+import {
   cooperTunnelPenaltyPlankOffsetsXM,
   faultLineEndPointsWorld,
   faultLineGeometryAfterStretch,
@@ -37,6 +44,7 @@ import {
   FAULT_LINE_SECTION_M,
   isShieldWithPortFamily,
   propOutlineWorld,
+  propHeightM,
   movingPlatformDeckOutlineWorld,
   propPortHoleWorld,
   SEESAW_PIPE_RADIUS_M,
@@ -88,11 +96,67 @@ const EMPTY_PAN_THRESHOLD_PX = 6
 const MIN_DRAW_MIN_PX = 14
 const TOUCH_PICK_MIN_PX = 26
 const EXTRUDE_SCREEN_PX = { dx: 5, dy: 7 }
-const HANDLE_OFFSET_M = 0.32
+/** Зазор між **краєм контуру** у напрямку ручки і центром іконки ↻ (м). Раніше додавалось `boundsR` до центру об’єкта — для попперів із вузькою проєкцією вбік ручка «вилазила» на ~половину метра. */
+const ROTATION_HANDLE_MARGIN_M = 0.06
+/** Відступ ручки ↻ лише для штрафної лінії (логіка офсетів відмінна від контуру на основі bbox). */
+const FAULTLINE_ROT_HANDLE_OFFSET_M = 0.24
+
+/**
+ * Обидва уздовж локальної +X (cos(rot), sin(rot)) та −X прийнятні для ручки ↻ на плані.
+ * Обрати знак так, щоб ручка була з боку **зовнішнього краю поля** (від центру майданчика до об’єкта —
+ * продовжувати далі уздовж того ж променя дає місце з менше сусідніх мішеней). Якщо обидві стороні
+ * рівносильні — чергування по координатній сітці, щоб у щільному ряду поруч не всі були співнапрямлені.
+ */
+function rotationHandleTangentSign(
+  positionXM: number,
+  positionYM: number,
+  rotationRad: number,
+  fieldWM: number,
+  fieldHM: number,
+): 1 | -1 {
+  const ox = Math.cos(rotationRad)
+  const oy = Math.sin(rotationRad)
+  let vx = positionXM - fieldWM * 0.5
+  let vy = positionYM - fieldHM * 0.5
+  const len = Math.hypot(vx, vy)
+  if (len < 1e-4) {
+    const cellKey = Math.round(positionXM / GRID_SNAP_M) + Math.round(positionYM / GRID_SNAP_M)
+    return (cellKey & 1) !== 0 ? -1 : 1
+  }
+  vx /= len
+  vy /= len
+  const aligned = vx * ox + vy * oy
+  if (Math.abs(aligned) < 2e-4) {
+    const cellKey =
+      Math.round(positionXM / GRID_SNAP_M) + Math.round(positionYM / GRID_SNAP_M)
+    return (cellKey & 1) !== 0 ? -1 : 1
+  }
+  return aligned > 0 ? 1 : -1
+}
+
 /** 5° — інакше 45° діагональ «лягає» на 40°/50° і краї щитів не сходяться. */
 const ROTATION_SNAP_RAD = Math.PI / 36
 
 type Vec2 = { x: number; y: number }
+
+/**
+ * На скільки метрів силует (полігон у світових координатах) виступає від точки pivot уздовж одиничного вектора `(ux,uy)`.
+ * Тобто max dot(vertex − pivot, u); для симетричного прямокутника на осі дорівнює «півширині» в тому напрямку.
+ */
+function silhouetteExtentAlongRay(
+  polyWorld: Vec2[],
+  pivotX: number,
+  pivotY: number,
+  ux: number,
+  uy: number,
+): number {
+  let max = 0
+  for (const p of polyWorld) {
+    const d = (p.x - pivotX) * ux + (p.y - pivotY) * uy
+    if (d > max) max = d
+  }
+  return max
+}
 
 /** Виділення на плані: одне або кілька (рамка за центром об’єкта); вершина контуру штрафної зони; лінія розмірів. */
 export type PlanSelectState =
@@ -180,11 +244,16 @@ function collectIdsInWorldRect(
 }
 
 /**
- * Узгоджений екранний радіус точок контакту на 2D-плані: вершини штрафного контуру, обертання,
+ * Узгоджений екранний радіус точок контакту на 2D-плані: вершини штрафного контуру,
  * кінець штрафної лінії, вимір/розміри, підказка сітки, чернетки контуру тощо.
  */
 function planContactHandleRadiusPx(pxPerMeter: number, selected: boolean): number {
   return selected ? Math.max(9, 0.2 * pxPerMeter) : Math.max(5, 0.11 * pxPerMeter)
+}
+
+/** Компактна фіолетова ручка ↻ поруч із мішенню/реквізитом (не плутати з крупнішими оранжевими точками штрафної лінії). */
+function rotationHandleRadiusPx(pxPerMeter: number): number {
+  return Math.min(11.5, Math.max(5, 0.055 * pxPerMeter))
 }
 
 function drawPlanSelectOutlines(
@@ -232,20 +301,21 @@ function drawPlanSelectOutlines(
     }
 
     let hw: Vec2 | null = null
-    if (planSelect.kind === 'target' && selT) hw = handleWorldPosTarget(selT)
-    if (planSelect.kind === 'prop' && selP) hw = handleWorldPosProp(selP)
+    if (planSelect.kind === 'target' && selT)
+      hw = handleWorldPosTarget(selT, tf.fieldWidthM, tf.fieldHeightM)
+    if (planSelect.kind === 'prop' && selP) hw = handleWorldPosProp(selP, tf.fieldWidthM, tf.fieldHeightM)
     if (hw) {
       const hs = worldToScreen(hw.x, hw.y, tf)
-      const hr = planContactHandleRadiusPx(tf.pxPerMeter, false)
+      const hr = rotationHandleRadiusPx(tf.pxPerMeter)
       ctx.fillStyle = 'rgba(79, 70, 229, 0.95)'
       ctx.strokeStyle = '#ffffff'
-      ctx.lineWidth = 1.35
+      ctx.lineWidth = 1.25
       ctx.beginPath()
       ctx.arc(hs.x, hs.y, hr, 0, Math.PI * 2)
       ctx.fill()
       ctx.stroke()
       ctx.fillStyle = '#ffffff'
-      ctx.font = `${Math.max(8, Math.round(hr * 1.25))}px system-ui, sans-serif`
+      ctx.font = `${Math.max(7, Math.round(hr * 1.08))}px system-ui, sans-serif`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillText('↻', hs.x, hs.y + 0.5)
@@ -420,43 +490,48 @@ function planDimensionAnchorWorld(
   return { x: wx, y: wy }
 }
 
-function handleWorldPosTarget(t: Target): Vec2 {
+function handleWorldPosTarget(t: Target, fieldWM: number, fieldHM: number): Vec2 {
   const rot = t.rotationRad
-  const { boundsR } = targetFootprintWorld(t)
-  const d = boundsR + HANDLE_OFFSET_M
+  const sign = rotationHandleTangentSign(t.position.x, t.position.y, rot, fieldWM, fieldHM)
+  const ux = sign * Math.cos(rot)
+  const uy = sign * Math.sin(rot)
+  const { poly } = targetFootprintWorld(t)
+  const ext = silhouetteExtentAlongRay(poly, t.position.x, t.position.y, ux, uy)
+  const d = ext + ROTATION_HANDLE_MARGIN_M
   return {
-    x: t.position.x + Math.cos(rot) * d,
-    y: t.position.y + Math.sin(rot) * d,
+    x: t.position.x + ux * d,
+    y: t.position.y + uy * d,
   }
 }
 
-function handleWorldPosProp(p: Prop): Vec2 {
+function handleWorldPosProp(p: Prop, fieldWM: number, fieldHM: number): Vec2 {
   const rot = p.rotationRad
   if (p.type === 'faultLine') {
     const ends = faultLineEndPointsWorld(p)
     if (!ends) {
       const perpX = -Math.sin(rot)
       const perpY = Math.cos(rot)
-      const off = p.sizeM.y / 2 + HANDLE_OFFSET_M
+      const off = p.sizeM.y / 2 + FAULTLINE_ROT_HANDLE_OFFSET_M
       return { x: p.position.x + perpX * off, y: p.position.y + perpY * off }
     }
     const perpX = -Math.sin(rot)
     const perpY = Math.cos(rot)
     /** Від кінця лінії: далі від осі, щоб клік по ↻ не перехоплювався як розтягування за помаранчеву точку. */
-    const off = HANDLE_OFFSET_M + p.sizeM.y * 0.85
+    const off = FAULTLINE_ROT_HANDLE_OFFSET_M + p.sizeM.y * 0.85
     return {
       x: ends.pos.x + perpX * off,
       y: ends.pos.y + perpY * off,
     }
   }
-  const hw = p.sizeM.x / 2
-  const hh = p.sizeM.y / 2
-  const r0 =
-    p.type === 'barrel' || p.type === 'tireStack' ? Math.min(hw, hh) : Math.hypot(hw, hh)
-  const d = r0 + HANDLE_OFFSET_M
+  const sign = rotationHandleTangentSign(p.position.x, p.position.y, rot, fieldWM, fieldHM)
+  const ux = sign * Math.cos(rot)
+  const uy = sign * Math.sin(rot)
+  const outline = propOutlineWorld(p)
+  const ext = silhouetteExtentAlongRay(outline, p.position.x, p.position.y, ux, uy)
+  const d = ext + ROTATION_HANDLE_MARGIN_M
   return {
-    x: p.position.x + Math.cos(rot) * d,
-    y: p.position.y + Math.sin(rot) * d,
+    x: p.position.x + ux * d,
+    y: p.position.y + uy * d,
   }
 }
 
@@ -466,6 +541,16 @@ function pickHandle(wx: number, wy: number, h: Vec2, pxPerMeter: number): boolea
   const dx = wx - h.x
   const dy = wy - h.y
   return dx * dx + dy * dy <= r * r
+}
+
+/** Клік по малій ручці ↻ узгоджений із `rotationHandleRadiusPx` (+ невеликий px-запас), з верхньою міжею в метрах на сильному zoom-out. */
+function pickRotationHandle(wx: number, wy: number, h: Vec2, pxPerMeter: number): boolean {
+  const rPx = rotationHandleRadiusPx(pxPerMeter) + 12
+  let rWorld = rPx / Math.max(pxPerMeter, 1e-6)
+  rWorld = Math.min(rWorld, 0.1)
+  const dx = wx - h.x
+  const dy = wy - h.y
+  return dx * dx + dy * dy <= rWorld * rWorld
 }
 
 /** Найближча вершина контуру штрафної зони (світові м); той самий радіус, що й pickHandle. */
@@ -1623,6 +1708,183 @@ function drawWoodChairPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTra
   ctx.stroke()
 }
 
+/** Декор «авто» на плані: габарит prop + деталі з `computeDecorationCarGeometry` (трапеція лобового як у 3D). */
+function drawDecorationCarPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransform) {
+  const outline = propOutlineWorld(p)
+  const corners = outline.map((q) => worldToScreen(q.x, q.y, tf))
+  const { dx, dy } = EXTRUDE_SCREEN_PX
+  ctx.beginPath()
+  tracePropOutline(ctx, corners, dx, dy)
+  ctx.fillStyle = 'rgba(25, 25, 28, 0.92)'
+  ctx.fill()
+  ctx.beginPath()
+  tracePropOutline(ctx, corners, 0, 0)
+  ctx.fillStyle = 'rgba(37, 99, 235, 0.9)'
+  ctx.fill()
+  ctx.strokeStyle = 'rgba(15, 23, 42, 0.45)'
+  ctx.lineWidth = 1.5
+  ctx.stroke()
+
+  const g = computeDecorationCarGeometry(p.sizeM.x, p.sizeM.y, propHeightM(p))
+  const lw = (lx: number, lz: number): Vec2 => decorationCarLocalToWorld(p, lx, lz)
+
+  const halfL = g.cabinLenInner / 2
+  const halfW = g.cabinWid / 2
+  const cabinRing: Vec2[] = [
+    lw(g.cabinCX - halfL, -halfW),
+    lw(g.cabinCX + halfL, -halfW),
+    lw(g.cabinCX + halfL, halfW),
+    lw(g.cabinCX - halfL, halfW),
+  ]
+  ctx.beginPath()
+  traceClosedRingWorld(ctx, tf, cabinRing)
+  ctx.fillStyle = 'rgba(29, 78, 216, 0.82)'
+  ctx.fill()
+
+  const wz = g.wsHW
+  const windRing: Vec2[] = [
+    lw(g.wsXB, -wz),
+    lw(g.wsXB, wz),
+    lw(g.wsXT, wz),
+    lw(g.wsXT, -wz),
+  ]
+  ctx.beginPath()
+  traceClosedRingWorld(ctx, tf, windRing)
+  ctx.fillStyle = 'rgba(148, 183, 209, 0.72)'
+  ctx.fill()
+  ctx.beginPath()
+  traceClosedRingWorld(ctx, tf, windRing)
+  ctx.strokeStyle = 'rgba(30, 58, 138, 0.42)'
+  ctx.lineWidth = 1
+  ctx.stroke()
+
+  const botL = lw(g.wsXB, -wz)
+  const botR = lw(g.wsXB, wz)
+  const topL = lw(g.wsXT, -wz)
+  const topR = lw(g.wsXT, wz)
+  ctx.beginPath()
+  const b0 = worldToScreen(botL.x, botL.y, tf)
+  const b1 = worldToScreen(botR.x, botR.y, tf)
+  const t0 = worldToScreen(topL.x, topL.y, tf)
+  const t1 = worldToScreen(topR.x, topR.y, tf)
+  ctx.moveTo(b0.x, b0.y)
+  ctx.lineTo(b1.x, b1.y)
+  ctx.moveTo(t0.x, t0.y)
+  ctx.lineTo(t1.x, t1.y)
+  ctx.strokeStyle = 'rgba(23, 37, 84, 0.55)'
+  ctx.lineWidth = 1.35
+  ctx.stroke()
+
+  const swCx = g.cabinCX + g.cabinLenInner * DECORATION_CAR_SIDE_GLASS_CENTER_X_FRAC
+  const swHalfLen = (g.cabinLenInner * DECORATION_CAR_SIDE_GLASS_LENGTH_FRAC) / 2
+  const innerZ = g.cabinWid / 2 - g.glassT / 2
+  const swHalfZ = Math.max(g.glassT * 0.55, 0.012 * g.sz)
+  for (const sign of [-1, 1] as const) {
+    const zc = sign * innerZ
+    const swRing: Vec2[] = [
+      lw(swCx - swHalfLen, zc - swHalfZ),
+      lw(swCx + swHalfLen, zc - swHalfZ),
+      lw(swCx + swHalfLen, zc + swHalfZ),
+      lw(swCx - swHalfLen, zc + swHalfZ),
+    ]
+    ctx.beginPath()
+    traceClosedRingWorld(ctx, tf, swRing)
+    ctx.fillStyle = 'rgba(95, 122, 148, 0.62)'
+    ctx.fill()
+  }
+
+  const zw = g.cabinWid / 2 + 0.006
+  const seamX = g.cabinCX + g.cabinLenInner * DECORATION_CAR_DOOR_SEAM_CENTER_X_FRAC
+  const seamHalfX = 0.02 * g.sx
+  const seamHalfZ = 0.011 * g.sz
+  for (const sign of [-1, 1] as const) {
+    const zc = sign * zw
+    const seamRing: Vec2[] = [
+      lw(seamX - seamHalfX, zc - seamHalfZ),
+      lw(seamX + seamHalfX, zc - seamHalfZ),
+      lw(seamX + seamHalfX, zc + seamHalfZ),
+      lw(seamX - seamHalfX, zc + seamHalfZ),
+    ]
+    ctx.beginPath()
+    traceClosedRingWorld(ctx, tf, seamRing)
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.52)'
+    ctx.fill()
+  }
+
+  /* Проєкція шини зверху: прямокутник 2r × tread (вісь коліс уздовж lz як у циліндрі CarSUV). */
+  const tireHalfLon = g.r
+  const tireHalfLat = g.tread / 2
+  for (const ax of [g.axleFrontX, g.axleRearX] as const) {
+    for (const sign of [-1, 1] as const) {
+      const zc = sign * g.wheelZ
+      const tireRing: Vec2[] = [
+        lw(ax - tireHalfLon, zc - tireHalfLat),
+        lw(ax + tireHalfLon, zc - tireHalfLat),
+        lw(ax + tireHalfLon, zc + tireHalfLat),
+        lw(ax - tireHalfLon, zc + tireHalfLat),
+      ]
+      ctx.beginPath()
+      traceClosedRingWorld(ctx, tf, tireRing)
+      ctx.fillStyle = 'rgba(20, 20, 22, 0.92)'
+      ctx.fill()
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.38)'
+      ctx.lineWidth = 1
+      ctx.stroke()
+    }
+  }
+
+  const bumpHalfZ = (g.chassisWid * 0.98) / 2
+  const frontBump: Vec2[] = [
+    lw(g.chassisHalf, -bumpHalfZ),
+    lw(g.chassisHalf + g.bumperProtrude, -bumpHalfZ),
+    lw(g.chassisHalf + g.bumperProtrude, bumpHalfZ),
+    lw(g.chassisHalf, bumpHalfZ),
+  ]
+  const rearBump: Vec2[] = [
+    lw(-g.chassisHalf - g.bumperProtrude, -bumpHalfZ),
+    lw(-g.chassisHalf, -bumpHalfZ),
+    lw(-g.chassisHalf, bumpHalfZ),
+    lw(-g.chassisHalf - g.bumperProtrude, bumpHalfZ),
+  ]
+  ctx.fillStyle = 'rgba(30, 41, 59, 0.78)'
+  for (const bump of [frontBump, rearBump]) {
+    ctx.beginPath()
+    traceClosedRingWorld(ctx, tf, bump)
+    ctx.fill()
+  }
+
+  const hlHalfX = 0.042 * g.sx
+  const hlHalfZ = 0.095 * g.sz
+  const hlCx = g.hlX + 0.04 * g.sx
+  ctx.fillStyle = 'rgba(254, 252, 232, 0.92)'
+  for (const sign of [-1, 1] as const) {
+    const ring: Vec2[] = [
+      lw(hlCx - hlHalfX, sign * g.hlZ - hlHalfZ),
+      lw(hlCx + hlHalfX, sign * g.hlZ - hlHalfZ),
+      lw(hlCx + hlHalfX, sign * g.hlZ + hlHalfZ),
+      lw(hlCx - hlHalfX, sign * g.hlZ + hlHalfZ),
+    ]
+    ctx.beginPath()
+    traceClosedRingWorld(ctx, tf, ring)
+    ctx.fill()
+  }
+
+  const tlHalfX = 0.045 * g.sx
+  const tlHalfZ = 0.1 * g.sz
+  ctx.fillStyle = 'rgba(225, 29, 72, 0.88)'
+  for (const sign of [-1, 1] as const) {
+    const ring: Vec2[] = [
+      lw(g.tlX - tlHalfX, sign * g.tlZ - tlHalfZ),
+      lw(g.tlX + tlHalfX, sign * g.tlZ - tlHalfZ),
+      lw(g.tlX + tlHalfX, sign * g.tlZ + tlHalfZ),
+      lw(g.tlX - tlHalfX, sign * g.tlZ + tlHalfZ),
+    ]
+    ctx.beginPath()
+    traceClosedRingWorld(ctx, tf, ring)
+    ctx.fill()
+  }
+}
+
 /** Червона стійка на плані: контур основи + схема вужчої верхньої планки (як у 3D). */
 function drawWeaponRackPyramidPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: ViewTransform) {
   const outline = propOutlineWorld(p)
@@ -2169,6 +2431,8 @@ function redraw(
       return { face: 'rgba(166, 124, 82, 0.9)', depth: 'rgba(25, 25, 28, 0.9)' }
     if (p.type === 'weaponRackPyramid')
       return { face: 'rgba(229, 57, 53, 0.88)', depth: 'rgba(25, 25, 28, 0.9)' }
+    if (p.type === 'decorationCar')
+      return { face: 'rgba(37, 99, 235, 0.9)', depth: 'rgba(25, 25, 28, 0.9)' }
     return { face: 'rgba(148, 163, 184, 0.94)', depth: 'rgba(71, 85, 105, 0.9)' }
   }
 
@@ -2214,6 +2478,10 @@ function redraw(
     }
     if (p.type === 'woodChair') {
       drawWoodChairPlan2D(ctx, p, tf)
+      continue
+    }
+    if (p.type === 'decorationCar') {
+      drawDecorationCarPlan2D(ctx, p, tf)
       continue
     }
     if (p.type === 'weaponRackPyramid') {
@@ -3307,13 +3575,14 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
-    const ppm = transformRef.current.pxPerMeter
+    const tfR = transformRef.current
+    const ppm = tfR.pxPerMeter
     const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
 
     if (!readOnly && planSelect.mode === 'single' && planSelect.kind === 'prop') {
       const selP = props.find((x) => x.id === planSelect.id)
       if (selP?.type === 'faultLine') {
-        const hwFl = handleWorldPosProp(selP)
+        const hwFl = handleWorldPosProp(selP, tfR.fieldWidthM, tfR.fieldHeightM)
         if (pickHandle(w.x, w.y, hwFl, ppm)) {
           gridHoverRef.current = null
           clearLongPressTimer()
@@ -3337,11 +3606,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const selP = planSelect.kind === 'prop' ? props.find((x) => x.id === planSelect.id) : undefined
       const hw =
         planSelect.kind === 'target' && selT
-          ? handleWorldPosTarget(selT)
+          ? handleWorldPosTarget(selT, tfR.fieldWidthM, tfR.fieldHeightM)
           : planSelect.kind === 'prop' && selP
-            ? handleWorldPosProp(selP)
+            ? handleWorldPosProp(selP, tfR.fieldWidthM, tfR.fieldHeightM)
             : null
-      if (hw && pickHandle(w.x, w.y, hw, ppm)) {
+      if (hw && pickRotationHandle(w.x, w.y, hw, ppm)) {
         gridHoverRef.current = null
         clearLongPressTimer()
         dragRef.current = { mode: 'rotate', kind: planSelect.kind, id: planSelect.id }

@@ -99,6 +99,7 @@ export type MessageTree = {
     woodTable: string
     woodChair: string
     weaponRackPyramid: string
+    decorationCar: string
     seesaw: string
     movingPlatform: string
     cooperTunnel: string
@@ -1043,8 +1044,12 @@ export type MessageTree = {
   }
   /** Meta / Open Graph / Twitter — синхронізуються з `locale` у `I18nProvider` */
   seo: {
+    /** Дефолтний опис порталу (не для `/stage-builder`). */
     metaDescription: string
     ogImageAlt: string
+    /** `<title>` і основний снипет для маршруту `/stage-builder`. */
+    stageBuilderHelmetTitle: string
+    stageBuilderMetaDescription: string
   }
   pdfBranding: {
     generatedBy: string
@@ -1212,6 +1217,7 @@ export const ukMessages: MessageTree = {
     woodTable: '+ \u0421\u0442\u0456\u043b (\u0434\u0435\u0440\u0435\u0432\u2019\u044f\u043d\u0438\u0439)',
     woodChair: '+ \u0421\u0442\u0456\u043b\u0435\u0446\u044c',
     weaponRackPyramid: '+ \u041f\u0456\u0440\u0430\u043c\u0456\u0434\u0430 \u0434\u043b\u044f \u0437\u0431\u0440\u043e\u0457 (\u0440\u0443\u0448\u043d\u0438\u0446\u044f)',
+    decorationCar: '+ \u0410\u0432\u0442\u043e (\u0434\u0435\u043a\u043e\u0440, SUV)',
     seesaw: '+ \u041a\u0430\u0447\u0435\u043b\u044c',
     movingPlatform: '+ \u0420\u0443\u0445. \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430',
     cooperTunnel: '+ \u0422\u0443\u043d\u0435\u043b\u044c \u041a\u0443\u043f\u0435\u0440\u0430',
@@ -1427,9 +1433,9 @@ export const ukMessages: MessageTree = {
   },
   portal: {
     title: 'Shooters Tools',
-    helmetTitle: 'Shooters Tools — IPSC / \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u0430 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0430',
+    helmetTitle: 'Shooters Tools — практична стрільба, IPSC / USPSA',
     metaDescription:
-      '\u0406\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438 \u0434\u043b\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u043e\u0457 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 \u0442\u0430 IPSC: Stage Builder (\u043f\u043b\u0430\u043d, 3D, PDF\u2011\u0431\u0440\u0438\u0444\u0456\u043d\u0433, \u0435\u043a\u0441\u043f\u043e\u0440\u0442), RO Helper (\u0434\u043e\u0432\u0456\u0434\u043d\u0438\u043a \u043f\u0440\u0430\u0432\u0438\u043b).',
+      'Інструменти для практичної стрільби: Stage Builder (метричний план, 3D, PDF‑брифінг), Hit Factor, RO Helper — у браузері, UK/EN. Безкоштовний білдер стейджів і довідник правил.',
     lead: '\u0406\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438 \u0434\u043b\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u043e\u0457 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 \u0442\u0430 IPSC. \u041d\u043e\u0432\u0456 \u043c\u043e\u0434\u0443\u043b\u0456 \u0434\u043e\u0434\u0430\u0432\u0430\u0442\u0438\u043c\u0443\u0442\u044c\u0441\u044f \u043f\u043e\u0441\u0442\u0443\u043f\u043e\u0432\u043e.',
     navStageBuilder: 'Stage Builder',
     navHitFactor: 'Hit Factor',
@@ -2122,9 +2128,12 @@ export const ukMessages: MessageTree = {
   },
   seo: {
     metaDescription:
-      '\u041a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438\u0449\u043d\u0438\u0445 \u0432\u0440\u0430\u0432: \u043c\u0456\u0448\u0435\u043d\u0456 \u0439 \u0440\u0435\u043a\u0432\u0456\u0437\u0438\u0442 \u043d\u0430 \u043f\u043b\u0430\u043d\u0456, 3D-\u043f\u0435\u0440\u0435\u0433\u043b\u044f\u0434, \u0431\u0440\u0438\u0444\u0456\u043d\u0433 \u0443 PDF. \u0411\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u0438\u0439 \u043e\u043d\u043b\u0430\u0439\u043d-\u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440.',
+      'Інструменти для практичної стрільби: Stage Builder (метричний план, 3D, PDF‑брифінг), Hit Factor, RO Helper — у браузері, UK/EN. Безкоштовний білдер стейджів і довідник правил.',
     ogImageAlt:
       'Stage Builder \u2014 \u043f\u043b\u0430\u043d \u0441\u0446\u0435\u043d\u0438, \u043c\u0456\u0448\u0435\u043d\u0456, \u0435\u043a\u0441\u043f\u043e\u0440\u0442 \u0431\u0440\u0438\u0444\u0456\u043d\u0433\u0443 \u0432 PDF',
+    stageBuilderHelmetTitle: 'Конструктор вправ IPSC онлайн — Stage Builder | Shooters Tools',
+    stageBuilderMetaDescription:
+      'Безкоштовний конструктор вправ IPSC та USPSA: метричний план, 3D‑перегляд, шаблон брифінгу PDF, файл .stage.json. Схема стрільбищної вправи в браузері — UK/EN, PWA.',
   },
   pdfBranding: {
     generatedBy: '\u0417\u0433\u0435\u043d\u0435\u0440\u043e\u0432\u0430\u043d\u043e \u0432 Stage Builder',
@@ -2290,6 +2299,7 @@ export const enMessages: MessageTree = {
     woodTable: '+ Wood table',
     woodChair: '+ Chair',
     weaponRackPyramid: '+ Weapon rack (pyramid, rifle)',
+    decorationCar: '+ Car (decoration, SUV)',
     seesaw: '+ Seesaw',
     movingPlatform: '+ Moving platform',
     cooperTunnel: '+ Cooper tunnel',
@@ -2488,9 +2498,9 @@ export const enMessages: MessageTree = {
   },
   portal: {
     title: 'Shooters Tools',
-    helmetTitle: 'Shooters Tools — IPSC / practical shooting',
+    helmetTitle: 'Shooters Tools — practical shooting (IPSC / USPSA)',
     metaDescription:
-      'Practical shooting and IPSC tools: Stage Builder (metric plan, 3D, PDF briefing, export), RO Helper (rules reference).',
+      'Shooters Tools: free IPSC/USPSA-style stage designer (2D/3D, PDF briefing), Hit Factor calculator, RO Helper rules quick search — browser tools, UK/EN.',
     lead: 'Tools for practical shooting and IPSC. More modules will roll out over time.',
     navStageBuilder: 'Stage Builder',
     navHitFactor: 'Hit Factor',
@@ -3177,8 +3187,11 @@ export const enMessages: MessageTree = {
   },
   seo: {
     metaDescription:
-      'Design practical shooting stages: 2D plan, 3D preview, targets, props, and PDF briefing export. Free online editor.',
+      'Shooters Tools: free IPSC/USPSA-style stage designer (2D/3D, PDF briefing), Hit Factor calculator, RO Helper rules quick search — browser tools, UK/EN.',
     ogImageAlt: 'Stage Builder — stage plan, targets, PDF briefing export',
+    stageBuilderHelmetTitle: 'Free IPSC & USPSA Stage Builder Online — Shooters Tools',
+    stageBuilderMetaDescription:
+      'Free online IPSC & USPSA stage designer: 2D metric plan, 3D preview, PDF briefing template, .stage.json export. Practical shooting stage design software in your browser — bilingual PWA.',
   },
   pdfBranding: {
     generatedBy: 'Generated in Stage Builder',

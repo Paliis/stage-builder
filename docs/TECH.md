@@ -46,7 +46,7 @@
 
 Точка входу: `src/main.tsx` — `hydrateSessionDraft()`, реєстрація PWA (`virtual:pwa-register`), обгортка `I18nProvider`, **`BrowserRouter`** з маршрутами, **Vercel Analytics** і **Google Analytics**.
 
-**Code splitting:** `StageView3D` підвантажується через `React.lazy` у `App.tsx` лише в режимі «3D», всередині `<Suspense>`. Експорт PDF — динамічний `import()` модуля `exportBriefingPdf` у момент натискання кнопки.
+**Code splitting:** `StageView3D` підвантажується через `React.lazy` у `App.tsx` лише в режимі «3D», всередині `<Suspense>`. Експорт PDF — динамічний `import()` модуля `exportBriefingPdf` у момент натискання кнопки. Після **production-деплою** з новими chunk-хешами стара вкладка інколи не може підвантажити ці модулі (`Failed to fetch dynamically imported module` тощо): у `App.handleExportPdf` такі помилки розпізнаються (`isStaleBundledChunkError`), користувачу показується **локалізована підказка** оновити сторінку (`exportPdfStaleChunkHint` у `messages.ts`).
 
 ## Площадка, пресети та прив’язка
 
@@ -56,7 +56,7 @@
 - **Прокрутка сторінки** — смуга перемикання 2D/3D, полів розміру та пресетів (`.app__view-controls-strip`) і ліва панель тулбару на широкому екрані (`min-width: 52.0625rem`) закріплені через `position: sticky`, щоб залишатися в полі зору при довгій сітці. Відступ лівої панелі від верху вьюпорту узгоджується з `--app-sticky-controls-height` у `index.css` (за потреби підлаштувати, якщо зміниться верстка смуги). На вузьких екранах ліва панель — у drawer (overlay), sticky для неї не застосовується.
 - **Сітка та snap** — `GRID_SNAP_M = 0.5`; поверх поля на 2D — **шахматка** кроком `GRID_CHESS_M = 1` (дві тонкі заливки, лише видимий viewport; при дуже сильному віддаленні або понад ~8000 клітин у кадрі шахматку пропускаємо — лишаються лінії 0,5 м). Інтер’єри дірок у «матрьошці» штрафних зон **не** перекриваються окремою заливкою — видно ту саму шахматку, що й на решті поля. Для центрів після перетягування: `TARGET_PLACEMENT_SNAP_M` і `PROP_PLACEMENT_SNAP_M` (0,05 м), щоб дрібно позиціонувати мішені й стикувати реквізит.
 - **Зміна розміру поля** — `setFieldSizeM` і завантаження файлу викликають `reclampTargetsProps`: усі позиції обмежуються новими межами; реквізит проходить через `migrateProp` (старі типи `wall`/`window` прибираються, `port` → `shieldWithPort`, корекція розміру `tireStack`). У **шапці** (числові поля та пресети) перед `setFieldSizeM` викликається `fieldResizeChangesEntities` (`fieldResizeImpact.ts`); якщо симуляція reclamp змінює сцену — показується `window.confirm` з текстом `toolbar.fieldResizeConfirm`.
-- **3D і знімок PDF** — `a4PrintLayout.ts`: для PNG брифінгу **`briefingPdfSnapshotAspectRatio`** (не вужче за **`PDF_BRIEFING_SNAPSHOT_MIN_ASPECT`**, для широких полів — як `stageViewportAspectRatio`), **`pdfSnapshotPixelSize`** (ширина колонки PDF × **`PDF_SNAPSHOT_EXPORT_SCALE`** у `capturePngDataUrl`), висота з цього aspect. У **`StageView3D`** режим камери `pdf` дає той самий aspect, що й PNG; обгортка канваса (`App.css`) — вписаний прямокутник (`--pdf-aspect`, `min(100cqw, …)`). Параметри **«Без тіней»** та **«Чорно-біле»** — `.app__view3d-render-tools` у `App.tsx`.
+- **3D і знімок PDF** — `a4PrintLayout.ts`: для PNG брифінгу **`briefingPdfSnapshotAspectRatio`** (не вужче за **`PDF_BRIEFING_SNAPSHOT_MIN_ASPECT`**, для широких полів — як `stageViewportAspectRatio`), **`pdfSnapshotPixelSize`** (ширина колонки PDF × **`PDF_SNAPSHOT_EXPORT_SCALE`** у `capturePngDataUrl`), висота з цього aspect. У **`StageView3D`** режим камери `pdf` дає той самий aspect, що й PNG; обгортка канваса (`App.css`) — вписаний прямокутник (`--pdf-aspect`, `min(100cqw, …)`). Параметри **«Без тіней»** та **«Чорно-біле»** — блок **`.app__view3d-render-tools`** у `App.tsx` (**верхній правий кут** картки 3D, кнопки **вертикально**).
 
 ## Розстановка з тулбару (placement)
 
@@ -108,7 +108,7 @@
 
 ## Домен: реквізит
 
-Повний перелік — **`PropType`** у `models.ts` (двері, штрафна лінія, щити звичайні/подвійні/з портом і варіантами порту, дверцята в порті, бочка, шини, **стіл** `woodTable`, **стілець** `woodChair`, **стійка** `weaponRackPyramid`, качель, платформа, тунель Купера, стартова позиція). Дефолтні розміри та геометрія плану/3D — **`propGeometry.ts`** (у т.ч. спеціалізовані малювалки для щитів з портом, качелі тощо в `StageCanvas` / `StageView3D`).
+Повний перелік — **`PropType`** у `models.ts` (двері, штрафна лінія, щити звичайні/подвійні/з портом і варіантами порту, дверцята в порті, бочка, шини, **стіл** `woodTable`, **стілець** `woodChair`, **стійка** `weaponRackPyramid`, декор **авто** `decorationCar` — спільна логіка пропорцій у `decorationCarGeometry.ts` для `CarSUV` і плану 2D, качель, платформа, тунель Купера, стартова позиція). Додаткове подовження кабіни вперед (передня зона дверей / вікно): **`DECORATION_CABIN_EXTRA_FORWARD_LENGTH_M`** у тому ж файлі. Дефолтні розміри та геометрія плану/3D — **`propGeometry.ts`** (у т.ч. спеціалізовані малювалки для щитів з портом, качелі тощо в `StageCanvas` / `StageView3D`).
 
 ## Файл вправи (`*.stage.json`)
 
@@ -129,7 +129,7 @@
 - Обгортка зберігання містить **`draftMetaVersion`** (`SESSION_DRAFT_META_VERSION`), час `savedAt`, знімок `stage` (у т.ч. **`penaltyZoneSet`**) + `briefing`.
 - Старт: `hydrateSessionDraft()` у `main.tsx` **до** першого рендеру; парсинг через `parseStageProjectJson`. Після відновлення — `temporal.clear()`. Пошкоджений JSON видаляється зі сховища.
 - `SessionDraftPersist` — debounce **450 ms** (`DEBOUNCE_MS`).
-- Очистити вправу: кнопка кошика на 2D-карті; `resetSceneToDefaults`, `defaultStageBriefing()`, `temporal.clear`, `clearSessionDraftStorage`.
+- Очистити вправу: кнопка кошика у **стовпчику під міні-картою**; `resetSceneToDefaults`, `defaultStageBriefing()`, `temporal.clear`, `clearSessionDraftStorage`.
 
 ## 3D
 
@@ -141,8 +141,12 @@
 
 ## PDF брифінгу
 
-- **`exportBriefingPdf.ts`** + **`pdfBriefingLogos.ts`** — заголовок PDF: лого зліва (`fpsu.png`, `ipsc.png`; fallback `.svg`); базова висота слоту лого — **`PDF_BRIEFING_LOGO_ROW_MM`** (~22 мм); для ФПСУ можливий легкий множник висоти (`FPSU_LOGO_HEIGHT_FACTOR`). Широкий файл UA+LAT (aspect ≥ порога в коді) — ліва половина аркуша + inset і зріз низу; квадратний **`fpsu.png`** у репо йде без цієї гілки. Між лого й QR — назва матчу / заголовок; QR; таблиця; знімок; бренд. **`fpsu.png`** у репозиторії — кроп UPSF з practical-shooting.org.ua (`cropped-UPSF_Logo_512-270x270`). **`pdfFonts.ts`** — Roboto.
+- **`exportBriefingPdf.ts`** + **`pdfBriefingLogos.ts`** — заголовок PDF: лого зліва (`fpsu.png`, `ipsc.png`; fallback `.svg`); показ кожного лого керується полями брифінгу **`pdfLogoFpsu`** / **`pdfLogoIpsc`** (зберігаються в `*.stage.json`); базова висота ряду лого — **`PDF_BRIEFING_LOGO_ROW_MM`** (~22 мм); для ФПСУ — додаткові коефіцієнти/зсуви для візуального паритету з IPSC і для обрізки широкого UA-банера. Широкий файл UA+LAT (aspect ≥ порога в коді) — ліва половина аркуша + inset і зріз низу підпису; квадратний **`fpsu.png`** у репо йде без цієї гілки. Між лого й QR — **назва матчу** (`matchName`) / заголовок документа; QR; знімок; бренд; таблиця брифінгу з **`TABLE_FONT_SIZE`** (~10 pt), **`TABLE_CELL_PADDING`**, ширшою колонкою значень. **`fpsu.png`** у репозиторії — офіційний кроп з practical-shooting.org.ua (UPSF). **`pdfFonts.ts`** — Roboto.
 - **`a4PrintLayout.ts`** — розміри A4 в мм/px, співвідношення для знімка плану в UI (узгоджено з PDF).
+
+### Макет 2D: міні-карта та інструменти
+
+- У `App.tsx` / `App.css` блок **`.app__plan-map-corner-stack`**: зверху **`StageMinimap`**, під ним **`.app__plan-map-actions`** (рамка, копіювання/вставка, активації, розміри, вимір, видалення, кошик). Верстка без циклічних **%** ширини в стовпчику, щоб згортання міні-карти не ламало layout.
 
 ## PWA та встановлення
 
@@ -160,7 +164,7 @@ npm run dev       # розробка (Vite)
 npm run build     # tsc -b && vite build → dist/
 npm test          # Vitest (src/**/*.test.ts)
 npm run lint      # ESLint
-npm run check     # як у CI: lint + test + build
+npm run check     # як у CI: lint + test + build + ro-helper:validate + ro-helper:audit-en
 npm run icons     # node scripts/generate-icons-from-preview.mjs
 npm run icons:st  # ST на SB-only master з git (за замовч. b2b5854:public/icon-preview.png; ICON_BASE_REF=…) + npm run icons
 ```
@@ -170,7 +174,7 @@ npm run icons:st  # ST на SB-only master з git (за замовч. b2b5854:pu
 - `tsconfig.app.json` **виключає** `src/**/*.test.ts` з `tsc -b`; фікстури в тестах мають відповідати доменним типам.
 - Unit-тести в `src/domain/`: `field.test.ts` (розмір поля, snap, clamp), `safetyAngles.test.ts` (парсинг кутів, клин безпеки), `fieldEntityReclamp.test.ts` (reclamp після зміни поля, міграція `wall`), `computeMinRounds.test.ts`, `targetSummary.test.ts`, `activationBriefing.test.ts` (списки номерів для BL-004), `stageProjectFile.test.ts` (у т. ч. міграції застарілих типів мішеней у JSON), `fieldResizeImpact.test.ts`, `penaltyZones.test.ts`, `overviewAnchor.test.ts`, `planClipboard.test.ts` (центроїд, вставка), `a4PrintLayout.test.ts` (aspect PNG для PDF).
 - Unit-тести в `src/presentation/lib/`: `viewTransform.test.ts` (світ ↔ екран, pan до центру).
-- **Перевірка як у CI:** `npm run check` → ESLint, Vitest, `tsc -b`, production `vite build` (успішний вихід = готово до push у `main` / `staging`).
+- **Перевірка як у CI:** `npm run check` → ESLint, Vitest, `tsc -b`, production `vite build`, **`ro-helper:validate`**, **`ro-helper:audit-en --quiet`** (успішний вихід = готово до push у `main` / `staging`).
 
 ### Примітки з код-рев’ю (огляд 3D і домен)
 

@@ -50,6 +50,7 @@ const PROP_TYPES: PropType[] = [
   'woodTable',
   'woodChair',
   'weaponRackPyramid',
+  'decorationCar',
   'seesaw',
   'movingPlatform',
   'cooperTunnel',

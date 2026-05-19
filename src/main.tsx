@@ -76,9 +76,9 @@ setPwaApplyUpdate(reloadForNewServiceWorker)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <I18nProvider>
-      <HelmetProvider>
-        <BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <I18nProvider>
           <RoutePageViewAnalytics />
           <Routes>
             <Route path="/" element={<RootRedirect />} />
@@ -191,10 +191,10 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/e/:shareId" element={<ShareStageRoute mode="edit" />} />
             <Route path="*" element={<Navigate to={`/${getInitialLocale()}`} replace />} />
           </Routes>
-        </BrowserRouter>
-        <Analytics />
-        <GoogleAnalytics />
-      </HelmetProvider>
-    </I18nProvider>
+          <Analytics />
+          <GoogleAnalytics />
+        </I18nProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   </StrictMode>,
 )

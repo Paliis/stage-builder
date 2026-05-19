@@ -156,6 +156,11 @@ export const COOPER_TUNNEL_DEFAULT_WIDTH_M = 1
 /** Стартова позиція на плані: розмах «стоп» × глибина кроку (м). */
 export const START_POSITION_DEFAULT_SIZE_M: Vec2 = { x: 0.52, y: 0.72 }
 
+/** Декор «авто» на плані: довжина × ширина колії (м), еталон середній SUV (~4,7 × 1,9). */
+export const DECORATION_CAR_DEFAULT_SIZE_M: Vec2 = { x: 4.7, y: 1.9 }
+/** Загальна висота процедурного SUV у 3D (м), узгоджено з `CarSUV`. */
+export const DECORATION_CAR_HEIGHT_M = 1.75
+
 /** Стіл у плані: довга сторона × коротша (м); висота столу в 3D фіксована. */
 export const WOOD_TABLE_DEFAULT_SIZE_M: Vec2 = { x: 1.2, y: 0.65 }
 export const WOOD_TABLE_HEIGHT_M = 0.76
@@ -298,6 +303,8 @@ export function defaultPropSizeM(type: PropType): Vec2 {
       return { x: WOOD_CHAIR_DEFAULT_SIZE_M.x, y: WOOD_CHAIR_DEFAULT_SIZE_M.y }
     case 'weaponRackPyramid':
       return { x: WEAPON_RACK_PYRAMID_DEFAULT_SIZE_M.x, y: WEAPON_RACK_PYRAMID_DEFAULT_SIZE_M.y }
+    case 'decorationCar':
+      return { x: DECORATION_CAR_DEFAULT_SIZE_M.x, y: DECORATION_CAR_DEFAULT_SIZE_M.y }
     default: {
       const _e: never = type
       return _e
@@ -337,6 +344,8 @@ export function propHeightM(p: Prop): number {
       return WOOD_CHAIR_HEIGHT_M
     case 'weaponRackPyramid':
       return WEAPON_RACK_PYRAMID_HEIGHT_M
+    case 'decorationCar':
+      return DECORATION_CAR_HEIGHT_M
     default: {
       const _e: never = p.type
       return _e

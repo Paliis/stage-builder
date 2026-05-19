@@ -79,6 +79,7 @@ import {
   overviewAnchorRelevantSignature,
 } from '../../domain/overviewAnchor'
 import { stageToThreeXZ, type StageFieldM } from '../lib/stageCoordinates3d'
+import { CarSUV } from './CarSUV'
 
 function Activations3D() {
   const targets = useStageStore((s) => s.targets)
@@ -1733,6 +1734,14 @@ function Prop3D({ p }: { p: Prop }) {
 
   if (p.type === 'woodChair') {
     return <WoodChair3D p={p} x={x} z={z} />
+  }
+
+  if (p.type === 'decorationCar') {
+    return (
+      <group position={[x, 0, z]} rotation={[0, p.rotationRad, 0]}>
+        <CarSUV lengthM={p.sizeM.x} widthM={p.sizeM.y} heightM={h} />
+      </group>
+    )
   }
 
   if (p.type === 'weaponRackPyramid') {
