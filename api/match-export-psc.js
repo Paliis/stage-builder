@@ -22917,11 +22917,19 @@ function reclampPlanDimensionsToField(dims, widthM, heightM) {
 }
 
 // src/domain/rangeDistanceSigns.ts
+var RANGE_DISTANCE_SIGN_LABEL_MIN = 1;
+var RANGE_DISTANCE_SIGN_LABEL_MAX = 999;
+function clampRangeDistanceSignLabelM(labelM) {
+  const n = Math.round(labelM);
+  if (!Number.isFinite(n)) return RANGE_DISTANCE_SIGN_LABEL_MIN;
+  return Math.min(RANGE_DISTANCE_SIGN_LABEL_MAX, Math.max(RANGE_DISTANCE_SIGN_LABEL_MIN, n));
+}
 function reclampRangeDistanceSignsToField(signs, fieldHeightM) {
   const fh = Math.max(fieldHeightM, 0);
   return signs.map((s) => ({
     ...s,
-    edgePositionYM: Math.min(Math.max(s.edgePositionYM, 0), fh)
+    edgePositionYM: Math.min(Math.max(s.edgePositionYM, 0), fh),
+    labelM: clampRangeDistanceSignLabelM(s.labelM)
   }));
 }
 
@@ -23189,8 +23197,7 @@ function parseRangeDistanceSign(raw, idx) {
   if (typeof edgePositionYM !== "number" || !Number.isFinite(edgePositionYM)) return null;
   if (typeof labelM !== "number" || !Number.isFinite(labelM)) return null;
   const labelRounded = Math.round(labelM);
-  const labelClamped = Math.min(999, Math.max(1, labelRounded));
-  return { id, edgePositionYM, labelM: labelClamped };
+  return { id, edgePositionYM, labelM: clampRangeDistanceSignLabelM(labelRounded) };
 }
 function parsePlanDimensionLine(raw, idx, targets, props) {
   if (typeof raw !== "object" || raw === null) return null;

@@ -2,8 +2,8 @@
 
 Документ для розробників: архітектура, домен, формати даних, збірка та відомі обмеження.
 
-**Пов’язані документи:** зведений контекст (бізнес + техніка + індекс `docs/`) — **[PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)**; бізнес- і технічний огляд **[PRODUCT.md](./PRODUCT.md)**; план порталу (архітектура, бренд, URL, хостінг) **[PORTAL_PLAN.md](./PORTAL_PLAN.md)**; **беклог ідей** **[BACKLOG.md](./BACKLOG.md)**; чернетка **видимість / промені 2D** (BL-010 / BL-013) — **[VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md)**; повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**; **оптимізація бандла** — **[OPTIMIZATION.md](./OPTIMIZATION.md)**; **план посилання на вправу (BL-001)** — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**; **політика публікації (чернетка BL-001)** — **[PUBLISH_POLICY.md](./PUBLISH_POLICY.md)**; **Bluetooth-таймер SG Timer, BLE (BL-014)** — **[BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md)**; **активації на плані (BL-004, специфіка рішень)** — **[BL-004_ACTIVATIONS.md](./BL-004_ACTIVATIONS.md)**.  
-**Важливо:** позначки V0 / V1 / V2 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **3**: штрафні зони, активації).
+**Пов’язані документи:** зведений контекст (бізнес + техніка + індекс `docs/`) — **[PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)**; **джерела даних (файл, `localStorage`, Supabase)** — **[DATA_AND_STORAGE.md](./DATA_AND_STORAGE.md)**; бізнес- і технічний огляд **[PRODUCT.md](./PRODUCT.md)**; план порталу (архітектура, бренд, URL, хостінг) **[PORTAL_PLAN.md](./PORTAL_PLAN.md)**; **беклог ідей** **[BACKLOG.md](./BACKLOG.md)**; чернетка **видимість / промені 2D** (BL-010 / BL-013) — **[VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md)**; повний опис функціоналу **[FUNCTIONALITY.md](./FUNCTIONALITY.md)**; продуктові версії **[VERSIONING.md](./VERSIONING.md)**; чернетка зворотного зв’язку **[USER_FEEDBACK.md](./USER_FEEDBACK.md)**; **оптимізація бандла** — **[OPTIMIZATION.md](./OPTIMIZATION.md)**; **план посилання на вправу (BL-001)** — **[BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md)**; **політика публікації (чернетка BL-001)** — **[PUBLISH_POLICY.md](./PUBLISH_POLICY.md)**; **Bluetooth-таймер SG Timer, BLE (BL-014)** — **[BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md)**; **активації на плані (BL-004, специфіка рішень)** — **[BL-004_ACTIVATIONS.md](./BL-004_ACTIVATIONS.md)**.  
+**Важливо:** позначки V0 / V1 / V2 — це продукт, не версія схеми файлу. Версія JSON-вправи — `STAGE_PROJECT_VERSION` у `stageProjectFile.ts` (зараз **6**; історія змін схеми — коментар біля константи та `[DATA_AND_STORAGE.md](./DATA_AND_STORAGE.md)`).
 
 ## Посилання на вправу (BL-001)
 
@@ -37,9 +37,9 @@
 
 | Шар | Каталог | Відповідальність |
 |-----|---------|------------------|
-| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), **чернетка тексту активацій для брифінгу** (`activationBriefing.ts`, BL-004), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), опорна точка огляду 3D (`overviewAnchor.ts`), покриття площадки в 3D (`fieldGround3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
+| **Domain** | `src/domain/` | Типи (`models.ts`), геометрія мішеней і реквізиту (`propGeometry.ts`, `swingerGeometry.ts`), константи габаритів (IPSC, A4, кераміка), розрахунки (`computeMinRounds`, `targetSummary`), **чернетка тексту активацій для брифінгу** (`activationBriefing.ts`, BL-004), **таблички дистанції** (`rangeDistanceSigns.ts`), парсинг/збірка `*.stage.json`, буфер плану (`planClipboard.ts`), кути безпеки (`safetyAngles.ts`), маппінг 3D (`stageCoordinates3d.ts`), опорна точка огляду 3D (`overviewAnchor.ts`), покриття площадки в 3D (`fieldGround3d.ts`), макет A4/PDF (`a4PrintLayout.ts`) |
 | **Application** | `src/application/` | Zustand: сцена (`stageStore`, у т. ч. **`activations`** BL-004, undo/redo через `zundo`), брифінг (`briefingStore`), чернетка `localStorage` (`sessionDraft.ts`), компонент **`SessionDraftPersist.tsx`** (підписка + debounce) |
-| **Presentation** | `src/presentation/` | React-компоненти: `StageCanvas`, `StageView3D`, `StageBuilderToolbar`, `StageMinimap`, `GoogleAnalytics`; хуки (`usePwaInstall`); бібліотеки: `exportBriefingPdf`, `pdfFonts`, `viewTransform` |
+| **Presentation** | `src/presentation/` | React-компоненти: `StageCanvas`, `StageView3D`, `RangeDistanceSignDialog`, `StageBuilderToolbar`, `StageMinimap`, `GoogleAnalytics`; хуки (`usePwaInstall`); бібліотеки: `exportBriefingPdf`, `pdfFonts`, `viewTransform` |
 | **Корінь UI** | `src/App.tsx` | Композиція layout, брифінг-форма, гарячі клавіші, lazy-3D, стрічка staging, посилання на канвас через `ref` (`StageCanvasHandle`) |
 | **i18n** | `src/i18n/` | Дерева рядків UK/EN (`messages.ts`), `I18nProvider`, `getMessage` / `formatTemplate`, `localStorage` для мови (`storage.ts`) |
 | **Портал** | `src/portal/` | `PortalShell`, home, калькулятор Hit Factor, RO Helper (lazy), акаунт, модуль матчів (`matches/*`; прапорець **`isMatchPortalEnabled`**), утиліти сесії (**`useSupabaseSession`**) |
@@ -113,7 +113,7 @@
 ## Файл вправи (`*.stage.json`)
 
 - Контракт: `stageProjectFile.ts` — `STAGE_PROJECT_FORMAT`, `STAGE_PROJECT_VERSION`, розширення `.stage.json`.
-- Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `fieldGroundCover3d`, `targets`, `props`, **`penaltyZoneSet`** з `version >= 2`) + об’єкт брифінгу.
+- Вміст: знімок сцени (`name`, `weaponClass`, `fieldSizeM`, `fieldGroundCover3d`, `targets`, `props`, **`penaltyZoneSet`** з `version >= 2`, **`rangeDistanceSigns`**) + об’єкт брифінгу. Таблички дистанції біля лівого краю: при парсингу **`labelM` clamp 1…999 м** (`rangeDistanceSigns.ts`).
 - Для квадратних сталевих мішеней у JSON зберігається опційне **`metalRectSideCm`** (15 | 20 | 30).
 - При завантаженні: `migrateProp` у `stageStore` (узгоджено з парсером).
 - **BL-019** (замкнені контури штрафних зон): у проді — `penaltyZoneSet` у JSON, **`PENALTY_ZONE_CLOSE_EPSILON_M`** = 0,05 у `penaltyZones.ts`; після замикання контуру **`resolveClosedPenaltyRing`** вирішує, чи це новий полігон, чи дірка в існуючому (найменший зовнішній контур, що містить ситуацію), без окремого режиму «дірка в останньому»; при кресленні та перетягуванні вершин **прив’язка** — **`PENALTY_CONTOUR_VERTEX_SNAP_M`** = 0,1 у `field.ts` (тонше за загальну сітку **`GRID_SNAP_M`**); на 2D-плані вершини показані однаковими біло-червоними маркерами (окремої «режимної» плями під час виділення немає): клік — перетягування, під час переміщення малюється довжина **двох суміжних** ребер; запис у сторі **`movePenaltyVertex`** нормалізує позицію так само, як клік при кресленні: **`clampVec2ToField(..., 1, …)`** + **`PENALTY_CONTOUR_VERTEX_SNAP_M`**; Delete/Backspace — видалення вершини (`movePenaltyVertex` / `removePenaltyVertex` у `stageStore.ts`); 2D — `StageCanvas.tsx`; 3D — сегменти контуру як «стінки» з тими ж габаритами/кольором, що **`faultLine`** (`PenaltyZonesFaultLines3D` у `StageView3D.tsx`); орієнтація ребра: кут навколо **Y** = `atan2(-dz, dx)` у просторі Three (після `Ry` локальна **+X** дає `(cos θ, 0, −sin θ)`). Деталі — [VISIBILITY_AND_SAFETY_RULES.md §4](./VISIBILITY_AND_SAFETY_RULES.md).
@@ -126,7 +126,7 @@
 ## Чернетка сесії (localStorage)
 
 - Ключ **`stage-builder-session-draft-v1`** (`SESSION_DRAFT_STORAGE_KEY` у `sessionDraft.ts`).
-- Обгортка зберігання містить **`draftMetaVersion`** (`SESSION_DRAFT_META_VERSION`), час `savedAt`, знімок `stage` (у т.ч. **`penaltyZoneSet`**) + `briefing`.
+- Обгортка зберігання містить **`draftMetaVersion`** (`SESSION_DRAFT_META_VERSION`), час `savedAt`, знімок `stage` (у т.ч. **`penaltyZoneSet`**, **`rangeDistanceSigns`**) + `briefing`.
 - Старт: `hydrateSessionDraft()` у `main.tsx` **до** першого рендеру; парсинг через `parseStageProjectJson`. Після відновлення — `temporal.clear()`. Пошкоджений JSON видаляється зі сховища.
 - `SessionDraftPersist` — debounce **450 ms** (`DEBOUNCE_MS`).
 - Очистити вправу: кнопка кошика у **стовпчику під міні-картою**; `resetSceneToDefaults`, `defaultStageBriefing()`, `temporal.clear`, `clearSessionDraftStorage`.
@@ -137,7 +137,7 @@
 - **Огляд і режим PDF:** початкова точка огляду (`StageNavigator`) береться з `computeOverviewAnchorWorld2d` (`overviewAnchor.ts`): якщо на сцені є стартові позиції — центр обраної з мінімальним **Y** на плані, при рівності — з максимальним **X**; інакше серед усіх кінців усіх штрафних ліній (`faultLine`) та сама логіка; якщо немає ні старту, ні ліній — центр поля. Відносний зсув камери до точки погляду зберігається як у попередній фіксованій схемі для центру поля.
 - **Розмір WebGL:** обгортка з `ResizeObserver` задає піксельні `width`/`height` для `Canvas`; у `App.css` — **absolute inset 0** на `.app__r3f-canvas-outer` (не PDF), **stretch** на `.app__stage-print-frame`, **`min-height`** на картці (коли `100cqw === 0`, `height` міг бути 0px).
 - **Земля:** площина поля — `Ground`, `meshStandardMaterial`, `receiveShadow`; колір з **`fieldGroundCover3d`** (`earth` / `grass` / `sand` у `fieldGround3d.ts`), зберігається в **`.stage.json`** і чернетці сесії.
-- Знімок для PDF: у **3D** — `capturePngDataUrl` у `StageView3D`; у **2D** — `captureVisiblePngDataUrl` у `StageCanvas` (PNG поточного кадру канвасу: видимий viewport, сітка, закріплені розміри `planDimensions`). Виклик з `App.handleExportPdf` після пару `requestAnimationFrame`.
+- Знімок для PDF: у **3D** — `capturePngDataUrl` у `StageView3D` (у т. ч. **`rangeDistanceSigns`** — `RangeDistanceSigns3D`); у **2D** — `captureVisiblePngDataUrl` у `StageCanvas` (PNG поточного кадру канвасу: видимий viewport, сітка, закріплені розміри `planDimensions`, таблички дистанції). Виклик з `App.handleExportPdf` після пару `requestAnimationFrame`. Окремого коду в `exportBriefingPdf.ts` для табличок немає — лише вставка готового PNG.
 
 ## PDF брифінгу
 
@@ -271,6 +271,7 @@ SPA-роутінг: автоматичний `page_view` вимкнено (`send
 
 | Тема | Файл |
 |------|------|
+| Дані: файл, `localStorage`, Supabase | `docs/DATA_AND_STORAGE.md` |
 | Продуктові версії V0 / V1 / V2 | `docs/VERSIONING.md` |
 | Зворотний зв’язок (ідеї) | `docs/USER_FEEDBACK.md` |
 | Моделі мішеней і реквізиту | `src/domain/models.ts` |

@@ -40,9 +40,7 @@ import {
   clampFieldDimensions,
   clampVec2ToField,
   FIELD_SIZE_PRESETS,
-  GRID_SNAP_M,
   PENALTY_CONTOUR_VERTEX_SNAP_M,
-  snapMeters,
   snapVec2,
   STAGE_CARD_UI_DEPTH_FACTOR,
 } from './domain/field'
@@ -54,10 +52,6 @@ import {
   serializeStageProject,
   suggestedStageProjectFileName,
 } from './domain/stageProjectFile'
-import {
-  RANGE_DISTANCE_SIGN_LABEL_MAX,
-  RANGE_DISTANCE_SIGN_LABEL_MIN,
-} from './domain/rangeDistanceSigns'
 import { summarizeTargetsDescriptionFromScene } from './domain/targetSummary'
 import { useI18n } from './i18n/useI18n'
 import { CANONICAL_PRODUCTION_ORIGIN } from './seo/canonicalProductionOrigin'
@@ -74,6 +68,7 @@ import type { CameraMode3D, StageView3DHandle } from './presentation/components/
 import type { WorldViewportRect } from './presentation/lib/viewTransform'
 import { PwaUpdateBanner } from './presentation/components/PwaUpdateBanner'
 import { SharePublishDialog } from './presentation/components/SharePublishDialog'
+import { RangeDistanceSignDialog } from './presentation/components/RangeDistanceSignDialog'
 import { usePwaInstall } from './presentation/hooks/usePwaInstall'
 import './App.css'
 
@@ -252,8 +247,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const [dimensionLinkMode, setDimensionLinkMode] = useState(false)
   const [dimensionDraftWorld, setDimensionDraftWorld] = useState<Vec2 | null>(null)
   const [rangeSignDialogOpen, setRangeSignDialogOpen] = useState(false)
-  const [rangeSignLabelDraft, setRangeSignLabelDraft] = useState('300')
-  const [rangeSignEdgeYDraft, setRangeSignEdgeYDraft] = useState('0')
+  const [rangeSignDialogSession, setRangeSignDialogSession] = useState(0)
   const [planSelectionSummary, setPlanSelectionSummary] = useState<PlanSelectionSummary>({
     empty: true,
     count: 0,
@@ -740,43 +734,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     },
     [addPlanDimensionLine],
   )
-
-  const openRangeSignDialog = useCallback(() => {
-    setRangeSignLabelDraft('300')
-    setRangeSignEdgeYDraft(String(snapMeters(fieldSizeM.y * 0.5, GRID_SNAP_M)))
-    setRangeSignDialogOpen(true)
-  }, [fieldSizeM.y])
-
-  const rangeSignLabelValid = useMemo(() => {
-    const raw = rangeSignLabelDraft.trim().replace(',', '.')
-    const n = parseInt(raw, 10)
-    if (raw !== String(n)) return false
-    return Number.isFinite(n) && n >= RANGE_DISTANCE_SIGN_LABEL_MIN && n <= RANGE_DISTANCE_SIGN_LABEL_MAX
-  }, [rangeSignLabelDraft])
-
-  const rangeSignEdgeYValid = useMemo(() => {
-    const raw = rangeSignEdgeYDraft.trim().replace(',', '.')
-    const y = parseFloat(raw)
-    if (!Number.isFinite(y)) return false
-    return y >= 0 && y <= fieldSizeM.y
-  }, [rangeSignEdgeYDraft, fieldSizeM.y])
-
-  const rangeSignFormValid = rangeSignLabelValid && rangeSignEdgeYValid
-
-  const confirmRangeSignDialog = useCallback(() => {
-    if (!rangeSignFormValid) return
-    const rawY = rangeSignEdgeYDraft.trim().replace(',', '.')
-    const y = parseFloat(rawY)
-    const rawL = rangeSignLabelDraft.trim().replace(',', '.')
-    const n = parseInt(rawL, 10)
-    addRangeDistanceSign(y, n)
-    setRangeSignDialogOpen(false)
-  }, [
-    rangeSignFormValid,
-    rangeSignEdgeYDraft,
-    rangeSignLabelDraft,
-    addRangeDistanceSign,
-  ])
 
   const armTargetPlacement = useCallback(
     (type: TargetType, isNoShoot = false) => {
@@ -1694,7 +1651,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                           setActivationPendingFrom(null)
                           setDimensionLinkMode(false)
                           setDimensionDraftWorld(null)
-                          openRangeSignDialog()
+                          setRangeSignDialogSession((n) => n + 1)
+                          setRangeSignDialogOpen(true)
                         }}
                       >
                         <svg
@@ -1884,76 +1842,14 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         </div>
       ) : null}
 
-      {rangeSignDialogOpen ? (
-        <div
-          className="app__modal-center-backdrop"
-          role="presentation"
-          onClick={() => setRangeSignDialogOpen(false)}
-        >
-          <div
-            className="app__modal-center-card"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="range-sign-dialog-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p id="range-sign-dialog-title" className="app__selection-sheet__title">
-              {tree.view.rangeDistanceSignDialogTitle}
-            </p>
-            <p className="app__selection-sheet__hint">{tree.view.rangeDistanceSignDialogHint}</p>
-            <label className="app__field">
-              {tree.view.rangeDistanceSignLabelField}
-              <input
-                type="text"
-                inputMode="numeric"
-                maxLength={3}
-                value={rangeSignLabelDraft}
-                onChange={(e) => setRangeSignLabelDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && rangeSignFormValid) {
-                    e.preventDefault()
-                    confirmRangeSignDialog()
-                  }
-                }}
-                autoFocus
-              />
-            </label>
-            <label className="app__field">
-              {tree.view.rangeDistanceSignEdgeField}
-              <input
-                type="text"
-                inputMode="decimal"
-                value={rangeSignEdgeYDraft}
-                onChange={(e) => setRangeSignEdgeYDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && rangeSignFormValid) {
-                    e.preventDefault()
-                    confirmRangeSignDialog()
-                  }
-                }}
-              />
-            </label>
-            <p className="app__modal-center-card__field-hint">
-              {formatTemplate(tree.view.rangeDistanceSignEdgeHint, { max: String(fieldSizeM.y) })}
-            </p>
-            <button
-              type="button"
-              className="app__selection-sheet__btn app__selection-sheet__btn--primary"
-              disabled={!rangeSignFormValid}
-              onClick={confirmRangeSignDialog}
-            >
-              {tree.view.rangeDistanceSignConfirm}
-            </button>
-            <button
-              type="button"
-              className="app__selection-sheet__btn app__selection-sheet__btn--ghost"
-              onClick={() => setRangeSignDialogOpen(false)}
-            >
-              {tree.view.rangeDistanceSignCancel}
-            </button>
-          </div>
-        </div>
-      ) : null}
+      <RangeDistanceSignDialog
+        key={rangeSignDialogSession}
+        open={rangeSignDialogOpen}
+        onOpenChange={setRangeSignDialogOpen}
+        fieldHeightM={fieldSizeM.y}
+        onConfirm={addRangeDistanceSign}
+        tree={tree}
+      />
 
       <details className="app__briefing">
         <summary>{tree.briefing.summary}</summary>

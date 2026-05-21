@@ -127,7 +127,8 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 
 ### 3.4. Дані
 
-- **Файл вправи:** `*.stage.json`, версія формату **`STAGE_PROJECT_VERSION`** (зараз **3** — штрафні зони, активації) у `stageProjectFile.ts`.
+- Зведена таблиця ключів і сценарій після скидання БД — **[DATA_AND_STORAGE.md](./DATA_AND_STORAGE.md)**.
+- **Файл вправи:** `*.stage.json`, версія формату **`STAGE_PROJECT_VERSION`** (зараз **6** у `stageProjectFile.ts`).
 - **Чернетка:** ключ `stage-builder-session-draft-v1` у `localStorage`, debounce ~450 ms.
 - **Брифінг:** окремий стор **без** undo (undo лише для сцени).
 
@@ -163,7 +164,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 |---------------|----------|
 | Портал, URL, roadmap, freemium | [PORTAL_PLAN.md](./PORTAL_PLAN.md) |
 | RO Helper (контент v0, UK+EN, IPSC/ФПСУ) | [RO_HELPER_V0.md](./RO_HELPER_V0.md), [RO_HELPER_CONTENT_TZ.md](./RO_HELPER_CONTENT_TZ.md), глосарій, topic map, реєстр карток, матриця |
-| Share / Supabase | [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md), [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md), [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md), [PUBLISH_POLICY.md](./PUBLISH_POLICY.md) |
+| Share / Supabase | [BL-001_SHARE_LINK_PLAN.md](./BL-001_SHARE_LINK_PLAN.md), [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md), [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md), [PUBLISH_POLICY.md](./PUBLISH_POLICY.md), [DATA_AND_STORAGE.md](./DATA_AND_STORAGE.md) |
 | Активації | [BL-004_ACTIVATIONS.md](./BL-004_ACTIVATIONS.md) |
 | BLE-таймер (дослідження) | [BL-014_SG_TIMER_BLE.md](./BL-014_SG_TIMER_BLE.md) |
 | Штрафні зони / видимість (чернетка правил) | [VISIBILITY_AND_SAFETY_RULES.md](./VISIBILITY_AND_SAFETY_RULES.md) |
@@ -205,6 +206,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | **RO_HELPER_CARD_REGISTRY.md** | Реєстр карток |
 | **RO_HELPER_CARD_MATRIX.md** | Матриця карток (Markdown) |
 | **RO_HELPER_CARD_MATRIX.csv** | Та сама матриця (CSV) |
+| **DATA_AND_STORAGE.md** | Джерела даних поза Git: `*.stage.json`, ключі `localStorage`, Supabase після скидання БД |
 | **CLAUDE_DESIGN_UX_PACKAGE.md** | Промпт і список документів для Claude (дизайн / UI-UX порталу) |
 | **DESIGN_SYSTEM_V0.md** | Дизайн-система v0.1 (токени, патерни, IA, a11y) — імплементація поетапно |
 
@@ -229,6 +231,7 @@ npm run icons:st     # ST на іконці + похідні PNG/favicon/og
 | Задача | Документи |
 |--------|-----------|
 | Зрозуміти «що за продукт» за 5 хв | Цей файл → [PRODUCT.md](./PRODUCT.md) |
+| Що зберігається локально / у хмарі (перед скиданням БД) | [DATA_AND_STORAGE.md](./DATA_AND_STORAGE.md) |
 | Реалізувати фічу в редакторі | [FUNCTIONALITY.md](./FUNCTIONALITY.md) → [TECH.md](./TECH.md) → код у `src/domain/` |
 | Share / Supabase / деплой секретів | [TECH.md](./TECH.md) (розділ BL-001) → [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md) |
 | Новий модуль на порталі | [PORTAL_PLAN.md](./PORTAL_PLAN.md) → [TECH.md](./TECH.md) |

@@ -1,0 +1,41 @@
+# Дані: де що лежить (файл, браузер, Supabase)
+
+Короткий знімок **поза** Git: що варто знати перед **очищенням хмарної БД Supabase**, перенесенням на інший проєкт або перевстановленням браузера. Очищення локальних даних IDE (Cursor) на worktree **не** чіпає Supabase і **не** змінює збережені користувачем файли.
+
+## Файли користувача (диск)
+
+| Що | Де | Примітка |
+|----|-----|----------|
+| Експорт / імпорт вправи | `*.stage.json` | Повний контракт — `src/domain/stageProjectFile.ts`: `STAGE_PROJECT_FORMAT`, **`STAGE_PROJECT_VERSION`** (зараз **6**). У знімку сцени — у т. ч. **`rangeDistanceSigns`** (при відкритті **`labelM` clamp 1…999**). Таблички **не** в `planClipboard` (Ctrl+C/V по плану). |
+| PDF брифінгу | знімок PNG у `exportBriefingPdf` | Таблички з **`rangeDistanceSigns`** входять у **2D/3D PNG** сцени (див. [FUNCTIONALITY.md §7.2a, §10](./FUNCTIONALITY.md)), не в окрему таблицю PDF. |
+
+## Браузер (`localStorage`)
+
+| Ключ | Модуль | Зміст |
+|------|--------|--------|
+| `stage-builder-session-draft-v1` | `sessionDraft.ts` | Чернетка: `draftMetaVersion`, `savedAt`, знімок **`stage`** + **`briefing`** (без зовнішньої обгортки `format`/`version` файлу). Містить ті самі поля сцени, що й `*.stage.json`. |
+| `stage-builder-locale` | `i18n/storage.ts` | Остання мова UI (`uk` / `en`), якщо не задає URL. |
+| `sb-stage-builder-auth` | `supabaseClient.ts` | Сесія Supabase Auth (PKCE); для share достатньо anon, для порталу / матчів — вхід. |
+| `stage-builder-onboarding-collapsed` | `App.tsx` | Стан onboarding у редакторі. |
+| `stage-builder-view3d-shadows`, `stage-builder-view3d-grayscale` | `App.tsx` | Перемикачі знімка 3D. |
+| `stage-builder-pwa-update-prompt-at` | `pwaUpdateGate.ts` | Час останнього банера «доступне оновлення». |
+| `ro-helper-fpsu-layer` | `RoHelperFpsuPrefs.tsx` | Шар ФПСУ в RO Helper. |
+
+Workbox / PWA можуть додавати власні записи кешу (не перелічені тут).
+
+## Supabase (хмара)
+
+| Область | Документ / SQL |
+|---------|----------------|
+| Share: таблиця **`shared_stages`**, RPC **`fetch_shared_stage`**, RLS | [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md), міграції в **`supabase/migrations/`** |
+| Матчі, реєстрація, PSC | [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
+| CLI: логін, link, накат міграцій | [supabase/README.md](../supabase/README.md) |
+
+**Після повного скидання даних у проєкті Supabase** посилання **`/v/:id`**, **`/e/:id`**, публікації та облікові записи користувачів зникають, доки не відновити схему (**`supabase db push`** / застосування міграцій) і не налаштуються знову секрети та змінні середовища на хості (**див. [TECH.md](./TECH.md)**). Код і міграції лишаються в репозиторії.
+
+**Локальні проєкти й файли `*.stage.json` не резервуються автоматично в хмарі** — їх зберігає лише користувач (файл або власні бекапи).
+
+## Пов’язано
+
+- Формат файлу та домен — **[TECH.md](./TECH.md)** (розділи «Файл вправи», «Чернетка сесії»).
+- Env і деплой — **[PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)** §3.5, **[TECH.md](./TECH.md)** (BL-001, публікація).
