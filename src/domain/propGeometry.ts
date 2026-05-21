@@ -30,7 +30,13 @@ export function propOutlineWorld(p: Prop): Vec2[] {
   const rot = p.rotationRad
   const hw = p.sizeM.x / 2
   const hh = p.sizeM.y / 2
-  if (p.type === 'barrel' || p.type === 'tireStack')
+  if (
+    p.type === 'barrel' ||
+    p.type === 'barrelDouble' ||
+    p.type === 'tireStack' ||
+    p.type === 'tireStack1m' ||
+    p.type === 'tireStackTall'
+  )
     return circleWorld(cx, cy, Math.min(hw, hh), 36, rot)
   return rectWorldCorners(cx, cy, hw, hh, rot)
 }
@@ -155,6 +161,17 @@ export const COOPER_TUNNEL_DEFAULT_WIDTH_M = 1
 
 /** Стартова позиція на плані: розмах «стоп» × глибина кроку (м). */
 export const START_POSITION_DEFAULT_SIZE_M: Vec2 = { x: 0.52, y: 0.72 }
+
+/** Одна колона бочок у 3D (м) — еталон для `barrel` і множника подвійної бочки. */
+export const BARREL_COLUMN_HEIGHT_M = 1.1
+/** Подвійна бочка: загальна висота рівно **2×** `BARREL_COLUMN_HEIGHT_M`. */
+export const BARREL_DOUBLE_HEIGHT_M = 2 * BARREL_COLUMN_HEIGHT_M
+/** Малий стос шин (м). */
+export const TIRE_STACK_SMALL_HEIGHT_M = 0.72
+/** Середній стос шин (м). */
+export const TIRE_STACK_1M_HEIGHT_M = 1
+/** Високий стос шин (м). */
+export const TIRE_STACK_TALL_HEIGHT_M = 1.5
 
 /** Декор «авто» на плані: довжина × ширина колії (м), еталон середній SUV (~4,7 × 1,9). */
 export const DECORATION_CAR_DEFAULT_SIZE_M: Vec2 = { x: 4.7, y: 1.9 }
@@ -286,8 +303,14 @@ export function defaultPropSizeM(type: PropType): Vec2 {
       return { x: 2.2, y: FAULT_LINE_SECTION_M }
     case 'barrel':
       return { x: 0.62, y: 0.62 }
+    case 'barrelDouble':
+      return { x: 0.62, y: 0.62 }
     /** У плані той самий діаметр, що й бочка. */
     case 'tireStack':
+      return { x: 0.62, y: 0.62 }
+    case 'tireStack1m':
+      return { x: 0.62, y: 0.62 }
+    case 'tireStackTall':
       return { x: 0.62, y: 0.62 }
     case 'seesaw':
       return { x: SEESAW_PLANK_LENGTH_M, y: SEESAW_PLANK_WIDTH_M }
@@ -318,9 +341,15 @@ export function propHeightM(p: Prop): number {
     case 'faultLine':
       return FAULT_LINE_SECTION_M
     case 'barrel':
-      return 1.1
+      return BARREL_COLUMN_HEIGHT_M
+    case 'barrelDouble':
+      return BARREL_DOUBLE_HEIGHT_M
     case 'tireStack':
-      return 0.72
+      return TIRE_STACK_SMALL_HEIGHT_M
+    case 'tireStack1m':
+      return TIRE_STACK_1M_HEIGHT_M
+    case 'tireStackTall':
+      return TIRE_STACK_TALL_HEIGHT_M
     case 'shield':
     case 'shieldDouble':
     case 'shieldWithPort':

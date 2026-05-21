@@ -18,7 +18,10 @@ export const INFRASTRUCTURE_FAULT_LINE: readonly PropType[] = ['faultLine']
 export const INFRASTRUCTURE_EQUIPMENT: readonly PropType[] = [
   'door',
   'barrel',
+  'barrelDouble',
   'tireStack',
+  'tireStack1m',
+  'tireStackTall',
   'woodTable',
   'woodChair',
   'weaponRackPyramid',
@@ -35,7 +38,10 @@ export const INFRASTRUCTURE_PROPS_PRIMARY: readonly PropType[] = [
   'door',
   'faultLine',
   'barrel',
+  'barrelDouble',
   'tireStack',
+  'tireStack1m',
+  'tireStackTall',
 ]
 
 /** @deprecated Див. INFRASTRUCTURE_EQUIPMENT. */
@@ -59,7 +65,10 @@ export const INFRASTRUCTURE_PROP_ORDER: readonly PropType[] = [
   'door',
   'faultLine',
   'barrel',
+  'barrelDouble',
   'tireStack',
+  'tireStack1m',
+  'tireStackTall',
   'woodTable',
   'woodChair',
   'weaponRackPyramid',

@@ -30,6 +30,12 @@ export const DECORATION_CAR_SIDE_GLASS_LENGTH_FRAC = 0.66
 /** Шов між дверима (B-подібний): `cabinCX + frac * cabinLenInner` (0 — геометричний центр кабіни). */
 export const DECORATION_CAR_DOOR_SEAM_CENTER_X_FRAC = 0
 
+/**
+ * Колір кузова SUV у 3D (`meshStandardMaterial.color`).
+ * Світліший за бочку (`PROP_BARREL_BLUE` / `#1d4ed8` у `StageView3D`) приблизно на 2 ступені шкали blue.
+ */
+export const DECORATION_CAR_BODY_HEX = '#3b82f6'
+
 export type DecorationCarGeometry = {
   sx: number
   sz: number

@@ -35,6 +35,8 @@ import {
 import type { Prop, Target, TargetType } from '../../domain/models'
 import { CERAMIC_FACE_HEX, CERAMIC_RADIUS_M } from '../../domain/ceramicPlateSpec'
 import {
+  BARREL_COLUMN_HEIGHT_M,
+  BARREL_DOUBLE_HEIGHT_M,
   cooperTunnelPenaltyPlankOffsetsXM,
   COOPER_TUNNEL_HEIGHT_M,
   isShieldWithPortFamily,
@@ -274,7 +276,7 @@ function StackedBlueBarrelsColumn({
   position,
   rotationY = 0,
   radius = 0.31,
-  totalHeight = 1.1,
+  totalHeight = BARREL_COLUMN_HEIGHT_M,
   layers = 5,
 }: {
   position: readonly [number, number, number]
@@ -293,6 +295,44 @@ function StackedBlueBarrelsColumn({
           <meshStandardMaterial color={PROP_BARREL_BLUE} roughness={0.52} metalness={0.16} />
         </mesh>
       ))}
+    </group>
+  )
+}
+
+/** Дві повноцінні бочки з темним «хомутом» між ними — вигляд відмінний від багатошарової колони `barrel`. */
+function DoubleBlueBarrelsColumn({
+  position,
+  rotationY = 0,
+  radius = 0.31,
+  totalHeight = BARREL_DOUBLE_HEIGHT_M,
+}: {
+  position: readonly [number, number, number]
+  rotationY?: number
+  radius?: number
+  totalHeight?: number
+}) {
+  const r = radius
+  const ringGap = Math.min(0.055, totalHeight * 0.048)
+  const drumH = (totalHeight - ringGap) / 2
+  const yLow = drumH / 2
+  const yHigh = drumH + ringGap + drumH / 2
+  const drumMat = { color: PROP_BARREL_BLUE, roughness: 0.52, metalness: 0.16 } as const
+  const clampMat = { color: '#0c1969', roughness: 0.4, metalness: 0.28 } as const
+  const rimT = Math.max(0.012, r * 0.038)
+  return (
+    <group position={position} rotation={[0, rotationY, 0]}>
+      <mesh position={[0, yLow, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[r, r * 0.97, drumH, 26]} />
+        <meshStandardMaterial {...drumMat} />
+      </mesh>
+      <mesh position={[0, drumH + ringGap / 2, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
+        <torusGeometry args={[r * 0.96, rimT, 10, 36]} />
+        <meshStandardMaterial {...clampMat} />
+      </mesh>
+      <mesh position={[0, yHigh, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[r, r * 0.97, drumH, 26]} />
+        <meshStandardMaterial {...drumMat} />
+      </mesh>
     </group>
   )
 }
@@ -1660,10 +1700,25 @@ function Prop3D({ p }: { p: Prop }) {
     )
   }
 
-  if (p.type === 'tireStack') {
+  if (p.type === 'barrelDouble') {
+    const r = Math.min(p.sizeM.x, p.sizeM.y) / 2
+    return (
+      <DoubleBlueBarrelsColumn
+        position={[x, 0, z]}
+        rotationY={p.rotationRad}
+        radius={r}
+        totalHeight={h}
+      />
+    )
+  }
+
+  if (p.type === 'tireStack' || p.type === 'tireStack1m' || p.type === 'tireStackTall') {
     const R = Math.min(p.sizeM.x, p.sizeM.y) / 2
     const tube = Math.max(R * 0.15, 0.028)
-    const layers = 4
+    const layers =
+      p.type === 'tireStack'
+        ? 4
+        : Math.max(6, Math.min(40, Math.ceil((h - 2 * tube) / (2 * tube * 0.86)) + 1))
     /* Після Rx(π/2) товщина стосу в Y ≈ 2·tube; крок трохи менший — покришки стикаються / трохи вкладаються. */
     let step = 2 * tube * 0.86
     const naturalH = 2 * tube + (layers - 1) * step

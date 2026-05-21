@@ -95,7 +95,10 @@ export type MessageTree = {
     door: string
     faultLine: string
     barrel: string
+    barrelDouble: string
     tireStack: string
+    tireStack1m: string
+    tireStackTall: string
     woodTable: string
     woodChair: string
     weaponRackPyramid: string
@@ -1213,7 +1216,10 @@ export const ukMessages: MessageTree = {
     door: '+ \u0414\u0432\u0435\u0440\u0456',
     faultLine: '+ \u0428\u0442\u0440\u0430\u0444\u043d\u0430 \u043b\u0456\u043d\u0456\u044f',
     barrel: '+ \u0411\u043e\u0447\u043a\u0430',
-    tireStack: '+ \u0421\u0442\u043e\u0441 \u0448\u0438\u043d',
+    barrelDouble: '+ \u041f\u043e\u0434\u0432\u0456\u0439\u043d\u0430 \u0431\u043e\u0447\u043a\u0430',
+    tireStack: '+ \u0421\u0442\u043e\u0441 \u0448\u0438\u043d (\u043d\u0438\u0437\u044c\u043a\u0438\u0439)',
+    tireStack1m: '+ \u0421\u0442\u043e\u0441 \u0448\u0438\u043d (1 \u043c)',
+    tireStackTall: '+ \u0421\u0442\u043e\u0441 \u0448\u0438\u043d (1,5 \u043c)',
     woodTable: '+ \u0421\u0442\u0456\u043b (\u0434\u0435\u0440\u0435\u0432\u2019\u044f\u043d\u0438\u0439)',
     woodChair: '+ \u0421\u0442\u0456\u043b\u0435\u0446\u044c',
     weaponRackPyramid: '+ \u041f\u0456\u0440\u0430\u043c\u0456\u0434\u0430 \u0434\u043b\u044f \u0437\u0431\u0440\u043e\u0457 (\u0440\u0443\u0448\u043d\u0438\u0446\u044f)',
@@ -2295,7 +2301,10 @@ export const enMessages: MessageTree = {
     door: '+ Door',
     faultLine: '+ Penalty line',
     barrel: '+ Barrel',
-    tireStack: '+ Tire stack',
+    barrelDouble: '+ Double barrel',
+    tireStack: '+ Tire stack (low)',
+    tireStack1m: '+ Tire stack (1 m)',
+    tireStackTall: '+ Tire stack (1.5 m)',
     woodTable: '+ Wood table',
     woodChair: '+ Chair',
     weaponRackPyramid: '+ Weapon rack (pyramid, rifle)',

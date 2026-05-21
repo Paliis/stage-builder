@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import type { DecorationCarGeometry } from '../../domain/decorationCarGeometry'
 import {
   computeDecorationCarGeometry,
+  DECORATION_CAR_BODY_HEX,
   DECORATION_CAR_DOOR_SEAM_CENTER_X_FRAC,
   DECORATION_CAR_SIDE_GLASS_CENTER_X_FRAC,
   DECORATION_CAR_SIDE_GLASS_LENGTH_FRAC,
@@ -214,7 +215,7 @@ export type CarSUVProps = {
 /**
  * Процедурний середній SUV з примітивів R3F. Якір групи: центр сліду на землі (Y=0).
  */
-export function CarSUV({ lengthM, widthM, heightM, bodyColor = '#2563eb' }: CarSUVProps) {
+export function CarSUV({ lengthM, widthM, heightM, bodyColor = DECORATION_CAR_BODY_HEX }: CarSUVProps) {
   const g = useMemo(
     () => computeDecorationCarGeometry(lengthM, widthM, heightM),
     [lengthM, widthM, heightM],
@@ -271,9 +272,9 @@ export function CarSUV({ lengthM, widthM, heightM, bodyColor = '#2563eb' }: CarS
   const glassWindshieldMat = useMemo(
     () =>
       ({
-        color: '#c8e8ff',
+        color: '#eaf6ff',
         transparent: true,
-        opacity: 0.45,
+        opacity: 0.4,
         roughness: 0.05,
         metalness: 0.12,
         depthWrite: false,
@@ -288,10 +289,10 @@ export function CarSUV({ lengthM, widthM, heightM, bodyColor = '#2563eb' }: CarS
   const glassSideMat = useMemo(
     () =>
       ({
-        color: '#5f7a94',
+        color: '#c8e2fb',
         transparent: true,
-        opacity: 0.52,
-        roughness: 0.14,
+        opacity: 0.48,
+        roughness: 0.12,
         metalness: 0.06,
         depthWrite: false,
         polygonOffset: true,

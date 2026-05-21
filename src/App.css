@@ -1203,6 +1203,18 @@
   color: #172554;
 }
 
+.app__buttons button.app__btn-secondary.app__tb-prop--barrelDouble {
+  background: rgba(37, 99, 235, 0.24);
+  border-color: rgba(29, 78, 216, 0.42);
+  color: #1e3a8a;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--barrelDouble:hover {
+  background: rgba(37, 99, 235, 0.36);
+  border-color: rgba(30, 64, 175, 0.5);
+  color: #172554;
+}
+
 .app__buttons button.app__btn-secondary.app__tb-prop--tire {
   background: rgba(23, 23, 23, 0.18);
   border-color: rgba(10, 10, 10, 0.35);
@@ -1212,6 +1224,28 @@
 .app__buttons button.app__btn-secondary.app__tb-prop--tire:hover {
   background: rgba(23, 23, 23, 0.3);
   border-color: rgba(10, 10, 10, 0.45);
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--tireStack1m {
+  background: rgba(30, 41, 59, 0.2);
+  border-color: rgba(51, 65, 85, 0.4);
+  color: #0f172a;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--tireStack1m:hover {
+  background: rgba(30, 41, 59, 0.32);
+  border-color: rgba(30, 41, 59, 0.5);
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--tireStackTall {
+  background: rgba(15, 23, 42, 0.2);
+  border-color: rgba(15, 23, 42, 0.38);
+  color: #0f172a;
+}
+
+.app__buttons button.app__btn-secondary.app__tb-prop--tireStackTall:hover {
+  background: rgba(15, 23, 42, 0.32);
+  border-color: rgba(15, 23, 42, 0.48);
 }
 
 .app__buttons button.app__btn-secondary.app__tb-prop--woodTable {
@@ -1251,15 +1285,15 @@
 }
 
 .app__buttons button.app__btn-secondary.app__tb-prop--decorationCar {
-  background: rgba(71, 85, 105, 0.28);
-  border-color: rgba(51, 65, 85, 0.42);
-  color: #1e293b;
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(37, 99, 235, 0.42);
+  color: #1e3a8a;
 }
 
 .app__buttons button.app__btn-secondary.app__tb-prop--decorationCar:hover {
-  background: rgba(71, 85, 105, 0.4);
-  border-color: rgba(30, 41, 59, 0.52);
-  color: #0f172a;
+  background: rgba(59, 130, 246, 0.34);
+  border-color: rgba(29, 78, 216, 0.48);
+  color: #172554;
 }
 
 .app__buttons button.app__btn-secondary.app__tb-prop--weaponRack {

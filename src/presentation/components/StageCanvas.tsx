@@ -435,7 +435,7 @@ function pickPropAt(props: readonly Prop[], wx: number, wy: number, touchPadM: n
   for (let i = props.length - 1; i >= 0; i--) {
     const p = props[i]
     if (!p) continue
-    if (p.type === 'barrel' || p.type === 'tireStack') {
+    if (p.type === 'barrel' || p.type === 'barrelDouble' || p.type === 'tireStack' || p.type === 'tireStack1m' || p.type === 'tireStackTall') {
       const r = Math.min(p.sizeM.x, p.sizeM.y) / 2
       const dx = wx - p.position.x
       const dy = wy - p.position.y
@@ -1719,7 +1719,8 @@ function drawDecorationCarPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: Vie
   ctx.fill()
   ctx.beginPath()
   tracePropOutline(ctx, corners, 0, 0)
-  ctx.fillStyle = 'rgba(37, 99, 235, 0.9)'
+  /* Кузов: `DECORATION_CAR_BODY_HEX` (#3b82f6), світліший за бочку `#1d4ed8`. */
+  ctx.fillStyle = 'rgba(59, 130, 246, 0.9)'
   ctx.fill()
   ctx.strokeStyle = 'rgba(15, 23, 42, 0.45)'
   ctx.lineWidth = 1.5
@@ -1738,7 +1739,7 @@ function drawDecorationCarPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: Vie
   ]
   ctx.beginPath()
   traceClosedRingWorld(ctx, tf, cabinRing)
-  ctx.fillStyle = 'rgba(29, 78, 216, 0.82)'
+  ctx.fillStyle = 'rgba(43, 119, 240, 0.82)'
   ctx.fill()
 
   const wz = g.wsHW
@@ -1750,11 +1751,11 @@ function drawDecorationCarPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: Vie
   ]
   ctx.beginPath()
   traceClosedRingWorld(ctx, tf, windRing)
-  ctx.fillStyle = 'rgba(148, 183, 209, 0.72)'
+  ctx.fillStyle = 'rgba(220, 242, 255, 0.76)'
   ctx.fill()
   ctx.beginPath()
   traceClosedRingWorld(ctx, tf, windRing)
-  ctx.strokeStyle = 'rgba(30, 58, 138, 0.42)'
+  ctx.strokeStyle = 'rgba(125, 211, 252, 0.48)'
   ctx.lineWidth = 1
   ctx.stroke()
 
@@ -1771,7 +1772,7 @@ function drawDecorationCarPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: Vie
   ctx.lineTo(b1.x, b1.y)
   ctx.moveTo(t0.x, t0.y)
   ctx.lineTo(t1.x, t1.y)
-  ctx.strokeStyle = 'rgba(23, 37, 84, 0.55)'
+  ctx.strokeStyle = 'rgba(56, 189, 248, 0.42)'
   ctx.lineWidth = 1.35
   ctx.stroke()
 
@@ -1789,7 +1790,7 @@ function drawDecorationCarPlan2D(ctx: CanvasRenderingContext2D, p: Prop, tf: Vie
     ]
     ctx.beginPath()
     traceClosedRingWorld(ctx, tf, swRing)
-    ctx.fillStyle = 'rgba(95, 122, 148, 0.62)'
+    ctx.fillStyle = 'rgba(186, 230, 253, 0.68)'
     ctx.fill()
   }
 
@@ -2419,7 +2420,10 @@ function redraw(
     )
       return { face: 'rgba(198, 236, 212, 0.46)', depth: 'rgba(25, 25, 28, 0.9)' }
     if (p.type === 'barrel') return { face: 'rgba(29, 78, 216, 0.92)', depth: 'rgba(30, 58, 138, 0.96)' }
+    if (p.type === 'barrelDouble') return { face: 'rgba(29, 78, 216, 0.92)', depth: 'rgba(30, 58, 138, 0.96)' }
     if (p.type === 'tireStack') return { face: 'rgba(30, 41, 59, 0.92)', depth: 'rgba(15, 23, 42, 0.96)' }
+    if (p.type === 'tireStack1m') return { face: 'rgba(30, 41, 59, 0.92)', depth: 'rgba(15, 23, 42, 0.96)' }
+    if (p.type === 'tireStackTall') return { face: 'rgba(30, 41, 59, 0.92)', depth: 'rgba(15, 23, 42, 0.96)' }
     if (p.type === 'seesaw') return { face: 'rgba(196, 160, 118, 0.88)', depth: 'rgba(25, 25, 28, 0.9)' }
     if (p.type === 'movingPlatform')
       return { face: 'rgba(185, 190, 200, 0.52)', depth: 'rgba(25, 25, 28, 0.9)' }
@@ -2432,7 +2436,7 @@ function redraw(
     if (p.type === 'weaponRackPyramid')
       return { face: 'rgba(229, 57, 53, 0.88)', depth: 'rgba(25, 25, 28, 0.9)' }
     if (p.type === 'decorationCar')
-      return { face: 'rgba(37, 99, 235, 0.9)', depth: 'rgba(25, 25, 28, 0.9)' }
+      return { face: 'rgba(59, 130, 246, 0.9)', depth: 'rgba(25, 25, 28, 0.9)' }
     return { face: 'rgba(148, 163, 184, 0.94)', depth: 'rgba(71, 85, 105, 0.9)' }
   }
 
@@ -2502,16 +2506,53 @@ function redraw(
     ctx.lineWidth = 1.5
     ctx.stroke()
 
-    if (p.type === 'tireStack') {
+    {
       const c = worldToScreen(p.position.x, p.position.y, tf)
       const rPx = (Math.min(p.sizeM.x, p.sizeM.y) / 2) * tf.pxPerMeter
-      ctx.strokeStyle = 'rgba(51, 65, 85, 0.65)'
-      ctx.lineWidth = 1
-      for (let k = 1; k <= 3; k++) {
-        const rk = (k / 4) * rPx
-        ctx.beginPath()
-        ctx.ellipse(c.x, c.y, rk, rk, 0, 0, Math.PI * 2)
-        ctx.stroke()
+
+      if (p.type === 'barrel' || p.type === 'barrelDouble') {
+        ctx.save()
+        if (p.type === 'barrel') {
+          ctx.strokeStyle = 'rgba(30, 64, 175, 0.52)'
+          ctx.lineWidth = 1
+          for (let k = 1; k <= 5; k++) {
+            const rk = (k / 6) * rPx
+            ctx.beginPath()
+            ctx.ellipse(c.x, c.y, rk, rk, 0, 0, Math.PI * 2)
+            ctx.stroke()
+          }
+        } else {
+          ctx.strokeStyle = 'rgba(30, 58, 138, 0.68)'
+          ctx.lineWidth = 1.35
+          ctx.beginPath()
+          ctx.ellipse(c.x, c.y, rPx * 0.9, rPx * 0.9, 0, 0, Math.PI * 2)
+          ctx.stroke()
+          ctx.strokeStyle = 'rgba(147, 197, 253, 0.9)'
+          ctx.lineWidth = 2.2
+          ctx.beginPath()
+          ctx.ellipse(c.x, c.y, rPx * 0.46, rPx * 0.46, 0, 0, Math.PI * 2)
+          ctx.stroke()
+          ctx.fillStyle = 'rgba(29, 78, 216, 0.22)'
+          ctx.beginPath()
+          ctx.ellipse(c.x, c.y, rPx * 0.2, rPx * 0.2, 0, 0, Math.PI * 2)
+          ctx.fill()
+        }
+        ctx.restore()
+      }
+
+      if (p.type === 'tireStack' || p.type === 'tireStack1m' || p.type === 'tireStackTall') {
+        const rings = p.type === 'tireStack' ? 3 : p.type === 'tireStack1m' ? 6 : 10
+        ctx.strokeStyle = 'rgba(51, 65, 85, 0.72)'
+        ctx.lineWidth = 1
+        ctx.save()
+        if (p.type === 'tireStack') ctx.setLineDash([4, 4])
+        for (let k = 1; k <= rings; k++) {
+          const rk = (k / (rings + 1)) * rPx
+          ctx.beginPath()
+          ctx.ellipse(c.x, c.y, rk, rk, 0, 0, Math.PI * 2)
+          ctx.stroke()
+        }
+        ctx.restore()
       }
     }
   }
