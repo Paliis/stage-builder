@@ -5,6 +5,7 @@ import {
   targetActivationLabelWorldYM,
   targetFootprintWorld,
 } from './targetSpecs'
+import { isGongTargetType } from './gongSpec'
 
 export function refKey(r: StageEntityRef): string {
   return `${r.kind}:${r.id}`
@@ -195,6 +196,7 @@ function activationCompactLabelSideShiftM(
   if (!t) return 0
   if (
     isSquareSteelPlateTargetType(t.type) ||
+    isGongTargetType(t.type) ||
     t.type === 'ceramicPlate' ||
     t.type === 'miniPopper'
   ) {

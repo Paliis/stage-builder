@@ -1,5 +1,5 @@
 import { Line, OrbitControls, Text } from '@react-three/drei'
-import { Canvas, useThree, type RootState } from '@react-three/fiber'
+import { Canvas, useFrame, useThree, type RootState } from '@react-three/fiber'
 import {
   forwardRef,
   useCallback,
@@ -32,8 +32,21 @@ import {
   globalActivationNumberMap,
   refKey,
 } from '../../domain/activations'
-import type { Prop, Target, TargetType } from '../../domain/models'
+import type { Prop, RangeDistanceSign, Target, TargetType } from '../../domain/models'
 import { CERAMIC_FACE_HEX, CERAMIC_RADIUS_M } from '../../domain/ceramicPlateSpec'
+import {
+  GONG_CHAIN_COLOR,
+  GONG_FRAME_COLOR,
+  GONG_PLATE_COLOR,
+  GONG_POLE_RADIUS_M,
+  gongChainAnchorsLocalM,
+  gongFrameBottomLocalY,
+  gongFramePostXsLocalM,
+  gongPlateSizeM,
+  gongTopBarLocalY,
+  isGongRoundTargetType,
+  isGongTargetType,
+} from '../../domain/gongSpec'
 import {
   BARREL_COLUMN_HEIGHT_M,
   BARREL_DOUBLE_HEIGHT_M,
@@ -50,6 +63,7 @@ import {
   shieldPortSlantOpeningLocalM,
   WOOD_CHAIR_HEIGHT_M,
   WOOD_TABLE_HEIGHT_M,
+  FAULT_LINE_SECTION_M,
 } from '../../domain/propGeometry'
 import {
   isPaperTargetType,
@@ -75,7 +89,10 @@ import {
 } from '../../domain/swingerGeometry'
 import { groundCoverColorHex } from '../../domain/fieldGround3d'
 import { ringToClosedPoints } from '../../domain/penaltyZones'
-import { FAULT_LINE_SECTION_M } from '../../domain/propGeometry'
+import {
+  RANGE_DISTANCE_SIGN_3D_FACE_M,
+  RANGE_DISTANCE_SIGN_3D_PLAN_X_M,
+} from '../../domain/rangeDistanceSigns'
 import {
   computeOverviewAnchorWorld2d,
   overviewAnchorRelevantSignature,
@@ -148,6 +165,146 @@ function useStageFieldM(): StageFieldM {
   const x = useStageStore((s) => s.fieldSizeM.x)
   const y = useStageStore((s) => s.fieldSizeM.y)
   return { widthM: x, heightM: y }
+}
+
+/** Червона рамка: частка від грані, щоб при 2.2 м табличка лишалась читабельною. */
+const RANGE_SIGN_3D_BORDER_FRAC = 0.045
+
+/**
+ * Числа на табличці — CanvasTexture на тому ж WebGL-mesh, що й біле лице (без drei Html transform).
+ * Причина: у `drei/web/Html.js` режим transform збирає CSS matrix3d поелементним множенням matrixWorld і `translate(-50%,-50%)`;
+ * це не еквівалент повної 3D-проєкції камери → стабільний зсув тексту відносно мешів незалежно від padding/CSS.
+ */
+function makeRangeDistanceSignLabelTexture(text: string): THREE.CanvasTexture {
+  const size = 4096
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d')
+  if (!ctx) {
+    const t = new THREE.CanvasTexture(canvas)
+    t.needsUpdate = true
+    return t
+  }
+  ctx.clearRect(0, 0, size, size)
+  const len = text.length
+  let fontPx = Math.min(
+    Math.floor(size * 0.46),
+    Math.floor((size * 0.96) / Math.max(len * 0.46, 0.58)),
+  )
+  const fontSpec = (px: number) => `900 ${px}px system-ui, "Segoe UI", sans-serif`
+  ctx.font = fontSpec(fontPx)
+  const maxW = size * 0.9
+  while (fontPx > 32 && ctx.measureText(text).width > maxW) {
+    fontPx -= 3
+    ctx.font = fontSpec(fontPx)
+  }
+  ctx.fillStyle = '#991b1b'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(text, size / 2, size / 2)
+
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.wrapS = THREE.ClampToEdgeWrapping
+  tex.wrapT = THREE.ClampToEdgeWrapping
+  tex.generateMipmaps = true
+  tex.minFilter = THREE.LinearMipmapLinearFilter
+  tex.magFilter = THREE.LinearFilter
+  tex.needsUpdate = true
+  return tex
+}
+
+function RangeDistanceSign3DItem({
+  sign,
+  field,
+}: {
+  sign: RangeDistanceSign
+  field: StageFieldM
+}) {
+  const groupRef = useRef<THREE.Group>(null)
+  const face = RANGE_DISTANCE_SIGN_3D_FACE_M
+  const half = face / 2
+  const b = Math.max(0.1, face * RANGE_SIGN_3D_BORDER_FRAC)
+  const bHalf = b / 2
+  const zFace = 0
+  const zBorder = 0.012
+  /** Площина з цифрами — трохи перед білим лицем (той самий пайплайн WebGL, без DOM-проєкції). */
+  const zLabel = 0.028
+  const innerH = Math.max(face - 2 * b, 0.1)
+  const labelSide = face * 0.92
+
+  const label = String(Math.round(sign.labelM))
+  const labelTex = useMemo(() => makeRangeDistanceSignLabelTexture(label), [label])
+
+  useEffect(() => {
+    return () => {
+      labelTex.dispose()
+    }
+  }, [labelTex])
+  const [cx, , cz] = useMemo(() => {
+    const planX = Math.min(
+      RANGE_DISTANCE_SIGN_3D_PLAN_X_M,
+      Math.max(0.05, field.widthM - 0.05),
+    )
+    return stageToThreeXZ({ x: planX, y: sign.edgePositionYM }, field)
+  }, [field, sign.edgePositionYM])
+
+  useFrame(({ camera }) => {
+    const g = groupRef.current
+    if (!g) return
+    g.position.set(cx, face / 2, cz)
+    g.quaternion.copy(camera.quaternion)
+  })
+
+  return (
+    <group ref={groupRef}>
+      <mesh position={[0, 0, zFace]} castShadow={false}>
+        <planeGeometry args={[face, face]} />
+        <meshBasicMaterial color="#ffffff" side={THREE.DoubleSide} toneMapped={false} />
+      </mesh>
+      <mesh position={[0, 0, zLabel]} castShadow={false} renderOrder={100}>
+        <planeGeometry args={[labelSide, labelSide]} />
+        <meshBasicMaterial
+          map={labelTex}
+          transparent
+          toneMapped={false}
+          depthWrite={false}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh position={[0, half - bHalf, zBorder]} castShadow={false}>
+        <boxGeometry args={[face, b, 0.02]} />
+        <meshBasicMaterial color="#dc2626" toneMapped={false} />
+      </mesh>
+      <mesh position={[0, -half + bHalf, zBorder]} castShadow={false}>
+        <boxGeometry args={[face, b, 0.02]} />
+        <meshBasicMaterial color="#dc2626" toneMapped={false} />
+      </mesh>
+      <mesh position={[-half + bHalf, 0, zBorder]} castShadow={false}>
+        <boxGeometry args={[b, innerH, 0.02]} />
+        <meshBasicMaterial color="#dc2626" toneMapped={false} />
+      </mesh>
+      <mesh position={[half - bHalf, 0, zBorder]} castShadow={false}>
+        <boxGeometry args={[b, innerH, 0.02]} />
+        <meshBasicMaterial color="#dc2626" toneMapped={false} />
+      </mesh>
+    </group>
+  )
+}
+
+function RangeDistanceSigns3D() {
+  const signs = useStageStore((s) => s.rangeDistanceSigns)
+  const { widthM, heightM } = useStageFieldM()
+  const field = useMemo((): StageFieldM => ({ widthM, heightM }), [widthM, heightM])
+
+  return (
+    <group>
+      {signs.map((s) => (
+        <RangeDistanceSign3DItem key={s.id} sign={s} field={field} />
+      ))}
+    </group>
+  )
 }
 
 /**
@@ -377,6 +534,7 @@ function steelPlateStandHeightM(type: TargetType): number {
 function targetColor(t: Target): string {
   if (t.isNoShoot) return '#e11d48'
   if (t.type === 'ceramicPlate') return CERAMIC_FACE_HEX
+  if (isGongTargetType(t.type)) return t.isNoShoot ? '#e11d48' : GONG_PLATE_COLOR
   if (t.type === 'swingerSingleCeramic' || t.type === 'swingerDoubleCeramic') return CERAMIC_FACE_HEX
   if (isSquareSteelPlateTargetType(t.type)) return '#f4f4f5'
   if (isPaperTargetType(t.type)) return '#ffffff'
@@ -654,6 +812,79 @@ function Swinger3D({ t }: { t: Target }) {
   )
 }
 
+function Gong3D({ t }: { t: Target }) {
+  const field = useStageFieldM()
+  const [x, , z] = stageToThreeXZ(t.position, field)
+  const plateSize = gongPlateSizeM(t)
+  const half = plateSize * 0.5
+  const faceDepth = 0.018
+  const bottom = gongFrameBottomLocalY(t)
+  const topBar = gongTopBarLocalY(t)
+  const [xL, xR] = gongFramePostXsLocalM()
+  const isRound = isGongRoundTargetType(t.type)
+  const plateColor = targetColor(t)
+  const frameMat = useMemo(
+    () => ({ color: GONG_FRAME_COLOR, roughness: 0.72, metalness: 0.18 }),
+    [],
+  )
+  const plateMat = useMemo(
+    () => ({
+      color: plateColor,
+      roughness: t.isNoShoot ? 0.55 : 0.48,
+      metalness: t.isNoShoot ? 0.12 : 0.22,
+    }),
+    [plateColor, t.isNoShoot],
+  )
+  const liftY = -bottom
+  const topBarLen = xR - xL
+  const chainAnchors = useMemo(() => gongChainAnchorsLocalM(t), [t])
+
+  return (
+    <group position={[x, liftY, z]} rotation={[0, t.rotationRad, 0]}>
+      {[xL, xR].map((px) => {
+        const postH = topBar - bottom
+        return (
+          <mesh key={px} position={[px, bottom + postH / 2, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[GONG_POLE_RADIUS_M, GONG_POLE_RADIUS_M, postH, 10]} />
+            <meshStandardMaterial {...frameMat} />
+          </mesh>
+        )
+      })}
+      <mesh
+        position={[(xL + xR) / 2, topBar, 0]}
+        rotation={[0, 0, Math.PI / 2]}
+        castShadow
+        receiveShadow
+      >
+        <cylinderGeometry args={[GONG_POLE_RADIUS_M, GONG_POLE_RADIUS_M, topBarLen, 10]} />
+        <meshStandardMaterial {...frameMat} />
+      </mesh>
+      {chainAnchors.map((a, i) => (
+        <Line
+          key={i}
+          points={[
+            [a.x, topBar, 0],
+            [a.x, a.y, 0],
+          ]}
+          color={GONG_CHAIN_COLOR}
+          lineWidth={1.5}
+        />
+      ))}
+      {isRound ? (
+        <mesh rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[half, half, faceDepth, 36]} />
+          <meshStandardMaterial {...plateMat} />
+        </mesh>
+      ) : (
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[plateSize, plateSize, faceDepth]} />
+          <meshStandardMaterial {...plateMat} />
+        </mesh>
+      )}
+    </group>
+  )
+}
+
 function Target3D({ t }: { t: Target }) {
   const field = useStageFieldM()
   const [x, , z] = stageToThreeXZ(t.position, field)
@@ -698,6 +929,10 @@ function Target3D({ t }: { t: Target }) {
 
   if (isSwingerTargetType(t.type)) {
     return <Swinger3D t={t} />
+  }
+
+  if (isGongTargetType(t.type)) {
+    return <Gong3D t={t} />
   }
 
   if (t.type === 'ceramicPlate') {
@@ -1850,16 +2085,25 @@ function StageView3DCanvasSized({
   useLayoutEffect(() => {
     const el = wrapRef.current
     if (!el) return
+    let raf = 0
     const read = () => {
+      raf = 0
       const r = el.getBoundingClientRect()
       const w = Math.max(2, Math.round(r.width))
       const h = Math.max(2, Math.round(r.height))
       setDims((d) => (d.w === w && d.h === h ? d : { w, h }))
     }
+    const schedule = () => {
+      if (raf) return
+      raf = requestAnimationFrame(read)
+    }
     read()
-    const ro = new ResizeObserver(read)
+    const ro = new ResizeObserver(schedule)
     ro.observe(el)
-    return () => ro.disconnect()
+    return () => {
+      cancelAnimationFrame(raf)
+      ro.disconnect()
+    }
   }, [])
 
   return (
@@ -1927,7 +2171,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
       shadows: shadowsEnabled,
       camera: { position: [11, 14.5, 18], fov: 48, near: 0.15, far: 240 },
       gl: { preserveDrawingBuffer: true, antialias: true, alpha: false },
-      dpr: [1, 1.75] as [number, number],
+      dpr: [1, 1.5] as [number, number],
       onCreated: onGlCreated,
     }),
     [onGlCreated, shadowsEnabled],
@@ -1991,6 +2235,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
           <Target3D key={t.id} t={t} />
         ))}
         <Activations3D />
+        <RangeDistanceSigns3D />
       </StageView3DCanvasSized>
     </StageView3DCanvasShell>
   )

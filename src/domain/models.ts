@@ -6,6 +6,9 @@ export type Vec2 = {
 /** Appendix C3: сторона квадратної металевої пластини (см), таблиця для гвинтівки — 15 / 20 / 30. */
 export type MetalPlateRectSideCm = 15 | 20 | 30
 
+/** Діаметр / сторона гонга (см). */
+export type GongSizeCm = 30 | 40 | 50
+
 /** Основні типи мішеней редактора (спрощений набір). */
 export type TargetType =
   /** IPSC B2 (контур), біла; низ лиця біля землі (~0,1 м) у 3D. */
@@ -30,6 +33,10 @@ export type TargetType =
   | 'metalPlateStand100'
   | 'popper'
   | 'miniPopper'
+  /** Гонг на рамці з трьох палок; квадратна пластина 30 / 40 / 50 см. */
+  | 'gongSquare'
+  /** Гонг на рамці з трьох палок; кругла пластина Ø 30 / 40 / 50 см. */
+  | 'gongRound'
   /** Кругла керамічна тарілка (типово Ø 110 мм, помаранчева). */
   | 'ceramicPlate'
   /** Ківак (swinger): одинарний/подвійний, паперова IPSC або кераміка на кінцях важеля. */
@@ -89,6 +96,8 @@ export type Target = {
   position: Vec2
   /** Квадратна сталь (Appendix C3); якщо немає — 30 см (старі файли). */
   metalRectSideCm?: MetalPlateRectSideCm
+  /** Гонг: діаметр / сторона пластини (см); за замовч. 30. */
+  gongSizeCm?: GongSizeCm
   rotationRad: number
 }
 
@@ -122,6 +131,18 @@ export type PlanDimensionLine = {
   id: string
   endA: Vec2
   endB: Vec2
+}
+
+/**
+ * Табличка «оголошеної дистанції» на 2D-плані біля лівого краю поля (x → 0).
+ * `labelM` — підпис у метрах; позиція по Y схематична і може не відповідати масштабу плану.
+ */
+export type RangeDistanceSign = {
+  id: string
+  /** Позиція вздовж глибини поля (вісь Y), м. */
+  edgePositionYM: number
+  /** Відстань на табличці, м (ціле 1…999). */
+  labelM: number
 }
 
 export type Stage = {

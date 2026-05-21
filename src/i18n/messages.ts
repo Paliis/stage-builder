@@ -81,6 +81,12 @@ export type MessageTree = {
     penaltyZoneContour: string
     /** Підказка: клік біля першої точки замикає контур. */
     penaltyZoneCloseHint: string
+    /** Підпис над сегментами розміру квадратної сталевої пластини. */
+    metalPlateSizeLabel: string
+    /** Підпис над сегментами розміру гонга. */
+    gongSizeLabel: string
+    /** Суфікс одиниці на кнопках сегментів (напр. «см»). */
+    sizeCmSuffix: string
     /** Повідомлення з VISIBILITY §4.3 — чернетка контуру ще не замкнена. */
     penaltyContourUnclosed: string
   }
@@ -131,6 +137,8 @@ export type MessageTree = {
     metalPlateStand100: string
     popper: string
     miniPopper: string
+    gongSquare: string
+    gongRound: string
     ceramicPlate: string
     swingerSinglePaper: string
     swingerDoublePaper: string
@@ -150,6 +158,8 @@ export type MessageTree = {
     noShootMetalStand100: string
     noShootPopper: string
     noShootMiniPopper: string
+    noShootGongSquare: string
+    noShootGongRound: string
     noShootCeramicPlate: string
     noShootSwingerSinglePaper: string
     noShootSwingerDoublePaper: string
@@ -200,6 +210,19 @@ export type MessageTree = {
     /** Закріплені розміри між об’єктами (центр–центр), для кваліфікаційних схем */
     dimensionLinkMode: string
     dimensionLinkModeTitle: string
+    /** Таблички оголошених дистанцій (підпис у метрах; Y на схемі) */
+    rangeDistanceSignMode: string
+    rangeDistanceSignModeTitle: string
+    rangeDistanceSignDialogTitle: string
+    /** Підказка: число на табличці не залежить від масштабу плану */
+    rangeDistanceSignDialogHint: string
+    rangeDistanceSignLabelField: string
+    /** Позиція таблички вздовж глибини поля на 2D (м). */
+    rangeDistanceSignEdgeField: string
+    /** Підказка з `{{max}}` — глибина поля в метрах. */
+    rangeDistanceSignEdgeHint: string
+    rangeDistanceSignConfirm: string
+    rangeDistanceSignCancel: string
     copySelection: string
     copySelectionTitle: string
     pasteSelection: string
@@ -1153,7 +1176,10 @@ export const ukMessages: MessageTree = {
       '\u041d\u0430\u043c\u0430\u043b\u044c\u043e\u0432\u0443\u0432\u0430\u0442\u0438 \u0437\u0430\u043c\u043a\u043d\u0435\u043d\u0456 \u043a\u043e\u043d\u0442\u0443\u0440\u0438: \u0434\u0456\u0440\u043a\u0430 \u0432\u0438\u0437\u043d\u0430\u0447\u0430\u0454\u0442\u044c\u0441\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u043d\u043e, \u044f\u043a\u0449\u043e \u043a\u043e\u043d\u0442\u0443\u0440 \u0437\u0430\u043c\u043a\u043d\u0443\u0442\u043e \u0432\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0456 \u0456\u043d\u0448\u043e\u0457 \u0437\u043e\u043d\u0438',
     penaltyZoneContour: '\u041a\u043e\u043d\u0442\u0443\u0440 \u0448\u0442\u0440\u0430\u0444\u043d\u043e\u0457 \u0437\u043e\u043d\u0438',
     penaltyZoneCloseHint:
-      'Клацніть близько до першої точки (допуск 5 см), щоб замкнути. Під час руху курсора від останньої точки показано довжину наступного відрізка та шкалу (рисочки кожні 0,1 м, довші — на метрах). Постановка та перетягування вершин — з прив’язкою 0,1 м. Всередині існуючої зони — дірка. Вершини — перетягувати за точкою; під час руху відображено довжини двох прилеглих до неї ребер (до сусідніх точок уздовж контуру). Delete / Backspace — видалити вершину (якщо менше за 3 точки в контурі — весь полігон або дірку).',
+      'Кліками по плану ставте точки й замкніть контур біля першої. Контур всередині вже накресленої зони — дірка. Вершини перетягуйте; Delete — видалити точку.',
+    metalPlateSizeLabel: 'Сторона пластини',
+    gongSizeLabel: 'Розмір гонга',
+    sizeCmSuffix: 'см',
     penaltyContourUnclosed: '\u041a\u043e\u043d\u0442\u0443\u0440 \u0448\u0442\u0440\u0430\u0444\u043d\u043e\u0457 \u0437\u043e\u043d\u0438 \u043d\u0435 \u0437\u0430\u043c\u043a\u043d\u0435\u043d\u0438\u0439',
   },
   weapon: {
@@ -1180,6 +1206,8 @@ export const ukMessages: MessageTree = {
     metalPlateStand100: '+ \u041c\u0435\u0442\u0430\u043b, \u0441\u0442\u0456\u0439\u043a\u0430 1 \u043c',
     popper: '+ \u041f\u043e\u043f\u043f\u0435\u0440',
     miniPopper: '+ \u041c\u0456\u043d\u0456-\u043f\u043e\u043f\u043f\u0435\u0440',
+    gongSquare: '+ \u0413\u043e\u043d\u0433 (\u043a\u0432\u0430\u0434\u0440.)',
+    gongRound: '+ \u0413\u043e\u043d\u0433 (\u043a\u0440\u0443\u0433.)',
     ceramicPlate: '+ \u041a\u0435\u0440\u0430\u043c\u0456\u043a\u0430',
     swingerSinglePaper: '+ \u041a\u0456\u0432\u0430\u043a 1\u00d7 \u043f\u0430\u043f\u0456\u0440',
     swingerDoublePaper: '+ \u041a\u0456\u0432\u0430\u043a 2\u00d7 \u043f\u0430\u043f\u0456\u0440',
@@ -1199,6 +1227,8 @@ export const ukMessages: MessageTree = {
     noShootMetalStand100: '+ NS \u043c\u0435\u0442\u0430\u043b 1 \u043c',
     noShootPopper: '+ NS \u043f\u043e\u043f\u043f\u0435\u0440',
     noShootMiniPopper: '+ NS \u043c\u0456\u043d\u0456',
+    noShootGongSquare: '+ NS \u0433\u043e\u043d\u0433 (\u043a\u0432\u0430\u0434\u0440.)',
+    noShootGongRound: '+ NS \u0433\u043e\u043d\u0433 (\u043a\u0440\u0443\u0433.)',
     noShootCeramicPlate: '+ NS \u043a\u0435\u0440\u0430\u043c\u0456\u043a\u0430',
     noShootSwingerSinglePaper: '+ NS \u043a\u0456\u0432\u0430\u043a 1\u00d7 \u043f\u0430\u043f\u0456\u0440',
     noShootSwingerDoublePaper: '+ NS \u043a\u0456\u0432\u0430\u043a 2\u00d7 \u043f\u0430\u043f\u0456\u0440',
@@ -1278,6 +1308,17 @@ export const ukMessages: MessageTree = {
     dimensionLinkMode: '\u0420\u043e\u0437\u043c\u0456\u0440\u0438',
     dimensionLinkModeTitle:
       'Два кліки — новий розмір; перетягувати кінець або середину (рух усій лінії). Клік виділяє — Delete або Backspace видаляють. Esc знімає виділення (вихід з режиму «Розміри» — як раніше через панель).',
+    rangeDistanceSignMode: 'Дистанції',
+    rangeDistanceSignModeTitle:
+      'Додати табличку з підписом у метрах і позицією вздовж глибини поля. На плані табличку можна перетягувати; Delete — видалити.',
+    rangeDistanceSignDialogTitle: 'Оголошена дистанція',
+    rangeDistanceSignDialogHint:
+      'Ціле 1–999 м (до трьох цифр); не прив’язане до масштабу плану.',
+    rangeDistanceSignLabelField: 'Метри (підпис)',
+    rangeDistanceSignEdgeField: 'Позиція вздовж глибини поля (м)',
+    rangeDistanceSignEdgeHint: 'Допустимо 0…{{max}} м — положення вздовж глибини на плані (схематично).',
+    rangeDistanceSignConfirm: 'Додати',
+    rangeDistanceSignCancel: 'Скасувати',
     copySelection: '\u041a\u043e\u043f\u0456\u044f',
     copySelectionTitle:
       '\u041a\u043e\u043f\u0456\u044e\u0432\u0430\u0442\u0438 \u0432\u0438\u0434\u0456\u043b\u0435\u043d\u0435 (Ctrl+C). \u0421\u043f\u043e\u0447\u0430\u0442\u043a\u0443 \u2014 \u0432\u043d\u0443\u0442\u0440\u0456\u0448\u043d\u0454 \u0437\u0431\u0435\u0440\u0456\u0433\u0430\u043d\u043d\u044f \u0442\u0430\u043a\u043e\u0436 \u0443 \u0431\u0443\u0444\u0435\u0440 \u043e\u0431\u043c\u0456\u043d\u0443.',
@@ -1292,7 +1333,7 @@ export const ukMessages: MessageTree = {
     redoPlanTitle:
       '\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0438 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0443 \u0434\u0456\u044e (Ctrl+Shift+Z, Ctrl+Y \u0430\u0431\u043e \u2318+Shift+Z).',
     planMapActionsAria:
-      'Дії на 2D-плані: рамка, копія, вставка, активація, розміри, вимір, видалити виділене, очистити всю вправу',
+      'Дії на 2D-плані: рамка, копія, вставка, активація, розміри, дистанції, вимір, видалити виділене, очистити всю вправу',
     deleteSelection: 'Видалити виділене',
     deleteSelectionTitle:
       'Прибрати з плану лише виділені об’єкти (як Delete на клавіатурі). Червона кнопка з кошиком нижче — очистити всю вправу.',
@@ -2239,7 +2280,10 @@ export const enMessages: MessageTree = {
       'Draw closed outlines: a hole is detected automatically when you close a contour inside an existing zone',
     penaltyZoneContour: 'Penalty zone outline',
     penaltyZoneCloseHint:
-      'Click near the first point (within 5 cm) to close. While you move toward the next point, the dashed guide shows edge length and metric ticks (every 0.1 m, taller ticks each full metre). Vertices snap to a 0.1 m grid when placing and dragging. Inside an existing zone, the closed contour becomes a hole. Drag a vertex to move it; while dragging, distances for the two incident edges are shown along the contour. Delete or Backspace removes the vertex (fewer than three vertices removes the whole polygon or hole).',
+      'Click the plan to add points, then close the outline near the first point. An outline inside an existing zone becomes a hole. Drag vertices to move; Delete removes a point.',
+    metalPlateSizeLabel: 'Plate side',
+    gongSizeLabel: 'Gong size',
+    sizeCmSuffix: 'cm',
     penaltyContourUnclosed: 'Penalty zone outline is not closed',
   },
   weapon: {
@@ -2265,6 +2309,8 @@ export const enMessages: MessageTree = {
     metalPlateStand100: '+ Steel plate, 1 m stand',
     popper: '+ Popper',
     miniPopper: '+ Mini popper',
+    gongSquare: '+ Gong (square)',
+    gongRound: '+ Gong (round)',
     ceramicPlate: '+ Ceramic',
     swingerSinglePaper: '+ Swinger 1\u00d7 paper',
     swingerDoublePaper: '+ Swinger 2\u00d7 paper',
@@ -2284,6 +2330,8 @@ export const enMessages: MessageTree = {
     noShootMetalStand100: '+ NS steel 1 m',
     noShootPopper: '+ NS popper',
     noShootMiniPopper: '+ NS mini',
+    noShootGongSquare: '+ NS gong (square)',
+    noShootGongRound: '+ NS gong (round)',
     noShootCeramicPlate: '+ NS ceramic',
     noShootSwingerSinglePaper: '+ NS swinger 1\u00d7 paper',
     noShootSwingerDoublePaper: '+ NS swinger 2\u00d7 paper',
@@ -2361,6 +2409,17 @@ export const enMessages: MessageTree = {
     dimensionLinkMode: 'Dimensions',
     dimensionLinkModeTitle:
       'Two clicks — new dimension. Drag an endpoint or the segment body to move. Click selects (violet); Delete or Backspace removes. Esc clears line selection (exit Dimensions mode from the toolbar as before).',
+    rangeDistanceSignMode: 'Ranges',
+    rangeDistanceSignModeTitle:
+      'Add a range sign (metres and position along field depth). Drag the sign on the plan; Delete removes it.',
+    rangeDistanceSignDialogTitle: 'Announced range',
+    rangeDistanceSignDialogHint:
+      'Whole number 1–999 m (up to three digits); not tied to plan scale.',
+    rangeDistanceSignLabelField: 'Metres (label)',
+    rangeDistanceSignEdgeField: 'Position along field depth (m)',
+    rangeDistanceSignEdgeHint: 'Allowed 0…{{max}} m — placement along depth on the plan (indicative).',
+    rangeDistanceSignConfirm: 'Add',
+    rangeDistanceSignCancel: 'Cancel',
     copySelection: 'Copy',
     copySelectionTitle:
       'Copy selection (Ctrl+C). Also saved to the internal buffer; tries system clipboard when allowed.',
@@ -2373,7 +2432,7 @@ export const enMessages: MessageTree = {
     redoPlan: 'Redo',
     redoPlanTitle: 'Redo undone change (Ctrl+Shift+Z, Ctrl+Y, or ⌘+Shift+Z).',
     planMapActionsAria:
-      '2D plan actions: marquee, copy, paste, activation, pinned dimensions, measure, delete selection, clear entire exercise',
+      '2D plan actions: marquee, copy, paste, activation, pinned dimensions, range signs, measure, delete selection, clear entire exercise',
     deleteSelection: 'Delete selection',
     deleteSelectionTitle:
       'Remove only selected objects from the plan (same as Delete key). The red trash button below clears the whole exercise.',

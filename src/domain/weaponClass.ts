@@ -22,6 +22,8 @@ export const ALL_TARGET_TYPES: readonly TargetType[] = [
   'metalPlateStand100',
   'popper',
   'miniPopper',
+  'gongSquare',
+  'gongRound',
   'ceramicPlate',
   'swingerSinglePaper',
   'swingerDoublePaper',

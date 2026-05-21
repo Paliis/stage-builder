@@ -12,9 +12,11 @@ import { useStageStore } from '../../application/stageStore'
 import { CERAMIC_FACE_RGBA } from '../../domain/ceramicPlateSpec'
 import type {
   ActivationEdge,
+  GongSizeCm,
   MetalPlateRectSideCm,
   PlanDimensionLine,
   Prop,
+  RangeDistanceSign,
   StageEntityRef,
   Target,
 } from '../../domain/models'
@@ -50,12 +52,20 @@ import {
   SEESAW_PIPE_RADIUS_M,
   SHIELD_FRAME_SECTION_M,
 } from '../../domain/propGeometry'
+import { GONG_FRAME_COLOR } from '../../domain/gongSpec'
 import {
+  nextGongSizeCm,
+  nextMetalPlateSideCm,
+} from '../../domain/resizableTargetSizes'
+import {
+  gongFrame2DSpecWorld,
+  isGongTargetType,
   isPaperTargetType,
   isSquareSteelPlateTargetType,
   popper2DDrawSpec,
   targetFootprintWorld,
   targetMetalPedestalWorld,
+  targetMetalStandStickIndicatorsWorld,
   targetPaperTwoPostBasesWorld,
   targetPaperTwoPostStickIndicatorsWorld,
   targetRenderPolygonWorld,
@@ -77,6 +87,7 @@ import {
   TARGET_PLACEMENT_SNAP_M,
 } from '../../domain/field'
 import { ringToClosedPoints, type PenaltyZoneSet } from '../../domain/penaltyZones'
+import { RANGE_DISTANCE_SIGN_PLAN_CENTER_X_M } from '../../domain/rangeDistanceSigns'
 import {
   applyZoomAtWorldPoint,
   buildStageViewTransform,
@@ -165,13 +176,14 @@ export type PlanSelectState =
   | { mode: 'multi'; targetIds: string[]; propIds: string[] }
   | { mode: 'penaltyVertex'; polygonId: string; ringId: string; vertexIndex: number }
   | { mode: 'planDimension'; id: string }
+  | { mode: 'rangeDistanceSign'; id: string }
 
 function snapshotEntitiesForCopy(
   planSelect: PlanSelectState,
   targets: readonly Target[],
   props: readonly Prop[],
 ): { targets: Target[]; props: Prop[] } | null {
-  if (planSelect.mode === 'none' || planSelect.mode === 'penaltyVertex' || planSelect.mode === 'planDimension')
+  if (planSelect.mode === 'none' || planSelect.mode === 'penaltyVertex' || planSelect.mode === 'planDimension' || planSelect.mode === 'rangeDistanceSign')
     return null
   if (planSelect.mode === 'single') {
     if (planSelect.kind === 'target') {
@@ -227,6 +239,7 @@ type DragMode =
       origA: Vec2
       origB: Vec2
     }
+  | { mode: 'moveRangeDistanceSign'; id: string; grabOffsetY: number }
 
 function collectIdsInWorldRect(
   targets: readonly Target[],
@@ -262,7 +275,23 @@ function drawPlanSelectOutlines(
   targets: readonly Target[],
   props: readonly Prop[],
   planSelect: PlanSelectState,
+  rangeDistanceSigns: readonly RangeDistanceSign[],
 ) {
+  if (planSelect.mode === 'rangeDistanceSign') {
+    const sign = rangeDistanceSigns.find((s) => s.id === planSelect.id)
+    if (sign) {
+      const sc = worldToScreen(RANGE_DISTANCE_SIGN_PLAN_CENTER_X_M, sign.edgePositionYM, tf)
+      const wPx = Math.max(48, 0.44 * tf.pxPerMeter)
+      const hPx = Math.max(26, 0.16 * tf.pxPerMeter)
+      ctx.strokeStyle = 'rgba(79, 70, 229, 0.95)'
+      ctx.lineWidth = 2
+      ctx.setLineDash([6, 4])
+      ctx.strokeRect(sc.x - wPx / 2, sc.y - hPx / 2, wPx, hPx)
+      ctx.setLineDash([])
+    }
+    return
+  }
+
   const strokeOne = (outline: Vec2[]) => {
     if (outline.length === 0) return
     const scr = outline.map((p) => worldToScreen(p.x, p.y, tf))
@@ -593,9 +622,52 @@ function pickPenaltyVertexAt(
 function targetFill(type: Target['type'], isNoShoot: boolean): string {
   if (isNoShoot) return 'rgba(239, 68, 68, 0.9)'
   if (type === 'ceramicPlate') return CERAMIC_FACE_RGBA
+  if (isGongTargetType(type)) return 'rgba(255, 102, 0, 0.94)'
   if (isSquareSteelPlateTargetType(type)) return 'rgba(248, 250, 252, 0.96)'
   if (isPaperTargetType(type)) return 'rgba(255, 255, 255, 0.98)'
   return 'rgba(244, 244, 245, 0.96)'
+}
+
+function drawGongFrame2D(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  spec: NonNullable<ReturnType<typeof gongFrame2DSpecWorld>>,
+) {
+  const frameColor = GONG_FRAME_COLOR
+  const chainColor = 'rgba(148, 163, 184, 0.95)'
+  const lw = Math.max(2, tf.pxPerMeter * 0.045)
+  ctx.lineCap = 'round'
+  ctx.lineJoin = 'round'
+  for (const post of spec.postsWorld) {
+    const a = worldToScreen(post.from.x, post.from.y, tf)
+    const b = worldToScreen(post.to.x, post.to.y, tf)
+    ctx.beginPath()
+    ctx.moveTo(a.x, a.y)
+    ctx.lineTo(b.x, b.y)
+    ctx.strokeStyle = frameColor
+    ctx.lineWidth = lw
+    ctx.stroke()
+  }
+  const barA = worldToScreen(spec.topBarWorld.from.x, spec.topBarWorld.from.y, tf)
+  const barB = worldToScreen(spec.topBarWorld.to.x, spec.topBarWorld.to.y, tf)
+  ctx.beginPath()
+  ctx.moveTo(barA.x, barA.y)
+  ctx.lineTo(barB.x, barB.y)
+  ctx.strokeStyle = frameColor
+  ctx.lineWidth = lw
+  ctx.stroke()
+  for (const chain of spec.chainsWorld) {
+    const a = worldToScreen(chain.from.x, chain.from.y, tf)
+    const b = worldToScreen(chain.to.x, chain.to.y, tf)
+    ctx.beginPath()
+    ctx.moveTo(a.x, a.y)
+    ctx.lineTo(b.x, b.y)
+    ctx.strokeStyle = chainColor
+    ctx.lineWidth = Math.max(1, lw * 0.45)
+    ctx.stroke()
+  }
+  ctx.lineCap = 'butt'
+  ctx.lineJoin = 'miter'
 }
 
 function tracePolygonScreen(ctx: CanvasRenderingContext2D, scr: Vec2[]) {
@@ -2342,6 +2414,61 @@ function drawActivationsPlan2D(
   }
 }
 
+function pickRangeDistanceSignAtScreen(
+  sx: number,
+  sy: number,
+  signs: readonly RangeDistanceSign[],
+  tf: ViewTransform,
+): string | null {
+  const r = Math.max(36, 0.22 * tf.pxPerMeter)
+  for (let i = signs.length - 1; i >= 0; i--) {
+    const s = signs[i]!
+    const sc = worldToScreen(RANGE_DISTANCE_SIGN_PLAN_CENTER_X_M, s.edgePositionYM, tf)
+    if (Math.hypot(sx - sc.x, sy - sc.y) <= r) return s.id
+  }
+  return null
+}
+
+function drawRangeDistanceSigns(
+  ctx: CanvasRenderingContext2D,
+  tf: ViewTransform,
+  signs: readonly RangeDistanceSign[],
+  selectedId: string | null,
+) {
+  for (const s of signs) {
+    const sc = worldToScreen(RANGE_DISTANCE_SIGN_PLAN_CENTER_X_M, s.edgePositionYM, tf)
+    const text = String(Math.round(s.labelM))
+    const fontPx = Math.max(10, Math.min(18, Math.round(0.11 * tf.pxPerMeter)))
+    ctx.save()
+    ctx.font = `bold ${fontPx}px system-ui, sans-serif`
+    const tw = ctx.measureText(text).width
+    const padX = 8
+    const padY = 5
+    const bw = tw + padX * 2
+    const bh = fontPx * 1.28 + padY * 2
+    const rx = 6
+    const sel = s.id === selectedId
+    ctx.fillStyle = sel ? 'rgba(254, 243, 199, 0.97)' : 'rgba(255, 251, 235, 0.94)'
+    ctx.strokeStyle = sel ? 'rgba(79, 70, 229, 0.88)' : 'rgba(120, 53, 15, 0.5)'
+    ctx.lineWidth = sel ? 2 : 1
+    const x0 = sc.x - bw / 2
+    const y0 = sc.y - bh / 2
+    ctx.beginPath()
+    if (typeof ctx.roundRect === 'function') {
+      ctx.roundRect(x0, y0, bw, bh, rx)
+    } else {
+      ctx.rect(x0, y0, bw, bh)
+    }
+    ctx.fill()
+    ctx.stroke()
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.92)'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(text, sc.x, sc.y)
+    ctx.restore()
+  }
+}
+
 function redraw(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
@@ -2365,6 +2492,7 @@ function redraw(
   activationPendingFrom: StageEntityRef | null,
   planDimensions: readonly PlanDimensionLine[],
   planDimensionDraftWorld: Vec2 | null,
+  rangeDistanceSigns: readonly RangeDistanceSign[],
 ) {
   const dpr = window.devicePixelRatio || 1
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -2567,8 +2695,9 @@ function redraw(
     ctx.fill()
 
     const swSpec = swinger2DDrawSpecWorld(g)
-    const twoPostBases = swSpec ? null : targetPaperTwoPostBasesWorld(g)
-    const ped = swSpec ? null : twoPostBases ? null : targetMetalPedestalWorld(g)
+    const gongFrame = swSpec ? null : gongFrame2DSpecWorld(g)
+    const twoPostBases = swSpec || gongFrame ? null : targetPaperTwoPostBasesWorld(g)
+    const ped = swSpec || gongFrame ? null : twoPostBases ? null : targetMetalPedestalWorld(g)
     if (twoPostBases) {
       for (const poly of twoPostBases) {
         if (poly.length < 3) continue
@@ -2594,6 +2723,9 @@ function redraw(
 
     const stroke = g.isNoShoot ? 'rgba(127,29,29,0.88)' : 'rgba(15,23,42,0.5)'
     const popSpec = swSpec ? null : popper2DDrawSpec(g)
+    if (gongFrame) {
+      drawGongFrame2D(ctx, tf, gongFrame)
+    }
     if (swSpec) {
       drawSwinger2D(ctx, g, tf, swSpec, stroke, 2)
     } else if (popSpec) {
@@ -2605,6 +2737,22 @@ function redraw(
 
     if (twoPostBases) {
       const stickSegs = targetPaperTwoPostStickIndicatorsWorld(g)
+      if (stickSegs) {
+        ctx.lineCap = 'round'
+        ctx.lineJoin = 'round'
+        for (const seg of stickSegs) {
+          const a = worldToScreen(seg.from.x, seg.from.y, tf)
+          const b = worldToScreen(seg.to.x, seg.to.y, tf)
+          ctx.beginPath()
+          ctx.moveTo(a.x, a.y)
+          ctx.lineTo(b.x, b.y)
+          ctx.strokeStyle = 'rgba(25, 18, 14, 0.95)'
+          ctx.lineWidth = Math.max(2, tf.pxPerMeter * 0.07)
+          ctx.stroke()
+        }
+      }
+    } else if (isSquareSteelPlateTargetType(g.type)) {
+      const stickSegs = targetMetalStandStickIndicatorsWorld(g)
       if (stickSegs) {
         ctx.lineCap = 'round'
         ctx.lineJoin = 'round'
@@ -2677,6 +2825,12 @@ function redraw(
     activationNumMap,
     activationPendingFrom,
   )
+  drawRangeDistanceSigns(
+    ctx,
+    tf,
+    rangeDistanceSigns,
+    planSelect.mode === 'rangeDistanceSign' ? planSelect.id : null,
+  )
   drawSavedPlanDimensions(
     ctx,
     tf,
@@ -2685,7 +2839,7 @@ function redraw(
     planDimensionDraftWorld,
     planSelect.mode === 'planDimension' ? planSelect.id : null,
   )
-  drawPlanSelectOutlines(ctx, tf, targets, props, planSelect)
+  drawPlanSelectOutlines(ctx, tf, targets, props, planSelect, rangeDistanceSigns)
   drawPenaltyVertexHandles(ctx, tf, penaltyZoneSet)
   drawPenaltyVertexAdjacentEdgeLabels(ctx, tf, penaltyZoneSet, penaltyVertexDrag, formatMeasureDistance)
 
@@ -2726,6 +2880,7 @@ export type StageCanvasProps = {
   onDeleteTarget: (id: string) => void
   onDeleteProp: (id: string) => void
   onSetTargetMetalRectSideCm: (id: string, cm: MetalPlateRectSideCm) => void
+  onSetTargetGongSizeCm: (id: string, cm: GongSizeCm) => void
   /** Під час панорами/зуму — межі видимого фрагменту поля в метрах (для міні-карти). */
   onViewportWorldChange?: (rect: WorldViewportRect) => void
   /** Режим вимірювання відстані (два кліки на плані). */
@@ -2739,7 +2894,7 @@ export type StageCanvasProps = {
   marqueeModeActive: boolean
   /** Після завершення жесту рамки (значний рух) — вимкнути режим у батьківському UI, щоб можна було перетягувати виділення. */
   onMarqueeGestureComplete?: () => void
-  onPlanSelectionChange?: (summary: { empty: boolean; count: number }) => void
+  onPlanSelectionChange?: (summary: PlanSelectionSummary) => void
   /** Довгий тап по плану при непорожньому виділенні (мобільні дії). */
   onSelectionLongPress?: () => void
   /** Чернетка полілінії штрафної зони (клацання вершин); null — не в режимі малювання контуру. */
@@ -2755,6 +2910,12 @@ export type StageCanvasProps = {
   onRemovePlanDimensionLine?: (id: string) => void
   /** Режим перегляду за share-посиланням: лише пан/зум і вимірювання, без редагування сцени. */
   readOnly?: boolean
+}
+
+export type PlanSelectionSummary = {
+  empty: boolean
+  count: number
+  singleTargetId: string | null
 }
 
 export type StageCanvasHandle = {
@@ -2801,6 +2962,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   onDeleteTarget,
   onDeleteProp,
   onSetTargetMetalRectSideCm,
+  onSetTargetGongSizeCm,
   onViewportWorldChange,
   measureToolActive,
   formatMeasureDistance,
@@ -2825,9 +2987,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   const fieldSizeM = useStageStore((s) => s.fieldSizeM)
   const activations = useStageStore((s) => s.activations)
   const planDimensions = useStageStore((s) => s.planDimensions)
+  const rangeDistanceSigns = useStageStore((s) => s.rangeDistanceSigns)
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
   const movePenaltyVertex = useStageStore((s) => s.movePenaltyVertex)
   const removePenaltyVertex = useStageStore((s) => s.removePenaltyVertex)
+  const removeRangeDistanceSign = useStageStore((s) => s.removeRangeDistanceSign)
   const fw = fieldSizeM.x
   const fh = fieldSizeM.y
   const activationNumMap = useMemo(
@@ -2903,7 +3067,9 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         : planSelect.mode === 'multi'
           ? planSelect.targetIds.length + planSelect.propIds.length
           : 1
-    onPlanSelectionChange?.({ empty: c === 0, count: c })
+    const singleTargetId =
+      planSelect.mode === 'single' && planSelect.kind === 'target' ? planSelect.id : null
+    onPlanSelectionChange?.({ empty: c === 0, count: c, singleTargetId })
   }, [planSelect, onPlanSelectionChange])
 
   const performDeleteSelection = useCallback(() => {
@@ -2912,6 +3078,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     if (ps.mode === 'none') return
     if (ps.mode === 'planDimension') {
       onRemovePlanDimensionLine?.(ps.id)
+      setPlanSelect({ mode: 'none' })
+      return
+    }
+    if (ps.mode === 'rangeDistanceSign') {
+      removeRangeDistanceSign(ps.id)
       setPlanSelect({ mode: 'none' })
       return
     }
@@ -2928,7 +3099,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       else onDeleteProp(ps.id)
     }
     setPlanSelect({ mode: 'none' })
-  }, [readOnly, onDeleteTarget, onDeleteProp, removePenaltyVertex, onRemovePlanDimensionLine])
+  }, [readOnly, onDeleteTarget, onDeleteProp, removePenaltyVertex, onRemovePlanDimensionLine, removeRangeDistanceSign])
 
   const clearLongPressTimer = useCallback(() => {
     if (longPressTimerRef.current != null) {
@@ -3077,6 +3248,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         activationPendingFrom,
         planDimensions,
         dimensionDraftWorld,
+        rangeDistanceSigns,
       )
 
     const t = transformRef.current
@@ -3103,6 +3275,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     activationPendingFrom,
     planDimensions,
     dimensionDraftWorld,
+    rangeDistanceSigns,
   ])
 
   useImperativeHandle(
@@ -3269,6 +3442,12 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
           repaint()
           return
         }
+        if (planSelectRef.current.mode === 'rangeDistanceSign') {
+          e.preventDefault()
+          setPlanSelect({ mode: 'none' })
+          repaint()
+          return
+        }
       }
       if (e.code === 'Delete' || e.code === 'Backspace') {
         if (readOnly) return
@@ -3286,14 +3465,21 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         const ps = planSelectRef.current
         if (ps.mode !== 'single' || ps.kind !== 'target') return
         const hit = targets.find((x) => x.id === ps.id)
-        if (!hit || !isSquareSteelPlateTargetType(hit.type)) return
-        e.preventDefault()
-        const order: readonly MetalPlateRectSideCm[] = [15, 20, 30]
-        const cur = hit.metalRectSideCm ?? 30
-        const idx = order.indexOf(cur)
-        const i = idx >= 0 ? idx : 0
-        const next = e.code === 'BracketRight' ? order[(i + 1) % 3]! : order[(i + 2) % 3]!
-        onSetTargetMetalRectSideCm(ps.id, next)
+        if (!hit) return
+        if (isSquareSteelPlateTargetType(hit.type)) {
+          e.preventDefault()
+          const cur = hit.metalRectSideCm ?? 30
+          const next = nextMetalPlateSideCm(cur, e.code === 'BracketRight' ? 1 : -1)
+          onSetTargetMetalRectSideCm(ps.id, next)
+          return
+        }
+        if (isGongTargetType(hit.type)) {
+          e.preventDefault()
+          const cur = hit.gongSizeCm ?? 30
+          const next = nextGongSizeCm(cur, e.code === 'BracketRight' ? 1 : -1)
+          onSetTargetGongSizeCm(ps.id, next)
+          return
+        }
         return
       }
       if (e.code !== 'Space' || e.repeat) return
@@ -3318,6 +3504,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     onDeleteTarget,
     onDeleteProp,
     onSetTargetMetalRectSideCm,
+    onSetTargetGongSizeCm,
     targets,
     measurePoints.a,
     measurePoints.b,
@@ -3454,6 +3641,40 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       }
     }
 
+    if (
+      !readOnly &&
+      !measureToolActive &&
+      !marqueeModeActive &&
+      !activationLinkModeActive &&
+      !dimensionLinkModeActive &&
+      !placementArmed &&
+      rangeDistanceSigns.length > 0 &&
+      ev.button === 0
+    ) {
+      const pickId = pickRangeDistanceSignAtScreen(sx, sy, rangeDistanceSigns, transformRef.current)
+      if (pickId) {
+        ev.preventDefault()
+        clearLongPressTimer()
+        pendingEmptyPanRef.current = null
+        gridHoverRef.current = null
+        const sign = rangeDistanceSigns.find((s) => s.id === pickId)
+        if (!sign) return
+        setPlanSelect({ mode: 'rangeDistanceSign', id: pickId })
+        dragRef.current = {
+          mode: 'moveRangeDistanceSign',
+          id: pickId,
+          grabOffsetY: w.y - sign.edgePositionYM,
+        }
+        try {
+          canvas.setPointerCapture(ev.pointerId)
+        } catch {
+          /* ignore */
+        }
+        repaint()
+        return
+      }
+    }
+
     if (dimensionLinkModeActive && !readOnly && ev.button === 0) {
       ev.preventDefault()
       clearLongPressTimer()
@@ -3576,7 +3797,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       !activationLinkModeActive &&
       !dimensionLinkModeActive &&
       planSelect.mode !== 'none' &&
-      planSelect.mode !== 'planDimension'
+      planSelect.mode !== 'planDimension' &&
+      planSelect.mode !== 'rangeDistanceSign'
     ) {
       clearLongPressTimer()
       longPressArmRef.current = { pointerId: ev.pointerId, x: ev.clientX, y: ev.clientY }
@@ -4038,6 +4260,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
+    if (drag.mode === 'moveRangeDistanceSign') {
+      const rawY = w.y - drag.grabOffsetY
+      useStageStore.getState().setRangeDistanceSignEdgeYM(drag.id, rawY)
+      repaint()
+      return
+    }
+
     if (drag.mode === 'rotate') {
       const ent =
         drag.kind === 'target'
@@ -4297,10 +4526,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         : placementArmed
           ? 'crosshair'
           : marqueeModeActive
+          ? 'crosshair'
+          : activationLinkModeActive || dimensionLinkModeActive
             ? 'crosshair'
-            : activationLinkModeActive || dimensionLinkModeActive
-              ? 'crosshair'
-              : undefined
+            : undefined
 
   return (
     <canvas

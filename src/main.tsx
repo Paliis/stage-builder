@@ -88,6 +88,13 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/ro-helper/*" element={<LegacyRoHelperTreeRedirect />} />
             <Route path="/tools/ro-helper" element={<LegacyRoHelperTreeRedirect />} />
             <Route path="/tools/ro-helper/*" element={<LegacyRoHelperTreeRedirect />} />
+            {/*
+              Static paths must come before `/:locale` (PortalShell) so `/stage-builder` is never
+              mistaken for a locale segment (white screen / wrong layout).
+            */}
+            <Route path="/stage-builder" element={<App />} />
+            <Route path="/v/:shareId" element={<ShareStageRoute mode="view" />} />
+            <Route path="/e/:shareId" element={<ShareStageRoute mode="edit" />} />
             <Route element={<PortalShell />}>
               <Route path=":locale" element={<PortalLocaleGate />}>
                 <Route index element={<PortalHome />} />
@@ -186,9 +193,6 @@ createRoot(document.getElementById('root')!).render(
                 ) : null}
               </Route>
             </Route>
-            <Route path="/stage-builder" element={<App />} />
-            <Route path="/v/:shareId" element={<ShareStageRoute mode="view" />} />
-            <Route path="/e/:shareId" element={<ShareStageRoute mode="edit" />} />
             <Route path="*" element={<Navigate to={`/${getInitialLocale()}`} replace />} />
           </Routes>
           <Analytics />

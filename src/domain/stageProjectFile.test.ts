@@ -260,4 +260,34 @@ describe('stageProjectFile', () => {
     expect(parsed.data.stage.planDimensions[0]!.endA).toEqual({ x: 1, y: 1 })
     expect(parsed.data.stage.planDimensions[0]!.endB).toEqual({ x: 5, y: 1 })
   })
+
+  it('clamps rangeDistanceSigns labelM to 1–999 when loading', () => {
+    const briefing = defaultStageBriefing()
+    const raw = {
+      format: STAGE_PROJECT_FORMAT,
+      version: STAGE_PROJECT_VERSION,
+      stage: {
+        name: 'Ranges',
+        weaponClass: 'handgun',
+        fieldSizeM: { x: 30, y: 40 },
+        fieldGroundCover3d: 'grass',
+        targets: [],
+        props: [],
+        penaltyZoneSet: emptyPenaltyZoneSet(),
+        activations: [],
+        planDimensions: [],
+        rangeDistanceSigns: [
+          { id: 'a', edgePositionYM: 10, labelM: 1500 },
+          { id: 'b', edgePositionYM: 5, labelM: 0 },
+        ],
+      },
+      briefing,
+    }
+    const parsed = parseStageProjectJson(JSON.stringify(raw))
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    const signs = parsed.data.stage.rangeDistanceSigns ?? []
+    expect(signs.find((s) => s.id === 'a')!.labelM).toBe(999)
+    expect(signs.find((s) => s.id === 'b')!.labelM).toBe(1)
+  })
 })

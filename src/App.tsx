@@ -21,6 +21,8 @@ import type { PlacementMode } from './domain/placementMode'
 import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
 import { refKey } from './domain/activations'
 import type {
+  GongSizeCm,
+  MetalPlateRectSideCm,
   Prop,
   PropType,
   StageCategory,
@@ -29,13 +31,18 @@ import type {
   TargetType,
   Vec2,
 } from './domain/models'
+import { canRetargetSelectedToType } from './domain/resizableTargetSizes'
+import { isGongTargetType } from './domain/gongSpec'
+import { isSquareSteelPlateTargetType } from './domain/targetSpecs'
 import { ALL_TARGET_TYPES } from './domain/weaponClass'
 import { FIELD_GROUND_COVER_3D_VALUES, type FieldGroundCover3d } from './domain/fieldGround3d'
 import {
   clampFieldDimensions,
   clampVec2ToField,
   FIELD_SIZE_PRESETS,
+  GRID_SNAP_M,
   PENALTY_CONTOUR_VERTEX_SNAP_M,
+  snapMeters,
   snapVec2,
   STAGE_CARD_UI_DEPTH_FACTOR,
 } from './domain/field'
@@ -47,6 +54,10 @@ import {
   serializeStageProject,
   suggestedStageProjectFileName,
 } from './domain/stageProjectFile'
+import {
+  RANGE_DISTANCE_SIGN_LABEL_MAX,
+  RANGE_DISTANCE_SIGN_LABEL_MIN,
+} from './domain/rangeDistanceSigns'
 import { summarizeTargetsDescriptionFromScene } from './domain/targetSummary'
 import { useI18n } from './i18n/useI18n'
 import { CANONICAL_PRODUCTION_ORIGIN } from './seo/canonicalProductionOrigin'
@@ -57,7 +68,7 @@ import {
   type BriefingPdfLabels,
 } from './domain/stageBriefing'
 import { StageBuilderToolbar } from './presentation/components/StageBuilderToolbar'
-import { type StageCanvasHandle, StageCanvas } from './presentation/components/StageCanvas'
+import { type PlanSelectionSummary, type StageCanvasHandle, StageCanvas } from './presentation/components/StageCanvas'
 import { StageMinimap } from './presentation/components/StageMinimap'
 import type { CameraMode3D, StageView3DHandle } from './presentation/components/StageView3D'
 import type { WorldViewportRect } from './presentation/lib/viewTransform'
@@ -112,10 +123,12 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const setTargetPosition = useStageStore((s) => s.setTargetPosition)
   const setPropPosition = useStageStore((s) => s.setPropPosition)
   const setTargetRotation = useStageStore((s) => s.setTargetRotation)
+  const setTargetType = useStageStore((s) => s.setTargetType)
   const setPropRotation = useStageStore((s) => s.setPropRotation)
   const setPropGeometry = useStageStore((s) => s.setPropGeometry)
   const removeTarget = useStageStore((s) => s.removeTarget)
   const setTargetMetalRectSideCm = useStageStore((s) => s.setTargetMetalRectSideCm)
+  const setTargetGongSizeCm = useStageStore((s) => s.setTargetGongSizeCm)
   const removeProp = useStageStore((s) => s.removeProp)
   const fieldSizeM = useStageStore((s) => s.fieldSizeM)
   const fieldGroundCover3d = useStageStore((s) => s.fieldGroundCover3d)
@@ -127,9 +140,11 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const penaltyZoneSet = useStageStore((s) => s.penaltyZoneSet)
   const activations = useStageStore((s) => s.activations)
   const planDimensions = useStageStore((s) => s.planDimensions)
+  const rangeDistanceSigns = useStageStore((s) => s.rangeDistanceSigns)
   const addActivationEdge = useStageStore((s) => s.addActivationEdge)
   const addPlanDimensionLine = useStageStore((s) => s.addPlanDimensionLine)
   const removePlanDimensionLine = useStageStore((s) => s.removePlanDimensionLine)
+  const addRangeDistanceSign = useStageStore((s) => s.addRangeDistanceSign)
   const addPenaltyClosedRing = useStageStore((s) => s.addPenaltyClosedRing)
 
   const briefing = useBriefingStore(
@@ -236,8 +251,57 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const [activationPendingFrom, setActivationPendingFrom] = useState<StageEntityRef | null>(null)
   const [dimensionLinkMode, setDimensionLinkMode] = useState(false)
   const [dimensionDraftWorld, setDimensionDraftWorld] = useState<Vec2 | null>(null)
-  const [planSelectionSummary, setPlanSelectionSummary] = useState({ empty: true, count: 0 })
+  const [rangeSignDialogOpen, setRangeSignDialogOpen] = useState(false)
+  const [rangeSignLabelDraft, setRangeSignLabelDraft] = useState('300')
+  const [rangeSignEdgeYDraft, setRangeSignEdgeYDraft] = useState('0')
+  const [planSelectionSummary, setPlanSelectionSummary] = useState<PlanSelectionSummary>({
+    empty: true,
+    count: 0,
+    singleTargetId: null,
+  })
+  const [draftMetalPlateSideCm, setDraftMetalPlateSideCm] = useState<MetalPlateRectSideCm>(15)
+  const [draftGongSizeCm, setDraftGongSizeCm] = useState<GongSizeCm>(30)
   const [hasPlanClipboard, setHasPlanClipboard] = useState(false)
+
+  const selectedSingleTarget = useMemo(() => {
+    const id = planSelectionSummary.singleTargetId
+    return id ? targets.find((t) => t.id === id) : undefined
+  }, [planSelectionSummary.singleTargetId, targets])
+
+  const metalPlateSideCm = useMemo((): MetalPlateRectSideCm => {
+    if (selectedSingleTarget && isSquareSteelPlateTargetType(selectedSingleTarget.type)) {
+      return selectedSingleTarget.metalRectSideCm ?? 30
+    }
+    return draftMetalPlateSideCm
+  }, [selectedSingleTarget, draftMetalPlateSideCm])
+
+  const gongSizeCm = useMemo((): GongSizeCm => {
+    if (selectedSingleTarget && isGongTargetType(selectedSingleTarget.type)) {
+      return selectedSingleTarget.gongSizeCm ?? 30
+    }
+    return draftGongSizeCm
+  }, [selectedSingleTarget, draftGongSizeCm])
+
+  const handleMetalPlateSideCmChange = useCallback(
+    (cm: MetalPlateRectSideCm) => {
+      setDraftMetalPlateSideCm(cm)
+      if (selectedSingleTarget && isSquareSteelPlateTargetType(selectedSingleTarget.type)) {
+        setTargetMetalRectSideCm(selectedSingleTarget.id, cm)
+      }
+    },
+    [selectedSingleTarget, setTargetMetalRectSideCm],
+  )
+
+  const handleGongSizeCmChange = useCallback(
+    (cm: GongSizeCm) => {
+      setDraftGongSizeCm(cm)
+      if (selectedSingleTarget && isGongTargetType(selectedSingleTarget.type)) {
+        setTargetGongSizeCm(selectedSingleTarget.id, cm)
+      }
+    },
+    [selectedSingleTarget, setTargetGongSizeCm],
+  )
+
   const internalClipboardRef = useRef<{ targets: Target[]; props: Prop[] } | null>(null)
   const [selectionSheetOpen, setSelectionSheetOpen] = useState(false)
 
@@ -267,6 +331,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     setActivationPendingFrom(null)
     setDimensionLinkMode(false)
     setDimensionDraftWorld(null)
+    setRangeSignDialogOpen(false)
     setMobileMenuOpen(false)
     setHasPlanClipboard(false)
     internalClipboardRef.current = null
@@ -279,6 +344,18 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   useEffect(() => {
     if (planSelectionSummary.empty) setSelectionSheetOpen(false)
   }, [planSelectionSummary.empty])
+
+  useEffect(() => {
+    if (selectedSingleTarget && isSquareSteelPlateTargetType(selectedSingleTarget.type)) {
+      setDraftMetalPlateSideCm(selectedSingleTarget.metalRectSideCm ?? 30)
+    }
+  }, [selectedSingleTarget])
+
+  useEffect(() => {
+    if (selectedSingleTarget && isGongTargetType(selectedSingleTarget.type)) {
+      setDraftGongSizeCm(selectedSingleTarget.gongSizeCm ?? 30)
+    }
+  }, [selectedSingleTarget])
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 52rem)')
@@ -348,6 +425,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         penaltyZoneSet,
         activations,
         planDimensions,
+        rangeDistanceSigns,
       },
       briefing: { ...briefing },
     })
@@ -371,6 +449,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     activations,
     planDimensions,
     briefing,
+    rangeDistanceSigns,
   ])
 
   const shareProjectRoot = useMemo(
@@ -386,6 +465,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
           penaltyZoneSet,
           activations,
           planDimensions,
+          rangeDistanceSigns,
         },
         briefing: { ...briefing },
       }),
@@ -399,6 +479,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       penaltyZoneSet,
       activations,
       planDimensions,
+      rangeDistanceSigns,
       briefing,
     ],
   )
@@ -507,6 +588,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setActivationPendingFrom(null)
       setDimensionLinkMode(false)
       setDimensionDraftWorld(null)
+      setRangeSignDialogOpen(false)
     }
   }, [viewMode])
 
@@ -518,6 +600,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setActivationPendingFrom(null)
       setDimensionLinkMode(false)
       setDimensionDraftWorld(null)
+      setRangeSignDialogOpen(false)
     }
   }, [marqueeModeActive])
 
@@ -528,6 +611,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setActivationPendingFrom(null)
       setDimensionLinkMode(false)
       setDimensionDraftWorld(null)
+      setRangeSignDialogOpen(false)
     }
   }, [measureToolActive])
 
@@ -538,6 +622,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setActivationPendingFrom(null)
       setDimensionLinkMode(false)
       setDimensionDraftWorld(null)
+      setRangeSignDialogOpen(false)
     }
   }, [placementMode])
 
@@ -548,6 +633,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setMarqueeModeActive(false)
       setDimensionLinkMode(false)
       setDimensionDraftWorld(null)
+      setRangeSignDialogOpen(false)
     }
   }, [activationLinkMode])
 
@@ -558,6 +644,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setMarqueeModeActive(false)
       setActivationLinkMode(false)
       setActivationPendingFrom(null)
+      setRangeSignDialogOpen(false)
     }
   }, [dimensionLinkMode])
 
@@ -590,6 +677,11 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         setDimensionDraftWorld(null)
         return
       }
+      if (rangeSignDialogOpen) {
+        e.preventDefault()
+        setRangeSignDialogOpen(false)
+        return
+      }
       if (activationLinkMode) {
         e.preventDefault()
         setActivationLinkMode(false)
@@ -616,6 +708,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     clearPenaltyContourDraft,
     readOnly,
     dimensionLinkMode,
+    rangeSignDialogOpen,
   ])
 
   const formatMeasureDistance = useCallback(
@@ -648,15 +741,73 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     [addPlanDimensionLine],
   )
 
-  const armTargetPlacement = useCallback((type: TargetType, isNoShoot = false) => {
-    setMeasureToolActive(false)
-    clearPenaltyContourDraft()
-    setPlacementMode((prev) =>
-      prev?.kind === 'target' && prev.type === type && prev.isNoShoot === isNoShoot
-        ? null
-        : { kind: 'target', type, isNoShoot },
-    )
-  }, [clearPenaltyContourDraft])
+  const openRangeSignDialog = useCallback(() => {
+    setRangeSignLabelDraft('300')
+    setRangeSignEdgeYDraft(String(snapMeters(fieldSizeM.y * 0.5, GRID_SNAP_M)))
+    setRangeSignDialogOpen(true)
+  }, [fieldSizeM.y])
+
+  const rangeSignLabelValid = useMemo(() => {
+    const raw = rangeSignLabelDraft.trim().replace(',', '.')
+    const n = parseInt(raw, 10)
+    if (raw !== String(n)) return false
+    return Number.isFinite(n) && n >= RANGE_DISTANCE_SIGN_LABEL_MIN && n <= RANGE_DISTANCE_SIGN_LABEL_MAX
+  }, [rangeSignLabelDraft])
+
+  const rangeSignEdgeYValid = useMemo(() => {
+    const raw = rangeSignEdgeYDraft.trim().replace(',', '.')
+    const y = parseFloat(raw)
+    if (!Number.isFinite(y)) return false
+    return y >= 0 && y <= fieldSizeM.y
+  }, [rangeSignEdgeYDraft, fieldSizeM.y])
+
+  const rangeSignFormValid = rangeSignLabelValid && rangeSignEdgeYValid
+
+  const confirmRangeSignDialog = useCallback(() => {
+    if (!rangeSignFormValid) return
+    const rawY = rangeSignEdgeYDraft.trim().replace(',', '.')
+    const y = parseFloat(rawY)
+    const rawL = rangeSignLabelDraft.trim().replace(',', '.')
+    const n = parseInt(rawL, 10)
+    addRangeDistanceSign(y, n)
+    setRangeSignDialogOpen(false)
+  }, [
+    rangeSignFormValid,
+    rangeSignEdgeYDraft,
+    rangeSignLabelDraft,
+    addRangeDistanceSign,
+  ])
+
+  const armTargetPlacement = useCallback(
+    (type: TargetType, isNoShoot = false) => {
+      setMeasureToolActive(false)
+      clearPenaltyContourDraft()
+
+      const selectedId = planSelectionSummary.singleTargetId
+      if (selectedId) {
+        const hit = targets.find((t) => t.id === selectedId)
+        if (hit && canRetargetSelectedToType(hit, type, isNoShoot)) {
+          if (hit.type !== type) {
+            setTargetType(selectedId, type)
+          }
+          setPlacementMode(null)
+          return
+        }
+      }
+
+      setPlacementMode((prev) =>
+        prev?.kind === 'target' && prev.type === type && prev.isNoShoot === isNoShoot
+          ? null
+          : { kind: 'target', type, isNoShoot },
+      )
+    },
+    [
+      clearPenaltyContourDraft,
+      planSelectionSummary.singleTargetId,
+      setTargetType,
+      targets,
+    ],
+  )
 
   const armPropPlacement = useCallback((type: PropType) => {
     setMeasureToolActive(false)
@@ -694,7 +845,10 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         return
       }
       if (placementMode.kind === 'target') {
-        addTarget(placementMode.type, placementMode.isNoShoot, p)
+        addTarget(placementMode.type, placementMode.isNoShoot, p, {
+          metalRectSideCm: draftMetalPlateSideCm,
+          gongSizeCm: draftGongSizeCm,
+        })
       } else {
         addProp(placementMode.type, undefined, p)
       }
@@ -709,6 +863,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       addProp,
       addPenaltyClosedRing,
       layoutNarrow,
+      draftMetalPlateSideCm,
+      draftGongSizeCm,
       clearPenaltyContourDraft,
     ],
   )
@@ -1084,6 +1240,12 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     placementMode,
     layoutNarrow,
     readOnly,
+    metalPlateSideCm,
+    gongSizeCm,
+    selectedTargetType: selectedSingleTarget?.type ?? null,
+    selectedTargetIsNoShoot: selectedSingleTarget?.isNoShoot ?? null,
+    onMetalPlateSideCmChange: handleMetalPlateSideCmChange,
+    onGongSizeCmChange: handleGongSizeCmChange,
     onArmTarget: armTargetPlacement,
     onArmProp: armPropPlacement,
     onArmPenaltyContour: armPenaltyContour,
@@ -1343,6 +1505,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       onDeleteTarget={removeTarget}
                       onDeleteProp={removeProp}
                       onSetTargetMetalRectSideCm={setTargetMetalRectSideCm}
+                      onSetTargetGongSizeCm={setTargetGongSizeCm}
                       onViewportWorldChange={setPlanViewportWorld}
                       measureToolActive={measureToolActive}
                       formatMeasureDistance={formatMeasureDistance}
@@ -1385,6 +1548,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                           setMarqueeModeActive((v) => !v)
                           setDimensionLinkMode(false)
                           setDimensionDraftWorld(null)
+                          setRangeSignDialogOpen(false)
                         }}
                       >
                         <svg
@@ -1460,6 +1624,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                           setActivationPendingFrom(null)
                           setDimensionLinkMode(false)
                           setDimensionDraftWorld(null)
+                          setRangeSignDialogOpen(false)
                         }}
                       >
                         <svg
@@ -1493,6 +1658,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                           setActivationPendingFrom(null)
                           setMeasureToolActive(false)
                           setMarqueeModeActive(false)
+                          setRangeSignDialogOpen(false)
                         }}
                       >
                         <svg
@@ -1514,6 +1680,41 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       </button>
                       <button
                         type="button"
+                        className={`app__plan-map-action-btn${
+                          rangeSignDialogOpen ? ' is-active' : ''
+                        }`}
+                        aria-pressed={rangeSignDialogOpen}
+                        aria-label={tree.view.rangeDistanceSignMode}
+                        title={tree.view.rangeDistanceSignModeTitle}
+                        onClick={() => {
+                          setPlacementMode(null)
+                          setMeasureToolActive(false)
+                          setMarqueeModeActive(false)
+                          setActivationLinkMode(false)
+                          setActivationPendingFrom(null)
+                          setDimensionLinkMode(false)
+                          setDimensionDraftWorld(null)
+                          openRangeSignDialog()
+                        }}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M5 4v16" />
+                          <rect x="8" y="9" width="11" height="10" rx="1" />
+                          <path d="M11 13h5M11 16h3" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
                         className={`app__plan-map-action-btn${measureToolActive ? ' is-active' : ''}`}
                         aria-pressed={measureToolActive}
                         aria-label={tree.view.measureTool}
@@ -1525,6 +1726,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                           setActivationLinkMode(false)
                           setActivationPendingFrom(null)
                           setMeasureToolActive((v) => !v)
+                          setRangeSignDialogOpen(false)
                         }}
                       >
                         <svg
@@ -1677,6 +1879,77 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               onClick={() => setSelectionSheetOpen(false)}
             >
               {tree.view.selectionSheetDismiss}
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {rangeSignDialogOpen ? (
+        <div
+          className="app__modal-center-backdrop"
+          role="presentation"
+          onClick={() => setRangeSignDialogOpen(false)}
+        >
+          <div
+            className="app__modal-center-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="range-sign-dialog-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p id="range-sign-dialog-title" className="app__selection-sheet__title">
+              {tree.view.rangeDistanceSignDialogTitle}
+            </p>
+            <p className="app__selection-sheet__hint">{tree.view.rangeDistanceSignDialogHint}</p>
+            <label className="app__field">
+              {tree.view.rangeDistanceSignLabelField}
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={3}
+                value={rangeSignLabelDraft}
+                onChange={(e) => setRangeSignLabelDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && rangeSignFormValid) {
+                    e.preventDefault()
+                    confirmRangeSignDialog()
+                  }
+                }}
+                autoFocus
+              />
+            </label>
+            <label className="app__field">
+              {tree.view.rangeDistanceSignEdgeField}
+              <input
+                type="text"
+                inputMode="decimal"
+                value={rangeSignEdgeYDraft}
+                onChange={(e) => setRangeSignEdgeYDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && rangeSignFormValid) {
+                    e.preventDefault()
+                    confirmRangeSignDialog()
+                  }
+                }}
+              />
+            </label>
+            <p className="app__modal-center-card__field-hint">
+              {formatTemplate(tree.view.rangeDistanceSignEdgeHint, { max: String(fieldSizeM.y) })}
+            </p>
+            <button
+              type="button"
+              className="app__selection-sheet__btn app__selection-sheet__btn--primary"
+              disabled={!rangeSignFormValid}
+              onClick={confirmRangeSignDialog}
+            >
+              {tree.view.rangeDistanceSignConfirm}
+            </button>
+            <button
+              type="button"
+              className="app__selection-sheet__btn app__selection-sheet__btn--ghost"
+              onClick={() => setRangeSignDialogOpen(false)}
+            >
+              {tree.view.rangeDistanceSignCancel}
             </button>
           </div>
         </div>

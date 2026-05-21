@@ -64,7 +64,8 @@ export function isSessionDraftMeaningful(envelope: SessionDraftEnvelope): boolea
     stage.props.length > 0 ||
     pz.polygons.length > 0 ||
     (stage.activations?.length ?? 0) > 0 ||
-    (stage.planDimensions?.length ?? 0) > 0
+    (stage.planDimensions?.length ?? 0) > 0 ||
+    (stage.rangeDistanceSigns?.length ?? 0) > 0
   )
     return true
   if (stage.name.trim() !== DEFAULT_STAGE_NAME_UA) return true
@@ -102,6 +103,7 @@ export function downloadSessionDraftEnvelopeAsFile(envelope: SessionDraftEnvelop
   const stage: StageProjectSnapshot = {
     ...envelope.stage,
     penaltyZoneSet: envelope.stage.penaltyZoneSet ?? emptyPenaltyZoneSet(),
+    rangeDistanceSigns: envelope.stage.rangeDistanceSigns ?? [],
   }
   const file = buildStageProjectFile({
     stage,
@@ -149,6 +151,7 @@ function persistDraftNow(): void {
     penaltyZoneSet,
     activations,
     planDimensions,
+    rangeDistanceSigns,
   } = useStageStore.getState()
   const envelope: SessionDraftEnvelope = {
     draftMetaVersion: SESSION_DRAFT_META_VERSION,
@@ -163,6 +166,7 @@ function persistDraftNow(): void {
       penaltyZoneSet,
       activations,
       planDimensions,
+      rangeDistanceSigns,
     },
     briefing: briefingSnapshot(),
   }

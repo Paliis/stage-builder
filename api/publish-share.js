@@ -21057,9 +21057,20 @@ function clampVec2ToField(point, marginM, widthM = DEFAULT_FIELD_WIDTH_M, height
   };
 }
 
+// src/domain/propGeometry.ts
+var BARREL_COLUMN_HEIGHT_M = 1.1;
+var BARREL_DOUBLE_HEIGHT_M = 2 * BARREL_COLUMN_HEIGHT_M;
+
 // src/domain/ceramicPlateSpec.ts
 var MM = 1e-3;
 var CERAMIC_RADIUS_M = 55 * MM;
+
+// src/domain/gongSpec.ts
+var GONG_FRAME_WIDTH_M = 1;
+var GONG_FRAME_HALF_WIDTH_M = GONG_FRAME_WIDTH_M * 0.5;
+function isGongTargetType(type) {
+  return type === "gongSquare" || type === "gongRound";
+}
 
 // src/domain/targetSpecs.ts
 var CM = 0.01;
@@ -21088,6 +21099,15 @@ function reclampPlanDimensionsToField(dims, widthM, heightM) {
     ...d,
     endA: clampVec2ToField(d.endA, 0, widthM, heightM),
     endB: clampVec2ToField(d.endB, 0, widthM, heightM)
+  }));
+}
+
+// src/domain/rangeDistanceSigns.ts
+function reclampRangeDistanceSignsToField(signs, fieldHeightM) {
+  const fh = Math.max(fieldHeightM, 0);
+  return signs.map((s) => ({
+    ...s,
+    edgePositionYM: Math.min(Math.max(s.edgePositionYM, 0), fh)
   }));
 }
 
@@ -21127,6 +21147,8 @@ var ALL_TARGET_TYPES = [
   "metalPlateStand100",
   "popper",
   "miniPopper",
+  "gongSquare",
+  "gongRound",
   "ceramicPlate",
   "swingerSinglePaper",
   "swingerDoublePaper",
@@ -21141,7 +21163,7 @@ function emptyPenaltyZoneSet() {
 
 // src/domain/stageProjectFile.ts
 var STAGE_PROJECT_FORMAT = "stage-builder";
-var STAGE_PROJECT_VERSION = 5;
+var STAGE_PROJECT_VERSION = 6;
 var STAGE_PROJECT_VERSION_MIN = 1;
 var WEAPON_CLASSES = /* @__PURE__ */ new Set(["handgun", "rifle", "shotgun"]);
 var TARGET_TYPE_SET = new Set(ALL_TARGET_TYPES);
@@ -21158,6 +21180,7 @@ var PROP_TYPES = [
   "barrel",
   "barrelDouble",
   "tireStack",
+  "tireStack1m",
   "tireStackTall",
   "woodTable",
   "woodChair",
@@ -21203,6 +21226,10 @@ function parseMetalRectSideCm(raw) {
   if (raw === 15 || raw === 20 || raw === 30) return raw;
   return void 0;
 }
+function parseGongSizeCm(raw) {
+  if (raw === 30 || raw === 40 || raw === 50) return raw;
+  return void 0;
+}
 var LEGACY_PAPER_IPSC_TWO_POST = "paperIpscTwoPost";
 function migrateLegacySinglePostPaperType(type) {
   if (type === "paperIpsc") return "paperIpscTwoPostStand100";
@@ -21225,13 +21252,15 @@ function parseTarget(raw, idx) {
   if (typeof rotationRad !== "number" || !Number.isFinite(rotationRad)) return null;
   const tt = normalizedType;
   const metalRectSideCm = isSquareSteelPlateTargetType(tt) ? parseMetalRectSideCm(o.metalRectSideCm) : void 0;
+  const gongSizeCm = isGongTargetType(tt) ? parseGongSizeCm(o.gongSizeCm) : void 0;
   return {
     id: id || `t-${idx}`,
     type: tt,
     isNoShoot,
     position: o.position,
     rotationRad,
-    ...metalRectSideCm !== void 0 ? { metalRectSideCm } : {}
+    ...metalRectSideCm !== void 0 ? { metalRectSideCm } : {},
+    ...gongSizeCm !== void 0 ? { gongSizeCm } : {}
   };
 }
 function parsePenaltyRing(raw, idx) {
@@ -21348,6 +21377,27 @@ function ensureUniquePlanDimensionIds(lines) {
     return { ...line, id };
   });
 }
+function ensureUniqueRangeDistanceSignIds(signs) {
+  const seen = /* @__PURE__ */ new Set();
+  return signs.map((s) => {
+    let id = typeof s.id === "string" && s.id ? s.id : newEntityId();
+    while (seen.has(id)) id = newEntityId();
+    seen.add(id);
+    return { ...s, id };
+  });
+}
+function parseRangeDistanceSign(raw, idx) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const o = raw;
+  const id = typeof o.id === "string" && o.id ? o.id : `rds-${idx}`;
+  const edgePositionYM = o.edgePositionYM;
+  const labelM = o.labelM;
+  if (typeof edgePositionYM !== "number" || !Number.isFinite(edgePositionYM)) return null;
+  if (typeof labelM !== "number" || !Number.isFinite(labelM)) return null;
+  const labelRounded = Math.round(labelM);
+  const labelClamped = Math.min(999, Math.max(1, labelRounded));
+  return { id, edgePositionYM, labelM: labelClamped };
+}
 function parsePlanDimensionLine(raw, idx, targets, props) {
   if (typeof raw !== "object" || raw === null) return null;
   const o = raw;
@@ -21376,6 +21426,16 @@ function parsePlanDimensions(raw, targets, props) {
     if (line) out.push(line);
   }
   return ensureUniquePlanDimensionIds(out);
+}
+function parseRangeDistanceSigns(raw) {
+  if (raw === void 0 || raw === null) return [];
+  if (!Array.isArray(raw)) return [];
+  const out = [];
+  for (let i = 0; i < raw.length; i++) {
+    const s = parseRangeDistanceSign(raw[i], i);
+    if (s) out.push(s);
+  }
+  return ensureUniqueRangeDistanceSignIds(out);
 }
 function parseBriefing(raw) {
   const d = defaultStageBriefing();
@@ -21441,6 +21501,11 @@ function buildStageProjectFile(snapshot) {
         id: d.id,
         endA: { ...d.endA },
         endB: { ...d.endB }
+      })),
+      rangeDistanceSigns: (snapshot.stage.rangeDistanceSigns ?? []).map((s) => ({
+        id: s.id,
+        edgePositionYM: s.edgePositionYM,
+        labelM: s.labelM
       }))
     },
     briefing: { ...snapshot.briefing }
@@ -21501,6 +21566,11 @@ function parseStageProjectJson(text) {
   }
   let planDimensions = parsePlanDimensions(stageObj.planDimensions, targets, props);
   planDimensions = reclampPlanDimensionsToField(planDimensions, fw.x, fw.y);
+  let rangeDistanceSigns = [];
+  if (version3 >= 6) {
+    rangeDistanceSigns = parseRangeDistanceSigns(stageObj.rangeDistanceSigns);
+  }
+  rangeDistanceSigns = reclampRangeDistanceSignsToField(rangeDistanceSigns, fw.y);
   const data = {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
@@ -21513,7 +21583,8 @@ function parseStageProjectJson(text) {
       fieldGroundCover3d,
       penaltyZoneSet,
       activations,
-      planDimensions
+      planDimensions,
+      rangeDistanceSigns
     },
     briefing: parseBriefing(root.briefing)
   };

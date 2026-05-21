@@ -19,6 +19,8 @@ export const TOOLBAR_GROUP_METAL: readonly TargetType[] = [
   'metalPlateStand100',
   'popper',
   'miniPopper',
+  'gongSquare',
+  'gongRound',
 ]
 
 export const TOOLBAR_GROUP_CERAMIC: readonly TargetType[] = ['ceramicPlate']

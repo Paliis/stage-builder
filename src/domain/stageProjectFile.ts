@@ -2,10 +2,12 @@ import { normalizeFieldGroundCover3d, type FieldGroundCover3d } from './fieldGro
 import { clampFieldDimensions, FIELD_SIZE_LIMITS } from './field'
 import type {
   ActivationEdge,
+  GongSizeCm,
   MetalPlateRectSideCm,
   PlanDimensionLine,
   Prop,
   PropType,
+  RangeDistanceSign,
   StageCategory,
   StageEntityKind,
   Target,
@@ -14,10 +16,12 @@ import type {
 } from './models'
 import { planAnchorWorld, refKey } from './activations'
 import { reclampPlanDimensionsToField } from './planDimensions'
+import { clampRangeDistanceSignLabelM, reclampRangeDistanceSignsToField } from './rangeDistanceSigns'
 import type { StageBriefing } from './stageBriefing'
 import { defaultStageBriefing } from './stageBriefing'
 import type { WeaponClass } from './weaponClass'
 import { isSquareSteelPlateTargetType } from './targetSpecs'
+import { isGongTargetType } from './gongSpec'
 import { ALL_TARGET_TYPES } from './weaponClass'
 import {
   emptyPenaltyZoneSet,
@@ -27,8 +31,8 @@ import {
 } from './penaltyZones'
 
 export const STAGE_PROJECT_FORMAT = 'stage-builder' as const
-/** 1 — початковий формат; …; 4 — `planDimensions`; 5 — точки `endA`/`endB` (без прив’язки до сутностей). */
-export const STAGE_PROJECT_VERSION = 5
+/** 1 — початковий формат; …; 5 — розміри `endA`/`endB`; 6 — таблички дистанції біля лівого краю (`rangeDistanceSigns`). */
+export const STAGE_PROJECT_VERSION = 6
 /** Старі файли залишаються валідними при парсингу. */
 export const STAGE_PROJECT_VERSION_MIN = 1
 export const STAGE_PROJECT_FILE_EXTENSION = '.stage.json'
@@ -116,6 +120,8 @@ export type StageProjectSnapshot = {
   activations: ActivationEdge[]
   /** Розміри на плані; старі записи з посиланнями під час завантаження мігрують у `endA`/`endB`. */
   planDimensions: PlanDimensionLine[]
+  /** Таблички оголошених дистанцій біля лівого краю; для `version < 6` при парсингу — `[]`. */
+  rangeDistanceSigns: RangeDistanceSign[]
 }
 
 export type StageProjectFileV1 = {
@@ -127,6 +133,11 @@ export type StageProjectFileV1 = {
 
 function parseMetalRectSideCm(raw: unknown): MetalPlateRectSideCm | undefined {
   if (raw === 15 || raw === 20 || raw === 30) return raw
+  return undefined
+}
+
+function parseGongSizeCm(raw: unknown): GongSizeCm | undefined {
+  if (raw === 30 || raw === 40 || raw === 50) return raw
   return undefined
 }
 
@@ -162,6 +173,7 @@ function parseTarget(raw: unknown, idx: number): Target | null {
   const metalRectSideCm = isSquareSteelPlateTargetType(tt)
     ? parseMetalRectSideCm(o.metalRectSideCm)
     : undefined
+  const gongSizeCm = isGongTargetType(tt) ? parseGongSizeCm(o.gongSizeCm) : undefined
   return {
     id: id || `t-${idx}`,
     type: tt,
@@ -169,6 +181,7 @@ function parseTarget(raw: unknown, idx: number): Target | null {
     position: o.position,
     rotationRad,
     ...(metalRectSideCm !== undefined ? { metalRectSideCm } : {}),
+    ...(gongSizeCm !== undefined ? { gongSizeCm } : {}),
   }
 }
 
@@ -295,6 +308,28 @@ function ensureUniquePlanDimensionIds(lines: PlanDimensionLine[]): PlanDimension
   })
 }
 
+function ensureUniqueRangeDistanceSignIds(signs: RangeDistanceSign[]): RangeDistanceSign[] {
+  const seen = new Set<string>()
+  return signs.map((s) => {
+    let id = typeof s.id === 'string' && s.id ? s.id : newEntityId()
+    while (seen.has(id)) id = newEntityId()
+    seen.add(id)
+    return { ...s, id }
+  })
+}
+
+function parseRangeDistanceSign(raw: unknown, idx: number): RangeDistanceSign | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const o = raw as Record<string, unknown>
+  const id = typeof o.id === 'string' && o.id ? o.id : `rds-${idx}`
+  const edgePositionYM = o.edgePositionYM
+  const labelM = o.labelM
+  if (typeof edgePositionYM !== 'number' || !Number.isFinite(edgePositionYM)) return null
+  if (typeof labelM !== 'number' || !Number.isFinite(labelM)) return null
+  const labelRounded = Math.round(labelM)
+  return { id, edgePositionYM, labelM: clampRangeDistanceSignLabelM(labelRounded) }
+}
+
 function parsePlanDimensionLine(
   raw: unknown,
   idx: number,
@@ -333,6 +368,17 @@ function parsePlanDimensions(
     if (line) out.push(line)
   }
   return ensureUniquePlanDimensionIds(out)
+}
+
+function parseRangeDistanceSigns(raw: unknown): RangeDistanceSign[] {
+  if (raw === undefined || raw === null) return []
+  if (!Array.isArray(raw)) return []
+  const out: RangeDistanceSign[] = []
+  for (let i = 0; i < raw.length; i++) {
+    const s = parseRangeDistanceSign(raw[i], i)
+    if (s) out.push(s)
+  }
+  return ensureUniqueRangeDistanceSignIds(out)
 }
 
 function parseBriefing(raw: unknown): StageBriefing {
@@ -421,6 +467,11 @@ export function buildStageProjectFile(snapshot: {
         endA: { ...d.endA },
         endB: { ...d.endB },
       })),
+      rangeDistanceSigns: (snapshot.stage.rangeDistanceSigns ?? []).map((s) => ({
+        id: s.id,
+        edgePositionYM: s.edgePositionYM,
+        labelM: s.labelM,
+      })),
     },
     briefing: { ...snapshot.briefing },
   }
@@ -504,6 +555,12 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
   let planDimensions = parsePlanDimensions(stageObj.planDimensions, targets, props)
   planDimensions = reclampPlanDimensionsToField(planDimensions, fw.x, fw.y)
 
+  let rangeDistanceSigns: RangeDistanceSign[] = []
+  if (version >= 6) {
+    rangeDistanceSigns = parseRangeDistanceSigns(stageObj.rangeDistanceSigns)
+  }
+  rangeDistanceSigns = reclampRangeDistanceSignsToField(rangeDistanceSigns, fw.y)
+
   const data: StageProjectFileV1 = {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
@@ -517,6 +574,7 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
       penaltyZoneSet,
       activations,
       planDimensions,
+      rangeDistanceSigns,
     },
     briefing: parseBriefing(root.briefing),
   }

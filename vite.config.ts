@@ -72,6 +72,10 @@ export default defineConfig(({ mode }) => {
     react(),
     htmlTransformPlugin(),
     VitePWA({
+      /** Avoid registering a dev SW that can cache stale HTML/JS and cause a blank SPA on localhost. */
+      devOptions: {
+        enabled: false,
+      },
       /** User activates new SW via UI; see `pwaUpdateGate` + `PwaUpdateBanner` (max one prompt / 24h). */
       registerType: 'prompt',
       includeAssets: [

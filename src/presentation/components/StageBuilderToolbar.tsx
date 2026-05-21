@@ -11,11 +11,17 @@ import {
   TOOLBAR_GROUP_MOVING,
   TOOLBAR_GROUP_PAPER,
   TOOLBAR_GROUP_PENALTY_CERAMIC,
-  TOOLBAR_GROUP_PENALTY_METAL,
   TOOLBAR_GROUP_PENALTY_PAPER,
 } from '../../domain/toolbarTargetGroups'
+import type { GongSizeCm, MetalPlateRectSideCm, PropType, TargetType } from '../../domain/models'
 import type { PlacementMode } from '../../domain/placementMode'
-import type { PropType, TargetType } from '../../domain/models'
+import {
+  GONG_SIZE_CM_OPTIONS,
+  METAL_PLATE_SIDE_CM_OPTIONS,
+  TOOLBAR_GONG_TYPES,
+  TOOLBAR_POPPER_TYPES,
+  TOOLBAR_SQUARE_STEEL_TYPES,
+} from '../../domain/resizableTargetSizes'
 import type { MessageTree } from '../../i18n/messages'
 
 function targetAddButtonClass(type: TargetType): string {
@@ -37,6 +43,8 @@ function targetAddButtonClass(type: TargetType): string {
     case 'metalPlateStand100':
     case 'popper':
     case 'miniPopper':
+    case 'gongSquare':
+    case 'gongRound':
       return 'app__tb app__tb--metal'
     case 'ceramicPlate':
     case 'swingerSingleCeramic':
@@ -139,6 +147,10 @@ function noShootLabel(tr: MessageTree['targets'], ty: TargetType): string {
       return tr.noShootPopper
     case 'miniPopper':
       return tr.noShootMiniPopper
+    case 'gongSquare':
+      return tr.noShootGongSquare
+    case 'gongRound':
+      return tr.noShootGongRound
     case 'ceramicPlate':
       return tr.noShootCeramicPlate
     case 'swingerSinglePaper':
@@ -171,6 +183,42 @@ function ToolbarSubgroup({
   )
 }
 
+function SizeSegmentRow<T extends number>({
+  ariaLabel,
+  options,
+  value,
+  disabled,
+  formatOption,
+  onChange,
+}: {
+  ariaLabel: string
+  options: readonly T[]
+  value: T
+  disabled?: boolean
+  formatOption: (n: T) => string
+  onChange: (n: T) => void
+}) {
+  return (
+    <div className="app__tb-size-segments" role="group" aria-label={ariaLabel}>
+      {options.map((n) => {
+        const active = n === value
+        return (
+          <button
+            key={n}
+            type="button"
+            disabled={disabled}
+            className={`app__tb-size-segment${active ? ' is-active' : ''}`}
+            aria-pressed={active}
+            onClick={() => onChange(n)}
+          >
+            {formatOption(n)}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 export type StageBuilderToolbarProps = {
   className?: string
   tree: MessageTree
@@ -181,6 +229,12 @@ export type StageBuilderToolbarProps = {
   layoutNarrow: boolean
   /** Share view link: disable adding targets, props, and penalty contours. */
   readOnly?: boolean
+  metalPlateSideCm: MetalPlateRectSideCm
+  gongSizeCm: GongSizeCm
+  selectedTargetType: TargetType | null
+  selectedTargetIsNoShoot: boolean | null
+  onMetalPlateSideCmChange: (cm: MetalPlateRectSideCm) => void
+  onGongSizeCmChange: (cm: GongSizeCm) => void
   onArmTarget: (type: TargetType, isNoShoot?: boolean) => void
   onArmProp: (type: PropType) => void
   onArmPenaltyContour: () => void
@@ -194,6 +248,12 @@ export function StageBuilderToolbar({
   placementMode,
   layoutNarrow,
   readOnly = false,
+  metalPlateSideCm,
+  gongSizeCm,
+  selectedTargetType,
+  selectedTargetIsNoShoot,
+  onMetalPlateSideCmChange,
+  onGongSizeCmChange,
   onArmTarget,
   onArmProp,
   onArmPenaltyContour,
@@ -207,8 +267,14 @@ export function StageBuilderToolbar({
   const movingTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_MOVING)
 
   const nsPaperTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_PENALTY_PAPER)
-  const nsMetalTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_PENALTY_METAL)
   const nsCeramicTypes = filterTargetTypesByGroup(allowedTargetTypes, TOOLBAR_GROUP_PENALTY_CERAMIC)
+
+  const squareSteelTypes = filterTargetTypesByGroup(metalTypes, TOOLBAR_SQUARE_STEEL_TYPES)
+  const gongTypes = filterTargetTypesByGroup(metalTypes, TOOLBAR_GONG_TYPES)
+  const popperTypes = filterTargetTypesByGroup(metalTypes, TOOLBAR_POPPER_TYPES)
+
+  const formatMetalCm = (n: MetalPlateRectSideCm) => `${n} ${tp.sizeCmSuffix}`
+  const formatGongCm = (n: GongSizeCm) => `${n} ${tp.sizeCmSuffix}`
 
   const infraPropButtons = (types: readonly PropType[]) =>
     types.map((pt) => {
@@ -237,9 +303,12 @@ export function StageBuilderToolbar({
 
   const targetButtons = (types: readonly TargetType[], isNoShoot: boolean) =>
     types.map((ty) => {
-      const armed =
+      const placementArmed =
         placementMode?.kind === 'target' && placementMode.type === ty && placementMode.isNoShoot === isNoShoot
-      const label = isNoShoot ? noShootLabel(tr, ty) : tr[ty]
+      const selectionMatches =
+        selectedTargetType === ty && selectedTargetIsNoShoot === isNoShoot
+      const armed = placementArmed || selectionMatches
+      const label = isNoShoot ? noShootLabel(tr, ty) : tr[ty as keyof typeof tr]
       return (
         <button
           key={`${isNoShoot ? 'ns' : 't'}-${ty}`}
@@ -262,6 +331,48 @@ export function StageBuilderToolbar({
       )
     })
 
+  const metalSizeBlocks = (isNoShoot: boolean) => (
+    <>
+      {squareSteelTypes.length > 0 ? (
+        <div className="app__tb-size-block">
+          <span className="app__tb-size-label">{tp.metalPlateSizeLabel}</span>
+          <SizeSegmentRow
+            ariaLabel={tp.metalPlateSizeLabel}
+            options={METAL_PLATE_SIDE_CM_OPTIONS}
+            value={metalPlateSideCm}
+            disabled={readOnly}
+            formatOption={formatMetalCm}
+            onChange={onMetalPlateSideCmChange}
+          />
+          <div className={`app__buttons${isNoShoot ? ' app__buttons--targets-ns' : ''}`}>
+            {targetButtons(squareSteelTypes, isNoShoot)}
+          </div>
+        </div>
+      ) : null}
+      {gongTypes.length > 0 ? (
+        <div className="app__tb-size-block">
+          <span className="app__tb-size-label">{tp.gongSizeLabel}</span>
+          <SizeSegmentRow
+            ariaLabel={tp.gongSizeLabel}
+            options={GONG_SIZE_CM_OPTIONS}
+            value={gongSizeCm}
+            disabled={readOnly}
+            formatOption={formatGongCm}
+            onChange={onGongSizeCmChange}
+          />
+          <div className={`app__buttons${isNoShoot ? ' app__buttons--targets-ns' : ''}`}>
+            {targetButtons(gongTypes, isNoShoot)}
+          </div>
+        </div>
+      ) : null}
+      {popperTypes.length > 0 ? (
+        <div className={`app__buttons${isNoShoot ? ' app__buttons--targets-ns' : ''}`}>
+          {targetButtons(popperTypes, isNoShoot)}
+        </div>
+      ) : null}
+    </>
+  )
+
   return (
     <section className={className ?? 'app__toolbar'} aria-label={tree.toolbar.aria}>
       {placementMode ? (
@@ -281,9 +392,7 @@ export function StageBuilderToolbar({
         <ToolbarSubgroup title={tp.groupPaper}>
           <div className="app__buttons">{targetButtons(paperTypes, false)}</div>
         </ToolbarSubgroup>
-        <ToolbarSubgroup title={tp.groupMetal}>
-          <div className="app__buttons">{targetButtons(metalTypes, false)}</div>
-        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.groupMetal}>{metalSizeBlocks(false)}</ToolbarSubgroup>
         <ToolbarSubgroup title={tp.groupCeramic}>
           <div className="app__buttons">{targetButtons(ceramicTypes, false)}</div>
         </ToolbarSubgroup>
@@ -301,9 +410,7 @@ export function StageBuilderToolbar({
         <ToolbarSubgroup title={tp.groupPenaltyPaper}>
           <div className="app__buttons app__buttons--targets-ns">{targetButtons(nsPaperTypes, true)}</div>
         </ToolbarSubgroup>
-        <ToolbarSubgroup title={tp.groupPenaltyMetal}>
-          <div className="app__buttons app__buttons--targets-ns">{targetButtons(nsMetalTypes, true)}</div>
-        </ToolbarSubgroup>
+        <ToolbarSubgroup title={tp.groupPenaltyMetal}>{metalSizeBlocks(true)}</ToolbarSubgroup>
         <ToolbarSubgroup title={tp.groupPenaltyCeramic}>
           <div className="app__buttons app__buttons--targets-ns">{targetButtons(nsCeramicTypes, true)}</div>
         </ToolbarSubgroup>

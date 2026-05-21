@@ -2,10 +2,12 @@ import { create } from 'zustand'
 import { temporal } from 'zundo'
 import type {
   ActivationEdge,
+  GongSizeCm,
   MetalPlateRectSideCm,
   PlanDimensionLine,
   Prop,
   PropType,
+  RangeDistanceSign,
   StageEntityRef,
   Target,
   TargetType,
@@ -21,6 +23,10 @@ import {
   reclampPlanDimensionsToField,
 } from '../domain/planDimensions'
 import {
+  clampRangeDistanceSignLabelM,
+  reclampRangeDistanceSignsToField,
+} from '../domain/rangeDistanceSigns'
+import {
   emptyPenaltyZoneSet,
   newPolygonId,
   newRingId,
@@ -30,14 +36,17 @@ import {
   type PenaltyZoneSet,
 } from '../domain/penaltyZones'
 import { isSquareSteelPlateTargetType } from '../domain/targetSpecs'
+import { isGongTargetType } from '../domain/gongSpec'
 import { DEFAULT_FIELD_GROUND_COVER_3D, type FieldGroundCover3d } from '../domain/fieldGround3d'
 import {
   clampFieldDimensions,
   clampVec2ToField,
   DEFAULT_FIELD_HEIGHT_M,
   DEFAULT_FIELD_WIDTH_M,
+  GRID_SNAP_M,
   PENALTY_CONTOUR_VERTEX_SNAP_M,
   PROP_PLACEMENT_SNAP_M,
+  snapMeters,
   snapVec2,
   TARGET_PLACEMENT_SNAP_M,
 } from '../domain/field'
@@ -108,6 +117,8 @@ export type StageState = {
   activations: ActivationEdge[]
   /** Закріплені розміри між двома точками плану в метрах. */
   planDimensions: PlanDimensionLine[]
+  /** Таблички оголошених дистанцій біля лівого краю плану. */
+  rangeDistanceSigns: RangeDistanceSign[]
   setStageName: (name: string) => void
   setFieldGroundCover3d: (cover: FieldGroundCover3d) => void
   /** Повна заміна сцени (напр. з файлу вправи). */
@@ -121,15 +132,23 @@ export type StageState = {
     penaltyZoneSet?: PenaltyZoneSet
     activations?: ActivationEdge[]
     planDimensions?: PlanDimensionLine[]
+    rangeDistanceSigns?: RangeDistanceSign[]
   }) => void
   setWeaponClass: (wc: WeaponClass) => void
   setFieldSizeM: (size: Vec2) => void
-  addTarget: (type: TargetType, isNoShoot?: boolean, positionHint?: Vec2) => void
+  addTarget: (
+    type: TargetType,
+    isNoShoot?: boolean,
+    positionHint?: Vec2,
+    size?: { metalRectSideCm?: MetalPlateRectSideCm; gongSizeCm?: GongSizeCm },
+  ) => void
   addProp: (type: PropType, sizeM?: Vec2, positionHint?: Vec2) => void
   setTargetPosition: (id: string, position: Vec2) => void
   setPropPosition: (id: string, position: Vec2) => void
   setTargetRotation: (id: string, rotationRad: number) => void
+  setTargetType: (id: string, type: TargetType) => void
   setTargetMetalRectSideCm: (id: string, cm: MetalPlateRectSideCm) => void
+  setTargetGongSizeCm: (id: string, cm: GongSizeCm) => void
   setPropRotation: (id: string, rotationRad: number) => void
   setPropGeometry: (id: string, position: Vec2, sizeM: Vec2) => void
   removeTarget: (id: string) => void
@@ -151,6 +170,10 @@ export type StageState = {
   removePlanDimensionLine: (id: string) => void
   /** Оновлення кінців (перетягування); без дублікату інших ліній; нульову довжину ігноруємо. */
   setPlanDimensionLineEnds: (id: string, endA: Vec2, endB: Vec2) => void
+  /** Табличка оголошеної дистанції біля лівого краю (Y у межах поля). */
+  addRangeDistanceSign: (edgePositionYM: number, labelM: number) => void
+  removeRangeDistanceSign: (id: string) => void
+  setRangeDistanceSignEdgeYM: (id: string, edgePositionYM: number) => void
 }
 
 export const useStageStore = create<StageState>()(temporal((set) => ({
@@ -163,6 +186,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   penaltyZoneSet: emptyPenaltyZoneSet(),
   activations: [],
   planDimensions: [],
+  rangeDistanceSigns: [],
 
   setStageName: (name) =>
     set({
@@ -187,6 +211,10 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         next.x,
         next.y,
       )
+      const rangeDistanceSigns = reclampRangeDistanceSignsToField(
+        snapshot.rangeDistanceSigns ?? [],
+        next.y,
+      )
       return {
         name: snapshot.name.trim().slice(0, 200) || s.name,
         weaponClass: snapshot.weaponClass,
@@ -197,6 +225,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         penaltyZoneSet,
         activations,
         planDimensions,
+        rangeDistanceSigns,
       }
     }),
 
@@ -213,6 +242,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         penaltyZoneSet: emptyPenaltyZoneSet(),
         activations: [],
         planDimensions: [],
+        rangeDistanceSigns: [],
       }
     }),
 
@@ -388,10 +418,11 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       const { targets, props } = reclampTargetsProps(s.targets, s.props, next.x, next.y)
       const penaltyZoneSet = reclampPenaltyZoneSet(s.penaltyZoneSet, next.x, next.y)
       const planDimensions = reclampPlanDimensionsToField(s.planDimensions, next.x, next.y)
-      return { fieldSizeM: next, targets, props, penaltyZoneSet, planDimensions }
+      const rangeDistanceSigns = reclampRangeDistanceSignsToField(s.rangeDistanceSigns, next.y)
+      return { fieldSizeM: next, targets, props, penaltyZoneSet, planDimensions, rangeDistanceSigns }
     }),
 
-  addTarget: (type, isNoShoot = false, positionHint) =>
+  addTarget: (type, isNoShoot = false, positionHint, size) =>
     set((s) => {
       // Клас зброї тимчасово прихований у UI; фільтрацію за isTargetTypeForWeaponClass вимкнено.
       // if (!isTargetTypeForWeaponClass(type, s.weaponClass)) return s
@@ -408,7 +439,11 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         rotationRad: 0,
       }
       const t: Target =
-        isSquareSteelPlateTargetType(type) ? { ...base, metalRectSideCm: 15 } : base
+        isSquareSteelPlateTargetType(type)
+          ? { ...base, metalRectSideCm: size?.metalRectSideCm ?? 15 }
+          : isGongTargetType(type)
+            ? { ...base, gongSizeCm: size?.gongSizeCm ?? 30 }
+            : base
       return {
         targets: [...s.targets, t],
       }
@@ -450,10 +485,22 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       targets: s.targets.map((x) => (x.id === id ? { ...x, rotationRad } : x)),
     })),
 
+  setTargetType: (id, type) =>
+    set((s) => ({
+      targets: s.targets.map((x) => (x.id === id ? { ...x, type } : x)),
+    })),
+
   setTargetMetalRectSideCm: (id, cm) =>
     set((s) => ({
       targets: s.targets.map((x) =>
         x.id === id && isSquareSteelPlateTargetType(x.type) ? { ...x, metalRectSideCm: cm } : x,
+      ),
+    })),
+
+  setTargetGongSizeCm: (id, cm) =>
+    set((s) => ({
+      targets: s.targets.map((x) =>
+        x.id === id && isGongTargetType(x.type) ? { ...x, gongSizeCm: cm } : x,
       ),
     })),
 
@@ -484,6 +531,37 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       targets: [...s.targets, ...targets.map((t) => ({ ...t, id: newId() }))],
       props: [...s.props, ...props.map((p) => ({ ...p, id: newId() }))],
     })),
+
+  addRangeDistanceSign: (edgePositionYM, labelM) =>
+    set((s) => {
+      const fh = s.fieldSizeM.y
+      const y = snapMeters(Math.min(Math.max(edgePositionYM, 0), fh), GRID_SNAP_M)
+      const rounded = Math.round(labelM)
+      if (!Number.isFinite(rounded)) return s
+      const n = clampRangeDistanceSignLabelM(rounded)
+      return {
+        rangeDistanceSigns: [
+          ...s.rangeDistanceSigns,
+          { id: newId(), edgePositionYM: y, labelM: n },
+        ],
+      }
+    }),
+
+  removeRangeDistanceSign: (id) =>
+    set((s) => ({
+      rangeDistanceSigns: s.rangeDistanceSigns.filter((x) => x.id !== id),
+    })),
+
+  setRangeDistanceSignEdgeYM: (id, edgePositionYM) =>
+    set((s) => {
+      const fh = s.fieldSizeM.y
+      const y = snapMeters(Math.min(Math.max(edgePositionYM, 0), fh), GRID_SNAP_M)
+      const idx = s.rangeDistanceSigns.findIndex((x) => x.id === id)
+      if (idx < 0) return s
+      const next = [...s.rangeDistanceSigns]
+      next[idx] = { ...next[idx]!, edgePositionYM: y }
+      return { rangeDistanceSigns: next }
+    }),
 }), {
   limit: 50,
   partialize: (state) => {
@@ -497,6 +575,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       penaltyZoneSet,
       activations,
       planDimensions,
+      rangeDistanceSigns,
     } = state
     return {
       name,
@@ -508,6 +587,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       penaltyZoneSet,
       activations,
       planDimensions,
+      rangeDistanceSigns,
     }
   },
 }))

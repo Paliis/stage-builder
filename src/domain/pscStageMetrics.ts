@@ -1,6 +1,7 @@
 import type { Target, TargetType } from './models'
-import { swingerIsPaperLoad, swingerTargetFaceCount } from './swingerGeometry'
 import { isPaperTwoPostTargetType } from './targetSpecs'
+import { swingerIsPaperLoad, swingerTargetFaceCount } from './swingerGeometry'
+import { isGongTargetType } from './gongSpec'
 
 /** PractiScore match_stages fields we derive from Stage Builder targets (MVP shotgun). */
 export type PscStageMetrics = {
@@ -56,7 +57,7 @@ export function computePscStageMetrics(targets: readonly Target[]): PscStageMetr
       if (!t.isNoShoot) poppersLike += 1
       continue
     }
-    if (isMetalRectPlateType(t.type) || isCeramicPlateType(t.type)) {
+    if (isMetalRectPlateType(t.type) || isCeramicPlateType(t.type) || isGongTargetType(t.type)) {
       if (!t.isNoShoot) poppersLike += 1
       continue
     }

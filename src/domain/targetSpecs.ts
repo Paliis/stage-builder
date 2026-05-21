@@ -7,6 +7,7 @@
  */
 import type { Target, TargetType } from './models'
 import { CERAMIC_RADIUS_M } from './ceramicPlateSpec'
+import { gongFrameBottomLocalY, gongPlateSizeM, isGongTargetType } from './gongSpec'
 import {
   isSwingerTargetType,
   swingerBoundsRadiusM,
@@ -83,6 +84,14 @@ export function paperTwoPostFaceBottomHeightM(type: TargetType): number {
   return 1.0
 }
 
+/** Висота нижнього краю квадратної сталі над «землею» у 3D (м). */
+export function steelPlateFaceBottomHeightM(type: TargetType): number {
+  if (type === 'metalPlateStand50') return 0.5
+  if (type === 'metalPlateStand100') return 1.0
+  if (type === 'metalPlate') return 0.1
+  return 0.1
+}
+
 function metalPlateSquareSideM(t: Target): number {
   if (!isSquareSteelPlateTargetType(t.type)) return 300 * MM
   /** `metalRectSideCm` у сантиметрах → метри через CM, не MM (інакше 15 см стають 15 мм). */
@@ -105,6 +114,8 @@ const STEEL_TARGET_TYPES = new Set<TargetType>([
   'metalPlate',
   'metalPlateStand50',
   'metalPlateStand100',
+  'gongSquare',
+  'gongRound',
   'ceramicPlate',
 ])
 
@@ -208,6 +219,12 @@ export function targetFootprintLocalM(t: Target): Vec2[] {
       const half = metalPlateSquareSideM(t) * 0.5
       return rectLocal(half, half)
     }
+    case 'gongSquare': {
+      const half = gongPlateSizeM(t) * 0.5
+      return rectLocal(half, half)
+    }
+    case 'gongRound':
+      return circleOutlineLocal(gongPlateSizeM(t) * 0.5, 32)
     case 'ceramicPlate':
       return circleOutlineLocal(CERAMIC_RADIUS_M, 32)
     case 'swingerSinglePaper':
@@ -525,6 +542,25 @@ export function targetPaperTwoPostStickIndicatorsWorld(t: Target): { from: Vec2;
   return out
 }
 
+/** Схематична «стійка» квадратної сталі на 2D (довжина ∝ висоті лиця в 3D). */
+export function targetMetalStandStickIndicatorsWorld(t: Target): { from: Vec2; to: Vec2 }[] | null {
+  if (!isSquareSteelPlateTargetType(t.type)) return null
+  const h = steelPlateFaceBottomHeightM(t.type)
+  const planLenM = 0.08 + 0.58 * h
+  const faceH = targetFaceSizeM(t).h
+  const bottomLocalY = -faceH / 2
+  const { x: cx, y: cy } = t.position
+  const rot = t.rotationRad
+  const fromW = localToWorldPoint(0, bottomLocalY, cx, cy, rot)
+  const { x: dwx, y: dwy } = paperFaceDownDirWorld(rot)
+  return [
+    {
+      from: fromW,
+      to: { x: fromW.x + dwx * planLenM, y: fromW.y + dwy * planLenM },
+    },
+  ]
+}
+
 export function targetPaperTwoPostBasesWorld(t: Target): Vec2[][] | null {
   if (!isPaperTwoPostTargetType(t.type)) return null
   const bases = paperTwoPostBasesLocalM(t.type)
@@ -599,6 +635,11 @@ export function targetFaceSizeM(t: Target): { w: number; h: number } {
       const s = metalPlateSquareSideM(t)
       return { w: s, h: s }
     }
+    case 'gongSquare':
+    case 'gongRound': {
+      const s = gongPlateSizeM(t)
+      return { w: s, h: s }
+    }
     case 'ceramicPlate':
       return { w: CERAMIC_RADIUS_M * 2, h: CERAMIC_RADIUS_M * 2 }
     case 'swingerSinglePaper':
@@ -635,13 +676,17 @@ export function targetActivationLabelWorldYM(t: Target): number {
     return bottom + h * 0.55 + 0.08
   }
   if (isSquareSteelPlateTargetType(t.type)) {
-    const bottom = t.type === 'metalPlate' ? 0 : t.type === 'metalPlateStand50' ? 0.5 : 1.0
+    const bottom = steelPlateFaceBottomHeightM(t.type)
     const { h } = targetFaceSizeM(t)
     return bottom + h * 0.5 + 0.08
   }
   if (t.type === 'ceramicPlate') {
     const { h } = targetFaceSizeM(t)
     return 0.1 + h * 0.5 + 0.06
+  }
+  if (isGongTargetType(t.type)) {
+    const { h } = targetFaceSizeM(t)
+    return -gongFrameBottomLocalY(t) + h * 0.55 + 0.08
   }
   if (t.type === 'popper' || t.type === 'miniPopper') {
     const { h } = targetFaceSizeM(t)
@@ -664,3 +709,4 @@ export function targetsDrawOrder(targets: readonly Target[]): Target[] {
 }
 
 export { CERAMIC_RADIUS_M }
+export { isGongTargetType, isGongRoundTargetType, gongFrame2DSpecWorld } from './gongSpec'

@@ -368,6 +368,41 @@
   margin-bottom: 0;
 }
 
+/* Центрована модалка (оголошені дистанції тощо) */
+.app__modal-center-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 960;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(0.75rem, env(safe-area-inset-top, 0px)) 0.75rem max(0.75rem, env(safe-area-inset-bottom, 0px));
+  background: rgba(15, 23, 42, 0.38);
+  backdrop-filter: blur(2px);
+}
+
+.app__modal-center-card {
+  width: 100%;
+  max-width: 22rem;
+  padding: 1.1rem 1rem 0.85rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.18);
+}
+
+.app__modal-center-card .app__field {
+  margin-bottom: 0.5rem;
+}
+
+.app__modal-center-card__field-hint {
+  margin: -0.15rem 0 0.65rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--text);
+  opacity: 0.82;
+}
+
 /* Онбординг-модалка */
 .app__onboarding-dialog {
   position: relative;
@@ -1132,6 +1167,65 @@
 .app__buttons button.app__tb--metal:hover {
   background: rgba(148, 163, 184, 0.42);
   border-color: rgba(71, 85, 105, 0.5);
+}
+
+.app__tb-size-block {
+  margin-bottom: 0.65rem;
+}
+
+.app__tb-size-block:last-child {
+  margin-bottom: 0;
+}
+
+.app__tb-size-label {
+  display: block;
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(51, 65, 85, 0.88);
+}
+
+.app__tb-size-segments {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-bottom: 0.45rem;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.app__tb-size-segment {
+  min-width: 3.1rem;
+  padding: 0.28rem 0.55rem;
+  border: none;
+  border-right: 1px solid rgba(148, 163, 184, 0.45);
+  background: transparent;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.app__tb-size-segment:last-child {
+  border-right: none;
+}
+
+.app__tb-size-segment:hover:not(:disabled) {
+  background: rgba(226, 232, 240, 0.85);
+}
+
+.app__tb-size-segment.is-active {
+  background: #475569;
+  color: #f8fafc;
+}
+
+.app__tb-size-segment:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .app__buttons button.app__tb--ceramic {
