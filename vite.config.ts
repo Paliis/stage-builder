@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { matchExportDevApiPlugin } from './src/dev/matchExportDevApiPlugin'
 import { organizerMonoPaymentDevApiPlugin } from './src/dev/organizerMonoPaymentDevApiPlugin'
+import { matchPaymentsDevApiPlugin } from './src/dev/matchPaymentsDevApiPlugin'
 import { CANONICAL_PRODUCTION_ORIGIN } from './src/seo/canonicalProductionOrigin'
 import { OG_IMAGE_ASSET_QUERY } from './src/seo/ogConstants'
 
@@ -70,7 +71,7 @@ export default defineConfig(({ mode }) => {
   },
   plugins: [
     ...(mode === 'development' ?
-      [matchExportDevApiPlugin(), organizerMonoPaymentDevApiPlugin()]
+      [matchExportDevApiPlugin(), organizerMonoPaymentDevApiPlugin(), matchPaymentsDevApiPlugin()]
     : []),
     react(),
     htmlTransformPlugin(),

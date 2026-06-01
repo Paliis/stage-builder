@@ -8,6 +8,8 @@ import {
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { useSearchParams } from 'react-router-dom'
+import { formatTemplate } from '../../i18n/format'
 import { getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient'
 import { isValidParticipantPhone } from '../../lib/isValidParticipantPhone'
 import { participantDefaultsCompleteForMatchPrefill } from '../../lib/participantDefaultsPrefillGate'
@@ -28,6 +30,11 @@ import {
 } from './matchPortalRegistrationMetrics'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import { type ParticipantPaymentOption } from './matchPortalParticipantPayment'
+import {
+  entryFeeKopForCategories,
+  formatEntryFeeKopAsUah,
+  type MatchEntryFeesKop,
+} from '../../domain/matchEntryFee'
 import '../PortalMatchesUi.css'
 
 type Portal = MessageTree['portal']
@@ -38,6 +45,8 @@ export type OwnRegistrationRow = {
   squad_id: string
   division: string
   power_factor?: string | null
+  payment_received?: boolean | null
+  categories?: unknown
 }
 
 type Props = {
@@ -45,6 +54,7 @@ type Props = {
   matchUuid: string
   matchDiscipline: string
   matchEventKind: string | null
+  matchEntryFees: MatchEntryFeesKop | null
   p: Portal
   metrics: RegistrationMetricRow[] | undefined
   metricsError: string | null
@@ -85,17 +95,77 @@ type ParticipantDefaultsRow = {
   weapon_class?: string | null
 }
 
+const CREATE_PAYMENT_TIMEOUT_MS = 35_000
+
+async function createMatchPayment(
+  accessToken: string,
+  registrationId: string,
+  loc: Locale,
+): Promise<
+  | { ok: true; pageUrl: string }
+  | { ok: false; message: string; kind?: 'timeout' | 'local_dev' | 'not_configured' | 'other' }
+> {
+  const ac = new AbortController()
+  const timer = setTimeout(() => ac.abort(), CREATE_PAYMENT_TIMEOUT_MS)
+  let res: Response
+  try {
+    res = await fetch('/api/create-payment', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ registrationId, locale: loc }),
+      signal: ac.signal,
+    })
+  } catch (e) {
+    if (e instanceof Error && e.name === 'AbortError') {
+      return { ok: false, message: 'timeout', kind: 'timeout' }
+    }
+    return { ok: false, message: e instanceof Error ? e.message : 'network_error', kind: 'other' }
+  } finally {
+    clearTimeout(timer)
+  }
+  let data: unknown = null
+  try {
+    data = await res.json()
+  } catch {
+    data = null
+  }
+  if (!res.ok) {
+    const err =
+      data && typeof data === 'object' && 'error' in data && typeof (data as { error: unknown }).error === 'string' ?
+        (data as { error: string }).error
+      : `HTTP ${res.status}`
+    if (err === 'Organizer payment not configured') {
+      return { ok: false, message: 'not_configured', kind: 'not_configured' }
+    }
+    if (err.includes('VITE_SHARE_PUBLIC_ORIGIN')) {
+      return { ok: false, message: err, kind: 'local_dev' }
+    }
+    return { ok: false, message: err, kind: 'other' }
+  }
+  const pageUrl =
+    data && typeof data === 'object' && 'pageUrl' in data && typeof (data as { pageUrl: unknown }).pageUrl === 'string' ?
+      (data as { pageUrl: string }).pageUrl
+    : ''
+  if (!pageUrl) return { ok: false, message: 'missing_page_url' }
+  return { ok: true, pageUrl }
+}
+
 export function MatchPublicRegistrationSection({
   locale,
   matchUuid,
   matchDiscipline,
   matchEventKind,
+  matchEntryFees,
   p,
   metrics,
   metricsError,
   reloadMetrics,
   mastheadActionsMount = null,
 }: Props) {
+  const [searchParams, setSearchParams] = useSearchParams()
   const { loading: sessionLoading, user } = useSupabaseSession()
   const sb = useMemo(() => getSupabase(), [])
   const configured = isSupabaseConfigured()
@@ -128,6 +198,8 @@ export function MatchPublicRegistrationSection({
 
   const [submitBusy, setSubmitBusy] = useState(false)
   const [mineBusy, setMineBusy] = useState(false)
+  const [payOnlineBusy, setPayOnlineBusy] = useState(false)
+  const [paymentReturnHint, setPaymentReturnHint] = useState(false)
   const [feedback, setFeedback] = useState<string | null>(null)
 
   const defaultsPrefetchKeyRef = useRef<string | null>(null)
@@ -158,7 +230,7 @@ export function MatchPublicRegistrationSection({
     setMine(undefined)
     const { data, error } = await sb
       .from('match_registrations')
-      .select('id, status, squad_id, division, power_factor')
+      .select('id, status, squad_id, division, power_factor, payment_received, categories')
       .eq('match_id', matchUuid)
       .eq('competitor_user_id', user.id)
       .maybeSingle()
@@ -189,6 +261,58 @@ export function MatchPublicRegistrationSection({
     if (sessionLoading || !configured) return
     queueMicrotask(() => void loadMine())
   }, [configured, loadMine, sessionLoading])
+
+  const paymentReturnHandledRef = useRef(false)
+  useEffect(() => {
+    if (searchParams.get('payment') !== 'return' || paymentReturnHandledRef.current) return
+    paymentReturnHandledRef.current = true
+    setPaymentReturnHint(true)
+    const next = new URLSearchParams(searchParams)
+    next.delete('payment')
+    setSearchParams(next, { replace: true })
+    if (user?.id && configured) queueMicrotask(() => void loadMine())
+  }, [configured, loadMine, searchParams, setSearchParams, user?.id])
+
+  const myCategories = useMemo(
+    () => normalizeParticipantCategories(mine?.categories),
+    [mine?.categories],
+  )
+
+  const myEntryFeeKop = useMemo(() => {
+    if (!matchEntryFees) return null
+    return entryFeeKopForCategories(matchEntryFees, myCategories)
+  }, [matchEntryFees, myCategories])
+
+  const startPayOnline = useCallback(async () => {
+    if (!mine?.id || payOnlineBusy) return
+    const { data: sessionData } = await sb.auth.getSession()
+    const accessToken = sessionData.session?.access_token
+    if (!accessToken) {
+      setFeedback(p.matchDetailRegistrationSignInIntro)
+      return
+    }
+    setPayOnlineBusy(true)
+    setFeedback(null)
+    try {
+      const result = await createMatchPayment(accessToken, mine.id, locale)
+      if (!result.ok) {
+        setFeedback(
+          result.kind === 'not_configured' ? p.matchDetailPayOnlineNotConfigured
+          : result.kind === 'timeout' ? p.matchDetailPayOnlineTimeout
+          : result.kind === 'local_dev' ? p.matchDetailPayOnlineLocalDevHint
+          : `${p.matchDetailPayOnlineError}: ${result.message}`,
+        )
+        return
+      }
+      window.location.assign(result.pageUrl)
+    } catch (e) {
+      setFeedback(
+        `${p.matchDetailPayOnlineError}: ${e instanceof Error ? e.message : 'unknown'}`,
+      )
+    } finally {
+      setPayOnlineBusy(false)
+    }
+  }, [locale, mine?.id, payOnlineBusy, p, sb])
 
   const applyParticipantDefaultsRow = useCallback((row: ParticipantDefaultsRow) => {
     setCabinetFirstName(typeof row.first_name === 'string' ? row.first_name : '')
@@ -768,13 +892,24 @@ export function MatchPublicRegistrationSection({
       !sessionLoading &&
       (mine?.status === 'pending' || mine?.status === 'confirmed'),
   )
+  const minePaid = mine?.payment_received === true
+  const showPayOnline =
+    Boolean(user) &&
+    !sessionLoading &&
+    showWithdrawTools &&
+    !minePaid &&
+    myEntryFeeKop != null &&
+    myEntryFeeKop >= 100
   const showCancelledNote = Boolean(user && !sessionLoading && mine?.status === 'cancelled')
 
   const showMastheadUi =
     showGuestRegisterCta ||
     showRegisterCta ||
     showWithdrawTools ||
-    showCancelledNote
+    showPayOnline ||
+    showCancelledNote ||
+    paymentReturnHint ||
+    (showWithdrawTools && minePaid)
 
   const showMatchFullNote =
     Boolean(matchFull && metrics && metrics.length > 0 && mine?.status !== 'confirmed')
@@ -800,6 +935,10 @@ export function MatchPublicRegistrationSection({
         </>
       : null}
 
+      {paymentReturnHint ?
+        <p className="portal-reg-inline-meta portal-reg-inline-meta--hint">{p.matchDetailPayOnlineReturnHint}</p>
+      : null}
+
       {showWithdrawTools ?
         <>
           <p className="portal-reg-inline-meta">
@@ -807,7 +946,30 @@ export function MatchPublicRegistrationSection({
             {mine?.status === 'confirmed' ?
               p.matchDetailRegistrationStatusConfirmed
             : p.matchDetailRegistrationStatusPending}
+            {minePaid ?
+              <>
+                {' · '}
+                <span className="portal-reg-paid-badge">{p.matchDetailPayOnlinePaidBadge}</span>
+              </>
+            : null}
           </p>
+          {showPayOnline ?
+            <button
+              type="button"
+              className="portal-btn portal-btn--primary portal-btn--compact portal-match-public-detail__masthead-cta"
+              disabled={payOnlineBusy || mineBusy}
+              onClick={() => void startPayOnline()}
+            >
+              {payOnlineBusy ?
+                p.matchDetailPayOnlineBusy
+              : formatTemplate(p.matchDetailPayOnlineCta, {
+                  amount: (() => {
+                    const uah = formatEntryFeeKopAsUah(myEntryFeeKop)
+                    return uah ? ` (${uah} ₴)` : ''
+                  })(),
+                })}
+            </button>
+          : null}
           <button
             type="button"
             className="portal-btn portal-btn--secondary portal-btn--compact"

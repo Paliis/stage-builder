@@ -14,6 +14,7 @@ import { programmeListDisplayTitles } from './matchPortalProgrammeDisplay'
 import { formatPortalDateShort, parsePublicMatchProgrammeBundle } from './matchStagesVisibility'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
+import type { MatchEntryFeesKop } from '../../domain/matchEntryFee'
 import { categoryLabel, parseMatchDiscipline, weaponClassLabel } from '../shooterProfileCatalog'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import {
@@ -40,6 +41,9 @@ type MatchDetailRow = {
   match_event_kind: string | null
   ps_match_level: string | null
   programme_stages_enabled: boolean | null
+  entry_fee_standard_kop: number | null
+  entry_fee_military_kop: number | null
+  entry_fee_lady_junior_kop: number | null
 }
 
 type PublicRosterRow = {
@@ -113,6 +117,15 @@ export function MatchPublicDetailPage() {
   const validId = matchId && MATCH_ID_UUID_RE.test(matchId)
   const configured = isSupabaseConfigured()
 
+  const matchEntryFees = useMemo((): MatchEntryFeesKop | null => {
+    if (!row) return null
+    return {
+      standard: row.entry_fee_standard_kop,
+      military: row.entry_fee_military_kop,
+      ladyJunior: row.entry_fee_lady_junior_kop,
+    }
+  }, [row])
+
   useEffect(() => {
     if (!validId || !configured) return
     let cancelled = false
@@ -126,7 +139,7 @@ export function MatchPublicDetailPage() {
       const { data, error: qErr } = await sb
         .from('matches')
         .select(
-          'id, title, description_md, starts_at, location_label, cover_image_url, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled, match_event_kind, ps_match_level, programme_stages_enabled',
+          'id, title, description_md, starts_at, location_label, cover_image_url, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled, match_event_kind, ps_match_level, programme_stages_enabled, entry_fee_standard_kop, entry_fee_military_kop, entry_fee_lady_junior_kop',
         )
         .eq('id', matchId)
         .eq('status', 'published')
@@ -612,6 +625,7 @@ export function MatchPublicDetailPage() {
         matchUuid={row.id}
         matchDiscipline={row.discipline}
         matchEventKind={row.match_event_kind}
+        matchEntryFees={matchEntryFees}
         metrics={regMetrics}
         metricsError={regMetricsError}
         reloadMetrics={loadRegistrationMetrics}

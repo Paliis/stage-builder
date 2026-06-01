@@ -1779,7 +1779,7 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-matches-organizer__mono-payment {
-  margin: 0 0 1.25rem;
+  margin: 1.5rem 0 0;
   max-width: 40rem;
 }
 
@@ -1800,11 +1800,56 @@ a.portal-match-title-ellipsis:hover {
   line-height: 1.45;
 }
 
-.portal-matches-organizer__mono-label {
-  display: block;
+.portal-matches-organizer__mono-label-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
   margin: 0 0 0.35rem;
+}
+
+.portal-matches-organizer__mono-label {
   font-size: 0.85rem;
   font-weight: 650;
+}
+
+.portal-matches-organizer__mono-help-link {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent, #4f46e5);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.portal-matches-organizer__mono-help-link:hover {
+  text-decoration: none;
+}
+
+.portal-matches-organizer__mono-help-steps {
+  margin: 0 0 0.85rem;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.portal-matches-organizer__mono-help-steps li + li {
+  margin-top: 0.35rem;
+}
+
+.portal-matches-organizer__mono-help-official {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+}
+
+.portal-matches-organizer__mono-help-official a {
+  color: var(--accent, #4f46e5);
+}
+
+.portal-matches-organizer__mono-help-dialog {
+  max-width: 28rem;
 }
 
 .portal-matches-organizer__mono-input {
@@ -2179,6 +2224,40 @@ a.portal-match-title-ellipsis:hover {
 
 @media (max-width: 639px) {
   .portal-match-org-form__cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portal-match-org-form__cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem 1rem;
+  margin: 0 0 0.5rem;
+  align-items: start;
+}
+
+.portal-match-org-form__cols-3 > .portal-match-org-form__field {
+  margin-bottom: 0;
+}
+
+.portal-match-org-form__fee-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.portal-match-org-form__fee-input-wrap .portal-match-org-form__control {
+  max-width: 8rem;
+}
+
+.portal-match-org-form__fee-suffix {
+  font-size: 0.88rem;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+@media (max-width: 767px) {
+  .portal-match-org-form__cols-3 {
     grid-template-columns: 1fr;
   }
 }

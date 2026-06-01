@@ -179,8 +179,6 @@ export function OrganizerMatchesListPage() {
         </div>
       </header>
 
-      <OrganizerMonoPaymentSection p={p} userId={user.id} />
-
       {error ? (
         <p className="portal-matches-organizer__hint" role="alert">
           {p.myMatchesLoadError}: {error}
@@ -275,6 +273,8 @@ export function OrganizerMatchesListPage() {
           </div>
         </>
       )}
+
+      <OrganizerMonoPaymentSection p={p} userId={user.id} />
     </div>
   )
 }

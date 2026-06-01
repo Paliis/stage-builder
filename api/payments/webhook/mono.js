@@ -12476,12 +12476,12 @@ var require_main3 = __commonJS({
   }
 });
 
-// src/server/organizerMonoPaymentApiHandler.ts
-var organizerMonoPaymentApiHandler_exports = {};
-__export(organizerMonoPaymentApiHandler_exports, {
+// src/server/monoPaymentWebhookApiHandler.ts
+var monoPaymentWebhookApiHandler_exports = {};
+__export(monoPaymentWebhookApiHandler_exports, {
   default: () => handler
 });
-module.exports = __toCommonJS(organizerMonoPaymentApiHandler_exports);
+module.exports = __toCommonJS(monoPaymentWebhookApiHandler_exports);
 
 // node_modules/@supabase/supabase-js/dist/index.mjs
 var dist_exports = {};
@@ -21031,7 +21031,37 @@ function shouldShowDeprecationWarning() {
 }
 if (shouldShowDeprecationWarning()) console.warn("\u26A0\uFE0F  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");
 
+// src/server/payments/applyMatchMonoPayment.ts
+async function applyMatchMonoPaymentSuccess(supabase, registrationId, invoiceId, modifiedDate, organizerId) {
+  const { data: reg, error: loadErr } = await supabase.from("match_registrations").select("id, payment_received").eq("id", registrationId).maybeSingle();
+  if (loadErr || !reg) return { ok: false, alreadyPaid: false };
+  if (reg.payment_received) return { ok: true, alreadyPaid: true };
+  const now = (/* @__PURE__ */ new Date()).toISOString();
+  const { error: upErr } = await supabase.from("match_registrations").update({
+    payment_received: true,
+    paid_at: now,
+    payment_provider: "mono",
+    external_payment_id: invoiceId,
+    status: "confirmed",
+    confirmed_at: now,
+    confirmed_by: organizerId
+  }).eq("id", registrationId);
+  if (upErr) return { ok: false, alreadyPaid: false };
+  await supabase.from("match_mono_invoices").upsert(
+    {
+      registration_id: registrationId,
+      invoice_id: invoiceId,
+      status: "success",
+      modified_date: modifiedDate,
+      updated_at: now
+    },
+    { onConflict: "registration_id" }
+  );
+  return { ok: true, alreadyPaid: false };
+}
+
 // src/server/payments/monobankAcquiring.ts
+var import_node_crypto = require("node:crypto");
 var MONO_MERCHANT_API = "https://api.monobank.ua";
 var MONO_HTTP_TIMEOUT_MS = 2e4;
 function wrapMonoFetchError(e) {
@@ -21063,104 +21093,110 @@ async function fetchMonobankMerchantPubkey(xToken) {
   }
   return data;
 }
-function monoTokenHint(xToken) {
-  const t = xToken.trim();
-  if (t.length <= 4) return "\u2022\u2022\u2022\u2022";
-  return `\u2022\u2022\u2022\u2022${t.slice(-4)}`;
+function verifyMonobankWebhookSignature(pubKeyBase64, body, xSignBase64) {
+  try {
+    const pemBytes = Buffer.from(pubKeyBase64, "base64");
+    const key = (0, import_node_crypto.createPublicKey)({ key: pemBytes, format: "pem" });
+    const signature = Buffer.from(xSignBase64, "base64");
+    const verify = (0, import_node_crypto.createVerify)("SHA256");
+    verify.update(body);
+    verify.end();
+    return verify.verify({ key, dsaEncoding: "ieee-p1363" }, signature);
+  } catch {
+    try {
+      const pemBytes = Buffer.from(pubKeyBase64, "base64");
+      const key = (0, import_node_crypto.createPublicKey)({ key: pemBytes, format: "pem" });
+      const signature = Buffer.from(xSignBase64, "base64");
+      const verify = (0, import_node_crypto.createVerify)("SHA256");
+      verify.update(body);
+      verify.end();
+      return verify.verify(key, signature);
+    } catch {
+      return false;
+    }
+  }
+}
+function isMonobankInvoicePaid(status) {
+  return status === "success";
 }
 
-// src/server/organizerMonoPaymentApiHandler.ts
-function readBearer(req) {
-  const h = req.headers.authorization;
-  if (typeof h !== "string" || !h.trim()) return null;
-  const m = /^Bearer\s+(.+)$/i.exec(h.trim());
-  return m?.[1]?.trim() || null;
-}
-function parseJsonBody(req) {
-  const raw = typeof req.body === "string" ? req.body : JSON.stringify(req.body ?? {});
-  return JSON.parse(raw);
+// src/server/monoPaymentWebhookApiHandler.ts
+var REGISTRATION_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+async function readRawBody(req) {
+  if (typeof req.body === "string") return Buffer.from(req.body, "utf8");
+  if (Buffer.isBuffer(req.body)) return req.body;
+  if (req.body && typeof req.body === "object") {
+    return Buffer.from(JSON.stringify(req.body), "utf8");
+  }
+  return Buffer.alloc(0);
 }
 async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    return res.status(204).end();
+  if (req.method !== "POST") {
+    return res.status(405).end();
   }
   const supabaseUrl = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const platformToken = process.env.MONO_WEBHOOK_VERIFY_TOKEN?.trim();
   if (!supabaseUrl?.trim() || !serviceKey?.trim()) {
-    return res.status(503).json({ error: "Payment API is not configured" });
+    return res.status(503).end();
   }
-  const token = readBearer(req);
-  if (!token) return res.status(401).json({ error: "Missing Authorization bearer token" });
+  const bodyBuf = await readRawBody(req);
+  let payload;
+  try {
+    payload = JSON.parse(bodyBuf.toString("utf8"));
+  } catch {
+    return res.status(400).end();
+  }
+  const xSign = req.headers["x-sign"] ?? req.headers["X-Sign"];
+  const xSignStr = typeof xSign === "string" ? xSign : Array.isArray(xSign) ? xSign[0] : "";
   const supabase = createClient(supabaseUrl.trim(), serviceKey.trim(), {
     auth: { persistSession: false, autoRefreshToken: false }
   });
-  const { data: userData, error: userErr } = await supabase.auth.getUser(token);
-  if (userErr || !userData.user) {
-    return res.status(401).json({ error: "Invalid or expired session" });
+  const reference = typeof payload.reference === "string" ? payload.reference.trim() : "";
+  if (!REGISTRATION_ID_RE.test(reference)) {
+    return res.status(200).end();
   }
-  const userId = userData.user.id;
-  const { data: orgProfile, error: orgErr } = await supabase.from("match_admin_profiles").select("organizer_status").eq("user_id", userId).maybeSingle();
-  if (orgErr) return res.status(500).json({ error: orgErr.message });
-  if (orgProfile?.organizer_status !== "active") {
-    return res.status(403).json({ error: "Organizer not active" });
+  const { data: reg, error: regErr } = await supabase.from("match_registrations").select("id, match_id, payment_received, matches!inner(organizer_id)").eq("id", reference).maybeSingle();
+  if (regErr || !reg) return res.status(200).end();
+  const matchJoined = reg.matches;
+  const match = Array.isArray(matchJoined) ? matchJoined[0] : matchJoined;
+  const { data: provider } = await supabase.from("organizer_payment_providers").select("mono_x_token").eq("organizer_id", match.organizer_id).eq("provider", "mono").maybeSingle();
+  const xToken = provider?.mono_x_token ?? platformToken;
+  if (!xToken || !xSignStr) {
+    return res.status(401).end();
   }
-  const path = typeof req.url === "string" ? new URL(req.url, "http://local").pathname : "";
-  const isVerify = path.endsWith("/verify");
-  if (req.method === "DELETE") {
-    const { error } = await supabase.from("organizer_payment_providers").delete().eq("organizer_id", userId).eq("provider", "mono");
-    if (error) return res.status(500).json({ error: error.message });
-    return res.status(200).json({ connected: false });
+  try {
+    const { key } = await fetchMonobankMerchantPubkey(xToken);
+    if (!key || !verifyMonobankWebhookSignature(key, bodyBuf, xSignStr)) {
+      return res.status(401).end();
+    }
+  } catch {
+    return res.status(401).end();
   }
-  if (req.method === "POST" && isVerify) {
-    const { data: row, error } = await supabase.from("organizer_payment_providers").select("mono_x_token").eq("organizer_id", userId).eq("provider", "mono").maybeSingle();
-    if (error) return res.status(500).json({ error: error.message });
-    const stored = row?.mono_x_token;
-    if (typeof stored !== "string" || !stored.trim()) {
-      return res.status(400).json({ error: "No Mono token saved" });
-    }
-    try {
-      await fetchMonobankMerchantPubkey(stored);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "verify_failed";
-      return res.status(400).json({ error: msg });
-    }
-    const verifiedAt = (/* @__PURE__ */ new Date()).toISOString();
-    const { error: upErr } = await supabase.from("organizer_payment_providers").update({ verified_at: verifiedAt, updated_at: verifiedAt }).eq("organizer_id", userId).eq("provider", "mono");
-    if (upErr) return res.status(500).json({ error: upErr.message });
-    return res.status(200).json({ ok: true, verifiedAt });
-  }
-  if (req.method === "POST") {
-    let body;
-    try {
-      body = parseJsonBody(req);
-    } catch {
-      return res.status(400).json({ error: "Invalid JSON body" });
-    }
-    const xToken = typeof body === "object" && body !== null && "xToken" in body ? String(body.xToken ?? "").trim() : "";
-    if (xToken.length < 8) {
-      return res.status(400).json({ error: "Invalid API token" });
-    }
-    const now = (/* @__PURE__ */ new Date()).toISOString();
-    const { error } = await supabase.from("organizer_payment_providers").upsert(
-      {
-        organizer_id: userId,
-        provider: "mono",
-        mono_x_token: xToken,
-        token_hint: monoTokenHint(xToken),
-        verified_at: null,
-        updated_at: now
-      },
-      { onConflict: "organizer_id" }
+  const invoiceId = typeof payload.invoiceId === "string" ? payload.invoiceId : "";
+  const modifiedDate = typeof payload.modifiedDate === "string" ? payload.modifiedDate : null;
+  if (isMonobankInvoicePaid(payload.status)) {
+    await applyMatchMonoPaymentSuccess(
+      supabase,
+      reference,
+      invoiceId,
+      modifiedDate,
+      match.organizer_id
     );
-    if (error) return res.status(500).json({ error: error.message });
-    return res.status(200).json({
-      connected: true,
-      tokenHint: monoTokenHint(xToken),
-      verifiedAt: null
-    });
+  } else if (invoiceId) {
+    await supabase.from("match_mono_invoices").upsert(
+      {
+        registration_id: reference,
+        invoice_id: invoiceId,
+        amount_kop: typeof payload.finalAmount === "number" ? payload.finalAmount : payload.amount ?? 0,
+        status: payload.status ?? "unknown",
+        modified_date: modifiedDate,
+        updated_at: (/* @__PURE__ */ new Date()).toISOString()
+      },
+      { onConflict: "registration_id" }
+    );
   }
-  return res.status(405).json({ error: "Method not allowed" });
+  return res.status(200).end();
 }
+
+module.exports.config = { api: { bodyParser: false } };

@@ -3,7 +3,7 @@
  * Pre-bundle to single CommonJS files under api/ during `npm run build`.
  */
 import * as esbuild from 'esbuild'
-import { mkdir } from 'node:fs/promises'
+import { appendFile, mkdir } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -25,7 +25,14 @@ const bundles = [
     join(root, 'src/server/organizerMonoPaymentVerifyApiHandler.ts'),
     join(root, 'api', 'organizer-mono-payment', 'verify.js'),
   ],
+  [join(root, 'src/server/createPaymentApiHandler.ts'), join(root, 'api', 'create-payment.js')],
+  [
+    join(root, 'src/server/monoPaymentWebhookApiHandler.ts'),
+    join(root, 'api', 'payments', 'webhook', 'mono.js'),
+  ],
 ]
+
+const webhookOut = join(root, 'api', 'payments', 'webhook', 'mono.js')
 
 for (const [entry, outfile] of bundles) {
   await esbuild.build({
@@ -39,3 +46,8 @@ for (const [entry, outfile] of bundles) {
     logLevel: 'info',
   })
 }
+
+await appendFile(
+  webhookOut,
+  '\nmodule.exports.config = { api: { bodyParser: false } };\n',
+)

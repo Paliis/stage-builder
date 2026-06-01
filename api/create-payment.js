@@ -12476,12 +12476,12 @@ var require_main3 = __commonJS({
   }
 });
 
-// src/server/organizerMonoPaymentApiHandler.ts
-var organizerMonoPaymentApiHandler_exports = {};
-__export(organizerMonoPaymentApiHandler_exports, {
+// src/server/createPaymentApiHandler.ts
+var createPaymentApiHandler_exports = {};
+__export(createPaymentApiHandler_exports, {
   default: () => handler
 });
-module.exports = __toCommonJS(organizerMonoPaymentApiHandler_exports);
+module.exports = __toCommonJS(createPaymentApiHandler_exports);
 
 // node_modules/@supabase/supabase-js/dist/index.mjs
 var dist_exports = {};
@@ -21031,6 +21031,75 @@ function shouldShowDeprecationWarning() {
 }
 if (shouldShowDeprecationWarning()) console.warn("\u26A0\uFE0F  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");
 
+// src/domain/matchEntryFee.ts
+var LADY_JUNIOR_FEE_CATEGORY_IDS = ["lady", "junior", "lady_junior"];
+var MILITARY_FEE_CATEGORY_ID = "military";
+function entryFeeKopForCategories(fees, categoryIds) {
+  const set = new Set(categoryIds);
+  const options = [];
+  const push = (kop) => {
+    if (kop != null && kop > 0) options.push(kop);
+  };
+  push(fees.standard);
+  if (set.has(MILITARY_FEE_CATEGORY_ID)) push(fees.military);
+  if (LADY_JUNIOR_FEE_CATEGORY_IDS.some((id) => set.has(id))) push(fees.ladyJunior);
+  if (options.length === 0) return null;
+  return Math.min(...options);
+}
+
+// src/seo/canonicalProductionOrigin.ts
+var CANONICAL_PRODUCTION_ORIGIN = "https://shooters-tools.com";
+
+// src/lib/resolvePublicOriginFromEnv.ts
+function resolvePublicOriginFromEnv(requestFallback) {
+  const env = process.env.VITE_SHARE_PUBLIC_ORIGIN?.replace(/\/$/, "");
+  if (env) return env;
+  const prod = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (prod) {
+    const host = prod.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    const fromProd = `https://${host}`;
+    if (fromProd === "https://stage-builder.vercel.app") return CANONICAL_PRODUCTION_ORIGIN;
+    return fromProd;
+  }
+  const vu = process.env.VERCEL_URL;
+  if (vu) return `https://${vu.replace(/^https?:\/\//, "")}`;
+  const out = requestFallback.replace(/\/$/, "");
+  if (out === "https://stage-builder.vercel.app") return CANONICAL_PRODUCTION_ORIGIN;
+  return out;
+}
+
+// src/lib/resolveMatchPaymentUrls.ts
+function headerString(v) {
+  if (typeof v === "string") return v;
+  if (Array.isArray(v)) return v[0] ?? "";
+  return "";
+}
+function isLocalDevHost(host) {
+  const h = host.split(":")[0]?.toLowerCase() ?? "";
+  return h === "localhost" || h === "127.0.0.1" || h === "[::1]";
+}
+function resolveMatchPaymentUrls(headers) {
+  const host = headerString(headers["x-forwarded-host"]) || headerString(headers.host);
+  const isLocal = isLocalDevHost(host);
+  const proto = headerString(headers["x-forwarded-proto"]) || (isLocal ? "http" : "https");
+  const fallback = host ? `${proto}://${host}` : "";
+  const redirectOrigin = resolvePublicOriginFromEnv(fallback);
+  const webhookOverride = process.env.MATCH_PAYMENT_WEBHOOK_ORIGIN?.trim() || process.env.VITE_SHARE_PUBLIC_ORIGIN?.trim() || "";
+  let webHookOrigin = redirectOrigin;
+  let localWebhookMissing = false;
+  if (isLocal) {
+    if (webhookOverride && /^https:\/\//i.test(webhookOverride)) {
+      webHookOrigin = webhookOverride.replace(/\/$/, "");
+    } else {
+      localWebhookMissing = true;
+      webHookOrigin = redirectOrigin;
+    }
+  } else if (webhookOverride) {
+    webHookOrigin = webhookOverride.replace(/\/$/, "");
+  }
+  return { redirectOrigin, webHookOrigin, isLocal, localWebhookMissing };
+}
+
 // src/server/payments/monobankAcquiring.ts
 var MONO_MERCHANT_API = "https://api.monobank.ua";
 var MONO_HTTP_TIMEOUT_MS = 2e4;
@@ -21040,36 +21109,43 @@ function wrapMonoFetchError(e) {
   }
   return e instanceof Error ? e : new Error("mono_request_failed");
 }
-async function fetchMonobankMerchantPubkey(xToken) {
-  const token = xToken.trim();
-  if (!token) throw new Error("empty_token");
+async function createMonobankInvoice(xToken, params) {
   let res;
   try {
-    res = await fetch(`${MONO_MERCHANT_API}/api/merchant/pubkey`, {
-      method: "GET",
-      headers: { "X-Token": token },
-      signal: AbortSignal.timeout(MONO_HTTP_TIMEOUT_MS)
+    res = await fetch(`${MONO_MERCHANT_API}/api/merchant/invoice/create`, {
+      method: "POST",
+      headers: {
+        "X-Token": xToken.trim(),
+        "Content-Type": "application/json"
+      },
+      signal: AbortSignal.timeout(MONO_HTTP_TIMEOUT_MS),
+      body: JSON.stringify({
+        amount: params.amountKop,
+        ccy: 980,
+        merchantPaymInfo: {
+          reference: params.reference,
+          destination: params.destination.slice(0, 280)
+        },
+        redirectUrl: params.redirectUrl,
+        webHookUrl: params.webHookUrl,
+        validity: params.validitySec ?? 86400,
+        paymentType: "debit"
+      })
     });
   } catch (e) {
     throw wrapMonoFetchError(e);
   }
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`mono_pubkey_http_${res.status}${text ? `: ${text.slice(0, 200)}` : ""}`);
+    throw new Error(`mono_invoice_http_${res.status}${text ? `: ${text.slice(0, 300)}` : ""}`);
   }
   const data = await res.json();
-  if (!data?.key || typeof data.key !== "string" || !data.key.trim()) {
-    throw new Error("mono_pubkey_missing_key");
-  }
+  if (!data.invoiceId || !data.pageUrl) throw new Error("mono_invoice_missing_fields");
   return data;
 }
-function monoTokenHint(xToken) {
-  const t = xToken.trim();
-  if (t.length <= 4) return "\u2022\u2022\u2022\u2022";
-  return `\u2022\u2022\u2022\u2022${t.slice(-4)}`;
-}
 
-// src/server/organizerMonoPaymentApiHandler.ts
+// src/server/createPaymentApiHandler.ts
+var REGISTRATION_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function readBearer(req) {
   const h = req.headers.authorization;
   if (typeof h !== "string" || !h.trim()) return null;
@@ -21083,9 +21159,12 @@ function parseJsonBody(req) {
 async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     return res.status(204).end();
+  }
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
   const supabaseUrl = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -21094,6 +21173,18 @@ async function handler(req, res) {
   }
   const token = readBearer(req);
   if (!token) return res.status(401).json({ error: "Missing Authorization bearer token" });
+  let body;
+  try {
+    body = parseJsonBody(req);
+  } catch {
+    return res.status(400).json({ error: "Invalid JSON body" });
+  }
+  const registrationId = body.registrationId;
+  const localeRaw = body.locale;
+  const locale = localeRaw === "en" ? "en" : "uk";
+  if (typeof registrationId !== "string" || !REGISTRATION_ID_RE.test(registrationId)) {
+    return res.status(400).json({ error: "Invalid registrationId" });
+  }
   const supabase = createClient(supabaseUrl.trim(), serviceKey.trim(), {
     auth: { persistSession: false, autoRefreshToken: false }
   });
@@ -21102,65 +21193,66 @@ async function handler(req, res) {
     return res.status(401).json({ error: "Invalid or expired session" });
   }
   const userId = userData.user.id;
-  const { data: orgProfile, error: orgErr } = await supabase.from("match_admin_profiles").select("organizer_status").eq("user_id", userId).maybeSingle();
-  if (orgErr) return res.status(500).json({ error: orgErr.message });
-  if (orgProfile?.organizer_status !== "active") {
-    return res.status(403).json({ error: "Organizer not active" });
+  const { data: reg, error: regErr } = await supabase.from("match_registrations").select(
+    "id, match_id, competitor_user_id, status, payment_received, categories, matches!inner(id, title, status, organizer_id, entry_fee_standard_kop, entry_fee_military_kop, entry_fee_lady_junior_kop)"
+  ).eq("id", registrationId).eq("competitor_user_id", userId).maybeSingle();
+  if (regErr) return res.status(500).json({ error: regErr.message });
+  if (!reg) return res.status(404).json({ error: "Registration not found" });
+  if (reg.payment_received) {
+    return res.status(409).json({ error: "Already paid" });
   }
-  const path = typeof req.url === "string" ? new URL(req.url, "http://local").pathname : "";
-  const isVerify = path.endsWith("/verify");
-  if (req.method === "DELETE") {
-    const { error } = await supabase.from("organizer_payment_providers").delete().eq("organizer_id", userId).eq("provider", "mono");
-    if (error) return res.status(500).json({ error: error.message });
-    return res.status(200).json({ connected: false });
+  if (reg.status === "cancelled") {
+    return res.status(400).json({ error: "Registration cancelled" });
   }
-  if (req.method === "POST" && isVerify) {
-    const { data: row, error } = await supabase.from("organizer_payment_providers").select("mono_x_token").eq("organizer_id", userId).eq("provider", "mono").maybeSingle();
-    if (error) return res.status(500).json({ error: error.message });
-    const stored = row?.mono_x_token;
-    if (typeof stored !== "string" || !stored.trim()) {
-      return res.status(400).json({ error: "No Mono token saved" });
-    }
-    try {
-      await fetchMonobankMerchantPubkey(stored);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "verify_failed";
-      return res.status(400).json({ error: msg });
-    }
-    const verifiedAt = (/* @__PURE__ */ new Date()).toISOString();
-    const { error: upErr } = await supabase.from("organizer_payment_providers").update({ verified_at: verifiedAt, updated_at: verifiedAt }).eq("organizer_id", userId).eq("provider", "mono");
-    if (upErr) return res.status(500).json({ error: upErr.message });
-    return res.status(200).json({ ok: true, verifiedAt });
+  const matchJoined = reg.matches;
+  const match = Array.isArray(matchJoined) ? matchJoined[0] : matchJoined;
+  if (match.status !== "published") {
+    return res.status(400).json({ error: "Match not open for payment" });
   }
-  if (req.method === "POST") {
-    let body;
-    try {
-      body = parseJsonBody(req);
-    } catch {
-      return res.status(400).json({ error: "Invalid JSON body" });
-    }
-    const xToken = typeof body === "object" && body !== null && "xToken" in body ? String(body.xToken ?? "").trim() : "";
-    if (xToken.length < 8) {
-      return res.status(400).json({ error: "Invalid API token" });
-    }
-    const now = (/* @__PURE__ */ new Date()).toISOString();
-    const { error } = await supabase.from("organizer_payment_providers").upsert(
-      {
-        organizer_id: userId,
-        provider: "mono",
-        mono_x_token: xToken,
-        token_hint: monoTokenHint(xToken),
-        verified_at: null,
-        updated_at: now
-      },
-      { onConflict: "organizer_id" }
-    );
-    if (error) return res.status(500).json({ error: error.message });
-    return res.status(200).json({
-      connected: true,
-      tokenHint: monoTokenHint(xToken),
-      verifiedAt: null
+  const categories = Array.isArray(reg.categories) ? reg.categories.filter((x) => typeof x === "string") : [];
+  const fees = {
+    standard: match.entry_fee_standard_kop,
+    military: match.entry_fee_military_kop,
+    ladyJunior: match.entry_fee_lady_junior_kop
+  };
+  const amountKop = entryFeeKopForCategories(fees, categories);
+  if (amountKop == null || amountKop < 100) {
+    return res.status(400).json({ error: "Entry fee not configured" });
+  }
+  const { data: provider, error: provErr } = await supabase.from("organizer_payment_providers").select("mono_x_token, verified_at").eq("organizer_id", match.organizer_id).eq("provider", "mono").maybeSingle();
+  if (provErr) return res.status(500).json({ error: provErr.message });
+  if (!provider?.mono_x_token || !provider.verified_at) {
+    return res.status(400).json({ error: "Organizer payment not configured" });
+  }
+  const { redirectOrigin, webHookOrigin, localWebhookMissing } = resolveMatchPaymentUrls(req.headers);
+  if (localWebhookMissing) {
+    return res.status(503).json({
+      error: "Local dev: add VITE_SHARE_PUBLIC_ORIGIN=https://your-staging.vercel.app to .env.local (Mono webhook must be public HTTPS)"
     });
   }
-  return res.status(405).json({ error: "Method not allowed" });
+  const redirectUrl = `${redirectOrigin}/${locale}/matches/${match.id}?payment=return`;
+  const webHookUrl = `${webHookOrigin}/api/payments/webhook/mono`;
+  try {
+    const invoice = await createMonobankInvoice(provider.mono_x_token, {
+      amountKop,
+      reference: registrationId,
+      destination: `\u0412\u043D\u0435\u0441\u043E\u043A: ${match.title}`.slice(0, 280),
+      redirectUrl,
+      webHookUrl
+    });
+    await supabase.from("match_mono_invoices").upsert(
+      {
+        registration_id: registrationId,
+        invoice_id: invoice.invoiceId,
+        amount_kop: amountKop,
+        status: "created",
+        updated_at: (/* @__PURE__ */ new Date()).toISOString()
+      },
+      { onConflict: "registration_id" }
+    );
+    return res.status(200).json({ pageUrl: invoice.pageUrl, amountKop });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "mono_create_failed";
+    return res.status(502).json({ error: msg });
+  }
 }

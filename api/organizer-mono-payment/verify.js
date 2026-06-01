@@ -21033,15 +21033,26 @@ if (shouldShowDeprecationWarning()) console.warn("\u26A0\uFE0F  Node.js 18 and b
 
 // src/server/payments/monobankAcquiring.ts
 var MONO_MERCHANT_API = "https://api.monobank.ua";
+var MONO_HTTP_TIMEOUT_MS = 2e4;
+function wrapMonoFetchError(e) {
+  if (e instanceof Error && e.name === "TimeoutError") {
+    return new Error("mono_request_timeout");
+  }
+  return e instanceof Error ? e : new Error("mono_request_failed");
+}
 async function fetchMonobankMerchantPubkey(xToken) {
   const token = xToken.trim();
   if (!token) throw new Error("empty_token");
-  const res = await fetch(`${MONO_MERCHANT_API}/api/merchant/pubkey`, {
-    method: "GET",
-    headers: {
-      "X-Token": token
-    }
-  });
+  let res;
+  try {
+    res = await fetch(`${MONO_MERCHANT_API}/api/merchant/pubkey`, {
+      method: "GET",
+      headers: { "X-Token": token },
+      signal: AbortSignal.timeout(MONO_HTTP_TIMEOUT_MS)
+    });
+  } catch (e) {
+    throw wrapMonoFetchError(e);
+  }
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`mono_pubkey_http_${res.status}${text ? `: ${text.slice(0, 200)}` : ""}`);
@@ -21130,7 +21141,7 @@ async function handler(req, res) {
     }
     const xToken = typeof body === "object" && body !== null && "xToken" in body ? String(body.xToken ?? "").trim() : "";
     if (xToken.length < 8) {
-      return res.status(400).json({ error: "Invalid X-Token" });
+      return res.status(400).json({ error: "Invalid API token" });
     }
     const now = (/* @__PURE__ */ new Date()).toISOString();
     const { error } = await supabase.from("organizer_payment_providers").upsert(

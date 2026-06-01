@@ -584,6 +584,16 @@ export type MessageTree = {
     matchDetailRegistrationWithdrawFailed: string
     matchDetailRegistrationErrorPrefix: string
     matchDetailRegistrationCta: string
+    /** Pay entry fee via Monobank (pending registration, fees configured). */
+    matchDetailPayOnlineCta: string
+    matchDetailPayOnlineBusy: string
+    /** Shown after redirect from Mono checkout (?payment=return). */
+    matchDetailPayOnlineReturnHint: string
+    matchDetailPayOnlinePaidBadge: string
+    matchDetailPayOnlineError: string
+    matchDetailPayOnlineTimeout: string
+    matchDetailPayOnlineLocalDevHint: string
+    matchDetailPayOnlineNotConfigured: string
     matchDetailRegistrationModalTitle: string
     matchDetailRegistrationModalClose: string
     /** Participant name from shooter profile (account): shown read-only in registration modal. */
@@ -719,6 +729,7 @@ export type MessageTree = {
     accountMonoPaymentConnected: string
     accountMonoPaymentVerifiedBadge: string
     accountMonoPaymentNotVerifiedBadge: string
+    accountMonoPaymentVerifyAfterSave: string
     accountMonoPaymentSaved: string
     accountMonoPaymentVerified: string
     accountMonoPaymentDisconnected: string
@@ -728,6 +739,14 @@ export type MessageTree = {
     accountMonoPaymentDisconnectError: string
     accountMonoPaymentTokenInvalid: string
     accountMonoPaymentSessionRequired: string
+    accountMonoPaymentTokenHelpLink: string
+    accountMonoPaymentTokenModalTitle: string
+    accountMonoPaymentTokenModalStep1: string
+    accountMonoPaymentTokenModalStep2: string
+    accountMonoPaymentTokenModalStep3: string
+    accountMonoPaymentTokenModalStep4: string
+    accountMonoPaymentTokenModalOfficialLink: string
+    accountMonoPaymentTokenModalClose: string
     accountOrganizerApplyContactLabel: string
     accountOrganizerApplyContactPlaceholder: string
     accountOrganizerApplyPastMatchesLabel: string
@@ -871,6 +890,13 @@ export type MessageTree = {
     /** Section title for squad / capacity fields on organizer match edit. */
     matchOrgSectionPlanHeading: string
     /** Section for description, status, participant list on organizer match edit. */
+    matchOrgSectionEntryFeesHeading: string
+    matchOrgEntryFeesHint: string
+    matchOrgEntryFeeStandard: string
+    matchOrgEntryFeeMilitary: string
+    matchOrgEntryFeeLadyJunior: string
+    matchOrgEntryFeeUahSuffix: string
+    matchOrgEntryFeeInvalid: string
     matchOrgSectionPublishHeading: string
     /** Deprecated in UI — lead under catalog section removed; kept for docs / compatibility. */
     matchOrgTaxonomyOptionalLead: string
@@ -1758,6 +1784,16 @@ export const ukMessages: MessageTree = {
       'Не вдалося відмовитись від участі (статус уже змінився або немає прав). Оновіть сторінку.',
     matchDetailRegistrationErrorPrefix: 'Помилка',
     matchDetailRegistrationCta: 'Зареєструватись',
+    matchDetailPayOnlineCta: 'Сплатити онлайн{{amount}}',
+    matchDetailPayOnlineBusy: 'Перенаправлення…',
+    matchDetailPayOnlineReturnHint:
+      'Ви повернулись з оплати. Якщо платіж пройшов успішно, заявку буде підтверджено автоматично протягом хвилини.',
+    matchDetailPayOnlinePaidBadge: 'Внесок оплачено',
+    matchDetailPayOnlineError: 'Не вдалося відкрити оплату',
+    matchDetailPayOnlineTimeout: 'Сервер оплати не відповів вчасно. Спробуйте ще раз.',
+    matchDetailPayOnlineLocalDevHint:
+      'Локально: додайте у .env.local VITE_SHARE_PUBLIC_ORIGIN=https://ваш-staging.vercel.app (публічний webhook для Mono), перезапустіть npm run dev.',
+    matchDetailPayOnlineNotConfigured: 'Онлайн-оплата для цієї події ще не налаштована',
     matchDetailRegistrationModalTitle: 'Подання заявки на подію',
     matchDetailRegistrationModalClose: 'Закрити',
     matchDetailRegistrationRegisteredNameLabel: 'Прізвище та ім’я',
@@ -1881,9 +1917,9 @@ export const ukMessages: MessageTree = {
     accountOrganizerModerationHeading: 'Повідомлення від платформи',
     accountMonoPaymentHeading: 'Оплата онлайн (Monobank)',
     accountMonoPaymentIntro:
-      'X-Token з кабінету Monobank Acquiring (еквайринг, не jar). Після збереження натисніть «Перевірити» — без списання коштів.',
-    accountMonoPaymentTokenLabel: 'X-Token',
-    accountMonoPaymentTokenPlaceholder: 'Вставте токен з Monobank',
+      'Щоб стрільці могли сплатити стартовий внесок карткою на сайті, підключіть Monobank. Ключ беруть у бізнес-кабінеті банку — покроково за посиланням нижче. Кнопка «Перевірити» лише перевіряє ключ, гроші не списує.',
+    accountMonoPaymentTokenLabel: 'API-токен',
+    accountMonoPaymentTokenPlaceholder: 'Вставте API-токен з Monobank',
     accountMonoPaymentTokenReplacePlaceholder: 'Новий токен (замінить збережений)',
     accountMonoPaymentSave: 'Зберегти',
     accountMonoPaymentSaving: 'Збереження…',
@@ -1894,15 +1930,25 @@ export const ukMessages: MessageTree = {
     accountMonoPaymentConnected: 'Підключено: {{hint}}',
     accountMonoPaymentVerifiedBadge: 'перевірено',
     accountMonoPaymentNotVerifiedBadge: 'не перевірено',
-    accountMonoPaymentSaved: 'Токен збережено. Натисніть «Перевірити».',
+    accountMonoPaymentVerifyAfterSave: 'Після збереження ключа з’явиться кнопка «Перевірити».',
+    accountMonoPaymentSaved: 'Ключ збережено. Натисніть «Перевірити».',
     accountMonoPaymentVerified: 'Токен дійсний (Monobank pubkey).',
     accountMonoPaymentDisconnected: 'Monobank від’єднано.',
     accountMonoPaymentLoadError: 'Не вдалося завантажити статус оплати',
     accountMonoPaymentSaveError: 'Не вдалося зберегти токен',
     accountMonoPaymentVerifyError: 'Перевірка не вдалася',
     accountMonoPaymentDisconnectError: 'Не вдалося від’єднати',
-    accountMonoPaymentTokenInvalid: 'Введіть коректний X-Token.',
+    accountMonoPaymentTokenInvalid: 'Введіть коректний API-токен.',
     accountMonoPaymentSessionRequired: 'Увійдіть знову, щоб змінити оплату.',
+    accountMonoPaymentTokenHelpLink: 'Як отримати API-токен?',
+    accountMonoPaymentTokenModalTitle: 'API-токен Monobank Acquiring',
+    accountMonoPaymentTokenModalStep1: 'Увійдіть у бізнес-кабінет web.monobank.ua.',
+    accountMonoPaymentTokenModalStep2:
+      'Онлайн-еквайринг → «Налаштувати» (перший раз) або «Інтеграції» → «На мій сайт».',
+    accountMonoPaymentTokenModalStep3: 'Створіть і скопіюйте API-токен (не посилання jar).',
+    accountMonoPaymentTokenModalStep4: 'Вставте токен нижче → «Зберегти» → «Перевірити» (без списання).',
+    accountMonoPaymentTokenModalOfficialLink: 'Повна інструкція на monobank.ua',
+    accountMonoPaymentTokenModalClose: 'Закрити',
     accountOrganizerApplyContactLabel: 'Контакт (Telegram, телефон тощо) — опційно',
     accountOrganizerApplyContactPlaceholder: 'Наприклад @username або +380…',
     accountOrganizerApplyPastMatchesLabel: 'Посилання на минулі матчі / коментар — опційно',
@@ -2040,6 +2086,14 @@ export const ukMessages: MessageTree = {
     matchOrgFieldProgrammeStages: 'Додавати вправи до програми (Stage Builder)',
     matchOrgSectionCatalogHeading: 'Параметри події',
     matchOrgSectionPlanHeading: 'Налаштуйте кількість груп (скводів) та місць',
+    matchOrgSectionEntryFeesHeading: 'Стартові внески',
+    matchOrgEntryFeesHint:
+      'Суми для онлайн-оплати (якщо підключено Monobank). Пільга застосовується за категоріями стрільця при реєстрації; якщо підходить кілька — найнижча сума.',
+    matchOrgEntryFeeStandard: 'Стандарт',
+    matchOrgEntryFeeMilitary: 'Військовий',
+    matchOrgEntryFeeLadyJunior: 'Леді / Юніори',
+    matchOrgEntryFeeUahSuffix: 'грн',
+    matchOrgEntryFeeInvalid: 'Вкажіть суми внеску цілими числами (грн) або залиште поле порожнім.',
     matchOrgSectionPublishHeading: 'Текст і видимість',
     matchOrgTaxonomyOptionalLead:
       'За потреби. Якщо лишити порожніми, на картці буде не вказано. Не замінює поле «Назва».',
@@ -3007,6 +3061,16 @@ export const enMessages: MessageTree = {
       'Could not withdraw — status changed or not permitted. Refresh and try again.',
     matchDetailRegistrationErrorPrefix: 'Error',
     matchDetailRegistrationCta: 'Register',
+    matchDetailPayOnlineCta: 'Pay online{{amount}}',
+    matchDetailPayOnlineBusy: 'Redirecting…',
+    matchDetailPayOnlineReturnHint:
+      'You returned from checkout. If payment succeeded, your registration will be confirmed automatically within a minute.',
+    matchDetailPayOnlinePaidBadge: 'Entry fee paid',
+    matchDetailPayOnlineError: 'Could not start payment',
+    matchDetailPayOnlineTimeout: 'Payment server did not respond in time. Please try again.',
+    matchDetailPayOnlineLocalDevHint:
+      'Local dev: set VITE_SHARE_PUBLIC_ORIGIN=https://your-staging.vercel.app in .env.local (public Mono webhook), then restart npm run dev.',
+    matchDetailPayOnlineNotConfigured: 'Online payment is not set up for this event yet',
     matchDetailRegistrationModalTitle: 'Match sign-up',
     matchDetailRegistrationModalClose: 'Close',
     matchDetailRegistrationRegisteredNameLabel: 'Full name',
@@ -3132,9 +3196,9 @@ export const enMessages: MessageTree = {
     accountOrganizerModerationHeading: 'Message from the platform',
     accountMonoPaymentHeading: 'Online payments (Monobank)',
     accountMonoPaymentIntro:
-      'X-Token from Monobank Acquiring (merchant API, not jar). After saving, click Verify — no charge.',
-    accountMonoPaymentTokenLabel: 'X-Token',
-    accountMonoPaymentTokenPlaceholder: 'Paste token from Monobank',
+      'Connect Monobank so shooters can pay entry fees by card on the site. Create the key in your Monobank business cabinet — see the link below. Verify only checks the key; it does not charge anyone.',
+    accountMonoPaymentTokenLabel: 'API token',
+    accountMonoPaymentTokenPlaceholder: 'Paste API token from Monobank',
     accountMonoPaymentTokenReplacePlaceholder: 'New token (replaces saved)',
     accountMonoPaymentSave: 'Save',
     accountMonoPaymentSaving: 'Saving…',
@@ -3145,15 +3209,25 @@ export const enMessages: MessageTree = {
     accountMonoPaymentConnected: 'Connected: {{hint}}',
     accountMonoPaymentVerifiedBadge: 'verified',
     accountMonoPaymentNotVerifiedBadge: 'not verified',
-    accountMonoPaymentSaved: 'Token saved. Click Verify.',
+    accountMonoPaymentVerifyAfterSave: 'After you save the key, the Verify button will appear.',
+    accountMonoPaymentSaved: 'Key saved. Click Verify.',
     accountMonoPaymentVerified: 'Token is valid (Monobank pubkey).',
     accountMonoPaymentDisconnected: 'Monobank disconnected.',
     accountMonoPaymentLoadError: 'Could not load payment status',
     accountMonoPaymentSaveError: 'Could not save token',
     accountMonoPaymentVerifyError: 'Verification failed',
     accountMonoPaymentDisconnectError: 'Could not disconnect',
-    accountMonoPaymentTokenInvalid: 'Enter a valid X-Token.',
+    accountMonoPaymentTokenInvalid: 'Enter a valid API token.',
     accountMonoPaymentSessionRequired: 'Sign in again to change payment settings.',
+    accountMonoPaymentTokenHelpLink: 'How to get an API token?',
+    accountMonoPaymentTokenModalTitle: 'Monobank Acquiring API token',
+    accountMonoPaymentTokenModalStep1: 'Sign in to the business cabinet at web.monobank.ua.',
+    accountMonoPaymentTokenModalStep2:
+      'Online acquiring → Configure (first time) or Integrations → To my website.',
+    accountMonoPaymentTokenModalStep3: 'Create and copy the API token (not a jar link).',
+    accountMonoPaymentTokenModalStep4: 'Paste the token below → Save → Verify (no charge).',
+    accountMonoPaymentTokenModalOfficialLink: 'Full guide on monobank.ua',
+    accountMonoPaymentTokenModalClose: 'Close',
     accountOrganizerApplyContactLabel: 'Contact (Telegram, phone, etc.) — optional',
     accountOrganizerApplyContactPlaceholder: 'e.g. @username or +1…',
     accountOrganizerApplyPastMatchesLabel: 'Past matches / links — optional',
@@ -3290,6 +3364,14 @@ export const enMessages: MessageTree = {
     matchOrgFieldProgrammeStages: 'Include stages in programme (Stage Builder)',
     matchOrgSectionCatalogHeading: 'Event parameters',
     matchOrgSectionPlanHeading: 'Set up groups (squads) and capacity',
+    matchOrgSectionEntryFeesHeading: 'Entry fees',
+    matchOrgEntryFeesHint:
+      'Amounts for online payment when Monobank is connected. Discount tiers use shooter categories at registration; if several apply, the lowest amount is used.',
+    matchOrgEntryFeeStandard: 'Standard',
+    matchOrgEntryFeeMilitary: 'Military',
+    matchOrgEntryFeeLadyJunior: 'Lady / Juniors',
+    matchOrgEntryFeeUahSuffix: 'UAH',
+    matchOrgEntryFeeInvalid: 'Enter whole-number amounts in UAH or leave a field empty.',
     matchOrgSectionPublishHeading: 'Copy and visibility',
     matchOrgTaxonomyOptionalLead:
       'Optional. Leave both empty to show as not set on the card. Does not replace the title.',

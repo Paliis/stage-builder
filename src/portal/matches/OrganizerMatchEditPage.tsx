@@ -16,6 +16,10 @@ import { exportMatchCoverFromFullImage, measureImageNaturalSize } from '../cropP
 import { wrapBbCode } from './bbCodeTextareaWrap'
 import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
 import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
+import {
+  formatEntryFeeKopAsUah,
+  parseEntryFeeUahToKop,
+} from '../../domain/matchEntryFee'
 import { MATCH_LOCATION_LABEL_MAX_LEN } from './matchLocationLabel'
 import {
   isWeaponClassId,
@@ -53,6 +57,9 @@ type MatchDraft = {
   shooters_per_main_squad: number
   shooters_per_prematch_squad: number
   programme_stages_enabled: boolean
+  entry_fee_standard_uah: string
+  entry_fee_military_uah: string
+  entry_fee_lady_junior_uah: string
 }
 
 function defaultStartsLocal(): string {
@@ -144,6 +151,9 @@ export function OrganizerMatchEditPage() {
     shooters_per_main_squad: 18,
     shooters_per_prematch_squad: 18,
     programme_stages_enabled: true,
+    entry_fee_standard_uah: '',
+    entry_fee_military_uah: '',
+    entry_fee_lady_junior_uah: '',
   }))
   const [saveError, setSaveError] = useState<string | null>(null)
   const [squadSyncBanner, setSquadSyncBanner] = useState<string | null>(null)
@@ -189,6 +199,9 @@ export function OrganizerMatchEditPage() {
         shooters_per_main_squad: 18,
         shooters_per_prematch_squad: 18,
         programme_stages_enabled: true,
+        entry_fee_standard_uah: '',
+        entry_fee_military_uah: '',
+        entry_fee_lady_junior_uah: '',
       })
       return
     }
@@ -207,7 +220,7 @@ export function OrganizerMatchEditPage() {
     void sb
       .from('matches')
       .select(
-        'id, title, description_md, starts_at, location_label, cover_image_url, discipline, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad, programme_stages_enabled',
+        'id, title, description_md, starts_at, location_label, cover_image_url, discipline, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad, programme_stages_enabled, entry_fee_standard_kop, entry_fee_military_kop, entry_fee_lady_junior_kop',
       )
       .eq('id', matchId!)
       .maybeSingle()
@@ -250,6 +263,15 @@ export function OrganizerMatchEditPage() {
           shooters_per_main_squad: Math.max(1, Number(data.shooters_per_main_squad) || 18),
           shooters_per_prematch_squad: Math.max(1, Number(data.shooters_per_prematch_squad) || 18),
           programme_stages_enabled: data.programme_stages_enabled !== false,
+          entry_fee_standard_uah: formatEntryFeeKopAsUah(
+            typeof data.entry_fee_standard_kop === 'number' ? data.entry_fee_standard_kop : null,
+          ),
+          entry_fee_military_uah: formatEntryFeeKopAsUah(
+            typeof data.entry_fee_military_kop === 'number' ? data.entry_fee_military_kop : null,
+          ),
+          entry_fee_lady_junior_uah: formatEntryFeeKopAsUah(
+            typeof data.entry_fee_lady_junior_kop === 'number' ? data.entry_fee_lady_junior_kop : null,
+          ),
         })
         setPlanQtyStr({})
         setLoadState('loaded')
@@ -349,6 +371,21 @@ export function OrganizerMatchEditPage() {
       discipline = merged.discipline
     }
 
+    const parseFeeField = (raw: string): number | null | 'invalid' => {
+      const t = raw.trim()
+      if (!t) return null
+      const kop = parseEntryFeeUahToKop(t)
+      return kop === null ? 'invalid' : kop
+    }
+
+    const feeStandard = parseFeeField(merged.entry_fee_standard_uah)
+    const feeMilitary = parseFeeField(merged.entry_fee_military_uah)
+    const feeLadyJunior = parseFeeField(merged.entry_fee_lady_junior_uah)
+    if (feeStandard === 'invalid' || feeMilitary === 'invalid' || feeLadyJunior === 'invalid') {
+      setSaveError(p.matchOrgEntryFeeInvalid)
+      return
+    }
+
     const row = {
       organizer_id: user.id,
       title,
@@ -375,6 +412,9 @@ export function OrganizerMatchEditPage() {
       planned_prematch_squad_count: plannedPrematch,
       shooters_per_main_squad: shootersMain,
       shooters_per_prematch_squad: shootersPrematch,
+      entry_fee_standard_kop: feeStandard,
+      entry_fee_military_kop: feeMilitary,
+      entry_fee_lady_junior_kop: feeLadyJunior,
     }
 
     setSaving(true)
@@ -1210,6 +1250,60 @@ export function OrganizerMatchEditPage() {
                 />
               </>
             : null}
+          </div>
+        </section>
+
+        <section className="portal-match-org-form__section" aria-labelledby="match-org-entry-fees-heading">
+          <h2 id="match-org-entry-fees-heading" className="portal-match-org-form__section-heading">
+            {p.matchOrgSectionEntryFeesHeading}
+          </h2>
+          <p className="portal-match-org-form__hint">{p.matchOrgEntryFeesHint}</p>
+          <div className="portal-match-org-form__cols-3 portal-match-org-form__entry-fees">
+            <label className="portal-match-org-form__field">
+              <span className="portal-match-org-form__label">{p.matchOrgEntryFeeStandard}</span>
+              <span className="portal-match-org-form__fee-input-wrap">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  className="portal-match-org-form__control"
+                  value={draft.entry_fee_standard_uah}
+                  onChange={(e) =>
+                    setDraft((d) => ({ ...d, entry_fee_standard_uah: e.target.value }))
+                  }
+                />
+                <span className="portal-match-org-form__fee-suffix">{p.matchOrgEntryFeeUahSuffix}</span>
+              </span>
+            </label>
+            <label className="portal-match-org-form__field">
+              <span className="portal-match-org-form__label">{p.matchOrgEntryFeeMilitary}</span>
+              <span className="portal-match-org-form__fee-input-wrap">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  className="portal-match-org-form__control"
+                  value={draft.entry_fee_military_uah}
+                  onChange={(e) =>
+                    setDraft((d) => ({ ...d, entry_fee_military_uah: e.target.value }))
+                  }
+                />
+                <span className="portal-match-org-form__fee-suffix">{p.matchOrgEntryFeeUahSuffix}</span>
+              </span>
+            </label>
+            <label className="portal-match-org-form__field">
+              <span className="portal-match-org-form__label">{p.matchOrgEntryFeeLadyJunior}</span>
+              <span className="portal-match-org-form__fee-input-wrap">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  className="portal-match-org-form__control"
+                  value={draft.entry_fee_lady_junior_uah}
+                  onChange={(e) =>
+                    setDraft((d) => ({ ...d, entry_fee_lady_junior_uah: e.target.value }))
+                  }
+                />
+                <span className="portal-match-org-form__fee-suffix">{p.matchOrgEntryFeeUahSuffix}</span>
+              </span>
+            </label>
           </div>
         </section>
 

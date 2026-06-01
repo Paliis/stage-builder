@@ -110,7 +110,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         String((body as { xToken: unknown }).xToken ?? '').trim()
       : ''
     if (xToken.length < 8) {
-      return res.status(400).json({ error: 'Invalid X-Token' })
+      return res.status(400).json({ error: 'Invalid API token' })
     }
 
     const now = new Date().toISOString()
