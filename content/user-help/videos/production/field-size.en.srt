@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:02,000
+Set field size in 10 seconds
+
+2
+00:00:02,000 --> 00:00:09,000
+Enter width and length in metres
+
+3
+00:00:09,000 --> 00:00:16,000
+Or pick a ready-made preset
+
+4
+00:00:16,000 --> 00:00:24,000
+0.5 m grid — easy target placement
+
+5
+00:00:24,000 --> 00:00:30,000
+Zoom: scroll wheel. Pan: Space + mouse
+
+6
+00:00:30,000 --> 00:00:35,000
+shooters-tools.com/stage-builder

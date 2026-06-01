@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:04,500
+How to register for a match
+
+2
+00:00:04,500 --> 00:00:10,500
+Open the Matches section on the portal
+
+3
+00:00:10,500 --> 00:00:19,000
+Find your event in the list
+
+4
+00:00:19,000 --> 00:00:27,000
+Open the match page
+
+5
+00:00:27,000 --> 00:00:40,000
+Date, location, and stage program
+
+6
+00:00:40,000 --> 00:00:50,000
+Tap “Submit application”

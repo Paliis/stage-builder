@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "updated": "2026-05-21",
+  "scriptsDir": "scripts",
+  "demoStage": { "name": "Демо вправи", "field": "20x30", "targets": "2x IPSC, 1 popper, start" },
+  "strategy": "Знімати спочатку first-stage-full (1:45–2:00); короткі рілси — нарізка з нього",
+  "items": [
+    { "slug": "first-stage-full", "durationSec": 110, "priority": "P0", "type": "master", "module": "stage-builder", "status": "ready-for-shoot", "script": "scripts/first-stage-full.md", "production": "production/first-stage-full.md", "publishedUrl": null },
+    { "slug": "field-size", "durationSec": 35, "priority": "P0", "type": "extract", "extractFrom": "first-stage-full", "module": "stage-builder", "status": "extract-after-master", "script": "scripts/field-size.md", "production": "production/field-size.md", "publishedUrl": null },
+    { "slug": "place-target", "durationSec": 45, "priority": "P0", "type": "extract", "extractFrom": "first-stage-full", "module": "stage-builder", "status": "extract-after-master", "script": "scripts/place-target.md", "publishedUrl": null },
+    { "slug": "view-3d-shooter", "durationSec": 50, "priority": "P0", "type": "extract", "extractFrom": "first-stage-full", "module": "stage-builder", "status": "extract-after-master", "script": "scripts/view-3d-shooter.md", "publishedUrl": null },
+    { "slug": "briefing-pdf", "durationSec": 55, "priority": "P0", "type": "extract", "extractFrom": "first-stage-full", "module": "stage-builder", "status": "extract-after-master", "script": "scripts/briefing-pdf.md", "publishedUrl": null },
+    { "slug": "save-stage-file", "durationSec": 40, "priority": "P0", "type": "extract", "extractFrom": "first-stage-full", "module": "stage-builder", "status": "extract-after-master", "script": "scripts/save-stage-file.md", "publishedUrl": null },
+    { "slug": "shield-and-3d", "durationSec": 50, "priority": "P1", "module": "stage-builder", "status": "script", "script": "scripts/shield-and-3d.md", "publishedUrl": null },
+    { "slug": "measure-distance", "durationSec": 40, "priority": "P1", "module": "stage-builder", "status": "script", "script": "scripts/measure-distance.md", "publishedUrl": null },
+    { "slug": "mobile-place-delete", "durationSec": 40, "priority": "P1", "module": "stage-builder", "status": "script", "script": "scripts/mobile-place-delete.md", "publishedUrl": null },
+    { "slug": "share-link", "durationSec": 50, "priority": "P2", "module": "stage-builder", "status": "script", "script": "scripts/share-link.md", "publishedUrl": null },
+    { "slug": "plan-tools-overview", "durationSec": 55, "priority": "P2", "module": "stage-builder", "status": "script", "script": "scripts/plan-tools-overview.md", "publishedUrl": null },
+    { "slug": "activations-quick", "durationSec": 45, "priority": "P2", "module": "stage-builder", "status": "script", "script": "scripts/activations-quick.md", "publishedUrl": null },
+    { "slug": "open-shared-view", "durationSec": 35, "priority": "P2", "module": "stage-builder", "status": "script", "script": "scripts/open-shared-view.md", "publishedUrl": null },
+    { "slug": "matches-shooter-register-full", "durationSec": 75, "priority": "P0", "type": "master", "module": "matches", "status": "ready-for-shoot", "script": "scripts/matches-shooter-register-full.md", "production": "production/matches-shooter-register-full.md", "publishedUrl": "https://www.youtube.com/watch?v=YJ7Kze5xHo4", "phase": 3 },
+    { "slug": "matches-organizer-full", "durationSec": 125, "priority": "P1", "type": "master", "module": "matches", "status": "ready-for-shoot", "script": "scripts/matches-organizer-full.md", "production": "production/matches-organizer-full.md", "publishedUrl": null, "phase": 3 },
+    { "slug": "matches-find-and-register", "durationSec": 55, "priority": "P2", "type": "extract", "extractFrom": "matches-shooter-register-full", "module": "matches", "status": "extract-after-master", "script": "scripts/matches-find-and-register.md", "publishedUrl": null, "phase": 3 },
+    { "slug": "matches-organizer-create", "durationSec": 60, "priority": "P2", "type": "extract", "extractFrom": "matches-organizer-full", "module": "matches", "status": "extract-after-master", "script": "scripts/matches-organizer-create.md", "publishedUrl": null, "phase": 3 },
+    { "slug": "ro-helper-search", "durationSec": 45, "priority": "P2", "module": "ro-helper", "status": "script", "script": "scripts/ro-helper-search.md", "publishedUrl": null }
+  ]
+}
