@@ -199,6 +199,7 @@ export function MatchPublicRegistrationSection({
   const [submitBusy, setSubmitBusy] = useState(false)
   const [mineBusy, setMineBusy] = useState(false)
   const [payOnlineBusy, setPayOnlineBusy] = useState(false)
+  const [onlinePaymentAvailable, setOnlinePaymentAvailable] = useState<boolean | undefined>(undefined)
   const [paymentReturnHint, setPaymentReturnHint] = useState(false)
   const [feedback, setFeedback] = useState<string | null>(null)
 
@@ -218,8 +219,27 @@ export function MatchPublicRegistrationSection({
       setCabinetRegion('')
       setParticipantPayment('bank_transfer')
       setFeedback(null)
+      setOnlinePaymentAvailable(undefined)
     })
   }, [matchUuid])
+
+  useEffect(() => {
+    if (!configured || !matchUuid) {
+      queueMicrotask(() => setOnlinePaymentAvailable(false))
+      return
+    }
+    let cancelled = false
+    void (async () => {
+      const { data, error } = await sb.rpc('match_online_payment_available', {
+        p_match_id: matchUuid,
+      })
+      if (cancelled) return
+      setOnlinePaymentAvailable(!error && data === true)
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [configured, matchUuid, sb])
 
   const loadMine = useCallback(async () => {
     await Promise.resolve()
@@ -898,6 +918,7 @@ export function MatchPublicRegistrationSection({
     !sessionLoading &&
     showWithdrawTools &&
     !minePaid &&
+    onlinePaymentAvailable === true &&
     myEntryFeeKop != null &&
     myEntryFeeKop >= 100
   const showCancelledNote = Boolean(user && !sessionLoading && mine?.status === 'cancelled')
