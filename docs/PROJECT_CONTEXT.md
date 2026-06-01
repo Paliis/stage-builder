@@ -21,7 +21,7 @@
 | **Модуль редактора** | **Stage Builder** — 2D/3D план вправ, брифінг, PDF, `*.stage.json`, PWA (повна поведінка — FUNCTIONALITY) |
 | **URL редактора** | **`/stage-builder`** (поза `PortalShell` у тій самій збірці) |
 | **Репозиторій** | GitHub: `Paliis/stage-builder` (приватний npm-пакет не публікується) |
-| **Деплой** | **Prod:** Vercel `stage-builder`, гілка `main` → [shooters-tools.com](https://shooters-tools.com). **Staging:** `stage-builder-staging` → [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) (гілка `staging`). CI — `npm run check` на `main` і `staging` |
+| **Деплой** | **Prod:** Vercel `stage-builder`, гілка `main` → [shooters-tools.com](https://shooters-tools.com). **Staging:** `stage-builder-staging` → [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) (гілка `staging`, **синхронізується з `main`** після кожного push — див. [TECH.md](./TECH.md) § CI). CI — `npm run check` на `main` і `staging` |
 | **Модуль «Події»** | На **prod** вимкнено (`VITE_ENABLE_MATCH_PORTAL` не в env). На **staging** увімкнено (`=1`). Той самий Supabase. Бізнес — **§2.5**; техніка — **§3.2–3.3**, [TECH.md](./TECH.md) |
 
 **Не ціль продукту:** заміна офіційних правил IPSC, рішень RM/арбітражу чи сертифікованого софту змагань — інструмент **допомагає** готувати матеріали та зменшувати непорозуміння.

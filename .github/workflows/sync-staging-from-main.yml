@@ -1,0 +1,27 @@
+# Keep Vercel stage-builder-staging (branch staging) aligned with main after each main push.
+name: Sync staging from main
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fast-forward staging to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main staging
+          git checkout staging
+          git merge --ff-only origin/main
+          git push origin staging

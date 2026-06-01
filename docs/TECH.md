@@ -236,7 +236,7 @@ SPA-роутінг: автоматичний `page_view` вимкнено (`send
 
 **Захист URL:** пароль на деплой (Deployment Protection) поки **не** увімкнено — на команді потрібен план з **Advanced Deployment Protection**; до увімкнення достатньо noindex + непублічного URL. За потреби — [Deployment Protection](https://vercel.com/paliis-projects/stage-builder-staging/settings/deployment-protection) на `stage-builder-staging`.
 
-**Робочий цикл:** feature → push **`staging`** → перевірка на staging URL → merge **`main`** → prod.
+**Робочий цикл:** розробка в **`main`** (або PR → `main`); після кожного push у **`main`** гілка **`staging`** автоматично **fast-forward** до того ж коміту (workflow `.github/workflows/sync-staging-from-main.yml`) → Vercel **stage-builder-staging** збирає актуальний код. Ручна синхронізація: **`npm run git:sync-staging`**. Перевірка матчів/оплати — на staging URL; prod — після merge у `main` (матчі за прапорцем). Не залишати `staging` позаду `main` — інакше staging-сайт без нових фіч.
 
 **Vercel CLI:** для login/deploy використовуйте **`npx vercel@latest`** (у `package.json` зафіксовано 41.x — старий CLI може дати `Invalid Compact JWS` після device login). Локальна прив’язка: `.vercel/project.json` → зазвичай **`stage-builder`** (prod); staging — окремий проєкт у Dashboard або `vercel link --project stage-builder-staging`.
 
@@ -244,7 +244,7 @@ SPA-роутінг: автоматичний `page_view` вимкнено (`send
 
 ### CI
 
-- **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у **`main`** та **`staging`**.
+- **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у **`main`** та **`staging`**. **Sync** — `.github/workflows/sync-staging-from-main.yml`: після push у **`main`** → `staging` = `main` (ff-only).
 - **ESLint (react-hooks 7.x):** правило **`react-hooks/set-state-in-effect`** забороняє синхронно викликати оновлення стану з тіла `useEffect`. Для підвантажень даних з ефекту: **`queueMicrotask(() => void load())`** або **`await Promise.resolve()`** на початку асинхронного `load`, щоб перше `setState` не відбувалося в тому ж синхронному кроці, що й сам ефект; скидання UI при зміні маршруту — також через **`queueMicrotask`**. Для **`react-hooks/preserve-manual-memoization`** залежності `useCallback` узгоджуються з тим, що реально використовується (наприклад **`user`** замість лише **`user?.id`**).
 - **Vercel** — `vercel.json`: Vite, `dist/`. **Prod:** `stage-builder` ← `main`. **Staging:** `stage-builder-staging` ← `staging` (рекомендований Production Branch; після зміни — redeploy з Git).
 

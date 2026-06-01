@@ -41,7 +41,8 @@
     "supabase:seed:match-hub-demos": "npx supabase db query --linked -f supabase/seed/match_hub_demo_list_seed.sql",
     "supabase:seed:klassifikatsiyni-etap2": "npx supabase db query --linked -f supabase/seed/klassifikatsiyni_rushnytsia_etap2_2026_from_psc_stage1_roster.sql",
     "vercel:env-pull": "vercel env pull",
-    "vercel:link": "vercel link"
+    "vercel:link": "vercel link",
+    "git:sync-staging": "node scripts/sync-staging-from-main.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
