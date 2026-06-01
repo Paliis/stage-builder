@@ -705,6 +705,29 @@ export type MessageTree = {
     accountOrganizerApplyDuplicateFriendly: string
     accountOrganizerApplyValidationLength: string
     accountOrganizerModerationHeading: string
+    accountMonoPaymentHeading: string
+    accountMonoPaymentIntro: string
+    accountMonoPaymentTokenLabel: string
+    accountMonoPaymentTokenPlaceholder: string
+    accountMonoPaymentTokenReplacePlaceholder: string
+    accountMonoPaymentSave: string
+    accountMonoPaymentSaving: string
+    accountMonoPaymentVerify: string
+    accountMonoPaymentVerifying: string
+    accountMonoPaymentDisconnect: string
+    accountMonoPaymentDisconnecting: string
+    accountMonoPaymentConnected: string
+    accountMonoPaymentVerifiedBadge: string
+    accountMonoPaymentNotVerifiedBadge: string
+    accountMonoPaymentSaved: string
+    accountMonoPaymentVerified: string
+    accountMonoPaymentDisconnected: string
+    accountMonoPaymentLoadError: string
+    accountMonoPaymentSaveError: string
+    accountMonoPaymentVerifyError: string
+    accountMonoPaymentDisconnectError: string
+    accountMonoPaymentTokenInvalid: string
+    accountMonoPaymentSessionRequired: string
     accountOrganizerApplyContactLabel: string
     accountOrganizerApplyContactPlaceholder: string
     accountOrganizerApplyPastMatchesLabel: string
@@ -1856,6 +1879,30 @@ export const ukMessages: MessageTree = {
       'Профіль організатора для цього акаунта вже є в системі — можливо, заявку вже підано або платформа створила запис раніше. Якщо статус так і лишився лише учасника, перевірте сторінку пізніше або напишіть у підтримку.',
     accountOrganizerApplyValidationLength: 'Перевірте довжину полів: контакт до 280 символів, блок про матчі до 2000.',
     accountOrganizerModerationHeading: 'Повідомлення від платформи',
+    accountMonoPaymentHeading: 'Оплата онлайн (Monobank)',
+    accountMonoPaymentIntro:
+      'X-Token з кабінету Monobank Acquiring (еквайринг, не jar). Після збереження натисніть «Перевірити» — без списання коштів.',
+    accountMonoPaymentTokenLabel: 'X-Token',
+    accountMonoPaymentTokenPlaceholder: 'Вставте токен з Monobank',
+    accountMonoPaymentTokenReplacePlaceholder: 'Новий токен (замінить збережений)',
+    accountMonoPaymentSave: 'Зберегти',
+    accountMonoPaymentSaving: 'Збереження…',
+    accountMonoPaymentVerify: 'Перевірити',
+    accountMonoPaymentVerifying: 'Перевірка…',
+    accountMonoPaymentDisconnect: 'Від’єднати',
+    accountMonoPaymentDisconnecting: 'Від’єднання…',
+    accountMonoPaymentConnected: 'Підключено: {{hint}}',
+    accountMonoPaymentVerifiedBadge: 'перевірено',
+    accountMonoPaymentNotVerifiedBadge: 'не перевірено',
+    accountMonoPaymentSaved: 'Токен збережено. Натисніть «Перевірити».',
+    accountMonoPaymentVerified: 'Токен дійсний (Monobank pubkey).',
+    accountMonoPaymentDisconnected: 'Monobank від’єднано.',
+    accountMonoPaymentLoadError: 'Не вдалося завантажити статус оплати',
+    accountMonoPaymentSaveError: 'Не вдалося зберегти токен',
+    accountMonoPaymentVerifyError: 'Перевірка не вдалася',
+    accountMonoPaymentDisconnectError: 'Не вдалося від’єднати',
+    accountMonoPaymentTokenInvalid: 'Введіть коректний X-Token.',
+    accountMonoPaymentSessionRequired: 'Увійдіть знову, щоб змінити оплату.',
     accountOrganizerApplyContactLabel: 'Контакт (Telegram, телефон тощо) — опційно',
     accountOrganizerApplyContactPlaceholder: 'Наприклад @username або +380…',
     accountOrganizerApplyPastMatchesLabel: 'Посилання на минулі матчі / коментар — опційно',
@@ -3083,6 +3130,30 @@ export const enMessages: MessageTree = {
       'Your account already has an organizer profile in the database — perhaps you already applied, or an admin added it earlier. Refresh this page after a minute; contact support if the status seems wrong.',
     accountOrganizerApplyValidationLength: 'Check field length: contact max 280 characters; past matches block max 2000.',
     accountOrganizerModerationHeading: 'Message from the platform',
+    accountMonoPaymentHeading: 'Online payments (Monobank)',
+    accountMonoPaymentIntro:
+      'X-Token from Monobank Acquiring (merchant API, not jar). After saving, click Verify — no charge.',
+    accountMonoPaymentTokenLabel: 'X-Token',
+    accountMonoPaymentTokenPlaceholder: 'Paste token from Monobank',
+    accountMonoPaymentTokenReplacePlaceholder: 'New token (replaces saved)',
+    accountMonoPaymentSave: 'Save',
+    accountMonoPaymentSaving: 'Saving…',
+    accountMonoPaymentVerify: 'Verify',
+    accountMonoPaymentVerifying: 'Verifying…',
+    accountMonoPaymentDisconnect: 'Disconnect',
+    accountMonoPaymentDisconnecting: 'Disconnecting…',
+    accountMonoPaymentConnected: 'Connected: {{hint}}',
+    accountMonoPaymentVerifiedBadge: 'verified',
+    accountMonoPaymentNotVerifiedBadge: 'not verified',
+    accountMonoPaymentSaved: 'Token saved. Click Verify.',
+    accountMonoPaymentVerified: 'Token is valid (Monobank pubkey).',
+    accountMonoPaymentDisconnected: 'Monobank disconnected.',
+    accountMonoPaymentLoadError: 'Could not load payment status',
+    accountMonoPaymentSaveError: 'Could not save token',
+    accountMonoPaymentVerifyError: 'Verification failed',
+    accountMonoPaymentDisconnectError: 'Could not disconnect',
+    accountMonoPaymentTokenInvalid: 'Enter a valid X-Token.',
+    accountMonoPaymentSessionRequired: 'Sign in again to change payment settings.',
     accountOrganizerApplyContactLabel: 'Contact (Telegram, phone, etc.) — optional',
     accountOrganizerApplyContactPlaceholder: 'e.g. @username or +1…',
     accountOrganizerApplyPastMatchesLabel: 'Past matches / links — optional',

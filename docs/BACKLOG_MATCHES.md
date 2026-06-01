@@ -90,7 +90,7 @@
 | ID | Задача | Статус | BL | Примітки |
 |----|--------|--------|-----|----------|
 | **MA-P00** | Покращений офлайн: сума внеску на матч, QR IBAN, код у призначенні, колонка «Оплачено» в заявках | idea | — | 0% комісії; без провайдера |
-| **MA-P01** | `organizer_payment_providers` + Vault; UI «Підключити Mono»; «Перевірити» = pubkey, **без** тестового платежу | idea | — | [MATCH_PAYMENTS_PLAN.md §9](./MATCH_PAYMENTS_PLAN.md#9-зафіксовані-продуктові-рішення-2026-05-23) |
+| **MA-P01** | `organizer_payment_providers` + Vault; UI «Підключити Mono»; «Перевірити» = pubkey, **без** тестового платежу | partial | — | Таблиця + RPC статусу; API save/verify/disconnect; кабінет організатора |
 | **MA-P02** | Секція «Внесок»: 3 суми (Стандарт / Військовий / Леді·Юніори), офлайн+онлайн за замовч. | idea | — | Тарифи за категоріями — §9 плану |
 | **MA-P03** | API `create-payment` + webhook **LiqPay** | idea | — | Після Mono |
 | **MA-P04** | API + webhook **Monobank Acquiring**; webhook → `payment_received` + **auto `confirmed`** | idea | — | |

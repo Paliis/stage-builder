@@ -17,6 +17,14 @@ const bundles = [
     join(root, 'src/server/matchExportPscApiHandler.ts'),
     join(root, 'api', 'match-export-psc.js'),
   ],
+  [
+    join(root, 'src/server/organizerMonoPaymentApiHandler.ts'),
+    join(root, 'api', 'organizer-mono-payment.js'),
+  ],
+  [
+    join(root, 'src/server/organizerMonoPaymentVerifyApiHandler.ts'),
+    join(root, 'api', 'organizer-mono-payment', 'verify.js'),
+  ],
 ]
 
 for (const [entry, outfile] of bundles) {

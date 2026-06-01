@@ -1,3 +1,51 @@
+.portal-account__mono-payment {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  max-width: 40rem;
+}
+
+.portal-account__section-subtitle {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.portal-account__mono-payment-label {
+  display: block;
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.portal-account__mono-payment-input {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  box-sizing: border-box;
+  margin: 0 0 0.65rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.45rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.portal-account__mono-payment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.portal-account__mono-payment-feedback {
+  margin: 0.65rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
 .portal-account__loading {
   margin: 0;
   font-size: 0.9375rem;

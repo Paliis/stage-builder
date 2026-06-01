@@ -10,6 +10,7 @@ import { usePlatformIsAdmin } from '../usePlatformIsAdmin'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { isMatchPortalEnabled } from '../featureFlags'
 import { AccountParticipantHub } from './AccountParticipantHub'
+import { OrganizerMonoPaymentSection } from './OrganizerMonoPaymentSection'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 import './PortalAccountPage.css'
@@ -160,6 +161,9 @@ export function PortalAccountPage() {
                         </Link>
                       : null}
                     </div>
+                  : null}
+                  {profile === 'active' ?
+                    <OrganizerMonoPaymentSection p={p} userId={user.id} />
                   : null}
                   {profile === 'pending' ?
                     <div
