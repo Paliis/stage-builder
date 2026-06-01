@@ -8,18 +8,8 @@ import {
   verifyMonobankWebhookSignature,
   type MonobankWebhookPayload,
 } from './payments/monobankAcquiring.ts'
-
-const REGISTRATION_ID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-
-async function readRawBody(req: VercelRequest): Promise<Buffer> {
-  if (typeof req.body === 'string') return Buffer.from(req.body, 'utf8')
-  if (Buffer.isBuffer(req.body)) return req.body
-  if (req.body && typeof req.body === 'object') {
-    return Buffer.from(JSON.stringify(req.body), 'utf8')
-  }
-  return Buffer.alloc(0)
-}
+import { resolveMonoRegistrationId } from './payments/resolveMonoRegistrationId.ts'
+import { readVercelRawBody } from './vercelRawBody.ts'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -34,7 +24,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(503).end()
   }
 
-  const bodyBuf = await readRawBody(req)
+  const bodyBuf = await readVercelRawBody(req)
   let payload: MonobankWebhookPayload
   try {
     payload = JSON.parse(bodyBuf.toString('utf8')) as MonobankWebhookPayload
@@ -49,8 +39,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     auth: { persistSession: false, autoRefreshToken: false },
   })
 
-  const reference = typeof payload.reference === 'string' ? payload.reference.trim() : ''
-  if (!REGISTRATION_ID_RE.test(reference)) {
+  const reference = await resolveMonoRegistrationId(supabase, payload)
+  if (!reference) {
     return res.status(200).end()
   }
 

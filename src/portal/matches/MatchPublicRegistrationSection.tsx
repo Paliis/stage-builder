@@ -293,6 +293,50 @@ export function MatchPublicRegistrationSection({
     if (user?.id && configured) queueMicrotask(() => void loadMine())
   }, [configured, loadMine, searchParams, setSearchParams, user?.id])
 
+  const reconcilePaymentAttemptedRef = useRef<string | null>(null)
+  const reconcilePaymentAfterReturn = useCallback(
+    async (registrationId: string) => {
+      const { data: sessionData } = await sb.auth.getSession()
+      const accessToken = sessionData.session?.access_token
+      if (!accessToken) return
+      try {
+        const res = await fetch('/api/payments/reconcile', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ registrationId }),
+        })
+        if (!res.ok) return
+        const data = (await res.json()) as { paid?: boolean }
+        if (data.paid) await loadMine()
+      } catch {
+        /* webhook may still apply */
+      }
+    },
+    [sb, loadMine],
+  )
+
+  useEffect(() => {
+    if (!configured || !user?.id || !mine?.id || mine.payment_received) return
+    if (mine.status !== 'pending') return
+    if (reconcilePaymentAttemptedRef.current === mine.id) return
+    reconcilePaymentAttemptedRef.current = mine.id
+    void (async () => {
+      await reconcilePaymentAfterReturn(mine.id)
+      await loadMine()
+    })()
+  }, [
+    configured,
+    user?.id,
+    mine?.id,
+    mine?.payment_received,
+    mine?.status,
+    reconcilePaymentAfterReturn,
+    loadMine,
+  ])
+
   const myCategories = useMemo(
     () => normalizeParticipantCategories(mine?.categories),
     [mine?.categories],

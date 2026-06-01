@@ -27,6 +27,10 @@ const bundles = [
   ],
   [join(root, 'src/server/createPaymentApiHandler.ts'), join(root, 'api', 'create-payment.js')],
   [
+    join(root, 'src/server/reconcileMatchMonoPaymentApiHandler.ts'),
+    join(root, 'api', 'payments', 'reconcile.js'),
+  ],
+  [
     join(root, 'src/server/monoPaymentWebhookApiHandler.ts'),
     join(root, 'api', 'payments', 'webhook', 'mono.js'),
   ],

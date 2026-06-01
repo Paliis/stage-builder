@@ -3,6 +3,7 @@ import type { Plugin } from 'vite'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const CREATE_PATH = '/api/create-payment'
+const RECONCILE_PATH = '/api/payments/reconcile'
 const WEBHOOK_PATH = '/api/payments/webhook/mono'
 
 function readBody(req: IncomingMessage): Promise<Buffer> {
@@ -43,6 +44,7 @@ function shimRes(res: ServerResponse): VercelResponse {
 }
 
 let createHandler: ((req: VercelRequest, res: VercelResponse) => unknown) | undefined
+let reconcileHandler: ((req: VercelRequest, res: VercelResponse) => unknown) | undefined
 let webhookHandler: ((req: VercelRequest, res: VercelResponse) => unknown) | undefined
 
 export function matchPaymentsDevApiPlugin(): Plugin {
@@ -52,8 +54,9 @@ export function matchPaymentsDevApiPlugin(): Plugin {
       server.middlewares.use(async (req, res, next) => {
         const path = req.url?.split('?')[0] ?? ''
         const isCreate = path === CREATE_PATH
+        const isReconcile = path === RECONCILE_PATH
         const isWebhook = path === WEBHOOK_PATH
-        if (!isCreate && !isWebhook) return next()
+        if (!isCreate && !isReconcile && !isWebhook) return next()
 
         if (req.method === 'OPTIONS') {
           applyCors(res)
@@ -78,12 +81,21 @@ export function matchPaymentsDevApiPlugin(): Plugin {
           vercelReq.body = buf.length ? buf.toString('utf8') : undefined
 
           const vercelRes = shimRes(res)
-          if (isCreate) {
+          if (isCreate || isReconcile) {
             applyCors(res)
-            if (!createHandler) {
-              createHandler = (await import('../server/createPaymentApiHandler.ts')).default
+            if (isCreate) {
+              if (!createHandler) {
+                createHandler = (await import('../server/createPaymentApiHandler.ts')).default
+              }
+              await createHandler(vercelReq as unknown as VercelRequest, vercelRes)
+            } else {
+              if (!reconcileHandler) {
+                reconcileHandler = (
+                  await import('../server/reconcileMatchMonoPaymentApiHandler.ts')
+                ).default
+              }
+              await reconcileHandler(vercelReq as unknown as VercelRequest, vercelRes)
             }
-            await createHandler(vercelReq as unknown as VercelRequest, vercelRes)
           } else {
             if (!webhookHandler) {
               webhookHandler = (await import('../server/monoPaymentWebhookApiHandler.ts')).default

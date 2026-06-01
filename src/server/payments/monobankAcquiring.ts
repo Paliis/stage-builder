@@ -109,6 +109,29 @@ export async function createMonobankInvoice(
   return data
 }
 
+/** Plan B when webhook is delayed or failed — same shape as webhook payload. */
+export async function fetchMonobankInvoiceStatus(
+  xToken: string,
+  invoiceId: string,
+): Promise<MonobankWebhookPayload> {
+  const q = new URLSearchParams({ invoiceId: invoiceId.trim() })
+  let res: Response
+  try {
+    res = await fetch(`${MONO_MERCHANT_API}/api/merchant/invoice/status?${q}`, {
+      method: 'GET',
+      headers: { 'X-Token': xToken.trim() },
+      signal: AbortSignal.timeout(MONO_HTTP_TIMEOUT_MS),
+    })
+  } catch (e) {
+    throw wrapMonoFetchError(e)
+  }
+  if (!res.ok) {
+    const text = await res.text().catch(() => '')
+    throw new Error(`mono_invoice_status_http_${res.status}${text ? `: ${text.slice(0, 300)}` : ''}`)
+  }
+  return (await res.json()) as MonobankWebhookPayload
+}
+
 export function verifyMonobankWebhookSignature(
   pubKeyBase64: string,
   body: Buffer,
