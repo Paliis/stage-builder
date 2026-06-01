@@ -10,6 +10,7 @@ import type { MessageTree } from '../../i18n/messages'
 import { formatPortalDate } from './matchPortalFormat'
 import { portalLabelMatchEventKind } from './matchPortalLabels'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
+import { OrganizerMonoPaymentSection } from './OrganizerMonoPaymentSection'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
@@ -177,6 +178,8 @@ export function OrganizerMatchesListPage() {
           </div>
         </div>
       </header>
+
+      <OrganizerMonoPaymentSection p={p} userId={user.id} />
 
       {error ? (
         <p className="portal-matches-organizer__hint" role="alert">

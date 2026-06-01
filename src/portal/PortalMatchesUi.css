@@ -1778,6 +1778,61 @@ a.portal-match-title-ellipsis:hover {
   margin-bottom: 0;
 }
 
+.portal-matches-organizer__mono-payment {
+  margin: 0 0 1.25rem;
+  max-width: 40rem;
+}
+
+.portal-matches-organizer__mono-title {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.portal-matches-organizer__mono-intro {
+  margin-bottom: 0.65rem;
+}
+
+.portal-matches-organizer__mono-status {
+  margin: 0 0 0.65rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.portal-matches-organizer__mono-label {
+  display: block;
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.portal-matches-organizer__mono-input {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  box-sizing: border-box;
+  margin: 0 0 0.65rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.45rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.portal-matches-organizer__mono-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.portal-matches-organizer__mono-feedback {
+  margin: 0.65rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 /* Hub: vertical stack of match cards --------------------------------- */
 
 .portal-match-hub__published-cards {

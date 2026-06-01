@@ -149,21 +149,26 @@ export function OrganizerMonoPaymentSection({ p, userId }: Props) {
   }, [withSession, loadStatus, p])
 
   if (loadBusy && status === null) {
-    return <p className="portal-account__organizer-muted">{p.matchesLoadingDetail}</p>
+    return <p className="portal-matches-organizer__hint">{p.matchesLoadingDetail}</p>
   }
 
   const connected = status?.connected === true
   const verified = connected && Boolean(status?.verifiedAt)
 
   return (
-    <div className="portal-account__mono-payment">
-      <h4 className="portal-account__section-subtitle">{p.accountMonoPaymentHeading}</h4>
-      <p className="portal-account__organizer-muted" style={{ marginBottom: '0.65rem' }}>
+    <section
+      className="portal-matches-organizer__panel portal-matches-organizer__mono-payment"
+      aria-labelledby="organizer-mono-payment-heading"
+    >
+      <h2 id="organizer-mono-payment-heading" className="portal-matches-organizer__mono-title">
+        {p.accountMonoPaymentHeading}
+      </h2>
+      <p className="portal-matches-organizer__hint portal-matches-organizer__mono-intro">
         {p.accountMonoPaymentIntro}
       </p>
 
       {connected ?
-        <p className="portal-account__organizer-status-line" role="status">
+        <p className="portal-matches-organizer__mono-status" role="status">
           {p.accountMonoPaymentConnected.replace('{{hint}}', status?.tokenHint ?? '••••')}
           {verified ?
             ` · ${p.accountMonoPaymentVerifiedBadge}`
@@ -171,20 +176,20 @@ export function OrganizerMonoPaymentSection({ p, userId }: Props) {
         </p>
       : null}
 
-      <label className="portal-account__mono-payment-label" htmlFor="organizer-mono-x-token">
+      <label className="portal-matches-organizer__mono-label" htmlFor="organizer-mono-x-token">
         {p.accountMonoPaymentTokenLabel}
       </label>
       <input
         id="organizer-mono-x-token"
         type="password"
-        className="portal-account__mono-payment-input"
+        className="portal-matches-organizer__mono-input"
         value={tokenInput}
         autoComplete="off"
         placeholder={connected ? p.accountMonoPaymentTokenReplacePlaceholder : p.accountMonoPaymentTokenPlaceholder}
         onChange={(e) => setTokenInput(e.target.value)}
       />
 
-      <div className="portal-account__mono-payment-actions">
+      <div className="portal-matches-organizer__mono-actions">
         <button
           type="button"
           className="portal-btn portal-btn--primary portal-btn--block-xs"
@@ -216,10 +221,10 @@ export function OrganizerMonoPaymentSection({ p, userId }: Props) {
       </div>
 
       {feedback ?
-        <p className="portal-account__mono-payment-feedback" role="status">
+        <p className="portal-matches-organizer__mono-feedback" role="status">
           {feedback}
         </p>
       : null}
-    </div>
+    </section>
   )
 }
