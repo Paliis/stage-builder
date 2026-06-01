@@ -1,0 +1,14 @@
+---
+description: Після push у main — staging синхронізується автоматично; не лишати незапушені фікси.
+alwaysApply: true
+---
+
+# Git: синхрон комітів main → staging
+
+1. Зміни вносяться в **`main`**. Після завершення задачі: **commit + `git push origin main`** (користувач очікує синхронізацію, не «закоміть сам»).
+2. CI **`.github/workflows/sync-staging-from-main.yml`** після push у `main` робить **fast-forward гілки `staging`** до того ж SHA → Vercel **stage-builder-staging** (Production Branch = `staging`).
+3. Staging URL для матчів/оплати: **https://stage-builder-staging.vercel.app** — не плутати з preview проєкту `stage-builder`.
+4. Якщо staging відстав: `npm run git:sync-staging` або дочекатися workflow; не дублювати UI-фікси лише локально.
+5. **`OrganizerMonoPaymentSection`** на `/matches/my` — **після** таблиці подій; **не** переносити вгору без явного запиту користувача.
+
+Контекст handoff: `docs/CHAT_HANDOFF.md`.

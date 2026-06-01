@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-06-01 · гілка `main` синхронна з `origin/main` · робоче дерево чисте.
+**Оновлено:** 2026-06-01 · `main` → push → CI fast-forward **`staging`** → Vercel **stage-builder-staging** (див. нижче).
 
 ## Контекст
 
@@ -19,7 +19,7 @@
 | **MA-P06** | Колонка «Оплачено» + badge «онлайн» у таблиці заявок (`OrganizerMatchRegistrationsPage`) |
 | Cursor | `.cursorignore`, `.cursor/rules/agent-context-budget.mdc` (не перевантажувати чат; коміти — `commit-push-after-changes.mdc`) |
 
-**Коміти (останні):** `d35fb4d` (оплата), `fb44c30` (cursor), перед ними `af8195e`, `ec4b67e`.
+**Коміти (останні):** `90788b3` (Mono UI внизу на `/matches/my`), `543c1de` (**не** переносити Mono вгору — скасовано `90788b3`), `f9cf431` (auto-sync `staging` з `main`).
 
 **Міграції (застосовані на linked Supabase):**
 
@@ -57,9 +57,20 @@
 | UI внесків | `src/portal/matches/OrganizerMatchEditPage.tsx` |
 | UI Mono організатора | `src/portal/matches/OrganizerMonoPaymentSection.tsx` |
 
+## Git: `main` і `staging` (синхрон комітів)
+
+1. Робоча гілка — **`main`**. Після змін: **commit + `git push origin main`** (користувач очікує, що агент **сам** пушить, не лишає WIP).
+2. Після push у **`main`** workflow **`.github/workflows/sync-staging-from-main.yml`** робить **fast-forward `staging`** до того ж коміту → деплой **https://stage-builder-staging.vercel.app** (проєкт **`stage-builder-staging`**, не preview `stage-builder`).
+3. Ручна підстраховка: `npm run git:sync-staging`. Не залишати **`staging`** позаду **`main`** — інакше на staging URL старий UI.
+4. Перевірка матчів/оплати — лише **stage-builder-staging.vercel.app**; prod без `VITE_ENABLE_MATCH_PORTAL=1`.
+
+## UI Mono на `/matches/my`
+
+- Секція **`OrganizerMonoPaymentSection`** — **після** списку/таблиці подій (`OrganizerMatchesListPage`), **не** переносити вгору без **явного** запиту користувача.
+
 ## Правила для агента
 
-- Див. `.cursor/rules/agent-context-budget.mdc` — без `npm run check` за замовчуванням; не читати цілий `messages.ts` / `api/*.js`.
+- Див. `.cursor/rules/git-main-staging-sync.mdc`, `agent-context-budget.mdc` — без `npm run check` за замовчуванням; не читати цілий `messages.ts` / `api/*.js`.
 - Після нових файлів у `supabase/migrations/` → `npx supabase db push --linked --yes`.
 - Після змін handlers → `npm run build:api`.
 - Коміт + push після завершення задачі (`commit-push-after-changes.mdc`).
@@ -68,5 +79,5 @@
 ## Перше повідомлення в новому чаті (копіпаст)
 
 ```
-Прочитай docs/CHAT_HANDOFF.md. Зроби MA-P06 (badge «онлайн» у заявках організатора) і онови BACKLOG_MATCHES для MA-P01/P04/P05. Дотримуйся agent-context-budget.mdc.
+Прочитай docs/CHAT_HANDOFF.md і .cursor/rules/git-main-staging-sync.mdc. Після змін — commit + push main (staging синхронізується CI). E2E оплати на stage-builder-staging.vercel.app.
 ```
