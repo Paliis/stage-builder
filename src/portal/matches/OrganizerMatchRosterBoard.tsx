@@ -245,7 +245,7 @@ export function OrganizerMatchRosterBoard({
 
       {inactiveRegistrations.length === 0 ? null : (
         <div className="portal-roster-board__inactive">
-          <h2 className="portal-home__hero-title" style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
+          <h2 className="portal-home__hero-title portal-home__hero-title--subsection">
             {p.matchOrgRosterInactiveHeading}
           </h2>
           <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.88rem', lineHeight: 1.6 }}>

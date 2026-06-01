@@ -404,7 +404,7 @@ export function OrganizerMatchRegistrationsPage() {
         <Helmet>
           <title>{p.matchOrgRosterHelmet}</title>
         </Helmet>
-        <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
+        <header className="portal-home__hero portal-home__hero--spaced">
           <h1 className="portal-home__hero-title">{p.matchOrgRosterHeading}</h1>
         </header>
         <OrganizerMatchInactivePanel

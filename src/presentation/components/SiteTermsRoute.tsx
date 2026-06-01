@@ -1,28 +1,28 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useI18n } from '../../i18n/useI18n'
-import { PublishPolicyPanel } from './PublishPolicyPanel'
+import { SiteTermsPanel } from './SiteTermsPanel'
 
-/** Standalone page with the same text as the in-app publish policy modal (`/:locale/publish-policy`). */
-export function PublishPolicyRoute() {
+/** Site terms of use (`/:locale/terms`). */
+export function SiteTermsRoute() {
   const { locale, tree } = useI18n()
-  const sp = tree.share
+  const legal = tree.legal
   const p = tree.portal
-  const helmetTitle = `${tree.footer.publishPolicy} — ${p.title}`
+  const helmetTitle = `${legal.siteTermsTitle} — ${p.title}`
   return (
     <div className="app__publish-policy-page">
       <Helmet>
         <title>{helmetTitle}</title>
-        <meta name="description" content={sp.publishPolicyTitle} />
+        <meta name="description" content={legal.siteTermsMetaDescription} />
       </Helmet>
       <div className="app__publish-policy-page-inner">
         <header className="app__publish-policy-page-header">
           <Link to={`/${locale}`} className="app__publish-policy-back">
-            {sp.backHome}
+            {tree.share.backHome}
           </Link>
         </header>
         <main className="app__publish-policy-page-main app__publish-policy-page-card">
-          <PublishPolicyPanel tree={tree} />
+          <SiteTermsPanel tree={tree} />
         </main>
       </div>
     </div>

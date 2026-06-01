@@ -18,6 +18,9 @@ import type { MatchEventKind, PsMatchLevel } from '../domain/matchTaxonomy'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matches/matchPortalLabels'
 import { stripHttpUrlsFromPlainText } from './matches/plainTextAutolinkHelpers'
 import { isMatchPortalEnabled } from './featureFlags'
+import { useSupabaseSession } from './useSupabaseSession'
+import { useMyActiveMatchRegistration } from './matches/useMyActiveMatchRegistration'
+import { MatchCoverPlaceholder } from './matches/MatchCoverPlaceholder'
 import type { WeaponClassId } from './shooterProfileCatalog'
 import { WEAPON_CLASS_ORDER, weaponClassLabel } from './shooterProfileCatalog'
 import './PortalHome.css'
@@ -113,6 +116,11 @@ export function PortalPublishedMatchesSection() {
   const [calendarModalOpen, setCalendarModalOpen] = useState(false)
 
   const matchPortalOn = isMatchPortalEnabled()
+  const { loading: sessionLoading, user } = useSupabaseSession()
+  const { registration: activeReg } = useMyActiveMatchRegistration(
+    user?.id,
+    matchPortalOn && !sessionLoading && Boolean(user),
+  )
 
   useEffect(() => {
     if (!calendarInline) return
@@ -304,9 +312,34 @@ export function PortalPublishedMatchesSection() {
       {allRows !== undefined && !error ?
       <div className="portal-match-hub__masthead">
         <div className="portal-match-hub__masthead-title-row">
-          <h1 id="portal-published-matches" className="portal-home__hero-title portal-match-hub__masthead-title">
-            {p.portalPublishedMatchesHeading}
-          </h1>
+          <div className="portal-match-hub__masthead-title-block">
+            <h1 id="portal-published-matches" className="portal-home__hero-title portal-match-hub__masthead-title">
+              {p.portalPublishedMatchesHeading}
+            </h1>
+            {user && !sessionLoading ?
+              <p className="portal-match-hub__masthead-lead">{p.portalHomeMatchesFeaturedLeadReturning}</p>
+            : (
+              <p className="portal-match-hub__masthead-lead">{p.portalPublishedMatchesLead}</p>
+            )}
+          </div>
+          {user && !sessionLoading ?
+            <div className="portal-match-hub__quick-actions">
+              {activeReg ?
+                <Link
+                  className="portal-btn portal-btn--primary portal-btn--compact"
+                  to={`/${locale}/matches/${activeReg.matchId}`}
+                >
+                  {p.portalHomeMatchesFeaturedCtaOpenMatch}
+                </Link>
+              : null}
+              <Link
+                className="portal-btn portal-btn--secondary portal-btn--compact"
+                to={`/${locale}/account`}
+              >
+                {p.portalHomeMatchesFeaturedCtaMyRegistrations}
+              </Link>
+            </div>
+          : null}
         </div>
         <div className="portal-match-hub__masthead-body">
           <div className="portal-match-hub__masthead-tools">
@@ -357,6 +390,7 @@ export function PortalPublishedMatchesSection() {
                 <option value="training">{p.matchEventKindTraining}</option>
                 <option value="match">{p.matchEventKindMatch}</option>
                 <option value="classification">{p.matchEventKindClassification}</option>
+                <option value="seminar">{p.matchEventKindSeminar}</option>
               </select>
             </label>
             <label className="portal-match-hub__filter-field" htmlFor={`${filterFieldId}-weapon`}>
@@ -450,26 +484,26 @@ export function PortalPublishedMatchesSection() {
                   const detailPath = `/${locale}/matches/${m.id}`
                   const titleText = m.title.trim() || '—'
                   const coverUrl = m.cover_image_url?.trim() ?? ''
-                  const hasCover = Boolean(coverUrl)
                   const weaponKey = (m.discipline ?? 'shotgun').trim() || 'shotgun'
                   const weaponLine = weaponClassLabel(weaponKey, locale)
                   const locationListLine = stripHttpUrlsFromPlainText(m.location_label ?? '')
                   return (
                     <li
                       key={m.id}
-                      className={`portal-match-hub__published-card${hasCover ? ' portal-match-hub__published-card--with-thumb' : ''}`}
+                      className="portal-match-hub__published-card portal-match-hub__published-card--with-thumb"
                     >
                       <div className="portal-match-hub__published-card-row">
-                        {hasCover ?
-                          <div className="portal-match-hub__published-card-thumb">
+                        <div className="portal-match-hub__published-card-thumb">
+                          {coverUrl ?
                             <img
+                              className="portal-match-cover-img"
                               src={coverUrl}
                               alt={p.portalPublishedCardCoverAlt}
                               loading="lazy"
                               decoding="async"
                             />
-                          </div>
-                        : null}
+                          : <MatchCoverPlaceholder />}
+                        </div>
                         <div className="portal-match-hub__published-card-body">
                           <h2 className="portal-match-hub__published-card-title" title={titleText}>
                             {titleText}

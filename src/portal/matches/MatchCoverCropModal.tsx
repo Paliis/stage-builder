@@ -1,16 +1,23 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import Cropper, { type Area, type Point } from 'react-easy-crop'
+import Cropper, { type ReactCropperElement } from 'react-cropper'
+import type CropperJs from 'cropperjs'
 import type { MessageTree } from '../../i18n/messages'
-import { cropRectRegionToJpeg } from '../cropPixelsToJpeg'
 import '../account/AccountParticipantHub.css'
-import 'react-easy-crop/react-easy-crop.css'
+import 'cropperjs/dist/cropper.css'
 
 type Portal = MessageTree['portal']
 
 const COVER_ASPECT = 16 / 10
-const ZOOM_MIN = 0.22
-const ZOOM_MAX = 4
+const OUTPUT_W = 1600
+const OUTPUT_H = 1000
+/** Max zoom multiplier relative to the initial “fit” ratio after reset. */
+const FIT_ZOOM_MULTIPLIER = 4
+
+function cropperZoomRatio(cropper: CropperJs): number {
+  const { width, naturalWidth } = cropper.getCanvasData()
+  return naturalWidth > 0 ? width / naturalWidth : 1
+}
 
 export function MatchCoverCropModal({
   imageSrc,
@@ -25,11 +32,48 @@ export function MatchCoverCropModal({
   remoteError?: string | null
   p: Portal
 }) {
-  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
-  const [zoom, setZoom] = useState(1)
-  const [croppedPixels, setCroppedPixels] = useState<Area | null>(null)
+  const cropperRef = useRef<ReactCropperElement>(null)
+  /** Canvas ratio right after reset — slider 0% = this zoom level. */
+  const fitRatioRef = useRef(1)
+  const syncingSliderRef = useRef(false)
+  const [sliderPct, setSliderPct] = useState(0)
+  const [ready, setReady] = useState(false)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
+
+  const sliderToRatio = useCallback((pct: number) => {
+    const fit = fitRatioRef.current
+    const max = fit * FIT_ZOOM_MULTIPLIER
+    const t = Math.max(0, Math.min(100, pct)) / 100
+    return fit + (max - fit) * t
+  }, [])
+
+  const ratioToSlider = useCallback((ratio: number) => {
+    const fit = fitRatioRef.current
+    const max = fit * FIT_ZOOM_MULTIPLIER
+    if (max <= fit) return 0
+    const t = (ratio - fit) / (max - fit)
+    return Math.round(Math.max(0, Math.min(100, t * 100)))
+  }, [])
+
+  const applySliderToCropper = useCallback(
+    (pct: number) => {
+      const cropper = cropperRef.current?.cropper
+      if (!cropper) return
+      const target = sliderToRatio(pct)
+      const { width, height } = cropper.getContainerData()
+      syncingSliderRef.current = true
+      cropper.zoomTo(target, { x: width / 2, y: height / 2 })
+      syncingSliderRef.current = false
+    },
+    [sliderToRatio],
+  )
+
+  useEffect(() => {
+    setReady(false)
+    setSliderPct(0)
+    setErr(null)
+  }, [imageSrc])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -39,19 +83,57 @@ export function MatchCoverCropModal({
     return () => window.removeEventListener('keydown', onKey)
   }, [onCancel])
 
+  const onCropperReady = useCallback(() => {
+    const cropper = cropperRef.current?.cropper
+    if (cropper) {
+      cropper.reset()
+      fitRatioRef.current = cropperZoomRatio(cropper)
+    }
+    setSliderPct(0)
+    setReady(true)
+  }, [])
+
+  const onCropperZoom = useCallback(
+    (e: CropperJs.ZoomEvent<HTMLImageElement>) => {
+      if (syncingSliderRef.current) return
+      setSliderPct(ratioToSlider(e.detail.ratio))
+    },
+    [ratioToSlider],
+  )
+
+  const onSliderInput = useCallback(
+    (pct: number) => {
+      setSliderPct(pct)
+      applySliderToCropper(pct)
+    },
+    [applySliderToCropper],
+  )
+
   const handleApply = useCallback(async () => {
-    if (!croppedPixels || busy) return
+    const cropper = cropperRef.current?.cropper
+    if (!cropper || !ready || busy) return
     setErr(null)
     setBusy(true)
     try {
-      const blob = await cropRectRegionToJpeg(imageSrc, croppedPixels)
+      const canvas = cropper.getCroppedCanvas({
+        width: OUTPUT_W,
+        height: OUTPUT_H,
+        fillColor: '#ffffff',
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+      })
+      if (!canvas) throw new Error('Canvas unavailable')
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob((b) => resolve(b), 'image/jpeg', 0.88),
+      )
+      if (!blob) throw new Error('JPEG encode failed')
       await onApply(blob)
     } catch {
       setErr(p.matchOrgCoverCropErrCrop)
     } finally {
       setBusy(false)
     }
-  }, [busy, croppedPixels, imageSrc, onApply, p.matchOrgCoverCropErrCrop])
+  }, [busy, onApply, p.matchOrgCoverCropErrCrop, ready])
 
   const modal = (
     <div
@@ -73,20 +155,30 @@ export function MatchCoverCropModal({
         </h2>
         <p className="portal-account__field-hint portal-account__avatar-crop-lead">{p.matchOrgCoverCropLead}</p>
 
-        <div className="portal-account__avatar-crop-stage portal-match-cover-crop-stage">
+        <div className="portal-account__avatar-crop-stage portal-match-cover-crop-stage portal-match-cover-cropper-stage">
           <Cropper
-            image={imageSrc}
-            crop={crop}
-            zoom={zoom}
-            aspect={COVER_ASPECT}
-            cropShape="rect"
-            showGrid
-            objectFit="cover"
-            minZoom={ZOOM_MIN}
-            maxZoom={ZOOM_MAX}
-            onCropChange={setCrop}
-            onZoomChange={setZoom}
-            onCropAreaChange={(_a, pixels) => setCroppedPixels(pixels)}
+            ref={cropperRef}
+            src={imageSrc}
+            style={{ height: '100%', width: '100%' }}
+            aspectRatio={COVER_ASPECT}
+            viewMode={0}
+            dragMode="move"
+            guides
+            center
+            highlight={false}
+            background
+            autoCrop
+            autoCropArea={0.92}
+            responsive
+            checkOrientation={false}
+            modal={false}
+            zoomable
+            zoomOnWheel
+            zoomOnTouch
+            wheelZoomRatio={0.08}
+            movable
+            ready={onCropperReady}
+            zoom={onCropperZoom}
           />
         </div>
 
@@ -95,12 +187,12 @@ export function MatchCoverCropModal({
             <span>{p.matchOrgCoverCropZoom}</span>
             <input
               type="range"
-              min={ZOOM_MIN}
-              max={ZOOM_MAX}
-              step={0.02}
-              value={zoom}
-              onChange={(e) => setZoom(Number(e.target.value))}
-              disabled={busy}
+              min={0}
+              max={100}
+              step={1}
+              value={sliderPct}
+              onChange={(e) => onSliderInput(Number(e.target.value))}
+              disabled={busy || !ready}
             />
           </label>
         </div>
@@ -123,7 +215,7 @@ export function MatchCoverCropModal({
           <button
             type="button"
             className="portal-btn portal-btn--primary"
-            disabled={busy || !croppedPixels}
+            disabled={busy || !ready}
             onClick={() => void handleApply()}
           >
             {busy ? p.accountParticipantAvatarUploading : p.matchOrgCoverCropApply}

@@ -1,6 +1,6 @@
 /** Portal taxonomy (V1): event kind for humans + PractiScore match_level for .psc. */
 
-export const MATCH_EVENT_KIND_VALUES = ['training', 'match', 'classification'] as const
+export const MATCH_EVENT_KIND_VALUES = ['training', 'match', 'classification', 'seminar'] as const
 export type MatchEventKind = (typeof MATCH_EVENT_KIND_VALUES)[number]
 
 export const PS_MATCH_LEVEL_VALUES = ['L1', 'L2', 'L3', 'L4', 'L5'] as const

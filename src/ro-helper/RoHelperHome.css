@@ -9,8 +9,9 @@
 
 .ro-helper-home__title {
   margin: 0 0 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--portal-hero-title-size, clamp(1.25rem, 1vw + 1rem, 1.75rem));
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--text-h);
 }
 

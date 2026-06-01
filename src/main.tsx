@@ -10,6 +10,7 @@ import { I18nProvider } from './i18n/I18nProvider'
 import { GoogleAnalytics } from './presentation/components/GoogleAnalytics'
 import { RoutePageViewAnalytics } from './presentation/components/RoutePageViewAnalytics'
 import { PublishPolicyRoute } from './presentation/components/PublishPolicyRoute'
+import { SiteTermsRoute } from './presentation/components/SiteTermsRoute'
 import { ShareStageRoute } from './share/ShareStageRoute'
 import './index.css'
 import App from './App.tsx'
@@ -30,6 +31,7 @@ import {
   LegacyHitFactorRedirect,
   LegacyPublishPolicyRedirect,
   LegacyRoHelperTreeRedirect,
+  LegacyTermsRedirect,
   RootRedirect,
 } from './portal/legacyPortalRedirects'
 import {
@@ -84,6 +86,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/" element={<RootRedirect />} />
             <Route path="/hit-factor" element={<LegacyHitFactorRedirect />} />
             <Route path="/publish-policy" element={<LegacyPublishPolicyRedirect />} />
+            <Route path="/terms" element={<LegacyTermsRedirect />} />
             <Route path="/ro-helper" element={<LegacyRoHelperTreeRedirect />} />
             <Route path="/ro-helper/*" element={<LegacyRoHelperTreeRedirect />} />
             <Route path="/tools/ro-helper" element={<LegacyRoHelperTreeRedirect />} />
@@ -176,6 +179,7 @@ createRoot(document.getElementById('root')!).render(
                   </>
                 ) : null}
                 <Route path="publish-policy" element={<PublishPolicyRoute />} />
+                <Route path="terms" element={<SiteTermsRoute />} />
                 {isRoHelperEnabled() ? (
                   <Route
                     path="tools/ro-helper"

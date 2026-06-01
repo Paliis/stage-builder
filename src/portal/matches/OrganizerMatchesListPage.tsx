@@ -135,7 +135,7 @@ export function OrganizerMatchesListPage() {
             </ol>
           </nav>
         </div>
-        <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
+        <header className="portal-home__hero portal-home__hero--spaced">
           <h1 className="portal-home__hero-title">{p.myMatchesTitle}</h1>
         </header>
         <OrganizerMatchInactivePanel
@@ -167,7 +167,7 @@ export function OrganizerMatchesListPage() {
 
       <header className="portal-home__hero portal-matches-organizer__page-intro">
         <div className="portal-matches-page__toolbar">
-          <h1 className="portal-home__hero-title" style={{ margin: 0 }}>
+          <h1 className="portal-home__hero-title">
             {p.myMatchesTitle}
           </h1>
           <div className="portal-matches-page__toolbar-actions">

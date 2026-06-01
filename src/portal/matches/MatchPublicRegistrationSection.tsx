@@ -14,6 +14,7 @@ import { participantDefaultsCompleteForMatchPrefill } from '../../lib/participan
 import type { Locale, MessageTree } from '../../i18n/messages'
 import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
+import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
 import {
   type WeaponClassId,
   resolveShooterCategoriesForStorage,
@@ -44,6 +45,7 @@ type Props = {
   locale: Locale
   matchUuid: string
   matchDiscipline: string
+  matchEventKind: string | null
   p: Portal
   metrics: RegistrationMetricRow[] | undefined
   metricsError: string | null
@@ -56,6 +58,13 @@ const SHOOTER_CATEGORY_IDS = new Set(SHOOTER_CATEGORIES.map((c) => c.id))
 function normalizeParticipantCategories(raw: unknown): string[] {
   if (!Array.isArray(raw)) return []
   return raw.filter((x): x is string => typeof x === 'string' && SHOOTER_CATEGORY_IDS.has(x))
+}
+
+function participantDefaultsCompleteForSeminarPrefill(row: ParticipantDefaultsRow): boolean {
+  const fn = typeof row.first_name === 'string' ? row.first_name.trim() : ''
+  const ln = typeof row.last_name === 'string' ? row.last_name.trim() : ''
+  const ph = typeof row.phone === 'string' ? row.phone.trim() : ''
+  return fn !== '' && ln !== '' && isValidParticipantPhone(ph)
 }
 
 function phaseOf(m: RegistrationMetricRow): 'main' | 'prematch' {
@@ -86,6 +95,7 @@ export function MatchPublicRegistrationSection({
   locale,
   matchUuid,
   matchDiscipline,
+  matchEventKind,
   p,
   metrics,
   metricsError,
@@ -96,6 +106,13 @@ export function MatchPublicRegistrationSection({
   const sb = useMemo(() => getSupabase(), [])
   const configured = isSupabaseConfigured()
   const pathnameRedirect = `/${locale}/matches/${matchUuid}`
+
+  const eventKindProfile = useMemo(
+    () => getMatchEventKindProfile(matchEventKind),
+    [matchEventKind],
+  )
+  const isSeminarMinimal = eventKindProfile.registrationMode === 'seminar_minimal'
+  const accountEmail = typeof user?.email === 'string' ? user.email.trim() : ''
 
   const matchWeaponClassId = weaponClassForMatchDiscipline(matchDiscipline)
   const divisionOptions = divisionsForWeapon(matchWeaponClassId)
@@ -304,7 +321,12 @@ export function MatchPublicRegistrationSection({
         if (
           !error &&
           data &&
-          participantDefaultsCompleteForMatchPrefill(data as ParticipantDefaultsRow, matchWeaponClassId)
+          (isSeminarMinimal ?
+            participantDefaultsCompleteForSeminarPrefill(data as ParticipantDefaultsRow)
+          : participantDefaultsCompleteForMatchPrefill(
+              data as ParticipantDefaultsRow,
+              matchWeaponClassId,
+            ))
         )
           applyParticipantDefaultsRow(data as ParticipantDefaultsRow)
       })()
@@ -370,18 +392,14 @@ export function MatchPublicRegistrationSection({
       setFeedback(p.matchDetailRegistrationMatchFull)
       return
     }
-    const free = pickedSquad ? (spotFreeMap[pickedSquad] ?? 0) : 0
-    if (!pickedSquad || free <= 0) {
+
+    const squadId = pickedSquad || firstOpenSquad || ''
+    const free = squadId ? (spotFreeMap[squadId] ?? 0) : 0
+    if (!squadId || free <= 0) {
       setFeedback(p.matchDetailRegistrationPickOpenSquad)
       return
     }
-    if (
-      !division.trim() ||
-      !isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), division.trim())
-    ) {
-      setFeedback(p.matchDetailRegistrationChooseDivision)
-      return
-    }
+
     const lastNameTrim = cabinetLastName.trim()
     const firstNameTrim = cabinetFirstName.trim()
     if (!lastNameTrim || !firstNameTrim) {
@@ -393,20 +411,38 @@ export function MatchPublicRegistrationSection({
       setFeedback(p.matchDetailRegistrationPhoneInvalid)
       return
     }
-    if (signupCategories.length === 0) {
-      setFeedback(p.matchDetailRegistrationCategoryRequired)
+
+    const regionTrim = cabinetRegion.trim()
+    if (isSeminarMinimal && !regionTrim) {
+      setFeedback(p.matchDetailRegistrationRegionRequired)
       return
     }
-    const div = division.trim()
+
+    if (!isSeminarMinimal) {
+      if (
+        !division.trim() ||
+        !isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), division.trim())
+      ) {
+        setFeedback(p.matchDetailRegistrationChooseDivision)
+        return
+      }
+      if (signupCategories.length === 0) {
+        setFeedback(p.matchDetailRegistrationCategoryRequired)
+        return
+      }
+    }
+
+    const div = isSeminarMinimal ? '' : division.trim()
+    const storedCategories = isSeminarMinimal ? [] : resolveShooterCategoriesForStorage(signupCategories)
     const staleCancelledRegistrationId = mine?.status === 'cancelled' ? mine.id : null
 
     const rowPayload = {
       division: div,
       classification_grade: '',
       phone: phoneTrim,
-      competitor_region: cabinetRegion.trim(),
-      power_factor: powerFactor,
-      categories: resolveShooterCategoriesForStorage(signupCategories),
+      competitor_region: regionTrim,
+      power_factor: isSeminarMinimal ? 'MAJOR' : powerFactor,
+      categories: storedCategories,
       participant_payment_option: participantPayment,
     }
 
@@ -434,7 +470,7 @@ export function MatchPublicRegistrationSection({
 
       const { error } = await sb.from('match_registrations').insert({
         match_id: matchUuid,
-        squad_id: pickedSquad,
+        squad_id: squadId,
         competitor_user_id: user.id,
         ...rowPayload,
       })
@@ -444,21 +480,30 @@ export function MatchPublicRegistrationSection({
         return
       }
 
-      const { error: defErr } = await sb.from('participant_registration_defaults').upsert(
+      const defaultsPayload = isSeminarMinimal ?
         {
+          user_id: user.id,
+          first_name: firstNameTrim,
+          last_name: lastNameTrim,
+          phone: phoneTrim,
+          region: regionTrim,
+        }
+      : {
           user_id: user.id,
           first_name: firstNameTrim,
           last_name: lastNameTrim,
           division: div,
           classification_grade: '',
           phone: phoneTrim,
-          region: cabinetRegion.trim(),
+          region: regionTrim,
           weapon_class: matchWeaponClassId,
-          categories: resolveShooterCategoriesForStorage(signupCategories),
+          categories: storedCategories,
           power_factor: powerFactor,
-        },
-        { onConflict: 'user_id' },
-      )
+        }
+
+      const { error: defErr } = await sb
+        .from('participant_registration_defaults')
+        .upsert(defaultsPayload, { onConflict: 'user_id' })
       if (defErr) console.warn('participant_registration_defaults upsert:', defErr.message)
 
       closeRegistrationModal()
@@ -469,24 +514,20 @@ export function MatchPublicRegistrationSection({
     }
   }
 
-  async function cancelMine() {
-    if (!mine || mine.status !== 'pending' || !user?.id) return
+  async function withdrawMine() {
+    if (!mine || !user?.id) return
+    if (mine.status !== 'pending' && mine.status !== 'confirmed') return
     setMineBusy(true)
     setFeedback(null)
-    const { data: deleted, error } = await sb
-      .from('match_registrations')
-      .delete()
-      .eq('id', mine.id)
-      .eq('competitor_user_id', user.id)
-      .eq('status', 'pending')
-      .select('id')
-      .maybeSingle()
+    const { data: ok, error } = await sb.rpc('withdraw_my_match_registration', {
+      p_registration_id: mine.id,
+    })
     setMineBusy(false)
     if (error) {
       setFeedback(`${p.matchDetailRegistrationErrorPrefix}: ${error.message}`)
       return
     }
-    if (!deleted) {
+    if (!ok) {
       setFeedback(p.matchDetailRegistrationWithdrawFailed)
       await refreshAll()
       return
@@ -558,6 +599,7 @@ export function MatchPublicRegistrationSection({
                   {p.accountParticipantFieldRegion}
                   <input
                     type="text"
+                    required={isSeminarMinimal}
                     value={cabinetRegion}
                     onChange={(e) => setCabinetRegion(e.target.value)}
                     disabled={submitBusy}
@@ -567,8 +609,22 @@ export function MatchPublicRegistrationSection({
                   />
                 </label>
               </div>
+              {isSeminarMinimal && accountEmail ?
+                <label className="portal-reg-modal__label">
+                  {p.matchDetailRegistrationAccountEmail}
+                  <input
+                    type="email"
+                    readOnly
+                    value={accountEmail}
+                    disabled
+                    className="portal-reg-modal__control portal-reg-modal__control--readonly"
+                  />
+                </label>
+              : null}
             </section>
 
+            {!isSeminarMinimal ?
+              <>
             <section className="portal-reg-modal__section" aria-label={p.matchDetailRegistrationSectionMatch}>
               <h4 className="portal-reg-modal__section-title">{p.matchDetailRegistrationSectionMatch}</h4>
               <div className="portal-reg-modal__grid-2">
@@ -681,6 +737,8 @@ export function MatchPublicRegistrationSection({
                 })}
               </div>
             </fieldset>
+              </>
+            : null}
 
             <div className="portal-reg-modal__actions">
               <button type="button" className="portal-btn portal-btn--secondary" disabled={submitBusy} onClick={closeRegistrationModal}>
@@ -711,16 +769,18 @@ export function MatchPublicRegistrationSection({
     (mine === null || mine.status === 'cancelled') &&
     !matchFull &&
     Boolean(metrics?.length)
-  const showPendingTools = Boolean(user && !sessionLoading && mine?.status === 'pending')
+  const showWithdrawTools = Boolean(
+    user &&
+      !sessionLoading &&
+      (mine?.status === 'pending' || mine?.status === 'confirmed'),
+  )
   const showCancelledNote = Boolean(user && !sessionLoading && mine?.status === 'cancelled')
-  const showRegisteredMasthead = Boolean(user && !sessionLoading && mine?.status === 'confirmed')
 
   const showMastheadUi =
     showGuestRegisterCta ||
     showRegisterCta ||
-    showPendingTools ||
-    showCancelledNote ||
-    showRegisteredMasthead
+    showWithdrawTools ||
+    showCancelledNote
 
   const showMatchFullNote =
     Boolean(matchFull && metrics && metrics.length > 0 && mine?.status !== 'confirmed')
@@ -746,19 +806,27 @@ export function MatchPublicRegistrationSection({
         </>
       : null}
 
-      {showPendingTools ?
+      {showWithdrawTools ?
         <>
           <p className="portal-reg-inline-meta">
             <strong>{p.matchDetailRegistrationYourStatus}: </strong>
-            {p.matchDetailRegistrationStatusPending}
+            {mine?.status === 'confirmed' ?
+              p.matchDetailRegistrationStatusConfirmed
+            : p.matchDetailRegistrationStatusPending}
           </p>
           <button
             type="button"
             className="portal-btn portal-btn--secondary portal-btn--compact"
             disabled={mineBusy}
-            onClick={() => void cancelMine()}
+            onClick={() => void withdrawMine()}
           >
-            {mineBusy ? p.matchDetailRegistrationCancelling : p.matchDetailRegistrationCancel}
+            {mineBusy ?
+              mine?.status === 'confirmed' ?
+                p.matchDetailRegistrationWithdrawing
+              : p.matchDetailRegistrationCancelling
+            : mine?.status === 'confirmed' ?
+              p.matchDetailRegistrationWithdraw
+            : p.matchDetailRegistrationCancel}
           </button>
         </>
       : null}
@@ -780,12 +848,6 @@ export function MatchPublicRegistrationSection({
         </button>
       : null}
 
-      {showRegisteredMasthead ?
-        <p className="portal-reg-inline-meta" role="status">
-          <strong>{p.matchDetailRegistrationYourStatus}: </strong>
-          {p.matchDetailRegistrationMastheadRegistered}
-        </p>
-      : null}
     </>
   )
 

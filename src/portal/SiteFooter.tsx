@@ -9,40 +9,43 @@ export function SiteFooter() {
 
   return (
     <footer className="site-footer">
-      <div className="site-footer__top">
-        <div className="site-footer__card">
-          <h3 className="site-footer__heading">{f.feedbackHeading}</h3>
-          <p className="site-footer__text">{f.feedbackText}</p>
-          <div className="site-footer__links">
-            <a
-              className="site-footer__link site-footer__link--telegram"
-              href="https://t.me/denysparshentsev"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {f.feedbackTelegram}
-            </a>
+      <div className="site-footer__inner">
+        <div className="site-footer__top">
+          <div className="site-footer__card">
+            <h3 className="site-footer__heading">{f.feedbackHeading}</h3>
+            <p className="site-footer__text">{f.feedbackText}</p>
+            <div className="site-footer__links">
+              <a
+                className="site-footer__link site-footer__link--telegram"
+                href="https://t.me/denysparshentsev"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {f.feedbackTelegram}
+              </a>
+            </div>
+          </div>
+          <div className="site-footer__card">
+            <h3 className="site-footer__heading">{f.supportHeading}</h3>
+            <p className="site-footer__text">{f.supportText}</p>
+            <div className="site-footer__links">
+              <a
+                className="site-footer__link site-footer__link--donate"
+                href="https://send.monobank.ua/jar/2gUdnYvDXy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {f.supportLink}
+              </a>
+            </div>
           </div>
         </div>
-        <div className="site-footer__card">
-          <h3 className="site-footer__heading">{f.supportHeading}</h3>
-          <p className="site-footer__text">{f.supportText}</p>
-          <div className="site-footer__links">
-            <a
-              className="site-footer__link site-footer__link--donate"
-              href="https://send.monobank.ua/jar/2gUdnYvDXy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {f.supportLink}
-            </a>
-          </div>
+        <div className="site-footer__bottom">
+          <nav className="site-footer__nav" aria-label="Footer">
+            <Link to={`/${locale}/terms`}>{f.termsOfUse}</Link>
+            <Link to={`/${locale}/publish-policy`}>{f.publishPolicy}</Link>
+          </nav>
         </div>
-      </div>
-      <div className="site-footer__bottom">
-        <nav className="site-footer__nav" aria-label="Footer">
-          <Link to={`/${locale}/publish-policy`}>{f.publishPolicy}</Link>
-        </nav>
       </div>
     </footer>
   )

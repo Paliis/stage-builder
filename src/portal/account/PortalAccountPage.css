@@ -47,7 +47,7 @@
 
 .portal-account__cabinet-title {
   margin: 0;
-  font-size: clamp(1.2rem, 1.1vw + 1rem, 1.45rem);
+  font-size: var(--portal-hero-title-size, clamp(1.25rem, 1vw + 1rem, 1.75rem));
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-h);

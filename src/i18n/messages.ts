@@ -393,6 +393,32 @@ export type MessageTree = {
     openRoHelper: string
     /** ARIA label for the cards grid section. */
     gridAriaLabel: string
+    /** `/:locale` home — featured matches band (guest-focused). */
+    portalHomeMatchesFeaturedTitle: string
+    portalHomeMatchesFeaturedLead: string
+    portalHomeMatchesFeaturedFeatures: string[]
+    portalHomeMatchesFeaturedCtaAll: string
+    portalHomeMatchesFeaturedLinksAria: string
+    portalHomeMatchesFeaturedLinkAllEvents: string
+    portalHomeMatchesFeaturedLinkMyRegistrations: string
+    portalHomeMatchesFeaturedLinkOrganizerCabinet: string
+    portalHomeMatchesFeaturedSliderLabel: string
+    portalHomeMatchesFeaturedEmpty: string
+    portalHomeMatchesFeaturedLoading: string
+    portalHomeMatchesFeaturedPrevAria: string
+    portalHomeMatchesFeaturedNextAria: string
+    /** Signed-in user with an active registration — short convenience line. */
+    portalHomeMatchesFeaturedLeadReturning: string
+    /** `formatTemplate` `{{title}}` — pending application. */
+    portalHomeMatchesFeaturedActiveRegPending: string
+    /** `formatTemplate` `{{title}}` — confirmed registration. */
+    portalHomeMatchesFeaturedActiveRegConfirmed: string
+    portalHomeMatchesFeaturedCtaOpenMatch: string
+    portalHomeMatchesFeaturedCtaMyRegistrations: string
+    /** Active platform organizer — secondary link on home band. */
+    portalHomeMatchesFeaturedCtaOrganizerMatches: string
+    /** Slider card highlight when it is the user's active registration match. */
+    portalHomeMatchesFeaturedYourEvent: string
     /** Match hub (`/:locale/matches`): published list + lead copy. */
     portalPublishedMatchesHeading: string
     portalPublishedMatchesLead: string
@@ -436,7 +462,7 @@ export type MessageTree = {
     /** `formatTemplate`: `{{date}}` → YYYY-MM-DD (local calendar day label). */
     portalMatchesHubDayButtonAria: string
     portalMatchesHubNoMatchesFiltered: string
-    /** Match hub: filter by event kind (training / match / classification). */
+    /** Match hub: filter by event kind (training / match / classification / seminar). */
     portalMatchesHubFilterEventKind: string
     portalMatchesHubFilterEventKindAll: string
     /** Match hub: filter by PractiScore level L1–L5. */
@@ -491,6 +517,8 @@ export type MessageTree = {
      * `{{n}}` = serial in match programme; `{{title}}` = stored snapshot title.
      */
     matchDetailProgrammeDuplicateOrdinalFallback: string
+    /** Public match card: programme hidden until visibility window ({{date}} = DD.MM.YY). */
+    matchDetailProgrammePending: string
     /** Public match card: roster block (participant_list_visibility). */
     matchDetailParticipantsHeading: string
     matchDetailParticipantsClosed: string
@@ -547,6 +575,9 @@ export type MessageTree = {
     matchDetailRegistrationStatusCancelled: string
     matchDetailRegistrationCancel: string
     matchDetailRegistrationCancelling: string
+    /** Withdraw from match after organizer confirmed the registration. */
+    matchDetailRegistrationWithdraw: string
+    matchDetailRegistrationWithdrawing: string
     matchDetailRegistrationPickOpenSquad: string
     /** DELETE / cleanup returned no row (race or missing migration GRANT DELETE). */
     matchDetailRegistrationReopenFailed: string
@@ -565,6 +596,8 @@ export type MessageTree = {
     /** At least one IPSC-style category checkbox. */
     matchDetailRegistrationCategoryRequired: string
     matchDetailRegistrationSectionContact: string
+    matchDetailRegistrationRegionRequired: string
+    matchDetailRegistrationAccountEmail: string
     matchDetailRegistrationSectionMatch: string
     matchDetailRegistrationPhone: string
     matchDetailRegistrationPhoneInvalid: string
@@ -691,6 +724,8 @@ export type MessageTree = {
     accountMyRegistrationsStatusCancelled: string
     accountMyRegistrationsCancel: string
     accountMyRegistrationsCancelling: string
+    accountMyRegistrationsWithdraw: string
+    accountMyRegistrationsWithdrawing: string
     accountMyRegistrationsMatchUnavailable: string
     accountParticipantDefaultsHeading: string
     /** Optional intro under shooter profile card title (account page). */
@@ -801,8 +836,10 @@ export type MessageTree = {
     matchOrgCoverCropCancel: string
     matchOrgCoverCropApply: string
     matchOrgCoverCropErrCrop: string
+    matchOrgCoverSaved: string
     matchOrgFieldEventKind: string
     matchOrgFieldPsLevel: string
+    matchOrgFieldProgrammeStages: string
     /** Section title above event type / PractiScore level fields (training, match, or classification). */
     matchOrgSectionCatalogHeading: string
     /** Section title for squad / capacity fields on organizer match edit. */
@@ -819,6 +856,7 @@ export type MessageTree = {
     matchEventKindTraining: string
     matchEventKindMatch: string
     matchEventKindClassification: string
+    matchEventKindSeminar: string
     matchOrgPsLevelUnset: string
     matchPsLevelL1: string
     matchPsLevelL2: string
@@ -895,6 +933,14 @@ export type MessageTree = {
     matchOrgStagesDuplicate: string
     matchOrgStagesErrNoShareGroup: string
     matchOrgStagesErrNoLatestShare: string
+    /** Organizer: days before match start when programme becomes public on the card. */
+    matchOrgStagesVisibleDaysLabel: string
+    matchOrgStagesVisibleDaysHint: string
+    matchOrgStagesVisibleDaysPlaceholder: string
+    matchOrgStagesVisibleDaysSaving: string
+    matchOrgStagesVisibleDaysSaveError: string
+    /** Organizer preview when days > 0; {{date}} = DD.MM.YY. */
+    matchOrgStagesVisibleFromPreview: string
     matchOrgSquadsHeading: string
     matchOrgSquadsDerivedIntro: string
     matchOrgSquadsDerivedCapacityLine: string
@@ -1048,6 +1094,12 @@ export type MessageTree = {
     quickCiteFpsuSeeBlock: string
     quickCiteNote: string
   }
+  legal: {
+    siteTermsTitle: string
+    siteTermsUpdated: string
+    siteTermsMetaDescription: string
+    siteTermsSections: { heading: string; paragraphs: string[] }[]
+  }
   footer: {
     feedbackHeading: string
     feedbackText: string
@@ -1058,6 +1110,7 @@ export type MessageTree = {
     installHeading: string
     installText: string
     installButton: string
+    termsOfUse: string
     publishPolicy: string
   }
   pwa: {
@@ -1483,7 +1536,7 @@ export const ukMessages: MessageTree = {
     helmetTitle: 'Shooters Tools — практична стрільба, IPSC / USPSA',
     metaDescription:
       'Інструменти для практичної стрільби: Stage Builder (метричний план, 3D, PDF‑брифінг), Hit Factor, RO Helper — у браузері, UK/EN. Безкоштовний білдер стейджів і довідник правил.',
-    lead: '\u0406\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438 \u0434\u043b\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u0447\u043d\u043e\u0457 \u0441\u0442\u0440\u0456\u043b\u044c\u0431\u0438 \u0442\u0430 IPSC. \u041d\u043e\u0432\u0456 \u043c\u043e\u0434\u0443\u043b\u0456 \u0434\u043e\u0434\u0430\u0432\u0430\u0442\u0438\u043c\u0443\u0442\u044c\u0441\u044f \u043f\u043e\u0441\u0442\u0443\u043f\u043e\u0432\u043e.',
+    lead: 'Інструменти для практичної стрільби та IPSC',
     navStageBuilder: 'Stage Builder',
     navHitFactor: 'Hit Factor',
     navRoHelper: 'RO Helper',
@@ -1515,6 +1568,32 @@ export const ukMessages: MessageTree = {
     ],
     openRoHelper: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 RO Helper',
     gridAriaLabel: '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u0456 \u0456\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0438',
+    portalHomeMatchesFeaturedTitle: 'Події',
+    portalHomeMatchesFeaturedLead:
+      'Каталог змагань і семінарів: знайдіть подію, подайте заявку онлайн — картка матчу, учасники та програма в одному місці.',
+    portalHomeMatchesFeaturedFeatures: [
+      'Календар і пошук майбутніх подій',
+      'Заявка зі скводом і дивізіоном після входу',
+      'Картка матчу з описом і програмою вправ',
+    ],
+    portalHomeMatchesFeaturedCtaAll: 'Переглянути всі події',
+    portalHomeMatchesFeaturedLinksAria: 'Швидкі посилання — події',
+    portalHomeMatchesFeaturedLinkAllEvents: 'Всі події',
+    portalHomeMatchesFeaturedLinkMyRegistrations: 'Мої заявки',
+    portalHomeMatchesFeaturedLinkOrganizerCabinet: 'Кабінет організатора',
+    portalHomeMatchesFeaturedSliderLabel: 'Найближчі',
+    portalHomeMatchesFeaturedEmpty: 'Найближчі події з’являться тут — поки перегляньте каталог.',
+    portalHomeMatchesFeaturedLoading: 'Завантаження подій…',
+    portalHomeMatchesFeaturedPrevAria: 'Попередні події',
+    portalHomeMatchesFeaturedNextAria: 'Наступні події',
+    portalHomeMatchesFeaturedLeadReturning:
+      'Ваші заявки, картки матчів і статус — в одному місці, без пошуку в чатах.',
+    portalHomeMatchesFeaturedActiveRegPending: 'Заявка на «{{title}}» — очікує підтвердження',
+    portalHomeMatchesFeaturedActiveRegConfirmed: 'Ви зареєстровані на «{{title}}»',
+    portalHomeMatchesFeaturedCtaOpenMatch: 'Відкрити матч',
+    portalHomeMatchesFeaturedCtaMyRegistrations: 'Мої заявки',
+    portalHomeMatchesFeaturedCtaOrganizerMatches: 'Мої матчі',
+    portalHomeMatchesFeaturedYourEvent: 'Ваша подія',
     portalPublishedMatchesHeading: 'Перелік майбутніх подій',
     portalPublishedMatchesLead:
       'Майбутні опубліковані змагання; реєстрація — на картці матчу після входу. Повний огляд ваших заявок — в обліковому записі.',
@@ -1562,16 +1641,16 @@ export const ukMessages: MessageTree = {
     badgeNew: '\u041d\u043e\u0432\u0435',
     badgeBeta: 'Beta',
     matchesPageHelmetTitle: 'Перелік майбутніх подій — Shooters Tools',
-    matchesPageShortTitle: 'Матч',
+    matchesPageShortTitle: 'Подія',
     matchesSupabaseUnset:
       'Клієнт Supabase не налаштовано (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY). Дані матчу в браузері недоступні.',
     matchesLoadError: 'Не вдалося завантажити дані',
     matchesLoadingDetail: 'Завантаження матчу…',
-    matchDetailBackToList: 'До списку матчів',
+    matchDetailBackToList: 'До списку подій',
     portalBreadcrumbAria: 'Шлях до сторінки',
-    matchDetailNotFoundTitle: 'Матч не знайдено — Shooters Tools',
+    matchDetailNotFoundTitle: 'Подію не знайдено — Shooters Tools',
     matchDetailNotFoundBody:
-      'Матч із таким ідентифікатором немає серед опублікованих або посилання некоректне.',
+      'Події з таким ідентифікатором немає серед опублікованих або посилання некоректне.',
     matchDetailStartsLabel: 'Початок',
     matchDetailEventKindLabel: 'Тип події',
     matchDetailPsLevelLabel: 'Рівень',
@@ -1580,7 +1659,7 @@ export const ukMessages: MessageTree = {
     matchDetailDisciplineLabel: 'Дисципліна',
     matchDetailLimitLabel: 'Ліміт учасників',
     matchDetailLimitWithFree: '{{limit}} (вільно {{free}})',
-    matchDetailMastheadActionsAria: 'Реєстрація на матч',
+    matchDetailMastheadActionsAria: 'Реєстрація на подію',
     matchDetailRegistrationMastheadRegistered: 'Ви зареєстровані',
     matchDetailPrematchLabel: 'Прематч',
     matchDetailPrematchValueYes: 'Так',
@@ -1589,13 +1668,14 @@ export const ukMessages: MessageTree = {
     matchDetailProgrammeViewLink: 'Схема / брифінг',
     matchDetailProgrammeFootnote: '',
     matchDetailProgrammeDuplicateOrdinalFallback: 'Вправа №{{n}}: {{title}}',
+    matchDetailProgrammePending: 'Бріфінг вправ буде доступним з {{date}}',
     matchDetailParticipantsHeading: 'Учасники',
     matchDetailParticipantsClosed:
-      'Список зареєстрованих учасників не опубліковано (налаштування організатора).',
+      'З міркувань безпеки список учасників доступний лише організатору події.',
     matchDetailParticipantsOpenEmpty:
       'Публічний список поки порожній (підтверджених заявок ще немає).',
     matchDetailParticipantsOpenAwaitingConfirmation:
-      'Підтверджені учасники з’являться тут після затвердження організатором. Активних записів у скводах зараз: {{count}}.',
+      'Підтверджені учасники з’являться тут після затвердження організатором. Активних записів у групах (скводах) зараз: {{count}}.',
     matchDetailParticipantsColIndex: '№',
     matchDetailParticipantsColSquad: 'Сквод',
     matchDetailParticipantsColPhase: 'День',
@@ -1610,21 +1690,21 @@ export const ukMessages: MessageTree = {
       'Застосуй останні міграції Supabase з каталогу supabase/migrations (зокрема `20260504140000_public_match_registration_metrics.sql` та `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Реєстрація',
     matchDetailRegistrationPrematchHeading: 'Прематч',
-    matchDetailRegistrationMainHeading: 'Основний день матчу',
-    matchDetailRegistrationPrematchEmpty: 'Скводи прематчу ще не додані організатором.',
+    matchDetailRegistrationMainHeading: 'Основний день події',
+    matchDetailRegistrationPrematchEmpty: 'Групи (скводи) прематчу ще не додані організатором.',
     matchDetailRegistrationMainEmpty: 'Скводи основного дня ще не додані.',
     matchDetailRegistrationPhaseShortPrematch: 'Прематч',
     matchDetailRegistrationPhaseShortMain: 'Матч',
     matchDetailRegistrationNoSquads:
-      'Для цього матчу ще не додані скводи. Поверніться пізніше або зв’яжіться з організатором.',
+      'Для цієї події ще не додані групи (скводи). Поверніться пізніше або зв’яжіться з організатором.',
     matchDetailRegistrationColSquad: 'Сквод',
     matchDetailRegistrationColFree: 'Вільні місця',
     matchDetailRegistrationFull: 'Повний',
-    matchDetailRegistrationMatchFull: 'Ліміт учасників матчу вже заповнений; нові заявки тимчасово недоступні.',
+    matchDetailRegistrationMatchFull: 'Ліміт учасників події вже заповнений; нові заявки тимчасово недоступні.',
     matchDetailRegistrationSignInIntro: 'Увійдіть або створіть обліковий запис, щоб подати заявку на участь.',
     matchDetailGuestAuthModalTitle: 'Увійдіть або зареєструйтеся',
     matchDetailRegistrationFieldSquad: 'Сквод',
-    matchDetailRegistrationSelectSquad: 'Оберіть сквод',
+    matchDetailRegistrationSelectSquad: 'Оберіть групу (сквод)',
     matchDetailRegistrationDivision: 'Дивізіон',
     matchDetailRegistrationPFOptional: 'Power factor (необов’язково)',
     matchDetailRegistrationPowerFactor: 'Фактор потужності',
@@ -1644,14 +1724,16 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationStatusCancelled: 'скасовано',
     matchDetailRegistrationCancel: 'Скасувати заявку',
     matchDetailRegistrationCancelling: 'Скасування…',
-    matchDetailRegistrationPickOpenSquad: 'Оберіть сквод із вільними місцями.',
+    matchDetailRegistrationWithdraw: 'Відмовитись від участі',
+    matchDetailRegistrationWithdrawing: 'Відмова…',
+    matchDetailRegistrationPickOpenSquad: 'Оберіть групу (сквод) із вільними місцями.',
     matchDetailRegistrationReopenFailed:
       'Не вдалося очистити стару скасовану заявку (немає прав DELETE у БД або запис уже змінився). Оновіть сторінку й спробуйте ще раз.',
     matchDetailRegistrationWithdrawFailed:
-      'Не вдалося скасувати заявку (немає прав видалення в БД або статус уже інший). Оновіть сторінку.',
+      'Не вдалося відмовитись від участі (статус уже змінився або немає прав). Оновіть сторінку.',
     matchDetailRegistrationErrorPrefix: 'Помилка',
     matchDetailRegistrationCta: 'Зареєструватись',
-    matchDetailRegistrationModalTitle: 'Подання заявки на матч',
+    matchDetailRegistrationModalTitle: 'Подання заявки на подію',
     matchDetailRegistrationModalClose: 'Закрити',
     matchDetailRegistrationRegisteredNameLabel: 'Прізвище та ім’я',
     matchDetailRegistrationRegisteredNameEmpty: 'Не зазначено в обліковому записі.',
@@ -1660,6 +1742,8 @@ export const ukMessages: MessageTree = {
     matchDetailRegistrationNameRequired: 'Вкажіть прізвище та ім’я.',
     matchDetailRegistrationCategoryRequired: 'Оберіть щонайменше одну категорію.',
     matchDetailRegistrationSectionContact: 'Контакт',
+    matchDetailRegistrationRegionRequired: 'Вкажіть регіон.',
+    matchDetailRegistrationAccountEmail: 'Email облікового запису',
     matchDetailRegistrationSectionMatch: 'Участь',
     matchDetailRegistrationPhone: 'Телефон',
     matchDetailRegistrationPhoneInvalid:
@@ -1788,6 +1872,8 @@ export const ukMessages: MessageTree = {
     accountMyRegistrationsStatusCancelled: 'скасовано',
     accountMyRegistrationsCancel: 'Скасувати заявку',
     accountMyRegistrationsCancelling: 'Скасування…',
+    accountMyRegistrationsWithdraw: 'Відмовитись від участі',
+    accountMyRegistrationsWithdrawing: 'Відмова…',
     accountMyRegistrationsMatchUnavailable: '(картка недоступна)',
     accountParticipantDefaultsHeading: 'Профіль стрільця',
     accountParticipantProfileSectionLead:
@@ -1813,7 +1899,7 @@ export const ukMessages: MessageTree = {
       'Після вибору файлу відкриється вікно: перетягніть фото та змініть масштаб — саме так воно з’явиться в круглому аватарі.',
     accountParticipantAvatarCropTitle: 'Підганяння фото під аватар',
     accountParticipantAvatarCropLead:
-      'Перетягніть зображення та збільште або зменшіть його слайдером «Масштаб», щоб вписати обличчя в коло.',
+      'Перетягніть зображення; повзунок вправо — збільшити, щоб вписати обличчя в коло.',
     accountParticipantAvatarCropZoom: 'Масштаб',
     accountParticipantAvatarCropApply: 'Застосувати',
     accountParticipantAvatarCropCancel: 'Скасувати',
@@ -1835,10 +1921,10 @@ export const ukMessages: MessageTree = {
     portalShellMenuOpenAria: 'Відкрити меню навігації',
     portalShellMenuCloseAria: 'Закрити меню навігації',
     portalShellNavDrawerAria: 'Навігація й обліковий запис',
-    navMatches: 'Матчі',
-    myMatchesTitle: 'Мої матчі',
-    myMatchesHelmet: 'Мої матчі — Shooters Tools',
-    myMatchesCreate: 'Створити матч',
+    navMatches: 'Події',
+    myMatchesTitle: 'Мої події',
+    myMatchesHelmet: 'Мої події — Shooters Tools',
+    myMatchesCreate: 'Створити подію',
     myMatchesColTitle: 'Назва',
     myMatchesColStarts: 'Початок',
     myMatchesColEventKind: 'Тип',
@@ -1848,27 +1934,27 @@ export const ukMessages: MessageTree = {
     myMatchesColActions: 'Дії',
     myMatchesRoster: 'Заявки',
     myMatchesEdit: 'Редагувати',
-    myMatchesViewPublic: 'Картка матчу',
-    myMatchesNeedSignIn: 'Увійди, щоб керувати своїми матчами.',
+    myMatchesViewPublic: 'Картка події',
+    myMatchesNeedSignIn: 'Увійди, щоб керувати своїми подіями.',
     myMatchesLoading: 'Завантаження…',
     myMatchesLoadError: 'Помилка',
-    myMatchesEmpty: 'Ще немає матчів. Створи перший.',
+    myMatchesEmpty: 'Ще немає подій. Створи першу.',
     myMatchesBackHome: 'На головну порталу',
-    myMatchesQuickLinksAria: 'Дії для цього матчу',
+    myMatchesQuickLinksAria: 'Дії для цієї події',
     matchOrgStatusDraft: 'Чернетка',
     matchOrgStatusPublished: 'Опубліковано',
     matchOrgStatusCancelled: 'Скасовано',
     matchOrgStatusCompleted: 'Завершено',
     matchOrgParticipantsOpenShort: 'Відкритий',
     matchOrgParticipantsClosedShort: 'Закритий',
-    matchOrgCreateTitle: 'Новий матч',
+    matchOrgCreateTitle: 'Нова подія',
     matchOrgEditTitle: 'Редагування події',
-    matchOrgCreateHelmet: 'Новий матч — Shooters Tools',
+    matchOrgCreateHelmet: 'Нова подія — Shooters Tools',
     matchOrgEditHelmetEdit: 'Редагування події — Shooters Tools',
     matchOrgEditHelmetLoading: 'Подія — завантаження',
     matchOrgSave: 'Зберегти',
     matchOrgSaveSaving: 'Збереження…',
-    matchOrgBackList: 'До списку матчів',
+    matchOrgBackList: 'До списку подій',
     matchOrgQuickActionsHeading: 'Швидкі дії',
     matchOrgQuickActionsAria: 'Збереження, заявки та експорт PractiScore',
     matchOrgQuickActionsNewHint:
@@ -1884,21 +1970,23 @@ export const ukMessages: MessageTree = {
     matchOrgFieldCoverImage: 'Обкладинка',
     matchOrgCoverUpload: 'Завантажити зображення',
     matchOrgCoverRemove: 'Прибрати',
-    matchOrgCoverHintNew: 'Після збереження можна додати зображення для картки в списку матчів.',
+    matchOrgCoverHintNew: 'Після збереження можна додати зображення для картки в списку подій.',
     matchOrgCoverErrType: 'Дозволені лише JPEG, PNG або WebP.',
     matchOrgCoverErrSize: 'Файл завеликий (макс. 5 МБ).',
     matchOrgCoverUploading: 'Завантаження…',
     matchOrgCoverCropTitle: 'Обріжте обкладинку',
     matchOrgCoverCropLead:
-      'Співвідношення сторін 16∶10, як у картці матчу. Перетягніть кадр і підберіть масштаб повзунком.',
+      'Рамка 16∶10 — так збережеться на картці. Повзунок вправо — збільшити; перетягніть зображення.',
+    matchOrgCoverSaved: 'Обкладинку збережено.',
     matchOrgCoverCropZoom: 'Масштаб',
     matchOrgCoverCropCancel: 'Скасувати',
     matchOrgCoverCropApply: 'Застосувати',
     matchOrgCoverCropErrCrop: 'Не вдалося обробити зображення. Спробуйте інший файл.',
     matchOrgFieldEventKind: 'Тип події',
     matchOrgFieldPsLevel: 'Рівень',
+    matchOrgFieldProgrammeStages: 'Додавати вправи до програми (Stage Builder)',
     matchOrgSectionCatalogHeading: 'Параметри події',
-    matchOrgSectionPlanHeading: 'Налаштуйте кількість скводів та місць',
+    matchOrgSectionPlanHeading: 'Налаштуйте кількість груп (скводів) та місць',
     matchOrgSectionPublishHeading: 'Текст і видимість',
     matchOrgTaxonomyOptionalLead:
       'За потреби. Якщо лишити порожніми, на картці буде не вказано. Не замінює поле «Назва».',
@@ -1908,6 +1996,7 @@ export const ukMessages: MessageTree = {
     matchEventKindTraining: 'Тренування',
     matchEventKindMatch: 'Матч',
     matchEventKindClassification: 'Класифікація',
+    matchEventKindSeminar: 'Семінар',
     matchOrgPsLevelUnset: '— не обрано —',
     matchPsLevelL1: 'Рівень I',
     matchPsLevelL2: 'Рівень II',
@@ -1916,9 +2005,9 @@ export const ukMessages: MessageTree = {
     matchPsLevelL5: 'Рівень V',
     matchOrgDerivedCapacityLine:
       'Разом місць на події: {{total}} (після збереження записується як ліміт учасників).',
-    matchOrgFieldDerivedTotalShooters: 'Загальна кількість стрільців',
-    matchOrgFieldShootersMain: 'Стрільці в скводі',
-    matchOrgFieldShootersPrematch: 'Стрільці в скводі (прематч)',
+    matchOrgFieldDerivedTotalShooters: 'Загальна кількість учасників (стрільців)',
+    matchOrgFieldShootersMain: 'Учасників (стрільців) у групі (скводі)',
+    matchOrgFieldShootersPrematch: 'Учасників (стрільців) у групі (скводі) (прематч)',
     matchOrgFieldDescription: 'Опис для картки події',
     matchOrgFieldDescriptionHint: 'Форматування: Markdown або BBCode; посилання в тексті стануть активними.',
     matchOrgBbcodeToolbarAria: 'Вставити тег BBCode в описі',
@@ -1935,12 +2024,12 @@ export const ukMessages: MessageTree = {
     matchOrgParticipantsListOpen: 'Відкритий',
     matchOrgParticipantsListClosed: 'Закритий',
     matchOrgParticipantsListFootnote:
-      'Відкритий список показує підтверджених учасників на публічній сторінці матчу. Закритий — лише організатор бачить заявки в адміністративному кабінеті.',
+      'Відкритий список показує підтверджених учасників на публічній сторінці події. Закритий — лише організатор бачить заявки в адміністративному кабінеті.',
     matchOrgDisciplineShotgunNote:
       'У дисциплінах на базі shotgun перевір експорт, стартові позиції та обмеження за правилами змагання перед публікацією.',
     matchOrgRegistrationsSummary:
-      'Заявки цього матчу (організатор): {{confirmed}} підтверджено · {{pending}} очікує підтвердження.',
-    matchOrgRegistrationsNoneYet: 'Заявок на цей матч поки немає.',
+      'Заявки цієї події (організатор): {{confirmed}} підтверджено · {{pending}} очікує підтвердження.',
+    matchOrgRegistrationsNoneYet: 'Заявок на цю подію поки немає.',
     matchOrgExportPsc: 'Завантажити .psc (PractiScore)',
     matchOrgExportPscBusy: 'Готуємо файл…',
     matchOrgExportPscHint:
@@ -1951,21 +2040,21 @@ export const ukMessages: MessageTree = {
     matchOrgExportPscErrNoStages: 'Додай хоча б одну вправу (посилання share) перед експортом.',
     matchOrgExportPscErrSession: 'Увійди в обліковий запис і онови сторінку.',
     matchOrgFieldPrematch: 'Прематч',
-    matchOrgFieldPlannedMainSquads: 'Кількість скводів',
-    matchOrgFieldPlannedPrematchSquads: 'Кількість скводів (прематч)',
-    matchOrgPlannedMainInvalid: 'Число скводів на основний день має бути цілим числом ≥ 1.',
-    matchOrgPlannedPrematchInvalid: 'З увімкненим прематчем потрібно ціле число скводів для прематчу ≥ 1.',
+    matchOrgFieldPlannedMainSquads: 'Кількість груп (скводів)',
+    matchOrgFieldPlannedPrematchSquads: 'Кількість груп (скводів) (прематч)',
+    matchOrgPlannedMainInvalid: 'Число груп (скводів) на основний день має бути цілим числом ≥ 1.',
+    matchOrgPlannedPrematchInvalid: 'З увімкненим прематчем потрібно ціле число груп (скводів) для прематчу ≥ 1.',
     matchOrgEditBadId: 'Некоректне посилання для редагування.',
-    matchOrgEditNotFound: 'Матч не знайдено або він не належить до твого облікового запису.',
+    matchOrgEditNotFound: 'Подію не знайдено або вона не належить до твого облікового запису.',
     matchOrgTitleRequired: 'Заповни назву.',
-    matchOrgShootersInvalid: 'Кількість стрільців у скводі має бути цілим числом ≥ 1.',
+    matchOrgShootersInvalid: 'Кількість учасників (стрільців) у групі (скводі) має бути цілим числом ≥ 1.',
     matchOrgStagesHeading: 'Завантаж вправи події',
     matchOrgStagesIntro:
-      'Створи вправу в Stage Builder, отримай посилання для перегляду й додай його в поле нижче. Назва в програмі матчу збігається з назвою вправи з PDF-брифінгу.',
+      'Створи вправу в Stage Builder, отримай посилання для перегляду й додай його в поле нижче. Назва в програмі події збігається з назвою вправи з PDF-брифінгу.',
     matchOrgStagesOpenEditor: 'Відкрити Stage Builder (нова вкладка)',
     matchOrgStagesPasteLabel: 'Посилання перегляду або id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… або s…',
-    matchOrgStagesAdd: 'Додати до матчу',
+    matchOrgStagesAdd: 'Додати до події',
     matchOrgStagesAdding: 'Додавання…',
     matchOrgStagesEmpty: 'Ще немає прив’язаних вправ — додай перше посилання перегляду.',
     matchOrgStagesColTitle: 'Назва',
@@ -1987,32 +2076,39 @@ export const ukMessages: MessageTree = {
       'Немає логічної групи версій (share_group_id). Додай вправу знову або накоти міграцію та оновлення publish API.',
     matchOrgStagesErrNoLatestShare:
       'Не знайдено актуального view для цієї групи — перевір прострочення посилань або що знов опубліковано view із тим самим shareGroupId.',
-    matchOrgSquadsHeading: 'Скводи',
+    matchOrgStagesVisibleDaysLabel: 'Днів до події для публікації вправ',
+    matchOrgStagesVisibleDaysHint:
+      'На картці події вправи приховані, доки не настане цей термін. 0 — показувати одразу; порожнє поле — лишати прихованими без дати.',
+    matchOrgStagesVisibleDaysPlaceholder: 'напр. 6',
+    matchOrgStagesVisibleDaysSaving: 'Збереження…',
+    matchOrgStagesVisibleDaysSaveError: 'Не вдалося зберегти термін публікації вправ.',
+    matchOrgStagesVisibleFromPreview: 'На картці з’явиться з {{date}}',
+    matchOrgSquadsHeading: 'Групи (скводи)',
     matchOrgSquadsDerivedIntro:
-      'Таблиця скводів формується з налаштувань матчу: кількість скводів × стрільців у скводі (окремо для основного дня та прематчу). Збережи картку — рядки оновлються; зменшення можливе лише якщо на скводі немає активних заявок.',
+      'Таблиця груп (скводів) формується з налаштувань події: кількість груп (скводів) × учасників (стрільців) у групі (скводі) (окремо для основного дня та прематчу). Збережи картку — рядки оновлються; зменшення можливе лише якщо в групі (скводі) немає активних заявок.',
     matchOrgSquadsDerivedCapacityLine:
       '{{mainSq}}×{{mainShoot}}{{prematchPart}} = {{planned}} місць (ціль).',
-    matchOrgSquadSyncBanner: 'Не вдалося оновити таблицю скводів: {{detail}}',
+    matchOrgSquadSyncBanner: 'Не вдалося оновити таблицю груп (скводів): {{detail}}',
     matchOrgSquadSyncBannerDismiss: 'Зрозуміло',
     matchOrgSyncErrPrematchRemove:
-      'Не можна прибрати скводи прематчу, доки є очікуючі чи підтверджені заявки. Спочатку перерозподіль стрільців на сторінці заявок.',
+      'Не можна прибрати групи (скводи) прематчу, доки є очікуючі чи підтверджені заявки. Спочатку перерозподіль учасників (стрільців) на сторінці заявок.',
     matchOrgSyncErrLowerCapacity:
-      'Не можна зменшити кількість місць у скводі нижче вже зарахованої кількості стрільців. Спочатку перемісти або скасуй зайві заявки.',
+      'Не можна зменшити кількість місць у групі (скводі) нижче вже зарахованої кількості учасників (стрільців). Спочатку перемісти або скасуй зайві заявки.',
     matchOrgSyncErrReduceSquads:
-      'Не можна зменшити кількість скводів, доки один із скводів, які треба прибрати, має заявки. Спочатку перерозподіль або скасуй.',
+      'Не можна зменшити кількість груп (скводів), доки одна з груп (скводів), які треба прибрати, має заявки. Спочатку перерозподіль або скасуй.',
     matchOrgSyncErrOrganizerInactive: 'Обліковий запис організатора не активний — звернися до куратора платформи.',
-    matchOrgSyncErrGeneric: 'Не вдалося синхронізувати скводи.',
+    matchOrgSyncErrGeneric: 'Не вдалося синхронізувати групи (скводи).',
     matchOrgSquadsColPhase: 'День',
     matchOrgSquadsPhaseMain: 'Основний',
     matchOrgSquadsPhasePrematch: 'Прематч',
-    matchOrgSquadsPlannedMainLine: 'Основний день: {{current}} / {{planned}} скводів (ціль).',
-    matchOrgSquadsPlannedPrematchLine: 'Прематч: {{current}} / {{planned}} скводів (ціль).',
-    matchOrgRosterManageLink: 'Заявки та скводи',
-    matchOrgRosterHelmet: 'Заявки на матч',
+    matchOrgSquadsPlannedMainLine: 'Основний день: {{current}} / {{planned}} груп (скводів) (ціль).',
+    matchOrgSquadsPlannedPrematchLine: 'Прематч: {{current}} / {{planned}} груп (скводів) (ціль).',
+    matchOrgRosterManageLink: 'Заявки та групи (скводи)',
+    matchOrgRosterHelmet: 'Заявки на подію',
     matchOrgRosterHeading: 'Заявки',
     matchOrgRosterLead:
-      'Перерозподіляй стрільців по скводах після зміни сітки місткості. Для активних скводів у списку лише скводи з вільним місцем.',
-    matchOrgRosterEditMatch: 'Назад до картки матчу',
+      'Перерозподіляй учасників (стрільців) по групах (скводах) після зміни сітки місткості. У списку лише групи (скводи) з вільним місцем.',
+    matchOrgRosterEditMatch: 'Назад до картки події',
     matchOrgRosterEmpty: 'Заявок ще немає.',
     matchOrgRosterColName: 'Учасник',
     matchOrgRosterColPhone: 'Телефон',
@@ -2020,24 +2116,24 @@ export const ukMessages: MessageTree = {
     matchOrgRosterColRegion: 'Регіон',
     matchOrgRosterColDivision: 'Дивізіон',
     matchOrgRosterColStatus: 'Статус',
-    matchOrgRosterColSquad: 'Сквод',
+    matchOrgRosterColSquad: 'Група (сквод)',
     matchOrgRosterStatusOptionPending: 'очікує',
     matchOrgRosterStatusOptionConfirmed: 'підтверджено',
     matchOrgRosterSavePage: 'Зберегти',
     matchOrgRosterSaving: 'Збереження…',
-    matchOrgRosterNoFreeSlot: 'Немає доступного скводу з місцем або зміни потребують збереження картки.',
+    matchOrgRosterNoFreeSlot: 'Немає доступної групи (скводу) з місцем або зміни потребують збереження картки.',
     matchOrgRosterViewTable: 'Таблиця',
-    matchOrgRosterViewBoard: 'Дошка скводів',
+    matchOrgRosterViewBoard: 'Дошка груп (скводів)',
     matchOrgRosterBoardHint:
-      'Тягни картку стрільця в інший сквод — зміна зберігається одразу. У сквод є місце, якщо зайнято менше місткості.',
-    matchOrgRosterBoardSquadFull: 'У цьому скводі немає вільного місця для цієї заявки.',
+      'Тягни картку учасника (стрільця) в іншу групу (сквод) — зміна зберігається одразу. У групі (скводі) є місце, якщо зайнято менше місткості.',
+    matchOrgRosterBoardSquadFull: 'У цій групі (скводі) немає вільного місця для цієї заявки.',
     matchOrgRosterBoardEmptyColumn: 'Немає активних заявок',
     matchOrgRosterInactiveHeading: 'Неактивні заявки (не на дошці)',
     matchOrgSquadsColLabel: 'Назва',
     matchOrgSquadsColCapacity: 'Місць',
     matchOrgSquadsColTaken: 'Зайнято',
     matchOrgSquadsAutoEmpty:
-      'Після збереження картки тут з’являться скводи. Якщо рядків немає — збережи форму ще раз або перевір міграції БД.',
+      'Після збереження картки тут з’являться групи (скводи). Якщо рядків немає — збережи форму ще раз або перевір міграції БД.',
   },
   hitFactor: {
     pageTitle: 'Hit Factor \u2014 \u0446\u0456\u043d\u0430 \u043f\u043e\u043c\u0438\u043b\u043a\u0438',
@@ -2152,6 +2248,98 @@ export const ukMessages: MessageTree = {
     quickCiteNote:
       '\u041f\u0440\u0438\u043c\u0456\u0442\u043a\u0430: \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u044e\u0454 \u0440\u0456\u0448\u0435\u043d\u043d\u044f RM / \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0438 \u043c\u0430\u0442\u0447\u0443.',
   },
+  legal: {
+    siteTermsTitle: 'Правила користування сайтом',
+    siteTermsUpdated: 'Останнє оновлення: 23 травня 2026 р.',
+    siteTermsMetaDescription:
+      'Правила користування Shooters Tools: Stage Builder, розділ «Події», акаунт, публікація вправ за посиланням, обмеження відповідальності.',
+    siteTermsSections: [
+      {
+        heading: '1. Загальні положення',
+        paragraphs: [
+          'Сайт Shooters Tools (shooters-tools.com) надає безкоштовні веб-інструменти для практичної стрільби та підготовки до змагань: Stage Builder, довідник RO Helper, калькулятор Hit Factor, а також — за наявності на сайті — розділ «Події».',
+          'Користуючись сайтом, створюючи обліковий запис або публікуючи контент, ви погоджуєтесь із цими правилами. Якщо ви не згодні — не користуйтеся сервісом.',
+        ],
+      },
+      {
+        heading: '2. Призначення сервісу та обмеження',
+        paragraphs: [
+          'Продукт не є офіційним джерелом правил IPSC, ФПСУ чи іншої федерації; не замінює рішення Range Master, арбітражу чи сертифікованого софту змагань. На матчі завжди діють документи організатора та офіційні правила.',
+          'RO Helper — довідковий матеріал для швидкого пошуку; перед застосуванням на змаганні звіряйтеся з актуальним PDF правил.',
+          'Hit Factor і підказки Stage Builder (кути безпеки, мінімум пострілів тощо) — орієнтовні інструменти, а не юридична чи соревновальна експертиза.',
+        ],
+      },
+      {
+        heading: '3. Обліковий запис',
+        paragraphs: [
+          'Для реєстрації на події та частини налаштувань потрібен вхід електронною поштою. Ви відповідаєте за безпеку доступу до пошти та достовірність даних профілю (ім’я, контакт, клас зброї, регіон тощо), які вказуєте в заявках.',
+          'Фото профілю (аватар) завантажуєте добровільно; не додавайте зображення з персональними даними інших осіб без їхньої згоди.',
+        ],
+      },
+      {
+        heading: '4. Stage Builder',
+        paragraphs: [
+          'Проєкти вправ за замовчуванням зберігаються у вашому браузері (локально) або у файлі *.stage.json на вашому пристрої. Автоматичного хмарного сховища всіх ваших чернеток у редакторі немає.',
+          'Якщо ви обираєте «Поділитися», на сервері зберігається знімок сцени, і ви отримуєте посилання для перегляду (/v/) або редактора (/e/). Такі посилання можна додавати до програми події в розділі «Події». Термін дії, обмеження та згода — у Політиці публікації (/publish-policy).',
+          'Можна встановити додаток (PWA) для офлайн-роботи; оновлення версії — через механізм оновлення браузера/додатку.',
+        ],
+      },
+      {
+        heading: '5. Розділ «Події»',
+        paragraphs: [
+          'Якщо розділ увімкнено на сайті: організатори публікують події; стрільці подають заявки через форму. Дані заявок і профілю зберігаються на сервері для роботи каталогу, ростеру та статусів.',
+          'Організатор керує назвою, датою, локацією, програмою вправ (у тому числі посиланнями на опубліковані вправи), обкладинкою події, видимістю списку учасників і підтвердженням участі. Оплата стартового внеску, якщо вона є, відбувається за правилами організатора поза платформою, якщо інше прямо не зазначено на сторінці події.',
+          'Публічність імені та контактів у ростері залежить від налаштувань організатора та вашого статусу заявки; не вказуйте в заявці зайві персональні дані.',
+        ],
+      },
+      {
+        heading: '6. Публікація вправ за посиланням',
+        paragraphs: [
+          'Детальні умови публікації в хмару (посилання /v/ та /e/, скарги, видалення) — у Політиці публікації на сторінці /publish-policy. Натискаючи «Отримати посилання», ви підтверджуєте згоду з нею.',
+        ],
+      },
+      {
+        heading: '7. Допустимий контент і поведінка',
+        paragraphs: [
+          'Заборонено публікувати незаконний, образливий, дискримінаційний контент, чужі персональні дані без згоди, шкідливе ПЗ або матеріали, що порушують права третіх осіб.',
+          'Про неприйнятний контент повідомляйте через блок «Зворотний зв’язок» у нижньому колонтитулі (Telegram); за можливості вкажіть URL і короткий опис.',
+        ],
+      },
+      {
+        heading: '8. Інтелектуальна власність',
+        paragraphs: [
+          'Ви зберігаєте права на створені вами сцени та тексти. Надаючи контент сервісу (зокрема через публікацію за посиланням або обкладинку події), ви дозволяєте його технічне зберігання та показ іншим користувачам у межах функцій сайту.',
+          'Назва Shooters Tools, логотип і програмний код сайту належать власнику продукту; копіювання без дозволу заборонено, окрім випадків, дозволених законом.',
+        ],
+      },
+      {
+        heading: '9. Відмова від гарантій і обмеження відповідальності',
+        paragraphs: [
+          'Сервіс надається «як є». Ми прагнемо стабільності, але не гарантуємо безперебійну роботу, збереження всіх даних або відсутність помилок у розрахунках і довіднику.',
+          'В межах, дозволених законом, оператор не відповідає за рішення на змаганнях, травми, збитки від використання сцен, заявок чи сторонніх посилань.',
+        ],
+      },
+      {
+        heading: '10. Персональні дані',
+        paragraphs: [
+          'Обробляємо мінімум даних, потрібних для акаунта, заявок на події, опублікованих вправ за посиланням і підтримки. Хостинг і база даних — у постачальників хмарної інфраструктури (зокрема Supabase, Vercel).',
+          'Запит на виправлення або видалення даних профілю надішліть через зворотний зв’язок; видалення акаунта може обмежити доступ до заявок і історії.',
+        ],
+      },
+      {
+        heading: '11. Зміни правил',
+        paragraphs: [
+          'Правила можуть оновлюватися; актуальна дата — на цій сторінці. Продовження користування після змін означає згоду з оновленою редакцією.',
+        ],
+      },
+      {
+        heading: '12. Контакти',
+        paragraphs: [
+          'З питань щодо сервісу, контенту та персональних даних: Telegram у блоці «Зворотний зв’язок» у нижньому колонтитулі сайту.',
+        ],
+      },
+    ],
+  },
   footer: {
     feedbackHeading: '\u0417\u0432\u043e\u0440\u043e\u0442\u043d\u0438\u0439 \u0437\u0432\u2019\u044f\u0437\u043e\u043a',
     feedbackText: '\u0417\u043d\u0430\u0439\u0448\u043b\u0438 \u043f\u043e\u043c\u0438\u043b\u043a\u0443, \u043c\u0430\u0454\u0442\u0435 \u043f\u0440\u043e\u043f\u043e\u0437\u0438\u0446\u0456\u044e \u0447\u0438 \u0432\u0456\u0434\u0433\u0443\u043a? \u041d\u0430\u043f\u0438\u0448\u0456\u0442\u044c:',
@@ -2162,6 +2350,7 @@ export const ukMessages: MessageTree = {
     installHeading: '\u0412\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0438 \u0434\u043e\u0434\u0430\u0442\u043e\u043a',
     installText: '\u0414\u043e\u0434\u0430\u0439\u0442\u0435 Stage Builder \u043d\u0430 \u0440\u043e\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u0456\u043b \u0434\u043b\u044f \u0448\u0432\u0438\u0434\u043a\u043e\u0433\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u0443 \u0442\u0430 \u0440\u043e\u0431\u043e\u0442\u0438 \u043e\u0444\u043b\u0430\u0439\u043d.',
     installButton: '\u0412\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0438',
+    termsOfUse: 'Правила користування',
     publishPolicy: '\u041f\u043e\u043b\u0456\u0442\u0438\u043a\u0430 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0457',
   },
   pwa: {
@@ -2569,7 +2758,7 @@ export const enMessages: MessageTree = {
     helmetTitle: 'Shooters Tools — practical shooting (IPSC / USPSA)',
     metaDescription:
       'Shooters Tools: free IPSC/USPSA-style stage designer (2D/3D, PDF briefing), Hit Factor calculator, RO Helper rules quick search — browser tools, UK/EN.',
-    lead: 'Tools for practical shooting and IPSC. More modules will roll out over time.',
+    lead: 'Tools for practical shooting and IPSC',
     navStageBuilder: 'Stage Builder',
     navHitFactor: 'Hit Factor',
     navRoHelper: 'RO Helper',
@@ -2601,6 +2790,32 @@ export const enMessages: MessageTree = {
     ],
     openRoHelper: 'Open RO Helper',
     gridAriaLabel: 'Available tools',
+    portalHomeMatchesFeaturedTitle: 'Events',
+    portalHomeMatchesFeaturedLead:
+      'Browse matches and seminars, sign up online — match page, roster, and stage programme in one place.',
+    portalHomeMatchesFeaturedFeatures: [
+      'Calendar and search for upcoming events',
+      'Sign-up with squad and division after sign-in',
+      'Match page with description and stage programme',
+    ],
+    portalHomeMatchesFeaturedCtaAll: 'Browse all events',
+    portalHomeMatchesFeaturedLinksAria: 'Events quick links',
+    portalHomeMatchesFeaturedLinkAllEvents: 'All events',
+    portalHomeMatchesFeaturedLinkMyRegistrations: 'My sign-ups',
+    portalHomeMatchesFeaturedLinkOrganizerCabinet: 'Organizer dashboard',
+    portalHomeMatchesFeaturedSliderLabel: 'Coming up',
+    portalHomeMatchesFeaturedEmpty: 'Upcoming events will appear here — open the full catalog for now.',
+    portalHomeMatchesFeaturedLoading: 'Loading events…',
+    portalHomeMatchesFeaturedPrevAria: 'Previous events',
+    portalHomeMatchesFeaturedNextAria: 'Next events',
+    portalHomeMatchesFeaturedLeadReturning:
+      'Your sign-ups, match pages, and status — in one place, without digging through chats.',
+    portalHomeMatchesFeaturedActiveRegPending: 'Application for “{{title}}” — pending confirmation',
+    portalHomeMatchesFeaturedActiveRegConfirmed: 'You are registered for “{{title}}”',
+    portalHomeMatchesFeaturedCtaOpenMatch: 'Open match',
+    portalHomeMatchesFeaturedCtaMyRegistrations: 'My sign-ups',
+    portalHomeMatchesFeaturedCtaOrganizerMatches: 'My matches',
+    portalHomeMatchesFeaturedYourEvent: 'Your event',
     portalPublishedMatchesHeading: 'Upcoming events',
     portalPublishedMatchesLead:
       'Upcoming published events; sign up from each match page while signed in. Your personal sign-up list lives on the account page.',
@@ -2647,7 +2862,7 @@ export const enMessages: MessageTree = {
     badgeNew: 'New',
     badgeBeta: 'Beta',
     matchesPageHelmetTitle: 'Upcoming events — Shooters Tools',
-    matchesPageShortTitle: 'Match',
+    matchesPageShortTitle: 'Event',
     matchesSupabaseUnset:
       'Supabase client is not configured (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY). Match data is unavailable in the browser.',
     matchesLoadError: 'Could not load data',
@@ -2674,9 +2889,10 @@ export const enMessages: MessageTree = {
     matchDetailProgrammeViewLink: 'Course of fire',
     matchDetailProgrammeFootnote: '',
     matchDetailProgrammeDuplicateOrdinalFallback: 'Exercise {{n}}: {{title}}',
+    matchDetailProgrammePending: 'Stage briefings will be available from {{date}}',
     matchDetailParticipantsHeading: 'Participants',
     matchDetailParticipantsClosed:
-      'The participant list is not published for this match (organizer setting).',
+      'For security reasons, the participant list is only available to the match organizer.',
     matchDetailParticipantsOpenEmpty:
       'The public list is empty (no confirmed registrations yet).',
     matchDetailParticipantsOpenAwaitingConfirmation:
@@ -2730,11 +2946,13 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationStatusCancelled: 'cancelled',
     matchDetailRegistrationCancel: 'Cancel registration',
     matchDetailRegistrationCancelling: 'Cancelling…',
+    matchDetailRegistrationWithdraw: 'Withdraw from match',
+    matchDetailRegistrationWithdrawing: 'Withdrawing…',
     matchDetailRegistrationPickOpenSquad: 'Choose a squad with open seats.',
     matchDetailRegistrationReopenFailed:
       'Could not remove your cancelled signup row (missing DELETE permission or the row changed). Refresh and try again.',
     matchDetailRegistrationWithdrawFailed:
-      'Could not cancel signup — deletion blocked by policies or status changed. Refresh and try again.',
+      'Could not withdraw — status changed or not permitted. Refresh and try again.',
     matchDetailRegistrationErrorPrefix: 'Error',
     matchDetailRegistrationCta: 'Register',
     matchDetailRegistrationModalTitle: 'Match sign-up',
@@ -2746,6 +2964,8 @@ export const enMessages: MessageTree = {
     matchDetailRegistrationNameRequired: 'Enter last name and first name.',
     matchDetailRegistrationCategoryRequired: 'Choose at least one category.',
     matchDetailRegistrationSectionContact: 'Contact',
+    matchDetailRegistrationRegionRequired: 'Please enter your region.',
+    matchDetailRegistrationAccountEmail: 'Account email',
     matchDetailRegistrationSectionMatch: 'Participation',
     matchDetailRegistrationPhone: 'Phone',
     matchDetailRegistrationPhoneInvalid:
@@ -2875,6 +3095,8 @@ export const enMessages: MessageTree = {
     accountMyRegistrationsStatusCancelled: 'cancelled',
     accountMyRegistrationsCancel: 'Cancel sign-up',
     accountMyRegistrationsCancelling: 'Cancelling…',
+    accountMyRegistrationsWithdraw: 'Withdraw from match',
+    accountMyRegistrationsWithdrawing: 'Withdrawing…',
     accountMyRegistrationsMatchUnavailable: '(match unavailable)',
     accountParticipantDefaultsHeading: 'Shooter profile',
     accountParticipantProfileSectionLead:
@@ -2900,7 +3122,7 @@ export const enMessages: MessageTree = {
       'After you pick a file, a window opens: drag the image and adjust zoom — that is how it will look in the circular avatar.',
     accountParticipantAvatarCropTitle: 'Fit photo for avatar',
     accountParticipantAvatarCropLead:
-      'Drag the image and use the scale slider to fit your face inside the circle.',
+      'Drag the image; slider right — zoom in so your face fits the circle.',
     accountParticipantAvatarCropZoom: 'Scale',
     accountParticipantAvatarCropApply: 'Apply',
     accountParticipantAvatarCropCancel: 'Cancel',
@@ -2922,10 +3144,10 @@ export const enMessages: MessageTree = {
     portalShellMenuOpenAria: 'Open navigation menu',
     portalShellMenuCloseAria: 'Close navigation menu',
     portalShellNavDrawerAria: 'Navigation and account',
-    navMatches: 'Matches',
-    myMatchesTitle: 'My matches',
-    myMatchesHelmet: 'My matches — Shooters Tools',
-    myMatchesCreate: 'Create match',
+    navMatches: 'Events',
+    myMatchesTitle: 'My events',
+    myMatchesHelmet: 'My events — Shooters Tools',
+    myMatchesCreate: 'Create event',
     myMatchesColTitle: 'Title',
     myMatchesColStarts: 'Starts',
     myMatchesColEventKind: 'Type',
@@ -2935,27 +3157,27 @@ export const enMessages: MessageTree = {
     myMatchesColActions: 'Actions',
     myMatchesRoster: 'Registrations',
     myMatchesEdit: 'Edit',
-    myMatchesViewPublic: 'Match card',
-    myMatchesNeedSignIn: 'Sign in to manage your matches.',
+    myMatchesViewPublic: 'Event card',
+    myMatchesNeedSignIn: 'Sign in to manage your events.',
     myMatchesLoading: 'Loading…',
     myMatchesLoadError: 'Error',
-    myMatchesEmpty: 'No matches yet. Create one.',
+    myMatchesEmpty: 'No events yet. Create one.',
     myMatchesBackHome: 'Portal home',
-    myMatchesQuickLinksAria: 'Actions for this match',
+    myMatchesQuickLinksAria: 'Actions for this event',
     matchOrgStatusDraft: 'Draft',
     matchOrgStatusPublished: 'Published',
     matchOrgStatusCancelled: 'Cancelled',
     matchOrgStatusCompleted: 'Completed',
     matchOrgParticipantsOpenShort: 'Open',
     matchOrgParticipantsClosedShort: 'Closed',
-    matchOrgCreateTitle: 'New match',
+    matchOrgCreateTitle: 'New event',
     matchOrgEditTitle: 'Edit event',
-    matchOrgCreateHelmet: 'New match — Shooters Tools',
+    matchOrgCreateHelmet: 'New event — Shooters Tools',
     matchOrgEditHelmetEdit: 'Edit event — Shooters Tools',
     matchOrgEditHelmetLoading: 'Event — loading',
     matchOrgSave: 'Save',
     matchOrgSaveSaving: 'Saving…',
-    matchOrgBackList: 'Back to my matches',
+    matchOrgBackList: 'Back to my events',
     matchOrgQuickActionsHeading: 'Quick actions',
     matchOrgQuickActionsAria: 'Save, registrations, PractiScore export',
     matchOrgQuickActionsNewHint:
@@ -2971,21 +3193,23 @@ export const enMessages: MessageTree = {
     matchOrgFieldCoverImage: 'Cover image',
     matchOrgCoverUpload: 'Upload image',
     matchOrgCoverRemove: 'Remove',
-    matchOrgCoverHintNew: 'Save the match first, then you can add a list card image here.',
+    matchOrgCoverHintNew: 'Save the event first, then you can add a list card image here.',
     matchOrgCoverErrType: 'Only JPEG, PNG, or WebP are allowed.',
     matchOrgCoverErrSize: 'File is too large (max 5 MB).',
     matchOrgCoverUploading: 'Uploading…',
     matchOrgCoverCropTitle: 'Crop cover image',
     matchOrgCoverCropLead:
-      '16∶10 aspect ratio (match list card). Drag to frame and use the slider to zoom.',
+      '16∶10 frame is saved as shown. Slider right — zoom in; drag to reposition.',
+    matchOrgCoverSaved: 'Cover image saved.',
     matchOrgCoverCropZoom: 'Zoom',
     matchOrgCoverCropCancel: 'Cancel',
     matchOrgCoverCropApply: 'Apply',
     matchOrgCoverCropErrCrop: 'Could not process the image. Try another file.',
     matchOrgFieldEventKind: 'Event type',
     matchOrgFieldPsLevel: 'Level',
+    matchOrgFieldProgrammeStages: 'Include stages in programme (Stage Builder)',
     matchOrgSectionCatalogHeading: 'Event parameters',
-    matchOrgSectionPlanHeading: 'Set up squads and capacity',
+    matchOrgSectionPlanHeading: 'Set up groups (squads) and capacity',
     matchOrgSectionPublishHeading: 'Copy and visibility',
     matchOrgTaxonomyOptionalLead:
       'Optional. Leave both empty to show as not set on the card. Does not replace the title.',
@@ -2995,6 +3219,7 @@ export const enMessages: MessageTree = {
     matchEventKindTraining: 'Training',
     matchEventKindMatch: 'Match',
     matchEventKindClassification: 'Classification',
+    matchEventKindSeminar: 'Seminar',
     matchOrgPsLevelUnset: '— not set —',
     matchPsLevelL1: 'Level I',
     matchPsLevelL2: 'Level II',
@@ -3002,9 +3227,9 @@ export const enMessages: MessageTree = {
     matchPsLevelL4: 'Level IV',
     matchPsLevelL5: 'Level V',
     matchOrgDerivedCapacityLine: 'Total capacity: {{total}} (stored as the event competitor limit after save).',
-    matchOrgFieldDerivedTotalShooters: 'Total shooters',
-    matchOrgFieldShootersMain: 'Shooters per squad',
-    matchOrgFieldShootersPrematch: 'Shooters per squad (prematch)',
+    matchOrgFieldDerivedTotalShooters: 'Total participants (shooters)',
+    matchOrgFieldShootersMain: 'Participants (shooters) per group (squad)',
+    matchOrgFieldShootersPrematch: 'Participants (shooters) per group (squad) (prematch)',
     matchOrgFieldDescription: 'Event card description',
     matchOrgFieldDescriptionHint: 'Use Markdown or BBCode; plain URLs become clickable.',
     matchOrgBbcodeToolbarAria: 'Insert BBCode in the description',
@@ -3021,12 +3246,12 @@ export const enMessages: MessageTree = {
     matchOrgParticipantsListOpen: 'Open',
     matchOrgParticipantsListClosed: 'Closed',
     matchOrgParticipantsListFootnote:
-      'Open list shows confirmed participants on the public match page. Closed — only the organizer sees applications.',
+      'Open list shows confirmed participants on the public event page. Closed — only the organizer sees applications.',
     matchOrgDisciplineShotgunNote:
       'For shotgun-style disciplines, double-check exports, stages, and any rule-specific constraints before publishing.',
     matchOrgRegistrationsSummary:
-      'Registrations on this match (organizer): {{confirmed}} confirmed · {{pending}} awaiting confirmation.',
-    matchOrgRegistrationsNoneYet: 'No registrations for this match yet.',
+      'Registrations on this event (organizer): {{confirmed}} confirmed · {{pending}} awaiting confirmation.',
+    matchOrgRegistrationsNoneYet: 'No registrations for this event yet.',
     matchOrgExportPsc: 'Download .psc (PractiScore)',
     matchOrgExportPscBusy: 'Preparing file…',
     matchOrgExportPscHint:
@@ -3037,21 +3262,21 @@ export const enMessages: MessageTree = {
     matchOrgExportPscErrNoStages: 'Link at least one stage (share URL) before exporting.',
     matchOrgExportPscErrSession: 'Sign in and refresh the page.',
     matchOrgFieldPrematch: 'Prematch',
-    matchOrgFieldPlannedMainSquads: 'Number of squads',
-    matchOrgFieldPlannedPrematchSquads: 'Number of squads (prematch)',
-    matchOrgPlannedMainInvalid: 'Main-day squad count must be an integer ≥ 1.',
-    matchOrgPlannedPrematchInvalid: 'With prematch enabled, prematch squad count must be an integer ≥ 1.',
+    matchOrgFieldPlannedMainSquads: 'Number of groups (squads)',
+    matchOrgFieldPlannedPrematchSquads: 'Number of groups (squads) (prematch)',
+    matchOrgPlannedMainInvalid: 'Main-day group (squad) count must be an integer ≥ 1.',
+    matchOrgPlannedPrematchInvalid: 'With prematch enabled, prematch group (squad) count must be an integer ≥ 1.',
     matchOrgEditBadId: 'Invalid edit link.',
-    matchOrgEditNotFound: 'Match not found or not owned by you.',
+    matchOrgEditNotFound: 'Event not found or not owned by you.',
     matchOrgTitleRequired: 'Please enter a title.',
-    matchOrgShootersInvalid: 'Shooters per squad must be an integer ≥ 1.',
+    matchOrgShootersInvalid: 'Participants (shooters) per group (squad) must be an integer ≥ 1.',
     matchOrgStagesHeading: 'Load event exercises',
     matchOrgStagesIntro:
-      'Create the exercise in Stage Builder, copy the view link, and paste it in the field below. The title in the match programme matches the exercise title from the PDF briefing.',
+      'Create the exercise in Stage Builder, copy the view link, and paste it in the field below. The title in the event programme matches the exercise title from the PDF briefing.',
     matchOrgStagesOpenEditor: 'Open Stage Builder (new tab)',
     matchOrgStagesPasteLabel: 'View URL or share id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… or s…',
-    matchOrgStagesAdd: 'Add to match',
+    matchOrgStagesAdd: 'Add to event',
     matchOrgStagesAdding: 'Adding…',
     matchOrgStagesEmpty: 'No exercises linked yet—add the first view link.',
     matchOrgStagesColTitle: 'Title',
@@ -3072,31 +3297,38 @@ export const enMessages: MessageTree = {
       'Missing share_group_id for this row—reenable migrations / publish pipeline, or re-add this exercise.',
     matchOrgStagesErrNoLatestShare:
       'No current view snapshot in this group—links may have expired or you need another view publish in the same group.',
-    matchOrgSquadsHeading: 'Squads',
+    matchOrgStagesVisibleDaysLabel: 'Days before event to publish exercises',
+    matchOrgStagesVisibleDaysHint:
+      'Exercises stay hidden on the public event card until then. 0 = show immediately; leave empty to keep hidden with no date.',
+    matchOrgStagesVisibleDaysPlaceholder: 'e.g. 6',
+    matchOrgStagesVisibleDaysSaving: 'Saving…',
+    matchOrgStagesVisibleDaysSaveError: 'Could not save exercise visibility schedule.',
+    matchOrgStagesVisibleFromPreview: 'Public card shows from {{date}}',
+    matchOrgSquadsHeading: 'Groups (squads)',
     matchOrgSquadsDerivedIntro:
-      'Squad rows are generated from planned squad counts × shooters per squad (main vs prematch). Saving the match updates rows; shrinking is blocked while active registrations occupy removed capacity.',
+      'Group (squad) rows are generated from planned group (squad) counts × participants (shooters) per group (squad) (main vs prematch). Saving the event updates rows; shrinking is blocked while active registrations occupy removed capacity.',
     matchOrgSquadsDerivedCapacityLine: '{{mainSq}}×{{mainShoot}}{{prematchPart}} = {{planned}} slots (planned).',
-    matchOrgSquadSyncBanner: 'Could not rebuild squad rows: {{detail}}',
+    matchOrgSquadSyncBanner: 'Could not rebuild group (squad) rows: {{detail}}',
     matchOrgSquadSyncBannerDismiss: 'Dismiss',
     matchOrgSyncErrPrematchRemove:
-      'Cannot remove prematch squads while registrations still reference them—reassign shooters on the registrations page first.',
+      'Cannot remove prematch groups (squads) while registrations still reference them—reassign participants (shooters) on the registrations page first.',
     matchOrgSyncErrLowerCapacity:
-      'Cannot lower shooters-per-squad below already-assigned shooters. Reassign or cancel registrations first.',
+      'Cannot lower capacity per group (squad) below already-assigned participants (shooters). Reassign or cancel registrations first.',
     matchOrgSyncErrReduceSquads:
-      'Cannot reduce squad count while a squad slated for removal still has registrations. Reassign them first.',
+      'Cannot reduce group (squad) count while a group (squad) slated for removal still has registrations. Reassign them first.',
     matchOrgSyncErrOrganizerInactive: 'Organizer profile is not active—contact platform support.',
-    matchOrgSyncErrGeneric: 'Could not sync squads.',
+    matchOrgSyncErrGeneric: 'Could not sync groups (squads).',
     matchOrgSquadsColPhase: 'Day',
     matchOrgSquadsPhaseMain: 'Main',
     matchOrgSquadsPhasePrematch: 'Prematch',
-    matchOrgSquadsPlannedMainLine: 'Main day: {{current}} / {{planned}} squads (target).',
-    matchOrgSquadsPlannedPrematchLine: 'Prematch: {{current}} / {{planned}} squads (target).',
-    matchOrgRosterManageLink: 'Registrations & squads',
-    matchOrgRosterHelmet: 'Match registrations',
+    matchOrgSquadsPlannedMainLine: 'Main day: {{current}} / {{planned}} groups (squads) (target).',
+    matchOrgSquadsPlannedPrematchLine: 'Prematch: {{current}} / {{planned}} groups (squads) (target).',
+    matchOrgRosterManageLink: 'Registrations & groups (squads)',
+    matchOrgRosterHelmet: 'Event registrations',
     matchOrgRosterHeading: 'Registrations',
     matchOrgRosterLead:
-      'Reassign shooters after changing the squad grid—only squads with an open seat are listed for pending/confirmed entries.',
-    matchOrgRosterEditMatch: 'Back to match draft',
+      'Reassign participants (shooters) after changing the group (squad) grid—only groups (squads) with an open seat are listed for pending/confirmed entries.',
+    matchOrgRosterEditMatch: 'Back to event card',
     matchOrgRosterEmpty: 'No registrations yet.',
     matchOrgRosterColName: 'Shooter',
     matchOrgRosterColPhone: 'Phone',
@@ -3104,25 +3336,25 @@ export const enMessages: MessageTree = {
     matchOrgRosterColRegion: 'Region',
     matchOrgRosterColDivision: 'Division',
     matchOrgRosterColStatus: 'Status',
-    matchOrgRosterColSquad: 'Squad',
+    matchOrgRosterColSquad: 'Group (squad)',
     matchOrgRosterStatusOptionPending: 'Awaiting',
     matchOrgRosterStatusOptionConfirmed: 'Confirmed',
     matchOrgRosterSavePage: 'Save',
     matchOrgRosterSaving: 'Saving…',
     matchOrgRosterNoFreeSlot:
-      'No squad with spare capacity—or save the match card first after changing squad settings.',
+      'No group (squad) with spare capacity—or save the event card first after changing group (squad) settings.',
     matchOrgRosterViewTable: 'Table',
-    matchOrgRosterViewBoard: 'Squads board',
+    matchOrgRosterViewBoard: 'Groups (squads) board',
     matchOrgRosterBoardHint:
-      'Drag a shooter card into another squad—the change saves immediately when there is spare capacity.',
-    matchOrgRosterBoardSquadFull: 'This squad has no spare seat for this registration.',
+      'Drag a participant (shooter) card into another group (squad)—the change saves immediately when there is spare capacity.',
+    matchOrgRosterBoardSquadFull: 'This group (squad) has no spare seat for this registration.',
     matchOrgRosterBoardEmptyColumn: 'No active registrations',
     matchOrgRosterInactiveHeading: 'Inactive registrations (not on the board)',
     matchOrgSquadsColLabel: 'Label',
     matchOrgSquadsColCapacity: 'Capacity',
     matchOrgSquadsColTaken: 'Taken',
     matchOrgSquadsAutoEmpty:
-      'Squads appear after saving the draft. If the table stays empty, save again or verify database migrations.',
+      'Groups (squads) appear after saving the draft. If the table stays empty, save again or verify database migrations.',
   },
   hitFactor: {
     pageTitle: 'Hit Factor — price of mistakes',
@@ -3233,6 +3465,98 @@ export const enMessages: MessageTree = {
     quickCiteFpsuSeeBlock: 'see block in article (link targets only; not full text)',
     quickCiteNote: 'Note: does not replace Range Master decisions or match documents.',
   },
+  legal: {
+    siteTermsTitle: 'Terms of use',
+    siteTermsUpdated: 'Last updated: 23 May 2026',
+    siteTermsMetaDescription:
+      'Shooters Tools terms of use: Stage Builder, Events, account, share links, and liability limits.',
+    siteTermsSections: [
+      {
+        heading: '1. General',
+        paragraphs: [
+          'Shooters Tools (shooters-tools.com) provides free web tools for practical shooting and match preparation: Stage Builder, RO Helper, Hit Factor calculator, and — when enabled on the site — the Events section.',
+          'By using the site, creating an account, or publishing content, you agree to these terms. If you do not agree, do not use the service.',
+        ],
+      },
+      {
+        heading: '2. Purpose and limitations',
+        paragraphs: [
+          'The product is not an official source of IPSC, USPSA, or national federation rules; it does not replace Range Master decisions, arbitration, or certified match software. Organizer documents and official rules always apply at a match.',
+          'RO Helper is a quick reference; verify against the current rulebook PDF before applying at a match.',
+          'Hit Factor and Stage Builder hints (safety sectors, minimum rounds, etc.) are estimates, not legal or competitive rulings.',
+        ],
+      },
+      {
+        heading: '3. Account',
+        paragraphs: [
+          'Event registration and some settings require email sign-in. You are responsible for securing your email access and for accurate profile data (name, contact, division, region, etc.) used in applications.',
+          'Profile photos (avatars) are optional; do not upload images containing other people’s personal data without consent.',
+        ],
+      },
+      {
+        heading: '4. Stage Builder',
+        paragraphs: [
+          'By default, stage projects are stored locally in your browser and/or in a *.stage.json file on your device. There is no automatic cloud backup of all your editor drafts.',
+          'If you choose “Share”, a snapshot of the stage is stored on our servers and you receive a view link (/v/) or editor link (/e/). Such links can be added to an event program in the Events section. Lifetime, limits, and consent are in the Publish policy at /publish-policy.',
+          'You may install the PWA for offline use; app updates are delivered through the browser/PWA update mechanism.',
+        ],
+      },
+      {
+        heading: '5. Events section',
+        paragraphs: [
+          'When the section is enabled on the site: organizers publish events; shooters submit applications through the form. Application and profile data are stored on the server to run the catalog, roster, and status workflows.',
+          'Organizers manage name, date, location, stage program (including links to published stages), cover image, roster visibility, and participation confirmation. Entry fees, if any, are handled under the organizer’s rules off-platform unless the event page states otherwise.',
+          'Whether your name and contacts appear on a public roster depends on organizer settings and your application status; do not submit unnecessary personal data.',
+        ],
+      },
+      {
+        heading: '6. Share publishing',
+        paragraphs: [
+          'Full terms for cloud publishing (/v/ and /e/ links, reports, removal) are in the Publish policy at /publish-policy. By requesting a link, you agree to that policy.',
+        ],
+      },
+      {
+        heading: '7. Acceptable content',
+        paragraphs: [
+          'Do not publish illegal, abusive, or discriminatory content, others’ personal data without consent, malware, or material that infringes third-party rights.',
+          'Report unacceptable content via Feedback in the site footer (Telegram); include the URL and a short description when possible.',
+        ],
+      },
+      {
+        heading: '8. Intellectual property',
+        paragraphs: [
+          'You retain rights to stages and text you create. By providing content to the service (including share links or match cover images), you allow technical hosting and display to other users within site features.',
+          'The Shooters Tools name, logo, and site code belong to the product owner; copying without permission is prohibited except as allowed by law.',
+        ],
+      },
+      {
+        heading: '9. Disclaimer',
+        paragraphs: [
+          'The service is provided “as is”. We aim for stability but do not guarantee uninterrupted operation, permanent data retention, or error-free calculations or references.',
+          'To the extent permitted by law, the operator is not liable for match decisions, injury, losses from using stages or applications, or third-party links.',
+        ],
+      },
+      {
+        heading: '10. Personal data',
+        paragraphs: [
+          'We process the minimum data needed for accounts, event applications, published stage links, and support. Hosting and databases use cloud providers (including Supabase and Vercel).',
+          'Request correction or deletion via feedback; deleting an account may limit access to applications and history.',
+        ],
+      },
+      {
+        heading: '11. Changes',
+        paragraphs: [
+          'These terms may be updated; the current date is shown on this page. Continued use after changes means you accept the revised terms.',
+        ],
+      },
+      {
+        heading: '12. Contact',
+        paragraphs: [
+          'For questions about the service, content, or personal data: Telegram in the Feedback block in the site footer.',
+        ],
+      },
+    ],
+  },
   footer: {
     feedbackHeading: 'Feedback',
     feedbackText: 'Found a bug, have a suggestion, or want to leave a review? Reach out:',
@@ -3243,6 +3567,7 @@ export const enMessages: MessageTree = {
     installHeading: 'Install the app',
     installText: 'Add Stage Builder to your home screen for quick access and offline use.',
     installButton: 'Install',
+    termsOfUse: 'Terms of use',
     publishPolicy: 'Publish policy',
   },
   pwa: {

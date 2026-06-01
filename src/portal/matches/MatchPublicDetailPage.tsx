@@ -11,7 +11,9 @@ import { formatPortalDate } from './matchPortalFormat'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
 import { programmeListDisplayTitles } from './matchPortalProgrammeDisplay'
+import { formatPortalDateShort, parsePublicMatchProgrammeBundle } from './matchStagesVisibility'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
+import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
 import { categoryLabel, weaponClassLabel } from '../shooterProfileCatalog'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import {
@@ -37,6 +39,7 @@ type MatchDetailRow = {
   prematch_enabled: boolean | null
   match_event_kind: string | null
   ps_match_level: string | null
+  programme_stages_enabled: boolean | null
 }
 
 type PublicRosterRow = {
@@ -54,6 +57,13 @@ type PublicStageLinkRow = {
   sort_order: number
   share_stage_id: string | null
   snapshot_meta: Record<string, unknown> | null
+}
+
+type PublicProgrammeState = {
+  hasStages: boolean
+  publiclyVisible: boolean
+  availableFrom: string | null
+  stages: PublicStageLinkRow[]
 }
 
 function parseCategoryIdsFromRoster(raw: unknown): string[] {
@@ -85,7 +95,7 @@ export function MatchPublicDetailPage() {
   const [roster, setRoster] = useState<PublicRosterRow[] | null | undefined>(undefined)
   const [rosterError, setRosterError] = useState<string | null>(null)
   /** pending+confirmed total from public metrics — when list is open but confirmed-only table empty. */
-  const [programmeLinks, setProgrammeLinks] = useState<PublicStageLinkRow[] | undefined>(undefined)
+  const [programme, setProgramme] = useState<PublicProgrammeState | null | undefined>(undefined)
   const [programmeError, setProgrammeError] = useState<string | null>(null)
   const [regMetrics, setRegMetrics] = useState<RegistrationMetricRow[] | undefined>(undefined)
   const [regMetricsError, setRegMetricsError] = useState<string | null>(null)
@@ -116,7 +126,7 @@ export function MatchPublicDetailPage() {
       const { data, error: qErr } = await sb
         .from('matches')
         .select(
-          'id, title, description_md, starts_at, location_label, cover_image_url, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled, match_event_kind, ps_match_level',
+          'id, title, description_md, starts_at, location_label, cover_image_url, competitor_limit, discipline, status, participant_list_visibility, prematch_enabled, match_event_kind, ps_match_level, programme_stages_enabled',
         )
         .eq('id', matchId)
         .eq('status', 'published')
@@ -204,25 +214,27 @@ export function MatchPublicDetailPage() {
       await Promise.resolve()
       if (cancelled) return
       if (!validId || !configured || !row?.id) {
-        setProgrammeLinks(undefined)
+        setProgramme(undefined)
         setProgrammeError(null)
         return
       }
       const sb = getSupabase()
-      setProgrammeLinks(undefined)
+      setProgramme(undefined)
       setProgrammeError(null)
-      const { data, error: qErr } = await sb
-        .from('match_stage_links')
-        .select('sort_order, share_stage_id, snapshot_meta')
-        .eq('match_id', row.id)
-        .order('sort_order', { ascending: true })
+      const { data, error: rpcErr } = await sb.rpc('fetch_public_match_programme', { p_match_id: row.id })
       if (cancelled) return
-      if (qErr) {
-        setProgrammeError(qErr.message)
-        setProgrammeLinks([])
+      if (rpcErr) {
+        setProgrammeError(rpcErr.message)
+        setProgramme(null)
         return
       }
-      setProgrammeLinks((data ?? []) as PublicStageLinkRow[])
+      const bundle = parsePublicMatchProgrammeBundle(data)
+      setProgramme({
+        hasStages: bundle.has_stages,
+        publiclyVisible: bundle.publicly_visible,
+        availableFrom: bundle.available_from,
+        stages: bundle.stages,
+      })
     })()
     return () => {
       cancelled = true
@@ -303,11 +315,24 @@ export function MatchPublicDetailPage() {
   const hasCover = Boolean(coverUrl)
   const locUi = locale === 'uk' ? 'uk' : 'en'
   const eventKindLine = portalLabelMatchEventKind(row.match_event_kind, p)
-  const psLevelLine = portalLabelPsMatchLevel(row.ps_match_level, p)
+  const eventKindProfile = getMatchEventKindProfile(row.match_event_kind)
+  const psLevelLine =
+    eventKindProfile.showPsLevelOnCard ? portalLabelPsMatchLevel(row.ps_match_level, p) : ''
   const weaponLine = weaponClassLabel((row.discipline ?? 'shotgun').trim() || 'shotgun', locUi)
 
   const programmeDisplayTitles =
-    programmeLinks !== undefined && !programmeError ? programmeListDisplayTitles(programmeLinks, p) : null
+    programme && !programmeError ? programmeListDisplayTitles(programme.stages, p) : null
+  const programmePendingDate =
+    programme?.availableFrom ?
+      formatPortalDateShort(`${programme.availableFrom}T00:00:00.000Z`, locale === 'uk' ? 'uk' : 'en')
+    : null
+  const programmeEnabled = row.programme_stages_enabled !== false
+  const showProgrammeSection =
+    programmeEnabled &&
+    (programme === undefined ||
+      programmeError != null ||
+      (programme?.hasStages &&
+        (programme.publiclyVisible || programme.availableFrom != null)))
 
   function renderParticipantsSectionBody(match: MatchDetailRow) {
     const vis = match.participant_list_visibility ?? 'closed'
@@ -347,10 +372,16 @@ export function MatchPublicDetailPage() {
                   {p.matchDetailParticipantsColIndex}
                 </th>
                 {match.prematch_enabled ?
-                  <th scope="col">{p.matchDetailParticipantsColPhase}</th>
+                  <th scope="col" className="portal-match-public-participants-table__phase">
+                    {p.matchDetailParticipantsColPhase}
+                  </th>
                 : null}
-                <th scope="col">{p.matchDetailParticipantsColSquad}</th>
-                <th scope="col">{p.matchDetailParticipantsColName}</th>
+                <th scope="col" className="portal-match-public-participants-table__squad">
+                  {p.matchDetailParticipantsColSquad}
+                </th>
+                <th scope="col" className="portal-match-public-participants-table__name">
+                  {p.matchDetailParticipantsColName}
+                </th>
                 <th scope="col">{p.matchDetailParticipantsColDivision}</th>
                 <th scope="col">{p.matchDetailParticipantsColCategory}</th>
                 <th scope="col">{p.matchDetailParticipantsColPaymentConfirmation}</th>
@@ -370,14 +401,16 @@ export function MatchPublicDetailPage() {
                   >
                     <td className="portal-match-public-participants-table__idx">{i + 1}</td>
                     {match.prematch_enabled ?
-                      <td>
+                      <td className="portal-match-public-participants-table__phase">
                         {r.squad_phase === 'prematch' ?
                           p.matchDetailRegistrationPhaseShortPrematch
                         : p.matchDetailRegistrationPhaseShortMain}
                       </td>
                     : null}
-                    <td title={r.squad_label}>{formatSquadLabelNumberOnly(r.squad_label)}</td>
-                    <td>{r.display_name}</td>
+                    <td className="portal-match-public-participants-table__squad" title={r.squad_label}>
+                      {formatSquadLabelNumberOnly(r.squad_label)}
+                    </td>
+                    <td className="portal-match-public-participants-table__name">{r.display_name}</td>
                     <td>{r.division}</td>
                     <td>{rosterCategoriesDisplay(r.categories, locUi)}</td>
                     <td>
@@ -439,7 +472,13 @@ export function MatchPublicDetailPage() {
             {hasCover ?
               <div className="portal-match-public-detail__masthead-cover-col">
                 <figure className="portal-match-public-detail__cover">
-                  <img src={coverUrl} alt="" loading="lazy" decoding="async" />
+                  <img
+                    className="portal-match-cover-img"
+                    src={coverUrl}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </figure>
                 <div
                   className="portal-match-public-detail__masthead-cta-slot"
@@ -480,8 +519,12 @@ export function MatchPublicDetailPage() {
                     </dd>
                   </>
                 : null}
-                <dt>{p.matchDetailDisciplineLabel}</dt>
-                <dd>{weaponLine}</dd>
+                {eventKindProfile.showDisciplineOnCard ?
+                  <>
+                    <dt>{p.matchDetailDisciplineLabel}</dt>
+                    <dd>{weaponLine}</dd>
+                  </>
+                : null}
                 {row.competitor_limit != null ?
                   <>
                     <dt>{p.matchDetailLimitLabel}</dt>
@@ -519,7 +562,7 @@ export function MatchPublicDetailPage() {
         </section>
       : null}
 
-      {programmeLinks === undefined || programmeLinks.length > 0 || programmeError ?
+      {showProgrammeSection ?
         <section
           className="portal-match-public-detail__surface portal-match-public-detail__section"
           aria-labelledby="match-programme-heading"
@@ -527,15 +570,15 @@ export function MatchPublicDetailPage() {
           <h2 id="match-programme-heading" className="portal-match-public-detail__section-title">
             {p.matchDetailProgrammeHeading}
           </h2>
-          {programmeLinks === undefined ?
+          {programme === undefined ?
             <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
           : programmeError ?
             <p role="alert" className="portal-match-public-detail__muted">
               {p.matchesLoadError}: {programmeError}
             </p>
-          : (
+          : programme?.publiclyVisible ?
             <ol className="portal-match-public-detail__programme">
-              {programmeLinks.map((lnk, idx) => {
+              {programme.stages.map((lnk, idx) => {
                 const sid = lnk.share_stage_id?.trim()
                 const title = programmeDisplayTitles![idx]!
                 return (
@@ -555,7 +598,11 @@ export function MatchPublicDetailPage() {
                 )
               })}
             </ol>
-          )}
+          : programmePendingDate ?
+            <p className="portal-match-public-detail__prose">
+              {formatTemplate(p.matchDetailProgrammePending, { date: programmePendingDate })}
+            </p>
+          : null}
         </section>
       : null}
 
@@ -563,6 +610,7 @@ export function MatchPublicDetailPage() {
         locale={locale}
         matchUuid={row.id}
         matchDiscipline={row.discipline}
+        matchEventKind={row.match_event_kind}
         metrics={regMetrics}
         metricsError={regMetricsError}
         reloadMetrics={loadRegistrationMetrics}

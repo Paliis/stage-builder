@@ -10,7 +10,7 @@
 .ro-helper-search__inner {
   position: relative;
   width: 100%;
-  max-width: var(--portal-layout-max-width, 72rem);
+  max-width: var(--portal-layout-max-width, 90rem);
   margin: 0 auto;
   padding: 0.6rem var(--portal-layout-gutter-inline, 1.25rem);
 }

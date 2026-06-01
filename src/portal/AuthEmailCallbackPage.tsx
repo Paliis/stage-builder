@@ -65,7 +65,7 @@ export function AuthEmailCallbackPage() {
         <Helmet>
           <title>{p.authEmailCallbackHelmet}</title>
         </Helmet>
-        <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
+        <header className="portal-home__hero portal-home__hero--spaced">
           <h1 className="portal-home__hero-title">{p.authEmailCallbackFailedTitle}</h1>
         </header>
         <p style={{ maxWidth: '40rem', lineHeight: 1.55 }}>{p.authEmailCallbackFailedBody}</p>
@@ -109,7 +109,7 @@ export function AuthEmailCallbackPage() {
         <Helmet>
           <title>{p.authEmailCallbackHelmet}</title>
         </Helmet>
-        <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
+        <header className="portal-home__hero portal-home__hero--spaced">
           <h1 className="portal-home__hero-title">{p.authEmailCallbackSuccessTitle}</h1>
         </header>
         <p style={{ maxWidth: '36rem', lineHeight: 1.55 }}>{p.authEmailCallbackSuccessBody}</p>
@@ -130,7 +130,7 @@ export function AuthEmailCallbackPage() {
       <Helmet>
         <title>{p.authEmailCallbackHelmet}</title>
       </Helmet>
-      <header className="portal-home__hero" style={{ marginBottom: '1rem' }}>
+      <header className="portal-home__hero portal-home__hero--spaced">
         <h1 className="portal-home__hero-title">{p.authEmailCallbackFailedTitle}</h1>
       </header>
       <p style={{ maxWidth: '40rem', lineHeight: 1.55 }}>{p.authEmailCallbackFailedBody}</p>

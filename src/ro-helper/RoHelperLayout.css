@@ -4,9 +4,10 @@
   flex-direction: column;
   min-height: 0;
   width: 100%;
-  max-width: 52rem;
+  max-width: min(var(--portal-tool-max-width, 52rem), 100%);
   margin: 0 auto;
-  padding: 0 1.25rem 2rem;
+  padding: 0 var(--portal-layout-gutter-inline, 1.25rem) var(--portal-page-padding-block-end, 2.5rem);
+  box-sizing: border-box;
 }
 
 .ro-helper-layout__subbar {

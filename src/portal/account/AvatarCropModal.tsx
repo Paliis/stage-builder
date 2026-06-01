@@ -1,14 +1,20 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import Cropper, { type Area, type Point } from 'react-easy-crop'
+import Cropper, { type ReactCropperElement } from 'react-cropper'
+import type CropperJs from 'cropperjs'
 import type { MessageTree } from '../../i18n/messages'
-import { cropPixelsToJpeg } from '../cropPixelsToJpeg'
-import 'react-easy-crop/react-easy-crop.css'
+import 'cropperjs/dist/cropper.css'
+import './AccountParticipantHub.css'
 
 type Portal = MessageTree['portal']
 
-const ZOOM_MIN = 0.22
-const ZOOM_MAX = 4
+const AVATAR_OUTPUT_PX = 512
+const FIT_ZOOM_MULTIPLIER = 4
+
+function cropperZoomRatio(cropper: CropperJs): number {
+  const { width, naturalWidth } = cropper.getCanvasData()
+  return naturalWidth > 0 ? width / naturalWidth : 1
+}
 
 export function AvatarCropModal({
   imageSrc,
@@ -20,19 +26,50 @@ export function AvatarCropModal({
   imageSrc: string
   onCancel: () => void
   onApply: (jpegBlob: Blob) => void | Promise<void>
-  /** Upload / storage errors from parent (shown above actions while modal is open). */
   remoteError?: string | null
   p: Portal
 }) {
-  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
-  const [zoom, setZoom] = useState(1)
-  const [croppedPixels, setCroppedPixels] = useState<Area | null>(null)
+  const cropperRef = useRef<ReactCropperElement>(null)
+  const fitRatioRef = useRef(1)
+  const syncingSliderRef = useRef(false)
+  const [sliderPct, setSliderPct] = useState(0)
+  const [ready, setReady] = useState(false)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
 
-  const onCropComplete = useCallback((_area: Area, pixels: Area) => {
-    setCroppedPixels(pixels)
+  const sliderToRatio = useCallback((pct: number) => {
+    const fit = fitRatioRef.current
+    const max = fit * FIT_ZOOM_MULTIPLIER
+    const t = Math.max(0, Math.min(100, pct)) / 100
+    return fit + (max - fit) * t
   }, [])
+
+  const ratioToSlider = useCallback((ratio: number) => {
+    const fit = fitRatioRef.current
+    const max = fit * FIT_ZOOM_MULTIPLIER
+    if (max <= fit) return 0
+    const t = (ratio - fit) / (max - fit)
+    return Math.round(Math.max(0, Math.min(100, t * 100)))
+  }, [])
+
+  const applySliderToCropper = useCallback(
+    (pct: number) => {
+      const cropper = cropperRef.current?.cropper
+      if (!cropper) return
+      const target = sliderToRatio(pct)
+      const { width, height } = cropper.getContainerData()
+      syncingSliderRef.current = true
+      cropper.zoomTo(target, { x: width / 2, y: height / 2 })
+      syncingSliderRef.current = false
+    },
+    [sliderToRatio],
+  )
+
+  useEffect(() => {
+    setReady(false)
+    setSliderPct(0)
+    setErr(null)
+  }, [imageSrc])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -42,19 +79,58 @@ export function AvatarCropModal({
     return () => window.removeEventListener('keydown', onKey)
   }, [onCancel])
 
+  const onCropperReady = useCallback(() => {
+    const cropper = cropperRef.current?.cropper
+    if (cropper) {
+      cropper.reset()
+      fitRatioRef.current = cropperZoomRatio(cropper)
+    }
+    setSliderPct(0)
+    setReady(true)
+  }, [])
+
+  const onCropperZoom = useCallback(
+    (e: CropperJs.ZoomEvent<HTMLImageElement>) => {
+      if (syncingSliderRef.current) return
+      setSliderPct(ratioToSlider(e.detail.ratio))
+    },
+    [ratioToSlider],
+  )
+
+  const onSliderInput = useCallback(
+    (pct: number) => {
+      setSliderPct(pct)
+      applySliderToCropper(pct)
+    },
+    [applySliderToCropper],
+  )
+
   const handleApply = useCallback(async () => {
-    if (!croppedPixels || busy) return
+    const cropper = cropperRef.current?.cropper
+    if (!cropper || !ready || busy) return
     setErr(null)
     setBusy(true)
     try {
-      const blob = await cropPixelsToJpeg(imageSrc, croppedPixels)
+      const canvas = cropper.getCroppedCanvas({
+        width: AVATAR_OUTPUT_PX,
+        height: AVATAR_OUTPUT_PX,
+        rounded: true,
+        fillColor: '#ffffff',
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+      })
+      if (!canvas) throw new Error('Canvas unavailable')
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob((b) => resolve(b), 'image/jpeg', 0.88),
+      )
+      if (!blob) throw new Error('JPEG encode failed')
       await onApply(blob)
     } catch {
       setErr(p.accountParticipantAvatarErrCrop)
     } finally {
       setBusy(false)
     }
-  }, [busy, croppedPixels, imageSrc, onApply, p.accountParticipantAvatarErrCrop])
+  }, [busy, onApply, p.accountParticipantAvatarErrCrop, ready])
 
   const modal = (
     <div
@@ -76,21 +152,30 @@ export function AvatarCropModal({
         </h2>
         <p className="portal-account__field-hint portal-account__avatar-crop-lead">{p.accountParticipantAvatarCropLead}</p>
 
-        <div className="portal-account__avatar-crop-stage">
+        <div className="portal-account__avatar-crop-stage portal-account__avatar-cropper-stage">
           <Cropper
-            image={imageSrc}
-            crop={crop}
-            zoom={zoom}
-            aspect={1}
-            cropShape="round"
-            showGrid={false}
-            objectFit="cover"
-            minZoom={ZOOM_MIN}
-            maxZoom={ZOOM_MAX}
-            onCropChange={setCrop}
-            onZoomChange={setZoom}
-            onCropComplete={onCropComplete}
-            onCropAreaChange={(_a, pixels) => setCroppedPixels(pixels)}
+            ref={cropperRef}
+            src={imageSrc}
+            style={{ height: '100%', width: '100%' }}
+            aspectRatio={1}
+            viewMode={0}
+            dragMode="move"
+            guides={false}
+            center
+            highlight={false}
+            background
+            autoCrop
+            autoCropArea={0.9}
+            responsive
+            checkOrientation={false}
+            modal={false}
+            zoomable
+            zoomOnWheel
+            zoomOnTouch
+            wheelZoomRatio={0.08}
+            movable
+            ready={onCropperReady}
+            zoom={onCropperZoom}
           />
         </div>
 
@@ -99,12 +184,12 @@ export function AvatarCropModal({
             <span>{p.accountParticipantAvatarCropZoom}</span>
             <input
               type="range"
-              min={ZOOM_MIN}
-              max={ZOOM_MAX}
-              step={0.02}
-              value={zoom}
-              onChange={(e) => setZoom(Number(e.target.value))}
-              disabled={busy}
+              min={0}
+              max={100}
+              step={1}
+              value={sliderPct}
+              onChange={(e) => onSliderInput(Number(e.target.value))}
+              disabled={busy || !ready}
             />
           </label>
         </div>
@@ -121,18 +206,13 @@ export function AvatarCropModal({
         : null}
 
         <div className="portal-account__avatar-crop-actions">
-          <button
-            type="button"
-            className="portal-btn portal-btn--secondary"
-            disabled={busy}
-            onClick={onCancel}
-          >
+          <button type="button" className="portal-btn portal-btn--secondary" disabled={busy} onClick={onCancel}>
             {p.accountParticipantAvatarCropCancel}
           </button>
           <button
             type="button"
             className="portal-btn portal-btn--primary"
-            disabled={busy || !croppedPixels}
+            disabled={busy || !ready}
             onClick={() => void handleApply()}
           >
             {busy ? p.accountParticipantAvatarUploading : p.accountParticipantAvatarCropApply}

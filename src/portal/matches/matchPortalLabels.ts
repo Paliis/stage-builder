@@ -9,7 +9,8 @@ export function portalLabelMatchEventKind(
   if (!kind || !isMatchEventKind(kind)) return ''
   if (kind === 'training') return p.matchEventKindTraining
   if (kind === 'match') return p.matchEventKindMatch
-  return p.matchEventKindClassification
+  if (kind === 'classification') return p.matchEventKindClassification
+  return p.matchEventKindSeminar
 }
 
 /** Label for `matches.ps_match_level` — Level I … V (empty if unknown/null). */

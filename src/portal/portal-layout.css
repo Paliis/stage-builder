@@ -1,0 +1,62 @@
+/**
+ * Shared portal page chrome: heroes, section headings, layout tokens.
+ * Imported from PortalShell — applies to all `/:locale/*` routes.
+ */
+
+.portal-home__hero {
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.portal-home__hero--spaced {
+  margin-bottom: 1rem;
+}
+
+.portal-home__hero-title {
+  margin: 0;
+  font-size: var(--portal-hero-title-size, clamp(1.25rem, 1vw + 1rem, 1.75rem));
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-h);
+}
+
+.portal-home__hero-title--section {
+  font-size: clamp(1.05rem, 0.5vw + 0.95rem, 1.2rem);
+  margin: 0 0 0.5rem;
+}
+
+.portal-home__hero-title--subsection {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.portal-home__hero-lead {
+  margin: 0.35rem 0 0;
+  max-width: var(--portal-prose-max-width, 44rem);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* Narrow tool columns (Hit Factor, RO Helper) — same gutters as portal-home */
+.portal-page--narrow {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: min(var(--portal-narrow-max-width, 42rem), 100%);
+  margin: 0 auto;
+  padding: var(--portal-page-padding-block-start) var(--portal-layout-gutter-inline, 1.25rem)
+    var(--portal-page-padding-block-end, 2.5rem);
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+.portal-page--tool {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: min(var(--portal-tool-max-width, 52rem), 100%);
+  margin: 0 auto;
+  padding: 0 var(--portal-layout-gutter-inline, 1.25rem) var(--portal-page-padding-block-end, 2.5rem);
+  box-sizing: border-box;
+  min-height: 0;
+}

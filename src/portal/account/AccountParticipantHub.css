@@ -606,6 +606,23 @@
   border: 1px solid var(--border);
 }
 
+.portal-account__avatar-cropper-stage .cropper-view-box {
+  border-radius: 50%;
+  outline: 2px solid rgba(255, 255, 255, 0.92);
+  outline-offset: -1px;
+}
+
+.portal-account__avatar-cropper-stage .cropper-face {
+  border-radius: 50%;
+  opacity: 0.35;
+  background-color: #000;
+}
+
+.portal-account__avatar-cropper-stage .cropper-line,
+.portal-account__avatar-cropper-stage .cropper-point {
+  display: none;
+}
+
 .portal-account__avatar-crop-zoom {
   margin: 0.65rem 0 0;
 }

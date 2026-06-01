@@ -7,6 +7,7 @@ describe('matchTaxonomy', () => {
     expect(isMatchEventKind('training')).toBe(true)
     expect(isMatchEventKind('match')).toBe(true)
     expect(isMatchEventKind('classification')).toBe(true)
+    expect(isMatchEventKind('seminar')).toBe(true)
     expect(isMatchEventKind('')).toBe(false)
     expect(isMatchEventKind('cup')).toBe(false)
   })

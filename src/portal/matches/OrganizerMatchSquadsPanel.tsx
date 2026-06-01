@@ -103,7 +103,7 @@ export function OrganizerMatchSquadsPanel({
 
   return (
     <section style={{ marginTop: '2rem', maxWidth: '42rem' }} aria-labelledby="match-squads-heading">
-      <h2 id="match-squads-heading" className="portal-home__hero-title" style={{ fontSize: '1.1rem', margin: '0 0 0.5rem' }}>
+      <h2 id="match-squads-heading" className="portal-home__hero-title portal-home__hero-title--section">
         {p.matchOrgSquadsHeading}
       </h2>
 

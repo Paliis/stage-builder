@@ -3,15 +3,23 @@
   margin-top: auto;
   border-top: 1px solid var(--border);
   background: var(--btn-bg);
+}
+
+/* Same column model as `.portal-home` / `.portal-shell__header-inner` */
+.site-footer__inner {
+  width: 100%;
+  max-width: var(--portal-layout-max-width, 90rem);
+  margin: 0 auto;
   padding: 1.5rem var(--portal-layout-gutter-inline, 1.25rem) 1rem;
+  box-sizing: border-box;
 }
 
 .site-footer__top {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  max-width: var(--portal-layout-max-width, 72rem);
-  margin: 0 auto 1rem;
+  width: 100%;
+  margin: 0 0 1rem;
 }
 
 @media (max-width: 520px) {
@@ -78,10 +86,10 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.5rem;
-  max-width: var(--portal-layout-max-width, 72rem);
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding-top: 0.85rem;
   border-top: 1px solid var(--border);
   font-size: 0.75rem;

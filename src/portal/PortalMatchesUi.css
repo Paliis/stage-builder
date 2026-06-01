@@ -232,7 +232,7 @@ a.portal-match-title-ellipsis:hover {
   border-radius: 1rem;
   overflow: hidden;
   border: 1px solid var(--border);
-  background: linear-gradient(165deg, #f1f5f9, #e2e8f0);
+  background: #fff;
   aspect-ratio: 16 / 10;
   width: 100%;
   max-width: 100%;
@@ -240,13 +240,6 @@ a.portal-match-title-ellipsis:hover {
 
 .portal-match-public-detail__masthead-cover-col .portal-match-public-detail__cover {
   align-self: stretch;
-}
-
-.portal-match-public-detail__cover img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .portal-match-public-detail__title-block {
@@ -353,6 +346,26 @@ a.portal-match-title-ellipsis:hover {
 .portal-account__avatar-crop-stage.portal-match-cover-crop-stage {
   height: min(52vw, 22rem);
   max-height: min(62vh, 26rem);
+}
+
+.portal-match-cover-cropper-stage {
+  overflow: hidden;
+  background: #1c1c1e;
+}
+
+.portal-match-cover-cropper-stage .cropper-view-box {
+  outline: 2px solid rgba(255, 255, 255, 0.92);
+  outline-offset: -1px;
+}
+
+.portal-match-cover-cropper-stage .cropper-face {
+  opacity: 0.35;
+  background-color: #000;
+}
+
+.portal-match-cover-cropper-stage .cropper-line,
+.portal-match-cover-cropper-stage .cropper-point {
+  background-color: rgba(255, 255, 255, 0.85);
 }
 
 .portal-match-public-detail__description {
@@ -1026,7 +1039,7 @@ a.portal-match-title-ellipsis:hover {
 /* Wider content area when using squad board (multiple columns + 10-slot columns) */
 
 .portal-roster-page__sheet--board {
-  max-width: min(var(--portal-layout-max-width, 72rem), 100%);
+  max-width: min(var(--portal-layout-max-width, 90rem), 100%);
 }
 
 /* Organizer squad board (DnD roster columns, tuned for squads up to ~10 shooters) --------- */
@@ -1289,6 +1302,7 @@ a.portal-match-title-ellipsis:hover {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.92rem;
+  table-layout: fixed;
 }
 
 .portal-match-public-participants-table th,
@@ -1297,6 +1311,30 @@ a.portal-match-title-ellipsis:hover {
   border-bottom: 1px solid var(--border);
   text-align: left;
   vertical-align: top;
+}
+
+.portal-match-public-participants-table th.portal-match-public-participants-table__phase,
+.portal-match-public-participants-table td.portal-match-public-participants-table__phase {
+  width: 5.5rem;
+  max-width: 6.5rem;
+  padding-right: 0.55rem;
+}
+
+.portal-match-public-participants-table th.portal-match-public-participants-table__squad,
+.portal-match-public-participants-table td.portal-match-public-participants-table__squad {
+  width: 3.25rem;
+  max-width: 3.75rem;
+  padding-left: 0.55rem;
+  padding-right: 0.55rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.portal-match-public-participants-table th.portal-match-public-participants-table__name,
+.portal-match-public-participants-table td.portal-match-public-participants-table__name {
+  min-width: 10rem;
+  width: 22%;
+  overflow-wrap: anywhere;
 }
 
 .portal-match-public-participants-table th {
@@ -1827,21 +1865,78 @@ a.portal-match-title-ellipsis:hover {
   margin-top: 0.15rem;
 }
 
+.portal-match-cover-placeholder {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 48%, #4f46e5 100%);
+}
+
+.portal-match-cover-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.35) 1px, transparent 0);
+  background-size: 10px 10px;
+  pointer-events: none;
+}
+
+.portal-match-cover-placeholder::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3.25rem;
+  height: 3.25rem;
+  transform: translate(-50%, -50%);
+  border-radius: 0.65rem;
+  background-color: #ffffff;
+  background-image: url('/icon-192.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 2.75rem 2.75rem;
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+/** Uploaded covers are 16∶10 JPEG — same fit in list, home slider, form preview, public card. */
+.portal-match-cover-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
 .portal-match-hub__published-card-thumb {
+  position: relative;
   width: 100%;
   max-width: 6.5rem;
   border-radius: 0.6rem;
   overflow: hidden;
   aspect-ratio: 16 / 10;
-  background: linear-gradient(165deg, #f1f5f9, #e2e8f0);
+  background: #fff;
   border: 1px solid var(--border);
 }
 
-.portal-match-hub__published-card-thumb img {
+.portal-match-hub__published-card-thumb > .portal-match-cover-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.portal-match-hub__published-card-thumb > img,
+.portal-match-public-detail__cover img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
 }
 
 .portal-match-hub__published-card-body {
@@ -1863,7 +1958,7 @@ a.portal-match-title-ellipsis:hover {
 
   .portal-match-hub__published-card--with-thumb .portal-match-hub__published-card-thumb {
     max-width: none;
-    aspect-ratio: 21 / 9;
+    aspect-ratio: 16 / 10;
   }
 
   .portal-match-hub__published-card-cta {
@@ -2278,6 +2373,11 @@ a.portal-match-title-ellipsis:hover {
   font-weight: 600;
 }
 
+.portal-match-org-form__hint--ok {
+  color: var(--portal-link, var(--link, #2563eb));
+  font-weight: 600;
+}
+
 .portal-match-org-form__cover-block {
   display: flex;
   flex-direction: column;
@@ -2298,7 +2398,6 @@ a.portal-match-title-ellipsis:hover {
   border-radius: 0.55rem;
   border: 1px solid var(--border);
   aspect-ratio: 16 / 10;
-  object-fit: cover;
   flex-shrink: 0;
 }
 

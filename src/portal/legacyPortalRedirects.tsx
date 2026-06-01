@@ -14,6 +14,10 @@ export function LegacyPublishPolicyRedirect() {
   return <Navigate to={`/${getInitialLocale()}/publish-policy`} replace />
 }
 
+export function LegacyTermsRedirect() {
+  return <Navigate to={`/${getInitialLocale()}/terms`} replace />
+}
+
 /** `/tools/ro-helper/*` and `/ro-helper/*` → `/:locale/tools/ro-helper/*` */
 export function LegacyRoHelperTreeRedirect() {
   const { '*': rest } = useParams()

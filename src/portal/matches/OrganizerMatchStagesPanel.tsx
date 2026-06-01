@@ -1,5 +1,6 @@
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { formatTemplate } from '../../i18n/format'
 import { getSupabase } from '../../lib/supabaseClient'
 import type { MessageTree } from '../../i18n/messages'
 import { parseStageProjectJson } from '../../domain/stageProjectFile'
@@ -10,6 +11,10 @@ import {
   programmeListDisplayTitles,
   programmeSnapshotTitleRaw,
 } from './matchPortalProgrammeDisplay'
+import {
+  formatPortalDateShort,
+  matchStagesAvailableFromUtcDate,
+} from './matchStagesVisibility'
 
 type Portal = MessageTree['portal']
 
@@ -36,6 +41,11 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   const [addError, setAddError] = useState<string | null>(null)
   const [refreshAllBusy, setRefreshAllBusy] = useState(false)
   const [busyById, setBusyById] = useState<Record<string, 'delete' | 'move' | undefined>>({})
+  const [startsAtIso, setStartsAtIso] = useState<string | null>(null)
+  const [visibleDaysBefore, setVisibleDaysBefore] = useState('')
+  const [visibleDaysSaved, setVisibleDaysSaved] = useState('')
+  const [visibleDaysSaving, setVisibleDaysSaving] = useState(false)
+  const [visibleDaysError, setVisibleDaysError] = useState<string | null>(null)
 
   const reload = useCallback(async () => {
     setLoadError(null)
@@ -68,6 +78,82 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   useEffect(() => {
     void reload()
   }, [reload])
+
+  const reloadVisibilitySetting = useCallback(async () => {
+    setVisibleDaysError(null)
+    const { data, error } = await sb
+      .from('matches')
+      .select('starts_at, stages_visible_days_before')
+      .eq('id', matchId)
+      .maybeSingle()
+
+    if (error) {
+      setVisibleDaysError(
+        error.message.includes('column') ?
+          `${error.message} (${p.matchDetailApplyMigrationHint})`
+        : p.matchOrgStagesVisibleDaysSaveError,
+      )
+      return
+    }
+
+    const starts = typeof data?.starts_at === 'string' ? data.starts_at : null
+    setStartsAtIso(starts)
+
+    const rawDays = data?.stages_visible_days_before
+    const daysStr =
+      rawDays == null || !Number.isFinite(Number(rawDays)) ? '' : String(Math.max(0, Math.floor(Number(rawDays))))
+    setVisibleDaysBefore(daysStr)
+    setVisibleDaysSaved(daysStr)
+  }, [matchId, sb, p.matchDetailApplyMigrationHint, p.matchOrgStagesVisibleDaysSaveError])
+
+  useEffect(() => {
+    void reloadVisibilitySetting()
+  }, [reloadVisibilitySetting])
+
+  const parseVisibleDaysInput = useCallback((raw: string): number | null => {
+    const t = raw.trim()
+    if (t === '') return null
+    const n = Math.floor(Number(t))
+    if (!Number.isFinite(n) || n < 0) return null
+    return n
+  }, [])
+
+  const saveVisibleDaysBefore = useCallback(
+    async (raw: string) => {
+      const parsed = parseVisibleDaysInput(raw)
+      const normalized = parsed == null ? '' : String(parsed)
+      if (normalized === visibleDaysSaved) return
+
+      setVisibleDaysSaving(true)
+      setVisibleDaysError(null)
+      try {
+        const { error } = await sb
+          .from('matches')
+          .update({ stages_visible_days_before: parsed })
+          .eq('id', matchId)
+        if (error) {
+          setVisibleDaysError(
+            error.message.includes('column') ?
+              `${error.message} (${p.matchDetailApplyMigrationHint})`
+            : p.matchOrgStagesVisibleDaysSaveError,
+          )
+          return
+        }
+        setVisibleDaysBefore(normalized)
+        setVisibleDaysSaved(normalized)
+      } finally {
+        setVisibleDaysSaving(false)
+      }
+    },
+    [
+      matchId,
+      parseVisibleDaysInput,
+      sb,
+      p.matchDetailApplyMigrationHint,
+      p.matchOrgStagesVisibleDaysSaveError,
+      visibleDaysSaved,
+    ],
+  )
 
   const setRowBusyKind = useCallback((id: string, kind: 'delete' | 'move' | undefined) => {
     setBusyById((prev) => {
@@ -251,10 +337,16 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   const displayTitles = programmeListDisplayTitles(ordered, p)
 
   const anyRowBusy = Object.keys(busyById).length > 0
+  const visibleDaysParsed = parseVisibleDaysInput(visibleDaysBefore)
+  const visibleFromPreview = useMemo(() => {
+    if (visibleDaysParsed == null || visibleDaysParsed <= 0 || !startsAtIso) return null
+    const d = matchStagesAvailableFromUtcDate(startsAtIso, visibleDaysParsed)
+    return d ? formatPortalDateShort(d, locale === 'uk' ? 'uk' : 'en') : null
+  }, [locale, startsAtIso, visibleDaysParsed])
 
   return (
     <section style={{ marginTop: '2rem', maxWidth: '42rem' }} aria-labelledby="match-stages-heading">
-      <h2 id="match-stages-heading" className="portal-home__hero-title" style={{ fontSize: '1.1rem', margin: '0 0 0.5rem' }}>
+      <h2 id="match-stages-heading" className="portal-home__hero-title portal-home__hero-title--section">
         {p.matchOrgStagesHeading}
       </h2>
 
@@ -301,18 +393,66 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         </div>
       </form>
 
-      {ordered.length > 0 ? (
-        <div style={{ marginBottom: '0.75rem' }}>
+      <div style={{ marginBottom: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'flex-end' }}>
+        {ordered.length > 0 ?
           <button
             type="button"
             className="portal-btn portal-btn--secondary portal-btn--compact"
-            disabled={refreshAllBusy || addBusy || anyRowBusy}
+            disabled={refreshAllBusy || addBusy || anyRowBusy || visibleDaysSaving}
             onClick={() => void refreshAllRows()}
           >
             {refreshAllBusy ? p.matchOrgStagesRefreshAllBusy : p.matchOrgStagesRefreshAll}
           </button>
-        </div>
-      ) : null}
+        : null}
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minWidth: '10rem' }}>
+          <span style={{ fontSize: '0.82rem', fontWeight: 600 }}>{p.matchOrgStagesVisibleDaysLabel}</span>
+          <input
+            type="number"
+            min={0}
+            step={1}
+            inputMode="numeric"
+            value={visibleDaysBefore}
+            onChange={(e) => {
+              setVisibleDaysError(null)
+              setVisibleDaysBefore(e.target.value)
+            }}
+            onBlur={() => void saveVisibleDaysBefore(visibleDaysBefore)}
+            placeholder={p.matchOrgStagesVisibleDaysPlaceholder}
+            disabled={visibleDaysSaving || addBusy || refreshAllBusy}
+            aria-describedby="match-stages-visible-days-hint"
+            style={{
+              width: '6.5rem',
+              font: 'inherit',
+              fontSize: '0.86rem',
+              padding: '0.45rem 0.55rem',
+              borderRadius: 8,
+              border: '1px solid var(--border)',
+              background: 'var(--surface)',
+              color: 'var(--text)',
+            }}
+          />
+        </label>
+        {visibleDaysSaving ?
+          <span style={{ fontSize: '0.82rem', opacity: 0.85 }}>{p.matchOrgStagesVisibleDaysSaving}</span>
+        : visibleFromPreview ?
+          <span style={{ fontSize: '0.82rem', opacity: 0.9 }}>
+            {formatTemplate(p.matchOrgStagesVisibleFromPreview, { date: visibleFromPreview })}
+          </span>
+        : null}
+      </div>
+
+      <p
+        id="match-stages-visible-days-hint"
+        style={{ margin: '0 0 0.75rem', fontSize: '0.82rem', lineHeight: 1.5, opacity: 0.88 }}
+      >
+        {p.matchOrgStagesVisibleDaysHint}
+      </p>
+
+      {visibleDaysError ?
+        <p role="alert" style={{ margin: '0 0 0.75rem', fontSize: '0.86rem', color: '#991b1b' }}>
+          {visibleDaysError}
+        </p>
+      : null}
 
       {addError ? (
         <p

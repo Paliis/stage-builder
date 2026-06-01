@@ -12,9 +12,10 @@ import { OrganizerMatchStagesPanel } from './OrganizerMatchStagesPanel'
 import { organizerSquadSyncErrorMessage } from './organizerSquadSyncErrorMessage'
 import { OrganizerMatchInactivePanel } from './OrganizerMatchInactivePanel'
 import { MatchCoverCropModal } from './MatchCoverCropModal'
-import { cropRectRegionToJpeg, measureImageNaturalSize } from '../cropPixelsToJpeg'
+import { exportMatchCoverFromFullImage, measureImageNaturalSize } from '../cropPixelsToJpeg'
 import { wrapBbCode } from './bbCodeTextareaWrap'
 import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
+import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
 import { MATCH_LOCATION_LABEL_MAX_LEN } from './matchLocationLabel'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
@@ -34,7 +35,7 @@ type MatchDraft = {
   starts_at_local: string
   location_label: string
   cover_image_url: string
-  match_event_kind: '' | 'training' | 'match' | 'classification'
+  match_event_kind: '' | 'training' | 'match' | 'classification' | 'seminar'
   ps_match_level: '' | 'L1' | 'L2' | 'L3' | 'L4' | 'L5'
   status: string
   participant_list_visibility: 'open' | 'closed'
@@ -43,6 +44,7 @@ type MatchDraft = {
   planned_prematch_squad_count: number
   shooters_per_main_squad: number
   shooters_per_prematch_squad: number
+  programme_stages_enabled: boolean
 }
 
 function defaultStartsLocal(): string {
@@ -132,6 +134,7 @@ export function OrganizerMatchEditPage() {
     planned_prematch_squad_count: 2,
     shooters_per_main_squad: 18,
     shooters_per_prematch_squad: 18,
+    programme_stages_enabled: true,
   }))
   const [saveError, setSaveError] = useState<string | null>(null)
   const [squadSyncBanner, setSquadSyncBanner] = useState<string | null>(null)
@@ -139,6 +142,7 @@ export function OrganizerMatchEditPage() {
   const [pscBusy, setPscBusy] = useState(false)
   const [pscErr, setPscErr] = useState<string | null>(null)
   const [coverUploadErr, setCoverUploadErr] = useState<string | null>(null)
+  const [coverUploadOk, setCoverUploadOk] = useState(false)
   const coverCropObjectUrlRef = useRef<string | null>(null)
   const [coverCropSrc, setCoverCropSrc] = useState<string | null>(null)
   const [planQtyStr, setPlanQtyStr] = useState<Partial<Record<PlanQtyKey, string>>>({})
@@ -174,6 +178,7 @@ export function OrganizerMatchEditPage() {
         planned_prematch_squad_count: 2,
         shooters_per_main_squad: 18,
         shooters_per_prematch_squad: 18,
+        programme_stages_enabled: true,
       })
       return
     }
@@ -192,7 +197,7 @@ export function OrganizerMatchEditPage() {
     void sb
       .from('matches')
       .select(
-        'id, title, description_md, starts_at, location_label, cover_image_url, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad',
+        'id, title, description_md, starts_at, location_label, cover_image_url, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad, programme_stages_enabled',
       )
       .eq('id', matchId!)
       .maybeSingle()
@@ -231,6 +236,7 @@ export function OrganizerMatchEditPage() {
           planned_prematch_squad_count: Math.max(0, Number(data.planned_prematch_squad_count) || 0),
           shooters_per_main_squad: Math.max(1, Number(data.shooters_per_main_squad) || 18),
           shooters_per_prematch_squad: Math.max(1, Number(data.shooters_per_prematch_squad) || 18),
+          programme_stages_enabled: data.programme_stages_enabled !== false,
         })
         setPlanQtyStr({})
         setLoadState('loaded')
@@ -319,6 +325,8 @@ export function OrganizerMatchEditPage() {
     setPlanQtyStr({})
     setDraft(merged)
 
+    const kindProfile = getMatchEventKindProfile(merged.match_event_kind || null)
+
     const row = {
       organizer_id: user.id,
       title,
@@ -334,7 +342,11 @@ export function OrganizerMatchEditPage() {
           ? merged.match_event_kind
           : null,
       ps_match_level:
-        merged.ps_match_level && isPsMatchLevel(merged.ps_match_level) ? merged.ps_match_level : null,
+        kindProfile.showPsLevelField && merged.ps_match_level && isPsMatchLevel(merged.ps_match_level)
+          ? merged.ps_match_level
+          : null,
+      programme_stages_enabled:
+        kindProfile.showProgrammeStagesToggle ? merged.programme_stages_enabled : true,
       ps_match_subtype: 'ipsc',
       prematch_enabled: merged.prematch_enabled,
       planned_main_squad_count: plannedMain,
@@ -471,6 +483,7 @@ export function OrganizerMatchEditPage() {
       return false
     }
     setCoverUploadErr(null)
+    setCoverUploadOk(false)
     const objectPath = `${user.id}/${matchId}/cover-${Date.now()}.jpg`
     const sb = getSupabase()
     const { error: upErr } = await sb.storage.from('match-covers').upload(objectPath, file, {
@@ -482,12 +495,38 @@ export function OrganizerMatchEditPage() {
       return false
     }
     const { data: pub } = sb.storage.from('match-covers').getPublicUrl(objectPath)
-    setDraft((d) => ({ ...d, cover_image_url: pub.publicUrl }))
+    const publicUrl = pub.publicUrl
+    const { error: dbErr } = await sb
+      .from('matches')
+      .update({ cover_image_url: publicUrl })
+      .eq('id', matchId)
+    if (dbErr) {
+      setCoverUploadErr(dbErr.message)
+      return false
+    }
+    setDraft((d) => ({ ...d, cover_image_url: publicUrl }))
+    setCoverUploadOk(true)
     return true
+  }
+
+  async function clearCoverImage(): Promise<void> {
+    if (!configured || !validEditId || !matchId) return
+    setCoverUploadErr(null)
+    setCoverUploadOk(false)
+    const { error: dbErr } = await getSupabase()
+      .from('matches')
+      .update({ cover_image_url: null })
+      .eq('id', matchId)
+    if (dbErr) {
+      setCoverUploadErr(dbErr.message)
+      return
+    }
+    setDraft((d) => ({ ...d, cover_image_url: '' }))
   }
 
   async function handleCoverFileChange(e: ChangeEvent<HTMLInputElement>) {
     setCoverUploadErr(null)
+    setCoverUploadOk(false)
     const file = e.target.files?.[0]
     e.target.value = ''
     if (!file || !configured || !user?.id) return
@@ -514,7 +553,7 @@ export function OrganizerMatchEditPage() {
       if (width > 0 && height > 0) {
         const ar = width / height
         if (Math.abs(ar - MATCH_COVER_LIST_ASPECT) / MATCH_COVER_LIST_ASPECT <= MATCH_COVER_ASPECT_SKIP_CROP_TOL) {
-          const blob = await cropRectRegionToJpeg(url, { x: 0, y: 0, width, height })
+          const blob = await exportMatchCoverFromFullImage(url)
           URL.revokeObjectURL(url)
           setCoverUploadErr(null)
           await uploadCoverJpegBlob(blob)
@@ -623,6 +662,12 @@ export function OrganizerMatchEditPage() {
 
   const pageTitle = isNew ? p.matchOrgCreateTitle : p.matchOrgEditTitle
   const helmet = isNew ? p.matchOrgCreateHelmet : p.matchOrgEditHelmetEdit
+  const eventKindProfile = getMatchEventKindProfile(draft.match_event_kind || null)
+  const showStagesPanel =
+    !isNew &&
+    validEditId &&
+    matchId &&
+    (eventKindProfile.showProgrammeStagesToggle ? draft.programme_stages_enabled : true)
 
   const smActive = effectivePlanQty(planQtyStr.shooters_main, draft.shooters_per_main_squad)
   const pmActive = effectivePlanQty(planQtyStr.planned_main, draft.planned_main_squad_count)
@@ -785,9 +830,10 @@ export function OrganizerMatchEditPage() {
             <div className="portal-match-org-form__cover-row">
               {draft.cover_image_url.trim() ?
                 <img
+                  key={draft.cover_image_url.trim()}
                   src={draft.cover_image_url.trim()}
                   alt=""
-                  className="portal-match-org-form__cover-preview"
+                  className="portal-match-org-form__cover-preview portal-match-cover-img"
                 />
               : <div className="portal-match-org-form__cover-placeholder" aria-hidden />}
               {draft.cover_image_url.trim() ?
@@ -795,10 +841,7 @@ export function OrganizerMatchEditPage() {
                   type="button"
                   className="portal-btn portal-btn--secondary portal-btn--compact"
                   disabled={saving || Boolean(coverCropSrc)}
-                  onClick={() => {
-                    setCoverUploadErr(null)
-                    setDraft((d) => ({ ...d, cover_image_url: '' }))
-                  }}
+                  onClick={() => void clearCoverImage()}
                 >
                   {p.matchOrgCoverRemove}
                 </button>
@@ -818,6 +861,8 @@ export function OrganizerMatchEditPage() {
               <p role="alert" className="portal-match-org-form__hint portal-match-org-form__hint--error">
                 {coverUploadErr}
               </p>
+            : coverUploadOk ?
+              <p className="portal-match-org-form__hint portal-match-org-form__hint--ok">{p.matchOrgCoverSaved}</p>
             : null}
           </div>
         : (
@@ -837,41 +882,63 @@ export function OrganizerMatchEditPage() {
               <select
                 className="portal-match-org-form__control portal-match-org-form__control--select"
                 value={draft.match_event_kind}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const next = e.target.value as MatchDraft['match_event_kind']
+                  const nextProfile = getMatchEventKindProfile(next || null)
                   setDraft((d) => ({
                     ...d,
-                    match_event_kind: e.target.value as MatchDraft['match_event_kind'],
+                    match_event_kind: next,
+                    ps_match_level: nextProfile.showPsLevelField ? d.ps_match_level : '',
+                    programme_stages_enabled: nextProfile.showProgrammeStagesToggle
+                      ? nextProfile.defaultProgrammeStagesEnabled
+                      : true,
                   }))
-                }
+                }}
               >
                 <option value="">{p.matchOrgEventKindUnset}</option>
                 <option value="training">{p.matchEventKindTraining}</option>
                 <option value="match">{p.matchEventKindMatch}</option>
                 <option value="classification">{p.matchEventKindClassification}</option>
+                <option value="seminar">{p.matchEventKindSeminar}</option>
               </select>
             </label>
 
-            <label className="portal-match-org-form__field">
-              <span className="portal-match-org-form__label portal-match-org-form__label--squads-panel">{p.matchOrgFieldPsLevel}</span>
-              <select
-                className="portal-match-org-form__control portal-match-org-form__control--select"
-                value={draft.ps_match_level}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    ps_match_level: e.target.value as MatchDraft['ps_match_level'],
-                  }))
-                }
-              >
-                <option value="">{p.matchOrgPsLevelUnset}</option>
-                <option value="L1">{p.matchPsLevelL1}</option>
-                <option value="L2">{p.matchPsLevelL2}</option>
-                <option value="L3">{p.matchPsLevelL3}</option>
-                <option value="L4">{p.matchPsLevelL4}</option>
-                <option value="L5">{p.matchPsLevelL5}</option>
-              </select>
-            </label>
+            {eventKindProfile.showPsLevelField ?
+              <label className="portal-match-org-form__field">
+                <span className="portal-match-org-form__label portal-match-org-form__label--squads-panel">{p.matchOrgFieldPsLevel}</span>
+                <select
+                  className="portal-match-org-form__control portal-match-org-form__control--select"
+                  value={draft.ps_match_level}
+                  onChange={(e) =>
+                    setDraft((d) => ({
+                      ...d,
+                      ps_match_level: e.target.value as MatchDraft['ps_match_level'],
+                    }))
+                  }
+                >
+                  <option value="">{p.matchOrgPsLevelUnset}</option>
+                  <option value="L1">{p.matchPsLevelL1}</option>
+                  <option value="L2">{p.matchPsLevelL2}</option>
+                  <option value="L3">{p.matchPsLevelL3}</option>
+                  <option value="L4">{p.matchPsLevelL4}</option>
+                  <option value="L5">{p.matchPsLevelL5}</option>
+                </select>
+              </label>
+            : null}
           </div>
+
+          {eventKindProfile.showProgrammeStagesToggle ?
+            <label className="portal-match-org-form__checkbox">
+              <input
+                type="checkbox"
+                checked={draft.programme_stages_enabled}
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, programme_stages_enabled: e.target.checked }))
+                }
+              />
+              <span>{p.matchOrgFieldProgrammeStages}</span>
+            </label>
+          : null}
         </section>
 
         <section className="portal-match-org-form__section" aria-labelledby="match-org-plan-heading">
@@ -1207,7 +1274,7 @@ export function OrganizerMatchEditPage() {
       </form>
       </div>
 
-      {!isNew && validEditId && matchId ?
+      {!isNew && validEditId && matchId && showStagesPanel ?
         <div className="portal-match-org-edit__card portal-match-org-edit__card--programme">
           <OrganizerMatchStagesPanel locale={locale} matchId={matchId} p={p} />
         </div>

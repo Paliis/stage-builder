@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { isRoHelperEnabled } from './featureFlags'
 import { roHelperPath } from '../ro-helper/paths'
+import { PortalMatchesFeaturedBand } from './PortalMatchesFeaturedBand'
 import './PortalHome.css'
+import './PortalMatchesUi.css'
 
 type CardBadgeKind = 'live' | 'new' | 'beta'
 
@@ -119,12 +121,11 @@ export function PortalHome() {
         <meta name="description" content={p.metaDescription} />
       </Helmet>
 
-      <section className="portal-home__hero" aria-labelledby="portal-hero-title">
-        <h1 id="portal-hero-title" className="portal-home__hero-title">
-          {p.title}
-        </h1>
-        <p className="portal-home__hero-lead">{p.lead}</p>
-      </section>
+      <h1 id="portal-hero-title" className="portal-shell__sr-only">
+        {p.title}
+      </h1>
+
+      <PortalMatchesFeaturedBand />
 
       <section className="portal-home__grid" aria-label={p.gridAriaLabel}>
         <ProductCard

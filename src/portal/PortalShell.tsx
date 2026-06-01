@@ -10,6 +10,7 @@ import { isMatchPortalEnabled, isRoHelperEnabled } from './featureFlags'
 import { PortalHeaderAccount } from './PortalHeaderAccount'
 import { roHelperPath } from '../ro-helper/paths'
 import './PortalShell.css'
+import './portal-layout.css'
 
 const HEADER_COMPACT_MQ = '(max-width: 959px)' as const
 /** Same cutoff as mq: Cursor / split preview iframes can be narrower than outer window → matchContent with ResizeObserver. */
@@ -27,6 +28,7 @@ export function PortalShell() {
   const canonical = `${origin}${pathname}`
   const ukAlt = `${origin}${swapLocaleInPortalPath(pathname, 'uk')}`
   const enAlt = `${origin}${swapLocaleInPortalPath(pathname, 'en')}`
+  const isPortalHome = /^\/(uk|en)\/?$/.test(pathname)
 
   const [mqCompact, setMqCompact] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia(HEADER_COMPACT_MQ).matches : false,
@@ -87,7 +89,9 @@ export function PortalShell() {
   : 'portal-shell__header-toolbar'
 
   return (
-<div className={`portal-shell${compactHeader ? ' portal-shell--nav-compact' : ''}`}>
+<div
+      className={`portal-shell${compactHeader ? ' portal-shell--nav-compact' : ''}${isPortalHome ? ' portal-shell--home' : ''}`}
+    >
       <Helmet>
         <link rel="canonical" href={canonical} />
         <link rel="alternate" hrefLang="uk" href={ukAlt} />
@@ -98,7 +102,15 @@ export function PortalShell() {
         <div className="portal-shell__header-strip">
           <div className="portal-shell__header-inner" ref={headerInnerRef}>
             <Link to={`/${locale}`} className="portal-shell__brand">
-              {p.title}
+              <img
+                className="portal-shell__brand-mark"
+                src="/icon-192.png"
+                alt=""
+                width={40}
+                height={40}
+                decoding="async"
+              />
+              <span className="portal-shell__brand-text">{p.title}</span>
             </Link>
             <button
               type="button"
@@ -119,6 +131,14 @@ export function PortalShell() {
             </button>
             <div id={panelId} className={toolbarClassName} aria-label={p.portalShellNavDrawerAria}>
               <nav className="portal-shell__nav" aria-label="Primary">
+                {isMatchPortalEnabled() ?
+                  <NavLink
+                    to={`/${locale}/matches`}
+                    className={({ isActive }) => (isActive ? 'is-active' : '')}
+                  >
+                    {p.navMatches}
+                  </NavLink>
+                : null}
                 <NavLink
                   to="/stage-builder"
                   className={({ isActive }) => (isActive ? 'is-active' : '')}
@@ -131,14 +151,6 @@ export function PortalShell() {
                 >
                   {p.navHitFactor}
                 </NavLink>
-                {isMatchPortalEnabled() ?
-                  <NavLink
-                    to={`/${locale}/matches`}
-                    className={({ isActive }) => (isActive ? 'is-active' : '')}
-                  >
-                    {p.navMatches}
-                  </NavLink>
-                : null}
                 {isRoHelperEnabled() ?
                   <NavLink
                     to={roHelperPath(locale)}
@@ -148,29 +160,31 @@ export function PortalShell() {
                   </NavLink>
                 : null}
               </nav>
-              <PortalHeaderAccount
-                locale={locale}
-                p={p}
-                onAfterSignOut={compactHeader ? () => setNavOpen(false) : undefined}
-                suppressGuestSignInLink={pathname === `/${locale}/account`}
-              />
-              <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
-                <button
-                  type="button"
-                  className={locale === 'uk' ? 'is-active' : ''}
-                  onClick={() => goLocale('uk')}
-                  lang="uk"
-                >
-                  {tree.common.langUk}
-                </button>
-                <button
-                  type="button"
-                  className={locale === 'en' ? 'is-active' : ''}
-                  onClick={() => goLocale('en')}
-                  lang="en"
-                >
-                  {tree.common.langEn}
-                </button>
+              <div className="portal-shell__toolbar-end">
+                <PortalHeaderAccount
+                  locale={locale}
+                  p={p}
+                  onAfterSignOut={compactHeader ? () => setNavOpen(false) : undefined}
+                  suppressGuestSignInLink={pathname === `/${locale}/account`}
+                />
+                <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
+                  <button
+                    type="button"
+                    className={locale === 'uk' ? 'is-active' : ''}
+                    onClick={() => goLocale('uk')}
+                    lang="uk"
+                  >
+                    {tree.common.langUk}
+                  </button>
+                  <button
+                    type="button"
+                    className={locale === 'en' ? 'is-active' : ''}
+                    onClick={() => goLocale('en')}
+                    lang="en"
+                  >
+                    {tree.common.langEn}
+                  </button>
+                </div>
               </div>
             </div>
           </div>

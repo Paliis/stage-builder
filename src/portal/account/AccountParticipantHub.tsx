@@ -126,20 +126,27 @@ export function AccountParticipantHub({
     queueMicrotask(() => void loadRegs())
   }, [loadRegs])
 
-  const cancelReg = useCallback(
+  const withdrawReg = useCallback(
     async (id: string) => {
       if (!sb) return
       setBusyId(id)
       setRegErr(null)
-      const { error } = await sb.from('match_registrations').update({ status: 'cancelled' }).eq('id', id).eq('competitor_user_id', userId)
+      const { data: ok, error } = await sb.rpc('withdraw_my_match_registration', {
+        p_registration_id: id,
+      })
       setBusyId(null)
       if (error) {
         setRegErr(error.message)
         return
       }
+      if (!ok) {
+        setRegErr(p.matchDetailRegistrationWithdrawFailed)
+        await loadRegs()
+        return
+      }
       await loadRegs()
     },
-    [sb, userId, loadRegs],
+    [sb, userId, loadRegs, p.matchDetailRegistrationWithdrawFailed],
   )
 
   const [defDiv, setDefDiv] = useState('')
@@ -404,7 +411,7 @@ export function AccountParticipantHub({
                     const m = r.matches
                     const title = m?.title?.trim() || p.accountMyRegistrationsMatchUnavailable
                     const when = m?.starts_at ? formatPortalDate(m.starts_at, locale) : '—'
-                    const canCancel = r.status === 'pending'
+                    const canWithdraw = r.status === 'pending' || r.status === 'confirmed'
                     return (
                       <tr key={r.id}>
                         <td
@@ -437,15 +444,21 @@ export function AccountParticipantHub({
                           className="portal-account__hub-td-actions"
                           data-label={p.accountMyRegistrationsColActions}
                         >
-                          {canCancel ?
+                          {canWithdraw ?
                             <div className="portal-account__hub-table-actions">
                               <button
                                 type="button"
                                 className="portal-btn portal-btn--secondary portal-btn--compact"
                                 disabled={busyId === r.id}
-                                onClick={() => void cancelReg(r.id)}
+                                onClick={() => void withdrawReg(r.id)}
                               >
-                                {busyId === r.id ? p.accountMyRegistrationsCancelling : p.accountMyRegistrationsCancel}
+                                {busyId === r.id ?
+                                  r.status === 'confirmed' ?
+                                    p.accountMyRegistrationsWithdrawing
+                                  : p.accountMyRegistrationsCancelling
+                                : r.status === 'confirmed' ?
+                                  p.accountMyRegistrationsWithdraw
+                                : p.accountMyRegistrationsCancel}
                               </button>
                             </div>
                           : null}

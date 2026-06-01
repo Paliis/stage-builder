@@ -2,9 +2,11 @@
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
-  max-width: 42rem;
+  max-width: min(var(--portal-narrow-max-width, 42rem), 100%);
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 2.5rem;
+  padding: var(--portal-page-padding-block-start, 0.75rem) var(--portal-layout-gutter-inline, 1.25rem)
+    var(--portal-page-padding-block-end, 2.5rem);
+  box-sizing: border-box;
 }
 
 .hit-factor__head {
@@ -13,8 +15,8 @@
 
 .hit-factor__title {
   margin: 0;
-  font-size: 1.35rem;
-  font-weight: 750;
+  font-size: var(--portal-hero-title-size, clamp(1.25rem, 1vw + 1rem, 1.75rem));
+  font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-h);
 }
