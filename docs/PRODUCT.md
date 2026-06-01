@@ -151,7 +151,7 @@
 ### B.6. Якість, CI та середовища
 
 - **CI** — `npm run check` на `main` та `staging`.
-- **Staging** — окремий Vercel-проєкт, **`VITE_SITE_ENV=staging`** — [TECH.md](./TECH.md).
+- **Staging** — Vercel **`stage-builder-staging`** ([stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app)), **`VITE_SITE_ENV=staging`**, **`VITE_ENABLE_MATCH_PORTAL=1`** — [TECH.md](./TECH.md).
 
 ### B.7. Продуктові версії редактору (V0 / V1 / V2)
 

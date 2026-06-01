@@ -226,26 +226,27 @@ SPA-роутінг: автоматичний `page_view` вимкнено (`send
 
 ### Три рівні: локально → staging → production
 
-| Середовище | Що це | Типова перевірка |
-|------------|--------|------------------|
-| **Local** | `npm run dev` або `npm run build` + `npm run preview` | Швидкі зміни без хмари. |
-| **Staging** | Окремий деплой на Vercel з гілки **`staging`** | Повна збірка як у проді, стабільний URL. |
-| **Production** | `main` → Vercel Production | Бойовий сайт і індексація. |
+| Середовище | Vercel / гілка | URL | Модуль «Події» |
+|------------|----------------|-----|----------------|
+| **Local** | — | `npm run dev` | Увімкнено за замовчуванням (`vite dev`; вимкнути: `VITE_ENABLE_MATCH_PORTAL=0`) |
+| **Staging** | Проєкт **`stage-builder-staging`**, цільовий **Production Branch** = **`staging`** | [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) | **`VITE_ENABLE_MATCH_PORTAL=1`** у Production env |
+| **Production** | Проєкт **`stage-builder`**, гілка **`main`** | [shooters-tools.com](https://shooters-tools.com) | Прапорець **не** заданий — маршрути `/:locale/matches/*` не реєструються |
 
-Щоб мати **постійний staging** (одна адреса для гілки `staging`):
+**Staging (стан 2026-05):** окремий Vercel-проєкт, той самий репозиторій `Paliis/stage-builder`, **той самий Supabase**, що й prod. У Production env staging-проєкту: `VITE_SITE_ENV=staging`, `VITE_ENABLE_MATCH_PORTAL=1`, `VITE_SHARE_PUBLIC_ORIGIN=https://stage-builder-staging.vercel.app`, `VITE_SUPABASE_*`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (як на prod). Демо-події — ті самі дані в БД (seed: `npm run supabase:seed:match-all`). Перевірка каталогу: `/{uk|en}/matches`.
 
-1. У [Vercel Dashboard](https://vercel.com) створіть **другий проєкт**, підключіть той самий репозиторій.
-2. **Production Branch** цього проєкту = `staging`.
-3. У змінних цього проєкту (Production): **`VITE_SITE_ENV=staging`** — HTML отримає noindex, змінений title і стрічку в UI (див. SEO вище).
-4. Робочий цикл: зміни → `staging` → перевірка → merge у `main` для продакшену.
+**Захист URL:** пароль на деплой (Deployment Protection) поки **не** увімкнено — на команді потрібен план з **Advanced Deployment Protection**; до увімкнення достатньо noindex + непублічного URL. За потреби — [Deployment Protection](https://vercel.com/paliis-projects/stage-builder-staging/settings/deployment-protection) на `stage-builder-staging`.
 
-**Примітка:** статичний `public/robots.txt` один на всі деплої; окремий robots для staging лише через middleware / окремий билд-скрипт.
+**Робочий цикл:** feature → push **`staging`** → перевірка на staging URL → merge **`main`** → prod.
+
+**Vercel CLI:** для login/deploy використовуйте **`npx vercel@latest`** (у `package.json` зафіксовано 41.x — старий CLI може дати `Invalid Compact JWS` після device login). Локальна прив’язка: `.vercel/project.json` → зазвичай **`stage-builder`** (prod); staging — окремий проєкт у Dashboard або `vercel link --project stage-builder-staging`.
+
+**Примітка:** статичний `public/robots.txt` один на всі деплої; noindex для staging — через `htmlTransformPlugin` при `VITE_SITE_ENV=staging` (див. SEO вище).
 
 ### CI
 
 - **GitHub Actions** — `.github/workflows/ci.yml`: `npm ci --legacy-peer-deps`, `npm run check` на push/PR у **`main`** та **`staging`**.
 - **ESLint (react-hooks 7.x):** правило **`react-hooks/set-state-in-effect`** забороняє синхронно викликати оновлення стану з тіла `useEffect`. Для підвантажень даних з ефекту: **`queueMicrotask(() => void load())`** або **`await Promise.resolve()`** на початку асинхронного `load`, щоб перше `setState` не відбувалося в тому ж синхронному кроці, що й сам ефект; скидання UI при зміні маршруту — також через **`queueMicrotask`**. Для **`react-hooks/preserve-manual-memoization`** залежності `useCallback` узгоджуються з тим, що реально використовується (наприклад **`user`** замість лише **`user?.id`**).
-- **Vercel (production-проєкт)** — `vercel.json`: Vite, `dist/`. Production з гілки `main`.
+- **Vercel** — `vercel.json`: Vite, `dist/`. **Prod:** `stage-builder` ← `main`. **Staging:** `stage-builder-staging` ← `staging` (рекомендований Production Branch; після зміни — redeploy з Git).
 
 ### Як задеплоїти production
 

@@ -56,7 +56,7 @@
 |------------|------------|
 | `vite dev` | За замовчуванням маршрути матчів **увімкнені**; вимкнути локально: `VITE_ENABLE_MATCH_PORTAL=0`. |
 | Production (напр. shooters-tools.com) | Якщо `VITE_ENABLE_MATCH_PORTAL` **не** `1`/`true` — маршрути `/:locale/matches/*` **не реєструються**. |
-| Staging / службовий URL | У змінних збірки або Vercel Environment: `VITE_ENABLE_MATCH_PORTAL=1`. |
+| Staging | Vercel **`stage-builder-staging`**: [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) — `VITE_ENABLE_MATCH_PORTAL=1`, `VITE_SITE_ENV=staging`, той самий Supabase що prod ([TECH.md](./TECH.md) → CI та деплой). |
 
 Код: `isMatchPortalEnabled()` у `src/portal/featureFlags.ts`.
 
@@ -108,7 +108,7 @@
 
 **Критерій:** організатор вручну перевів заявку в підтверджений статус; публічний список учасників показує лише підтверджених (або режим як у політики продукту).
 
-**Пізніше (не MVP):** інтеграція платіжного провайдера — окремий епік за потреби.
+**Пізніше (не MVP):** онлайн-оплата — **[MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md)** (моделі A/B/C, Portmone marketplace, беклог **MA-P\***).
 
 ### Фаза C — Зв’язок зі Stage Builder
 

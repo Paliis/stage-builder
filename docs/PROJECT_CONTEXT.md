@@ -19,8 +19,8 @@
 | **Модуль редактора** | **Stage Builder** — 2D/3D план вправ, брифінг, PDF, `*.stage.json`, PWA (повна поведінка — FUNCTIONALITY) |
 | **URL редактора** | **`/stage-builder`** (поза `PortalShell` у тій самій збірці) |
 | **Репозиторій** | GitHub: `Paliis/stage-builder` (приватний npm-пакет не публікується) |
-| **Деплой** | **Vercel** з гілки `main`; CI — **GitHub Actions** (`npm run check`) на `main` і `staging` |
-| **Модуль «Матчі» (опційно на проді)** | Каталог, реєстрація, кабінет організатора, **`.psc`** — увімкнення збіркою **`VITE_ENABLE_MATCH_PORTAL`**. Бізнес-опис — **§2.5**; техніка — **§3.2–3.3** |
+| **Деплой** | **Prod:** Vercel `stage-builder`, гілка `main` → [shooters-tools.com](https://shooters-tools.com). **Staging:** `stage-builder-staging` → [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) (гілка `staging`). CI — `npm run check` на `main` і `staging` |
+| **Модуль «Події»** | На **prod** вимкнено (`VITE_ENABLE_MATCH_PORTAL` не в env). На **staging** увімкнено (`=1`). Той самий Supabase. Бізнес — **§2.5**; техніка — **§3.2–3.3**, [TECH.md](./TECH.md) |
 
 **Не ціль продукту:** заміна офіційних правил IPSC, рішень RM/арбітражу чи сертифікованого софту змагань — інструмент **допомагає** готувати матеріали та зменшувати непорозуміння.
 
@@ -141,7 +141,9 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | Supabase (клієнт) | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | Завантаження share, клієнт |
 | Supabase (сервер) | `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` або `VITE_SUPABASE_URL` | `POST /api/publish-share` |
 | Канон URL | `VITE_SHARE_PUBLIC_ORIGIN`, `VITE_PUBLIC_SITE_ORIGIN` | Посилання в API, QR, OG; fallback — `VERCEL_PROJECT_PRODUCTION_URL` + нормалізація legacy |
-| Staging | `VITE_SITE_ENV=staging` | noindex, стрічка в UI (лише staging-проєкт) |
+| Staging | `VITE_SITE_ENV=staging` (проєкт `stage-builder-staging`) | noindex, title `(staging)`, стрічка в UI |
+| Події на staging | `VITE_ENABLE_MATCH_PORTAL=1` | маршрути `/:locale/matches/*`; prod без прапорця |
+| Share на staging | `VITE_SHARE_PUBLIC_ORIGIN=https://stage-builder-staging.vercel.app` | канон для копійованих посилань з staging-білду |
 | Аналітика | `VITE_GA_MEASUREMENT_ID` | GA4 (опційно); Vercel Analytics окремо в коді |
 
 Після змін handler публікації: **`npm run build`** і commit згенерованого **`api/publish-share.js`** (CommonJS).
@@ -190,6 +192,9 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | **MATCH_EXPORT_PSC_STAGE_FIELDS.md** | Поля `match_stages[]`: що береться з share / що з шаблону PSC |
 | **MATCH_ADMIN_ARCHITECTURE.md** | Архітектура модуля матчів; прогалини (техніка, ліцензії, операторські реєстрації, продукти); UX-орієнтир [practicarms.ua](https://practicarms.ua/) (§8) |
 | **USER_FEEDBACK.md** | Чернетка збору відгуків |
+| **USER_HELP_ONBOARDING_PLAN.md** | План користувацької довідки (**UH-***), фази, інтеграція в продукт |
+| **USER_HELP_CONTENT_PLAN.md** | Контент-план усіх модулів: статті, FAQ, сценарії рілсів (таймінг); `content/user-help/` |
+| **BACKLOG_USER_HELP.md** | Беклог **UH**: шари **T** (текст), **V** (відео), **P** (продукт); **BL-037** |
 | **PUBLISH_POLICY.md** | Політика публікації share |
 | **BL-001_SHARE_LINK_PLAN.md** | План і статус посилань на вправу |
 | **BL-004_ACTIVATIONS.md** | Специфіка активацій на плані |

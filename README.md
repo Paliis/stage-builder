@@ -61,7 +61,7 @@ npm run check        # lint + тести + build (як у CI)
 - Pull request → preview deploy з унікальним URL
 - CI (GitHub Actions) перевіряє lint + тести + build на push/PR у **`main`** і **`staging`**
 
-**Staging (перевірка перед продом):** окремий Vercel-проєкт з **Production Branch** = `staging` і тим самим репозиторієм дає стабільний URL для прев’ю змін до merge в `main`. У змінних цього проєкту задайте **`VITE_SITE_ENV=staging`** — тоді HTML отримає `noindex` і з’явиться попереджувальна стрічка в інтерфейсі. Детально — `docs/TECH.md` → **«CI та деплой»**.
+**Staging (перевірка перед продом, демо «Події»):** окремий Vercel-проєкт **`stage-builder-staging`** → [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) (той самий Supabase, що prod). Env: **`VITE_SITE_ENV=staging`**, **`VITE_ENABLE_MATCH_PORTAL=1`**, Supabase-ключі як на prod; **Production Branch** = `staging`. Prod (`main` → shooters-tools.com) модуль матчів у збірці **вимкнено**. Детально — `docs/TECH.md` → **«CI та деплой»**.
 
 Конфігурація: `vercel.json` (Vite framework, `dist/` output).
 
