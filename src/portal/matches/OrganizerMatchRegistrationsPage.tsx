@@ -39,7 +39,14 @@ type RosterRpcRow = {
   phone: string
   competitor_region: string
   participant_payment_option: string
+  payment_received?: boolean | null
+  payment_provider?: string | null
+  paid_at?: string | null
   registration_created_at?: string | null
+}
+
+function registrationPaidOnline(reg: Pick<RosterRpcRow, 'payment_provider' | 'paid_at'>): boolean {
+  return reg.payment_provider === 'mono' || Boolean(reg.paid_at)
 }
 
 /** Поля, які достатні для відображення імені (таблиця й дошка скводів). */
@@ -553,6 +560,9 @@ export function OrganizerMatchRegistrationsPage() {
                 <th scope="col" className="portal-roster-page__reg-th--nowrap">
                   {p.matchOrgRosterColPaymentOption}
                 </th>
+                <th scope="col" className="portal-roster-page__reg-th--nowrap">
+                  {p.matchOrgRosterColPaid}
+                </th>
                 <th scope="col">{p.matchOrgRosterColRegion}</th>
                 <th scope="col">{p.matchOrgRosterColDivision}</th>
                 <th scope="col">{p.matchOrgRosterColStatus}</th>
@@ -579,6 +589,18 @@ export function OrganizerMatchRegistrationsPage() {
                     <td className="portal-roster-page__reg-td--phone">{(reg.phone ?? '').trim() || '—'}</td>
                     <td className="portal-roster-page__reg-td--muted">
                       {participantPaymentOptionLabel(p, parseParticipantPaymentOption(reg.participant_payment_option))}
+                    </td>
+                    <td className="portal-roster-page__reg-td--paid">
+                      {reg.payment_received ?
+                        <span className="portal-roster-page__paid-cell">
+                          <span>{p.matchOrgRosterPaidYes}</span>
+                          {registrationPaidOnline(reg) ?
+                            <span className="portal-reg-paid-badge portal-reg-paid-badge--online">
+                              {p.matchOrgRosterPaidOnlineBadge}
+                            </span>
+                          : null}
+                        </span>
+                      : '—'}
                     </td>
                     <td>{(reg.competitor_region ?? '').trim() || '—'}</td>
                     <td>{reg.division}</td>

@@ -890,6 +890,30 @@ a.portal-match-title-ellipsis:hover {
   font-size: 0.86rem;
 }
 
+.portal-roster-page__reg-td--paid {
+  white-space: nowrap;
+}
+
+.portal-roster-page__paid-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.portal-reg-paid-badge--online {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  background: color-mix(in srgb, var(--accent, #2d6a4f) 18%, transparent);
+  color: var(--accent, #2d6a4f);
+  border: 1px solid color-mix(in srgb, var(--accent, #2d6a4f) 35%, transparent);
+}
+
 .portal-roster-page__reg-td--status {
   min-width: 10rem;
 }

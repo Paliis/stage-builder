@@ -90,12 +90,12 @@
 | ID | Задача | Статус | BL | Примітки |
 |----|--------|--------|-----|----------|
 | **MA-P00** | Покращений офлайн: сума внеску на матч, QR IBAN, код у призначенні, колонка «Оплачено» в заявках | idea | — | 0% комісії; без провайдера |
-| **MA-P01** | `organizer_payment_providers` + Vault; UI «Підключити Mono»; «Перевірити» = pubkey, **без** тестового платежу | partial | — | Таблиця + RPC статусу; API save/verify/disconnect; кабінет організатора |
+| **MA-P01** | `organizer_payment_providers` + Vault; UI «Підключити Mono»; «Перевірити» = pubkey, **без** тестового платежу | partial | — | Таблиця + RPC; API save/verify/disconnect; UI на **`/matches/my`**, не `/account` |
 | **MA-P02** | Секція «Внесок»: 3 суми (Стандарт / Військовий / Леді·Юніори), офлайн+онлайн за замовч. | partial | — | Поля в редакторі матчу + `matchEntryFee.ts`; оплата — MA-P04/05 |
 | **MA-P03** | API `create-payment` + webhook **LiqPay** | idea | — | Після Mono |
-| **MA-P04** | API + webhook **Monobank Acquiring**; webhook → `payment_received` + **auto `confirmed`** | idea | — | |
-| **MA-P05** | UI стрільця «Сплатити онлайн» + return URL; сума за тарифом §9 | idea | — | |
-| **MA-P06** | Колонка «Оплачено» + badge «онлайн» у заявках організатора | idea | — | `payment_received` уже в RPC |
+| **MA-P04** | API + webhook **Monobank Acquiring**; webhook → `payment_received` + **auto `confirmed`** | done | — | `createPaymentApiHandler`, `monoPaymentWebhookApiHandler`, `match_mono_invoices` |
+| **MA-P05** | UI стрільця «Сплатити онлайн» + return URL; сума за тарифом §9 | done | — | `MatchPublicRegistrationSection`, `?payment=return`, localhost webhook guard |
+| **MA-P06** | Колонка «Оплачено» + badge «онлайн» у заявках організатора | done | — | `OrganizerMatchRegistrationsPage`; RPC + `payment_provider` / `paid_at` |
 | **MA-P07** | WayForPay (опційно) | idea | — | |
 | **MA-P08** | Дослідження **Portmone marketplace**: юридика, split, комісії, sandbox | idea | — | Після зустрічі з Portmone — оновити MATCH_PAYMENTS_PLAN §6 |
 
@@ -149,6 +149,7 @@
 
 | Дата | Зміни |
 |------|--------|
+| 2026-06-01 | **MA-P04**, **MA-P05**, **MA-P06** → **done**; **MA-P01** примітка UI `/matches/my`; RPC roster + колонка «Оплачено» / badge «онлайн». |
 | 2026-05-06 | Узгодження з тестами: **MA-D02** → **partial** (Vitest на збірку ZIP; повний diff з еталоном у CI — за потреби). |
 | 2026-05-07 | Синхронізація статусів з кодом: **MA-B02**, **MA-C01**, **MA-C02** → **partial** (публічний ростер / прив’язка вправ і refresh уже в проді-коді; епік C–PSC уточнюється). |
 | 2026-05-06 | PSC: додано [MATCH_REGISTRATION §8.6](./MATCH_REGISTRATION_AND_PSC_PLAN.md#86-покроковий-план-mac03--mad01--mad02-узгоджена-черга) і [MATCH_EXPORT_PSC_STAGE_FIELDS.md](./MATCH_EXPORT_PSC_STAGE_FIELDS.md); примітки в рядках **MA-C03**, **MA-D01**, **MA-D02**. |

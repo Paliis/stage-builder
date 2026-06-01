@@ -16,6 +16,7 @@
 | **MA-P02** | `entry_fee_*_kop` на `matches`, секція в `OrganizerMatchEditPage`, `src/domain/matchEntryFee.ts` |
 | **MA-P04** | `POST /api/create-payment`, `POST /api/payments/webhook/mono` → `payment_received` + auto `confirmed` (`confirmed_by` = organizer матчу) |
 | **MA-P05** | UI «Сплатити онлайн» у `MatchPublicRegistrationSection`, `?payment=return`, таймаути, localhost webhook guard |
+| **MA-P06** | Колонка «Оплачено» + badge «онлайн» у таблиці заявок (`OrganizerMatchRegistrationsPage`) |
 | Cursor | `.cursorignore`, `.cursor/rules/agent-context-budget.mdc` (не перевантажувати чат; коміти — `commit-push-after-changes.mdc`) |
 
 **Коміти (останні):** `d35fb4d` (оплата), `fb44c30` (cursor), перед ними `af8195e`, `ec4b67e`.
@@ -25,14 +26,14 @@
 - `20260602120000_organizer_payment_providers.sql`
 - `20260603120000_match_entry_fees.sql`
 - `20260604120000_match_registration_online_payment.sql` (+ `match_mono_invoices`)
+- `20260605120000_organizer_roster_online_payment_fields.sql`
 
 **Код API:** правити `src/server/*ApiHandler.ts` → `npm run build:api` → коміт `api/*.js`.
 
 ## Не зроблено (наступні кроки)
 
-1. **MA-P06** — у таблиці заявок організатора: колонка «Оплачено» + badge **«онлайн»** (`payment_provider = 'mono'` / `paid_at`). RPC `fetch_organizer_match_registration_roster` уже має `payment_received`.
-2. **Оновити BACKLOG** — MA-P04/P05 → `partial` або `done`; MA-P01 примітка: UI на `/matches/my`, не кабінет.
-3. **Опційно:** user-help статті про онлайн-оплату (`content/user-help/`) — лише якщо користувач попросить контент.
+1. **Опційно:** user-help статті про онлайн-оплату (`content/user-help/`) — лише якщо користувач попросить контент.
+2. **MA-P00** / **MA-W\*** — офлайн QR, waitlist (див. [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)).
 
 ## Локальна перевірка оплати
 

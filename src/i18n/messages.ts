@@ -1017,6 +1017,9 @@ export type MessageTree = {
     matchOrgRosterColName: string
     matchOrgRosterColPhone: string
     matchOrgRosterColPaymentOption: string
+    matchOrgRosterColPaid: string
+    matchOrgRosterPaidYes: string
+    matchOrgRosterPaidOnlineBadge: string
     matchOrgRosterColRegion: string
     matchOrgRosterColDivision: string
     matchOrgRosterColStatus: string
@@ -2220,6 +2223,9 @@ export const ukMessages: MessageTree = {
     matchOrgRosterColName: 'Учасник',
     matchOrgRosterColPhone: 'Телефон',
     matchOrgRosterColPaymentOption: 'Оплата',
+    matchOrgRosterColPaid: 'Оплачено',
+    matchOrgRosterPaidYes: 'Так',
+    matchOrgRosterPaidOnlineBadge: 'онлайн',
     matchOrgRosterColRegion: 'Регіон',
     matchOrgRosterColDivision: 'Дивізіон',
     matchOrgRosterColStatus: 'Статус',
@@ -3495,6 +3501,9 @@ export const enMessages: MessageTree = {
     matchOrgRosterColName: 'Shooter',
     matchOrgRosterColPhone: 'Phone',
     matchOrgRosterColPaymentOption: 'Payment',
+    matchOrgRosterColPaid: 'Paid',
+    matchOrgRosterPaidYes: 'Yes',
+    matchOrgRosterPaidOnlineBadge: 'online',
     matchOrgRosterColRegion: 'Region',
     matchOrgRosterColDivision: 'Division',
     matchOrgRosterColStatus: 'Status',
