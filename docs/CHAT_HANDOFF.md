@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-06-01 · `main` → push → CI fast-forward **`staging`** → Vercel **stage-builder-staging** (див. нижче).
+**Оновлено:** 2026-06-01 · **`49e170f`** на `main` і `origin/staging` · робоче дерево **clean** · див. синхрон нижче.
 
 ## Контекст
 

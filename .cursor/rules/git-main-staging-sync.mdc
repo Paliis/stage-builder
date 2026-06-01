@@ -10,5 +10,7 @@ alwaysApply: true
 3. Staging URL для матчів/оплати: **https://stage-builder-staging.vercel.app** — не плутати з preview проєкту `stage-builder`.
 4. Якщо staging відстав: `npm run git:sync-staging` або дочекатися workflow; не дублювати UI-фікси лише локально.
 5. **`OrganizerMonoPaymentSection`** на `/matches/my` — **після** таблиці подій; **не** переносити вгору без явного запиту користувача.
+6. **Перед завершення задачі / сесії** (обов’язково): `git status` → **nothing to commit, working tree clean** і **`main...origin/main`** без «ahead». Якщо є зміни — або **commit + push**, або **`git restore`** зайвого (напр. `api/*.js` / `searchIndex.*.json` після dev/build без наміреного коміту). **Не залишати** «лише локально» — користувач очікує, що remote = те, що на диску.
+7. Після push: `git fetch origin` — **`origin/main`** і **`origin/staging`** на **одному SHA** (або дочекатися CI sync-staging).
 
 Контекст handoff: `docs/CHAT_HANDOFF.md`.
