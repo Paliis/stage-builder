@@ -22,7 +22,8 @@ import { useSupabaseSession } from './useSupabaseSession'
 import { useMyActiveMatchRegistration } from './matches/useMyActiveMatchRegistration'
 import { MatchCoverPlaceholder } from './matches/MatchCoverPlaceholder'
 import type { WeaponClassId } from './shooterProfileCatalog'
-import { WEAPON_CLASS_ORDER, weaponClassLabel } from './shooterProfileCatalog'
+import { getMatchEventKindProfile } from '../domain/matchEventKindProfile'
+import { parseMatchDiscipline, WEAPON_CLASS_ORDER, weaponClassLabel } from './shooterProfileCatalog'
 import './PortalHome.css'
 import './PortalMatchHub.css'
 import './PortalMatchesUi.css'
@@ -322,21 +323,13 @@ export function PortalPublishedMatchesSection() {
               <p className="portal-match-hub__masthead-lead">{p.portalPublishedMatchesLead}</p>
             )}
           </div>
-          {user && !sessionLoading ?
+          {user && !sessionLoading && activeReg ?
             <div className="portal-match-hub__quick-actions">
-              {activeReg ?
-                <Link
-                  className="portal-btn portal-btn--primary portal-btn--compact"
-                  to={`/${locale}/matches/${activeReg.matchId}`}
-                >
-                  {p.portalHomeMatchesFeaturedCtaOpenMatch}
-                </Link>
-              : null}
               <Link
-                className="portal-btn portal-btn--secondary portal-btn--compact"
-                to={`/${locale}/account`}
+                className="portal-btn portal-btn--primary portal-btn--compact"
+                to={`/${locale}/matches/${activeReg.matchId}`}
               >
-                {p.portalHomeMatchesFeaturedCtaMyRegistrations}
+                {p.portalHomeMatchesFeaturedCtaOpenMatch}
               </Link>
             </div>
           : null}
@@ -484,8 +477,12 @@ export function PortalPublishedMatchesSection() {
                   const detailPath = `/${locale}/matches/${m.id}`
                   const titleText = m.title.trim() || '—'
                   const coverUrl = m.cover_image_url?.trim() ?? ''
-                  const weaponKey = (m.discipline ?? 'shotgun').trim() || 'shotgun'
-                  const weaponLine = weaponClassLabel(weaponKey, locale)
+                  const kindProfile = getMatchEventKindProfile(m.match_event_kind ?? null)
+                  const weaponId = parseMatchDiscipline(m.discipline)
+                  const weaponLine =
+                    kindProfile.showDisciplineOnCard && weaponId ?
+                      weaponClassLabel(weaponId, locale)
+                    : ''
                   const locationListLine = stripHttpUrlsFromPlainText(m.location_label ?? '')
                   return (
                     <li
@@ -523,8 +520,12 @@ export function PortalPublishedMatchesSection() {
                                 {locationListLine}
                               </>
                             : null}
-                            {' · '}
-                            {weaponLine}
+                            {weaponLine ?
+                              <>
+                                {' · '}
+                                {weaponLine}
+                              </>
+                            : null}
                             {' · '}
                             {portalLabelMatchEventKind(m.match_event_kind ?? null, p) ||
                               p.portalMatchesHubListDash}

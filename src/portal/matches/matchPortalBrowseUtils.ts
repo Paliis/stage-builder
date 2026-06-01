@@ -80,7 +80,7 @@ export function filterPublishedMatchesForHub(
     out = out.filter((r) => r.ps_match_level === psLevel)
   }
   if (weaponClass !== 'all') {
-    out = out.filter((r) => (r.discipline ?? 'shotgun') === weaponClass)
+    out = out.filter((r) => r.discipline === weaponClass)
   }
   return out
 }

@@ -14,7 +14,7 @@ import { programmeListDisplayTitles } from './matchPortalProgrammeDisplay'
 import { formatPortalDateShort, parsePublicMatchProgrammeBundle } from './matchStagesVisibility'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
-import { categoryLabel, weaponClassLabel } from '../shooterProfileCatalog'
+import { categoryLabel, parseMatchDiscipline, weaponClassLabel } from '../shooterProfileCatalog'
 import { formatSquadLabelNumberOnly } from './matchPortalSquadDisplay'
 import {
   type RegistrationMetricRow,
@@ -318,7 +318,8 @@ export function MatchPublicDetailPage() {
   const eventKindProfile = getMatchEventKindProfile(row.match_event_kind)
   const psLevelLine =
     eventKindProfile.showPsLevelOnCard ? portalLabelPsMatchLevel(row.ps_match_level, p) : ''
-  const weaponLine = weaponClassLabel((row.discipline ?? 'shotgun').trim() || 'shotgun', locUi)
+  const weaponId = parseMatchDiscipline(row.discipline)
+  const weaponLine = weaponId ? weaponClassLabel(weaponId, locUi) : ''
 
   const programmeDisplayTitles =
     programme && !programmeError ? programmeListDisplayTitles(programme.stages, p) : null
@@ -519,7 +520,7 @@ export function MatchPublicDetailPage() {
                     </dd>
                   </>
                 : null}
-                {eventKindProfile.showDisciplineOnCard ?
+                {eventKindProfile.showDisciplineOnCard && weaponLine ?
                   <>
                     <dt>{p.matchDetailDisciplineLabel}</dt>
                     <dd>{weaponLine}</dd>

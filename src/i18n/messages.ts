@@ -414,7 +414,6 @@ export type MessageTree = {
     /** `formatTemplate` `{{title}}` — confirmed registration. */
     portalHomeMatchesFeaturedActiveRegConfirmed: string
     portalHomeMatchesFeaturedCtaOpenMatch: string
-    portalHomeMatchesFeaturedCtaMyRegistrations: string
     /** Active platform organizer — secondary link on home band. */
     portalHomeMatchesFeaturedCtaOrganizerMatches: string
     /** Slider card highlight when it is the user's active registration match. */
@@ -838,6 +837,10 @@ export type MessageTree = {
     matchOrgCoverCropErrCrop: string
     matchOrgCoverSaved: string
     matchOrgFieldEventKind: string
+    matchOrgFieldDiscipline: string
+    matchOrgDisciplineUnset: string
+    matchOrgDisciplineRequired: string
+    matchOrgDisciplineSeminarHint: string
     matchOrgFieldPsLevel: string
     matchOrgFieldProgrammeStages: string
     /** Section title above event type / PractiScore level fields (training, match, or classification). */
@@ -1591,7 +1594,6 @@ export const ukMessages: MessageTree = {
     portalHomeMatchesFeaturedActiveRegPending: 'Заявка на «{{title}}» — очікує підтвердження',
     portalHomeMatchesFeaturedActiveRegConfirmed: 'Ви зареєстровані на «{{title}}»',
     portalHomeMatchesFeaturedCtaOpenMatch: 'Відкрити матч',
-    portalHomeMatchesFeaturedCtaMyRegistrations: 'Мої заявки',
     portalHomeMatchesFeaturedCtaOrganizerMatches: 'Мої матчі',
     portalHomeMatchesFeaturedYourEvent: 'Ваша подія',
     portalPublishedMatchesHeading: 'Перелік майбутніх подій',
@@ -1983,6 +1985,10 @@ export const ukMessages: MessageTree = {
     matchOrgCoverCropApply: 'Застосувати',
     matchOrgCoverCropErrCrop: 'Не вдалося обробити зображення. Спробуйте інший файл.',
     matchOrgFieldEventKind: 'Тип події',
+    matchOrgFieldDiscipline: 'Тип зброї',
+    matchOrgDisciplineUnset: '— не обрано —',
+    matchOrgDisciplineRequired: 'Оберіть тип зброї для цієї події.',
+    matchOrgDisciplineSeminarHint: 'Для семінару тип зброї не вказується.',
     matchOrgFieldPsLevel: 'Рівень',
     matchOrgFieldProgrammeStages: 'Додавати вправи до програми (Stage Builder)',
     matchOrgSectionCatalogHeading: 'Параметри події',
@@ -2813,7 +2819,6 @@ export const enMessages: MessageTree = {
     portalHomeMatchesFeaturedActiveRegPending: 'Application for “{{title}}” — pending confirmation',
     portalHomeMatchesFeaturedActiveRegConfirmed: 'You are registered for “{{title}}”',
     portalHomeMatchesFeaturedCtaOpenMatch: 'Open match',
-    portalHomeMatchesFeaturedCtaMyRegistrations: 'My sign-ups',
     portalHomeMatchesFeaturedCtaOrganizerMatches: 'My matches',
     portalHomeMatchesFeaturedYourEvent: 'Your event',
     portalPublishedMatchesHeading: 'Upcoming events',
@@ -3206,6 +3211,10 @@ export const enMessages: MessageTree = {
     matchOrgCoverCropApply: 'Apply',
     matchOrgCoverCropErrCrop: 'Could not process the image. Try another file.',
     matchOrgFieldEventKind: 'Event type',
+    matchOrgFieldDiscipline: 'Weapon class',
+    matchOrgDisciplineUnset: '— not set —',
+    matchOrgDisciplineRequired: 'Select a weapon class for this event.',
+    matchOrgDisciplineSeminarHint: 'Seminars do not require a weapon class.',
     matchOrgFieldPsLevel: 'Level',
     matchOrgFieldProgrammeStages: 'Include stages in programme (Stage Builder)',
     matchOrgSectionCatalogHeading: 'Event parameters',

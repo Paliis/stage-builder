@@ -17,6 +17,13 @@ import { wrapBbCode } from './bbCodeTextareaWrap'
 import { isMatchEventKind, isPsMatchLevel } from '../../domain/matchTaxonomy'
 import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
 import { MATCH_LOCATION_LABEL_MAX_LEN } from './matchLocationLabel'
+import {
+  isWeaponClassId,
+  parseMatchDiscipline,
+  WEAPON_CLASS_ORDER,
+  weaponClassLabel,
+  type WeaponClassId,
+} from '../shooterProfileCatalog'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 
@@ -36,6 +43,7 @@ type MatchDraft = {
   location_label: string
   cover_image_url: string
   match_event_kind: '' | 'training' | 'match' | 'classification' | 'seminar'
+  discipline: '' | WeaponClassId
   ps_match_level: '' | 'L1' | 'L2' | 'L3' | 'L4' | 'L5'
   status: string
   participant_list_visibility: 'open' | 'closed'
@@ -126,6 +134,7 @@ export function OrganizerMatchEditPage() {
     location_label: '',
     cover_image_url: '',
     match_event_kind: '',
+    discipline: '',
     ps_match_level: '',
     status: 'draft',
     participant_list_visibility: 'closed',
@@ -170,6 +179,7 @@ export function OrganizerMatchEditPage() {
         location_label: '',
         cover_image_url: '',
         match_event_kind: '',
+        discipline: '',
         ps_match_level: '',
         status: 'draft',
         participant_list_visibility: 'closed',
@@ -197,7 +207,7 @@ export function OrganizerMatchEditPage() {
     void sb
       .from('matches')
       .select(
-        'id, title, description_md, starts_at, location_label, cover_image_url, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad, programme_stages_enabled',
+        'id, title, description_md, starts_at, location_label, cover_image_url, discipline, match_event_kind, ps_match_level, status, participant_list_visibility, organizer_id, prematch_enabled, planned_main_squad_count, planned_prematch_squad_count, shooters_per_main_squad, shooters_per_prematch_squad, programme_stages_enabled',
       )
       .eq('id', matchId!)
       .maybeSingle()
@@ -225,6 +235,9 @@ export function OrganizerMatchEditPage() {
             typeof data.match_event_kind === 'string' && isMatchEventKind(data.match_event_kind)
               ? data.match_event_kind
               : '',
+          discipline: parseMatchDiscipline(
+            typeof data.discipline === 'string' ? data.discipline : null,
+          ) ?? '',
           ps_match_level:
             typeof data.ps_match_level === 'string' && isPsMatchLevel(data.ps_match_level)
               ? data.ps_match_level
@@ -327,6 +340,15 @@ export function OrganizerMatchEditPage() {
 
     const kindProfile = getMatchEventKindProfile(merged.match_event_kind || null)
 
+    let discipline: string | null = null
+    if (kindProfile.showDisciplineOnCard) {
+      if (!merged.discipline || !isWeaponClassId(merged.discipline)) {
+        setSaveError(p.matchOrgDisciplineRequired)
+        return
+      }
+      discipline = merged.discipline
+    }
+
     const row = {
       organizer_id: user.id,
       title,
@@ -334,7 +356,7 @@ export function OrganizerMatchEditPage() {
       starts_at: isoFromDatetimeLocal(merged.starts_at_local),
       location_label: locationTrimmed ? locationTrimmed : null,
       cover_image_url: merged.cover_image_url.trim() ? merged.cover_image_url.trim() : null,
-      discipline: 'shotgun' as const,
+      discipline,
       status: merged.status,
       participant_list_visibility: merged.participant_list_visibility,
       match_event_kind:
@@ -888,6 +910,7 @@ export function OrganizerMatchEditPage() {
                   setDraft((d) => ({
                     ...d,
                     match_event_kind: next,
+                    discipline: nextProfile.showDisciplineOnCard ? d.discipline : '',
                     ps_match_level: nextProfile.showPsLevelField ? d.ps_match_level : '',
                     programme_stages_enabled: nextProfile.showProgrammeStagesToggle
                       ? nextProfile.defaultProgrammeStagesEnabled
@@ -902,6 +925,34 @@ export function OrganizerMatchEditPage() {
                 <option value="seminar">{p.matchEventKindSeminar}</option>
               </select>
             </label>
+
+            {eventKindProfile.showDisciplineOnCard ?
+              <label className="portal-match-org-form__field">
+                <span className="portal-match-org-form__label portal-match-org-form__label--squads-panel">
+                  {p.matchOrgFieldDiscipline}
+                </span>
+                <select
+                  className="portal-match-org-form__control portal-match-org-form__control--select"
+                  value={draft.discipline}
+                  required
+                  onChange={(e) =>
+                    setDraft((d) => ({
+                      ...d,
+                      discipline: e.target.value as MatchDraft['discipline'],
+                    }))
+                  }
+                >
+                  <option value="">{p.matchOrgDisciplineUnset}</option>
+                  {WEAPON_CLASS_ORDER.map((id) => (
+                    <option key={id} value={id}>
+                      {weaponClassLabel(id, locale === 'uk' ? 'uk' : 'en')}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            : (
+              <p className="portal-match-org-form__hint">{p.matchOrgDisciplineSeminarHint}</p>
+            )}
 
             {eventKindProfile.showPsLevelField ?
               <label className="portal-match-org-form__field">

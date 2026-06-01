@@ -100,6 +100,17 @@ export function weaponClassLabel(id: string, locale: 'uk' | 'en'): string {
   return locale === 'en' ? m.labelEn : m.labelUk
 }
 
+export function isWeaponClassId(v: string | null | undefined): v is WeaponClassId {
+  return typeof v === 'string' && (WEAPON_CLASS_ORDER as readonly string[]).includes(v)
+}
+
+/** Parsed `matches.discipline`; empty/unknown → null (no default shotgun). */
+export function parseMatchDiscipline(discipline: string | null | undefined): WeaponClassId | null {
+  if (!discipline?.trim()) return null
+  const id = discipline.trim()
+  return isWeaponClassId(id) ? id : null
+}
+
 const SHOOTER_CATEGORY_ID_SET = new Set(SHOOTER_CATEGORIES.map((c) => c.id))
 const SHOOTER_CATEGORY_ORDER = new Map(SHOOTER_CATEGORIES.map((c, i) => [c.id, i]))
 

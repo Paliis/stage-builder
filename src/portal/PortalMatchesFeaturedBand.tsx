@@ -8,7 +8,8 @@ import { useMyActiveMatchRegistration } from './matches/useMyActiveMatchRegistra
 import { formatPortalDateShort } from './matches/matchStagesVisibility'
 import { portalLabelMatchEventKind } from './matches/matchPortalLabels'
 import { stripHttpUrlsFromPlainText } from './matches/plainTextAutolinkHelpers'
-import { weaponClassLabel } from './shooterProfileCatalog'
+import { getMatchEventKindProfile } from '../domain/matchEventKindProfile'
+import { parseMatchDiscipline, weaponClassLabel } from './shooterProfileCatalog'
 import { useSupabaseSession } from './useSupabaseSession'
 import { useOrganizerSelfServiceProfile } from './useOrganizerSelfServiceProfile'
 
@@ -152,8 +153,12 @@ export function PortalMatchesFeaturedBand() {
                   const detailPath = `/${locale}/matches/${m.id}`
                   const titleText = m.title.trim() || '—'
                   const coverUrl = m.cover_image_url?.trim() ?? ''
-                  const weaponKey = (m.discipline ?? 'shotgun').trim() || 'shotgun'
-                  const weaponLine = weaponClassLabel(weaponKey, locale)
+                  const kindProfile = getMatchEventKindProfile(m.match_event_kind ?? null)
+                  const weaponId = parseMatchDiscipline(m.discipline)
+                  const weaponLine =
+                    kindProfile.showDisciplineOnCard && weaponId ?
+                      weaponClassLabel(weaponId, locale)
+                    : ''
                   const kindLine =
                     portalLabelMatchEventKind(m.match_event_kind ?? null, p) ||
                     p.portalMatchesHubListDash
@@ -192,8 +197,12 @@ export function PortalMatchesFeaturedBand() {
                           {titleText}
                         </h3>
                         <p className="portal-home__matches-feature-card-meta">
-                          {weaponLine}
-                          {' · '}
+                          {weaponLine ?
+                            <>
+                              {weaponLine}
+                              {' · '}
+                            </>
+                          : null}
                           {kindLine}
                           {locationLine ?
                             <>

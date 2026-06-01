@@ -16,10 +16,9 @@ import { PortalCompactEmailAuth } from '../PortalCompactEmailAuth'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
 import {
-  type WeaponClassId,
   resolveShooterCategoriesForStorage,
   SHOOTER_CATEGORIES,
-  WEAPON_CLASS_ORDER,
+  parseMatchDiscipline,
   divisionsForWeapon,
   isValidDivisionForWeapon,
 } from '../shooterProfileCatalog'
@@ -75,11 +74,6 @@ function num(v: number | string | undefined): number {
   return registrationMetricNum(v)
 }
 
-function weaponClassForMatchDiscipline(raw: string): WeaponClassId {
-  const t = raw.trim()
-  return (WEAPON_CLASS_ORDER as readonly string[]).includes(t) ? (t as WeaponClassId) : 'shotgun'
-}
-
 type ParticipantDefaultsRow = {
   division?: string | null
   power_factor?: string | null
@@ -114,8 +108,8 @@ export function MatchPublicRegistrationSection({
   const isSeminarMinimal = eventKindProfile.registrationMode === 'seminar_minimal'
   const accountEmail = typeof user?.email === 'string' ? user.email.trim() : ''
 
-  const matchWeaponClassId = weaponClassForMatchDiscipline(matchDiscipline)
-  const divisionOptions = divisionsForWeapon(matchWeaponClassId)
+  const matchWeaponClassId = parseMatchDiscipline(matchDiscipline) ?? 'shotgun'
+  const divisionOptions = isSeminarMinimal ? [] : divisionsForWeapon(matchWeaponClassId)
 
   const regDialogRef = useRef<HTMLDialogElement>(null)
   const guestAuthDialogRef = useRef<HTMLDialogElement>(null)
@@ -182,14 +176,14 @@ export function MatchPublicRegistrationSection({
     if (row?.squad_id) setPickedSquad(row.squad_id)
     if (
       row?.division &&
-      isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), row.division)
+      isValidDivisionForWeapon(matchWeaponClassId, row.division)
     )
       setDivision(row.division)
     if (row) {
       const pf = typeof row.power_factor === 'string' ? row.power_factor.trim().toUpperCase() : ''
       setPowerFactor(pf === 'MINOR' ? 'MINOR' : 'MAJOR')
     }
-  }, [configured, sb, matchUuid, user, p.matchesLoadError, matchDiscipline])
+  }, [configured, sb, matchUuid, user, p.matchesLoadError, matchWeaponClassId])
 
   useEffect(() => {
     if (sessionLoading || !configured) return
@@ -210,7 +204,7 @@ export function MatchPublicRegistrationSection({
       const t = d.trim()
       if (t) return d
       const divRaw = typeof row.division === 'string' ? row.division : ''
-      return isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), divRaw) ?
+      return isValidDivisionForWeapon(matchWeaponClassId, divRaw) ?
           divRaw
         : ''
     })
@@ -226,7 +220,7 @@ export function MatchPublicRegistrationSection({
       if (prev.length > 0) return prev
       return normalizeParticipantCategories(row.categories)
     })
-  }, [matchDiscipline])
+  }, [matchWeaponClassId])
 
   useEffect(() => {
     if (!configured || sessionLoading || !user?.id) return
@@ -421,7 +415,7 @@ export function MatchPublicRegistrationSection({
     if (!isSeminarMinimal) {
       if (
         !division.trim() ||
-        !isValidDivisionForWeapon(weaponClassForMatchDiscipline(matchDiscipline), division.trim())
+        !isValidDivisionForWeapon(matchWeaponClassId, division.trim())
       ) {
         setFeedback(p.matchDetailRegistrationChooseDivision)
         return
