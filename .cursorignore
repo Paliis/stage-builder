@@ -1,0 +1,18 @@
+﻿# Generated API bundles — edit src/server/*ApiHandler.ts + npm run build:api
+api/publish-share.js
+api/match-export-psc.js
+api/organizer-mono-payment.js
+api/organizer-mono-payment/verify.js
+api/create-payment.js
+api/payments/
+
+dist/
+node_modules/
+
+src/ro-helper/data/searchIndex.en.json
+src/ro-helper/data/searchIndex.uk.json
+
+supabase/.temp/
+
+content/user-help/videos/production/
+content/user-help/assets/
