@@ -185,8 +185,6 @@ export function OrganizerMatchesListPage() {
         </p>
       ) : null}
 
-      <OrganizerMonoPaymentSection p={p} userId={user.id} />
-
       {rows === undefined ? (
         <p className="portal-matches-organizer__hint">{p.myMatchesLoading}</p>
       ) : rows.length === 0 ? (
@@ -275,6 +273,8 @@ export function OrganizerMatchesListPage() {
           </div>
         </>
       )}
+
+      <OrganizerMonoPaymentSection p={p} userId={user.id} />
     </div>
   )
 }
