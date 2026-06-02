@@ -601,10 +601,15 @@ export function MatchPublicDetailPage() {
             {programme?.publiclyVisible && programmeDisplayTitles ?
               <button
                 type="button"
-                className="portal-btn portal-btn--secondary portal-match-public-detail__programme-download"
+                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-public-detail__programme-download"
                 disabled
               >
-                {p.matchDetailProgrammeStatsDownloadSoon}
+                <span className="portal-match-public-detail__programme-download__full">
+                  {p.matchDetailProgrammeStatsDownloadSoon}
+                </span>
+                <span className="portal-match-public-detail__programme-download__short" aria-hidden="true">
+                  {p.matchDetailProgrammeStatsDownloadSoonShort}
+                </span>
               </button>
             : null}
           </div>

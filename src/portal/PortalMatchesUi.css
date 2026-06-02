@@ -445,20 +445,43 @@ a.portal-match-title-ellipsis:hover {
 
 .portal-match-public-detail__section-head {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.65rem 1rem;
+  gap: 0.5rem 0.75rem;
   margin-bottom: 0.85rem;
 }
 
 .portal-match-public-detail__section-head .portal-match-public-detail__section-title {
   margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .portal-match-public-detail__programme-download {
-  flex-shrink: 0;
-  max-width: 100%;
+  flex: 0 0 auto;
+  max-width: min(100%, 11.5rem);
+  white-space: nowrap;
+}
+
+.portal-match-public-detail__programme-download__short {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .portal-match-public-detail__programme-download__full {
+    display: none;
+  }
+
+  .portal-match-public-detail__programme-download__short {
+    display: inline;
+  }
+
+  .portal-match-public-detail__programme-download {
+    max-width: none;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.8125rem;
+  }
 }
 
 .portal-match-public-detail__programme-layout {
@@ -1414,6 +1437,11 @@ a.portal-match-title-ellipsis:hover {
   table-layout: fixed;
 }
 
+.portal-match-public-participants-table.portal-match-public-programme-stats-table,
+.portal-match-public-participants-table.portal-match-public-summary-table {
+  table-layout: auto;
+}
+
 .portal-match-public-participants-table th,
 .portal-match-public-participants-table td {
   padding: 0.55rem 0.95rem;
@@ -1545,7 +1573,7 @@ a.portal-match-title-ellipsis:hover {
   padding: 0.55rem 0.5rem;
   vertical-align: bottom;
   text-align: center;
-  hyphens: auto;
+  white-space: nowrap;
 }
 
 .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__stage,
@@ -1653,7 +1681,18 @@ a.portal-match-title-ellipsis:hover {
   }
 
   .portal-match-public-participants-table.portal-match-public-programme-stats-table {
-    min-width: 40rem;
+    min-width: 42rem;
+    width: max-content;
+    max-width: none;
+  }
+
+  .portal-match-public-programme-stats-table thead th {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.4rem;
+  }
+
+  .portal-match-public-programme-stats-table thead th.portal-match-public-programme-stats-table__stage {
+    white-space: normal;
   }
 
   .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__stage,
@@ -1681,23 +1720,20 @@ a.portal-match-title-ellipsis:hover {
 
   .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__num,
   .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__num {
-    min-width: 2.15rem;
+    min-width: 2.35rem;
     padding-left: 0.35rem;
     padding-right: 0.35rem;
+  }
+
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__type,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__type,
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__ammo,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__ammo {
+    min-width: 2.5rem;
   }
 }
 
 @media (max-width: 479px) {
-  .portal-match-public-detail__section-head {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .portal-match-public-detail__programme-download {
-    width: 100%;
-    justify-content: center;
-  }
-
   .portal-match-public-detail__programme-table-wrap {
     margin-inline: -0.35rem;
     border-radius: 0.5rem;
@@ -1705,6 +1741,10 @@ a.portal-match-title-ellipsis:hover {
 
   .portal-match-public-detail__participant-summary {
     max-width: none;
+  }
+
+  .portal-match-public-detail__section-head .portal-match-public-detail__section-title {
+    font-size: clamp(1.05rem, 4.5vw, 1.25rem);
   }
 }
 

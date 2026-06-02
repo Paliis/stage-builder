@@ -535,6 +535,7 @@ export type MessageTree = {
     matchDetailProgrammeStatsRowTotal: string
     matchDetailProgrammeStatsLoading: string
     matchDetailProgrammeStatsDownloadSoon: string
+    matchDetailProgrammeStatsDownloadSoonShort: string
     /** Public match card: roster block (participant_list_visibility). */
     matchDetailParticipantsHeading: string
     matchDetailParticipantsClosed: string
@@ -1765,6 +1766,7 @@ export const ukMessages: MessageTree = {
     matchDetailProgrammeStatsRowTotal: 'Разом',
     matchDetailProgrammeStatsLoading: 'Завантаження статистики…',
     matchDetailProgrammeStatsDownloadSoon: 'Завантажити PDF (незабаром)',
+    matchDetailProgrammeStatsDownloadSoonShort: 'PDF',
     matchDetailParticipantsHeading: 'Учасники',
     matchDetailParticipantsClosed:
       'З міркувань безпеки список учасників доступний лише організатору події.',
@@ -3068,6 +3070,7 @@ export const enMessages: MessageTree = {
     matchDetailProgrammeStatsRowTotal: 'Total',
     matchDetailProgrammeStatsLoading: 'Loading statistics…',
     matchDetailProgrammeStatsDownloadSoon: 'Download PDF (coming soon)',
+    matchDetailProgrammeStatsDownloadSoonShort: 'PDF',
     matchDetailParticipantsHeading: 'Participants',
     matchDetailParticipantsClosed:
       'For security reasons, the participant list is only available to the match organizer.',

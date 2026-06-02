@@ -19,6 +19,7 @@ export function programmeStatsTableHeaders(
         points: 'Оч.',
         pct: '%',
         type: 'Тип',
+        ammo: 'Наб.',
       }
     : {
         paper: 'Pap.',
@@ -30,6 +31,7 @@ export function programmeStatsTableHeaders(
         points: 'Pts.',
         pct: '%',
         type: 'Typ',
+        ammo: 'Ammo',
       }
 
   return [
@@ -40,7 +42,7 @@ export function programmeStatsTableHeaders(
     { full: p.matchDetailProgrammeStatsColCeramic, short: abbr.ceramic },
     { full: p.matchDetailProgrammeStatsColPopper, short: abbr.popper },
     { full: p.matchDetailProgrammeStatsColMiniPopper, short: abbr.mini },
-    { full: p.matchDetailProgrammeStatsColAmmo, short: p.matchDetailProgrammeStatsColAmmo },
+    { full: p.matchDetailProgrammeStatsColAmmo, short: abbr.ammo },
     { full: p.matchDetailProgrammeStatsColShots, short: abbr.shots },
     { full: p.matchDetailProgrammeStatsColPoints, short: abbr.points },
     { full: p.matchDetailProgrammeStatsColPercent, short: abbr.pct },
