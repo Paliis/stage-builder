@@ -18,6 +18,10 @@ const bundles = [
     join(root, 'api', 'match-export-psc.js'),
   ],
   [
+    join(root, 'src/server/matchProgrammeStatsApiHandler.ts'),
+    join(root, 'api', 'match-programme-stats.js'),
+  ],
+  [
     join(root, 'src/server/organizerMonoPaymentApiHandler.ts'),
     join(root, 'api', 'organizer-mono-payment.js'),
   ],

@@ -11,6 +11,8 @@ import { formatPortalDate } from './matchPortalFormat'
 import { MATCH_ID_UUID_RE } from './matchPortalUuid'
 import { MatchPublicRegistrationSection } from './MatchPublicRegistrationSection'
 import { programmeListDisplayTitles } from './matchPortalProgrammeDisplay'
+import { MatchPublicProgrammePanel } from './MatchPublicProgrammePanel'
+import { MatchPublicParticipantSummary } from './MatchPublicParticipantSummary'
 import { formatPortalDateShort, parsePublicMatchProgrammeBundle } from './matchStagesVisibility'
 import { portalLabelMatchEventKind, portalLabelPsMatchLevel } from './matchPortalLabels'
 import { getMatchEventKindProfile } from '../../domain/matchEventKindProfile'
@@ -364,17 +366,27 @@ export function MatchPublicDetailPage() {
       )
     }
     const rosterList = roster ?? []
+    const summaryBlock = <MatchPublicParticipantSummary matchId={match.id} locale={locale} p={p} />
+
     if (rosterList.length === 0) {
       if (openVisibilityActiveRegTotal !== undefined && openVisibilityActiveRegTotal > 0) {
         return (
-          <p className="portal-match-public-detail__prose">
-            {formatTemplate(p.matchDetailParticipantsOpenAwaitingConfirmation, {
-              count: openVisibilityActiveRegTotal,
-            })}
-          </p>
+          <>
+            <p className="portal-match-public-detail__prose">
+              {formatTemplate(p.matchDetailParticipantsOpenAwaitingConfirmation, {
+                count: openVisibilityActiveRegTotal,
+              })}
+            </p>
+            {summaryBlock}
+          </>
         )
       }
-      return <p className="portal-match-public-detail__prose">{p.matchDetailParticipantsOpenEmpty}</p>
+      return (
+        <>
+          <p className="portal-match-public-detail__prose">{p.matchDetailParticipantsOpenEmpty}</p>
+          {summaryBlock}
+        </>
+      )
     }
     return (
       <>
@@ -444,6 +456,7 @@ export function MatchPublicDetailPage() {
             </tbody>
           </table>
         </div>
+        {summaryBlock}
       </>
     )
   }
@@ -590,28 +603,14 @@ export function MatchPublicDetailPage() {
             <p role="alert" className="portal-match-public-detail__muted">
               {p.matchesLoadError}: {programmeError}
             </p>
-          : programme?.publiclyVisible ?
-            <ol className="portal-match-public-detail__programme">
-              {programme.stages.map((lnk, idx) => {
-                const sid = lnk.share_stage_id?.trim()
-                const title = programmeDisplayTitles![idx]!
-                return (
-                  <li key={`${sid ?? ''}-${lnk.sort_order}-${idx}`}>
-                    {sid ?
-                      <a
-                        href={`/v/${encodeURIComponent(sid)}?lang=${locale}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {title}
-                      </a>
-                    : (
-                      title
-                    )}
-                  </li>
-                )
-              })}
-            </ol>
+          : programme?.publiclyVisible && programmeDisplayTitles ?
+            <MatchPublicProgrammePanel
+              locale={locale}
+              matchId={row.id}
+              stages={programme.stages}
+              displayTitles={programmeDisplayTitles}
+              p={p}
+            />
           : programmePendingDate ?
             <p className="portal-match-public-detail__prose">
               {formatTemplate(p.matchDetailProgrammePending, { date: programmePendingDate })}

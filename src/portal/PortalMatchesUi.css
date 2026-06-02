@@ -443,6 +443,55 @@ a.portal-match-title-ellipsis:hover {
   color: var(--text-h);
 }
 
+.portal-match-public-detail__programme-layout {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .portal-match-public-detail__programme-layout {
+    grid-template-columns: minmax(12rem, 0.42fr) minmax(0, 1fr);
+  }
+}
+
+.portal-match-public-detail__programme-list {
+  margin: 0;
+}
+
+.portal-match-public-detail__programme-stats-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.65rem;
+}
+
+.portal-match-public-detail__programme-stats-table th,
+.portal-match-public-detail__programme-stats-table td {
+  white-space: nowrap;
+}
+
+.portal-match-public-detail__subsection-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  color: var(--text-h);
+}
+
+.portal-match-public-detail__participant-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  margin-top: 1.35rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+}
+
+.portal-match-public-detail__summary-table th,
+.portal-match-public-detail__summary-table td {
+  white-space: nowrap;
+}
+
 .portal-match-public-detail__programme {
   margin: 0;
   padding-left: 1.2rem;

@@ -518,6 +518,23 @@ export type MessageTree = {
     matchDetailProgrammeDuplicateOrdinalFallback: string
     /** Public match card: programme hidden until visibility window ({{date}} = DD.MM.YY). */
     matchDetailProgrammePending: string
+    /** MA-E02: aggregate stats table in Programme (public match card). */
+    matchDetailProgrammeStatsCaption: string
+    matchDetailProgrammeStatsColStage: string
+    matchDetailProgrammeStatsColType: string
+    matchDetailProgrammeStatsColPaper: string
+    matchDetailProgrammeStatsColMetal: string
+    matchDetailProgrammeStatsColCeramic: string
+    matchDetailProgrammeStatsColPopper: string
+    matchDetailProgrammeStatsColMiniPopper: string
+    matchDetailProgrammeStatsColAmmo: string
+    matchDetailProgrammeStatsColShots: string
+    matchDetailProgrammeStatsColPoints: string
+    matchDetailProgrammeStatsColPercent: string
+    matchDetailProgrammeStatsPercentValue: string
+    matchDetailProgrammeStatsRowTotal: string
+    matchDetailProgrammeStatsLoading: string
+    matchDetailProgrammeStatsDownloadSoon: string
     /** Public match card: roster block (participant_list_visibility). */
     matchDetailParticipantsHeading: string
     matchDetailParticipantsClosed: string
@@ -536,6 +553,15 @@ export type MessageTree = {
     matchDetailParticipantsPaymentPending: string
     /** Optional short footnote below public participants table; empty hides block. */
     matchDetailParticipantsFootnote: string
+    /** MA-E03: division / category summary tables below public roster. */
+    matchDetailParticipantsSummaryByDivision: string
+    matchDetailParticipantsSummaryByCategory: string
+    matchDetailParticipantsSummaryColLabel: string
+    matchDetailParticipantsSummaryColConfirmed: string
+    matchDetailParticipantsSummaryColPending: string
+    matchDetailParticipantsSummaryColTotal: string
+    matchDetailParticipantsSummaryRowTotal: string
+    matchDetailParticipantsSummaryLoading: string
     /** When RPC migration not applied yet */
     matchDetailApplyMigrationHint: string
     matchDetailRegistrationHeading: string
@@ -1723,6 +1749,22 @@ export const ukMessages: MessageTree = {
     matchDetailProgrammeFootnote: '',
     matchDetailProgrammeDuplicateOrdinalFallback: 'Вправа №{{n}}: {{title}}',
     matchDetailProgrammePending: 'Бріфінг вправ буде доступним з {{date}}',
+    matchDetailProgrammeStatsCaption: 'Зведена статистика вправ матчу',
+    matchDetailProgrammeStatsColStage: 'Вправа',
+    matchDetailProgrammeStatsColType: 'Тип',
+    matchDetailProgrammeStatsColPaper: 'Папір',
+    matchDetailProgrammeStatsColMetal: 'Метал',
+    matchDetailProgrammeStatsColCeramic: 'Кераміка',
+    matchDetailProgrammeStatsColPopper: 'Попери',
+    matchDetailProgrammeStatsColMiniPopper: 'Міні',
+    matchDetailProgrammeStatsColAmmo: 'Набої',
+    matchDetailProgrammeStatsColShots: 'Постріли',
+    matchDetailProgrammeStatsColPoints: 'Очки',
+    matchDetailProgrammeStatsColPercent: '% матчу',
+    matchDetailProgrammeStatsPercentValue: '{{value}}%',
+    matchDetailProgrammeStatsRowTotal: 'Разом',
+    matchDetailProgrammeStatsLoading: 'Завантаження статистики…',
+    matchDetailProgrammeStatsDownloadSoon: 'Завантажити PDF (незабаром)',
     matchDetailParticipantsHeading: 'Учасники',
     matchDetailParticipantsClosed:
       'З міркувань безпеки список учасників доступний лише організатору події.',
@@ -1740,6 +1782,14 @@ export const ukMessages: MessageTree = {
     matchDetailParticipantsPaymentConfirmed: 'Підтверджено',
     matchDetailParticipantsPaymentPending: 'Очікується',
     matchDetailParticipantsFootnote: '',
+    matchDetailParticipantsSummaryByDivision: 'За дивізіонами',
+    matchDetailParticipantsSummaryByCategory: 'За класами',
+    matchDetailParticipantsSummaryColLabel: 'Група',
+    matchDetailParticipantsSummaryColConfirmed: 'Підтверджені',
+    matchDetailParticipantsSummaryColPending: 'Очікує',
+    matchDetailParticipantsSummaryColTotal: 'Разом',
+    matchDetailParticipantsSummaryRowTotal: 'Усього',
+    matchDetailParticipantsSummaryLoading: 'Завантаження зведення…',
     matchDetailApplyMigrationHint:
       'Застосуй останні міграції Supabase з каталогу supabase/migrations (зокрема `20260504140000_public_match_registration_metrics.sql` та `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Реєстрація',
@@ -3002,6 +3052,22 @@ export const enMessages: MessageTree = {
     matchDetailProgrammeFootnote: '',
     matchDetailProgrammeDuplicateOrdinalFallback: 'Exercise {{n}}: {{title}}',
     matchDetailProgrammePending: 'Stage briefings will be available from {{date}}',
+    matchDetailProgrammeStatsCaption: 'Match stage aggregate statistics',
+    matchDetailProgrammeStatsColStage: 'Stage',
+    matchDetailProgrammeStatsColType: 'Type',
+    matchDetailProgrammeStatsColPaper: 'Paper',
+    matchDetailProgrammeStatsColMetal: 'Metal',
+    matchDetailProgrammeStatsColCeramic: 'Ceramic',
+    matchDetailProgrammeStatsColPopper: 'Poppers',
+    matchDetailProgrammeStatsColMiniPopper: 'Mini',
+    matchDetailProgrammeStatsColAmmo: 'Ammo',
+    matchDetailProgrammeStatsColShots: 'Shots',
+    matchDetailProgrammeStatsColPoints: 'Points',
+    matchDetailProgrammeStatsColPercent: '% of match',
+    matchDetailProgrammeStatsPercentValue: '{{value}}%',
+    matchDetailProgrammeStatsRowTotal: 'Total',
+    matchDetailProgrammeStatsLoading: 'Loading statistics…',
+    matchDetailProgrammeStatsDownloadSoon: 'Download PDF (coming soon)',
     matchDetailParticipantsHeading: 'Participants',
     matchDetailParticipantsClosed:
       'For security reasons, the participant list is only available to the match organizer.',
@@ -3019,6 +3085,14 @@ export const enMessages: MessageTree = {
     matchDetailParticipantsPaymentConfirmed: 'Confirmed',
     matchDetailParticipantsPaymentPending: 'Pending',
     matchDetailParticipantsFootnote: '',
+    matchDetailParticipantsSummaryByDivision: 'By division',
+    matchDetailParticipantsSummaryByCategory: 'By class',
+    matchDetailParticipantsSummaryColLabel: 'Group',
+    matchDetailParticipantsSummaryColConfirmed: 'Confirmed',
+    matchDetailParticipantsSummaryColPending: 'Pending',
+    matchDetailParticipantsSummaryColTotal: 'Total',
+    matchDetailParticipantsSummaryRowTotal: 'Grand total',
+    matchDetailParticipantsSummaryLoading: 'Loading summary…',
     matchDetailApplyMigrationHint:
       'Apply the latest migrations from supabase/migrations (including `20260504140000_public_match_registration_metrics.sql` and `20260505120000_match_prematch_squads.sql`).',
     matchDetailRegistrationHeading: 'Registration',
