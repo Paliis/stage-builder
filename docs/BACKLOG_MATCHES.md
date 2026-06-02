@@ -70,8 +70,8 @@
 
 | ID | Задача | Статус | BL | Примітки |
 |----|--------|--------|-----|----------|
-| **MA-E01** | Збірний **PDF** (або ZIP): усі брифінги матчу + титул; `POST /api/match-export-briefings` | idea | — | План: [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md); реюз `exportBriefingPdf` / merge |
-| **MA-E02** | Таблиця **«Статистика матчу»** на картці матчу (як PracticStats) | idea | — | Колонки з `stage` + `briefing`; рядок «Разом», % очок; публічно + опц. організатор |
+| **MA-E01** | **Публічне** завантаження PDF: усі брифінги + зведення; `GET/POST /api/match-export-briefings` | idea | — | Кнопка в блоці **«Програма»** на картці матчу (**для стрільців**), не поруч із PSC у організатора |
+| **MA-E02** | Таблиця пострілів/мішеней у блоці **«Програма»** (праворуч від списку вправ) | idea | — | Як PracticStats; дані з `stage` + `briefing`; разом із кнопкою **MA-E01** |
 | **MA-E03** | Зведена таблиця по **дивізіонах** і **класах** (категоріях) учасників | idea | — | `division` + `categories[]`; RPC-агрегація; у PDF пакеті (**MA-E01**) і UI матчу — [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) §2 |
 
 ---
