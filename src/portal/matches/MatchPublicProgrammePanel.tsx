@@ -83,115 +83,177 @@ export function MatchPublicProgrammePanel({
     stats.status === 'ready' ? stats.data.rows.map((r) => [r.sortOrder, r] as const) : [],
   )
 
+  function stageTitleCell(lnk: ProgrammeStageLink, idx: number) {
+    const sid = lnk.share_stage_id?.trim()
+    const title = displayTitles[idx]!
+    if (!sid) return title
+    return (
+      <a
+        href={`/v/${encodeURIComponent(sid)}?lang=${locale}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="portal-match-public-programme-stats-table__stage-link"
+      >
+        {title}
+      </a>
+    )
+  }
+
   return (
     <div className="portal-match-public-detail__programme-layout">
-      <ol className="portal-match-public-detail__programme portal-match-public-detail__programme-list">
-        {stages.map((lnk, idx) => {
-          const sid = lnk.share_stage_id?.trim()
-          const title = displayTitles[idx]!
-          return (
-            <li key={`${sid ?? ''}-${lnk.sort_order}-${idx}`}>
-              {sid ?
-                <a
-                  href={`/v/${encodeURIComponent(sid)}?lang=${locale}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {title}
-                </a>
-              : title}
-            </li>
-          )
-        })}
-      </ol>
+      <div className="portal-match-public-detail__programme-stats-toolbar">
+        <button type="button" className="portal-btn portal-btn--secondary" disabled>
+          {p.matchDetailProgrammeStatsDownloadSoon}
+        </button>
+      </div>
 
-      <div className="portal-match-public-detail__programme-stats">
-        <div className="portal-match-public-detail__programme-stats-toolbar">
-          <button type="button" className="portal-btn portal-btn--secondary" disabled>
-            {p.matchDetailProgrammeStatsDownloadSoon}
-          </button>
-        </div>
-
-        {stats.status === 'loading' ?
-          <p className="portal-match-public-detail__muted">{p.matchDetailProgrammeStatsLoading}</p>
-        : stats.status === 'error' ?
-          <p role="alert" className="portal-match-public-detail__muted">
+      {stats.status === 'loading' ?
+        <>
+          <p className="portal-match-public-detail__muted portal-match-public-detail__programme-status">
+            {p.matchDetailProgrammeStatsLoading}
+          </p>
+          <ol className="portal-match-public-detail__programme portal-match-public-detail__programme-list">
+            {stages.map((lnk, idx) => (
+              <li key={`${lnk.share_stage_id ?? ''}-${lnk.sort_order}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
+            ))}
+          </ol>
+        </>
+      : stats.status === 'error' ?
+        <>
+          <p role="alert" className="portal-match-public-detail__muted portal-match-public-detail__programme-status">
             {p.matchesLoadError}: {stats.message}
           </p>
-        : stats.status === 'ready' ?
-          <div className="portal-match-public-detail__table-scroll">
-            <table className="portal-match-public-participants-table portal-match-public-programme-stats-table">
-              <caption className="portal-shell__sr-only">{p.matchDetailProgrammeStatsCaption}</caption>
-              <thead>
-                <tr>
-                  <th scope="col">{p.matchDetailProgrammeStatsColStage}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColType}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColPaper}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColMetal}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColCeramic}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColPopper}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColMiniPopper}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColAmmo}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColShots}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColPoints}</th>
-                  <th scope="col">{p.matchDetailProgrammeStatsColPercent}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stages.map((lnk, idx) => {
-                  const row = rowByOrder.get(lnk.sort_order)
-                  const title = displayTitles[idx]!
-                  if (!row) {
-                    return (
-                      <tr key={`missing-${lnk.sort_order}-${idx}`}>
-                        <th scope="row">{title}</th>
-                        <td colSpan={10}>—</td>
-                      </tr>
-                    )
-                  }
-                  const t = row.targets
+          <ol className="portal-match-public-detail__programme portal-match-public-detail__programme-list">
+            {stages.map((lnk, idx) => (
+              <li key={`${lnk.share_stage_id ?? ''}-${lnk.sort_order}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
+            ))}
+          </ol>
+        </>
+      : stats.status === 'ready' ?
+        <div className="portal-match-public-detail__table-scroll portal-match-public-detail__programme-table-wrap">
+          <table className="portal-match-public-participants-table portal-match-public-programme-stats-table">
+            <caption className="portal-shell__sr-only">{p.matchDetailProgrammeStatsCaption}</caption>
+            <colgroup>
+              <col className="portal-match-public-programme-stats-table__col-stage" />
+              <col className="portal-match-public-programme-stats-table__col-type" />
+              <col className="portal-match-public-programme-stats-table__col-num" span={5} />
+              <col className="portal-match-public-programme-stats-table__col-ammo" />
+              <col className="portal-match-public-programme-stats-table__col-num" span={3} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col" className="portal-match-public-programme-stats-table__stage">
+                  {p.matchDetailProgrammeStatsColStage}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__type">
+                  {p.matchDetailProgrammeStatsColType}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__num">
+                  {p.matchDetailProgrammeStatsColPaper}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__num">
+                  {p.matchDetailProgrammeStatsColMetal}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__num">
+                  {p.matchDetailProgrammeStatsColCeramic}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__num">
+                  {p.matchDetailProgrammeStatsColPopper}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__num">
+                  {p.matchDetailProgrammeStatsColMiniPopper}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__ammo">
+                  {p.matchDetailProgrammeStatsColAmmo}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__num">
+                  {p.matchDetailProgrammeStatsColShots}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__num">
+                  {p.matchDetailProgrammeStatsColPoints}
+                </th>
+                <th scope="col" className="portal-match-public-programme-stats-table__num">
+                  {p.matchDetailProgrammeStatsColPercent}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {stages.map((lnk, idx) => {
+                const row = rowByOrder.get(lnk.sort_order)
+                if (!row) {
                   return (
-                    <tr key={`stat-${lnk.sort_order}-${idx}`}>
-                      <th scope="row">{title}</th>
-                      <td>{categoryLabel(categories, row.exerciseType)}</td>
-                      <td>{cellCount(t.paper)}</td>
-                      <td>{cellCount(t.metalPlates)}</td>
-                      <td>{cellCount(t.ceramic)}</td>
-                      <td>{cellCount(t.poppers)}</td>
-                      <td>{cellCount(t.miniPoppers)}</td>
-                      <td>{row.ammoLabel}</td>
-                      <td>{row.shots}</td>
-                      <td>{row.points}</td>
-                      <td>
-                        {formatTemplate(p.matchDetailProgrammeStatsPercentValue, {
-                          value: String(row.matchPercent),
-                        })}
-                      </td>
+                    <tr key={`missing-${lnk.sort_order}-${idx}`}>
+                      <th scope="row" className="portal-match-public-programme-stats-table__stage">
+                        {stageTitleCell(lnk, idx)}
+                      </th>
+                      <td colSpan={10}>—</td>
                     </tr>
                   )
-                })}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th scope="row">{p.matchDetailProgrammeStatsRowTotal}</th>
-                  <td />
-                  <td>{cellCount(stats.data.totals.paper)}</td>
-                  <td>{cellCount(stats.data.totals.metalPlates)}</td>
-                  <td>{cellCount(stats.data.totals.ceramic)}</td>
-                  <td>{cellCount(stats.data.totals.poppers)}</td>
-                  <td>{cellCount(stats.data.totals.miniPoppers)}</td>
-                  <td />
-                  <td>{stats.data.totals.shots}</td>
-                  <td>{stats.data.totals.points}</td>
-                  <td>
-                    {formatTemplate(p.matchDetailProgrammeStatsPercentValue, { value: '100' })}
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        : null}
-      </div>
+                }
+                const t = row.targets
+                return (
+                  <tr key={`stat-${lnk.sort_order}-${idx}`}>
+                    <th scope="row" className="portal-match-public-programme-stats-table__stage">
+                      {stageTitleCell(lnk, idx)}
+                    </th>
+                    <td className="portal-match-public-programme-stats-table__type">
+                      {categoryLabel(categories, row.exerciseType)}
+                    </td>
+                    <td className="portal-match-public-programme-stats-table__num">{cellCount(t.paper)}</td>
+                    <td className="portal-match-public-programme-stats-table__num">{cellCount(t.metalPlates)}</td>
+                    <td className="portal-match-public-programme-stats-table__num">{cellCount(t.ceramic)}</td>
+                    <td className="portal-match-public-programme-stats-table__num">{cellCount(t.poppers)}</td>
+                    <td className="portal-match-public-programme-stats-table__num">{cellCount(t.miniPoppers)}</td>
+                    <td className="portal-match-public-programme-stats-table__ammo">{row.ammoLabel}</td>
+                    <td className="portal-match-public-programme-stats-table__num">{row.shots}</td>
+                    <td className="portal-match-public-programme-stats-table__num">{row.points}</td>
+                    <td className="portal-match-public-programme-stats-table__num">
+                      {formatTemplate(p.matchDetailProgrammeStatsPercentValue, {
+                        value: String(row.matchPercent),
+                      })}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+            <tfoot>
+              <tr className="portal-match-public-programme-stats-table__total-row">
+                <th scope="row" className="portal-match-public-programme-stats-table__stage">
+                  {p.matchDetailProgrammeStatsRowTotal}
+                </th>
+                <td className="portal-match-public-programme-stats-table__type" />
+                <td className="portal-match-public-programme-stats-table__num">
+                  {cellCount(stats.data.totals.paper)}
+                </td>
+                <td className="portal-match-public-programme-stats-table__num">
+                  {cellCount(stats.data.totals.metalPlates)}
+                </td>
+                <td className="portal-match-public-programme-stats-table__num">
+                  {cellCount(stats.data.totals.ceramic)}
+                </td>
+                <td className="portal-match-public-programme-stats-table__num">
+                  {cellCount(stats.data.totals.poppers)}
+                </td>
+                <td className="portal-match-public-programme-stats-table__num">
+                  {cellCount(stats.data.totals.miniPoppers)}
+                </td>
+                <td className="portal-match-public-programme-stats-table__ammo" />
+                <td className="portal-match-public-programme-stats-table__num">{stats.data.totals.shots}</td>
+                <td className="portal-match-public-programme-stats-table__num">{stats.data.totals.points}</td>
+                <td className="portal-match-public-programme-stats-table__num">
+                  {formatTemplate(p.matchDetailProgrammeStatsPercentValue, { value: '100' })}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      : (
+        <ol className="portal-match-public-detail__programme portal-match-public-detail__programme-list">
+          {stages.map((lnk, idx) => (
+            <li key={`${lnk.share_stage_id ?? ''}-${lnk.sort_order}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
+          ))}
+        </ol>
+      )}
     </div>
   )
 }

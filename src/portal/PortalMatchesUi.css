@@ -444,25 +444,36 @@ a.portal-match-title-ellipsis:hover {
 }
 
 .portal-match-public-detail__programme-layout {
-  display: grid;
-  gap: 1.25rem;
-  align-items: start;
-}
-
-@media (min-width: 56rem) {
-  .portal-match-public-detail__programme-layout {
-    grid-template-columns: minmax(12rem, 0.42fr) minmax(0, 1fr);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 58rem;
+  margin-inline: auto;
 }
 
 .portal-match-public-detail__programme-list {
   margin: 0;
+  width: 100%;
+  max-width: 36rem;
+  padding-left: 1.2rem;
+}
+
+.portal-match-public-detail__programme-status {
+  width: 100%;
+  text-align: center;
+}
+
+.portal-match-public-detail__programme-table-wrap {
+  width: 100%;
 }
 
 .portal-match-public-detail__programme-stats-toolbar {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 0.65rem;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 0.15rem;
 }
 
 .portal-match-public-detail__subsection-title {
@@ -1478,32 +1489,77 @@ a.portal-match-title-ellipsis:hover {
 
 /** MA-E02: programme stats table */
 .portal-match-public-participants-table.portal-match-public-programme-stats-table {
-  table-layout: auto;
-  min-width: 52rem;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.portal-match-public-programme-stats-table__col-stage {
+  width: 28%;
+}
+
+.portal-match-public-programme-stats-table__col-type {
+  width: 9%;
+}
+
+.portal-match-public-programme-stats-table__col-num {
+  width: 6%;
+}
+
+.portal-match-public-programme-stats-table__col-ammo {
+  width: 9%;
 }
 
 .portal-match-public-programme-stats-table thead th {
   border-bottom-width: 2px;
   font-weight: 700;
-  white-space: nowrap;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  vertical-align: bottom;
 }
 
-.portal-match-public-programme-stats-table th[scope='row'] {
+.portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__stage,
+.portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__stage {
+  text-align: left;
   font-weight: 600;
   color: var(--text-h);
-  text-align: left;
-  min-width: 8rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+  padding-right: 0.65rem;
 }
 
-.portal-match-public-programme-stats-table td:not(:nth-child(2)):not(:nth-child(8)) {
-  text-align: right;
+.portal-match-public-programme-stats-table__stage-link {
+  color: var(--accent);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.portal-match-public-programme-stats-table__stage-link:hover {
+  text-decoration: underline;
+}
+
+.portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__type,
+.portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__type {
+  text-align: left;
+  white-space: nowrap;
+  font-size: 0.88rem;
+}
+
+.portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__ammo,
+.portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__ammo {
+  text-align: left;
+  white-space: nowrap;
+  font-size: 0.88rem;
+}
+
+.portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__num,
+.portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__num {
+  text-align: center;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-.portal-match-public-programme-stats-table td:nth-child(2),
-.portal-match-public-programme-stats-table td:nth-child(8) {
-  text-align: left;
+  font-size: 0.88rem;
 }
 
 .portal-match-public-programme-stats-table tbody tr:nth-child(even) td,
@@ -1517,6 +1573,30 @@ a.portal-match-title-ellipsis:hover {
   border-bottom: none;
   font-weight: 700;
   background-color: color-mix(in srgb, var(--btn-bg) 72%, transparent);
+}
+
+@media (max-width: 639px) {
+  .portal-match-public-detail__programme-layout {
+    max-width: none;
+  }
+
+  .portal-match-public-detail__programme-table-wrap {
+    margin-inline: -0.25rem;
+  }
+
+  .portal-match-public-programme-stats-table thead th,
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__stage,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__stage,
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__type,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__type,
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__ammo,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__ammo,
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__num,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__num {
+    font-size: 0.78rem;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+  }
 }
 
 .portal-match-reg-label {
