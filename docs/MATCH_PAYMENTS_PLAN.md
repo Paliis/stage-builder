@@ -1,23 +1,26 @@
 # Модуль «Події» — оплата стартових внесків (план)
 
-**Статус:** узгодження продукту та провайдерів; **код онлайн-оплат не в MVP**.  
-**Беклог задач:** **[BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)** → фаза **P** (`MA-P01` …).  
-**Зв’язок:** фаза B (офлайн) — [MATCH_REGISTRATION_AND_PSC_PLAN.md §4](./MATCH_REGISTRATION_AND_PSC_PLAN.md#фаза-b--підтвердження-реєстрації-й-облік-оплати-без-платіжних-шлюзів); архітектура — [MATCH_ADMIN_ARCHITECTURE.md](./MATCH_ADMIN_ARCHITECTURE.md); демо для фінвідділу — staging у [TECH.md](./TECH.md) (розділ CI та деплой).
+**Статус:** **Mono MVP реалізовано** на staging ([stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app)); **не** увімкнено на prod (`VITE_ENABLE_MATCH_PORTAL` вимкнено на shooters-tools.com).  
+**Беклог:** **[BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)** → фаза **P** (`MA-P04`…`P06` **done**).  
+**Зв’язок:** фаза B — [MATCH_REGISTRATION_AND_PSC_PLAN.md §4](./MATCH_REGISTRATION_AND_PSC_PLAN.md#фаза-b--підтвердження-реєстрації-й-облік-оплати-без-платіжних-шлюзів); деплой — [TECH.md](./TECH.md); handoff — [CHAT_HANDOFF.md](./CHAT_HANDOFF.md).
 
-**Останнє оновлення:** 2026-05-23 — продуктові рішення для Mono MVP (§9, §8, тарифи внеску); код онлайн-оплат ще не в prod.
+**Останнє оновлення:** 2026-06-01 — E2E тестовий токен api.monobank.ua; webhook + `POST /api/payments/reconcile`.
 
 ---
 
-## 1. Що вже є (фаза B — done / partial)
+## 1. Що вже є в коді
 
 | Поле / UI | Призначення |
 |-----------|-------------|
-| `match_registrations.payment_received` | Єдиний прапор «внесок отримано» (так/ні) |
+| `match_registrations.payment_received` | Прапор «внесок отримано» |
+| `paid_at`, `payment_provider`, `external_payment_id` | Онлайн Mono (після webhook / reconcile) |
 | `participant_payment_option` | `bank_transfer` \| `on_site` при подачі заявки |
-| `payment_note` | Текст організатора (реквізити, дата, «налічні») |
-| **MA-B01** | Ростер/заявки: підтвердження + примітка (**без** шлюзів) |
-
-Онлайн-шлюзи в першій хвилі **не** обіцяли — [MATCH_REGISTRATION_AND_PSC_PLAN.md §1.2](./MATCH_REGISTRATION_AND_PSC_PLAN.md#12-що-не-обіцяємо-в-першій-хвилі).
+| `payment_note` | Текст організатора (офлайн) |
+| `matches.entry_fee_*_kop` | Три тарифи внеску (§9) |
+| `organizer_payment_providers` | X-Token Mono (service role only) |
+| `match_mono_invoices` | `invoice_id` ↔ `registration_id` |
+| **MA-B01** | Ростер/заявки: підтвердження + примітка |
+| **MA-P04…P06** | Онлайн Mono на staging (див. §7, §11) |
 
 ---
 
@@ -95,16 +98,24 @@
 ## 7. Технічний потік (модель A / webhook)
 
 ```text
-Стрілець → POST /api/create-payment(registration_id)
-         → сервер читає ключі організатора (Vault, service role)
-         → redirect / invoice у провайдера (order_id = registration_id)
-         → оплата на стороні провайдера
-         → webhook /api/payments/webhook/{provider} (перевірка підпису)
-         → UPDATE payment_received = true, paid_at, external_payment_id, payment_provider
-         → status = confirmed, confirmed_at (див. §9 — auto-confirm після успішної оплати)
+Стрілець → POST /api/create-payment { registrationId }  (Bearer session)
+         → сервер: organizer mono_x_token (service role), сума з entry_fee_*_kop
+         → POST Mono /api/merchant/invoice/create
+              merchantPaymInfo.reference = registration_id (UUID)
+              merchantPaymInfo.destination = «Внесок: {title матчу}»
+              webHookUrl = {origin}/api/payments/webhook/mono
+              redirectUrl = {origin}/{locale}/matches/{id}?payment=return
+         → redirect на pay.monobank.ua
+         → оплата на стороні Mono
+         → webhook POST /api/payments/webhook/mono (X-Sign ECDSA, raw body)
+         → applyMatchMonoPaymentSuccess: payment_received, paid_at, provider=mono, status=confirmed
 ```
 
-Публічний ростер **не** показує payment id (як зараз без `payment_note`).
+**План B (якщо webhook не встиг):** після return UI викликає **`POST /api/payments/reconcile`** — `GET` статус інвойсу в Mono, той самий `applyMatchMonoPaymentSuccess`.
+
+**Локальний dev:** webhook URL = `VITE_SHARE_PUBLIC_ORIGIN` (HTTPS staging), redirect = localhost (`resolveMatchPaymentUrls.ts`).
+
+Публічний ростер **не** показує payment id.
 
 ---
 
@@ -115,7 +126,7 @@
 **Стрілець:** після заявки — «Сплатити онлайн»; сума за §9 (тариф за категоріями); після успішного webhook — **оплата зафіксована + участь `confirmed`**.  
 **Організатор — заявки:** колонка «Оплачено»; badge «онлайн»; ручний toggle для офлайн.
 
-Зберігання секретів: `organizer_payment_providers` + **Supabase Vault** / server-only; X-Token **не** повертається на клієнт після збереження.
+Зберігання секретів: `organizer_payment_providers.mono_x_token` (RLS revoke для anon/authenticated; запис лише через API з service role). **Vault** — заплановано, поки не в проді-коді. Клієнт бачить лише `token_hint` + `verified_at` (RPC).
 
 ---
 
@@ -165,10 +176,14 @@
 
 ---
 
-## 11. Демо для фінвідділу (без Portmone)
+## 11. Демо (staging)
 
-Staging: [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) — модуль Подій увімкнено; **онлайн-оплати в UI немає**. Показує заявки, ручне підтвердження, `payment_received`, реквізити в описі матчу.
+**URL:** [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) — `VITE_ENABLE_MATCH_PORTAL=1`, той самий Supabase що prod.
+
+**Онлайн Mono (E2E, 2026-06):** тестовий X-Token з [api.monobank.ua](https://api.monobank.ua/) → організатор `/matches/my` → внески в матчі → стрілець «Сплатити онлайн» → після оплати **підтверджено · Внесок оплачено**. Назва на формі Mono («Test Caption») — з профілю мерчанта в Mono, не з Shooters Tools.
+
+**Без Portmone** — див. §6, **MA-P08**.
 
 ---
 
-*Історія: 2026-05-26 — перша версія; 2026-05-23 — §9 зафіксовано (Mono, auto-confirm, 3 тарифи, перевірка без грошей).*
+*Історія: 2026-06-01 — Mono MVP на staging, reconcile API; 2026-05-26 — перша версія; 2026-05-23 — §9 (auto-confirm, 3 тарифи).*

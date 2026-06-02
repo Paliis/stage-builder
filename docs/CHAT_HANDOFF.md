@@ -1,83 +1,71 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-06-01 · **`49e170f`** на `main` і `origin/staging` · робоче дерево **clean** · див. синхрон нижче.
+**Оновлено:** 2026-06-01 · **`main`** ≈ `4bb9aa3` · E2E Mono на staging **пройдено** · див. [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
 
 ## Контекст
 
-Репозиторій **Stage Builder / Shooters Tools**. Модуль **Події (matches)** на staging (`VITE_ENABLE_MATCH_PORTAL=1`). Онлайн-оплата внеску — **Monobank Acquiring**, модель **A** (X-Token організатора).
+**Stage Builder / Shooters Tools** — модуль **Події** на [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) (`VITE_ENABLE_MATCH_PORTAL=1`). Онлайн-внесок: **Monobank Acquiring**, модель **A** (X-Token організатора). Prod ([shooters-tools.com](https://shooters-tools.com)) — матчі **вимкнені** прапорцем.
 
-Продуктові рішення: [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md) §9. Беклог: [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md) (рядки MA-P*).
+Беклог: [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md) (фаза **P**). План оплат: [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
 
-## Зроблено (у git)
+## Реалізовано (Mono MVP, staging)
 
 | ID | Що |
 |----|-----|
-| **MA-P01** | `organizer_payment_providers`, API save/verify/disconnect, UI Mono на **`/matches/my`** (не `/account`) |
-| **MA-P02** | `entry_fee_*_kop` на `matches`, секція в `OrganizerMatchEditPage`, `src/domain/matchEntryFee.ts` |
-| **MA-P04** | `POST /api/create-payment`, `POST /api/payments/webhook/mono` → `payment_received` + auto `confirmed` (`confirmed_by` = organizer матчу) |
-| **MA-P05** | UI «Сплатити онлайн» у `MatchPublicRegistrationSection`, `?payment=return`, таймаути, localhost webhook guard |
-| **MA-P06** | Колонка «Оплачено» + badge «онлайн» у таблиці заявок (`OrganizerMatchRegistrationsPage`) |
-| Cursor | `.cursorignore`, `.cursor/rules/agent-context-budget.mdc` (не перевантажувати чат; коміти — `commit-push-after-changes.mdc`) |
+| **MA-P01** | `organizer_payment_providers`, API save/verify/disconnect, RPC `get_own_organizer_mono_payment_status`, UI **`OrganizerMonoPaymentSection`** на **`/matches/my`** (після таблиці подій). Токен у БД (service role); **Supabase Vault — не** підключено. |
+| **MA-P02** | `entry_fee_*_kop`, секція внеску в `OrganizerMatchEditPage`, `src/domain/matchEntryFee.ts`. |
+| **MA-P04** | `POST /api/create-payment`, `POST /api/payments/webhook/mono` → `payment_received`, `paid_at`, `payment_provider=mono`, **`status=confirmed`** (auto). Таблиця `match_mono_invoices`. |
+| **MA-P05** | «Сплатити онлайн» у `MatchPublicRegistrationSection`; RPC `match_online_payment_available`; `?payment=return`; localhost → `VITE_SHARE_PUBLIC_ORIGIN` для webhook. |
+| **MA-P06** | Колонка «Оплачено» + badge «онлайн» у `OrganizerMatchRegistrationsPage`. |
+| **Підстраховка** | `POST /api/payments/reconcile` + виклик з UI для `pending` після повернення з Mono (якщо webhook затримався / body на Vercel). |
 
-**Коміти (останні):** `90788b3` (Mono UI внизу на `/matches/my`), `543c1de` (**не** переносити Mono вгору — скасовано `90788b3`), `f9cf431` (auto-sync `staging` з `main`).
+**API (збірка):** `src/server/*ApiHandler.ts` → `npm run build:api` → `api/*.js` (webhook: `bodyParser: false`).
 
-**Міграції (застосовані на linked Supabase):**
+**Міграції:**
 
 - `20260602120000_organizer_payment_providers.sql`
 - `20260603120000_match_entry_fees.sql`
-- `20260604120000_match_registration_online_payment.sql` (+ `match_mono_invoices`)
+- `20260604120000_match_registration_online_payment.sql`
 - `20260605120000_organizer_roster_online_payment_fields.sql`
+- `20260605130000_match_online_payment_available_rpc.sql`
 
-**Код API:** правити `src/server/*ApiHandler.ts` → `npm run build:api` → коміт `api/*.js`.
+## Не зроблено
 
-## Не зроблено (наступні кроки)
+- **MA-P00** — QR IBAN, покращений офлайн.
+- **MA-P03**, **MA-P07**, **MA-P08** — LiqPay, WayForPay, Portmone.
+- **MA-W\*** — waitlist, дедлайн оплати.
+- **Vault** для X-Token (зараз колонка `mono_x_token`, RLS revoke).
+- User-help про оплату — лише за запитом.
 
-1. **Опційно:** user-help статті про онлайн-оплату (`content/user-help/`) — лише якщо користувач попросить контент.
-2. **MA-P00** / **MA-W\*** — офлайн QR, waitlist (див. [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)).
+## E2E (перевірено на staging, тестовий токен api.monobank.ua)
 
-## Локальна перевірка оплати
+1. Організатор: `/uk/matches/my` → Mono: зберегти + **Перевірити**; у матчі — суми внеску (≥ 1 ₴).
+2. Стрілець: заявка `pending` → **Сплатити онлайн** → Mono «успішно» → повернення.
+3. Очікування: **підтверджено · Внесок оплачено**; організатор → заявки: **онлайн**.
 
-1. `.env.local`: `SUPABASE_SERVICE_ROLE_KEY`, `VITE_SUPABASE_*`
-2. **Обов’язково для localhost:** `VITE_SHARE_PUBLIC_ORIGIN=https://stage-builder-staging.vercel.app` (публічний HTTPS webhook для Mono; redirect лишається на localhost)
-3. `npm run dev` — API через `src/dev/matchPaymentsDevApiPlugin.ts`
-4. Організатор: `/matches/my` → зберегти + **Перевірити** Mono-токен; у матчі — суми внеску
-5. Стрілець: опублікований матч → заявка pending → **Сплатити онлайн**
+**Mono UI:** заголовок форми («Test Caption») — з кабінету/тестового токена Mono; опис внеску — `Внесок: {назва матчу}` з `create-payment`.
 
-Якщо кнопка «Перенаправлення…» зависає — перевірити Network `POST /api/create-payment` (має відповідь &lt;35s або помилка з текстом).
+**Локально:** `.env.local` — `SUPABASE_SERVICE_ROLE_KEY`, `VITE_SUPABASE_*`, **`VITE_SHARE_PUBLIC_ORIGIN=https://stage-builder-staging.vercel.app`**. Dev API: `src/dev/matchPaymentsDevApiPlugin.ts`.
 
-## Важливі шляхи
+## Шляхи коду
 
-| Що | Де |
-|----|-----|
+| Що | Файл |
+|----|------|
 | Create payment | `src/server/createPaymentApiHandler.ts` |
 | Webhook | `src/server/monoPaymentWebhookApiHandler.ts` |
+| Reconcile | `src/server/reconcileMatchMonoPaymentApiHandler.ts` |
 | Mono HTTP | `src/server/payments/monobankAcquiring.ts` |
+| Застосування оплати | `src/server/payments/applyMatchMonoPayment.ts` |
 | URL redirect/webhook | `src/lib/resolveMatchPaymentUrls.ts` |
 | UI стрільця | `src/portal/matches/MatchPublicRegistrationSection.tsx` |
-| UI внесків | `src/portal/matches/OrganizerMatchEditPage.tsx` |
-| UI Mono організатора | `src/portal/matches/OrganizerMonoPaymentSection.tsx` |
+| UI Mono | `src/portal/matches/OrganizerMonoPaymentSection.tsx` |
 
-## Git: `main` і `staging` (синхрон комітів)
+## Git
 
-1. Робоча гілка — **`main`**. Після змін: **commit + `git push origin main`** (користувач очікує, що агент **сам** пушить, не лишає WIP).
-2. Після push у **`main`** workflow **`.github/workflows/sync-staging-from-main.yml`** робить **fast-forward `staging`** до того ж коміту → деплой **https://stage-builder-staging.vercel.app** (проєкт **`stage-builder-staging`**, не preview `stage-builder`).
-3. Ручна підстраховка: `npm run git:sync-staging`. Не залишати **`staging`** позаду **`main`** — інакше на staging URL старий UI.
-4. Перевірка матчів/оплати — лише **stage-builder-staging.vercel.app**; prod без `VITE_ENABLE_MATCH_PORTAL=1`.
+`main` → push → CI fast-forward **`staging`**. Правило: `.cursor/rules/git-main-staging-sync.mdc`. Mono на `/matches/my` — **після** таблиці, не вгору без запиту.
 
-## UI Mono на `/matches/my`
-
-- Секція **`OrganizerMonoPaymentSection`** — **після** списку/таблиці подій (`OrganizerMatchesListPage`), **не** переносити вгору без **явного** запиту користувача.
-
-## Правила для агента
-
-- Див. `.cursor/rules/git-main-staging-sync.mdc`, `agent-context-budget.mdc` — без `npm run check` за замовчуванням; не читати цілий `messages.ts` / `api/*.js`.
-- Після нових файлів у `supabase/migrations/` → `npx supabase db push --linked --yes`.
-- Після змін handlers → `npm run build:api`.
-- Коміт + push після завершення задачі (`commit-push-after-changes.mdc`).
-- Спілкування з користувачем — **українською**.
-
-## Перше повідомлення в новому чаті (копіпаст)
+## Перше повідомлення в новому чаті
 
 ```
-Прочитай docs/CHAT_HANDOFF.md і .cursor/rules/git-main-staging-sync.mdc. Після змін — commit + push main (staging синхронізується CI). E2E оплати на stage-builder-staging.vercel.app.
+Прочитай docs/CHAT_HANDOFF.md. Далі: MA-P00 / MA-W або prod rollout Mono. commit + push main після змін.
 ```
