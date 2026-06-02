@@ -21759,14 +21759,14 @@ async function loadMatchProgrammeStats(supabase, matchId) {
   if (shareIds.length === 0) {
     return { ok: false, reason: "empty" };
   }
-  const { data: shareRows, error: shareErr } = await supabase.from("shared_stages").select("id, payload, updated_at").in("id", shareIds);
+  const { data: shareRows, error: shareErr } = await supabase.from("shared_stages").select("id, payload, created_at").in("id", shareIds);
   if (shareErr) throw new Error(shareErr.message);
   const payloadById = /* @__PURE__ */ new Map();
   let latestUpdated = null;
   for (const row of shareRows ?? []) {
     if (typeof row.id === "string") payloadById.set(row.id, row.payload);
-    if (typeof row.updated_at === "string") {
-      if (!latestUpdated || row.updated_at > latestUpdated) latestUpdated = row.updated_at;
+    if (typeof row.created_at === "string") {
+      if (!latestUpdated || row.created_at > latestUpdated) latestUpdated = row.created_at;
     }
   }
   const partialRows = stages.map((s) => {

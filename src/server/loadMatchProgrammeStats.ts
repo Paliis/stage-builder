@@ -55,7 +55,7 @@ export async function loadMatchProgrammeStats(
 
   const { data: shareRows, error: shareErr } = await supabase
     .from('shared_stages')
-    .select('id, payload, updated_at')
+    .select('id, payload, created_at')
     .in('id', shareIds)
 
   if (shareErr) throw new Error(shareErr.message)
@@ -64,8 +64,8 @@ export async function loadMatchProgrammeStats(
   let latestUpdated: string | null = null
   for (const row of shareRows ?? []) {
     if (typeof row.id === 'string') payloadById.set(row.id, row.payload)
-    if (typeof row.updated_at === 'string') {
-      if (!latestUpdated || row.updated_at > latestUpdated) latestUpdated = row.updated_at
+    if (typeof row.created_at === 'string') {
+      if (!latestUpdated || row.created_at > latestUpdated) latestUpdated = row.created_at
     }
   }
 
