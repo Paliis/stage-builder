@@ -84,7 +84,7 @@ export function MatchPublicParticipantSummary({ matchId, locale, p }: Props) {
           <h3 id="match-participants-summary-division" className="portal-match-public-detail__subsection-title">
             {p.matchDetailParticipantsSummaryByDivision}
           </h3>
-          <div className="portal-match-public-detail__table-scroll">
+          <div className="portal-match-public-detail__table-scroll portal-match-public-detail__data-table-wrap">
             <table className="portal-match-public-participants-table portal-match-public-summary-table">
               <thead>
                 <tr>
@@ -139,7 +139,7 @@ export function MatchPublicParticipantSummary({ matchId, locale, p }: Props) {
           <h3 id="match-participants-summary-category" className="portal-match-public-detail__subsection-title">
             {p.matchDetailParticipantsSummaryByCategory}
           </h3>
-          <div className="portal-match-public-detail__table-scroll">
+          <div className="portal-match-public-detail__table-scroll portal-match-public-detail__data-table-wrap">
             <table className="portal-match-public-participants-table portal-match-public-summary-table">
               <thead>
                 <tr>

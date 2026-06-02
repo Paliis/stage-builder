@@ -38,4 +38,22 @@ describe('matchProgrammeStats', () => {
     expect(rows[0]?.matchPercent).toBeCloseTo(28.2, 0)
     expect(rows[1]?.matchPercent).toBeCloseTo(71.8, 0)
   })
+
+  it('matches staging sample totals (445 pts, percents sum to 100)', () => {
+    const points = [40, 140, 40, 70, 45, 70, 40]
+    const rows = points.map((pts, i) =>
+      matchStageStatRowFromProject(
+        i + 1,
+        project([], { maxPoints: String(pts), recommendedShots: '1' }),
+      ),
+    )
+    const { totals, rows: out } = aggregateMatchProgrammeStats(rows)
+    expect(totals.points).toBe(445)
+    expect(out.map((r) => r.matchPercent)).toEqual([9, 31.5, 9, 15.7, 10.1, 15.7, 9])
+    const pctSum = out.reduce((s, r) => s + r.matchPercent, 0)
+    expect(pctSum).toBe(100)
+    expect(out[3]?.points).toBe(70)
+    expect(out[3]?.matchPercent).toBe(15.7)
+    expect(70 / 445).toBeCloseTo(0.1573, 3)
+  })
 })

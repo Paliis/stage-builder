@@ -443,20 +443,37 @@ a.portal-match-title-ellipsis:hover {
   color: var(--text-h);
 }
 
+.portal-match-public-detail__section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.portal-match-public-detail__section-head .portal-match-public-detail__section-title {
+  margin: 0;
+}
+
+.portal-match-public-detail__programme-download {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
 .portal-match-public-detail__programme-layout {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 1rem;
   width: 100%;
-  max-width: 58rem;
-  margin-inline: auto;
 }
 
 .portal-match-public-detail__programme-list {
   margin: 0;
   width: 100%;
   max-width: 36rem;
+  margin-inline: auto;
   padding-left: 1.2rem;
 }
 
@@ -476,6 +493,21 @@ a.portal-match-title-ellipsis:hover {
   margin-bottom: 0.15rem;
 }
 
+.portal-match-public-detail__data-table-wrap {
+  border: 1px solid color-mix(in srgb, var(--border) 88%, var(--text));
+  border-radius: 0.65rem;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable;
+}
+
+.portal-match-public-detail__data-table-wrap:focus-within {
+  outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline-offset: 2px;
+}
+
 .portal-match-public-detail__subsection-title {
   margin: 0 0 0.5rem;
   font-size: 1rem;
@@ -491,6 +523,9 @@ a.portal-match-title-ellipsis:hover {
   margin-top: 1.35rem;
   padding-top: 1.15rem;
   border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  max-width: 40rem;
+  margin-inline: auto;
+  width: 100%;
 }
 
 .portal-match-public-detail__programme {
@@ -1490,33 +1525,27 @@ a.portal-match-title-ellipsis:hover {
 /** MA-E02: programme stats table */
 .portal-match-public-participants-table.portal-match-public-programme-stats-table {
   width: 100%;
-  table-layout: fixed;
+  margin: 0;
+  table-layout: auto;
 }
 
-.portal-match-public-programme-stats-table__col-stage {
-  width: 28%;
+.portal-match-public-programme-stats-table__th-full {
+  display: inline;
 }
 
-.portal-match-public-programme-stats-table__col-type {
-  width: 9%;
-}
-
-.portal-match-public-programme-stats-table__col-num {
-  width: 6%;
-}
-
-.portal-match-public-programme-stats-table__col-ammo {
-  width: 9%;
+.portal-match-public-programme-stats-table__th-short {
+  display: none;
 }
 
 .portal-match-public-programme-stats-table thead th {
   border-bottom-width: 2px;
   font-weight: 700;
-  font-size: 0.82rem;
-  line-height: 1.25;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  padding: 0.55rem 0.5rem;
   vertical-align: bottom;
+  text-align: center;
+  hyphens: auto;
 }
 
 .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__stage,
@@ -1527,7 +1556,14 @@ a.portal-match-title-ellipsis:hover {
   white-space: normal;
   overflow-wrap: anywhere;
   line-height: 1.35;
+  padding-left: 0.75rem;
   padding-right: 0.65rem;
+  min-width: 9.5rem;
+  max-width: 14rem;
+}
+
+.portal-match-public-programme-stats-table thead th.portal-match-public-programme-stats-table__stage {
+  text-align: left;
 }
 
 .portal-match-public-programme-stats-table__stage-link {
@@ -1544,14 +1580,16 @@ a.portal-match-title-ellipsis:hover {
 .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__type {
   text-align: left;
   white-space: nowrap;
-  font-size: 0.88rem;
+  padding-left: 0.45rem;
+  padding-right: 0.45rem;
 }
 
 .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__ammo,
 .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__ammo {
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
-  font-size: 0.88rem;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
 }
 
 .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__num,
@@ -1559,7 +1597,9 @@ a.portal-match-title-ellipsis:hover {
   text-align: center;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  font-size: 0.88rem;
+  padding-left: 0.45rem;
+  padding-right: 0.45rem;
+  min-width: 2.35rem;
 }
 
 .portal-match-public-programme-stats-table tbody tr:nth-child(even) td,
@@ -1575,27 +1615,96 @@ a.portal-match-title-ellipsis:hover {
   background-color: color-mix(in srgb, var(--btn-bg) 72%, transparent);
 }
 
-@media (max-width: 639px) {
-  .portal-match-public-detail__programme-layout {
+@media (min-width: 900px) {
+  .portal-match-public-participants-table.portal-match-public-programme-stats-table {
+    table-layout: fixed;
+  }
+
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__stage,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__stage {
+    width: 24%;
     max-width: none;
   }
 
-  .portal-match-public-detail__programme-table-wrap {
-    margin-inline: -0.25rem;
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__type,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__type {
+    width: 8%;
   }
 
-  .portal-match-public-programme-stats-table thead th,
-  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__stage,
-  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__stage,
-  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__type,
-  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__type,
-  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__ammo,
-  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__ammo,
   .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__num,
   .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__num {
-    font-size: 0.78rem;
+    width: 5.5%;
+    min-width: 2.75rem;
+  }
+
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__ammo,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__ammo {
+    width: 7%;
+  }
+}
+
+@media (max-width: 899px) {
+  .portal-match-public-programme-stats-table__th-full {
+    display: none;
+  }
+
+  .portal-match-public-programme-stats-table__th-short {
+    display: inline;
+  }
+
+  .portal-match-public-participants-table.portal-match-public-programme-stats-table {
+    min-width: 40rem;
+  }
+
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__stage,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__stage {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    min-width: 8.25rem;
+    max-width: 10.5rem;
+    background: var(--surface);
+    box-shadow: 3px 0 6px color-mix(in srgb, var(--text) 8%, transparent);
+  }
+
+  .portal-match-public-programme-stats-table thead th.portal-match-public-programme-stats-table__stage {
+    z-index: 3;
+  }
+
+  .portal-match-public-programme-stats-table tbody tr:nth-child(even) th.portal-match-public-programme-stats-table__stage {
+    background: color-mix(in srgb, var(--btn-bg) 55%, var(--surface));
+  }
+
+  .portal-match-public-programme-stats-table tfoot th.portal-match-public-programme-stats-table__stage {
+    background: color-mix(in srgb, var(--btn-bg) 72%, var(--surface));
+  }
+
+  .portal-match-public-programme-stats-table th.portal-match-public-programme-stats-table__num,
+  .portal-match-public-programme-stats-table td.portal-match-public-programme-stats-table__num {
+    min-width: 2.15rem;
     padding-left: 0.35rem;
     padding-right: 0.35rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .portal-match-public-detail__section-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .portal-match-public-detail__programme-download {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .portal-match-public-detail__programme-table-wrap {
+    margin-inline: -0.35rem;
+    border-radius: 0.5rem;
+  }
+
+  .portal-match-public-detail__participant-summary {
+    max-width: none;
   }
 }
 

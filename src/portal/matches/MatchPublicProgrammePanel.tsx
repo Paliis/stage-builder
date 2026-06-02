@@ -5,6 +5,7 @@ import type { StageCategory } from '../../domain/models'
 import { formatTemplate } from '../../i18n/format'
 import type { MessageTree } from '../../i18n/messages'
 import { useI18n } from '../../i18n/useI18n'
+import { programmeStatsTableHeaders } from './matchProgrammeStatsTableHeaders'
 
 type ProgrammeStageLink = {
   sort_order: number
@@ -17,6 +18,19 @@ type Props = {
   stages: ProgrammeStageLink[]
   displayTitles: string[]
   p: MessageTree['portal']
+  /** When false, parent renders download control in section header. */
+  showToolbar?: boolean
+}
+
+function StatsTh({ full, short }: { full: string; short: string }) {
+  return (
+    <>
+      <span className="portal-match-public-programme-stats-table__th-full">{full}</span>
+      <span className="portal-match-public-programme-stats-table__th-short" aria-hidden="true">
+        {short}
+      </span>
+    </>
+  )
 }
 
 type StatsState =
@@ -44,9 +58,12 @@ export function MatchPublicProgrammePanel({
   stages,
   displayTitles,
   p,
+  showToolbar = true,
 }: Props) {
   const { tree } = useI18n()
   const categories = tree.briefing.category
+  const locUi = locale === 'uk' ? 'uk' : 'en'
+  const colHeaders = programmeStatsTableHeaders(p, locUi)
   const [stats, setStats] = useState<StatsState>({ status: 'idle' })
 
   useEffect(() => {
@@ -101,11 +118,13 @@ export function MatchPublicProgrammePanel({
 
   return (
     <div className="portal-match-public-detail__programme-layout">
-      <div className="portal-match-public-detail__programme-stats-toolbar">
-        <button type="button" className="portal-btn portal-btn--secondary" disabled>
-          {p.matchDetailProgrammeStatsDownloadSoon}
-        </button>
-      </div>
+      {showToolbar ?
+        <div className="portal-match-public-detail__programme-stats-toolbar">
+          <button type="button" className="portal-btn portal-btn--secondary" disabled>
+            {p.matchDetailProgrammeStatsDownloadSoon}
+          </button>
+        </div>
+      : null}
 
       {stats.status === 'loading' ?
         <>
@@ -130,50 +149,43 @@ export function MatchPublicProgrammePanel({
           </ol>
         </>
       : stats.status === 'ready' ?
-        <div className="portal-match-public-detail__table-scroll portal-match-public-detail__programme-table-wrap">
+        <div className="portal-match-public-detail__table-scroll portal-match-public-detail__data-table-wrap portal-match-public-detail__programme-table-wrap">
           <table className="portal-match-public-participants-table portal-match-public-programme-stats-table">
             <caption className="portal-shell__sr-only">{p.matchDetailProgrammeStatsCaption}</caption>
-            <colgroup>
-              <col className="portal-match-public-programme-stats-table__col-stage" />
-              <col className="portal-match-public-programme-stats-table__col-type" />
-              <col className="portal-match-public-programme-stats-table__col-num" span={5} />
-              <col className="portal-match-public-programme-stats-table__col-ammo" />
-              <col className="portal-match-public-programme-stats-table__col-num" span={3} />
-            </colgroup>
             <thead>
               <tr>
                 <th scope="col" className="portal-match-public-programme-stats-table__stage">
-                  {p.matchDetailProgrammeStatsColStage}
+                  <StatsTh full={colHeaders[0]!.full} short={colHeaders[0]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__type">
-                  {p.matchDetailProgrammeStatsColType}
+                  <StatsTh full={colHeaders[1]!.full} short={colHeaders[1]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__num">
-                  {p.matchDetailProgrammeStatsColPaper}
+                  <StatsTh full={colHeaders[2]!.full} short={colHeaders[2]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__num">
-                  {p.matchDetailProgrammeStatsColMetal}
+                  <StatsTh full={colHeaders[3]!.full} short={colHeaders[3]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__num">
-                  {p.matchDetailProgrammeStatsColCeramic}
+                  <StatsTh full={colHeaders[4]!.full} short={colHeaders[4]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__num">
-                  {p.matchDetailProgrammeStatsColPopper}
+                  <StatsTh full={colHeaders[5]!.full} short={colHeaders[5]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__num">
-                  {p.matchDetailProgrammeStatsColMiniPopper}
+                  <StatsTh full={colHeaders[6]!.full} short={colHeaders[6]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__ammo">
-                  {p.matchDetailProgrammeStatsColAmmo}
+                  <StatsTh full={colHeaders[7]!.full} short={colHeaders[7]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__num">
-                  {p.matchDetailProgrammeStatsColShots}
+                  <StatsTh full={colHeaders[8]!.full} short={colHeaders[8]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__num">
-                  {p.matchDetailProgrammeStatsColPoints}
+                  <StatsTh full={colHeaders[9]!.full} short={colHeaders[9]!.short} />
                 </th>
                 <th scope="col" className="portal-match-public-programme-stats-table__num">
-                  {p.matchDetailProgrammeStatsColPercent}
+                  <StatsTh full={colHeaders[10]!.full} short={colHeaders[10]!.short} />
                 </th>
               </tr>
             </thead>

@@ -390,7 +390,7 @@ export function MatchPublicDetailPage() {
     }
     return (
       <>
-        <div className="portal-match-public-detail__table-scroll">
+        <div className="portal-match-public-detail__table-scroll portal-match-public-detail__data-table-wrap">
           <table className="portal-match-public-participants-table">
             <thead>
               <tr>
@@ -591,12 +591,23 @@ export function MatchPublicDetailPage() {
 
       {showProgrammeSection ?
         <section
-          className="portal-match-public-detail__surface portal-match-public-detail__section"
+          className="portal-match-public-detail__surface portal-match-public-detail__section portal-match-public-detail__section--programme"
           aria-labelledby="match-programme-heading"
         >
-          <h2 id="match-programme-heading" className="portal-match-public-detail__section-title">
-            {p.matchDetailProgrammeHeading}
-          </h2>
+          <div className="portal-match-public-detail__section-head">
+            <h2 id="match-programme-heading" className="portal-match-public-detail__section-title">
+              {p.matchDetailProgrammeHeading}
+            </h2>
+            {programme?.publiclyVisible && programmeDisplayTitles ?
+              <button
+                type="button"
+                className="portal-btn portal-btn--secondary portal-match-public-detail__programme-download"
+                disabled
+              >
+                {p.matchDetailProgrammeStatsDownloadSoon}
+              </button>
+            : null}
+          </div>
           {programme === undefined ?
             <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
           : programmeError ?
@@ -610,6 +621,7 @@ export function MatchPublicDetailPage() {
               stages={programme.stages}
               displayTitles={programmeDisplayTitles}
               p={p}
+              showToolbar={false}
             />
           : programmePendingDate ?
             <p className="portal-match-public-detail__prose">
