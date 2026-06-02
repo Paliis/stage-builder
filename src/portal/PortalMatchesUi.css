@@ -465,11 +465,6 @@ a.portal-match-title-ellipsis:hover {
   margin-bottom: 0.65rem;
 }
 
-.portal-match-public-detail__programme-stats-table th,
-.portal-match-public-detail__programme-stats-table td {
-  white-space: nowrap;
-}
-
 .portal-match-public-detail__subsection-title {
   margin: 0 0 0.5rem;
   font-size: 1rem;
@@ -485,11 +480,6 @@ a.portal-match-title-ellipsis:hover {
   margin-top: 1.35rem;
   padding-top: 1.15rem;
   border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
-}
-
-.portal-match-public-detail__summary-table th,
-.portal-match-public-detail__summary-table td {
-  white-space: nowrap;
 }
 
 .portal-match-public-detail__programme {
@@ -1437,6 +1427,96 @@ a.portal-match-title-ellipsis:hover {
   min-width: 8.75rem;
   padding: 0.1rem 0.34rem;
   white-space: nowrap;
+}
+
+/** MA-E03: division / class summary — same chrome as roster table */
+.portal-match-public-participants-table.portal-match-public-summary-table {
+  table-layout: auto;
+  max-width: 40rem;
+}
+
+.portal-match-public-summary-table thead th {
+  border-bottom-width: 2px;
+  font-weight: 700;
+}
+
+.portal-match-public-summary-table th.portal-match-public-summary-table__label,
+.portal-match-public-summary-table td.portal-match-public-summary-table__label {
+  text-align: left;
+  min-width: 9rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.portal-match-public-summary-table thead th.portal-match-public-summary-table__label {
+  font-weight: 700;
+}
+
+.portal-match-public-summary-table th.portal-match-public-summary-table__num,
+.portal-match-public-summary-table td.portal-match-public-summary-table__num {
+  width: 5.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.portal-match-public-summary-table tbody tr:nth-child(even) th[scope='row'],
+.portal-match-public-summary-table tbody tr:nth-child(even) td {
+  background-color: color-mix(in srgb, var(--btn-bg) 40%, transparent);
+}
+
+.portal-match-public-summary-table tfoot th,
+.portal-match-public-summary-table tfoot td {
+  border-top: 2px solid var(--border);
+  border-bottom: none;
+  background-color: color-mix(in srgb, var(--btn-bg) 72%, transparent);
+}
+
+.portal-match-public-summary-table tfoot th.portal-match-public-summary-table__label {
+  font-weight: 800;
+}
+
+/** MA-E02: programme stats table */
+.portal-match-public-participants-table.portal-match-public-programme-stats-table {
+  table-layout: auto;
+  min-width: 52rem;
+}
+
+.portal-match-public-programme-stats-table thead th {
+  border-bottom-width: 2px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.portal-match-public-programme-stats-table th[scope='row'] {
+  font-weight: 600;
+  color: var(--text-h);
+  text-align: left;
+  min-width: 8rem;
+}
+
+.portal-match-public-programme-stats-table td:not(:nth-child(2)):not(:nth-child(8)) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.portal-match-public-programme-stats-table td:nth-child(2),
+.portal-match-public-programme-stats-table td:nth-child(8) {
+  text-align: left;
+}
+
+.portal-match-public-programme-stats-table tbody tr:nth-child(even) td,
+.portal-match-public-programme-stats-table tbody tr:nth-child(even) th[scope='row'] {
+  background-color: color-mix(in srgb, var(--btn-bg) 40%, transparent);
+}
+
+.portal-match-public-programme-stats-table tfoot th,
+.portal-match-public-programme-stats-table tfoot td {
+  border-top: 2px solid var(--border);
+  border-bottom: none;
+  font-weight: 700;
+  background-color: color-mix(in srgb, var(--btn-bg) 72%, transparent);
 }
 
 .portal-match-reg-label {

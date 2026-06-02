@@ -85,35 +85,45 @@ export function MatchPublicParticipantSummary({ matchId, locale, p }: Props) {
             {p.matchDetailParticipantsSummaryByDivision}
           </h3>
           <div className="portal-match-public-detail__table-scroll">
-            <table className="portal-match-public-detail__table portal-match-public-detail__summary-table">
+            <table className="portal-match-public-participants-table portal-match-public-summary-table">
               <thead>
                 <tr>
-                  <th scope="col">{p.matchDetailParticipantsSummaryColLabel}</th>
-                  <th scope="col">{p.matchDetailParticipantsSummaryColConfirmed}</th>
-                  <th scope="col">{p.matchDetailParticipantsSummaryColPending}</th>
-                  <th scope="col">{p.matchDetailParticipantsSummaryColTotal}</th>
+                  <th scope="col" className="portal-match-public-summary-table__label">
+                    {p.matchDetailParticipantsSummaryColLabel}
+                  </th>
+                  <th scope="col" className="portal-match-public-summary-table__num">
+                    {p.matchDetailParticipantsSummaryColConfirmed}
+                  </th>
+                  <th scope="col" className="portal-match-public-summary-table__num">
+                    {p.matchDetailParticipantsSummaryColPending}
+                  </th>
+                  <th scope="col" className="portal-match-public-summary-table__num">
+                    {p.matchDetailParticipantsSummaryColTotal}
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {state.data.byDivision.map((row) => (
                   <tr key={row.division}>
-                    <th scope="row">
+                    <th scope="row" className="portal-match-public-summary-table__label">
                       {weaponId ?
                         divisionLabel(weaponId, row.division, locUi)
                       : row.division}
                     </th>
-                    <td>{cellCount(row.confirmed)}</td>
-                    <td>{cellCount(row.pending)}</td>
-                    <td>{summaryRowTotal(row)}</td>
+                    <td className="portal-match-public-summary-table__num">{cellCount(row.confirmed)}</td>
+                    <td className="portal-match-public-summary-table__num">{cellCount(row.pending)}</td>
+                    <td className="portal-match-public-summary-table__num">{summaryRowTotal(row)}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr>
-                  <th scope="row">{p.matchDetailParticipantsSummaryRowTotal}</th>
-                  <td>{divTotals.confirmed}</td>
-                  <td>{divTotals.pending}</td>
-                  <td>{divTotals.total}</td>
+                <tr className="portal-match-public-summary-table__total-row">
+                  <th scope="row" className="portal-match-public-summary-table__label">
+                    {p.matchDetailParticipantsSummaryRowTotal}
+                  </th>
+                  <td className="portal-match-public-summary-table__num">{divTotals.confirmed}</td>
+                  <td className="portal-match-public-summary-table__num">{divTotals.pending}</td>
+                  <td className="portal-match-public-summary-table__num">{divTotals.total}</td>
                 </tr>
               </tfoot>
             </table>
@@ -130,31 +140,43 @@ export function MatchPublicParticipantSummary({ matchId, locale, p }: Props) {
             {p.matchDetailParticipantsSummaryByCategory}
           </h3>
           <div className="portal-match-public-detail__table-scroll">
-            <table className="portal-match-public-detail__table portal-match-public-detail__summary-table">
+            <table className="portal-match-public-participants-table portal-match-public-summary-table">
               <thead>
                 <tr>
-                  <th scope="col">{p.matchDetailParticipantsSummaryColLabel}</th>
-                  <th scope="col">{p.matchDetailParticipantsSummaryColConfirmed}</th>
-                  <th scope="col">{p.matchDetailParticipantsSummaryColPending}</th>
-                  <th scope="col">{p.matchDetailParticipantsSummaryColTotal}</th>
+                  <th scope="col" className="portal-match-public-summary-table__label">
+                    {p.matchDetailParticipantsSummaryColLabel}
+                  </th>
+                  <th scope="col" className="portal-match-public-summary-table__num">
+                    {p.matchDetailParticipantsSummaryColConfirmed}
+                  </th>
+                  <th scope="col" className="portal-match-public-summary-table__num">
+                    {p.matchDetailParticipantsSummaryColPending}
+                  </th>
+                  <th scope="col" className="portal-match-public-summary-table__num">
+                    {p.matchDetailParticipantsSummaryColTotal}
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {state.data.byCategory.map((row) => (
                   <tr key={row.category}>
-                    <th scope="row">{categoryLabel(row.category, locUi)}</th>
-                    <td>{cellCount(row.confirmed)}</td>
-                    <td>{cellCount(row.pending)}</td>
-                    <td>{summaryRowTotal(row)}</td>
+                    <th scope="row" className="portal-match-public-summary-table__label">
+                      {categoryLabel(row.category, locUi)}
+                    </th>
+                    <td className="portal-match-public-summary-table__num">{cellCount(row.confirmed)}</td>
+                    <td className="portal-match-public-summary-table__num">{cellCount(row.pending)}</td>
+                    <td className="portal-match-public-summary-table__num">{summaryRowTotal(row)}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr>
-                  <th scope="row">{p.matchDetailParticipantsSummaryRowTotal}</th>
-                  <td>{catTotals.confirmed}</td>
-                  <td>{catTotals.pending}</td>
-                  <td>{catTotals.total}</td>
+                <tr className="portal-match-public-summary-table__total-row">
+                  <th scope="row" className="portal-match-public-summary-table__label">
+                    {p.matchDetailParticipantsSummaryRowTotal}
+                  </th>
+                  <td className="portal-match-public-summary-table__num">{catTotals.confirmed}</td>
+                  <td className="portal-match-public-summary-table__num">{catTotals.pending}</td>
+                  <td className="portal-match-public-summary-table__num">{catTotals.total}</td>
                 </tr>
               </tfoot>
             </table>

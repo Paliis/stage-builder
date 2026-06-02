@@ -120,7 +120,7 @@ export function MatchPublicProgrammePanel({
           </p>
         : stats.status === 'ready' ?
           <div className="portal-match-public-detail__table-scroll">
-            <table className="portal-match-public-detail__table portal-match-public-detail__programme-stats-table">
+            <table className="portal-match-public-participants-table portal-match-public-programme-stats-table">
               <caption className="portal-shell__sr-only">{p.matchDetailProgrammeStatsCaption}</caption>
               <thead>
                 <tr>
