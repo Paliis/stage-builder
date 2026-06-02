@@ -72,6 +72,7 @@
 |----|--------|--------|-----|----------|
 | **MA-E01** | Збірний **PDF** (або ZIP): усі брифінги матчу + титул; `POST /api/match-export-briefings` | idea | — | План: [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md); реюз `exportBriefingPdf` / merge |
 | **MA-E02** | Таблиця **«Статистика матчу»** на картці матчу (як PracticStats) | idea | — | Колонки з `stage` + `briefing`; рядок «Разом», % очок; публічно + опц. організатор |
+| **MA-E03** | Зведена таблиця по **дивізіонах** і **класах** (категоріях) учасників | idea | — | `division` + `categories[]`; RPC-агрегація; у PDF пакеті (**MA-E01**) і UI матчу — [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) §2 |
 
 ---
 
@@ -150,7 +151,7 @@
 
 | Дата | Зміни |
 |------|--------|
-| 2026-06-01 | План **MA-E01/E02**: [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) (статистика матчу + збірний пакет брифінгів). |
+| 2026-06-01 | План **MA-E01…E03**: [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) (статистика вправ, дивізіони/класи, збірний PDF). |
 | 2026-06-01 | **MA-P02**, **MA-P04**…**P06** → **done**; webhook raw body + **reconcile**; E2E Mono staging; docs sync. **MA-P01** partial (без Vault). |
 | 2026-05-06 | Узгодження з тестами: **MA-D02** → **partial** (Vitest на збірку ZIP; повний diff з еталоном у CI — за потреби). |
 | 2026-05-07 | Синхронізація статусів з кодом: **MA-B02**, **MA-C01**, **MA-C02** → **partial** (публічний ростер / прив’язка вправ і refresh уже в проді-коді; епік C–PSC уточнюється). |

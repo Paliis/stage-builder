@@ -34,7 +34,7 @@
 - **MA-P00** — QR IBAN, покращений офлайн.
 - **MA-P03**, **MA-P07**, **MA-P08** — LiqPay, WayForPay, Portmone.
 - **MA-W\*** — waitlist, дедлайн оплати.
-- **MA-E01** — збірний PDF/HTML усіх брифінгів матчу; **MA-E02** — таблиця «Статистика матчу» на картці (план: [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md), реф. PracticStats).
+- **MA-E01** — збірний PDF усіх брифінгів; **MA-E02** — статистика вправ; **MA-E03** — зведення по дивізіонах і класах учасників ([MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md)).
 - **Vault** для X-Token (зараз колонка `mono_x_token`, RLS revoke).
 - User-help про оплату — лише за запитом.
 
