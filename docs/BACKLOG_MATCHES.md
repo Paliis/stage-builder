@@ -70,9 +70,9 @@
 
 | ID | Задача | Статус | BL | Примітки |
 |----|--------|--------|-----|----------|
-| **MA-E01** | **Публічне** завантаження PDF: усі брифінги + зведення; `GET/POST /api/match-export-briefings` | idea | — | Кнопка в блоці **«Програма»** на картці матчу (**для стрільців**), не поруч із PSC у організатора |
-| **MA-E02** | Таблиця пострілів/мішеней у блоці **«Програма»** (праворуч від списку вправ) | idea | — | Як PracticStats; дані з `stage` + `briefing`; разом із кнопкою **MA-E01** |
-| **MA-E03** | Зведення по **дивізіонах** і **класах** учасників | idea | — | Під таблицею **«Учасники»** на картці + сторінка в **MA-E01** PDF; RPC-агрегація — [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) §2 |
+| **MA-E01** | **Публічне** завантаження PDF: усі брифінги + зведення; `GET /api/match-export-briefings` | done | — | Кнопка в заголовку **«Програма»**; dev plugin + `api/match-export-briefings.js` |
+| **MA-E02** | Таблиця пострілів/мішеней у блоці **«Програма»** (праворуч від списку вправ) | done | — | `match-programme-stats` API + `MatchPublicProgrammePanel` |
+| **MA-E03** | Зведення по **дивізіонах** і **класах** учасників | done | — | `MatchPublicParticipantSummary` + PDF-розділ; RPC `fetch_public_match_participant_summary` |
 
 ---
 

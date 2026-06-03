@@ -9,6 +9,9 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "paths": {
+      "match-briefings-pdf-fonts": ["./src/server/pdf/registerPdfFontsNode.ts"]
+    },
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
@@ -22,5 +25,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts", "middleware.ts"]
+  "include": ["vite.config.ts", "middleware.ts", "src/typings/**/*.d.ts"]
 }

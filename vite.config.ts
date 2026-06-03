@@ -1,8 +1,11 @@
 /// <reference types="vitest/config" />
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { matchExportDevApiPlugin } from './src/dev/matchExportDevApiPlugin'
+import { matchExportBriefingsDevApiPlugin } from './src/dev/matchExportBriefingsDevApiPlugin'
 import { matchProgrammeStatsDevApiPlugin } from './src/dev/matchProgrammeStatsDevApiPlugin'
 import { organizerMonoPaymentDevApiPlugin } from './src/dev/organizerMonoPaymentDevApiPlugin'
 import { matchPaymentsDevApiPlugin } from './src/dev/matchPaymentsDevApiPlugin'
@@ -32,6 +35,8 @@ function resolveSiteOriginForHtml(): string {
 
 /** Set `VITE_SITE_ENV=staging` on the staging Vercel project so builds get noindex + UI ribbon. */
 const SITE_ENV = process.env.VITE_SITE_ENV ?? ''
+
+const repoRoot = path.dirname(fileURLToPath(import.meta.url))
 
 function htmlTransformPlugin() {
   return {
@@ -66,6 +71,11 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+  resolve: {
+    alias: {
+      'match-briefings-pdf-fonts': path.join(repoRoot, 'src/server/pdf/registerPdfFontsNode.ts'),
+    },
+  },
   define: {
     /** Set at build time on Vercel so preview deployments use production host in share/QR links. */
     'import.meta.env.VITE_BUILD_PRODUCTION_ORIGIN': JSON.stringify(buildProductionOrigin),
@@ -74,6 +84,7 @@ export default defineConfig(({ mode }) => {
     ...(mode === 'development' ?
       [
         matchExportDevApiPlugin(),
+        matchExportBriefingsDevApiPlugin(),
         matchProgrammeStatsDevApiPlugin(),
         organizerMonoPaymentDevApiPlugin(),
         matchPaymentsDevApiPlugin(),

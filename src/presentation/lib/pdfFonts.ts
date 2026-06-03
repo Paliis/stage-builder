@@ -1,8 +1,11 @@
 import { jsPDF } from 'jspdf'
-import robotoRegularUrl from './fonts/Roboto-Regular.ttf'
-import robotoBoldUrl from './fonts/Roboto-Bold.ttf'
 
-export const PDF_FONT_FAMILY = 'Roboto'
+import { PDF_FONT_FAMILY } from './pdfFontConstants'
+
+const robotoRegularUrl = new URL('./fonts/Roboto-Regular.ttf', import.meta.url).href
+const robotoBoldUrl = new URL('./fonts/Roboto-Bold.ttf', import.meta.url).href
+
+export { PDF_FONT_FAMILY }
 
 let cachedRegular: string | null = null
 let cachedBold: string | null = null

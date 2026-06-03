@@ -14,8 +14,3 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
-
-declare module '*.ttf' {
-  const src: string
-  export default src
-}

@@ -38,19 +38,28 @@ const bundles = [
     join(root, 'src/server/monoPaymentWebhookApiHandler.ts'),
     join(root, 'api', 'payments', 'webhook', 'mono.js'),
   ],
+  [
+    join(root, 'src/server/matchExportBriefingsApiHandler.ts'),
+    join(root, 'api', 'match-export-briefings.js'),
+  ],
 ]
 
 const webhookOut = join(root, 'api', 'payments', 'webhook', 'mono.js')
 
+const embeddedPdfFonts = join(root, 'src/server/pdf/registerPdfFontsNode.embedded.ts')
+
 for (const [entry, outfile] of bundles) {
+  const useEmbeddedPdfFonts = entry.includes('matchExportBriefingsApiHandler')
   await esbuild.build({
+    absWorkingDir: root,
     entryPoints: [entry],
     bundle: true,
     platform: 'node',
     target: 'node20',
     format: 'cjs',
     outfile,
-    loader: { '.json': 'json' },
+    loader: { '.json': 'json', '.ttf': 'base64' },
+    alias: useEmbeddedPdfFonts ? { 'match-briefings-pdf-fonts': embeddedPdfFonts } : undefined,
     logLevel: 'info',
   })
 }

@@ -256,6 +256,19 @@ export function MatchPublicDetailPage() {
     }
   }, [validId, configured, row?.id])
 
+  const programmeDisplayTitles = useMemo(() => {
+    if (!programme || programmeError) return null
+    return programmeListDisplayTitles(programme.stages, p)
+  }, [programme, programmeError, p])
+
+  const canDownloadBriefingsPdf = useMemo(
+    () =>
+      Boolean(row?.id) &&
+      programme?.publiclyVisible === true &&
+      programmeDisplayTitles != null,
+    [row?.id, programme?.publiclyVisible, programmeDisplayTitles],
+  )
+
   if (!validId) {
     return (
       <div className="portal-home">
@@ -336,8 +349,6 @@ export function MatchPublicDetailPage() {
   const weaponId = parseMatchDiscipline(row.discipline)
   const weaponLine = weaponId ? weaponClassLabel(weaponId, locUi) : ''
 
-  const programmeDisplayTitles =
-    programme && !programmeError ? programmeListDisplayTitles(programme.stages, p) : null
   const programmePendingDate =
     programme?.availableFrom ?
       formatPortalDateShort(`${programme.availableFrom}T00:00:00.000Z`, locale === 'uk' ? 'uk' : 'en')
@@ -598,19 +609,21 @@ export function MatchPublicDetailPage() {
             <h2 id="match-programme-heading" className="portal-match-public-detail__section-title">
               {p.matchDetailProgrammeHeading}
             </h2>
-            {programme?.publiclyVisible && programmeDisplayTitles ?
-              <button
-                type="button"
+            {canDownloadBriefingsPdf ?
+              <Link
+                to={{
+                  pathname: `/${locale}/matches/${row.id}/briefings`,
+                  search: `?${new URLSearchParams({ title: row.title })}`,
+                }}
                 className="portal-btn portal-btn--secondary portal-btn--compact portal-match-public-detail__programme-download"
-                disabled
               >
                 <span className="portal-match-public-detail__programme-download__full">
-                  {p.matchDetailProgrammeStatsDownloadSoon}
+                  {p.matchDetailProgrammeStatsDownload}
                 </span>
                 <span className="portal-match-public-detail__programme-download__short" aria-hidden="true">
                   {p.matchDetailProgrammeStatsDownloadSoonShort}
                 </span>
-              </button>
+              </Link>
             : null}
           </div>
           {programme === undefined ?

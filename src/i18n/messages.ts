@@ -536,6 +536,17 @@ export type MessageTree = {
     matchDetailProgrammeStatsLoading: string
     matchDetailProgrammeStatsDownloadSoon: string
     matchDetailProgrammeStatsDownloadSoonShort: string
+    matchDetailProgrammeStatsDownload: string
+    matchDetailProgrammeStatsDownloading: string
+    matchDetailProgrammeStatsDownloadError: string
+    matchDetailBriefingsPdfHelmet: string
+    matchDetailBriefingsPdfBack: string
+    matchDetailBriefingsPdfSave: string
+    matchDetailBriefingsPdfLoading: string
+    matchDetailBriefingsPdfNotPdf: string
+    matchDetailBriefingsPdfEmpty: string
+    matchDetailBriefingsPdfDevHint: string
+    matchDetailBriefingsPdfNoEmbed: string
     /** Public match card: roster block (participant_list_visibility). */
     matchDetailParticipantsHeading: string
     matchDetailParticipantsClosed: string
@@ -1767,6 +1778,18 @@ export const ukMessages: MessageTree = {
     matchDetailProgrammeStatsLoading: 'Завантаження статистики…',
     matchDetailProgrammeStatsDownloadSoon: 'Завантажити PDF (незабаром)',
     matchDetailProgrammeStatsDownloadSoonShort: 'PDF',
+    matchDetailProgrammeStatsDownload: 'Відкрити PDF',
+    matchDetailProgrammeStatsDownloading: 'Відкриття PDF…',
+    matchDetailProgrammeStatsDownloadError: 'Не вдалося відкрити PDF',
+    matchDetailBriefingsPdfHelmet: 'Зведений PDF матчу',
+    matchDetailBriefingsPdfBack: 'Назад до матчу',
+    matchDetailBriefingsPdfSave: 'Зберегти PDF',
+    matchDetailBriefingsPdfLoading: 'Формування PDF…',
+    matchDetailBriefingsPdfNotPdf: 'Сервер повернув не PDF',
+    matchDetailBriefingsPdfEmpty: 'PDF порожній або пошкоджений',
+    matchDetailBriefingsPdfDevHint:
+      'Локально: у .env потрібен SUPABASE_SERVICE_ROLE_KEY; перезапустіть npm run dev.',
+    matchDetailBriefingsPdfNoEmbed: 'Переглядач PDF недоступний у цьому браузері.',
     matchDetailParticipantsHeading: 'Учасники',
     matchDetailParticipantsClosed:
       'З міркувань безпеки список учасників доступний лише організатору події.',
@@ -3071,6 +3094,18 @@ export const enMessages: MessageTree = {
     matchDetailProgrammeStatsLoading: 'Loading statistics…',
     matchDetailProgrammeStatsDownloadSoon: 'Download PDF (coming soon)',
     matchDetailProgrammeStatsDownloadSoonShort: 'PDF',
+    matchDetailProgrammeStatsDownload: 'Open PDF',
+    matchDetailProgrammeStatsDownloading: 'Opening PDF…',
+    matchDetailProgrammeStatsDownloadError: 'Could not open PDF',
+    matchDetailBriefingsPdfHelmet: 'Match briefings PDF',
+    matchDetailBriefingsPdfBack: 'Back to match',
+    matchDetailBriefingsPdfSave: 'Save PDF',
+    matchDetailBriefingsPdfLoading: 'Building PDF…',
+    matchDetailBriefingsPdfNotPdf: 'Server did not return a PDF',
+    matchDetailBriefingsPdfEmpty: 'PDF is empty or corrupted',
+    matchDetailBriefingsPdfDevHint:
+      'Local dev: set SUPABASE_SERVICE_ROLE_KEY in .env and restart npm run dev.',
+    matchDetailBriefingsPdfNoEmbed: 'PDF viewer is not available in this browser.',
     matchDetailParticipantsHeading: 'Participants',
     matchDetailParticipantsClosed:
       'For security reasons, the participant list is only available to the match organizer.',
