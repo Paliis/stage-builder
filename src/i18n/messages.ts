@@ -510,6 +510,8 @@ export type MessageTree = {
     /** Public match card: linked exercises (match_stage_links). */
     matchDetailProgrammeHeading: string
     matchDetailProgrammeViewLink: string
+    matchDetailProgrammePdfLink: string
+    matchDetailProgrammePdfOnlyHint: string
     matchDetailProgrammeFootnote: string
     /**
      * When every programme snapshot title is identical (e.g. copied «Вправа №1…» everywhere), prepend/order by programme slot.
@@ -1001,6 +1003,12 @@ export type MessageTree = {
     matchOrgShootersInvalid: string
     matchOrgStagesHeading: string
     matchOrgStagesIntro: string
+    matchOrgStagesZoneSbTitle: string
+    matchOrgStagesZoneSbIntro: string
+    matchOrgStagesZonePdfTitle: string
+    matchOrgStagesZonePdfInformer: string
+    matchOrgStagesZoneVisibilityTitle: string
+    matchOrgStagesLinkedListHeading: string
     matchOrgStagesOpenEditor: string
     matchOrgStagesPasteLabel: string
     matchOrgStagesPastePlaceholder: string
@@ -1031,6 +1039,16 @@ export type MessageTree = {
     matchOrgStagesVisibleDaysSaveError: string
     /** Organizer preview when days > 0; {{date}} = DD.MM.YY. */
     matchOrgStagesVisibleFromPreview: string
+    matchOrgProgrammePdfLabel: string
+    matchOrgProgrammePdfHint: string
+    matchOrgProgrammePdfUpload: string
+    matchOrgProgrammePdfReplace: string
+    matchOrgProgrammePdfUploading: string
+    matchOrgProgrammePdfOpen: string
+    matchOrgProgrammePdfRemove: string
+    matchOrgProgrammePdfRequired: string
+    matchOrgProgrammePdfInvalid: string
+    matchOrgProgrammePdfTooLarge: string
     matchOrgSquadsHeading: string
     matchOrgSquadsDerivedIntro: string
     matchOrgSquadsDerivedCapacityLine: string
@@ -1758,6 +1776,8 @@ export const ukMessages: MessageTree = {
     matchDetailPrematchValueNo: 'Ні',
     matchDetailProgrammeHeading: 'Програма',
     matchDetailProgrammeViewLink: 'Схема / брифінг',
+    matchDetailProgrammePdfLink: 'PDF брифінг',
+    matchDetailProgrammePdfOnlyHint: 'Брифінг програми — у PDF вище.',
     matchDetailProgrammeFootnote: '',
     matchDetailProgrammeDuplicateOrdinalFallback: 'Вправа №{{n}}: {{title}}',
     matchDetailProgrammePending: 'Бріфінг вправ буде доступним з {{date}}',
@@ -2235,7 +2255,15 @@ export const ukMessages: MessageTree = {
     matchOrgShootersInvalid: 'Кількість учасників (стрільців) у групі (скводі) має бути цілим числом ≥ 1.',
     matchOrgStagesHeading: 'Завантаж вправи події',
     matchOrgStagesIntro:
-      'Створи вправу в Stage Builder, отримай посилання для перегляду й додай його в поле нижче. Назва в програмі події збігається з назвою вправи з PDF-брифінгу.',
+      'Три кроки: вправи з Stage Builder, або один PDF програми, і коли показати програму на картці матчу.',
+    matchOrgStagesZoneSbTitle: '1. Вправи з Stage Builder',
+    matchOrgStagesZoneSbIntro:
+      'Створи вправу в редакторі, опублікуй посилання перегляду (view) і встав його нижче. Назва в програмі збігається з PDF-брифінгом вправи.',
+    matchOrgStagesZonePdfTitle: '2. PDF-брифінг програми',
+    matchOrgStagesZonePdfInformer:
+      'Якщо програма лише в PDF (без посилань Stage Builder у списку нижче): збірний файл матчу на сайті формується без окремих вправ — лише зведення та дані про стрільців. Таблиця статистики вправ і блоки «Вправа 1…N» у збірному PDF не з’являться. Потрібні схеми вправ — додай їх у зоні 1.',
+    matchOrgStagesZoneVisibilityTitle: '3. Відтермінування публікації',
+    matchOrgStagesLinkedListHeading: 'Додані вправи (Stage Builder)',
     matchOrgStagesOpenEditor: 'Відкрити Stage Builder (нова вкладка)',
     matchOrgStagesPasteLabel: 'Посилання перегляду або id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… або s…',
@@ -2268,6 +2296,16 @@ export const ukMessages: MessageTree = {
     matchOrgStagesVisibleDaysSaving: 'Збереження…',
     matchOrgStagesVisibleDaysSaveError: 'Не вдалося зберегти термін публікації вправ.',
     matchOrgStagesVisibleFromPreview: 'На картці з’явиться з {{date}}',
+    matchOrgProgrammePdfLabel: 'PDF брифінг програми (один файл)',
+    matchOrgProgrammePdfHint: 'Один файл PDF (до 15 МБ). На картці матчу — кнопка «PDF брифінг» у блоці «Програма».',
+    matchOrgProgrammePdfUpload: 'Завантажити PDF',
+    matchOrgProgrammePdfReplace: 'Замінити PDF',
+    matchOrgProgrammePdfUploading: 'Завантаження…',
+    matchOrgProgrammePdfOpen: 'Відкрити PDF',
+    matchOrgProgrammePdfRemove: 'Прибрати PDF',
+    matchOrgProgrammePdfRequired: 'Обери файл PDF.',
+    matchOrgProgrammePdfInvalid: 'Потрібен файл PDF (.pdf).',
+    matchOrgProgrammePdfTooLarge: 'PDF завеликий (макс. 15 МБ).',
     matchOrgSquadsHeading: 'Групи (скводи)',
     matchOrgSquadsDerivedIntro:
       'Таблиця груп (скводів) формується з налаштувань події: кількість груп (скводів) × учасників (стрільців) у групі (скводі) (окремо для основного дня та прематчу). Збережи картку — рядки оновлються; зменшення можливе лише якщо в групі (скводі) немає активних заявок.',
@@ -3074,6 +3112,8 @@ export const enMessages: MessageTree = {
     matchDetailPrematchValueNo: 'No',
     matchDetailProgrammeHeading: 'Programme',
     matchDetailProgrammeViewLink: 'Course of fire',
+    matchDetailProgrammePdfLink: 'Briefing PDF',
+    matchDetailProgrammePdfOnlyHint: 'Programme briefing is in the PDF above.',
     matchDetailProgrammeFootnote: '',
     matchDetailProgrammeDuplicateOrdinalFallback: 'Exercise {{n}}: {{title}}',
     matchDetailProgrammePending: 'Stage briefings will be available from {{date}}',
@@ -3552,7 +3592,15 @@ export const enMessages: MessageTree = {
     matchOrgShootersInvalid: 'Participants (shooters) per group (squad) must be an integer ≥ 1.',
     matchOrgStagesHeading: 'Load event exercises',
     matchOrgStagesIntro:
-      'Create the exercise in Stage Builder, copy the view link, and paste it in the field below. The title in the event programme matches the exercise title from the PDF briefing.',
+      'Three steps: Stage Builder exercises, or one programme PDF, and when the programme appears on the public match card.',
+    matchOrgStagesZoneSbTitle: '1. Exercises from Stage Builder',
+    matchOrgStagesZoneSbIntro:
+      'Create a stage in the editor, publish a view link, and paste it below. The programme title matches the stage briefing PDF.',
+    matchOrgStagesZonePdfTitle: '2. Programme briefing PDF',
+    matchOrgStagesZonePdfInformer:
+      'If the programme is PDF-only (no Stage Builder links in the list below): the combined match file on the site is built without individual stages—only summaries and shooter data. Stage stats and “Stage 1…N” blocks are omitted. For per-stage diagrams, use zone 1.',
+    matchOrgStagesZoneVisibilityTitle: '3. Publication schedule',
+    matchOrgStagesLinkedListHeading: 'Linked exercises (Stage Builder)',
     matchOrgStagesOpenEditor: 'Open Stage Builder (new tab)',
     matchOrgStagesPasteLabel: 'View URL or share id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… or s…',
@@ -3584,6 +3632,17 @@ export const enMessages: MessageTree = {
     matchOrgStagesVisibleDaysSaving: 'Saving…',
     matchOrgStagesVisibleDaysSaveError: 'Could not save exercise visibility schedule.',
     matchOrgStagesVisibleFromPreview: 'Public card shows from {{date}}',
+    matchOrgProgrammePdfLabel: 'Programme briefing PDF (single file)',
+    matchOrgProgrammePdfHint:
+      'Single PDF file (max 15 MB). Public match card shows a “Briefing PDF” button in Programme.',
+    matchOrgProgrammePdfUpload: 'Upload PDF',
+    matchOrgProgrammePdfReplace: 'Replace PDF',
+    matchOrgProgrammePdfUploading: 'Uploading…',
+    matchOrgProgrammePdfOpen: 'Open PDF',
+    matchOrgProgrammePdfRemove: 'Remove PDF',
+    matchOrgProgrammePdfRequired: 'Choose a PDF file.',
+    matchOrgProgrammePdfInvalid: 'PDF file required (.pdf).',
+    matchOrgProgrammePdfTooLarge: 'PDF is too large (max 15 MB).',
     matchOrgSquadsHeading: 'Groups (squads)',
     matchOrgSquadsDerivedIntro:
       'Group (squad) rows are generated from planned group (squad) counts × participants (shooters) per group (squad) (main vs prematch). Saving the event updates rows; shrinking is blocked while active registrations occupy removed capacity.',

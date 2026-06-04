@@ -10,6 +10,7 @@ import { programmeStatsTableHeaders } from './matchProgrammeStatsTableHeaders'
 type ProgrammeStageLink = {
   sort_order: number
   share_stage_id: string | null
+  snapshot_meta: Record<string, unknown> | null
 }
 
 type Props = {
@@ -133,7 +134,7 @@ export function MatchPublicProgrammePanel({
           </p>
           <ol className="portal-match-public-detail__programme portal-match-public-detail__programme-list">
             {stages.map((lnk, idx) => (
-              <li key={`${lnk.share_stage_id ?? ''}-${lnk.sort_order}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
+              <li key={`${lnk.sort_order}-${lnk.share_stage_id ?? 'pdf'}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
             ))}
           </ol>
         </>
@@ -144,7 +145,7 @@ export function MatchPublicProgrammePanel({
           </p>
           <ol className="portal-match-public-detail__programme portal-match-public-detail__programme-list">
             {stages.map((lnk, idx) => (
-              <li key={`${lnk.share_stage_id ?? ''}-${lnk.sort_order}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
+              <li key={`${lnk.sort_order}-${lnk.share_stage_id ?? 'pdf'}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
             ))}
           </ol>
         </>
@@ -262,7 +263,7 @@ export function MatchPublicProgrammePanel({
       : (
         <ol className="portal-match-public-detail__programme portal-match-public-detail__programme-list">
           {stages.map((lnk, idx) => (
-            <li key={`${lnk.share_stage_id ?? ''}-${lnk.sort_order}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
+            <li key={`${lnk.sort_order}-${lnk.share_stage_id ?? 'pdf'}-${idx}`}>{stageTitleCell(lnk, idx)}</li>
           ))}
         </ol>
       )}

@@ -43,6 +43,7 @@ export type PublicMatchProgrammeBundle = {
   has_stages: boolean
   publicly_visible: boolean
   available_from: string | null
+  programme_briefing_pdf_url: string | null
   stages: {
     sort_order: number
     share_stage_id: string | null
@@ -53,10 +54,15 @@ export type PublicMatchProgrammeBundle = {
 export function parsePublicMatchProgrammeBundle(raw: unknown): PublicMatchProgrammeBundle {
   const o = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {}
   const stagesRaw = Array.isArray(o.stages) ? o.stages : []
+  const pdfRaw = o.programme_briefing_pdf_url
+  const programmePdfUrl =
+    typeof pdfRaw === 'string' && pdfRaw.trim() ? pdfRaw.trim() : null
+
   return {
     has_stages: o.has_stages === true,
     publicly_visible: o.publicly_visible === true,
     available_from: typeof o.available_from === 'string' ? o.available_from : null,
+    programme_briefing_pdf_url: programmePdfUrl,
     stages: stagesRaw.map((row) => {
       const r = row && typeof row === 'object' ? (row as Record<string, unknown>) : {}
       return {

@@ -69,6 +69,7 @@ type PublicProgrammeState = {
   hasStages: boolean
   publiclyVisible: boolean
   availableFrom: string | null
+  programmeBriefingPdfUrl: string | null
   stages: PublicStageLinkRow[]
 }
 
@@ -248,6 +249,7 @@ export function MatchPublicDetailPage() {
         hasStages: bundle.has_stages,
         publiclyVisible: bundle.publicly_visible,
         availableFrom: bundle.available_from,
+        programmeBriefingPdfUrl: bundle.programme_briefing_pdf_url,
         stages: bundle.stages,
       })
     })()
@@ -265,8 +267,14 @@ export function MatchPublicDetailPage() {
     () =>
       Boolean(row?.id) &&
       programme?.publiclyVisible === true &&
-      programmeDisplayTitles != null,
+      programmeDisplayTitles != null &&
+      programmeDisplayTitles.length > 0,
     [row?.id, programme?.publiclyVisible, programmeDisplayTitles],
+  )
+
+  const showProgrammeBriefingPdf = useMemo(
+    () => Boolean(programme?.publiclyVisible && programme.programmeBriefingPdfUrl),
+    [programme?.publiclyVisible, programme?.programmeBriefingPdfUrl],
   )
 
   if (!validId) {
@@ -609,22 +617,34 @@ export function MatchPublicDetailPage() {
             <h2 id="match-programme-heading" className="portal-match-public-detail__section-title">
               {p.matchDetailProgrammeHeading}
             </h2>
-            {canDownloadBriefingsPdf ?
-              <Link
-                to={{
-                  pathname: `/${locale}/matches/${row.id}/briefings`,
-                  search: `?${new URLSearchParams({ title: row.title })}`,
-                }}
-                className="portal-btn portal-btn--secondary portal-btn--compact portal-match-public-detail__programme-download"
-              >
-                <span className="portal-match-public-detail__programme-download__full">
-                  {p.matchDetailProgrammeStatsDownload}
-                </span>
-                <span className="portal-match-public-detail__programme-download__short" aria-hidden="true">
-                  {p.matchDetailProgrammeStatsDownloadSoonShort}
-                </span>
-              </Link>
-            : null}
+            <div className="portal-match-public-detail__programme-head-actions">
+              {showProgrammeBriefingPdf && programme?.programmeBriefingPdfUrl ?
+                <a
+                  href={programme.programmeBriefingPdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="portal-btn portal-btn--secondary portal-btn--compact portal-match-public-detail__programme-download"
+                >
+                  {p.matchDetailProgrammePdfLink}
+                </a>
+              : null}
+              {canDownloadBriefingsPdf ?
+                <Link
+                  to={{
+                    pathname: `/${locale}/matches/${row.id}/briefings`,
+                    search: `?${new URLSearchParams({ title: row.title })}`,
+                  }}
+                  className="portal-btn portal-btn--secondary portal-btn--compact portal-match-public-detail__programme-download"
+                >
+                  <span className="portal-match-public-detail__programme-download__full">
+                    {p.matchDetailProgrammeStatsDownload}
+                  </span>
+                  <span className="portal-match-public-detail__programme-download__short" aria-hidden="true">
+                    {p.matchDetailProgrammeStatsDownloadSoonShort}
+                  </span>
+                </Link>
+              : null}
+            </div>
           </div>
           {programme === undefined ?
             <p className="portal-match-public-detail__muted">{p.matchesLoadingDetail}</p>
@@ -632,7 +652,7 @@ export function MatchPublicDetailPage() {
             <p role="alert" className="portal-match-public-detail__muted">
               {p.matchesLoadError}: {programmeError}
             </p>
-          : programme?.publiclyVisible && programmeDisplayTitles ?
+          : programme?.publiclyVisible && programmeDisplayTitles && programmeDisplayTitles.length > 0 ?
             <MatchPublicProgrammePanel
               locale={locale}
               matchId={row.id}
@@ -641,6 +661,8 @@ export function MatchPublicDetailPage() {
               p={p}
               showToolbar={false}
             />
+          : programme?.publiclyVisible && showProgrammeBriefingPdf ?
+            <p className="portal-match-public-detail__prose">{p.matchDetailProgrammePdfOnlyHint}</p>
           : programmePendingDate ?
             <p className="portal-match-public-detail__prose">
               {formatTemplate(p.matchDetailProgrammePending, { date: programmePendingDate })}

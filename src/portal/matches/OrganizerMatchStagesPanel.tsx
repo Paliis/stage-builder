@@ -1,4 +1,10 @@
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  buildProgrammeBriefingStoragePath,
+  isAcceptedProgrammeBriefingPdf,
+  MATCH_PROGRAMME_BRIEFINGS_BUCKET,
+  PROGRAMME_BRIEFING_PDF_MAX_BYTES,
+} from '../../domain/matchProgrammeBriefingPdf'
 import { Link } from 'react-router-dom'
 import { formatTemplate } from '../../i18n/format'
 import { getSupabase } from '../../lib/supabaseClient'
@@ -46,6 +52,9 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   const [visibleDaysSaved, setVisibleDaysSaved] = useState('')
   const [visibleDaysSaving, setVisibleDaysSaving] = useState(false)
   const [visibleDaysError, setVisibleDaysError] = useState<string | null>(null)
+  const [programmePdfUrl, setProgrammePdfUrl] = useState<string | null>(null)
+  const [programmePdfFile, setProgrammePdfFile] = useState<File | null>(null)
+  const [programmePdfBusy, setProgrammePdfBusy] = useState(false)
 
   const reload = useCallback(async () => {
     setLoadError(null)
@@ -83,7 +92,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
     setVisibleDaysError(null)
     const { data, error } = await sb
       .from('matches')
-      .select('starts_at, stages_visible_days_before')
+      .select('starts_at, stages_visible_days_before, programme_briefing_pdf_url')
       .eq('id', matchId)
       .maybeSingle()
 
@@ -104,6 +113,12 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
       rawDays == null || !Number.isFinite(Number(rawDays)) ? '' : String(Math.max(0, Math.floor(Number(rawDays))))
     setVisibleDaysBefore(daysStr)
     setVisibleDaysSaved(daysStr)
+
+    const pdf =
+      typeof data?.programme_briefing_pdf_url === 'string' && data.programme_briefing_pdf_url.trim() ?
+        data.programme_briefing_pdf_url.trim()
+      : null
+    setProgrammePdfUrl(pdf)
   }, [matchId, sb, p.matchDetailApplyMigrationHint, p.matchOrgStagesVisibleDaysSaveError])
 
   useEffect(() => {
@@ -264,6 +279,95 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
     }
   }
 
+  const handleUploadProgrammePdf = async (e: FormEvent) => {
+    e.preventDefault()
+    setAddError(null)
+    if (!programmePdfFile) {
+      setAddError(p.matchOrgProgrammePdfRequired)
+      return
+    }
+    if (!isAcceptedProgrammeBriefingPdf(programmePdfFile)) {
+      setAddError(p.matchOrgProgrammePdfInvalid)
+      return
+    }
+    if (programmePdfFile.size > PROGRAMME_BRIEFING_PDF_MAX_BYTES) {
+      setAddError(p.matchOrgProgrammePdfTooLarge)
+      return
+    }
+
+    setProgrammePdfBusy(true)
+    try {
+      const {
+        data: { user },
+        error: authErr,
+      } = await sb.auth.getUser()
+      if (authErr || !user?.id) {
+        setAddError(authErr?.message ?? p.matchOrgStagesErrorGeneric)
+        return
+      }
+
+      const objectPath = buildProgrammeBriefingStoragePath(user.id, matchId)
+      const { error: upErr } = await sb.storage.from(MATCH_PROGRAMME_BRIEFINGS_BUCKET).upload(objectPath, programmePdfFile, {
+        upsert: true,
+        contentType: 'application/pdf',
+      })
+      if (upErr) {
+        setAddError(upErr.message)
+        return
+      }
+      const { data: pub } = sb.storage.from(MATCH_PROGRAMME_BRIEFINGS_BUCKET).getPublicUrl(objectPath)
+      const { error: dbErr } = await sb
+        .from('matches')
+        .update({
+          programme_briefing_pdf_url: pub.publicUrl,
+          programme_briefing_pdf_storage_path: objectPath,
+        })
+        .eq('id', matchId)
+      if (dbErr) {
+        setAddError(dbErr.message)
+        return
+      }
+      setProgrammePdfUrl(pub.publicUrl)
+      setProgrammePdfFile(null)
+    } finally {
+      setProgrammePdfBusy(false)
+    }
+  }
+
+  async function removeProgrammePdf() {
+    setAddError(null)
+    setProgrammePdfBusy(true)
+    try {
+      const { data: row, error: loadErr } = await sb
+        .from('matches')
+        .select('programme_briefing_pdf_storage_path')
+        .eq('id', matchId)
+        .maybeSingle()
+      if (loadErr) {
+        setAddError(loadErr.message)
+        return
+      }
+      const storagePath =
+        typeof row?.programme_briefing_pdf_storage_path === 'string' ?
+          row.programme_briefing_pdf_storage_path.trim()
+        : ''
+      if (storagePath) {
+        await sb.storage.from(MATCH_PROGRAMME_BRIEFINGS_BUCKET).remove([storagePath])
+      }
+      const { error: dbErr } = await sb
+        .from('matches')
+        .update({
+          programme_briefing_pdf_url: null,
+          programme_briefing_pdf_storage_path: null,
+        })
+        .eq('id', matchId)
+      if (dbErr) setAddError(dbErr.message)
+      else setProgrammePdfUrl(null)
+    } finally {
+      setProgrammePdfBusy(false)
+    }
+  }
+
   async function refreshAllRows() {
     const list = [...(rows ?? [])].sort((a, b) => a.sort_order - b.sort_order)
     if (list.length === 0) return
@@ -345,114 +449,161 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   }, [locale, startsAtIso, visibleDaysParsed])
 
   return (
-    <section style={{ marginTop: '2rem', maxWidth: '42rem' }} aria-labelledby="match-stages-heading">
+    <section className="portal-match-org-stages" aria-labelledby="match-stages-heading">
       <h2 id="match-stages-heading" className="portal-home__hero-title portal-home__hero-title--section">
         {p.matchOrgStagesHeading}
       </h2>
 
-      <p style={{ margin: '0 0 0.75rem', fontSize: '0.88rem', lineHeight: 1.55, opacity: 0.92 }}>
-        {p.matchOrgStagesIntro}{' '}
-        <Link to="/stage-builder" target="_blank" rel="noreferrer">
-          {p.matchOrgStagesOpenEditor}
-        </Link>
-      </p>
+      <p className="portal-match-org-stages__lead">{p.matchOrgStagesIntro}</p>
 
-      <form onSubmit={(e) => void handleAdd(e)} style={{ marginBottom: '1rem' }}>
-        <label htmlFor="match-stage-paste" style={{ display: 'block', fontSize: '0.86rem', fontWeight: 600, marginBottom: '0.35rem' }}>
-          {p.matchOrgStagesPasteLabel}
-        </label>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'stretch' }}>
-          <input
-            id="match-stage-paste"
-            type="text"
-            value={paste}
-            onChange={(e) => setPaste(e.target.value)}
-            placeholder={p.matchOrgStagesPastePlaceholder}
-            autoComplete="off"
-            spellCheck={false}
-            disabled={addBusy}
-            style={{
-              flex: '1 1 14rem',
-              minWidth: 0,
-              font: 'inherit',
-              fontSize: '0.86rem',
-              padding: '0.45rem 0.55rem',
-              borderRadius: 8,
-              border: '1px solid var(--border)',
-              background: 'var(--surface)',
-              color: 'var(--text)',
-            }}
-          />
-          <button
-            type="submit"
-            className="portal-btn portal-btn--primary portal-btn--compact"
-            disabled={addBusy || !paste.trim()}
-          >
-            {addBusy ? p.matchOrgStagesAdding : p.matchOrgStagesAdd}
-          </button>
-        </div>
-      </form>
+      <div className="portal-match-org-stages-zone" aria-labelledby="match-stages-zone-sb">
+        <h3 id="match-stages-zone-sb" className="portal-match-org-stages-zone__title">
+          {p.matchOrgStagesZoneSbTitle}
+        </h3>
+        <p className="portal-match-org-stages-zone__intro">
+          {p.matchOrgStagesZoneSbIntro}{' '}
+          <Link to="/stage-builder" target="_blank" rel="noreferrer">
+            {p.matchOrgStagesOpenEditor}
+          </Link>
+        </p>
 
-      <div style={{ marginBottom: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'flex-end' }}>
+        <form onSubmit={(e) => void handleAdd(e)}>
+          <label htmlFor="match-stage-paste" className="portal-match-org-stages-field-label">
+            {p.matchOrgStagesPasteLabel}
+          </label>
+          <div className="portal-match-org-stages-field-row">
+            <input
+              id="match-stage-paste"
+              type="text"
+              className="portal-match-org-stages-text-input"
+              value={paste}
+              onChange={(e) => setPaste(e.target.value)}
+              placeholder={p.matchOrgStagesPastePlaceholder}
+              autoComplete="off"
+              spellCheck={false}
+              disabled={addBusy}
+            />
+            <button
+              type="submit"
+              className="portal-btn portal-btn--primary portal-btn--compact"
+              disabled={addBusy || !paste.trim()}
+            >
+              {addBusy ? p.matchOrgStagesAdding : p.matchOrgStagesAdd}
+            </button>
+          </div>
+        </form>
+
         {ordered.length > 0 ?
-          <button
-            type="button"
-            className="portal-btn portal-btn--secondary portal-btn--compact"
-            disabled={refreshAllBusy || addBusy || anyRowBusy || visibleDaysSaving}
-            onClick={() => void refreshAllRows()}
-          >
-            {refreshAllBusy ? p.matchOrgStagesRefreshAllBusy : p.matchOrgStagesRefreshAll}
-          </button>
-        : null}
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minWidth: '10rem' }}>
-          <span style={{ fontSize: '0.82rem', fontWeight: 600 }}>{p.matchOrgStagesVisibleDaysLabel}</span>
-          <input
-            type="number"
-            min={0}
-            step={1}
-            inputMode="numeric"
-            value={visibleDaysBefore}
-            onChange={(e) => {
-              setVisibleDaysError(null)
-              setVisibleDaysBefore(e.target.value)
-            }}
-            onBlur={() => void saveVisibleDaysBefore(visibleDaysBefore)}
-            placeholder={p.matchOrgStagesVisibleDaysPlaceholder}
-            disabled={visibleDaysSaving || addBusy || refreshAllBusy}
-            aria-describedby="match-stages-visible-days-hint"
-            style={{
-              width: '6.5rem',
-              font: 'inherit',
-              fontSize: '0.86rem',
-              padding: '0.45rem 0.55rem',
-              borderRadius: 8,
-              border: '1px solid var(--border)',
-              background: 'var(--surface)',
-              color: 'var(--text)',
-            }}
-          />
-        </label>
-        {visibleDaysSaving ?
-          <span style={{ fontSize: '0.82rem', opacity: 0.85 }}>{p.matchOrgStagesVisibleDaysSaving}</span>
-        : visibleFromPreview ?
-          <span style={{ fontSize: '0.82rem', opacity: 0.9 }}>
-            {formatTemplate(p.matchOrgStagesVisibleFromPreview, { date: visibleFromPreview })}
-          </span>
+          <div style={{ marginTop: '0.85rem' }}>
+            <button
+              type="button"
+              className="portal-btn portal-btn--secondary portal-btn--compact"
+              disabled={refreshAllBusy || addBusy || programmePdfBusy || anyRowBusy || visibleDaysSaving}
+              onClick={() => void refreshAllRows()}
+            >
+              {refreshAllBusy ? p.matchOrgStagesRefreshAllBusy : p.matchOrgStagesRefreshAll}
+            </button>
+          </div>
         : null}
       </div>
 
-      <p
-        id="match-stages-visible-days-hint"
-        style={{ margin: '0 0 0.75rem', fontSize: '0.82rem', lineHeight: 1.5, opacity: 0.88 }}
-      >
-        {p.matchOrgStagesVisibleDaysHint}
-      </p>
-
-      {visibleDaysError ?
-        <p role="alert" style={{ margin: '0 0 0.75rem', fontSize: '0.86rem', color: '#991b1b' }}>
-          {visibleDaysError}
+      <div className="portal-match-org-stages-zone" aria-labelledby="match-stages-zone-pdf">
+        <h3 id="match-stages-zone-pdf" className="portal-match-org-stages-zone__title">
+          {p.matchOrgStagesZonePdfTitle}
+        </h3>
+        <p className="portal-match-org-stages-informer" role="note">
+          {p.matchOrgStagesZonePdfInformer}
         </p>
-      : null}
+
+        <form onSubmit={(e) => void handleUploadProgrammePdf(e)}>
+          <label htmlFor="match-programme-pdf" className="portal-match-org-stages-field-label">
+            {p.matchOrgProgrammePdfLabel}
+          </label>
+          <p className="portal-match-org-stages-field-hint">{p.matchOrgProgrammePdfHint}</p>
+          <div className="portal-match-org-stages-field-row" style={{ alignItems: 'center' }}>
+            <input
+              id="match-programme-pdf"
+              type="file"
+              accept="application/pdf,.pdf"
+              disabled={programmePdfBusy || addBusy}
+              onChange={(e) => setProgrammePdfFile(e.target.files?.[0] ?? null)}
+            />
+            <button
+              type="submit"
+              className="portal-btn portal-btn--primary portal-btn--compact"
+              disabled={programmePdfBusy || addBusy || !programmePdfFile}
+            >
+              {programmePdfBusy ?
+                p.matchOrgProgrammePdfUploading
+              : programmePdfUrl ?
+                p.matchOrgProgrammePdfReplace
+              :   p.matchOrgProgrammePdfUpload}
+            </button>
+            {programmePdfUrl ?
+              <>
+                <a
+                  href={programmePdfUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="portal-btn portal-btn--secondary portal-btn--compact"
+                >
+                  {p.matchOrgProgrammePdfOpen}
+                </a>
+                <button
+                  type="button"
+                  className="portal-btn portal-btn--secondary portal-btn--compact"
+                  disabled={programmePdfBusy || addBusy}
+                  onClick={() => void removeProgrammePdf()}
+                >
+                  {p.matchOrgProgrammePdfRemove}
+                </button>
+              </>
+            : null}
+          </div>
+        </form>
+      </div>
+
+      <div className="portal-match-org-stages-zone" aria-labelledby="match-stages-zone-visibility">
+        <h3 id="match-stages-zone-visibility" className="portal-match-org-stages-zone__title">
+          {p.matchOrgStagesZoneVisibilityTitle}
+        </h3>
+        <div className="portal-match-org-stages-visibility-row">
+          <label className="portal-match-org-stages-visibility-label">
+            <span>{p.matchOrgStagesVisibleDaysLabel}</span>
+            <input
+              type="number"
+              min={0}
+              step={1}
+              inputMode="numeric"
+              className="portal-match-org-stages-number-input"
+              value={visibleDaysBefore}
+              onChange={(e) => {
+                setVisibleDaysError(null)
+                setVisibleDaysBefore(e.target.value)
+              }}
+              onBlur={() => void saveVisibleDaysBefore(visibleDaysBefore)}
+              placeholder={p.matchOrgStagesVisibleDaysPlaceholder}
+              disabled={visibleDaysSaving || addBusy || refreshAllBusy || programmePdfBusy}
+              aria-describedby="match-stages-visible-days-hint"
+            />
+          </label>
+          {visibleDaysSaving ?
+            <span style={{ fontSize: '0.82rem', opacity: 0.85 }}>{p.matchOrgStagesVisibleDaysSaving}</span>
+          : visibleFromPreview ?
+            <span style={{ fontSize: '0.82rem', opacity: 0.9 }}>
+              {formatTemplate(p.matchOrgStagesVisibleFromPreview, { date: visibleFromPreview })}
+            </span>
+          : null}
+        </div>
+        <p id="match-stages-visible-days-hint" className="portal-match-org-stages-field-hint" style={{ marginTop: '0.65rem' }}>
+          {p.matchOrgStagesVisibleDaysHint}
+        </p>
+        {visibleDaysError ?
+          <p role="alert" style={{ margin: '0.5rem 0 0', fontSize: '0.86rem', color: '#991b1b' }}>
+            {visibleDaysError}
+          </p>
+        : null}
+      </div>
 
       {addError ? (
         <p
@@ -469,8 +620,13 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         </p>
       ) : null}
 
-      {ordered.length === 0 && rows !== undefined && !loadError ?
-        <p style={{ margin: '0 0 1rem', fontSize: '0.88rem', opacity: 0.9 }}>{p.matchOrgStagesEmpty}</p>
+      {(ordered.length > 0 || (rows !== undefined && !loadError)) ?
+        <div className="portal-match-org-stages-linked-list">
+          <h3 className="portal-match-org-stages-linked-list__title">{p.matchOrgStagesLinkedListHeading}</h3>
+          {ordered.length === 0 ?
+            <p style={{ margin: '0 0 1rem', fontSize: '0.88rem', opacity: 0.9 }}>{p.matchOrgStagesEmpty}</p>
+          : null}
+        </div>
       : null}
 
       {ordered.length > 0 ?

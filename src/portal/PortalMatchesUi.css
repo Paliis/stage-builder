@@ -545,6 +545,24 @@ a.portal-match-title-ellipsis:hover {
   padding-left: 1.2rem;
 }
 
+.portal-match-public-detail__programme-stage-line {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+}
+
+.portal-match-public-detail__programme-pdf-btn {
+  flex-shrink: 0;
+}
+
+.portal-match-public-detail__programme-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
 .portal-match-public-detail__programme-status {
   width: 100%;
   text-align: center;
@@ -2584,6 +2602,125 @@ a.portal-match-title-ellipsis:hover {
   margin-top: 1.35rem !important;
   padding-top: 1.25rem !important;
   border-top: 1px dashed color-mix(in srgb, var(--border) 90%, transparent);
+}
+
+.portal-match-org-stages {
+  margin-top: 2rem;
+  max-width: 42rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.portal-match-org-stages__lead {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  opacity: 0.92;
+}
+
+.portal-match-org-stages-zone {
+  padding: 1rem 1.05rem;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, var(--text));
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--surface) 94%, var(--bg, #fff));
+}
+
+.portal-match-org-stages-zone__title {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.portal-match-org-stages-zone__intro {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  opacity: 0.92;
+}
+
+.portal-match-org-stages-informer {
+  margin: 0 0 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, #6366f1 28%, var(--border));
+  background: color-mix(in srgb, #6366f1 7%, var(--surface));
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.portal-match-org-stages-field-label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.portal-match-org-stages-field-hint {
+  margin: 0 0 0.65rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.portal-match-org-stages-field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.portal-match-org-stages-text-input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.86rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.portal-match-org-stages-number-input {
+  width: 6.5rem;
+  font: inherit;
+  font-size: 0.86rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.portal-match-org-stages-visibility-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.portal-match-org-stages-visibility-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 10rem;
+}
+
+.portal-match-org-stages-visibility-label > span {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.portal-match-org-stages-linked-list {
+  margin-top: 0.25rem;
+}
+
+.portal-match-org-stages-linked-list__title {
+  margin: 0 0 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .portal-match-org-stages-table-wrap {
