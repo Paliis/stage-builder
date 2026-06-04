@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-06-04 · **`main`** = **`staging`** ≈ `8843624` · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
+**Оновлено:** 2026-06-04 · **`main`** = **`staging`** ≈ `7d92f78` · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
 
 ## Контекст
 
