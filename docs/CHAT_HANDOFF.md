@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-06-04 · **`main`** = **`staging`** ≈ `7a59a0e` · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
+**Оновлено:** 2026-06-04 · **`main`** = **`staging`** (синхрон через CI / `npm run git:sync-staging`) · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
 
 ## Контекст
 
