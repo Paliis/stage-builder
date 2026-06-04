@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-06-01 · **`main`** ≈ `4bb9aa3` · E2E Mono на staging **пройдено** · див. [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
+**Оновлено:** 2026-06-03 · **`main`** ≈ `dcb6811` · E2E Mono на staging **пройдено** · див. [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
 
 ## Контекст
 
@@ -18,6 +18,9 @@
 | **MA-P05** | «Сплатити онлайн» у `MatchPublicRegistrationSection`; RPC `match_online_payment_available`; `?payment=return`; localhost → `VITE_SHARE_PUBLIC_ORIGIN` для webhook. |
 | **MA-P06** | Колонка «Оплачено» + badge «онлайн» у `OrganizerMatchRegistrationsPage`. |
 | **Підстраховка** | `POST /api/payments/reconcile` + виклик з UI для `pending` після повернення з Mono (якщо webhook затримався / body на Vercel). |
+| **MA-E01** | `GET /api/match-export-briefings` → `api/match-export-briefings.js`; сторінка `/matches/:id/briefings` (перегляд PDF + «Зберегти»). Знімки вправ у PDF — **ні** (лише QR → `/v/:id`). |
+| **MA-E02** | Таблиця статистики вправ у «Програма»; `GET /api/match-programme-stats`. |
+| **MA-E03** | Зведення дивізіони/класи під «Учасники» + на титульній сторінці PDF. |
 
 **API (збірка):** `src/server/*ApiHandler.ts` → `npm run build:api` → `api/*.js` (webhook: `bodyParser: false`).
 
@@ -34,7 +37,7 @@
 - **MA-P00** — QR IBAN, покращений офлайн.
 - **MA-P03**, **MA-P07**, **MA-P08** — LiqPay, WayForPay, Portmone.
 - **MA-W\*** — waitlist, дедлайн оплати.
-- **MA-E01/E02** — **«Програма»**: таблиця вправ + кнопка PDF; **MA-E03** — під **«Учасники»** і в тому ж PDF ([MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md)).
+- **MA-E01** — PNG знімки вправ у збірному PDF (зараз лише брифінг-таблиця + QR); див. [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) §3.
 - **Vault** для X-Token (зараз колонка `mono_x_token`, RLS revoke).
 - User-help про оплату — лише за запитом.
 
