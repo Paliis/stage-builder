@@ -70,7 +70,7 @@
 
 | ID | Задача | Статус | BL | Примітки |
 |----|--------|--------|-----|----------|
-| **MA-E01** | **Публічне** завантаження PDF: усі брифінги + зведення; `GET /api/match-export-briefings` | done | — | Кнопка в заголовку **«Програма»**; dev plugin + `api/match-export-briefings.js` |
+| **MA-E01** | **Публічне** завантаження PDF: усі брифінги + зведення; `GET /api/match-export-briefings` | done | — | Кнопка в **«Програма»** → `/{locale}/matches/:id/briefings` (inline + download); `matchExportBriefingsApiHandler` |
 | **MA-E02** | Таблиця пострілів/мішеней у блоці **«Програма»** (праворуч від списку вправ) | done | — | `match-programme-stats` API + `MatchPublicProgrammePanel` |
 | **MA-E03** | Зведення по **дивізіонах** і **класах** учасників | done | — | `MatchPublicParticipantSummary` + PDF-розділ; RPC `fetch_public_match_participant_summary` |
 
@@ -151,6 +151,7 @@
 
 | Дата | Зміни |
 |------|--------|
+| 2026-06-04 | **MA-E01…E03** → **done** на staging: programme stats API, participant summary RPC, briefings PDF + viewer; [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) оновлено під код. |
 | 2026-06-01 | План **MA-E01…E03**: [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) (статистика вправ, дивізіони/класи, збірний PDF). |
 | 2026-06-01 | **MA-P02**, **MA-P04**…**P06** → **done**; webhook raw body + **reconcile**; E2E Mono staging; docs sync. **MA-P01** partial (без Vault). |
 | 2026-05-06 | Узгодження з тестами: **MA-D02** → **partial** (Vitest на збірку ZIP; повний diff з еталоном у CI — за потреби). |

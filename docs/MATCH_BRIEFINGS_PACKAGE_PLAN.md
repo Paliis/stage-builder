@@ -1,8 +1,8 @@
 # Матч: статистика + збірний пакет брифінгів (план)
 
-**Статус:** планування (2026-06). Референс: [PracticStats Stage Studio](https://practicstats.work/stage-studio/163cb01ff65c4228/) — зведена таблиця + блоки «Вправа N» з таблицею брифінгу.
+**Статус:** **baseline реалізовано** (2026-06-04, staging). Референс: [PracticStats Stage Studio](https://practicstats.work/stage-studio/163cb01ff65c4228/). Далі — PNG знімки вправ у PDF (див. §3 «відкрито»).
 
-**Беклог:** [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md) → **MA-E01**, **MA-E02**, **MA-E03**.
+**Беклог:** [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md) → **MA-E01**, **MA-E02**, **MA-E03** — **done**.
 
 ---
 
@@ -14,12 +14,14 @@
 | Брифінг однієї вправи | `StageBriefing` (`src/domain/stageBriefing.ts`), PDF — `exportBriefingPdf.ts` |
 | Підрахунки зі сцени | `computePscStageMetrics`, `summarizeTargets`, `computeMinRounds` |
 | PSC export | `POST /api/match-export-psc` (окремий продукт; не замінює пакет брифінгів) |
-| Публічна програма | RPC `fetch_public_match_programme`, список назв на картці матчу |
+| Публічна програма | RPC `fetch_public_match_programme`, список вправ + **MA-E02** таблиця (`MatchPublicProgrammePanel`, `GET /api/match-programme-stats`) |
+| Зведення учасників | **MA-E03**: RPC `fetch_public_match_participant_summary`, UI `MatchPublicParticipantSummary` |
+| Збірний PDF матчу | **MA-E01**: `GET /api/match-export-briefings`, `buildMatchBriefingsPdf.ts`; перегляд `/{locale}/matches/:id/briefings` |
 | Організатор | `OrganizerMatchStagesPanel` — прив’язка `/v/:id`, порядок, refresh |
 
-**Немає:** зведеної таблиці матчу, збірного PDF/HTML, зведення по **дивізіонах / класах** учасників, окремих колонок міні-поппер / кераміка / тарілки на рівні матчу.
+**Відкрито (не в baseline):** PNG/HTML-знімки плану вправ у збірному PDF (зараз — таблиці брифінгу + QR на share `/v/:id`).
 
-**Дані учасників (вже в БД):** `match_registrations.division`, `categories` (JSONB, id з `SHOOTER_CATEGORIES`), `power_factor` (MAJOR/MINOR); дисципліна матчу — `matches.discipline` → каталог дивізіонів `shooterProfileCatalog.ts`. Ростер: RPC `fetch_organizer_match_registration_roster`, публічно `fetch_public_match_roster` (лише `open` list).
+**Дані учасників:** `match_registrations.division`, `categories`, `power_factor`; агрегація MA-E03 — `fetch_public_match_participant_summary`. Ростер: `fetch_public_match_roster` (лише `open` list).
 
 ---
 
@@ -161,12 +163,12 @@
 
 ---
 
-## 5. Порядок впровадження
+## 5. Порядок впровадження (виконано 2026-06-04)
 
-1. **MA-E02** — domain + дані; UI в **«Програма»** (права колонка).
-2. **MA-E03** — RPC агрегації; UI під **«Учасники»**; ті самі дані в збірці **MA-E01**.
-3. **MA-E01** — API + кнопка в «Програма»; PDF включає **E02 + E03 + брифінги**.
-4. Організатор: опційно прев’ю — не основна CTA.
+1. **MA-E02** — `matchProgrammeStats.ts`, `MatchPublicProgrammePanel`, `/api/match-programme-stats`.
+2. **MA-E03** — `fetch_public_match_participant_summary`, `MatchPublicParticipantSummary`.
+3. **MA-E01** — `/api/match-export-briefings`, `MatchPublicBriefingsPdfPage`.
+4. Організатор: прев’ю PDF — **не** зроблено (публічна CTA достатня для MVP).
 
 ---
 

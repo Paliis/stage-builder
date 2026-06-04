@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-06-03 · **`main`** ≈ `dcb6811` · E2E Mono на staging **пройдено** · див. [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
+**Оновлено:** 2026-06-04 · **`main`** = **`staging`** ≈ `8843624` · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
 
 ## Контекст
 
@@ -18,9 +18,9 @@
 | **MA-P05** | «Сплатити онлайн» у `MatchPublicRegistrationSection`; RPC `match_online_payment_available`; `?payment=return`; localhost → `VITE_SHARE_PUBLIC_ORIGIN` для webhook. |
 | **MA-P06** | Колонка «Оплачено» + badge «онлайн» у `OrganizerMatchRegistrationsPage`. |
 | **Підстраховка** | `POST /api/payments/reconcile` + виклик з UI для `pending` після повернення з Mono (якщо webhook затримався / body на Vercel). |
-| **MA-E01** | `GET /api/match-export-briefings` → `api/match-export-briefings.js`; сторінка `/matches/:id/briefings` (перегляд PDF + «Зберегти»). Знімки вправ у PDF — **ні** (лише QR → `/v/:id`). |
-| **MA-E02** | Таблиця статистики вправ у «Програма»; `GET /api/match-programme-stats`. |
-| **MA-E03** | Зведення дивізіони/класи під «Учасники» + на титульній сторінці PDF. |
+| **MA-E01** | `GET /api/match-export-briefings` (`matchExportBriefingsApiHandler` → `api/match-export-briefings.js`); UI `/{locale}/matches/:id/briefings` (`MatchPublicBriefingsPdfPage` — inline PDF + «Зберегти»); кнопка з «Програма». Знімки сцен у PDF — **ні** (таблиця брифінгу + QR → `/v/:id`). |
+| **MA-E02** | `GET /api/match-programme-stats`; `MatchPublicProgrammePanel` + `src/domain/matchProgrammeStats.ts`; дані в PDF (MA-E01). |
+| **MA-E03** | `MatchPublicParticipantSummary` під «Учасники»; RPC `fetch_public_match_participant_summary` (`20260601140000_*`); той самий блок у PDF. |
 
 **API (збірка):** `src/server/*ApiHandler.ts` → `npm run build:api` → `api/*.js` (webhook: `bodyParser: false`).
 
@@ -63,6 +63,10 @@
 | URL redirect/webhook | `src/lib/resolveMatchPaymentUrls.ts` |
 | UI стрільця | `src/portal/matches/MatchPublicRegistrationSection.tsx` |
 | UI Mono | `src/portal/matches/OrganizerMonoPaymentSection.tsx` |
+| PDF брифінги API | `src/server/matchExportBriefingsApiHandler.ts`, `src/server/matchBriefingsPdf/buildMatchBriefingsPdf.ts` |
+| Статистика програми API | `src/server/matchProgrammeStatsApiHandler.ts`, `src/server/loadMatchProgrammeStats.ts` |
+| Публічний PDF viewer | `src/portal/matches/MatchPublicBriefingsPdfPage.tsx` |
+| Зведення учасників UI | `src/portal/matches/MatchPublicParticipantSummary.tsx` |
 
 ## Git
 
