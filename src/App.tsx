@@ -388,6 +388,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const weaponClassOptionLabel = (wc: WeaponClass) => {
     if (wc === 'handgun') return tree.briefing.weaponClassHandgun
     if (wc === 'rifle') return tree.briefing.weaponClassRifle
+    if (wc === 'pcc') return tree.briefing.weaponClassPcc
+    if (wc === 'mini_rifle') return tree.briefing.weaponClassMiniRifle
     return tree.briefing.weaponClassShotgun
   }
 

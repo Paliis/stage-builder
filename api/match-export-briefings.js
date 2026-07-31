@@ -67749,6 +67749,13 @@ function reclampRangeDistanceSignsToField(signs, fieldHeightM) {
 }
 
 // src/domain/weaponClass.ts
+var WEAPON_CLASS_VALUES = [
+  "shotgun",
+  "handgun",
+  "rifle",
+  "pcc",
+  "mini_rifle"
+];
 var ALL_TARGET_TYPES = [
   "paperIpscTwoPostGround",
   "paperIpscTwoPostStand50",
@@ -67782,7 +67789,7 @@ function emptyPenaltyZoneSet() {
 var STAGE_PROJECT_FORMAT = "stage-builder";
 var STAGE_PROJECT_VERSION = 6;
 var STAGE_PROJECT_VERSION_MIN = 1;
-var WEAPON_CLASSES = /* @__PURE__ */ new Set(["handgun", "rifle", "shotgun"]);
+var WEAPON_CLASSES = new Set(WEAPON_CLASS_VALUES);
 var TARGET_TYPE_SET = new Set(ALL_TARGET_TYPES);
 var PROP_TYPES = [
   "door",

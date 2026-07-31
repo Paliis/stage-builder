@@ -4,10 +4,19 @@ import type { Target, TargetType } from './models'
  * Клас дисципліни IPSC для підбору мішеней у редакторі.
  * Набори спрощені (без жорсткої валідації правил змагання).
  */
-export type WeaponClass = 'handgun' | 'rifle' | 'shotgun'
+export type WeaponClass = 'shotgun' | 'handgun' | 'rifle' | 'pcc' | 'mini_rifle'
 
-/** Порядок для селекторів у UI. */
-export const WEAPON_CLASS_VALUES: readonly WeaponClass[] = ['handgun', 'rifle', 'shotgun']
+/**
+ * Порядок для селекторів у UI; ідентифікатори збігаються з `WEAPON_CLASS_ORDER`
+ * портального каталогу та дисциплінами RO Helper.
+ */
+export const WEAPON_CLASS_VALUES: readonly WeaponClass[] = [
+  'shotgun',
+  'handgun',
+  'rifle',
+  'pcc',
+  'mini_rifle',
+]
 
 /** Один набір для всіх класів зброї. */
 export const ALL_TARGET_TYPES: readonly TargetType[] = [
@@ -35,9 +44,11 @@ export const ALL_TARGET_TYPES: readonly TargetType[] = [
 ] as const
 
 const BY_CLASS: Record<WeaponClass, readonly TargetType[]> = {
+  shotgun: ALL_TARGET_TYPES,
   handgun: ALL_TARGET_TYPES,
   rifle: ALL_TARGET_TYPES,
-  shotgun: ALL_TARGET_TYPES,
+  pcc: ALL_TARGET_TYPES,
+  mini_rifle: ALL_TARGET_TYPES,
 }
 
 export function targetTypesForWeaponClass(wc: WeaponClass): readonly TargetType[] {

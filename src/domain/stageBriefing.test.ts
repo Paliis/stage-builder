@@ -36,9 +36,10 @@ describe('briefingUsesScoringShots', () => {
     expect(briefingUsesScoringShots('handgun')).toBe(true)
   })
 
-  it('rifle and shotgun briefings keep the indicative minimum', () => {
-    expect(briefingUsesScoringShots('rifle')).toBe(false)
-    expect(briefingUsesScoringShots('shotgun')).toBe(false)
+  it('long guns keep the indicative minimum', () => {
+    for (const wc of WEAPON_CLASS_VALUES.filter((w) => w !== 'handgun')) {
+      expect(briefingUsesScoringShots(wc)).toBe(false)
+    }
   })
 })
 
@@ -48,8 +49,9 @@ describe('briefingTableRows shots label', () => {
   })
 
   it('uses the recommended variant for every other class', () => {
-    expect(firstRow('rifle', '12').label).toBe('type-recommended')
-    expect(firstRow('shotgun', '12').label).toBe('type-recommended')
+    for (const wc of WEAPON_CLASS_VALUES.filter((w) => w !== 'handgun')) {
+      expect(firstRow(wc, '12').label).toBe('type-recommended')
+    }
   })
 
   it('keeps the value independent of the weapon class', () => {

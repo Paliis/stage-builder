@@ -22,7 +22,7 @@ import { defaultStageBriefing } from './stageBriefing'
 import type { WeaponClass } from './weaponClass'
 import { isSquareSteelPlateTargetType } from './targetSpecs'
 import { isGongTargetType } from './gongSpec'
-import { ALL_TARGET_TYPES } from './weaponClass'
+import { ALL_TARGET_TYPES, WEAPON_CLASS_VALUES } from './weaponClass'
 import {
   emptyPenaltyZoneSet,
   type PenaltyPolygonData,
@@ -37,7 +37,7 @@ export const STAGE_PROJECT_VERSION = 6
 export const STAGE_PROJECT_VERSION_MIN = 1
 export const STAGE_PROJECT_FILE_EXTENSION = '.stage.json'
 
-const WEAPON_CLASSES = new Set<WeaponClass>(['handgun', 'rifle', 'shotgun'])
+const WEAPON_CLASSES = new Set<WeaponClass>(WEAPON_CLASS_VALUES)
 const TARGET_TYPE_SET = new Set<TargetType>(ALL_TARGET_TYPES)
 const PROP_TYPES: PropType[] = [
   'door',

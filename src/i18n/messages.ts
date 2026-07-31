@@ -261,6 +261,8 @@ export type MessageTree = {
     weaponClassHandgun: string
     weaponClassRifle: string
     weaponClassShotgun: string
+    weaponClassPcc: string
+    weaponClassMiniRifle: string
     allowedAmmo: string
     maxPoints: string
     startSignal: string
@@ -1531,6 +1533,8 @@ export const ukMessages: MessageTree = {
     weaponClassHandgun: 'Пістолет',
     weaponClassRifle: 'Карабін',
     weaponClassShotgun: 'Рушниця',
+    weaponClassPcc: 'КПК (PCC)',
+    weaponClassMiniRifle: 'Міні-карабін',
     allowedAmmo: '\u0414\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u0438\u0439 \u0442\u0438\u043f \u043d\u0430\u0431\u043e\u0457\u0432',
     maxPoints: '\u041c\u0430\u043a\u0441. \u043e\u0447\u043e\u043a',
     startSignal: '\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0438\u0439 \u0441\u0438\u0433\u043d\u0430\u043b',
@@ -2886,6 +2890,8 @@ export const enMessages: MessageTree = {
     weaponClassHandgun: 'Handgun',
     weaponClassRifle: 'Rifle',
     weaponClassShotgun: 'Shotgun',
+    weaponClassPcc: 'PCC',
+    weaponClassMiniRifle: 'Mini Rifle',
     allowedAmmo: 'Permitted ammunition',
     maxPoints: 'Max points',
     startSignal: 'Start signal',
