@@ -19,7 +19,7 @@ function sortDivisionRows(discipline: string | null, rows: DivisionSummaryRow[])
   return [...rows].sort(
     (a, b) =>
       divisionSortIndex(discipline, a.division) - divisionSortIndex(discipline, b.division) ||
-      a.division.localeCompare(b.division),
+      a.division.localeCompare(b.division, undefined, { sensitivity: 'base' }),
   )
 }
 

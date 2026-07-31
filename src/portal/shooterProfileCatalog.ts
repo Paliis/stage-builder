@@ -132,3 +132,56 @@ export function resolveShooterCategoriesForStorage(selectedIds: readonly string[
   if (valid.includes(DEFAULT_SHOOTER_CATEGORY_ID)) return [DEFAULT_SHOOTER_CATEGORY_ID]
   return [DEFAULT_SHOOTER_CATEGORY_ID]
 }
+
+function lookupKeysForStoredValue(s: string): string[] {
+  const t = s.trim().toLowerCase()
+  if (!t) return []
+  return [t, t.replace(/[\s-]+/g, '_')]
+}
+
+function buildCatalogAliasMap(entries: readonly { id: string; labelUk: string; labelEn: string }[]): Map<string, string> {
+  const m = new Map<string, string>()
+  for (const e of entries) {
+    for (const key of new Set([
+      ...lookupKeysForStoredValue(e.id),
+      ...lookupKeysForStoredValue(e.labelEn),
+      ...lookupKeysForStoredValue(e.labelUk),
+    ])) {
+      if (key) m.set(key, e.id)
+    }
+  }
+  return m
+}
+
+const CATEGORY_ALIAS_TO_ID = buildCatalogAliasMap(SHOOTER_CATEGORIES)
+
+const DIVISION_ALIAS_BY_WEAPON = new Map<WeaponClassId, Map<string, string>>(
+  WEAPON_CLASS_ORDER.map((w) => [w, buildCatalogAliasMap(WEAPON_CLASS_META[w].divisions)]),
+)
+
+/** Map legacy label casing (e.g. "Modified", "Lady") to canonical catalog id. */
+export function canonicalShooterCategoryId(raw: string): string {
+  const t = raw.trim()
+  if (!t) return ''
+  for (const key of lookupKeysForStoredValue(t)) {
+    const id = CATEGORY_ALIAS_TO_ID.get(key)
+    if (id) return id
+  }
+  return t.toLowerCase()
+}
+
+export function canonicalDivisionId(discipline: string | null | undefined, raw: string): string {
+  const t = raw.trim()
+  if (!t) return ''
+  const weapon = parseMatchDiscipline(discipline)
+  if (weapon) {
+    const map = DIVISION_ALIAS_BY_WEAPON.get(weapon)
+    if (map) {
+      for (const key of lookupKeysForStoredValue(t)) {
+        const id = map.get(key)
+        if (id) return id
+      }
+    }
+  }
+  return t.toLowerCase()
+}

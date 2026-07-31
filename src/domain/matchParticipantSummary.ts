@@ -1,3 +1,5 @@
+import { canonicalDivisionId, canonicalShooterCategoryId } from '../portal/shooterProfileCatalog'
+
 export type DivisionSummaryRow = {
   division: string
   confirmed: number
@@ -54,13 +56,50 @@ function parseCategoryRows(raw: unknown): CategorySummaryRow[] {
   return rows
 }
 
+/** Merge duplicate division keys (legacy label vs id casing in registrations). */
+export function mergeDivisionSummaryRows(
+  discipline: string | null,
+  rows: DivisionSummaryRow[],
+): DivisionSummaryRow[] {
+  const map = new Map<string, DivisionSummaryRow>()
+  for (const row of rows) {
+    const id = canonicalDivisionId(discipline, row.division)
+    if (!id) continue
+    const prev = map.get(id)
+    if (!prev) {
+      map.set(id, { division: id, confirmed: row.confirmed, pending: row.pending })
+      continue
+    }
+    prev.confirmed += row.confirmed
+    prev.pending += row.pending
+  }
+  return [...map.values()]
+}
+
+/** Merge duplicate category keys (legacy label vs id in JSONB). */
+export function mergeCategorySummaryRows(rows: CategorySummaryRow[]): CategorySummaryRow[] {
+  const map = new Map<string, CategorySummaryRow>()
+  for (const row of rows) {
+    const id = canonicalShooterCategoryId(row.category)
+    if (!id) continue
+    const prev = map.get(id)
+    if (!prev) {
+      map.set(id, { category: id, confirmed: row.confirmed, pending: row.pending })
+      continue
+    }
+    prev.confirmed += row.confirmed
+    prev.pending += row.pending
+  }
+  return [...map.values()]
+}
+
 export function parsePublicMatchParticipantSummary(raw: unknown): MatchParticipantSummary | null {
   if (raw == null) return null
   if (typeof raw !== 'object') return null
   const o = raw as Record<string, unknown>
   const discipline = typeof o.discipline === 'string' ? o.discipline.trim() : null
-  const byDivision = parseDivisionRows(o.by_division)
-  const byCategory = parseCategoryRows(o.by_category)
+  const byDivision = mergeDivisionSummaryRows(discipline, parseDivisionRows(o.by_division))
+  const byCategory = mergeCategorySummaryRows(parseCategoryRows(o.by_category))
   return { discipline, byDivision, byCategory }
 }
 
