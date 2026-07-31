@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-06-04 · **`main`** = **`staging`** (синхрон через CI / `npm run git:sync-staging`) · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
+**Оновлено:** 2026-07-31 · **`main`** = **`staging`** (синхрон через CI / `npm run git:sync-staging`) · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
 
 ## Контекст
 
@@ -68,6 +68,35 @@
 | Публічний PDF viewer | `src/portal/matches/MatchPublicBriefingsPdfPage.tsx` |
 | Зведення учасників UI | `src/portal/matches/MatchPublicParticipantSummary.tsx` |
 
+## Наступна задача: хмарна бібліотека вправ (SB-CL01) — не почато
+
+Фідбек стрільців: вправу неможливо нормально зберегти. План складено, код **не** починали. Рішення: **хмара основне сховище**, `.stage.json` лишається експортом; бібліотека відкривається **в редакторі**; без логіну «Зберегти» пропонує увійти.
+
+Стартові факти (аудит уже зроблено, повторювати не треба):
+
+| Що | Стан |
+|----|------|
+| Збереження вправи | `saveStageProject` у `src/App.tsx` — `Blob` + `a.download`, без id проєкту в стані |
+| Чернетка | `src/application/sessionDraft.ts`, один ключ `stage-builder-session-draft-v1`, debounce 450 мс |
+| Шери | `shared_stages` (`20260409120000_*`) — RLS без політик, **без owner**, читання лише RPC `fetch_shared_stage` по id |
+| Авторизація в редакторі | **немає** — `src/App.tsx` не торкається Supabase; `/api/publish-share` анонімний |
+| Готове до переюзу | `src/lib/supabaseClient.ts`, `src/portal/useSupabaseSession.ts`, зразок RLS-таблиці `20260510120000_participant_registration_defaults.sql` |
+| Конверт payload | `src/domain/stageProjectFile.ts`, `STAGE_PROJECT_VERSION = 6`, парсер `parseStageProjectJson` |
+
+Перший крок: міграція `public.user_stages` (`owner_id`, `title`, `weapon_class`, `payload jsonb`, `schema_version`, `created_at/updated_at`, індекс `(owner_id, updated_at desc)`, own-row RLS) + `npx supabase db push --linked --yes`. Далі — CRUD через клієнтський Supabase з RLS (без окремого Vercel API), потім кнопки «Зберегти / Мої вправи / Експорт».
+
+## Беклог UX з того ж фідбеку (діагнози готові)
+
+| Скарга | Причина в коді |
+|--------|----------------|
+| Довгу штрафну не поставити внизу | вершини затискаються `clampVec2ToField(p, 1, …)` — margin 1 м з усіх боків |
+| 3D з тачпада | дефолтний drei `OrbitControls` без `rotateSpeed/zoomSpeed/mouseButtons`, pan з тачпада недосяжний |
+| Зум замість скролу сторінки | безумовний `preventDefault` у wheel-listener `StageCanvas.tsx`, канвас на ~95dvh |
+| Немає групового переносу | насправді **є** (`moveMulti`), але лише кнопка «Рамка», без Shift/Ctrl, режим гасне після жесту |
+| Дрібні кліки | `TOUCH_PICK_MIN_PX = 26` застосовано і до миші, «верхній виграє» |
+| Клік крутить об'єкт | ручка ↻ перевіряється **до** pick, і для миші немає порогу руху |
+| Немає кнопок навігації | панорама лише жестами, стрілок і +/− не існує |
+
 ## Git
 
 `main` → push → CI fast-forward **`staging`**. Правило: `.cursor/rules/git-main-staging-sync.mdc`. Mono на `/matches/my` — **після** таблиці, не вгору без запиту.
@@ -75,5 +104,5 @@
 ## Перше повідомлення в новому чаті
 
 ```
-Прочитай docs/CHAT_HANDOFF.md. Далі: MA-P00 / MA-W або prod rollout Mono. commit + push main після змін.
+Прочитай docs/CHAT_HANDOFF.md. Далі: SB-CL01 — міграція user_stages і хмарне збереження вправ. commit + push main після змін.
 ```
