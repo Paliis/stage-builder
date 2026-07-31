@@ -34,7 +34,7 @@ import type {
 import { canRetargetSelectedToType } from './domain/resizableTargetSizes'
 import { isGongTargetType } from './domain/gongSpec'
 import { isSquareSteelPlateTargetType } from './domain/targetSpecs'
-import { ALL_TARGET_TYPES } from './domain/weaponClass'
+import { ALL_TARGET_TYPES, WEAPON_CLASS_VALUES, type WeaponClass } from './domain/weaponClass'
 import { FIELD_GROUND_COVER_3D_VALUES, type FieldGroundCover3d } from './domain/fieldGround3d'
 import {
   clampFieldDimensions,
@@ -58,6 +58,7 @@ import { CANONICAL_PRODUCTION_ORIGIN } from './seo/canonicalProductionOrigin'
 import { formatTemplate } from './i18n/format'
 import {
   BRIEFING_SCENE_SYNC_POINTS_PER_SCORING_HIT,
+  briefingUsesScoringShots,
   defaultStageBriefing,
   type BriefingPdfLabels,
 } from './domain/stageBriefing'
@@ -111,6 +112,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
 
   const name = useStageStore((s) => s.name)
   const weaponClass = useStageStore((s) => s.weaponClass)
+  const setWeaponClass = useStageStore((s) => s.setWeaponClass)
   const targets = useStageStore((s) => s.targets)
   const props = useStageStore((s) => s.props)
   const addTarget = useStageStore((s) => s.addTarget)
@@ -365,9 +367,11 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const pdfLabels: BriefingPdfLabels = useMemo(
     () => ({
       exerciseTypeAndShots: tree.pdf.rowExerciseTypeAndShots,
+      exerciseTypeAndScoringShots: tree.pdf.rowExerciseTypeAndScoringShots,
       exerciseType: tree.pdf.rowExerciseType,
       targets: tree.pdf.rowTargets,
       recommendedShots: tree.pdf.rowRecommendedShots,
+      scoringShots: tree.pdf.rowScoringShots,
       allowedAmmo: tree.pdf.rowAllowedAmmo,
       maxPoints: tree.pdf.rowMaxPoints,
       startSignal: tree.pdf.rowStartSignal,
@@ -380,6 +384,16 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   )
 
   const categoryLabel = (c: StageCategory) => t(`briefing.category.${c}`)
+
+  const weaponClassOptionLabel = (wc: WeaponClass) => {
+    if (wc === 'handgun') return tree.briefing.weaponClassHandgun
+    if (wc === 'rifle') return tree.briefing.weaponClassRifle
+    return tree.briefing.weaponClassShotgun
+  }
+
+  const shotsFieldLabel = briefingUsesScoringShots(weaponClass)
+    ? tree.briefing.scoringShots
+    : tree.briefing.recommendedShots
 
   const trySetFieldSizeM = useCallback(
     (raw: { x: number; y: number }) => {
@@ -901,6 +915,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       await exportBriefingPdf({
         snapshotDataUrl: snap,
         briefing: { ...briefing },
+        weaponClass,
         pdf: {
           labels: pdfLabels,
           categoryLabel,
@@ -1884,6 +1899,20 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               <span>{tree.briefing.logoPdfIpsc}</span>
             </label>
           </div>
+          <label className="app__field app__field--briefing-weapon">
+            {tree.briefing.weaponClass}
+            <select
+              disabled={readOnly}
+              value={weaponClass}
+              onChange={(e) => setWeaponClass(e.target.value as WeaponClass)}
+            >
+              {WEAPON_CLASS_VALUES.map((wc) => (
+                <option key={wc} value={wc}>
+                  {weaponClassOptionLabel(wc)}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
         <div className="app__briefing-grid">
@@ -1919,7 +1948,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               </select>
             </label>
             <label className="app__field app__field--briefing-slot">
-              {tree.briefing.recommendedShots}
+              {shotsFieldLabel}
               <input
                 readOnly={readOnly}
                 value={briefing.recommendedShots}

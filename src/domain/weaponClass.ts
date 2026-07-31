@@ -6,6 +6,9 @@ import type { Target, TargetType } from './models'
  */
 export type WeaponClass = 'handgun' | 'rifle' | 'shotgun'
 
+/** Порядок для селекторів у UI. */
+export const WEAPON_CLASS_VALUES: readonly WeaponClass[] = ['handgun', 'rifle', 'shotgun']
+
 /** Один набір для всіх класів зброї. */
 export const ALL_TARGET_TYPES: readonly TargetType[] = [
   'paperIpscTwoPostGround',

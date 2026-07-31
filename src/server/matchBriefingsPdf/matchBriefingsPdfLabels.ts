@@ -62,9 +62,11 @@ const UK: MatchBriefingsPdfStrings = {
   emptyCell: '—',
   briefingLabels: {
     exerciseTypeAndShots: 'Тип вправи · Рекомендовані постріли',
+    exerciseTypeAndScoringShots: 'Тип вправи · Залікові постріли',
     exerciseType: 'Тип вправи',
     targets: 'Мішені',
     recommendedShots: 'Рекомендована к-сть пострілів',
+    scoringShots: 'К-сть залікових пострілів',
     allowedAmmo: 'Дозволені набої',
     maxPoints: 'Макс. очок',
     startSignal: 'Сигнал старту',
@@ -109,9 +111,11 @@ const EN: MatchBriefingsPdfStrings = {
   emptyCell: '—',
   briefingLabels: {
     exerciseTypeAndShots: 'Exercise type · Recommended shots',
+    exerciseTypeAndScoringShots: 'Exercise type · Rounds to be scored',
     exerciseType: 'Exercise type',
     targets: 'Targets',
     recommendedShots: 'Recommended round count',
+    scoringShots: 'Rounds to be scored',
     allowedAmmo: 'Permitted ammunition',
     maxPoints: 'Maximum score',
     startSignal: 'Start signal',

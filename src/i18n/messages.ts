@@ -255,6 +255,12 @@ export type MessageTree = {
     exerciseType: string
     targetsText: string
     recommendedShots: string
+    /** Пістолет: ФПСУ V §2 вимагає саме залікові постріли. */
+    scoringShots: string
+    weaponClass: string
+    weaponClassHandgun: string
+    weaponClassRifle: string
+    weaponClassShotgun: string
     allowedAmmo: string
     maxPoints: string
     startSignal: string
@@ -283,9 +289,11 @@ export type MessageTree = {
   }
   pdf: {
     rowExerciseTypeAndShots: string
+    rowExerciseTypeAndScoringShots: string
     rowExerciseType: string
     rowTargets: string
     rowRecommendedShots: string
+    rowScoringShots: string
     rowAllowedAmmo: string
     rowMaxPoints: string
     rowStartSignal: string
@@ -1519,6 +1527,11 @@ export const ukMessages: MessageTree = {
     targetsText: '\u041c\u0456\u0448\u0435\u043d\u0456 (\u0442\u0435\u043a\u0441\u0442)',
     recommendedShots:
       '\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u0430 \u043a\u0456\u043b\u044c\u043a\u0456\u0441\u0442\u044c \u043f\u043e\u0441\u0442\u0440\u0456\u043b\u0456\u0432 (\u043e\u0440\u0456\u0454\u043d\u0442\u043e\u0432\u043d\u043e)',
+    scoringShots: 'Кількість залікових пострілів',
+    weaponClass: 'Клас зброї',
+    weaponClassHandgun: 'Пістолет',
+    weaponClassRifle: 'Карабін',
+    weaponClassShotgun: 'Рушниця',
     allowedAmmo: '\u0414\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u0438\u0439 \u0442\u0438\u043f \u043d\u0430\u0431\u043e\u0457\u0432',
     maxPoints: '\u041c\u0430\u043a\u0441. \u043e\u0447\u043e\u043a',
     startSignal: '\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0438\u0439 \u0441\u0438\u0433\u043d\u0430\u043b',
@@ -1545,10 +1558,12 @@ export const ukMessages: MessageTree = {
   pdf: {
     rowExerciseTypeAndShots:
       '\u0422\u0438\u043f \u0432\u043f\u0440\u0430\u0432\u0438 \xb7 \u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u0456 \u043f\u043e\u0441\u0442\u0440\u0456\u043b\u0456',
+    rowExerciseTypeAndScoringShots: 'Тип вправи · Залікові постріли',
     rowExerciseType: '\u0422\u0438\u043f \u0432\u043f\u0440\u0430\u0432\u0438',
     rowTargets: '\u041c\u0456\u0448\u0435\u043d\u0456',
     rowRecommendedShots:
       '\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u0430 \u043a\u0456\u043b\u044c\u043a\u0456\u0441\u0442\u044c \u043f\u043e\u0441\u0442\u0440\u0456\u043b\u0456\u0432 (\u043e\u0440\u0456\u0454\u043d\u0442\u043e\u0432\u043d\u043e)',
+    rowScoringShots: 'Кількість залікових пострілів',
     rowAllowedAmmo: '\u0414\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u0438\u0439 \u0442\u0438\u043f \u043d\u0430\u0431\u043e\u0457\u0432',
     rowMaxPoints: '\u041c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430 \u043a\u0456\u043b\u044c\u043a\u0456\u0441\u0442\u044c \u043e\u0447\u043e\u043a',
     rowStartSignal: '\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0438\u0439 \u0441\u0438\u0433\u043d\u0430\u043b',
@@ -2867,6 +2882,11 @@ export const enMessages: MessageTree = {
     exerciseType: 'Exercise type',
     targetsText: 'Targets (text)',
     recommendedShots: 'Recommended round count (indicative)',
+    scoringShots: 'Number of rounds to be scored',
+    weaponClass: 'Weapon class',
+    weaponClassHandgun: 'Handgun',
+    weaponClassRifle: 'Rifle',
+    weaponClassShotgun: 'Shotgun',
     allowedAmmo: 'Permitted ammunition',
     maxPoints: 'Max points',
     startSignal: 'Start signal',
@@ -2890,9 +2910,11 @@ export const enMessages: MessageTree = {
   },
   pdf: {
     rowExerciseTypeAndShots: 'Exercise type · Recommended shots',
+    rowExerciseTypeAndScoringShots: 'Exercise type · Rounds to be scored',
     rowExerciseType: 'Exercise type',
     rowTargets: 'Targets',
     rowRecommendedShots: 'Recommended round count (indicative)',
+    rowScoringShots: 'Number of rounds to be scored',
     rowAllowedAmmo: 'Permitted ammunition',
     rowMaxPoints: 'Maximum score',
     rowStartSignal: 'Start signal',

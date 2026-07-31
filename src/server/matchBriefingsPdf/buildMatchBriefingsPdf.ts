@@ -529,6 +529,7 @@ async function drawStageBriefingPage(
     s.briefingLabels,
     s.categoryLabel,
     s.emptyCell,
+    stage.project.stage.weaponClass,
   )
   const tableBody = rows.map((r) => [r.label, r.value])
   autoTable(doc, twoColTableOpts(tableBody, y, margin, contentW))

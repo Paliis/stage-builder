@@ -5,6 +5,7 @@ import { PDF_MARGIN_MM } from '../../domain/a4PrintLayout'
 import type { StageBriefing } from '../../domain/stageBriefing'
 import { briefingTableRows, type BriefingPdfLabels } from '../../domain/stageBriefing'
 import type { StageCategory } from '../../domain/models'
+import type { WeaponClass } from '../../domain/weaponClass'
 import { CANONICAL_PRODUCTION_ORIGIN } from '../../seo/canonicalProductionOrigin'
 import {
   prepareBriefingPdfLogos,
@@ -327,12 +328,20 @@ function measureTableHeight(
 export async function exportBriefingPdf(opts: {
   snapshotDataUrl: string | null
   briefing: StageBriefing
+  weaponClass: WeaponClass
   pdf: BriefingPdfExportStrings
   fileName?: string
   /** When set (e.g. opened from a share URL), QR encodes this URL — typically `/v/:id?lang=` for shooters. */
   qrTargetUrl?: string
 }): Promise<void> {
-  const { snapshotDataUrl, briefing, pdf, fileName = 'briefing.pdf', qrTargetUrl } = opts
+  const {
+    snapshotDataUrl,
+    briefing,
+    weaponClass,
+    pdf,
+    fileName = 'briefing.pdf',
+    qrTargetUrl,
+  } = opts
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
 
   await registerPdfFonts(doc)
@@ -351,7 +360,13 @@ export async function exportBriefingPdf(opts: {
   }
 
   /* ── Table data & measurement (компактніший перший ряд: тип + постріли) ── */
-  const rows = briefingTableRows(briefing, pdf.labels, pdf.categoryLabel, pdf.emptyCell)
+  const rows = briefingTableRows(
+    briefing,
+    pdf.labels,
+    pdf.categoryLabel,
+    pdf.emptyCell,
+    weaponClass,
+  )
   const tableBody = rows.map((r) => [r.label, r.value])
 
   const tableMarginBottomMm = margin
