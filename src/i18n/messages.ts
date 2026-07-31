@@ -1520,8 +1520,7 @@ export const ukMessages: MessageTree = {
     logoPdfFpsu: '\u041b\u043e\u0433\u043e \u0424\u041f\u0421\u0423 \u0443 PDF',
     logoPdfIpsc: '\u041b\u043e\u0433\u043e IPSC \u0443 PDF',
     pdfLogosGroupAria: '\u041b\u043e\u0433\u043e\u0442\u0438\u043f\u0438 \u0443 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u0443 PDF',
-    typeShotsRowAria:
-      '\u0422\u0438\u043f \u0432\u043f\u0440\u0430\u0432\u0438 \u0442\u0430 \u0440\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u0456 \u043f\u043e\u0441\u0442\u0440\u0456\u043b\u0456',
+    typeShotsRowAria: 'Тип вправи та кількість пострілів',
     documentTitle: '\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430',
     exerciseType: '\u0422\u0438\u043f \u0432\u043f\u0440\u0430\u0432\u0438',
     targetsText: '\u041c\u0456\u0448\u0435\u043d\u0456 (\u0442\u0435\u043a\u0441\u0442)',
@@ -2877,7 +2876,7 @@ export const enMessages: MessageTree = {
     logoPdfFpsu: 'FPSU logo on PDF',
     logoPdfIpsc: 'IPSC logo on PDF',
     pdfLogosGroupAria: 'PDF header logos',
-    typeShotsRowAria: 'Exercise type and recommended shots',
+    typeShotsRowAria: 'Exercise type and round count',
     documentTitle: 'Document title',
     exerciseType: 'Exercise type',
     targetsText: 'Targets (text)',
