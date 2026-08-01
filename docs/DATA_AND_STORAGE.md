@@ -19,6 +19,7 @@
 | `stage-builder-onboarding-collapsed` | `App.tsx` | Стан onboarding у редакторі. |
 | `stage-builder-view3d-shadows`, `stage-builder-view3d-grayscale` | `App.tsx` | Перемикачі знімка 3D. |
 | `stage-builder-briefing-collapsed` | `App.tsx` | `1` — автор згорнув панель брифінгу; без ключа вона відкрита (перший візит). |
+| `stage-builder-library-stage-id` | `App.tsx` | Запис у `user_stages`, з яким пов'язана чернетка; без нього після перезавантаження «Зберегти» пропонувало лише «Зберегти як нову». Не читається на share-маршрутах; чиститься при `notFound`, імпорті файлу та «Очистити вправу». |
 | `stage-builder-draft-legacy-name-cleared` | `sessionDraft.ts` | Одноразове прибирання назви `Нова вправа`, яку старий парсер підставляв у чернетку замість порожнього поля. |
 | `stage-builder-pwa-update-prompt-at` | `pwaUpdateGate.ts` | Час останнього банера «доступне оновлення». |
 | `ro-helper-fpsu-layer` | `RoHelperFpsuPrefs.tsx` | Шар ФПСУ в RO Helper. |

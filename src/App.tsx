@@ -95,6 +95,8 @@ const VIEW3D_LS_SHADOWS = 'stage-builder-view3d-shadows'
 const VIEW3D_LS_GRAYSCALE = 'stage-builder-view3d-grayscale'
 /** Absent on the first visit: the briefing panel opens so newcomers see where the PDF text lives. */
 const BRIEFING_PANEL_LS_KEY = 'stage-builder-briefing-collapsed'
+/** The draft survives a reload, so the record it belongs to has to survive with it. */
+const LIBRARY_STAGE_ID_LS_KEY = 'stage-builder-library-stage-id'
 /** Автозбереження в бібліотеку — лише для вправи, вже прив’язаної до запису. */
 const LIBRARY_AUTOSAVE_INTERVAL_MS = 30_000
 
@@ -238,7 +240,15 @@ export default function App({
   const [stageLibraryOpen, setStageLibraryOpen] = useState(false)
   const [authDialogOpen, setAuthDialogOpen] = useState(false)
   /** Запис у хмарній бібліотеці, з яким зараз пов’язана вправа в редакторі. */
-  const [libraryStageId, setLibraryStageId] = useState<string | null>(null)
+  const [libraryStageId, setLibraryStageId] = useState<string | null>(() => {
+    // A share link brings its own stage: the record from the previous visit is not it.
+    if (shareViewContext) return null
+    try {
+      return localStorage.getItem(LIBRARY_STAGE_ID_LS_KEY)
+    } catch {
+      return null
+    }
+  })
   const [libraryQuickSaving, setLibraryQuickSaving] = useState(false)
   const [librarySavedAt, setLibrarySavedAt] = useState<number | null>(null)
   const [librarySaveFailed, setLibrarySaveFailed] = useState(false)
@@ -600,6 +610,9 @@ export default function App({
       })
       setLibraryQuickSaving(false)
       if (!res.ok) {
+        // Record deleted elsewhere, or another account signed in on this browser: drop the dead
+        // link so the author is offered a fresh save instead of a failing one.
+        if (res.errorKey === 'notFound') setLibraryStageId(null)
         setLibrarySaveFailed(true)
         if (!silent) setStageLibraryOpen(true)
         return
@@ -1168,6 +1181,16 @@ export default function App({
       /* приватний режим */
     }
   }, [briefingOpen])
+
+  useEffect(() => {
+    if (shareViewContext) return
+    try {
+      if (libraryStageId) localStorage.setItem(LIBRARY_STAGE_ID_LS_KEY, libraryStageId)
+      else localStorage.removeItem(LIBRARY_STAGE_ID_LS_KEY)
+    } catch {
+      /* приватний режим */
+    }
+  }, [libraryStageId, shareViewContext])
 
   useEffect(() => {
     if (!mobileMenuOpen) return
