@@ -31,6 +31,18 @@ export type SessionDraftEnvelope = {
 }
 
 const DEFAULT_STAGE_NAME_UA = 'Нова вправа'
+/** Set the first time a draft is stripped of the auto-filled name, so a typed one survives later. */
+const LEGACY_DRAFT_NAME_KEY = 'stage-builder-draft-legacy-name-cleared'
+
+function claimLegacyDraftNameCleanup(): boolean {
+  try {
+    if (localStorage.getItem(LEGACY_DRAFT_NAME_KEY) === '1') return false
+    localStorage.setItem(LEGACY_DRAFT_NAME_KEY, '1')
+    return true
+  } catch {
+    return false
+  }
+}
 
 function briefingDiffersFromDefault(b: StageBriefing): boolean {
   const d = defaultStageBriefing()
@@ -219,9 +231,12 @@ export function hydrateSessionDraft(): void {
   temporal.pause()
   useStageStore.getState().replaceStageState({
     ...res.data.stage,
-    // Drafts written before the name became explicit got the placeholder from the parser,
-    // which hid the «enter a stage name» prompt on every return visit.
-    name: res.data.stage.name.trim() === DEFAULT_STAGE_NAME_UA ? '' : res.data.stage.name,
+    // Drafts written before the name became explicit got the placeholder from the parser, which hid
+    // the «enter a stage name» prompt. Strip it once — after that the author may type it for real.
+    name:
+      res.data.stage.name.trim() === DEFAULT_STAGE_NAME_UA && claimLegacyDraftNameCleanup() ?
+        ''
+      : res.data.stage.name,
   })
   useBriefingStore.getState().setBriefing(res.data.briefing)
   temporal.clear()

@@ -103,11 +103,17 @@ export function StageLibraryDialog({
     setErrorKey(null)
     setSavedFlash(false)
     d.showModal()
-    if (canUseCloud) void refresh()
-    else setRows([])
-    // Значення полів беремо на момент відкриття діалогу.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
+
+  /** Also runs when a guest signs in through the auth modal without closing this dialog. */
+  useEffect(() => {
+    if (!open) return
+    if (!canUseCloud) {
+      setRows([])
+      return
+    }
+    void refresh()
+  }, [open, canUseCloud, refresh])
 
   const flashSaved = useCallback(() => {
     setSavedFlash(true)
