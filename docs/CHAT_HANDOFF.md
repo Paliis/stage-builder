@@ -95,6 +95,8 @@
 
 Гість логіниться в модалці `src/portal/PortalAuthDialog.tsx` (та сама форма `PortalCompactEmailAuth`, `pathnameForRedirect` = поточний шлях). Точки входу: «Увійти» в смузі `PortalShell` та посилання в діалозі «Мої вправи» (`onRequestSignIn` з `App.tsx`) — незбережена вправа лишається відкритою позаду. Реєстрація на матч уже мала таку модалку (`MatchPublicRegistrationSection`). Пропс `onAuthenticated` каже формі не робити `window.location.assign` на `auth/email-callback` після OTP — сесія вже є, хост просто закривається. Сторінка `/{locale}/account` з `?next=` лишається для листів-підтверджень і навігаційних CTA.
 
+Реєстрація на **вже зареєстровану** адресу: GoTrue відповідає `200` із «фальшивим» користувачем (`identities: []`) і **листа не шле** — форма раніше все одно показувала крок «введіть код», і людина чекала листа, якого не буде. Тепер `PortalCompactEmailAuth` перевіряє порожній `identities`, перемикає на вкладку «Увійти» й пише про це. **Відновлення пароля в проєкті немає** (`resetPasswordForEmail` ніде не викликається) — якщо людина забула пароль, вона в глухому куті.
+
 ## Спільна шапка Shooters Tools у редакторі
 
 Редактор живе на **`/{locale}/stage-builder`** усередині `PortalShell`; старий `/stage-builder` — клієнтський редірект (`LegacyStageBuilderRedirect`), тому надруковані QR і закладки працюють. Шлях будує `src/portal/stageBuilderPath.ts` (`stageBuilderPath`, `isStageBuilderPath`).

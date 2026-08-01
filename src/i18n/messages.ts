@@ -716,6 +716,8 @@ export type MessageTree = {
     portalCompactAuthSubmitSignUp: string
     portalCompactAuthSignOut: string
     portalCompactAuthSignupSession: string
+    /** Address already has an account: Supabase answers signUp with success but sends no email. */
+    portalCompactAuthSignupExists: string
     portalCompactAuthSignupConfirm: string
     /** After signUp without session — OTP from email (Supabase `{{ .Token }}`, typically 6 or 8 digits). */
     portalCompactAuthOtpSent: string
@@ -2018,6 +2020,8 @@ export const ukMessages: MessageTree = {
     portalCompactAuthSubmitSignUp: 'Зареєструватися',
     portalCompactAuthSignOut: 'Вийти',
     portalCompactAuthSignupSession: 'Готово: ви ввійшли в обліковий запис.',
+    portalCompactAuthSignupExists:
+      'Ця адреса вже зареєстрована — листа з кодом не буде. Введіть пароль і увійдіть.',
     portalCompactAuthSignupConfirm:
       'Обліковий запис створено. Якщо увімкнено підтвердження email — відкрийте лист і перейдіть за посиланням, потім увійдіть.',
     portalCompactAuthOtpSent:
@@ -3403,6 +3407,8 @@ export const enMessages: MessageTree = {
     portalCompactAuthSubmitSignUp: 'Sign up',
     portalCompactAuthSignOut: 'Sign out',
     portalCompactAuthSignupSession: 'You are signed in.',
+    portalCompactAuthSignupExists:
+      'This address already has an account — no code will arrive. Enter your password to sign in.',
     portalCompactAuthSignupConfirm:
       'Account created. If email confirmation is enabled, confirm from your inbox before signing in.',
     portalCompactAuthOtpSent:

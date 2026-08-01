@@ -76,11 +76,14 @@ import { parseSafetyAngles, isTargetInSafetyZone, type SafetyAngles } from '../.
 import { useBriefingStore } from '../../application/briefingStore'
 import {
   clampVec2ToField,
+  clampVec2ToFieldBox,
   DEFAULT_FIELD_HEIGHT_M,
   DEFAULT_FIELD_WIDTH_M,
   GRID_CHESS_M,
   GRID_SNAP_M,
   PENALTY_CONTOUR_VERTEX_SNAP_M,
+  PENALTY_VERTEX_FIELD_MARGIN_M,
+  rotatedHalfExtentM,
   snapMeters,
   snapVec2,
   PROP_PLACEMENT_SNAP_M,
@@ -441,49 +444,76 @@ function minDistPointToPolygonEdgesSq(px: number, py: number, poly: Vec2[]): num
   return best
 }
 
+/** Влучання з квадратом відстані до силуету (0 — курсор усередині); за нею обираємо найближчий об’єкт. */
+type PickHit<T> = { ent: T; distSq: number }
+
+function pickTargetHitAt(
+  targets: readonly Target[],
+  wx: number,
+  wy: number,
+  touchPadM: number,
+): PickHit<Target> | null {
+  const ordered = targetsDrawOrder(targets)
+  const pad = PICK_MARGIN_M + touchPadM
+  const padSq = pad * pad
+  let best: PickHit<Target> | null = null
+  for (let i = ordered.length - 1; i >= 0; i--) {
+    const g = ordered[i]
+    if (!g) continue
+    const { poly } = targetFootprintWorld(g)
+    if (pointInPolygon(wx, wy, poly)) return { ent: g, distSq: 0 }
+    const distSq = minDistPointToPolygonEdgesSq(wx, wy, poly)
+    if (distSq <= padSq && (!best || distSq < best.distSq)) best = { ent: g, distSq }
+  }
+  return best
+}
+
+function pickPropHitAt(
+  props: readonly Prop[],
+  wx: number,
+  wy: number,
+  touchPadM: number,
+): PickHit<Prop> | null {
+  const pad = PICK_MARGIN_M + touchPadM
+  const padSq = pad * pad
+  let best: PickHit<Prop> | null = null
+  for (let i = props.length - 1; i >= 0; i--) {
+    const p = props[i]
+    if (!p) continue
+    let distSq: number
+    if (p.type === 'barrel' || p.type === 'barrelDouble' || p.type === 'tireStack' || p.type === 'tireStack1m' || p.type === 'tireStackTall') {
+      const r = Math.min(p.sizeM.x, p.sizeM.y) / 2
+      const outside = Math.max(Math.hypot(wx - p.position.x, wy - p.position.y) - r, 0)
+      distSq = outside * outside
+    } else {
+      const rot = p.rotationRad
+      const dx = wx - p.position.x
+      const dy = wy - p.position.y
+      const c = Math.cos(-rot)
+      const s = Math.sin(-rot)
+      const lx = Math.abs(dx * c - dy * s) - p.sizeM.x / 2
+      const ly = Math.abs(dx * s + dy * c) - p.sizeM.y / 2
+      const ox = Math.max(lx, 0)
+      const oy = Math.max(ly, 0)
+      distSq = ox * ox + oy * oy
+    }
+    if (distSq === 0) return { ent: p, distSq }
+    if (distSq <= padSq && (!best || distSq < best.distSq)) best = { ent: p, distSq }
+  }
+  return best
+}
+
 function pickTargetAt(
   targets: readonly Target[],
   wx: number,
   wy: number,
   touchPadM: number,
 ): Target | null {
-  const ordered = targetsDrawOrder(targets)
-  const pad = PICK_MARGIN_M + touchPadM
-  const padSq = pad * pad
-  for (let i = ordered.length - 1; i >= 0; i--) {
-    const g = ordered[i]
-    if (!g) continue
-    const { poly } = targetFootprintWorld(g)
-    if (pointInPolygon(wx, wy, poly)) return g
-    if (minDistPointToPolygonEdgesSq(wx, wy, poly) <= padSq) return g
-  }
-  return null
+  return pickTargetHitAt(targets, wx, wy, touchPadM)?.ent ?? null
 }
 
 function pickPropAt(props: readonly Prop[], wx: number, wy: number, touchPadM: number): Prop | null {
-  for (let i = props.length - 1; i >= 0; i--) {
-    const p = props[i]
-    if (!p) continue
-    if (p.type === 'barrel' || p.type === 'barrelDouble' || p.type === 'tireStack' || p.type === 'tireStack1m' || p.type === 'tireStackTall') {
-      const r = Math.min(p.sizeM.x, p.sizeM.y) / 2
-      const dx = wx - p.position.x
-      const dy = wy - p.position.y
-      if (Math.hypot(dx, dy) <= r + PICK_MARGIN_M + touchPadM) return p
-      continue
-    }
-    const hw = p.sizeM.x / 2
-    const hh = p.sizeM.y / 2
-    const rot = p.rotationRad
-    const dx = wx - p.position.x
-    const dy = wy - p.position.y
-    const c = Math.cos(-rot)
-    const s = Math.sin(-rot)
-    const lx = dx * c - dy * s
-    const ly = dx * s + dy * c
-    if (Math.abs(lx) <= hw + PICK_MARGIN_M + touchPadM && Math.abs(ly) <= hh + PICK_MARGIN_M + touchPadM)
-      return p
-  }
-  return null
+  return pickPropHitAt(props, wx, wy, touchPadM)?.ent ?? null
 }
 
 /**
@@ -3160,7 +3190,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const t = transformRef.current
     if (Math.abs(t.fieldWidthM - fw) > 1e-6 || Math.abs(t.fieldHeightM - fh) > 1e-6) return clearHover()
     const wRaw = screenToWorld(sx, sy, t)
-    const snapped = snapVec2(clampVec2ToField(wRaw, 1, fw, fh), PENALTY_CONTOUR_VERTEX_SNAP_M)
+    const snapped = snapVec2(
+      clampVec2ToField(wRaw, PENALTY_VERTEX_FIELD_MARGIN_M, fw, fh),
+      PENALTY_CONTOUR_VERTEX_SNAP_M,
+    )
     const prev = penaltyContourHoverSnapRef.current
     if (
       prev &&
@@ -3392,6 +3425,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     ro.observe(canvas)
 
     const onWheel = (e: WheelEvent) => {
+      /**
+       * Колесо над планом більше не з’їдає скрол сторінки: при масштабі 1 подія йде далі,
+       * а масштабують Ctrl/⌘ + колесо, pinch або кнопки навігації. Уже наближений план
+       * колесо віддаляє до 1 і лише потім віддає скрол сторінці.
+       */
+      const zoomIntent = e.ctrlKey || e.metaKey
+      if (!zoomIntent && viewZoomRef.current <= 1.001) return
       e.preventDefault()
       const r = canvas.getBoundingClientRect()
       const sx = e.clientX - r.left
@@ -4294,15 +4334,15 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       if (!pr || pr.type !== 'faultLine') return
       const maxL = faultLineMaxLenM()
       const geo = faultLineGeometryAfterStretch(pr, w, drag.anchor, maxL)
-      const margin = geo.sizeM.x / 2 + geo.sizeM.y / 2 + PICK_MARGIN_M
-      const c = clampVec2ToField(geo.position, margin, fw, fh)
+      const half = propHalfExtentForMove(geo.sizeM, pr.rotationRad)
+      const c = clampVec2ToFieldBox(geo.position, half, fw, fh)
       onSetPropGeometry(drag.id, c, geo.sizeM)
       return
     }
 
     if (drag.mode === 'movePenaltyVertex') {
       const raw = { x: w.x - drag.grabOffset.x, y: w.y - drag.grabOffset.y }
-      const clamped = clampVec2ToField(raw, 1, fw, fh)
+      const clamped = clampVec2ToField(raw, PENALTY_VERTEX_FIELD_MARGIN_M, fw, fh)
       movePenaltyVertex(
         drag.polygonId,
         drag.ringId,
@@ -4323,13 +4363,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const next = { x: w.x - drag.grabOffset.x, y: w.y - drag.grabOffset.y }
     const pr = props.find((p) => p.id === drag.id)
     const tgt = targets.find((t) => t.id === drag.id)
-    let margin = 1
-    if (drag.kind === 'target' && tgt) margin = targetFootprintWorld(tgt).boundsR + PICK_MARGIN_M
-    else if (drag.kind === 'prop') margin = edgeMarginForPropMove(pr?.sizeM ?? { x: 1, y: 1 })
-    const clamped = clampVec2ToField(next, margin, fw, fh)
-    if (drag.kind === 'target')
-      onMoveTarget(drag.id, snapVec2(clamped, TARGET_PLACEMENT_SNAP_M))
-    else onMoveProp(drag.id, snapVec2(clamped, PROP_PLACEMENT_SNAP_M))
+    if (drag.kind === 'target') {
+      const margin = tgt ? targetFootprintWorld(tgt).boundsR + PICK_MARGIN_M : 1
+      onMoveTarget(drag.id, snapVec2(clampVec2ToField(next, margin, fw, fh), TARGET_PLACEMENT_SNAP_M))
+      return
+    }
+    const half = propHalfExtentForMove(pr?.sizeM ?? { x: 1, y: 1 }, pr?.rotationRad ?? 0)
+    onMoveProp(drag.id, snapVec2(clampVec2ToFieldBox(next, half, fw, fh), PROP_PLACEMENT_SNAP_M))
   }
 
   const endDrag = (ev: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -4443,8 +4483,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
               x: pivot.x + Math.cos(snapped) * (L / 2),
               y: pivot.y + Math.sin(snapped) * (L / 2),
             }
-            const margin = L / 2 + ent.sizeM.y / 2 + PICK_MARGIN_M
-            onMoveProp(drag.id, snapVec2(clampVec2ToField(c, margin, fw, fh), PROP_PLACEMENT_SNAP_M))
+            const half = propHalfExtentForMove({ x: L, y: ent.sizeM.y }, snapped)
+            onMoveProp(drag.id, snapVec2(clampVec2ToFieldBox(c, half, fw, fh), PROP_PLACEMENT_SNAP_M))
             onRotateProp(drag.id, snapped)
           }
         } else {
@@ -4460,8 +4500,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         const maxL = faultLineMaxLenM()
         const L = Math.max(FAULT_LINE_SECTION_M, snapMeters(pr.sizeM.x))
         const geo = faultLineWithLength(pr, L, drag.anchor, maxL)
-        const margin = geo.sizeM.x / 2 + geo.sizeM.y / 2 + PICK_MARGIN_M
-        const c = snapVec2(clampVec2ToField(geo.position, margin, fw, fh))
+        const half = propHalfExtentForMove(geo.sizeM, pr.rotationRad)
+        const c = snapVec2(clampVec2ToFieldBox(geo.position, half, fw, fh))
         onSetPropGeometry(drag.id, c, geo.sizeM)
       }
     } else if (drag.mode === 'movePenaltyVertex') {
@@ -4470,7 +4510,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const sy = ev.clientY - rect.top
       const ww = screenToWorld(sx, sy, transformRef.current)
       const raw = { x: ww.x - drag.grabOffset.x, y: ww.y - drag.grabOffset.y }
-      const clamped = clampVec2ToField(raw, 1, fw, fh)
+      const clamped = clampVec2ToField(raw, PENALTY_VERTEX_FIELD_MARGIN_M, fw, fh)
       movePenaltyVertex(
         drag.polygonId,
         drag.ringId,
@@ -4491,13 +4531,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const raw = { x: w.x - drag.grabOffset.x, y: w.y - drag.grabOffset.y }
       const pr = props.find((p) => p.id === drag.id)
       const tgt = targets.find((t) => t.id === drag.id)
-      let margin = 1
-      if (drag.kind === 'target' && tgt) margin = targetFootprintWorld(tgt).boundsR + PICK_MARGIN_M
-      else margin = edgeMarginForPropMove(pr?.sizeM ?? { x: 1, y: 1 })
-      const clamped = clampVec2ToField(raw, margin, fw, fh)
-      if (drag.kind === 'target')
-        onMoveTarget(drag.id, snapVec2(clamped, TARGET_PLACEMENT_SNAP_M))
-      else onMoveProp(drag.id, snapVec2(clamped, PROP_PLACEMENT_SNAP_M))
+      if (drag.kind === 'target') {
+        const margin = tgt ? targetFootprintWorld(tgt).boundsR + PICK_MARGIN_M : 1
+        onMoveTarget(drag.id, snapVec2(clampVec2ToField(raw, margin, fw, fh), TARGET_PLACEMENT_SNAP_M))
+      } else {
+        const half = propHalfExtentForMove(pr?.sizeM ?? { x: 1, y: 1 }, pr?.rotationRad ?? 0)
+        onMoveProp(drag.id, snapVec2(clampVec2ToFieldBox(raw, half, fw, fh), PROP_PLACEMENT_SNAP_M))
+      }
     }
 
     dragRef.current = null
@@ -4548,8 +4588,10 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   )
 })
 
-function edgeMarginForPropMove(sizeM: Prop['sizeM']): number {
-  return Math.max(sizeM.x, sizeM.y) / 2 + PICK_MARGIN_M
+/** Півгабарити для clamp по осях: довга штрафна лінія має доїжджати до краю поля впоперек своєї осі. */
+function propHalfExtentForMove(sizeM: Prop['sizeM'], rotationRad: number): Vec2 {
+  const half = rotatedHalfExtentM(sizeM, rotationRad)
+  return { x: half.x + PICK_MARGIN_M, y: half.y + PICK_MARGIN_M }
 }
 
 function applyMoveMultiAtWorld(
@@ -4580,8 +4622,8 @@ function applyMoveMultiAtWorld(
     const p = props.find((x) => x.id === o.id)
     if (!p) continue
     const cand = { x: o.orig.x + dx, y: o.orig.y + dy }
-    const margin = edgeMarginForPropMove(p.sizeM ?? { x: 1, y: 1 })
-    const clamped = clampVec2ToField(cand, margin, fw, fh)
+    const half = propHalfExtentForMove(p.sizeM ?? { x: 1, y: 1 }, p.rotationRad)
+    const clamped = clampVec2ToFieldBox(cand, half, fw, fh)
     onMoveProp(o.id, snapVec2(clamped, PROP_PLACEMENT_SNAP_M))
   }
 }

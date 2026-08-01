@@ -11,6 +11,7 @@ import {
   useState,
   type ComponentProps,
   type CSSProperties,
+  type MutableRefObject,
   type ReactNode,
 } from 'react'
 import * as THREE from 'three'
@@ -344,6 +345,17 @@ export type CameraMode3D = 'overview' | 'shooter' | 'pdf'
 
 export type StageView3DHandle = {
   capturePngDataUrl: () => string | null
+  /** Екранні кнопки навігації: зсув у частках кадру, крок зуму, повернення до стартового ракурсу. */
+  panByViewFraction: (dxFraction: number, dyFraction: number) => void
+  zoomByStep: (direction: 1 | -1) => void
+  resetView: () => void
+}
+
+/** Імперативний місток із `StageNavigator` (усередині Canvas) до ref-хендла компонента. */
+type Navigator3dApi = {
+  panByViewFraction: (dxFraction: number, dyFraction: number) => void
+  zoomByStep: (direction: 1 | -1) => void
+  resetView: () => void
 }
 
 type StageView3DProps = {
@@ -363,14 +375,23 @@ const OVERVIEW_TARGET_Z_OFFSET = -3
 /** Компонента Z позиції камери: `tz` (Three.js) + це значення = те саме, що `+18` при старій схемі. */
 const OVERVIEW_CAMERA_Z_FROM_TZ = OVERVIEW_CAM_DELTA.z + OVERVIEW_TARGET_Z_OFFSET
 
+/** Крок екранних кнопок зуму: наближення / віддалення відстані до цілі орбіти. */
+const ZOOM_STEP_FACTOR = 1.28
+
 /** Обертання, зум (scroll / pinch), панорама; огляд центрується по старті / штрафній лінії або центру поля. */
-function StageNavigator({ mode }: { mode: CameraMode3D }) {
+function StageNavigator({
+  mode,
+  apiRef,
+}: {
+  mode: CameraMode3D
+  apiRef?: MutableRefObject<Navigator3dApi | null>
+}) {
   const ctrlRef = useRef<OrbitControlsType>(null)
   const { camera } = useThree()
   const { widthM, heightM } = useStageFieldM()
   const anchorSig = useStageStore((s) => overviewAnchorRelevantSignature(s.props))
 
-  useEffect(() => {
+  const applyCameraMode = useCallback(() => {
     const oc = ctrlRef.current
     const overview = mode === 'overview' || mode === 'pdf'
     if (overview) {
@@ -394,7 +415,73 @@ function StageNavigator({ mode }: { mode: CameraMode3D }) {
     }
     oc?.update()
     camera.updateProjectionMatrix()
-  }, [camera, mode, widthM, heightM, anchorSig])
+  }, [camera, mode, widthM, heightM])
+
+  useEffect(() => {
+    applyCameraMode()
+  }, [applyCameraMode, anchorSig])
+
+  /** З тачпада немає ані середньої кнопки, ані зручного drag правою — Shift переводить ЛКМ у панораму. */
+  useEffect(() => {
+    const oc = ctrlRef.current
+    if (!oc) return
+    const setLeft = (pan: boolean) => {
+      oc.mouseButtons = {
+        ...oc.mouseButtons,
+        LEFT: pan ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE,
+      }
+    }
+    setLeft(false)
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') setLeft(true)
+    }
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') setLeft(false)
+    }
+    const onBlur = () => setLeft(false)
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    window.addEventListener('blur', onBlur)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+      window.removeEventListener('blur', onBlur)
+      setLeft(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!apiRef) return
+    apiRef.current = {
+      panByViewFraction: (dxFraction, dyFraction) => {
+        const oc = ctrlRef.current
+        if (!oc || !(camera instanceof PerspectiveCamera)) return
+        const distance = camera.position.distanceTo(oc.target)
+        const halfHeight = Math.tan((camera.fov / 2) * THREE.MathUtils.DEG2RAD) * distance
+        const right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0)
+        const up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1)
+        const move = right
+          .multiplyScalar(2 * halfHeight * camera.aspect * dxFraction)
+          .add(up.multiplyScalar(2 * halfHeight * dyFraction))
+        camera.position.add(move)
+        oc.target.add(move)
+        oc.update()
+      },
+      zoomByStep: (direction) => {
+        const oc = ctrlRef.current
+        if (!oc) return
+        const offset = camera.position.clone().sub(oc.target)
+        const factor = direction > 0 ? 1 / ZOOM_STEP_FACTOR : ZOOM_STEP_FACTOR
+        const nextLen = Math.min(oc.maxDistance, Math.max(oc.minDistance, offset.length() * factor))
+        camera.position.copy(oc.target).add(offset.setLength(nextLen))
+        oc.update()
+      },
+      resetView: applyCameraMode,
+    }
+    return () => {
+      apiRef.current = null
+    }
+  }, [apiRef, camera, applyCameraMode])
 
   return (
     <OrbitControls
@@ -405,6 +492,10 @@ function StageNavigator({ mode }: { mode: CameraMode3D }) {
       enablePan
       enableZoom
       enableRotate
+      rotateSpeed={0.65}
+      zoomSpeed={0.55}
+      panSpeed={0.9}
+      zoomToCursor
       maxPolarAngle={Math.PI / 2 - 0.02}
       minPolarAngle={0.04}
     />
@@ -2148,6 +2239,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
   const glRef = useRef<WebGLRenderer | null>(null)
   const sceneRef = useRef<Scene | null>(null)
   const cameraRef = useRef<PerspectiveCamera | null>(null)
+  const navApiRef = useRef<Navigator3dApi | null>(null)
   const { widthM, heightM } = useStageFieldM()
   const pdfAspect = briefingPdfSnapshotAspectRatio(widthM, heightM)
 
@@ -2213,6 +2305,9 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
           gl.setSize(prevW, prevH, false)
         }
       },
+      panByViewFraction: (dx, dy) => navApiRef.current?.panByViewFraction(dx, dy),
+      zoomByStep: (direction) => navApiRef.current?.zoomByStep(direction),
+      resetView: () => navApiRef.current?.resetView(),
     }),
     [grayscaleForPdf],
   )
@@ -2222,7 +2317,7 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
   return (
     <StageView3DCanvasShell cameraMode={cameraMode} pdfAspect={pdfAspect}>
       <StageView3DCanvasSized canvasProps={canvasProps} measureClassName={measureExtraClass}>
-        <StageNavigator mode={cameraMode} />
+        <StageNavigator mode={cameraMode} apiRef={navApiRef} />
         <ambientLight intensity={shadowsEnabled ? 0.52 : 0.68} />
         <StageSunLight castShadowEnabled={shadowsEnabled} />
         <Ground />

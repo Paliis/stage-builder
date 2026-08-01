@@ -123,6 +123,14 @@ export function PortalCompactEmailAuth({
         setMessage(p.portalCompactAuthSignupSession)
         return
       }
+      // GoTrue hides «this address is taken» behind a success response with an empty `identities`
+      // array and sends no email. Without this check the visitor waits for a code that never comes.
+      if ((data.user?.identities?.length ?? 1) === 0) {
+        setAuthMode('signin')
+        setPassword('')
+        setMessage(p.portalCompactAuthSignupExists)
+        return
+      }
       setSignupAwaitingOtp(true)
       setOtp('')
       setMessage(p.portalCompactAuthOtpSent)

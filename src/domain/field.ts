@@ -43,6 +43,12 @@ export const GRID_SNAP_M = 0.5
 /** Крок прив’язки вершин контуру штрафної зони при кліку та перетягуванні (тонший за загальну сітку поля). */
 export const PENALTY_CONTOUR_VERTEX_SNAP_M = 0.1
 
+/**
+ * Відступ вершин штрафної зони від межі площадки. Нуль — контур можна вести по самому краю:
+ * штрафна лінія часто йде саме по межі тиру, а метровий бордюр не давав її туди поставити.
+ */
+export const PENALTY_VERTEX_FIELD_MARGIN_M = 0
+
 /** Крок «шахматки» на 2D-плані (м); тонкі лінії сітки лишаються з кроком `GRID_SNAP_M`. */
 export const GRID_CHESS_M = 1
 
@@ -72,5 +78,34 @@ export function clampVec2ToField(
   return {
     x: Math.max(marginM, Math.min(widthM - marginM, point.x)),
     y: Math.max(marginM, Math.min(heightM - marginM, point.y)),
+  }
+}
+
+/** Півгабарити осе-орієнтованої рамки, що описує повернутий прямокутник. */
+export function rotatedHalfExtentM(sizeM: Vec2, rotationRad: number): Vec2 {
+  const c = Math.abs(Math.cos(rotationRad))
+  const s = Math.abs(Math.sin(rotationRad))
+  return {
+    x: (sizeM.x / 2) * c + (sizeM.y / 2) * s,
+    y: (sizeM.x / 2) * s + (sizeM.y / 2) * c,
+  }
+}
+
+/**
+ * Clamp центру прямокутника окремо по кожній осі. Спільний відступ за найдовшою стороною
+ * не давав підсунути довгу штрафну лінію до нижнього краю поля, хоча її товщина — сантиметри.
+ * Об’єкт, ширший за поле, лишається по центру відповідної осі.
+ */
+export function clampVec2ToFieldBox(
+  point: Vec2,
+  halfExtentM: Vec2,
+  widthM: number = DEFAULT_FIELD_WIDTH_M,
+  heightM: number = DEFAULT_FIELD_HEIGHT_M,
+): Vec2 {
+  const axis = (value: number, half: number, sizeM: number): number =>
+    half * 2 >= sizeM ? sizeM / 2 : Math.max(half, Math.min(sizeM - half, value))
+  return {
+    x: axis(point.x, halfExtentM.x, widthM),
+    y: axis(point.y, halfExtentM.y, heightM),
   }
 }

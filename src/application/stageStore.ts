@@ -45,6 +45,7 @@ import {
   DEFAULT_FIELD_WIDTH_M,
   GRID_SNAP_M,
   PENALTY_CONTOUR_VERTEX_SNAP_M,
+  PENALTY_VERTEX_FIELD_MARGIN_M,
   PROP_PLACEMENT_SNAP_M,
   snapMeters,
   snapVec2,
@@ -343,7 +344,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       const fw = s.fieldSizeM.x
       const fh = s.fieldSizeM.y
       const pos = snapVec2(
-        clampVec2ToField(position, 1, fw, fh),
+        clampVec2ToField(position, PENALTY_VERTEX_FIELD_MARGIN_M, fw, fh),
         PENALTY_CONTOUR_VERTEX_SNAP_M,
       )
       const pi = s.penaltyZoneSet.polygons.findIndex((p) => p.id === polygonId)
