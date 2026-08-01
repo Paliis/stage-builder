@@ -367,7 +367,7 @@ function drawProgrammeStats(
 
   for (let page = 0; page < chunks.length; page++) {
     doc.addPage()
-    let y = drawSectionTitle(doc, margin + 4, margin, s.sectionProgrammeStats, true)
+    const y = drawSectionTitle(doc, margin + 4, margin, s.sectionProgrammeStats, true)
     if (chunks.length > 1) {
       doc.setFontSize(9)
       doc.setTextColor(100, 116, 139)

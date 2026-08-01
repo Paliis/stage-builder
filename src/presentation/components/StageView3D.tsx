@@ -455,8 +455,8 @@ function StageNavigator({
     if (!oc) return
     const lift = Math.max(MIN_CAMERA_EYE_Y_M - camera.position.y, -oc.target.y, 0)
     if (lift > 1e-4) {
-      camera.position.y += lift
-      oc.target.y += lift
+      camera.position.setY(camera.position.y + lift)
+      oc.target.setY(oc.target.y + lift)
     }
   })
 

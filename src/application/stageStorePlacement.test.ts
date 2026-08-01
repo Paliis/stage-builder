@@ -8,7 +8,7 @@ describe('addProp placement', () => {
   })
 
   it('puts a fault line at the very bottom of the field', () => {
-    const { x: fw, y: fh } = useStageStore.getState().fieldSizeM
+    const { x: fw } = useStageStore.getState().fieldSizeM
     useStageStore.getState().addProp('faultLine', undefined, { x: fw / 2, y: 0 })
     const placed = useStageStore.getState().props.at(-1)!
     // Раніше clamp тримав центр за 2 м від краю, хоча товщина лінії — сантиметри.
