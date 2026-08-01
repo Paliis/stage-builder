@@ -1341,8 +1341,8 @@
 /* Looks like a real text field so it is obvious the stage name is editable. */
 .app__stage-name {
   min-width: 0;
-  max-width: 18rem;
-  flex: 1 1 10rem;
+  max-width: 26rem;
+  flex: 1 1 14rem;
   text-overflow: ellipsis;
   padding: 0.32rem 0.55rem;
   font: inherit;
@@ -1356,7 +1356,21 @@
 
 .app__stage-name::placeholder {
   font-weight: 500;
-  color: var(--muted);
+  color: var(--accent);
+  opacity: 0.75;
+}
+
+/* Unnamed stage: the field itself is the call to action. */
+.app__stage-name:placeholder-shown:not(:focus) {
+  border-color: var(--accent-border);
+  border-style: dashed;
+  background: var(--accent-bg);
+}
+
+@media (min-width: 80rem) {
+  .app__stage-name {
+    max-width: 34rem;
+  }
 }
 
 .app__stage-name:hover {
