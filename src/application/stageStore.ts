@@ -176,10 +176,11 @@ export type StageState = {
   setRangeDistanceSignEdgeYM: (id: string, edgePositionYM: number) => void
 }
 
+/** Fallback title when the author saves or shares a stage without naming it. */
 export const DEFAULT_STAGE_NAME = 'Нова вправа'
 
 export const useStageStore = create<StageState>()(temporal((set) => ({
-  name: DEFAULT_STAGE_NAME,
+  name: '',
   weaponClass: 'handgun',
   fieldSizeM: { x: DEFAULT_FIELD_WIDTH_M, y: DEFAULT_FIELD_HEIGHT_M },
   fieldGroundCover3d: DEFAULT_FIELD_GROUND_COVER_3D,
@@ -233,7 +234,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set(() => {
       const fieldSizeM = clampFieldDimensions(DEFAULT_FIELD_WIDTH_M, DEFAULT_FIELD_HEIGHT_M)
       return {
-        name: DEFAULT_STAGE_NAME,
+        name: '',
         weaponClass: 'handgun',
         fieldSizeM,
         fieldGroundCover3d: DEFAULT_FIELD_GROUND_COVER_3D,

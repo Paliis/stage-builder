@@ -1338,29 +1338,35 @@
   background: var(--btn-secondary-bg);
 }
 
+/* Looks like a real text field so it is obvious the stage name is editable. */
 .app__stage-name {
   min-width: 0;
   max-width: 18rem;
-  flex: 1 1 8rem;
+  flex: 1 1 10rem;
   text-overflow: ellipsis;
-  padding: 0.32rem 0.5rem;
+  padding: 0.32rem 0.55rem;
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text);
-  background: transparent;
-  border: 1px solid transparent;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
 }
 
+.app__stage-name::placeholder {
+  font-weight: 500;
+  color: var(--muted);
+}
+
 .app__stage-name:hover {
-  border-color: var(--border);
+  border-color: var(--accent-border);
 }
 
 .app__stage-name:focus {
-  background: var(--surface);
-  border-color: var(--accent-border);
-  outline: none;
+  border-color: var(--accent);
+  outline: 2px solid var(--accent-bg);
+  outline-offset: 0;
 }
 
 .app__library-status {

@@ -238,41 +238,15 @@ html.portal-shell__nav-drawer-lock body {
 }
 
 /*
- * App mode (Stage Builder): the editor owns the screen, so product links always live in the
- * burger catalog while account + language stay inline in the strip.
+ * Editor route: the header stays the regular one, but the editor's own sticky rails and drawers
+ * climb up to z-index 910, so the strip and its drawer must sit above them (modals stay on top).
  */
-/* Editor sizes its canvas against the viewport — tell it how much the portal strip takes. */
 .portal-shell--app {
   --app-chrome-offset: var(--portal-shell-strip-h);
 }
 
-.portal-shell--app .portal-shell__menu-toggle {
-  display: inline-flex !important;
-  order: -1;
-}
-
-.portal-shell--app .portal-shell__header-toolbar--nav-only {
-  padding-top: 1rem;
-}
-
-.portal-shell--app .portal-shell__nav {
-  flex-direction: column;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  gap: 0.35rem;
-  padding: 0;
-  border: none;
-  background: transparent;
-}
-
-.portal-shell--app .portal-shell__nav a {
-  display: block;
-  width: 100%;
-  padding: 0.55rem 0.65rem;
-}
-
-.portal-shell--app .portal-shell__toolbar-end {
-  margin-left: auto;
+.portal-shell--app .portal-shell__header {
+  z-index: 940;
 }
 
 /* Narrow phones: keep the strip to burger + logo mark + account + language. */
@@ -282,29 +256,8 @@ html.portal-shell__nav-drawer-lock body {
   }
 }
 
-/* From tablet up the catalog is a dropdown under the burger, not a full-screen drawer. */
-@media (min-width: 48rem) {
-  .portal-shell--app .portal-shell__header-toolbar--nav-only {
-    right: auto;
-    bottom: auto;
-    left: calc(
-      max(0px, (100vw - var(--portal-layout-max-width, 90rem)) / 2) +
-        var(--portal-layout-gutter-inline, 1.25rem)
-    );
-    width: min(17rem, 92vw);
-    padding: 0.6rem;
-    border-radius: 0 0 0.9rem 0.9rem;
-    border: 1px solid var(--border);
-    border-top: none;
-  }
-
-  .portal-shell--app .portal-shell__nav-backdrop {
-    background: transparent;
-  }
-}
-
 /* Hamburger tied to TS `compactHeader`, not viewport alone (fixes wide window + narrow iframe). */
-.portal-shell:not(.portal-shell--nav-compact):not(.portal-shell--app) .portal-shell__menu-toggle {
+.portal-shell:not(.portal-shell--nav-compact) .portal-shell__menu-toggle {
   display: none !important;
 }
 

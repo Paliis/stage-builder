@@ -574,7 +574,7 @@ export default function App({
       setLibraryQuickSaving(true)
       const res = await saveUserStage({
         id: libraryStageId,
-        title: shareProjectRoot.stage.name,
+        title: shareProjectRoot.stage.name.trim() || DEFAULT_STAGE_NAME,
         stage: shareProjectRoot.stage,
         briefing: shareProjectRoot.briefing,
       })
@@ -1406,12 +1406,10 @@ export default function App({
                   className="app__stage-name"
                   value={name}
                   maxLength={200}
+                  placeholder={tree.library.namePlaceholder}
                   aria-label={tree.library.nameLabel}
                   title={tree.library.nameLabel}
                   onChange={(e) => setStageName(e.target.value)}
-                  onBlur={() => {
-                    if (!name.trim()) setStageName(DEFAULT_STAGE_NAME)
-                  }}
                 />
                 {libraryStatusText ? (
                   <span className="app__library-status" aria-live="polite">

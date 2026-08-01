@@ -9,6 +9,7 @@ import {
   type UserStageRecord,
   type UserStageSummary,
 } from '../../application/userStagesLibrary'
+import { DEFAULT_STAGE_NAME } from '../../application/stageStore'
 import type { StageBriefing } from '../../domain/stageBriefing'
 import type { StageProjectSnapshot } from '../../domain/stageProjectFile'
 import { formatTemplate } from '../../i18n/format'
@@ -111,7 +112,12 @@ export function StageLibraryDialog({
     async (id: string | null) => {
       setErrorKey(null)
       setBusy(true)
-      const res = await saveUserStage({ id, title: stage.name, stage, briefing })
+      const res = await saveUserStage({
+        id,
+        title: stage.name.trim() || DEFAULT_STAGE_NAME,
+        stage,
+        briefing,
+      })
       setBusy(false)
       if (!res.ok) {
         setErrorKey(res.errorKey)
@@ -234,7 +240,9 @@ export function StageLibraryDialog({
           <div className="app__stage-library-save">
             <p className="app__stage-library-name">
               <span className="app__stage-library-name-label">{lib.nameLabel}</span>
-              <strong className="app__stage-library-name-value">{stage.name}</strong>
+              <strong className="app__stage-library-name-value">
+                {stage.name.trim() || DEFAULT_STAGE_NAME}
+              </strong>
               <span className="app__stage-library-name-hint">{lib.nameFromHeader}</span>
             </p>
             <div className="app__stage-library-save-actions">

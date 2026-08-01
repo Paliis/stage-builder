@@ -68,7 +68,8 @@ export function isSessionDraftMeaningful(envelope: SessionDraftEnvelope): boolea
     (stage.rangeDistanceSigns?.length ?? 0) > 0
   )
     return true
-  if (stage.name.trim() !== DEFAULT_STAGE_NAME_UA) return true
+  const stageName = stage.name.trim()
+  if (stageName && stageName !== DEFAULT_STAGE_NAME_UA) return true
   if (stage.fieldSizeM.x !== DEFAULT_FIELD_WIDTH_M || stage.fieldSizeM.y !== DEFAULT_FIELD_HEIGHT_M) return true
   if (stage.weaponClass !== 'handgun') return true
   if (stage.fieldGroundCover3d !== DEFAULT_FIELD_GROUND_COVER_3D) return true

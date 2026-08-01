@@ -335,6 +335,7 @@ export type MessageTree = {
     myStages: string
     intro: string
     nameLabel: string
+    namePlaceholder: string
     saveAsNew: string
     update: string
     saving: string
@@ -1644,6 +1645,7 @@ export const ukMessages: MessageTree = {
     intro:
       'Вправи зберігаються у вашому акаунті й відкриваються з будь-якого пристрою. Файл .stage.json лишається для експорту.',
     nameLabel: 'Назва вправи',
+    namePlaceholder: 'Введіть назву вправи',
     saveAsNew: 'Зберегти як нову',
     update: 'Оновити збережену',
     saving: 'Збереження…',
@@ -3031,6 +3033,7 @@ export const enMessages: MessageTree = {
     intro:
       'Stages are stored in your account and open on any device. The .stage.json file remains available as an export.',
     nameLabel: 'Stage name',
+    namePlaceholder: 'Enter a stage name',
     saveAsNew: 'Save as new',
     update: 'Update saved stage',
     saving: 'Saving\u2026',
