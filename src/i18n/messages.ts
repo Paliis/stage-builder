@@ -1302,32 +1302,32 @@ export const ukMessages: MessageTree = {
     onboardingTitle: 'Stage Builder',
     onboardingLead: 'Редактор вправ для практичної стрільби. Тут ви можете:',
     onboardingBenefits: [
-      'намалювати вправу на плані з метровою сіткою',
-      'подивитися її в 3D очима стрільця й перевірити видимість мішеней',
-      'зібрати брифінг і роздрукувати PDF',
+      'намалювати вправу на плані з метровою сіткою: мішені, щити, двері, штрафні лінії та зони',
+      'подивитися її в 3D очима стрільця й перевірити, що видно крізь порти',
+      'зібрати брифінг і зробити PDF зі схемою, 3D-кадром і QR',
       'зберегти вправу в акаунті та поділитися посиланням',
     ],
     onboardingHowTitle: 'Як це працює',
     onboardingS1Title: '1. Площадка',
     onboardingS1Text:
-      'Задайте ширину й довжину поля вгорі або візьміть готовий пресет. Сітка — 0,5 м, по краях плану метрові лінійки. Масштаб — коліщатком, зсув — пробілом чи середньою кнопкою миші.',
+      'Задайте ширину й довжину поля вгорі (8–50 м на 8–100 м, крок 0,5 м) або візьміть готовий пресет. Сітка — 0,5 м, по краях плану метрові лінійки, під курсором видно координати. Масштаб — коліщатком, зсув — пробілом чи середньою кнопкою миші.',
     onboardingS2Title: '2. Мішені та реквізит',
     onboardingS2Text:
-      'Оберіть тип у панелі зліва й клацайте по плану — кожен клік ставить один об’єкт. Esc виходить із режиму додавання. Далі: перетягніть, щоб пересунути, «↻» — повернути, Delete — прибрати виділене.',
+      'Оберіть тип у панелі зліва й клацайте по плану — кожен клік ставить один об’єкт. Esc виходить із режиму додавання. Далі: перетягніть, щоб пересунути, «↻» — повернути кроками, Delete — прибрати виділене. Папір, метал і no-shoot є у варіантах «низько», «стійка 50 см» і «1 м».',
     onboardingS3Title: '3. Інструменти під міні-картою',
     onboardingS3Text:
-      'Рамка виділяє групу, Ctrl+C / Ctrl+V копіює, лінійка (клавіша M) міряє відстань, «Розміри» закріплює підписи на плані. Червоний кошик очищає всю вправу — це не те саме, що видалити виділене.',
+      'Рамка виділяє групу, Ctrl+C / Ctrl+V копіює виділене, лінійка (клавіша M) міряє відстань двома кліками, «Розміри» й «Дистанції» лишають підписи просто на плані. Помилковий крок скасовує Ctrl+Z. Сіра кнопка прибирає виділене, а червоний кошик очищає всю вправу — це різні речі.',
     onboardingS4Title: '4. Перевірка в 3D',
     onboardingS4Text:
-      'Вкладка «3D-перегляд» показує сцену збоку або очима учасника («Зона стрільця»): що видно крізь порти, чи мішень не сховано повністю. Цей самий кадр потрапляє у PDF.',
+      'Вкладка «3D-перегляд» показує сцену збоку або очима учасника («Зона стрільця»): що видно крізь порти, чи мішень не сховано повністю. Режим «Як у PDF» показує саме той кадр, що піде в документ, а перемикачі «Без тіней» і «Чорно-біле» роблять його придатнішим для друку.',
     onboardingS5Title: '5. Брифінг і PDF',
     onboardingS5Text:
-      'Панель під планом — текст, який піде у PDF. «Підставити зі сцени» заповнить мішені, постріли й максимум очок за вас, а кнопка «Завантажити PDF» — просто на смузі панелі.',
+      'Панель під планом — текст, який піде у PDF. Підстановка зі сцени заповнить мішені, постріли й максимум очок за вас, а клас зброї змінює підпис пострілів: для пістолета — залікові, для решти — рекомендовані. Кнопка «Завантажити PDF» — просто на смузі панелі.',
     onboardingS6Title: '6. Збереження',
     onboardingS6Text:
-      'Дайте вправі назву в шапці й натисніть «Зберегти» — вона лишиться у вашому акаунті й відкриється з іншого пристрою, далі зберігається сама. У «Моїх вправах» — список і експорт у файл, а «Поділитися» дає посилання для колег.',
+      'Дайте вправі назву в шапці й натисніть «Зберегти» — вона лишиться у вашому акаунті й відкриється з іншого пристрою, далі зберігається сама раз на 30 секунд. Поруч видно статус: «Збережено о 14:20» або «Є незбережені зміни». У «Моїх вправах» — список, перейменування та експорт у файл, а «Поділитися» дає посилання на перегляд чи редагування.',
     onboardingNote:
-      'Працює в браузері й офлайн, якщо встановити як застосунок. Коли виходить нова версія, згори з’являється смуга з кнопкою «Оновити».',
+      'Працює в браузері й офлайн, якщо встановити як застосунок — кнопка встановлення у футері сайту. Коли виходить нова версія, згори з’являється смуга з кнопкою «Оновити».',
     onboardingCta: 'Почати',
     onboardingReopen: '\u0406\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0456\u044f',
     contextHint: '\u0417\u0430\u0440\u0430\u0437: \u043f\u043e\u043b\u0435 {{w}}\u00d7{{h}} \u043c, \u0441\u0456\u0442\u043a\u0430 {{grid}} \u043c.',
@@ -2700,32 +2700,32 @@ export const enMessages: MessageTree = {
     onboardingTitle: 'Stage Builder',
     onboardingLead: 'A stage designer for practical shooting. Here you can:',
     onboardingBenefits: [
-      'lay out a stage on a plan with a metric grid',
-      'walk it in 3D from the shooter’s side and check what is visible',
-      'write the briefing and print a PDF',
+      'lay out a stage on a plan with a metric grid: targets, walls, doors, fault lines and zones',
+      'walk it in 3D from the shooter’s side and check what is visible through the ports',
+      'write the briefing and get a PDF with the plan, a 3D frame and a QR code',
       'keep the stage in your account and share a link',
     ],
     onboardingHowTitle: 'How it works',
     onboardingS1Title: '1. The range',
     onboardingS1Text:
-      'Set the width and length at the top, or take a preset. The grid is 0.5 m, with metre rulers along the plan. Zoom with the wheel, pan with Space or the middle mouse button.',
+      'Set the width and length at the top (8–50 m by 8–100 m, in 0.5 m steps) or take a preset. The grid is 0.5 m, with metre rulers along the plan and coordinates under the cursor. Zoom with the wheel, pan with Space or the middle mouse button.',
     onboardingS2Title: '2. Targets and props',
     onboardingS2Text:
-      'Pick a type in the left panel and click the plan — one click, one object. Esc leaves placement mode. After that: drag to move, «↻» to rotate, Delete to remove the selection.',
+      'Pick a type in the left panel and click the plan — one click, one object. Esc leaves placement mode. After that: drag to move, «↻» to rotate in steps, Delete to remove the selection. Paper, steel and no-shoots come in ground, 50 cm and 1 m stand variants.',
     onboardingS3Title: '3. Tools under the minimap',
     onboardingS3Text:
-      'The marquee selects a group, Ctrl+C / Ctrl+V duplicates, the ruler (key M) measures, and «Dimensions» pins labels to the plan. The red bin clears the whole stage — not the same as deleting a selection.',
+      'The marquee selects a group, Ctrl+C / Ctrl+V duplicates the selection, the ruler (key M) measures between two clicks, and «Dimensions» and «Distances» leave labels on the plan itself. Ctrl+Z undoes a wrong move. The grey button removes the selection, the red bin clears the whole stage — not the same thing.',
     onboardingS4Title: '4. A look in 3D',
     onboardingS4Text:
-      'The «3D view» tab shows the stage from the side or through the competitor’s eyes («Shooter’s view»): what you see through the ports, whether a target is hidden completely. The same frame goes into the PDF.',
+      'The «3D view» tab shows the stage from the side or through the competitor’s eyes («Shooter’s view»): what you see through the ports, whether a target is hidden completely. «PDF frame» previews the exact crop that goes into the document, and «No shadows» and «Black & white» make it print better.',
     onboardingS5Title: '5. Briefing and PDF',
     onboardingS5Text:
-      'The panel under the plan holds the text that goes into the PDF. «Fill from scene» writes the targets, shots and max points for you, and the «Download PDF» button sits right on the panel bar.',
+      'The panel under the plan holds the text that goes into the PDF. Filling from the scene writes the targets, shots and max points for you, and the weapon class sets the wording: scoring shots for handgun, recommended for the rest. The «Download PDF» button sits right on the panel bar.',
     onboardingS6Title: '6. Saving',
     onboardingS6Text:
-      'Name the stage in the header and press «Save» — it stays in your account, opens on any device and keeps saving itself. «My stages» holds the list and the file export; «Share» gives a link for your crew.',
+      'Name the stage in the header and press «Save» — it stays in your account, opens on any device and then saves itself every 30 seconds. The status next to it reads «Saved at 14:20» or «Unsaved changes». «My stages» holds the list, renaming and the file export; «Share» gives a view or edit link.',
     onboardingNote:
-      'Runs in the browser, and offline once installed as an app. When a new version ships, a bar with an Update button appears at the top.',
+      'Runs in the browser, and offline once installed as an app — the install button is in the site footer. When a new version ships, a bar with an Update button appears at the top.',
     onboardingCta: 'Start',
     onboardingReopen: 'Guide',
     contextHint: 'Current field: {{w}}\u00d7{{h}} m, grid {{grid}} m.',
