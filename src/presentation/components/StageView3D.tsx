@@ -423,7 +423,13 @@ function StageNavigator({
     } else {
       const field: StageFieldM = { widthM, heightM }
       const state = useStageStore.getState()
-      const viewpoints = computeShooterViewpoints(state.props, state.targets, widthM, heightM)
+      const viewpoints = computeShooterViewpoints(
+        state.props,
+        state.targets,
+        widthM,
+        heightM,
+        state.penaltyZoneSet,
+      )
       const index = Math.min(Math.max(0, shooterViewpointIndex), viewpoints.length - 1)
       const vp = viewpoints[index]!
       const [ex, , ez] = stageToThreeXZ(vp.position, field)

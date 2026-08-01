@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { FAULT_LINE_SECTION_M, START_POSITION_DEFAULT_SIZE_M } from './propGeometry'
 import type { Prop, Target } from './models'
+import type { PenaltyZoneSet } from './penaltyZones'
 import { computeShooterViewpoints } from './shooterViewpoint'
 
 function start(id: string, x: number, y: number, rotationRad = 0): Prop {
@@ -66,6 +67,31 @@ describe('computeShooterViewpoints', () => {
     expect(vp!.position.x).toBeCloseTo(10, 6)
     expect(vp!.position.y).toBeCloseTo(12, 6)
     expect(vp!.lookAt.y).toBeGreaterThan(vp!.position.y)
+  })
+
+  it('counts penalty zone contours in the fallback box', () => {
+    const zones: PenaltyZoneSet = {
+      polygons: [
+        {
+          id: 'p1',
+          outer: {
+            id: 'r1',
+            closed: true,
+            vertices: [
+              { x: 6, y: 4 },
+              { x: 14, y: 4 },
+              { x: 14, y: 20 },
+              { x: 6, y: 20 },
+            ],
+          },
+          holes: [],
+        },
+      ],
+    }
+    const [vp] = computeShooterViewpoints([], [target('t', 10, 30)], 30, 40, zones)
+    expect(vp!.kind).toBe('faultLines')
+    expect(vp!.position.x).toBeCloseTo(10, 6)
+    expect(vp!.position.y).toBeCloseTo(12, 6)
   })
 
   it('falls back to the field itself and stays inside a small field', () => {

@@ -1,5 +1,6 @@
 import { DEFAULT_FIELD_HEIGHT_M, DEFAULT_FIELD_WIDTH_M } from './field'
 import type { Prop, Target, Vec2 } from './models'
+import type { PenaltyZoneSet } from './penaltyZones'
 import { faultLineEndPointsWorld } from './propGeometry'
 
 /** Звідки взята точка огляду: маркер старту, габарити штрафних ліній чи просто поле. */
@@ -66,23 +67,31 @@ function startFacing(p: Prop, interest: Vec2): Vec2 {
   return axis.y >= 0 ? axis : { x: -axis.x, y: -axis.y }
 }
 
-/** Габаритний прямокутник кінців усіх штрафних ліній — центр беремо як «між штрафними». */
-function faultLinesCenter(props: readonly Prop[]): Vec2 | null {
+/**
+ * Габарит розмітки — кінці окремих штрафних ліній і вершини зовнішніх контурів штрафних зон
+ * (отвори всередині контуру габарит не розширюють). Центр цього прямокутника і є «між штрафними».
+ */
+function faultLinesCenter(props: readonly Prop[], penaltyZoneSet?: PenaltyZoneSet): Vec2 | null {
   let minX = Infinity
   let maxX = -Infinity
   let minY = Infinity
   let maxY = -Infinity
   let found = false
+  const include = (v: Vec2): void => {
+    found = true
+    minX = Math.min(minX, v.x)
+    maxX = Math.max(maxX, v.x)
+    minY = Math.min(minY, v.y)
+    maxY = Math.max(maxY, v.y)
+  }
   for (const p of props) {
     const ends = faultLineEndPointsWorld(p)
     if (!ends) continue
-    found = true
-    for (const e of [ends.neg, ends.pos]) {
-      minX = Math.min(minX, e.x)
-      maxX = Math.max(maxX, e.x)
-      minY = Math.min(minY, e.y)
-      maxY = Math.max(maxY, e.y)
-    }
+    include(ends.neg)
+    include(ends.pos)
+  }
+  for (const poly of penaltyZoneSet?.polygons ?? []) {
+    for (const v of poly.outer.vertices) include(v)
   }
   if (!found) return null
   return { x: (minX + maxX) / 2, y: (minY + maxY) / 2 }
@@ -91,8 +100,8 @@ function faultLinesCenter(props: readonly Prop[]): Vec2 | null {
 /**
  * Точки огляду для режиму «зона стрільця», у порядку показу в перемикачі:
  * - кожен маркер стартової позиції (ближчі до низу плану — перші), погляд за поворотом маркера;
- * - якщо стартів немає — центр габаритів штрафних ліній, погляд у бік мішеней;
- * - якщо немає й ліній — середина ширини поля на чверті його довжини, погляд углиб.
+ * - якщо стартів немає — центр габаритів штрафних ліній і контурів зон, погляд у бік мішеней;
+ * - якщо немає й розмітки — середина ширини поля на чверті його довжини, погляд углиб.
  *
  * Список ніколи не порожній.
  */
@@ -101,6 +110,7 @@ export function computeShooterViewpoints(
   targets: readonly Target[],
   widthM: number = DEFAULT_FIELD_WIDTH_M,
   heightM: number = DEFAULT_FIELD_HEIGHT_M,
+  penaltyZoneSet?: PenaltyZoneSet,
 ): ShooterViewpoint[] {
   const interest = sceneInterestPoint(targets, widthM, heightM)
 
@@ -120,7 +130,7 @@ export function computeShooterViewpoints(
     })
   }
 
-  const center = faultLinesCenter(props)
+  const center = faultLinesCenter(props, penaltyZoneSet)
   if (center) {
     const position = clampToField(center, widthM, heightM)
     return [

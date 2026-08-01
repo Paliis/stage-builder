@@ -228,8 +228,8 @@ export default function App({
   }
   const [camera3d, setCamera3d] = useState<CameraMode3D>('overview')
   const shooterViewpoints = useMemo(
-    () => computeShooterViewpoints(props, targets, fieldSizeM.x, fieldSizeM.y),
-    [props, targets, fieldSizeM.x, fieldSizeM.y],
+    () => computeShooterViewpoints(props, targets, fieldSizeM.x, fieldSizeM.y, penaltyZoneSet),
+    [props, targets, fieldSizeM.x, fieldSizeM.y, penaltyZoneSet],
   )
   const [shooterViewpointIndex, setShooterViewpointIndex] = useState(0)
   const shooterIndex = Math.min(shooterViewpointIndex, shooterViewpoints.length - 1)
