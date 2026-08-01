@@ -3,7 +3,7 @@
 [![CI](https://github.com/Paliis/stage-builder/actions/workflows/ci.yml/badge.svg)](https://github.com/Paliis/stage-builder/actions/workflows/ci.yml)
 [![Deploy](https://img.shields.io/badge/live-shooters--tools.com-black?logo=vercel)](https://shooters-tools.com)
 
-**[shooters-tools.com](https://shooters-tools.com)** — портал Shooters Tools; **Stage Builder** (редактор вправ) — за шляхом [`/stage-builder`](https://shooters-tools.com/stage-builder). Старий хост `stage-builder.vercel.app` редіректить на канонічний домен.
+**[shooters-tools.com](https://shooters-tools.com)** — портал Shooters Tools; **Stage Builder** (редактор вправ) — за шляхом [`/uk/stage-builder`](https://shooters-tools.com/uk/stage-builder) (старий `/stage-builder` перенаправляє туди). Старий хост `stage-builder.vercel.app` редіректить на канонічний домен.
 
 Розставляйте мішені й реквізит на площадці з метричною сіткою, переглядайте сцену в 3D, готуйте текст брифінгу та експортуйте PDF. Інтерфейс **українською та англійською**, працює офлайн (PWA).
 
@@ -16,8 +16,9 @@
 - **Реквізит** — щити (у т. ч. з портом і дверцятами), двері, штрафні лінії, бочки, стос шин, **стіл і стілець**, стійка для зброї, качель, рухома платформа, тунель Купера, стартова позиція.
 - **2D план** — панорама, зум, **міні-карта** у правому нижньому куті та **стовпчик інструментів під нею** (рамка, копіювання/вставка, активації, розміри, **оголошені дистанції**, лінійка, видалення виділеного, кошик); переміщення, обертання; `[`/`]` для зміни сторони металевої пластини; **закріплені розміри** (кнопка «Розміри»): клік по мішені всередині контуру — до центру, по реквізиту чи порожньому полю — у точку кліку; зберігаються у файлі впраси.
 - **3D перегляд** — камера «огляд», «зона стрільця» та **«як у PDF»**; у **верхньому правому куті** кадру — перемикачі **«Без тіней»** та **«Чорно-біле»** для знімка в PDF; покриття площадки (земля / трава / пісок) зберігається у вправі.
-- **PDF брифінг** — таблиця полів як у класифікаційних вправах; опційно **лого ФПСУ та IPSC** і **рядок назви матчу** в шапці; знімок (2D із сіткою, розмірами та **табличками дистанцій** або 3D — з урахуванням перемикачів знімка); **ширший гаризонтальний кадр** для 3D PNG під друк; QR і підпис; після деплою нової версії сайту при відкритій старій вкладці можливе повідомлення про **оновлення сторінки**, якщо браузер не підвантажить модуль експорту PDF.
-- **Файл вправи** — збереження / відкриття `*.stage.json` (сцена + брифінг).
+- **PDF брифінг** — панель «Брифінг вправи» під планом із кнопкою **«Завантажити PDF»** на смузі; таблиця полів як у класифікаційних вправах; опційно **лого ФПСУ та IPSC** і **рядок назви матчу** в шапці; знімок (2D із сіткою, розмірами та **табличками дистанцій** або 3D — з урахуванням перемикачів знімка); **ширший гаризонтальний кадр** для 3D PNG під друк; QR і підпис; після деплою нової версії сайту при відкритій старій вкладці можливе повідомлення про **оновлення сторінки**, якщо браузер не підвантажить модуль експорту PDF.
+- **Мої вправи** — збереження в акаунт Shooters Tools: назва в шапці редактора, статус збереження, автозбереження раз на 30 с, відкриття з будь-якого пристрою; вхід — вікном поверх редактора, без переходу на сторінку авторизації.
+- **Файл вправи** — експорт / імпорт `*.stage.json` (сцена + брифінг) із діалогу «Мої вправи».
 - **Поділитися посиланням** — після згоди з політикою публікації (текст у модалці та на сторінці `/publish-policy`) можна отримати URL перегляду або редактора (хмара Supabase; див. `docs/BL-001_SHARE_LINK_PLAN.md`).
 - **Чернетка в браузері** — сцена й брифінг автоматично зберігаються в `localStorage` між візитами (окремо від файлу вправи).
 - **Очистити вправу** — іконка кошика в **стовпчику інструментів під міні-картою** (правий нижній кут 2D); після підтвердження скидаються план, брифінг і чернетка (файли `.stage.json` на диску не змінюються).
@@ -112,4 +113,4 @@ src/
 
 ---
 
-*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan with a minimap and a vertical tool stack underneath, 3D preview (including PDF-matched framing, optional flat lighting and grayscale for the PDF snapshot), bilingual UI (UK/EN), JSON project files, classified-style PDF briefings with optional FPSU/IPSC logos and a match-name line, QR, and a browser draft saved between visits. If PDF export fails after a deploy with an old tab open, the UI suggests refreshing. Product milestones V0/V1/V2 are documented in `docs/VERSIONING.md`. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*
+*English: **Stage Builder** is a free online IPSC stage designer — 2D metric grid plan with a minimap and a vertical tool stack underneath, 3D preview (including PDF-matched framing, optional flat lighting and grayscale for the PDF snapshot), bilingual UI (UK/EN), a cloud stage library in the user account plus JSON project files, classified-style PDF briefings with optional FPSU/IPSC logos and a match-name line, QR, and a browser draft saved between visits. If PDF export fails after a deploy with an old tab open, the UI suggests refreshing. Product milestones V0/V1/V2 are documented in `docs/VERSIONING.md`. Stack: React 19, TypeScript, Vite, Three.js, Zustand. Deployed on Vercel with GitHub Actions CI.*

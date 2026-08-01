@@ -18,6 +18,8 @@
 | `sb-stage-builder-auth` | `supabaseClient.ts` | Сесія Supabase Auth (PKCE); для share достатньо anon, для порталу / матчів — вхід. |
 | `stage-builder-onboarding-collapsed` | `App.tsx` | Стан onboarding у редакторі. |
 | `stage-builder-view3d-shadows`, `stage-builder-view3d-grayscale` | `App.tsx` | Перемикачі знімка 3D. |
+| `stage-builder-briefing-collapsed` | `App.tsx` | `1` — автор згорнув панель брифінгу; без ключа вона відкрита (перший візит). |
+| `stage-builder-draft-legacy-name-cleared` | `sessionDraft.ts` | Одноразове прибирання назви `Нова вправа`, яку старий парсер підставляв у чернетку замість порожнього поля. |
 | `stage-builder-pwa-update-prompt-at` | `pwaUpdateGate.ts` | Час останнього банера «доступне оновлення». |
 | `ro-helper-fpsu-layer` | `RoHelperFpsuPrefs.tsx` | Шар ФПСУ в RO Helper. |
 
@@ -28,12 +30,13 @@ Workbox / PWA можуть додавати власні записи кешу (
 | Область | Документ / SQL |
 |---------|----------------|
 | Share: таблиця **`shared_stages`**, RPC **`fetch_shared_stage`**, RLS | [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md), міграції в **`supabase/migrations/`** |
+| «Мої вправи»: таблиця **`user_stages`** (own-row RLS, `payload jsonb` = конверт `.stage.json`) | міграція **`20260801120000_user_stages.sql`**, клієнт `src/application/userStagesLibrary.ts` |
 | Матчі, реєстрація, PSC | [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
 | CLI: логін, link, накат міграцій | [supabase/README.md](../supabase/README.md) |
 
 **Після повного скидання даних у проєкті Supabase** посилання **`/v/:id`**, **`/e/:id`**, публікації та облікові записи користувачів зникають, доки не відновити схему (**`supabase db push`** / застосування міграцій) і не налаштуються знову секрети та змінні середовища на хості (**див. [TECH.md](./TECH.md)**). Код і міграції лишаються в репозиторії.
 
-**Локальні проєкти й файли `*.stage.json` не резервуються автоматично в хмарі** — їх зберігає лише користувач (файл або власні бекапи).
+**Чернетка в браузері та файли `*.stage.json` не резервуються автоматично в хмарі** — у хмарі живуть лише вправи, збережені в акаунт («Мої вправи»); решту зберігає сам користувач.
 
 ## Пов’язано
 

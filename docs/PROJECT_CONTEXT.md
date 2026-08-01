@@ -17,9 +17,9 @@
 | Поле | Значення |
 |------|----------|
 | **Що за продукт** | **Shooters Tools** — один сайт (**SPA** на **Vercel**): портальна оболонка **`/:locale`** + модулі (див. [PRODUCT.md §A.1](./PRODUCT.md#a1-позиціонування-порталу)) |
-| **Ключові модулі** | **Stage Builder** (`/stage-builder`), **Матчі** (за env), **RO Helper**, **Hit Factor**, **акаунт**, share **`/v/*`**, **`/e/*`** — зведено в таблиці **PRODUCT §A.1** |
+| **Ключові модулі** | **Stage Builder** (`/:locale/stage-builder`), **Матчі** (за env), **RO Helper**, **Hit Factor**, **акаунт**, share **`/v/*`**, **`/e/*`** — зведено в таблиці **PRODUCT §A.1** |
 | **Модуль редактора** | **Stage Builder** — 2D/3D план вправ, брифінг, PDF, `*.stage.json`, PWA (повна поведінка — FUNCTIONALITY) |
-| **URL редактора** | **`/stage-builder`** (поза `PortalShell` у тій самій збірці) |
+| **URL редактора** | **`/:locale/stage-builder`** (усередині `PortalShell`; старий `/stage-builder` — редірект) |
 | **Репозиторій** | GitHub: `Paliis/stage-builder` (приватний npm-пакет не публікується) |
 | **Деплой** | **Prod:** Vercel `stage-builder`, гілка `main` → [shooters-tools.com](https://shooters-tools.com). **Staging:** `stage-builder-staging` → [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) (гілка `staging`, **синхронізується з `main`** після кожного push — див. [TECH.md](./TECH.md) § CI). CI — `npm run check` на `main` і `staging` |
 | **Модуль «Події»** | На **prod** вимкнено (`VITE_ENABLE_MATCH_PORTAL` не в env). На **staging** увімкнено (`=1`). Той самий Supabase. Бізнес — **§2.5**; техніка — **§3.2–3.3**, [TECH.md](./TECH.md) |
@@ -121,7 +121,8 @@
 | **`/:locale/matches`** | Матчі: публічний список майбутніх опублікованих подій — пошук, дати, календар (на вузьких екранах — бічна панель з крайньою вкладкою, як панель інструментів у Stage Builder) (**якщо** `VITE_ENABLE_MATCH_PORTAL`) |
 | **`/:locale/matches/my`**, **`/:locale/matches/:matchId`**, **`/:locale/admin/organizers`** | Матчі: кабінет організатора, редактор і ростер, адмінка (**той самий прапорець**); керування показує UI лише за **`organizer_status` = active** для інших статусів — пояснювальний екран без кнопки «створити матч» |
 | **`/hit-factor`**, **`/publish-policy`**, **`/ro-helper`**, **`/ro-helper/*`**, **`/tools/ro-helper`**, **`/tools/ro-helper/*`** | Legacy → відповідний шлях під **`/:locale`** (`legacyPortalRedirects.tsx`) |
-| `/stage-builder` | Повний редактор (`App`) — **поза** `PortalShell` |
+| **`/:locale/stage-builder`** | Повний редактор (`App`) — **усередині** `PortalShell` (спільні шапка й футер) |
+| `/stage-builder` | Legacy → **`/:locale/stage-builder`** (`LegacyStageBuilderRedirect`); надруковані QR і закладки |
 | `/v/:shareId` | Перегляд опублікованої вправи (**стабільний публічний контракт**, QR у PDF) |
 | `/e/:shareId` | Редактор за посиланням (**стабільний контракт**) |
 
