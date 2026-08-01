@@ -378,6 +378,12 @@ const OVERVIEW_CAMERA_Z_FROM_TZ = OVERVIEW_CAM_DELTA.z + OVERVIEW_TARGET_Z_OFFSE
 /** Крок екранних кнопок зуму: наближення / віддалення відстані до цілі орбіти. */
 const ZOOM_STEP_FACTOR = 1.28
 
+/**
+ * Панорама (Shift + ЛКМ, стрілки) і зум до курсора можуть тягнути камеру вниз —
+ * нижче цієї висоти око не опускаємо, інакше вид провалюється під підлогу.
+ */
+const MIN_CAMERA_EYE_Y_M = 0.35
+
 /** Обертання, зум (scroll / pinch), панорама; огляд центрується по старті / штрафній лінії або центру поля. */
 function StageNavigator({
   mode,
@@ -420,6 +426,17 @@ function StageNavigator({
   useEffect(() => {
     applyCameraMode()
   }, [applyCameraMode, anchorSig])
+
+  /** Після кожного оновлення контролів піднімаємо камеру й ціль назад над землею. */
+  useFrame(() => {
+    const oc = ctrlRef.current
+    if (!oc) return
+    const lift = Math.max(MIN_CAMERA_EYE_Y_M - camera.position.y, -oc.target.y, 0)
+    if (lift > 1e-4) {
+      camera.position.y += lift
+      oc.target.y += lift
+    }
+  })
 
   /** З тачпада немає ані середньої кнопки, ані зручного drag правою — Shift переводить ЛКМ у панораму. */
   useEffect(() => {
