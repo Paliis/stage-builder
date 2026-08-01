@@ -217,7 +217,12 @@ export function hydrateSessionDraft(): void {
 
   const temporal = useStageStore.temporal.getState()
   temporal.pause()
-  useStageStore.getState().replaceStageState(res.data.stage)
+  useStageStore.getState().replaceStageState({
+    ...res.data.stage,
+    // Drafts written before the name became explicit got the placeholder from the parser,
+    // which hid the «enter a stage name» prompt on every return visit.
+    name: res.data.stage.name.trim() === DEFAULT_STAGE_NAME_UA ? '' : res.data.stage.name,
+  })
   useBriefingStore.getState().setBriefing(res.data.briefing)
   temporal.clear()
   temporal.resume()

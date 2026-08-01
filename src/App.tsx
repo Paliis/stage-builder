@@ -546,7 +546,11 @@ export default function App({
 
   const handleLibraryOpened = useCallback(
     (record: UserStageRecord) => {
-      replaceStageState(record.project.stage)
+      replaceStageState({
+        ...record.project.stage,
+        // Stages saved before the name became explicit carry it only in the library row.
+        name: record.project.stage.name.trim() || record.title,
+      })
       setBriefing(record.project.briefing)
       setLibraryStageId(record.id)
       markLibraryCleanRef.current = true

@@ -565,7 +565,8 @@ export function parseStageProjectJson(text: string): ParseStageProjectResult {
     format: STAGE_PROJECT_FORMAT,
     version: STAGE_PROJECT_VERSION,
     stage: {
-      name: name || 'Нова вправа',
+      // Empty stays empty: the header field prompts for a name, callers fall back when they need a title.
+      name,
       weaponClass: wc as WeaponClass,
       fieldSizeM: fw,
       targets: ensureUniqueTargetIds(targets),
