@@ -261,8 +261,15 @@ html.portal-shell__nav-drawer-lock body {
   display: none !important;
 }
 
+/* Compact is decided in TS, so the burger must reach the right edge without waiting for the mq. */
 .portal-shell--nav-compact .portal-shell__menu-toggle {
   display: inline-flex !important;
+  margin-left: auto;
+}
+
+.portal-shell--nav-compact .portal-shell__header-inner {
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .portal-shell__menu-toggle {

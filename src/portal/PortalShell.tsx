@@ -16,6 +16,11 @@ import './portal-layout.css'
 const HEADER_COMPACT_MQ = '(max-width: 959px)' as const
 /** Same cutoff as mq: Cursor / split preview iframes can be narrower than outer window → matchContent with ResizeObserver. */
 const HEADER_COMPACT_MAX_CONTENT_PX = 959
+/**
+ * Leaving compact needs a wider row than entering it: opening the drawer hides the scrollbar, which
+ * grows the row by ~15px. Without this gap the header would flip back and slam the drawer shut.
+ */
+const HEADER_COMPACT_EXIT_CONTENT_PX = 1000
 
 /** Shared shell: responsive header → hamburger drawer on narrow screens. */
 export function PortalShell() {
@@ -36,6 +41,8 @@ export function PortalShell() {
   )
   const [layoutCompact, setLayoutCompact] = useState(false)
   const [navOpen, setNavOpen] = useState(false)
+  const navOpenRef = useRef(false)
+  navOpenRef.current = navOpen
   const compactHeader = mqCompact || layoutCompact
   /** Editor route: same header, but it must stack above the editor chrome and report its height. */
   const appMode = isStageBuilderPath(pathname)
@@ -58,7 +65,11 @@ export function PortalShell() {
     const ro = new ResizeObserver((entries) => {
       const cr = entries[0]?.contentRect
       const w = cr?.width ?? 0
-      setLayoutCompact(w > 0 && w <= HEADER_COMPACT_MAX_CONTENT_PX)
+      if (w <= 0) return
+      if (navOpenRef.current) return
+      setLayoutCompact((prev) =>
+        prev ? w < HEADER_COMPACT_EXIT_CONTENT_PX : w <= HEADER_COMPACT_MAX_CONTENT_PX,
+      )
     })
     ro.observe(el)
     return () => ro.disconnect()
