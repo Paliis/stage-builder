@@ -32,6 +32,7 @@ import type {
   TargetType,
   Vec2,
 } from './domain/models'
+import { computeShooterViewpoints } from './domain/shooterViewpoint'
 import { canRetargetSelectedToType } from './domain/resizableTargetSizes'
 import { isGongTargetType } from './domain/gongSpec'
 import { isSquareSteelPlateTargetType } from './domain/targetSpecs'
@@ -226,6 +227,12 @@ export default function App({
     reset: tree.view.navReset,
   }
   const [camera3d, setCamera3d] = useState<CameraMode3D>('overview')
+  const shooterViewpoints = useMemo(
+    () => computeShooterViewpoints(props, targets, fieldSizeM.x, fieldSizeM.y),
+    [props, targets, fieldSizeM.x, fieldSizeM.y],
+  )
+  const [shooterViewpointIndex, setShooterViewpointIndex] = useState(0)
+  const shooterIndex = Math.min(shooterViewpointIndex, shooterViewpoints.length - 1)
   const [view3dShadowsOn, setView3dShadowsOn] = useState(() => {
     try {
       return localStorage.getItem(VIEW3D_LS_SHADOWS) !== '0'
@@ -1429,6 +1436,37 @@ export default function App({
               {tree.view.camPdf}
             </button>
           </div>
+          {camera3d === 'shooter' && shooterViewpoints.length > 1 ? (
+            <div
+              className="app__camtabs app__camtabs--shooter"
+              role="group"
+              aria-label={tree.view.camShooterPointAria}
+            >
+              <button
+                type="button"
+                aria-label={tree.view.camShooterPrev}
+                onClick={() =>
+                  setShooterViewpointIndex(
+                    (shooterIndex - 1 + shooterViewpoints.length) % shooterViewpoints.length,
+                  )
+                }
+              >
+                {'\u2039'}
+              </button>
+              <span className="app__camtabs-counter">
+                {tree.view.camShooterPoint} {shooterIndex + 1}/{shooterViewpoints.length}
+              </span>
+              <button
+                type="button"
+                aria-label={tree.view.camShooterNext}
+                onClick={() =>
+                  setShooterViewpointIndex((shooterIndex + 1) % shooterViewpoints.length)
+                }
+              >
+                {'\u203a'}
+              </button>
+            </div>
+          ) : null}
           {!readOnly ? (
             <label className="app__ground-cover">
               <span className="app__ground-cover-label">{tree.view.groundCoverLabel}</span>
@@ -2114,6 +2152,7 @@ export default function App({
                         targets={targets}
                         props={props}
                         cameraMode={camera3d}
+                        shooterViewpointIndex={shooterIndex}
                         shadowsEnabled={view3dShadowsOn}
                         grayscaleForPdf={view3dGrayscale}
                       />

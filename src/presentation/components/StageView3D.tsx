@@ -98,6 +98,7 @@ import {
   computeOverviewAnchorWorld2d,
   overviewAnchorRelevantSignature,
 } from '../../domain/overviewAnchor'
+import { computeShooterViewpoints } from '../../domain/shooterViewpoint'
 import { stageToThreeXZ, type StageFieldM } from '../lib/stageCoordinates3d'
 import { CarSUV } from './CarSUV'
 
@@ -362,6 +363,8 @@ type StageView3DProps = {
   targets: readonly Target[]
   props: readonly Prop[]
   cameraMode: CameraMode3D
+  /** Індекс точки огляду в режимі «зона стрільця» (маркери старту зверху вниз). */
+  shooterViewpointIndex?: number
   /** За замовчуванням увімкнено; вимкнення — плоскіший рендер для знімка PDF / друку. */
   shadowsEnabled?: boolean
   /** Чорно-білий прев’ю та той самий вигляд у PNG для PDF. */
@@ -384,12 +387,18 @@ const ZOOM_STEP_FACTOR = 1.28
  */
 const MIN_CAMERA_EYE_Y_M = 0.35
 
+/** «Зона стрільця»: висота очей і трохи нижча ціль орбіти — погляд майже горизонтальний. */
+const SHOOTER_EYE_Y_M = 1.6
+const SHOOTER_LOOK_Y_M = 1.45
+
 /** Обертання, зум (scroll / pinch), панорама; огляд центрується по старті / штрафній лінії або центру поля. */
 function StageNavigator({
   mode,
+  shooterViewpointIndex = 0,
   apiRef,
 }: {
   mode: CameraMode3D
+  shooterViewpointIndex?: number
   apiRef?: MutableRefObject<Navigator3dApi | null>
 }) {
   const ctrlRef = useRef<OrbitControlsType>(null)
@@ -412,8 +421,15 @@ function StageNavigator({
         oc.maxDistance = 85
       }
     } else {
-      camera.position.set(0, 1.58, 11)
-      oc?.target.set(0, 1.32, -8.5)
+      const field: StageFieldM = { widthM, heightM }
+      const state = useStageStore.getState()
+      const viewpoints = computeShooterViewpoints(state.props, state.targets, widthM, heightM)
+      const index = Math.min(Math.max(0, shooterViewpointIndex), viewpoints.length - 1)
+      const vp = viewpoints[index]!
+      const [ex, , ez] = stageToThreeXZ(vp.position, field)
+      const [lx, , lz] = stageToThreeXZ(vp.lookAt, field)
+      camera.position.set(ex, SHOOTER_EYE_Y_M, ez)
+      oc?.target.set(lx, SHOOTER_LOOK_Y_M, lz)
       if (oc) {
         oc.minDistance = 2
         oc.maxDistance = 36
@@ -421,7 +437,7 @@ function StageNavigator({
     }
     oc?.update()
     camera.updateProjectionMatrix()
-  }, [camera, mode, widthM, heightM])
+  }, [camera, mode, widthM, heightM, shooterViewpointIndex])
 
   useEffect(() => {
     applyCameraMode()
@@ -2250,7 +2266,14 @@ function snapshotToGrayscalePngDataUrl(sourceCanvas: HTMLCanvasElement, w: numbe
 }
 
 export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(function StageView3D(
-  { targets, props, cameraMode, shadowsEnabled = true, grayscaleForPdf = false },
+  {
+    targets,
+    props,
+    cameraMode,
+    shooterViewpointIndex = 0,
+    shadowsEnabled = true,
+    grayscaleForPdf = false,
+  },
   ref,
 ) {
   const glRef = useRef<WebGLRenderer | null>(null)
@@ -2334,7 +2357,11 @@ export const StageView3D = forwardRef<StageView3DHandle, StageView3DProps>(funct
   return (
     <StageView3DCanvasShell cameraMode={cameraMode} pdfAspect={pdfAspect}>
       <StageView3DCanvasSized canvasProps={canvasProps} measureClassName={measureExtraClass}>
-        <StageNavigator mode={cameraMode} apiRef={navApiRef} />
+        <StageNavigator
+          mode={cameraMode}
+          shooterViewpointIndex={shooterViewpointIndex}
+          apiRef={navApiRef}
+        />
         <ambientLight intensity={shadowsEnabled ? 0.52 : 0.68} />
         <StageSunLight castShadowEnabled={shadowsEnabled} />
         <Ground />

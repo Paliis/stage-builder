@@ -2685,6 +2685,18 @@
   outline-offset: 2px;
 }
 
+.app__camtabs--shooter {
+  align-items: center;
+}
+
+.app__camtabs-counter {
+  padding: 0 0.3rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-h);
+  white-space: nowrap;
+}
+
 .app__ground-cover {
   display: inline-flex;
   flex-wrap: wrap;
