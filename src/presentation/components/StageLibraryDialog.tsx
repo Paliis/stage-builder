@@ -27,6 +27,7 @@ export type StageLibraryDialogProps = {
   stage: StageProjectSnapshot
   briefing: StageBriefing
   onSaved: (summary: UserStageSummary) => void
+  onRenamed: (summary: UserStageSummary) => void
   onOpened: (record: UserStageRecord) => void
   /** Резервний шлях повз хмару: файл `.stage.json`. */
   onExportFile: () => void
@@ -44,6 +45,7 @@ export function StageLibraryDialog({
   stage,
   briefing,
   onSaved,
+  onRenamed,
   onOpened,
   onExportFile,
   onImportFile,
@@ -154,10 +156,10 @@ export function StageLibraryDialog({
         setErrorKey(res.errorKey)
         return
       }
-      if (res.data.id === currentStageId) onSaved(res.data)
+      if (res.data.id === currentStageId) onRenamed(res.data)
       void refresh()
     },
-    [currentStageId, lib.renamePrompt, onSaved, refresh],
+    [currentStageId, lib.renamePrompt, onRenamed, refresh],
   )
 
   const remove = useCallback(

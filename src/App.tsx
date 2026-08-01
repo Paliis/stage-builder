@@ -51,6 +51,7 @@ import {
   parseStageProjectJson,
   serializeStageProject,
   suggestedStageProjectFileName,
+  type StageProjectFileV1,
 } from './domain/stageProjectFile'
 import { summarizeTargetsDescriptionFromScene } from './domain/targetSummary'
 import { useI18n } from './i18n/useI18n'
@@ -214,7 +215,10 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const [libraryStageId, setLibraryStageId] = useState<string | null>(null)
   const [libraryStageTitle, setLibraryStageTitle] = useState('')
   const [libraryQuickSaving, setLibraryQuickSaving] = useState(false)
-  const [librarySavedFlash, setLibrarySavedFlash] = useState(false)
+  const [librarySavedAt, setLibrarySavedAt] = useState<number | null>(null)
+  /** Знімок, що вже лежить у бібліотеці — порівняння за посиланням показує незбережені зміни. */
+  const savedProjectRootRef = useRef<StageProjectFileV1 | null>(null)
+  const markLibraryCleanRef = useRef(false)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const [measureToolActive, setMeasureToolActive] = useState(false)
   const [placementMode, setPlacementMode] = useState<PlacementMode>(null)
@@ -511,8 +515,17 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const { user: supabaseUser } = useSupabaseSession()
   const supabaseConfigured = isSupabaseConfigured()
 
-  const handleLibrarySaved = useCallback((summary: UserStageSummary) => {
-    setLibraryStageId(summary.id)
+  const handleLibrarySaved = useCallback(
+    (summary: UserStageSummary) => {
+      setLibraryStageId(summary.id)
+      setLibraryStageTitle(summary.title)
+      savedProjectRootRef.current = shareProjectRoot
+      setLibrarySavedAt(Date.now())
+    },
+    [shareProjectRoot],
+  )
+
+  const handleLibraryRenamed = useCallback((summary: UserStageSummary) => {
     setLibraryStageTitle(summary.title)
   }, [])
 
@@ -522,9 +535,18 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       setBriefing(record.project.briefing)
       setLibraryStageId(record.id)
       setLibraryStageTitle(record.title)
+      markLibraryCleanRef.current = true
     },
     [replaceStageState, setBriefing],
   )
+
+  // Знімок після відкриття з бібліотеки доступний лише на наступному рендері.
+  useEffect(() => {
+    if (!markLibraryCleanRef.current) return
+    markLibraryCleanRef.current = false
+    savedProjectRootRef.current = shareProjectRoot
+    setLibrarySavedAt(Date.now())
+  }, [shareProjectRoot])
 
   /** Повторне збереження вже прив’язаного запису; в інших випадках відкриваємо бібліотеку. */
   const quickSaveToLibrary = useCallback(async () => {
@@ -545,8 +567,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
       return
     }
     handleLibrarySaved(res.data)
-    setLibrarySavedFlash(true)
-    window.setTimeout(() => setLibrarySavedFlash(false), 2000)
   }, [
     handleLibrarySaved,
     libraryStageId,
@@ -554,6 +574,25 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     shareProjectRoot,
     supabaseConfigured,
     supabaseUser,
+  ])
+
+  const libraryStatusText = useMemo(() => {
+    if (!libraryStageId) return null
+    if (savedProjectRootRef.current !== shareProjectRoot) return tree.library.statusUnsaved
+    if (librarySavedAt === null) return null
+    return formatTemplate(tree.library.statusSaved, {
+      time: new Date(librarySavedAt).toLocaleTimeString(locale === 'uk' ? 'uk-UA' : 'en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    })
+  }, [
+    libraryStageId,
+    librarySavedAt,
+    locale,
+    shareProjectRoot,
+    tree.library.statusSaved,
+    tree.library.statusUnsaved,
   ])
 
   /** Public origin for share links (matches server `resolvePublicOrigin` / `VITE_SHARE_PUBLIC_ORIGIN`). */
@@ -616,6 +655,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         setBriefing(res.data.briefing)
         setLibraryStageId(null)
         setLibraryStageTitle('')
+        savedProjectRootRef.current = null
+        setLibrarySavedAt(null)
       }
       reader.readAsText(f, 'UTF-8')
     },
@@ -641,6 +682,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     internalClipboardRef.current = null
     setLibraryStageId(null)
     setLibraryStageTitle('')
+    savedProjectRootRef.current = null
+    setLibrarySavedAt(null)
   }, [resetSceneToDefaults, setBriefing, t, setMobileMenuOpen, clearPenaltyContourDraft])
 
   const applySceneToBriefing = () => {
@@ -1349,11 +1392,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       disabled={libraryQuickSaving}
                       onClick={() => void quickSaveToLibrary()}
                     >
-                      {libraryQuickSaving
-                        ? tree.library.saving
-                        : librarySavedFlash
-                          ? tree.library.saved
-                          : tree.library.save}
+                      {libraryQuickSaving ? tree.library.saving : tree.library.save}
                     </button>
                     <button
                       type="button"
@@ -1362,6 +1401,11 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                     >
                       {tree.library.myStages}
                     </button>
+                    {libraryStatusText ? (
+                      <span className="app__library-status" aria-live="polite">
+                        {libraryStatusText}
+                      </span>
+                    ) : null}
                     <button
                       type="button"
                       className="app__btn-secondary"
@@ -1513,6 +1557,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         stage={shareProjectRoot.stage}
         briefing={shareProjectRoot.briefing}
         onSaved={handleLibrarySaved}
+        onRenamed={handleLibraryRenamed}
         onOpened={handleLibraryOpened}
         onExportFile={saveStageProject}
         onImportFile={() => {

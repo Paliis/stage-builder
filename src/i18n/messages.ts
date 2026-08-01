@@ -339,6 +339,8 @@ export type MessageTree = {
     update: string
     saving: string
     saved: string
+    statusSaved: string
+    statusUnsaved: string
     open: string
     rename: string
     renamePrompt: string
@@ -1644,6 +1646,8 @@ export const ukMessages: MessageTree = {
     update: 'Оновити збережену',
     saving: 'Збереження…',
     saved: 'Збережено',
+    statusSaved: 'Збережено о {{time}}',
+    statusUnsaved: 'Є незбережені зміни',
     open: 'Відкрити',
     rename: 'Перейменувати',
     renamePrompt: 'Нова назва вправи:',
@@ -3027,6 +3031,8 @@ export const enMessages: MessageTree = {
     update: 'Update saved stage',
     saving: 'Saving\u2026',
     saved: 'Saved',
+    statusSaved: 'Saved at {{time}}',
+    statusUnsaved: 'Unsaved changes',
     open: 'Open',
     rename: 'Rename',
     renamePrompt: 'New stage name:',
