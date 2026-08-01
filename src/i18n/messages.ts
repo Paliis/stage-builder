@@ -733,6 +733,8 @@ export type MessageTree = {
     portalCompactAuthResetSubmit: string
     portalCompactAuthResetSent: string
     portalCompactAuthResetBack: string
+    portalCompactAuthResetOtpLead: string
+    portalCompactAuthResetNewPasswordLead: string
     accountPasswordHeading: string
     accountPasswordNewLabel: string
     accountPasswordRepeatLabel: string
@@ -2053,11 +2055,14 @@ export const ukMessages: MessageTree = {
       'Ця адреса вже зареєстрована — листа з кодом не буде. Введіть пароль і увійдіть.',
     portalCompactAuthForgot: 'Забули пароль?',
     portalCompactAuthResetLead:
-      'Вкажіть адресу — надішлемо лист із посиланням. За ним ви потрапите в кабінет і зможете задати новий пароль.',
-    portalCompactAuthResetSubmit: 'Надіслати посилання',
+      'Вкажіть адресу — надішлемо лист із кодом, і ви задасте новий пароль просто тут.',
+    portalCompactAuthResetSubmit: 'Надіслати код',
     portalCompactAuthResetSent:
-      'Якщо для цієї адреси є акаунт, лист із посиланням уже в дорозі. Перевірте також теку зі спамом.',
+      'Якщо для цієї адреси є акаунт, лист уже в дорозі. Перевірте також теку зі спамом.',
     portalCompactAuthResetBack: 'Назад до входу',
+    portalCompactAuthResetOtpLead:
+      'Введіть код із листа. Посилання в листі не потрібне — його часто відкривають поштові фільтри, і воно перестає діяти.',
+    portalCompactAuthResetNewPasswordLead: 'Код прийнято. Задайте новий пароль.',
     accountPasswordHeading: 'Пароль',
     accountPasswordNewLabel: 'Новий пароль',
     accountPasswordRepeatLabel: 'Повторіть пароль',
@@ -3461,11 +3466,14 @@ export const enMessages: MessageTree = {
       'This address already has an account — no code will arrive. Enter your password to sign in.',
     portalCompactAuthForgot: 'Forgot your password?',
     portalCompactAuthResetLead:
-      'Enter your address and we will email you a link. It signs you in so you can set a new password.',
-    portalCompactAuthResetSubmit: 'Send the link',
+      'Enter your address and we will email you a code, then you set the new password right here.',
+    portalCompactAuthResetSubmit: 'Send the code',
     portalCompactAuthResetSent:
-      'If this address has an account, the link is on its way. Check the spam folder too.',
+      'If this address has an account, the email is on its way. Check the spam folder too.',
     portalCompactAuthResetBack: 'Back to sign in',
+    portalCompactAuthResetOtpLead:
+      'Enter the code from the email. You do not need the link — mail filters often open it first, which burns it.',
+    portalCompactAuthResetNewPasswordLead: 'Code accepted. Set your new password.',
     accountPasswordHeading: 'Password',
     accountPasswordNewLabel: 'New password',
     accountPasswordRepeatLabel: 'Repeat password',
