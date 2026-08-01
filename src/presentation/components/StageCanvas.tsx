@@ -109,6 +109,12 @@ const PICK_MARGIN_M = 0.04
 const EMPTY_PAN_THRESHOLD_PX = 6
 const MIN_DRAW_MIN_PX = 14
 const TOUCH_PICK_MIN_PX = 26
+/** Курсор миші точніший за палець: 26 px запасу «з’їдали» дрібні об’єкти поруч із великими. */
+const MOUSE_PICK_MIN_PX = 7
+/** Поріг руху миші, після якого натиснута ручка ↻ справді починає обертати (нижче — це клік). */
+const MOUSE_ROTATE_SLOP_PX = 4
+/** Крок кнопок зуму в одиницях `deltaY` колеса (~1,25× за натискання). */
+const ZOOM_BUTTON_WHEEL_DELTA = 186
 const EXTRUDE_SCREEN_PX = { dx: 5, dy: 7 }
 /** Зазор між **краєм контуру** у напрямку ручки і центром іконки ↻ (м). Раніше додавалось `boundsR` до центру об’єкта — для попперів із вузькою проєкцією вбік ручка «вилазила» на ~половину метра. */
 const ROTATION_HANDLE_MARGIN_M = 0.06
@@ -381,15 +387,20 @@ type PendingEmptyPan = {
   clientY: number
 }
 
+/** Радіус промаху в метрах: палець грубіший за курсор миші. */
+function pickPadM(pointerType: string, pxPerMeter: number): number {
+  const px = pointerType === 'touch' ? TOUCH_PICK_MIN_PX : MOUSE_PICK_MIN_PX
+  return px / Math.max(pxPerMeter, 1e-6)
+}
+
 /** Лише кінець «neg»: другий кінець керується ручкою обертання. */
 function pickFaultStretchNegEnd(
   wx: number,
   wy: number,
   ends: { neg: Vec2; pos: Vec2 },
-  pxPerMeter: number,
+  padM: number,
 ): boolean {
-  const touch = Math.max(TOUCH_PICK_MIN_PX / Math.max(pxPerMeter, 1e-6), 0.16)
-  return Math.hypot(wx - ends.neg.x, wy - ends.neg.y) <= touch
+  return Math.hypot(wx - ends.neg.x, wy - ends.neg.y) <= Math.max(padM, 0.14)
 }
 
 function snapAngleRad(r: number): number {
@@ -516,6 +527,38 @@ function pickPropAt(props: readonly Prop[], wx: number, wy: number, touchPadM: n
   return pickPropHitAt(props, wx, wy, touchPadM)?.ent ?? null
 }
 
+/** Shift/Ctrl-клік: додати або зняти об’єкт у виділенні, не скидаючи решту групи. */
+function toggleEntityInSelection(
+  current: PlanSelectState,
+  kind: 'target' | 'prop',
+  id: string,
+): PlanSelectState {
+  const targetIds: string[] =
+    current.mode === 'multi'
+      ? [...current.targetIds]
+      : current.mode === 'single' && current.kind === 'target'
+        ? [current.id]
+        : []
+  const propIds: string[] =
+    current.mode === 'multi'
+      ? [...current.propIds]
+      : current.mode === 'single' && current.kind === 'prop'
+        ? [current.id]
+        : []
+  const list = kind === 'target' ? targetIds : propIds
+  const at = list.indexOf(id)
+  if (at >= 0) list.splice(at, 1)
+  else list.push(id)
+  const total = targetIds.length + propIds.length
+  if (total === 0) return { mode: 'none' }
+  if (total === 1) {
+    const onlyTarget = targetIds[0]
+    if (onlyTarget) return { mode: 'single', kind: 'target', id: onlyTarget }
+    return { mode: 'single', kind: 'prop', id: propIds[0]! }
+  }
+  return { mode: 'multi', targetIds, propIds }
+}
+
 /**
  * За multi-виділенням: хто з об’єктів під курсором входить у виділення (на плані мішені поверх реквізиту).
  */
@@ -594,9 +637,8 @@ function handleWorldPosProp(p: Prop, fieldWM: number, fieldHM: number): Vec2 {
   }
 }
 
-function pickHandle(wx: number, wy: number, h: Vec2, pxPerMeter: number): boolean {
-  const touch = TOUCH_PICK_MIN_PX / Math.max(pxPerMeter, 1e-6)
-  const r = Math.max(0.14, touch)
+function pickHandle(wx: number, wy: number, h: Vec2, padM: number): boolean {
+  const r = Math.max(0.12, padM)
   const dx = wx - h.x
   const dy = wy - h.y
   return dx * dx + dy * dy <= r * r
@@ -616,11 +658,10 @@ function pickRotationHandle(wx: number, wy: number, h: Vec2, pxPerMeter: number)
 function pickPenaltyVertexAt(
   wx: number,
   wy: number,
-  pxPerMeter: number,
+  padM: number,
   pz: PenaltyZoneSet,
 ): { polygonId: string; ringId: string; vertexIndex: number } | null {
-  const touch = TOUCH_PICK_MIN_PX / Math.max(pxPerMeter, 1e-6)
-  const r = Math.max(0.14, touch)
+  const r = Math.max(0.14, padM)
   const r2 = r * r
   let best: { polygonId: string; ringId: string; vertexIndex: number; d2: number } | null = null
   for (const poly of pz.polygons) {
@@ -2957,6 +2998,12 @@ export type StageCanvasHandle = {
   centerOnWorldPoint: (worldX: number, worldY: number) => void
   /** PNG-потік поточного кадру 2D (видима сітка та сцена) для PDF; null якщо канвас недоступний. */
   captureVisiblePngDataUrl: () => string | null
+  /** Кнопки навігації: зсув видимої частини поля на частку кадру (додатні — камера вправо / вгору). */
+  panByViewFraction: (dxFraction: number, dyFraction: number) => void
+  /** Крок зуму від центру канваса: 1 — наблизити, -1 — віддалити. */
+  zoomByStep: (direction: 1 | -1) => void
+  /** Повертає масштаб 1 і центр (уся площадка в кадрі). */
+  resetView: () => void
   /** Скидає точки вимірювання (виклик з App при вимкненні режиму). */
   clearMeasure: () => void
   /** Знімок виділених сутностей для копіювання (глибокі копії). */
@@ -3087,6 +3134,14 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       }
     | null
   >(null)
+  /** Натиснута ручка ↻ мишею: обертання почнеться лише після руху, інакше це звичайний клік. */
+  const pendingRotateRef = useRef<{
+    pointerId: number
+    kind: 'target' | 'prop'
+    id: string
+    startX: number
+    startY: number
+  } | null>(null)
   /** After selection long-press opens the sheet: ignore pan/pending-empty for this pointer until up (avoids stray pan). */
   const blockPlanPanPointerIdRef = useRef<number | null>(null)
 
@@ -3356,6 +3411,46 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         gridHoverRef.current = null
         repaint()
       },
+      panByViewFraction: (dxFraction: number, dyFraction: number) => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+        const rect = canvas.getBoundingClientRect()
+        if (rect.width < 2 || rect.height < 2) return
+        if (viewZoomRef.current <= 1.001) return
+        viewPanRef.current = {
+          x: viewPanRef.current.x - rect.width * dxFraction,
+          y: viewPanRef.current.y + rect.height * dyFraction,
+        }
+        gridHoverRef.current = null
+        repaint()
+      },
+      zoomByStep: (direction: 1 | -1) => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+        const rect = canvas.getBoundingClientRect()
+        if (rect.width < 2 || rect.height < 2) return
+        const { zoom, pan } = wheelZoomAdjust(
+          rect.width,
+          rect.height,
+          rect.width / 2,
+          rect.height / 2,
+          viewZoomRef.current,
+          viewPanRef.current,
+          direction > 0 ? -ZOOM_BUTTON_WHEEL_DELTA : ZOOM_BUTTON_WHEEL_DELTA,
+          fw,
+          fh,
+        )
+        viewZoomRef.current = zoom
+        viewPanRef.current = zoom <= 1.001 ? { x: 0, y: 0 } : pan
+        gridHoverRef.current = null
+        repaint()
+      },
+      resetView: () => {
+        viewZoomRef.current = 1
+        viewPanRef.current = { x: 0, y: 0 }
+        gridHoverRef.current = null
+        repaint()
+      },
       captureVisiblePngDataUrl: () => {
         const canvas = canvasRef.current
         if (!canvas) return null
@@ -3571,6 +3666,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       pinchMapRef.current.delete(pointerId)
       if (pendingEmptyPanRef.current?.pointerId === pointerId) pendingEmptyPanRef.current = null
       if (touchPendingDragRef.current?.pointerId === pointerId) touchPendingDragRef.current = null
+      if (pendingRotateRef.current?.pointerId === pointerId) pendingRotateRef.current = null
       if (longPressArmRef.current?.pointerId === pointerId) clearLongPressTimer()
       if (viewPanDragRef.current?.pointerId === pointerId) {
         viewPanDragRef.current = null
@@ -3726,9 +3822,13 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       gridHoverRef.current = null
       setPlanSelect({ mode: 'none' })
       const tfDm = transformRef.current
-      const ppm = tfDm.pxPerMeter
-      const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
-      const anchor = planDimensionAnchorWorld(targets, props, wx, wy, touchPad)
+      const anchor = planDimensionAnchorWorld(
+        targets,
+        props,
+        wx,
+        wy,
+        pickPadM(ev.pointerType, tfDm.pxPerMeter),
+      )
       onDimensionWorldPickRef.current?.(anchor)
       return
     }
@@ -3738,8 +3838,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       clearLongPressTimer()
       pendingEmptyPanRef.current = null
       gridHoverRef.current = null
-      const ppm = transformRef.current.pxPerMeter
-      const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
+      const touchPad = pickPadM(ev.pointerType, transformRef.current.pxPerMeter)
       const hitT = pickTargetAt(targets, w.x, w.y, touchPad)
       if (hitT) {
         onActivationEntityPickRef.current?.({ kind: 'target', id: hitT.id })
@@ -3761,7 +3860,12 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       !dimensionLinkModeActive &&
       ev.button === 0
     ) {
-      const pv = pickPenaltyVertexAt(w.x, w.y, transformRef.current.pxPerMeter, penaltyZoneSet)
+      const pv = pickPenaltyVertexAt(
+        w.x,
+        w.y,
+        pickPadM(ev.pointerType, transformRef.current.pxPerMeter),
+        penaltyZoneSet,
+      )
       if (pv) {
         ev.preventDefault()
         clearLongPressTimer()
@@ -3880,21 +3984,44 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
     const tfR = transformRef.current
     const ppm = tfR.pxPerMeter
-    const touchPad = TOUCH_PICK_MIN_PX / Math.max(ppm, 1e-6)
+    const touchPad = pickPadM(ev.pointerType, ppm)
+    const isMouseLike = ev.pointerType !== 'touch'
+
+    /**
+     * Мишею ручка ↻ реагує лише на справжнє тягнення: інакше кожен клік по об’єкту,
+     * що трапився під ручкою, тихо повертав його на крок прив’язки.
+     */
+    const armRotate = (kind: 'target' | 'prop', id: string) => {
+      gridHoverRef.current = null
+      clearLongPressTimer()
+      if (isMouseLike) {
+        pendingRotateRef.current = {
+          pointerId: ev.pointerId,
+          kind,
+          id,
+          startX: ev.clientX,
+          startY: ev.clientY,
+        }
+      } else {
+        dragRef.current = { mode: 'rotate', kind, id }
+      }
+      try {
+        canvas.setPointerCapture(ev.pointerId)
+      } catch {
+        /* ignore */
+      }
+    }
 
     if (!readOnly && planSelect.mode === 'single' && planSelect.kind === 'prop') {
       const selP = props.find((x) => x.id === planSelect.id)
       if (selP?.type === 'faultLine') {
         const hwFl = handleWorldPosProp(selP, tfR.fieldWidthM, tfR.fieldHeightM)
-        if (pickHandle(w.x, w.y, hwFl, ppm)) {
-          gridHoverRef.current = null
-          clearLongPressTimer()
-          dragRef.current = { mode: 'rotate', kind: 'prop', id: selP.id }
-          canvas.setPointerCapture(ev.pointerId)
+        if (pickHandle(w.x, w.y, hwFl, touchPad)) {
+          armRotate('prop', selP.id)
           return
         }
         const ends = faultLineEndPointsWorld(selP)
-        if (ends && pickFaultStretchNegEnd(w.x, w.y, ends, ppm)) {
+        if (ends && pickFaultStretchNegEnd(w.x, w.y, ends, touchPad)) {
           gridHoverRef.current = null
           clearLongPressTimer()
           dragRef.current = { mode: 'stretchFaultLine', id: selP.id, anchor: 'pos' }
@@ -3914,10 +4041,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
             ? handleWorldPosProp(selP, tfR.fieldWidthM, tfR.fieldHeightM)
             : null
       if (hw && pickRotationHandle(w.x, w.y, hw, ppm)) {
-        gridHoverRef.current = null
-        clearLongPressTimer()
-        dragRef.current = { mode: 'rotate', kind: planSelect.kind, id: planSelect.id }
-        canvas.setPointerCapture(ev.pointerId)
+        armRotate(planSelect.kind, planSelect.id)
         return
       }
     }
@@ -3936,8 +4060,29 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       return
     }
 
-    const hitT = pickTargetAt(targets, w.x, w.y, touchPad)
-    const hitP = pickPropAt(props, w.x, w.y, touchPad)
+    const hitTPick = pickTargetHitAt(targets, w.x, w.y, touchPad)
+    const hitPPick = pickPropHitAt(props, w.x, w.y, touchPad)
+    const hitT = hitTPick?.ent ?? null
+    const hitP = hitPPick?.ent ?? null
+    /** Ближчий силует виграє; за рівної відстані мішень лишається зверху, як і на плані. */
+    const nearest: { kind: 'target'; ent: Target } | { kind: 'prop'; ent: Prop } | null =
+      hitPPick && (!hitTPick || hitPPick.distSq < hitTPick.distSq - 1e-9)
+        ? { kind: 'prop', ent: hitPPick.ent }
+        : hitTPick
+          ? { kind: 'target', ent: hitTPick.ent }
+          : hitPPick
+            ? { kind: 'prop', ent: hitPPick.ent }
+            : null
+
+    if (isMouseLike && (ev.shiftKey || ev.ctrlKey || ev.metaKey) && nearest) {
+      ev.preventDefault()
+      clearLongPressTimer()
+      gridHoverRef.current = null
+      pendingEmptyPanRef.current = null
+      setPlanSelect(toggleEntityInSelection(planSelect, nearest.kind, nearest.ent.id))
+      repaint()
+      return
+    }
 
     if (planSelect.mode === 'multi') {
       const leader = pickMultiMoveLeaderAt(planSelect, hitT, hitP)
@@ -4027,18 +4172,20 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       }
     }
 
-    if (hitT) {
+    if (nearest) {
+      const { kind, ent } = nearest
+      const grabOffset = { x: w.x - ent.position.x, y: w.y - ent.position.y }
       gridHoverRef.current = null
-      setPlanSelect({ mode: 'single', kind: 'target', id: hitT.id })
+      setPlanSelect({ mode: 'single', kind, id: ent.id })
       if (ev.pointerType === 'touch') {
         touchPendingDragRef.current = {
           pointerId: ev.pointerId,
           startX: ev.clientX,
           startY: ev.clientY,
           touchDrag: 'single',
-          kind: 'target',
-          id: hitT.id,
-          grabOffset: { x: w.x - hitT.position.x, y: w.y - hitT.position.y },
+          kind,
+          id: ent.id,
+          grabOffset,
         }
         try {
           canvas.setPointerCapture(ev.pointerId)
@@ -4048,42 +4195,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
         return
       }
       clearLongPressTimer()
-      dragRef.current = {
-        mode: 'move',
-        kind: 'target',
-        id: hitT.id,
-        grabOffset: { x: w.x - hitT.position.x, y: w.y - hitT.position.y },
-      }
-      canvas.setPointerCapture(ev.pointerId)
-      return
-    }
-    if (hitP) {
-      gridHoverRef.current = null
-      setPlanSelect({ mode: 'single', kind: 'prop', id: hitP.id })
-      if (ev.pointerType === 'touch') {
-        touchPendingDragRef.current = {
-          pointerId: ev.pointerId,
-          startX: ev.clientX,
-          startY: ev.clientY,
-          touchDrag: 'single',
-          kind: 'prop',
-          id: hitP.id,
-          grabOffset: { x: w.x - hitP.position.x, y: w.y - hitP.position.y },
-        }
-        try {
-          canvas.setPointerCapture(ev.pointerId)
-        } catch {
-          /* ignore */
-        }
-        return
-      }
-      clearLongPressTimer()
-      dragRef.current = {
-        mode: 'move',
-        kind: 'prop',
-        id: hitP.id,
-        grabOffset: { x: w.x - hitP.position.x, y: w.y - hitP.position.y },
-      }
+      dragRef.current = { mode: 'move', kind, id: ent.id, grabOffset }
       canvas.setPointerCapture(ev.pointerId)
       return
     }
@@ -4147,6 +4259,16 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
                 origProps: tpdMove.origProps,
               }
         touchPendingDragRef.current = null
+      }
+    }
+
+    const prMove = pendingRotateRef.current
+    if (prMove && ev.pointerId === prMove.pointerId && !dragRef.current) {
+      if (
+        Math.hypot(ev.clientX - prMove.startX, ev.clientY - prMove.startY) > MOUSE_ROTATE_SLOP_PX
+      ) {
+        dragRef.current = { mode: 'rotate', kind: prMove.kind, id: prMove.id }
+        pendingRotateRef.current = null
       }
     }
 
@@ -4382,6 +4504,17 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
     if (longPressArmRef.current?.pointerId === ev.pointerId) {
       clearLongPressTimer()
+    }
+
+    const prEnd = pendingRotateRef.current
+    if (prEnd && prEnd.pointerId === ev.pointerId) {
+      pendingRotateRef.current = null
+      try {
+        canvas?.releasePointerCapture(ev.pointerId)
+      } catch {
+        /* ignore */
+      }
+      return
     }
 
     const tpdEnd = touchPendingDragRef.current

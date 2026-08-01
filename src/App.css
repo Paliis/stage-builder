@@ -243,6 +243,79 @@
   width: max(3rem, min(4.5rem, 26cqw, 5.75rem));
 }
 
+/* Пульт навігації: хрест панорами, зум і повернення до огляду в лівому нижньому куті кадру */
+.app__view-nav {
+  position: absolute;
+  bottom: max(0.9rem, env(safe-area-inset-bottom, 0px));
+  left: max(0.9rem, env(safe-area-inset-left, 0px));
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-areas:
+    '. up zin'
+    'left reset right'
+    '. down zout';
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent, #6366f1) 26%, var(--border));
+  background: color-mix(in srgb, var(--toolbar-bg) 88%, transparent);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+}
+
+/* Над канвасом 3D, як і перемикачі рендера */
+.app__view-nav--3d {
+  z-index: 24;
+}
+
+.app__view-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--accent, #6366f1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.app__view-nav-btn:hover:not(:disabled) {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+.app__view-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.app__view-nav-btn--up {
+  grid-area: up;
+}
+.app__view-nav-btn--down {
+  grid-area: down;
+}
+.app__view-nav-btn--left {
+  grid-area: left;
+}
+.app__view-nav-btn--right {
+  grid-area: right;
+}
+.app__view-nav-btn--reset {
+  grid-area: reset;
+}
+.app__view-nav-btn--zoom-in {
+  grid-area: zin;
+}
+.app__view-nav-btn--zoom-out {
+  grid-area: zout;
+}
+
 /* Кнопки одразу під мінімапою; column-reverse зберігає порядок як коли стовпчик ріс від низу вгору */
 .app__plan-map-actions {
   display: flex;

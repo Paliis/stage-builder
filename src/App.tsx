@@ -69,6 +69,7 @@ import {
 import { StageBuilderToolbar } from './presentation/components/StageBuilderToolbar'
 import { type PlanSelectionSummary, type StageCanvasHandle, StageCanvas } from './presentation/components/StageCanvas'
 import { StageMinimap } from './presentation/components/StageMinimap'
+import { ViewNavPad } from './presentation/components/ViewNavPad'
 import type { CameraMode3D, StageView3DHandle } from './presentation/components/StageView3D'
 import type { WorldViewportRect } from './presentation/lib/viewTransform'
 import { PwaUpdateBanner } from './presentation/components/PwaUpdateBanner'
@@ -207,6 +208,23 @@ export default function App({
   const onboardingDialogRef = useRef<HTMLDialogElement>(null)
   const [viewMode, setViewMode] = useState<'2d' | '3d'>(() => (shareReadOnly ? '3d' : '2d'))
   const [planViewportWorld, setPlanViewportWorld] = useState<WorldViewportRect | null>(null)
+  /** Стрілки панорами мають сенс лише тоді, коли в кадр не влазить уся площадка. */
+  const planViewCanPan =
+    planViewportWorld !== null &&
+    (planViewportWorld.minX > 0.01 ||
+      planViewportWorld.minY > 0.01 ||
+      planViewportWorld.maxX < fieldSizeM.x - 0.01 ||
+      planViewportWorld.maxY < fieldSizeM.y - 0.01)
+  const navPadLabels = {
+    aria: tree.view.navPadAria,
+    panUp: tree.view.navPanUp,
+    panDown: tree.view.navPanDown,
+    panLeft: tree.view.navPanLeft,
+    panRight: tree.view.navPanRight,
+    zoomIn: tree.view.navZoomIn,
+    zoomOut: tree.view.navZoomOut,
+    reset: tree.view.navReset,
+  }
   const [camera3d, setCamera3d] = useState<CameraMode3D>('overview')
   const [view3dShadowsOn, setView3dShadowsOn] = useState(() => {
     try {
@@ -1792,6 +1810,13 @@ export default function App({
                       onDimensionWorldPick={readOnly ? undefined : handleDimensionWorldPick}
                       onRemovePlanDimensionLine={readOnly ? undefined : removePlanDimensionLine}
                     />
+                    <ViewNavPad
+                      labels={navPadLabels}
+                      panDisabled={!planViewCanPan}
+                      onPan={(dx, dy) => planCanvasRef.current?.panByViewFraction(dx, dy)}
+                      onZoom={(direction) => planCanvasRef.current?.zoomByStep(direction)}
+                      onReset={() => planCanvasRef.current?.resetView()}
+                    />
                     <div className="app__plan-map-corner-stack">
                       <StageMinimap
                       fieldWidthM={fieldSizeM.x}
@@ -2093,6 +2118,15 @@ export default function App({
                         grayscaleForPdf={view3dGrayscale}
                       />
                     </Suspense>
+                    {viewMode === '3d' ? (
+                      <ViewNavPad
+                        labels={navPadLabels}
+                        className="app__view-nav--3d"
+                        onPan={(dx, dy) => view3dRef.current?.panByViewFraction(dx, dy)}
+                        onZoom={(direction) => view3dRef.current?.zoomByStep(direction)}
+                        onReset={() => view3dRef.current?.resetView()}
+                      />
+                    ) : null}
                   </div>
                 )}
               </main>

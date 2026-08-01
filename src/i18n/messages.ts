@@ -204,6 +204,15 @@ export type MessageTree = {
     measureDistanceMeters: string
     marqueeMode: string
     marqueeModeTitle: string
+    /** Екранні кнопки навігації над планом і 3D (панорама, зум, повернення до огляду). */
+    navPadAria: string
+    navPanUp: string
+    navPanDown: string
+    navPanLeft: string
+    navPanRight: string
+    navZoomIn: string
+    navZoomOut: string
+    navReset: string
     /** Режим зв’язків активації на плані (BL-004). */
     activationLinkMode: string
     activationLinkModeTitle: string
@@ -1515,6 +1524,14 @@ export const ukMessages: MessageTree = {
     marqueeMode: '\u0420\u0430\u043c\u043a\u0430',
     marqueeModeTitle:
       '\u0412\u0438\u0434\u0456\u043b\u0435\u043d\u043d\u044f \u0437\u043e\u043d\u043e\u044e: \u043f\u0440\u043e\u0442\u044f\u0433\u043d\u0456\u0442\u044c \u043f\u043e \u043f\u043b\u0430\u043d\u0443. \u041f\u043e\u043f\u0430\u0434\u0430\u044e\u0442\u044c \u043e\u0431\u2019\u0454\u043a\u0442\u0438, \u0447\u0438\u0439 \u0446\u0435\u043d\u0442\u0440 \u0432\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0456 \u0440\u0430\u043c\u043a\u0438. \u041f\u0456\u0441\u043b\u044f \u0432\u0456\u0434\u043f\u0443\u0441\u043a\u0430\u043d\u043d\u044f \u0440\u0435\u0436\u0438\u043c \u0440\u0430\u043c\u043a\u0438 \u0432\u0438\u043c\u043a\u0430\u0454\u0442\u044c\u0441\u044f \u2014 \u043c\u043e\u0436\u043d\u0430 \u043f\u0435\u0440\u0435\u0442\u044f\u0433\u0443\u0432\u0430\u0442\u0438 \u0432\u0438\u0434\u0456\u043b\u0435\u043d\u043d\u044f. Esc \u2014 \u0432\u0438\u043c\u043a\u043d\u0443\u0442\u0438 \u0432\u0440\u0443\u0447\u043d\u0443.',
+    navPadAria: 'Навігація по виду',
+    navPanUp: 'Зсунути вид угору',
+    navPanDown: 'Зсунути вид униз',
+    navPanLeft: 'Зсунути вид ліворуч',
+    navPanRight: 'Зсунути вид праворуч',
+    navZoomIn: 'Наблизити (Ctrl + колесо)',
+    navZoomOut: 'Віддалити (Ctrl + колесо)',
+    navReset: 'Уся площадка в кадрі',
     activationLinkMode: '\u0410\u043a\u0442\u0438\u0432\u0430\u0446\u0456\u044f',
     activationLinkModeTitle:
       '\u0414\u0432\u0430 \u043a\u043b\u0456\u043a\u0438: \u0441\u043f\u043e\u0447\u0430\u0442\u043a\u0443 \u0434\u0436\u0435\u0440\u0435\u043b\u043e, \u043f\u043e\u0442\u0456\u043c \u0446\u0456\u043b\u044c. Esc \u2014 \u0432\u0438\u0439\u0442\u0438 \u0437 \u0440\u0435\u0436\u0438\u043c\u0443.',
@@ -2916,6 +2933,14 @@ export const enMessages: MessageTree = {
     marqueeMode: 'Marquee',
     marqueeModeTitle:
       'Drag on the plan to select. Objects whose center lies inside the box are selected. Marquee mode turns off when you release the mouse so you can drag the selection. Esc exits manually.',
+    navPadAria: 'View navigation',
+    navPanUp: 'Move the view up',
+    navPanDown: 'Move the view down',
+    navPanLeft: 'Move the view left',
+    navPanRight: 'Move the view right',
+    navZoomIn: 'Zoom in (Ctrl + wheel)',
+    navZoomOut: 'Zoom out (Ctrl + wheel)',
+    navReset: 'Fit the whole range',
     activationLinkMode: 'Activation',
     activationLinkModeTitle:
       'Two clicks: first the source object, then the target. Esc exits the mode.',
