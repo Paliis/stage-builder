@@ -71,7 +71,7 @@ function priorityForUrl(loc) {
   let changefreq = 'weekly'
   let priority = 0.5
 
-  if (loc === `${ORIGIN}/stage-builder`) {
+  if (PORTAL_LOCALES.some((l) => loc === `${ORIGIN}/${l}/stage-builder`)) {
     priority = 0.95
   } else if (PORTAL_LOCALES.some((l) => loc === `${ORIGIN}/${l}`)) {
     priority = 1.0
@@ -100,10 +100,10 @@ async function main() {
 
   /** @type {Set<string>} */
   const urls = new Set()
-  urls.add(`${ORIGIN}/stage-builder`)
 
   for (const loc of PORTAL_LOCALES) {
     urls.add(`${ORIGIN}/${loc}`)
+    urls.add(`${ORIGIN}/${loc}/stage-builder`)
     urls.add(`${ORIGIN}/${loc}/hit-factor`)
     urls.add(`${ORIGIN}/${loc}/publish-policy`)
     if (enableRoHelper) {

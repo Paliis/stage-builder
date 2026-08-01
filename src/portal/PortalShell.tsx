@@ -8,6 +8,7 @@ import type { Locale } from '../i18n/messages'
 import { SiteFooter } from './SiteFooter'
 import { isMatchPortalEnabled, isRoHelperEnabled } from './featureFlags'
 import { PortalHeaderAccount } from './PortalHeaderAccount'
+import { isStageBuilderPath, stageBuilderPath } from './stageBuilderPath'
 import { roHelperPath } from '../ro-helper/paths'
 import './PortalShell.css'
 import './portal-layout.css'
@@ -36,6 +37,9 @@ export function PortalShell() {
   const [layoutCompact, setLayoutCompact] = useState(false)
   const [navOpen, setNavOpen] = useState(false)
   const compactHeader = mqCompact || layoutCompact
+  /** Editor route: product links collapse into a catalog drawer so the strip stays slim above the canvas. */
+  const appMode = isStageBuilderPath(pathname)
+  const navDrawer = appMode || compactHeader
 
   const goLocale = (next: Locale) => {
     navigate(swapLocaleInPortalPath(pathname, next), { replace: true })
@@ -66,14 +70,14 @@ export function PortalShell() {
   }, [pathname])
 
   useEffect(() => {
-    if (!compactHeader) queueMicrotask(() => setNavOpen(false))
-  }, [compactHeader])
+    if (!navDrawer) queueMicrotask(() => setNavOpen(false))
+  }, [navDrawer])
 
   useEffect(() => {
-    if (!compactHeader || !navOpen) return
+    if (!navDrawer || !navOpen) return
     document.documentElement.classList.add('portal-shell__nav-drawer-lock')
     return () => document.documentElement.classList.remove('portal-shell__nav-drawer-lock')
-  }, [compactHeader, navOpen])
+  }, [navDrawer, navOpen])
 
   useEffect(() => {
     if (!navOpen) return
@@ -84,13 +88,45 @@ export function PortalShell() {
     return () => window.removeEventListener('keydown', onKey)
   }, [navOpen])
 
-  const toolbarClassName = compactHeader ?
-    `portal-shell__header-toolbar portal-shell__header-toolbar--compact${navOpen ? ' is-open' : ''}`
-  : 'portal-shell__header-toolbar'
+  const toolbarClassName =
+    appMode ?
+      `portal-shell__header-toolbar portal-shell__header-toolbar--compact portal-shell__header-toolbar--nav-only${navOpen ? ' is-open' : ''}`
+    : compactHeader ?
+      `portal-shell__header-toolbar portal-shell__header-toolbar--compact${navOpen ? ' is-open' : ''}`
+    : 'portal-shell__header-toolbar'
+
+  const toolbarEnd = (
+    <div className="portal-shell__toolbar-end">
+      <PortalHeaderAccount
+        locale={locale}
+        p={p}
+        onAfterSignOut={navDrawer ? () => setNavOpen(false) : undefined}
+        suppressGuestSignInLink={pathname === `/${locale}/account`}
+      />
+      <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
+        <button
+          type="button"
+          className={locale === 'uk' ? 'is-active' : ''}
+          onClick={() => goLocale('uk')}
+          lang="uk"
+        >
+          {tree.common.langUk}
+        </button>
+        <button
+          type="button"
+          className={locale === 'en' ? 'is-active' : ''}
+          onClick={() => goLocale('en')}
+          lang="en"
+        >
+          {tree.common.langEn}
+        </button>
+      </div>
+    </div>
+  )
 
   return (
 <div
-      className={`portal-shell${compactHeader ? ' portal-shell--nav-compact' : ''}${isPortalHome ? ' portal-shell--home' : ''}`}
+      className={`portal-shell${compactHeader && !appMode ? ' portal-shell--nav-compact' : ''}${appMode ? ' portal-shell--app' : ''}${isPortalHome ? ' portal-shell--home' : ''}`}
     >
       <Helmet>
         <link rel="canonical" href={canonical} />
@@ -115,11 +151,11 @@ export function PortalShell() {
             <button
               type="button"
               className="portal-shell__menu-toggle"
-              aria-expanded={compactHeader ? navOpen : undefined}
-              aria-controls={compactHeader ? panelId : undefined}
-              aria-hidden={compactHeader ? undefined : true}
+              aria-expanded={navDrawer ? navOpen : undefined}
+              aria-controls={navDrawer ? panelId : undefined}
+              aria-hidden={navDrawer ? undefined : true}
               aria-label={
-                compactHeader ? (navOpen ? p.portalShellMenuCloseAria : p.portalShellMenuOpenAria) : undefined
+                navDrawer ? (navOpen ? p.portalShellMenuCloseAria : p.portalShellMenuOpenAria) : undefined
               }
               onClick={() => setNavOpen((v) => !v)}
             >
@@ -140,7 +176,7 @@ export function PortalShell() {
                   </NavLink>
                 : null}
                 <NavLink
-                  to="/stage-builder"
+                  to={stageBuilderPath(locale)}
                   className={({ isActive }) => (isActive ? 'is-active' : '')}
                 >
                   {p.navStageBuilder}
@@ -160,36 +196,12 @@ export function PortalShell() {
                   </NavLink>
                 : null}
               </nav>
-              <div className="portal-shell__toolbar-end">
-                <PortalHeaderAccount
-                  locale={locale}
-                  p={p}
-                  onAfterSignOut={compactHeader ? () => setNavOpen(false) : undefined}
-                  suppressGuestSignInLink={pathname === `/${locale}/account`}
-                />
-                <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
-                  <button
-                    type="button"
-                    className={locale === 'uk' ? 'is-active' : ''}
-                    onClick={() => goLocale('uk')}
-                    lang="uk"
-                  >
-                    {tree.common.langUk}
-                  </button>
-                  <button
-                    type="button"
-                    className={locale === 'en' ? 'is-active' : ''}
-                    onClick={() => goLocale('en')}
-                    lang="en"
-                  >
-                    {tree.common.langEn}
-                  </button>
-                </div>
-              </div>
+              {appMode ? null : toolbarEnd}
             </div>
+            {appMode ? toolbarEnd : null}
           </div>
         </div>
-        {compactHeader && navOpen ?
+        {navDrawer && navOpen ?
           <div
             className="portal-shell__nav-backdrop"
             aria-hidden

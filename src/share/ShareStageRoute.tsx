@@ -206,6 +206,7 @@ export function ShareStageRoute({ mode }: { mode: ShareMode }) {
     <App
       shareReadOnly={mode === 'view'}
       shareViewContext={sid ? { shareId: sid } : null}
+      standalone
     />
   )
 }

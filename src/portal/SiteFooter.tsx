@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
+import { usePwaInstall } from '../presentation/hooks/usePwaInstall'
 import './SiteFooter.css'
 
-/** Sitewide footer for portal shell (Stage Builder route uses its own footer with PWA install). */
+/** Sitewide footer: portal shell renders it, standalone share pages render it from `App`. */
 export function SiteFooter() {
   const { locale, tree } = useI18n()
+  const { canInstall, promptInstall } = usePwaInstall()
   const f = tree.footer
 
   return (
@@ -39,6 +41,36 @@ export function SiteFooter() {
               </a>
             </div>
           </div>
+          {canInstall ? (
+            <div className="site-footer__card">
+              <h3 className="site-footer__heading">{f.installHeading}</h3>
+              <p className="site-footer__text">{f.installText}</p>
+              <div className="site-footer__links">
+                <button
+                  type="button"
+                  className="site-footer__link site-footer__link--install"
+                  onClick={() => void promptInstall()}
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 15V3" />
+                    <path d="m8 11 4 4 4-4" />
+                    <path d="M20 21H4" />
+                  </svg>
+                  {f.installButton}
+                </button>
+              </div>
+            </div>
+          ) : null}
         </div>
         <div className="site-footer__bottom">
           <nav className="site-footer__nav" aria-label="Footer">

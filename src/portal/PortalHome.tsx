@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/useI18n'
 import { isRoHelperEnabled } from './featureFlags'
 import { roHelperPath } from '../ro-helper/paths'
+import { stageBuilderPath } from './stageBuilderPath'
 import { PortalMatchesFeaturedBand } from './PortalMatchesFeaturedBand'
 import './PortalHome.css'
 import './PortalMatchesUi.css'
@@ -129,7 +130,7 @@ export function PortalHome() {
 
       <section className="portal-home__grid" aria-label={p.gridAriaLabel}>
         <ProductCard
-          to="/stage-builder"
+          to={stageBuilderPath(locale)}
           preview="/portal-previews/stage-builder.webp"
           previewFallback="/portal-previews/stage-builder.svg"
           previewAlt={`${p.stageBuilderTitle} — ${p.stageBuilderDesc}`}

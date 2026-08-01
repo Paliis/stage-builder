@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
+import { isStageBuilderPath } from '../portal/stageBuilderPath'
 import { I18nContext, type I18nValue } from './contextBase'
 import { formatTemplate } from './format'
 import { getMessage } from './paths'
@@ -14,7 +15,7 @@ function applySeoMeta(tree: MessageTree, pathname: string) {
     if (el) el.setAttribute(attr, value)
   }
 
-  const isStageBuilder = pathname === '/stage-builder'
+  const isStageBuilder = isStageBuilderPath(pathname)
   const description = isStageBuilder ? seo.stageBuilderMetaDescription : seo.metaDescription
 
   set('meta[name="description"]', 'content', description)

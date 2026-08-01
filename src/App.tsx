@@ -74,6 +74,7 @@ import { StageLibraryDialog } from './presentation/components/StageLibraryDialog
 import { RangeDistanceSignDialog } from './presentation/components/RangeDistanceSignDialog'
 import { isSupabaseConfigured } from './lib/supabaseClient'
 import { useSupabaseSession } from './portal/useSupabaseSession'
+import { SiteFooter } from './portal/SiteFooter'
 import {
   saveUserStage,
   type UserStageRecord,
@@ -114,9 +115,15 @@ export type AppProps = {
   shareReadOnly?: boolean
   /** Opened via `/v/:shareId` or `/e/:shareId` — used for PDF QR (view URL) and «open in editor» on view links. */
   shareViewContext?: { shareId: string } | null
+  /** Rendered outside `PortalShell` (share links): brand link, language switcher and footer stay in the editor. */
+  standalone?: boolean
 }
 
-export default function App({ shareReadOnly = false, shareViewContext = null }: AppProps) {
+export default function App({
+  shareReadOnly = false,
+  shareViewContext = null,
+  standalone = false,
+}: AppProps) {
   const readOnly = shareReadOnly
   const { locale, setLocale, t, tree } = useI18n()
   const { canInstall, promptInstall } = usePwaInstall()
@@ -1384,9 +1391,13 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         <div className="app__header-inner">
           <div className="app__header-top-row">
             <h1 className="app__title-heading">
-              <Link to={`/${locale}`} className="app__title-link">
-                {tree.app.title}
-              </Link>
+              {standalone ? (
+                <Link to={`/${locale}`} className="app__title-link">
+                  {tree.app.title}
+                </Link>
+              ) : (
+                tree.app.title
+              )}
             </h1>
             {!readOnly ? (
               <div className="app__header-doc">
@@ -1410,24 +1421,26 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               </div>
             ) : null}
             <div className="app__header-actions">
-              <div className="app__lang" role="group" aria-label={tree.common.langSwitcher}>
-                <button
-                  type="button"
-                  className={locale === 'uk' ? 'is-active' : ''}
-                  onClick={() => setLocale('uk')}
-                  lang="uk"
-                >
-                  {tree.common.langUk}
-                </button>
-                <button
-                  type="button"
-                  className={locale === 'en' ? 'is-active' : ''}
-                  onClick={() => setLocale('en')}
-                  lang="en"
-                >
-                  {tree.common.langEn}
-                </button>
-              </div>
+              {standalone ? (
+                <div className="app__lang" role="group" aria-label={tree.common.langSwitcher}>
+                  <button
+                    type="button"
+                    className={locale === 'uk' ? 'is-active' : ''}
+                    onClick={() => setLocale('uk')}
+                    lang="uk"
+                  >
+                    {tree.common.langUk}
+                  </button>
+                  <button
+                    type="button"
+                    className={locale === 'en' ? 'is-active' : ''}
+                    onClick={() => setLocale('en')}
+                    lang="en"
+                  >
+                    {tree.common.langEn}
+                  </button>
+                </div>
+              ) : null}
               <div
                 className="app__buttons app__header-file-buttons"
                 role="group"
@@ -2232,40 +2245,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         </div>
       </details>
 
-      <footer className="app__footer">
-        <div className="app__footer-card">
-          <h3 className="app__footer-heading">{tree.footer.feedbackHeading}</h3>
-          <p className="app__footer-text">{tree.footer.feedbackText}</p>
-          <div className="app__footer-links">
-            <a href="https://t.me/denysparshentsev" target="_blank" rel="noopener noreferrer" className="app__footer-link">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.013 12.013 0 0 0 11.944 0Zm5.654 8.22l-1.7 8.013c-.127.6-.468.748-.95.466l-2.624-1.934l-1.266 1.218a.659.659 0 0 1-.527.257l.188-2.674l4.871-4.4c.212-.188-.046-.293-.328-.105l-6.02 3.79l-2.594-.81c-.564-.176-.575-.564.118-.835l10.14-3.91c.47-.17.882.113.692.924Z"/></svg>
-              {tree.footer.feedbackTelegram}
-            </a>
-          </div>
-        </div>
-        <div className="app__footer-card">
-          <h3 className="app__footer-heading">{tree.footer.supportHeading}</h3>
-          <p className="app__footer-text">{tree.footer.supportText}</p>
-          <div className="app__footer-links">
-            <a href="https://send.monobank.ua/jar/2gUdnYvDXy" target="_blank" rel="noopener noreferrer" className="app__footer-link app__footer-link--accent">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              {tree.footer.supportLink}
-            </a>
-          </div>
-        </div>
-        {canInstall && (
-          <div className="app__footer-card app__footer-card--install">
-            <h3 className="app__footer-heading">{tree.footer.installHeading}</h3>
-            <p className="app__footer-text">{tree.footer.installText}</p>
-            <div className="app__footer-links">
-              <button type="button" className="app__footer-link app__footer-link--accent app__btn-pwa-install" onClick={() => void promptInstall()}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="m8 11 4 4 4-4"/><path d="M20 21H4"/></svg>
-                {tree.footer.installButton}
-              </button>
-            </div>
-          </div>
-        )}
-      </footer>
+      {standalone ? <SiteFooter /> : null}
 
       {!readOnly ? (
         <button

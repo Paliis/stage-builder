@@ -16,7 +16,7 @@
 
 .site-footer__top {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   gap: 1.5rem;
   width: 100%;
   margin: 0 0 1rem;
@@ -55,6 +55,7 @@
 .site-footer__link {
   display: inline-flex;
   align-items: center;
+  gap: 0.35rem;
   min-height: 2.25rem;
   padding: 0.25rem 0.65rem;
   border-radius: 0.5rem;
@@ -80,6 +81,16 @@
   border-color: #f09595;
   color: #791f1f;
   background: #fcebeb;
+}
+
+.site-footer__link--install {
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-color: var(--accent-border);
+  color: var(--accent);
+  background: var(--accent-bg);
 }
 
 .site-footer__bottom {

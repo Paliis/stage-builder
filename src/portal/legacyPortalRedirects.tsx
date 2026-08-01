@@ -1,6 +1,7 @@
 import { Navigate, useParams } from 'react-router-dom'
 import { getInitialLocale } from '../i18n/storage'
 import { roHelperPath } from '../ro-helper/paths'
+import { stageBuilderPath } from './stageBuilderPath'
 
 export function RootRedirect() {
   return <Navigate to={`/${getInitialLocale()}`} replace />
@@ -8,6 +9,11 @@ export function RootRedirect() {
 
 export function LegacyHitFactorRedirect() {
   return <Navigate to={`/${getInitialLocale()}/hit-factor`} replace />
+}
+
+/** Printed QR codes and bookmarks still point at `/stage-builder`. */
+export function LegacyStageBuilderRedirect() {
+  return <Navigate to={stageBuilderPath(getInitialLocale())} replace />
 }
 
 export function LegacyPublishPolicyRedirect() {

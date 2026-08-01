@@ -74,7 +74,7 @@
 }
 
 .app {
-  --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
+  --_dvh-cap: min(94dvh, calc(100dvh - 7rem - var(--app-chrome-offset, 0px)));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,6 +133,13 @@
   font-size: 1.65rem;
   letter-spacing: -0.03em;
   line-height: 1.15;
+}
+
+/* Inside the portal shell the strip carries the brand, so the editor title is a quiet page label. */
+.portal-shell--app .app__title-heading {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-muted);
 }
 
 .app__title-link {
@@ -1713,7 +1720,7 @@
   container-type: size;
   container-name: stage-card;
   /* --_dvh-cap: ліміт по вікну; на широкому макеті додаємо 100cqh, щоб сцена займала висоту робочої колонки. */
-  --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
+  --_dvh-cap: min(94dvh, calc(100dvh - 7rem - var(--app-chrome-offset, 0px)));
   --_h-if-full-w: calc(100cqw * var(--stage-card-h, 35.7) / var(--stage-card-w, 30));
   --_plan-cap: min(var(--_dvh-cap), var(--_h-if-full-w));
   width: 100%;
@@ -1732,7 +1739,7 @@
   .app__main.app__main--stage-card {
     align-self: stretch;
     width: 100%;
-    --_plan-cap: min(70dvh, calc(100dvh - 10.5rem));
+    --_plan-cap: min(70dvh, calc(100dvh - 10.5rem - var(--app-chrome-offset, 0px)));
   }
 
   .app__plan-stage-stack {
@@ -1742,7 +1749,7 @@
 
 @media (max-width: 24rem) {
   .app__main.app__main--stage-card {
-    --_plan-cap: min(68dvh, calc(100dvh - 9rem));
+    --_plan-cap: min(68dvh, calc(100dvh - 9rem - var(--app-chrome-offset, 0px)));
   }
 }
 
@@ -2001,7 +2008,7 @@
  * через що при вузькій площадці (мала ширина / велика довжина) сцена лишалась вузькою смужкою.
  */
 .app__plan-workspace-cluster {
-  --_dvh-cap: min(94dvh, calc(100dvh - 7rem));
+  --_dvh-cap: min(94dvh, calc(100dvh - 7rem - var(--app-chrome-offset, 0px)));
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
@@ -2041,7 +2048,8 @@
     top: calc(env(safe-area-inset-top, 0px) + var(--app-sticky-controls-height, 4.5rem));
     z-index: 40;
     max-height: calc(
-      100dvh - env(safe-area-inset-top, 0px) - var(--app-sticky-controls-height, 4.5rem) - 0.75rem
+      100dvh - env(safe-area-inset-top, 0px) - var(--app-sticky-controls-height, 4.5rem) - 0.75rem -
+        var(--app-chrome-offset, 0px)
     );
   }
 }
@@ -2281,15 +2289,15 @@
  */
 @media (min-width: 80rem) and (min-height: 32rem) {
   .app {
-    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem));
+    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem - var(--app-chrome-offset, 0px)));
   }
 
   .app__plan-workspace-cluster {
-    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem));
+    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem - var(--app-chrome-offset, 0px)));
   }
 
   .app__main.app__main--stage-card {
-    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem));
+    --_dvh-cap: min(96dvh, calc(100dvh - 5.5rem - var(--app-chrome-offset, 0px)));
   }
 
   .app__plan-main {
@@ -2299,15 +2307,15 @@
 
 @media (min-width: 100rem) and (min-height: 36rem) {
   .app {
-    --_dvh-cap: min(96dvh, calc(100dvh - 5rem));
+    --_dvh-cap: min(96dvh, calc(100dvh - 5rem - var(--app-chrome-offset, 0px)));
   }
 
   .app__plan-workspace-cluster {
-    --_dvh-cap: min(96dvh, calc(100dvh - 5rem));
+    --_dvh-cap: min(96dvh, calc(100dvh - 5rem - var(--app-chrome-offset, 0px)));
   }
 
   .app__main.app__main--stage-card {
-    --_dvh-cap: min(96dvh, calc(100dvh - 5rem));
+    --_dvh-cap: min(96dvh, calc(100dvh - 5rem - var(--app-chrome-offset, 0px)));
   }
 
   .app__plan-main {
@@ -2788,81 +2796,10 @@
   cursor: wait;
 }
 
-/* Footer: зворотний зв'язок + підтримка */
-.app__footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+/* Share pages render the sitewide footer inside the editor column. */
+.app > .site-footer {
+  align-self: stretch;
   width: 100%;
-  max-width: 64rem;
-  align-self: center;
-  box-sizing: border-box;
-}
-
-.app__footer-card {
-  flex: 1 1 min(100%, 28rem);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
-  background: var(--toolbar-bg);
-}
-
-.app__footer-heading {
-  margin: 0 0 0.3rem;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text-h);
-}
-
-.app__footer-text {
-  margin: 0 0 0.5rem;
-  font-size: 0.82rem;
-  line-height: 1.45;
-  color: var(--text);
-}
-
-.app__footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-
-.app__footer-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.84rem;
-  font-weight: 600;
-  padding: 0.38rem 0.7rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--btn-bg);
-  color: var(--text-h);
-  text-decoration: none;
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-}
-
-.app__footer-link:hover {
-  border-color: var(--accent-border);
-  background: var(--accent-bg);
-  color: var(--accent);
-}
-
-.app__footer-link--accent {
-  border-color: var(--accent-border);
-  background: var(--accent-bg);
-  color: var(--accent);
-}
-
-.app__footer-link--accent:hover {
-  filter: brightness(1.05);
-}
-
-button.app__btn-pwa-install {
-  font: inherit;
-  cursor: pointer;
-  touch-action: manipulation;
 }
 
 .stage-canvas-3d {

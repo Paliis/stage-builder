@@ -12,6 +12,7 @@ import type { MessageTree } from '../../i18n/messages'
 import { parseStageProjectJson } from '../../domain/stageProjectFile'
 import { resolveSharePublishedTitle } from '../../domain/sharePublishedTitle'
 import { payloadToProjectText } from '../../share/payloadToProjectText'
+import { stageBuilderPath } from '../stageBuilderPath'
 import { extractShareViewId } from './extractShareViewId'
 import {
   programmeListDisplayTitles,
@@ -462,7 +463,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         </h3>
         <p className="portal-match-org-stages-zone__intro">
           {p.matchOrgStagesZoneSbIntro}{' '}
-          <Link to="/stage-builder" target="_blank" rel="noreferrer">
+          <Link to={stageBuilderPath(locale)} target="_blank" rel="noreferrer">
             {p.matchOrgStagesOpenEditor}
           </Link>
         </p>
