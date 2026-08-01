@@ -2379,10 +2379,6 @@
     min-height: min(62dvh, 42rem);
   }
 
-  .app__briefing {
-    max-width: min(80rem, 96vw);
-  }
-
   .app__view-hint-wrap {
     max-width: min(72rem, 96vw);
   }
@@ -2647,10 +2643,11 @@
   cursor: pointer;
 }
 
+/* Same edges as the plan workspace: the 64rem block used to pair with the old editor footer. */
 .app__briefing {
   width: 100%;
-  max-width: 64rem;
-  align-self: center;
+  max-width: 100%;
+  align-self: stretch;
   box-sizing: border-box;
   border: 1px solid var(--border);
   border-radius: 12px;
