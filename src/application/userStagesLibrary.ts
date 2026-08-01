@@ -14,6 +14,11 @@ const TABLE = 'user_stages'
 export const USER_STAGE_TITLE_MAX = 200
 /** Скільки записів тягнемо в список бібліотеки за раз. */
 export const USER_STAGES_PAGE_SIZE = 200
+/**
+ * Дзеркалить `user_stages_payload_size` у БД. Перевірка тут — по тексту JSON, у БД — по стиснутому
+ * `jsonb`, тобто клієнт суворіший: до сервера не доїде те, що він однаково відкине.
+ */
+export const USER_STAGE_PAYLOAD_MAX_BYTES = 524_288
 
 const WEAPON_CLASSES = new Set<WeaponClass>(WEAPON_CLASS_VALUES)
 
@@ -33,6 +38,8 @@ export type UserStageErrorKey =
   | 'notSignedIn'
   | 'invalidTitle'
   | 'invalidPayload'
+  | 'payloadTooLarge'
+  | 'quotaExceeded'
   | 'notFound'
   | 'network'
 
@@ -136,8 +143,16 @@ function buildPayload(input: SaveUserStageInput): StageProjectFileV1 {
 }
 
 /** Payload у колонці `jsonb` — прогін через серіалізатор гарантує ті самі дані, що й у файлі. */
-function payloadJson(file: StageProjectFileV1): unknown {
-  return JSON.parse(serializeStageProject(file)) as unknown
+function payloadJson(text: string): unknown {
+  return JSON.parse(text) as unknown
+}
+
+/** Запобіжники з міграції `user_stages_quota` приходять як помилка запиту, а не як окремий статус. */
+function mapWriteError(error: { code?: string; message?: string }): UserStageErrorKey {
+  const text = `${error.code ?? ''} ${error.message ?? ''}`
+  if (text.includes('user_stages_quota_exceeded')) return 'quotaExceeded'
+  if (text.includes('user_stages_payload_size')) return 'payloadTooLarge'
+  return 'network'
 }
 
 export async function saveUserStage(
@@ -149,12 +164,15 @@ export async function saveUserStage(
   const title = normalizeUserStageTitle(input.title)
   if (!title) return { ok: false, errorKey: 'invalidTitle' }
 
-  const file = buildPayload(input)
+  const text = serializeStageProject(buildPayload(input))
+  if (new TextEncoder().encode(text).length > USER_STAGE_PAYLOAD_MAX_BYTES) {
+    return { ok: false, errorKey: 'payloadTooLarge' }
+  }
   const values = {
     title,
     weapon_class: input.stage.weaponClass,
     schema_version: STAGE_PROJECT_VERSION,
-    payload: payloadJson(file),
+    payload: payloadJson(text),
   }
 
   const sb = getSupabase()
@@ -162,7 +180,7 @@ export async function saveUserStage(
     ? sb.from(TABLE).update(values).eq('id', input.id)
     : sb.from(TABLE).insert({ ...values, owner_id: ownerId })
   const { data, error } = await query.select(SUMMARY_COLUMNS).maybeSingle()
-  if (error) return { ok: false, errorKey: 'network' }
+  if (error) return { ok: false, errorKey: mapWriteError(error) }
   if (!data) return { ok: false, errorKey: input.id ? 'notFound' : 'network' }
   const summary = parseSummary(data as UserStageRow)
   if (!summary) return { ok: false, errorKey: 'network' }

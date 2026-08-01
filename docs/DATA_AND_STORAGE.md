@@ -32,6 +32,7 @@ Workbox / PWA можуть додавати власні записи кешу (
 |---------|----------------|
 | Share: таблиця **`shared_stages`**, RPC **`fetch_shared_stage`**, RLS | [SUPABASE_SHARED_STAGES.md](./SUPABASE_SHARED_STAGES.md), міграції в **`supabase/migrations/`** |
 | «Мої вправи»: таблиця **`user_stages`** (own-row RLS, `payload jsonb` = конверт `.stage.json`) | міграція **`20260801120000_user_stages.sql`**, клієнт `src/application/userStagesLibrary.ts` |
+| Квоти `user_stages`: **512 КБ** на `payload` (`CHECK pg_column_size`, як у `shared_stages`) і **200 записів** на акаунт (тригер `enforce_user_stages_quota`) — писати з браузера може будь-хто з anon-ключем, тож ліміти в БД | міграція **`20260801173000_user_stages_quota.sql`**; клієнт віддає `payloadTooLarge` / `quotaExceeded` |
 | Матчі, реєстрація, PSC | [SUPABASE_MATCH_ADMIN.md](./SUPABASE_MATCH_ADMIN.md) |
 | CLI: логін, link, накат міграцій | [supabase/README.md](../supabase/README.md) |
 

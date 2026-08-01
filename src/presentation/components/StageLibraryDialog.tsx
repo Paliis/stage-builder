@@ -78,9 +78,13 @@ export function StageLibraryDialog({
             ? lib.errorInvalidTitle
             : errorKey === 'invalidPayload'
               ? lib.errorInvalidPayload
-              : errorKey === 'notFound'
-                ? lib.errorNotFound
-                : lib.errorNetwork
+              : errorKey === 'payloadTooLarge'
+                ? lib.errorPayloadTooLarge
+                : errorKey === 'quotaExceeded'
+                  ? lib.errorQuotaExceeded
+                  : errorKey === 'notFound'
+                    ? lib.errorNotFound
+                    : lib.errorNetwork
 
   const refresh = useCallback(async () => {
     setListLoading(true)

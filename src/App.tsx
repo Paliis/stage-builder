@@ -99,6 +99,12 @@ const BRIEFING_PANEL_LS_KEY = 'stage-builder-briefing-collapsed'
 const LIBRARY_STAGE_ID_LS_KEY = 'stage-builder-library-stage-id'
 /** Автозбереження в бібліотеку — лише для вправи, вже прив’язаної до запису. */
 const LIBRARY_AUTOSAVE_INTERVAL_MS = 30_000
+/** Довша пауза після кількох невдач: під час аварії тисячі вкладок не мають бити раз на 30 с. */
+const AUTOSAVE_RETRY_MAX_MS = 10 * 60_000
+
+function autosaveRetryDelayMs(failures: number): number {
+  return Math.min(LIBRARY_AUTOSAVE_INTERVAL_MS * 2 ** (failures - 1), AUTOSAVE_RETRY_MAX_MS)
+}
 
 function parseFieldSizeInputMeters(raw: string): number | null {
   const t = raw.trim().replace(',', '.')
@@ -250,6 +256,9 @@ export default function App({
     }
   })
   const [libraryQuickSaving, setLibraryQuickSaving] = useState(false)
+  /** Пауза автозбереження після невдачі (backoff); ручне збереження її ігнорує. */
+  const autosaveRetryAtRef = useRef(0)
+  const autosaveFailuresRef = useRef(0)
   const [librarySavedAt, setLibrarySavedAt] = useState<number | null>(null)
   const [librarySaveFailed, setLibrarySaveFailed] = useState(false)
   /** Знімок, що вже лежить у бібліотеці — порівняння за посиланням показує незбережені зміни. */
@@ -600,7 +609,12 @@ export default function App({
         if (!silent) setStageLibraryOpen(true)
         return
       }
-      if (silent && (libraryQuickSaving || savedProjectRootRef.current === shareProjectRoot)) return
+      if (silent) {
+        if (libraryQuickSaving || savedProjectRootRef.current === shareProjectRoot) return
+        // Nobody is editing a hidden tab, and a failing save should not be retried on every tick.
+        if (document.visibilityState === 'hidden') return
+        if (Date.now() < autosaveRetryAtRef.current) return
+      }
       setLibraryQuickSaving(true)
       const res = await saveUserStage({
         id: libraryStageId,
@@ -614,9 +628,21 @@ export default function App({
         // link so the author is offered a fresh save instead of a failing one.
         if (res.errorKey === 'notFound') setLibraryStageId(null)
         setLibrarySaveFailed(true)
-        if (!silent) setStageLibraryOpen(true)
+        if (silent) {
+          autosaveFailuresRef.current += 1
+          // Size and quota do not heal on their own: wait the full pause and let a manual save
+          // (which always runs) surface the reason in the library dialog.
+          const permanent = res.errorKey === 'payloadTooLarge' || res.errorKey === 'quotaExceeded'
+          autosaveRetryAtRef.current =
+            Date.now() +
+            (permanent ? AUTOSAVE_RETRY_MAX_MS : autosaveRetryDelayMs(autosaveFailuresRef.current))
+        } else {
+          setStageLibraryOpen(true)
+        }
         return
       }
+      autosaveFailuresRef.current = 0
+      autosaveRetryAtRef.current = 0
       setLibrarySaveFailed(false)
       handleLibrarySaved(res.data)
     },

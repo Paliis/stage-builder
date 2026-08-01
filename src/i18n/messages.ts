@@ -363,6 +363,8 @@ export type MessageTree = {
     errorNetwork: string
     errorInvalidTitle: string
     errorInvalidPayload: string
+    errorPayloadTooLarge: string
+    errorQuotaExceeded: string
     errorNotFound: string
   }
   share: {
@@ -1672,6 +1674,10 @@ export const ukMessages: MessageTree = {
     errorNetwork: 'Не вдалося звʼязатися з сервером. Спробуйте ще раз.',
     errorInvalidTitle: 'Вкажіть назву вправи.',
     errorInvalidPayload: 'Дані збереженої вправи пошкоджені.',
+    errorPayloadTooLarge:
+      'Вправа завелика для збереження в акаунті (ліміт 512 КБ). Приберіть частину об’єктів або збережіть її у файл.',
+    errorQuotaExceeded:
+      'В акаунті вже 200 збережених вправ. Видаліть непотрібні, щоб зберегти нову.',
     errorNotFound: 'Вправу не знайдено — можливо, її вже видалено.',
   },
   share: {
@@ -3059,6 +3065,9 @@ export const enMessages: MessageTree = {
     errorNetwork: 'Could not reach the server. Please try again.',
     errorInvalidTitle: 'Enter a stage name.',
     errorInvalidPayload: 'The saved stage data is corrupted.',
+    errorPayloadTooLarge:
+      'This stage is too large to keep in your account (512 KB limit). Remove some objects or export it to a file.',
+    errorQuotaExceeded: 'Your account already holds 200 stages. Delete some to save a new one.',
     errorNotFound: 'Stage not found — it may have been deleted.',
   },
   share: {
