@@ -341,6 +341,8 @@ export type MessageTree = {
     saved: string
     statusSaved: string
     statusUnsaved: string
+    statusFailed: string
+    nameFromHeader: string
     open: string
     rename: string
     renamePrompt: string
@@ -1637,7 +1639,7 @@ export const ukMessages: MessageTree = {
   library: {
     title: 'Мої вправи',
     save: 'Зберегти',
-    saveHint: 'Зберегти вправу в акаунті',
+    saveHint: 'Зберегти вправу в акаунті (далі автозбереження кожні 30 с)',
     myStages: 'Мої вправи',
     intro:
       'Вправи зберігаються у вашому акаунті й відкриваються з будь-якого пристрою. Файл .stage.json лишається для експорту.',
@@ -1648,6 +1650,8 @@ export const ukMessages: MessageTree = {
     saved: 'Збережено',
     statusSaved: 'Збережено о {{time}}',
     statusUnsaved: 'Є незбережені зміни',
+    statusFailed: 'Не вдалося зберегти',
+    nameFromHeader: 'Назву змінюйте в полі вгорі редактора.',
     open: 'Відкрити',
     rename: 'Перейменувати',
     renamePrompt: 'Нова назва вправи:',
@@ -3022,7 +3026,7 @@ export const enMessages: MessageTree = {
   library: {
     title: 'My stages',
     save: 'Save',
-    saveHint: 'Save the stage to your account',
+    saveHint: 'Save the stage to your account (then autosaves every 30 s)',
     myStages: 'My stages',
     intro:
       'Stages are stored in your account and open on any device. The .stage.json file remains available as an export.',
@@ -3033,6 +3037,8 @@ export const enMessages: MessageTree = {
     saved: 'Saved',
     statusSaved: 'Saved at {{time}}',
     statusUnsaved: 'Unsaved changes',
+    statusFailed: 'Could not save',
+    nameFromHeader: 'Rename it in the field at the top of the editor.',
     open: 'Open',
     rename: 'Rename',
     renamePrompt: 'New stage name:',

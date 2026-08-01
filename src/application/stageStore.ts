@@ -176,8 +176,10 @@ export type StageState = {
   setRangeDistanceSignEdgeYM: (id: string, edgePositionYM: number) => void
 }
 
+export const DEFAULT_STAGE_NAME = 'Нова вправа'
+
 export const useStageStore = create<StageState>()(temporal((set) => ({
-  name: 'Нова вправа',
+  name: DEFAULT_STAGE_NAME,
   weaponClass: 'handgun',
   fieldSizeM: { x: DEFAULT_FIELD_WIDTH_M, y: DEFAULT_FIELD_HEIGHT_M },
   fieldGroundCover3d: DEFAULT_FIELD_GROUND_COVER_3D,
@@ -188,10 +190,8 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
   planDimensions: [],
   rangeDistanceSigns: [],
 
-  setStageName: (name) =>
-    set({
-      name: name.trim().slice(0, 200) || 'Нова вправа',
-    }),
+  // Порожнє значення допустиме під час набору; підстановку дефолту робить UI на blur.
+  setStageName: (name) => set({ name: name.slice(0, 200) }),
 
   setFieldGroundCover3d: (cover) => set({ fieldGroundCover3d: cover }),
 
@@ -233,7 +233,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set(() => {
       const fieldSizeM = clampFieldDimensions(DEFAULT_FIELD_WIDTH_M, DEFAULT_FIELD_HEIGHT_M)
       return {
-        name: 'Нова вправа',
+        name: DEFAULT_STAGE_NAME,
         weaponClass: 'handgun',
         fieldSizeM,
         fieldGroundCover3d: DEFAULT_FIELD_GROUND_COVER_3D,

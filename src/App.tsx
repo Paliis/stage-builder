@@ -15,7 +15,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { SessionDraftPersist } from './application/SessionDraftPersist'
 import { clearSessionDraftStorage } from './application/sessionDraft'
 import { useBriefingStore } from './application/briefingStore'
-import { useStageStore } from './application/stageStore'
+import { DEFAULT_STAGE_NAME, useStageStore } from './application/stageStore'
 import { computeMinRounds, countStageTargetUnits } from './domain/computeMinRounds'
 import type { PlacementMode } from './domain/placementMode'
 import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
@@ -89,6 +89,8 @@ const StageView3DLazy = lazy(() =>
 const ONBOARDING_LS_KEY = 'stage-builder-onboarding-collapsed'
 const VIEW3D_LS_SHADOWS = 'stage-builder-view3d-shadows'
 const VIEW3D_LS_GRAYSCALE = 'stage-builder-view3d-grayscale'
+/** Автозбереження в бібліотеку — лише для вправи, вже прив’язаної до запису. */
+const LIBRARY_AUTOSAVE_INTERVAL_MS = 30_000
 
 function parseFieldSizeInputMeters(raw: string): number | null {
   const t = raw.trim().replace(',', '.')
@@ -120,6 +122,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const { canInstall, promptInstall } = usePwaInstall()
 
   const name = useStageStore((s) => s.name)
+  const setStageName = useStageStore((s) => s.setStageName)
   const weaponClass = useStageStore((s) => s.weaponClass)
   const setWeaponClass = useStageStore((s) => s.setWeaponClass)
   const targets = useStageStore((s) => s.targets)
@@ -213,9 +216,9 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const [stageLibraryOpen, setStageLibraryOpen] = useState(false)
   /** Запис у хмарній бібліотеці, з яким зараз пов’язана вправа в редакторі. */
   const [libraryStageId, setLibraryStageId] = useState<string | null>(null)
-  const [libraryStageTitle, setLibraryStageTitle] = useState('')
   const [libraryQuickSaving, setLibraryQuickSaving] = useState(false)
   const [librarySavedAt, setLibrarySavedAt] = useState<number | null>(null)
+  const [librarySaveFailed, setLibrarySaveFailed] = useState(false)
   /** Знімок, що вже лежить у бібліотеці — порівняння за посиланням показує незбережені зміни. */
   const savedProjectRootRef = useRef<StageProjectFileV1 | null>(null)
   const markLibraryCleanRef = useRef(false)
@@ -518,23 +521,25 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const handleLibrarySaved = useCallback(
     (summary: UserStageSummary) => {
       setLibraryStageId(summary.id)
-      setLibraryStageTitle(summary.title)
       savedProjectRootRef.current = shareProjectRoot
       setLibrarySavedAt(Date.now())
     },
     [shareProjectRoot],
   )
 
-  const handleLibraryRenamed = useCallback((summary: UserStageSummary) => {
-    setLibraryStageTitle(summary.title)
-  }, [])
+  /** Перейменування в списку веде за собою назву в шапці — джерело правди одне. */
+  const handleLibraryRenamed = useCallback(
+    (summary: UserStageSummary) => {
+      setStageName(summary.title)
+    },
+    [setStageName],
+  )
 
   const handleLibraryOpened = useCallback(
     (record: UserStageRecord) => {
       replaceStageState(record.project.stage)
       setBriefing(record.project.briefing)
       setLibraryStageId(record.id)
-      setLibraryStageTitle(record.title)
       markLibraryCleanRef.current = true
     },
     [replaceStageState, setBriefing],
@@ -548,36 +553,59 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     setLibrarySavedAt(Date.now())
   }, [shareProjectRoot])
 
-  /** Повторне збереження вже прив’язаного запису; в інших випадках відкриваємо бібліотеку. */
-  const quickSaveToLibrary = useCallback(async () => {
-    if (!supabaseConfigured || !supabaseUser || !libraryStageId) {
-      setStageLibraryOpen(true)
-      return
-    }
-    setLibraryQuickSaving(true)
-    const res = await saveUserStage({
-      id: libraryStageId,
-      title: libraryStageTitle || shareProjectRoot.stage.name,
-      stage: shareProjectRoot.stage,
-      briefing: shareProjectRoot.briefing,
-    })
-    setLibraryQuickSaving(false)
-    if (!res.ok) {
-      setStageLibraryOpen(true)
-      return
-    }
-    handleLibrarySaved(res.data)
-  }, [
-    handleLibrarySaved,
-    libraryStageId,
-    libraryStageTitle,
-    shareProjectRoot,
-    supabaseConfigured,
-    supabaseUser,
-  ])
+  /**
+   * Повторне збереження вже прив’язаного запису. `silent` — автозбереження: без діалогу,
+   * тільки коли є незбережені зміни.
+   */
+  const quickSaveToLibrary = useCallback(
+    async (silent = false) => {
+      if (!supabaseConfigured || !supabaseUser || !libraryStageId) {
+        if (!silent) setStageLibraryOpen(true)
+        return
+      }
+      if (silent && (libraryQuickSaving || savedProjectRootRef.current === shareProjectRoot)) return
+      setLibraryQuickSaving(true)
+      const res = await saveUserStage({
+        id: libraryStageId,
+        title: shareProjectRoot.stage.name,
+        stage: shareProjectRoot.stage,
+        briefing: shareProjectRoot.briefing,
+      })
+      setLibraryQuickSaving(false)
+      if (!res.ok) {
+        setLibrarySaveFailed(true)
+        if (!silent) setStageLibraryOpen(true)
+        return
+      }
+      setLibrarySaveFailed(false)
+      handleLibrarySaved(res.data)
+    },
+    [
+      handleLibrarySaved,
+      libraryQuickSaving,
+      libraryStageId,
+      shareProjectRoot,
+      supabaseConfigured,
+      supabaseUser,
+    ],
+  )
+
+  const autosaveRef = useRef(quickSaveToLibrary)
+  useEffect(() => {
+    autosaveRef.current = quickSaveToLibrary
+  }, [quickSaveToLibrary])
+
+  useEffect(() => {
+    if (readOnly) return
+    const id = window.setInterval(() => {
+      void autosaveRef.current(true)
+    }, LIBRARY_AUTOSAVE_INTERVAL_MS)
+    return () => window.clearInterval(id)
+  }, [readOnly])
 
   const libraryStatusText = useMemo(() => {
     if (!libraryStageId) return null
+    if (librarySaveFailed) return tree.library.statusFailed
     if (savedProjectRootRef.current !== shareProjectRoot) return tree.library.statusUnsaved
     if (librarySavedAt === null) return null
     return formatTemplate(tree.library.statusSaved, {
@@ -588,9 +616,11 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     })
   }, [
     libraryStageId,
+    librarySaveFailed,
     librarySavedAt,
     locale,
     shareProjectRoot,
+    tree.library.statusFailed,
     tree.library.statusSaved,
     tree.library.statusUnsaved,
   ])
@@ -654,9 +684,9 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         replaceStageState(res.data.stage)
         setBriefing(res.data.briefing)
         setLibraryStageId(null)
-        setLibraryStageTitle('')
         savedProjectRootRef.current = null
         setLibrarySavedAt(null)
+        setLibrarySaveFailed(false)
       }
       reader.readAsText(f, 'UTF-8')
     },
@@ -681,9 +711,9 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     setHasPlanClipboard(false)
     internalClipboardRef.current = null
     setLibraryStageId(null)
-    setLibraryStageTitle('')
     savedProjectRootRef.current = null
     setLibrarySavedAt(null)
+    setLibrarySaveFailed(false)
   }, [resetSceneToDefaults, setBriefing, t, setMobileMenuOpen, clearPenaltyContourDraft])
 
   const applySceneToBriefing = () => {
@@ -1385,6 +1415,18 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               >
                 {!readOnly ? (
                   <>
+                    <input
+                      type="text"
+                      className="app__stage-name"
+                      value={name}
+                      maxLength={200}
+                      aria-label={tree.library.nameLabel}
+                      title={tree.library.nameLabel}
+                      onChange={(e) => setStageName(e.target.value)}
+                      onBlur={() => {
+                        if (!name.trim()) setStageName(DEFAULT_STAGE_NAME)
+                      }}
+                    />
                     <button
                       type="button"
                       className="app__btn-secondary app__btn-secondary--primary"

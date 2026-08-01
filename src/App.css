@@ -891,18 +891,20 @@
   display: flex;
   flex: 1 1 16rem;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.15rem;
+  margin: 0;
   font-size: 0.8rem;
   color: var(--muted);
 }
 
-.app__stage-library-name input {
-  padding: 0.4rem 0.55rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
+.app__stage-library-name-value {
+  font-size: 1rem;
   color: var(--text);
-  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.app__stage-library-name-hint {
+  font-size: 0.76rem;
 }
 
 .app__stage-library-save-actions {
@@ -1313,6 +1315,30 @@
 
 .app__buttons .app__btn-secondary {
   background: var(--btn-secondary-bg);
+}
+
+.app__stage-name {
+  min-width: 8rem;
+  max-width: 16rem;
+  flex: 0 1 12rem;
+  padding: 0.32rem 0.5rem;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.app__stage-name:hover {
+  border-color: var(--border);
+}
+
+.app__stage-name:focus {
+  background: var(--surface);
+  border-color: var(--accent-border);
+  outline: none;
 }
 
 .app__library-status {

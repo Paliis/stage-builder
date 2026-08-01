@@ -5,7 +5,6 @@ import {
   loadUserStage,
   renameUserStage,
   saveUserStage,
-  USER_STAGE_TITLE_MAX,
   type UserStageErrorKey,
   type UserStageRecord,
   type UserStageSummary,
@@ -53,7 +52,6 @@ export function StageLibraryDialog({
   const dialogRef = useRef<HTMLDialogElement>(null)
   const titleId = useId()
   const lib = tree.library
-  const [title, setTitle] = useState('')
   const [rows, setRows] = useState<UserStageSummary[]>([])
   const [listLoading, setListLoading] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -97,7 +95,6 @@ export function StageLibraryDialog({
     }
     setErrorKey(null)
     setSavedFlash(false)
-    setTitle(stage.name)
     d.showModal()
     if (canUseCloud) void refresh()
     else setRows([])
@@ -114,7 +111,7 @@ export function StageLibraryDialog({
     async (id: string | null) => {
       setErrorKey(null)
       setBusy(true)
-      const res = await saveUserStage({ id, title, stage, briefing })
+      const res = await saveUserStage({ id, title: stage.name, stage, briefing })
       setBusy(false)
       if (!res.ok) {
         setErrorKey(res.errorKey)
@@ -124,7 +121,7 @@ export function StageLibraryDialog({
       flashSaved()
       void refresh()
     },
-    [briefing, flashSaved, onSaved, refresh, stage, title],
+    [briefing, flashSaved, onSaved, refresh, stage],
   )
 
   const openStage = useCallback(
@@ -235,15 +232,11 @@ export function StageLibraryDialog({
       ) : (
         <>
           <div className="app__stage-library-save">
-            <label className="app__stage-library-name">
-              <span>{lib.nameLabel}</span>
-              <input
-                type="text"
-                value={title}
-                maxLength={USER_STAGE_TITLE_MAX}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </label>
+            <p className="app__stage-library-name">
+              <span className="app__stage-library-name-label">{lib.nameLabel}</span>
+              <strong className="app__stage-library-name-value">{stage.name}</strong>
+              <span className="app__stage-library-name-hint">{lib.nameFromHeader}</span>
+            </p>
             <div className="app__stage-library-save-actions">
               {currentStageId ? (
                 <button
