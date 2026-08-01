@@ -91,6 +91,19 @@ export function rotatedHalfExtentM(sizeM: Vec2, rotationRad: number): Vec2 {
   }
 }
 
+/** Запас між силуетом реквізиту й межею площадки (м). */
+export const PROP_FIELD_EDGE_MARGIN_M = 0.04
+
+/** Півгабарити реквізиту для утримання в межах поля: осі окремо, з невеликим запасом. */
+export function propFieldHalfExtentM(
+  sizeM: Vec2,
+  rotationRad: number,
+  marginM: number = PROP_FIELD_EDGE_MARGIN_M,
+): Vec2 {
+  const half = rotatedHalfExtentM(sizeM, rotationRad)
+  return { x: half.x + marginM, y: half.y + marginM }
+}
+
 /**
  * Clamp центру прямокутника окремо по кожній осі. Спільний відступ за найдовшою стороною
  * не давав підсунути довгу штрафну лінію до нижнього краю поля, хоча її товщина — сантиметри.

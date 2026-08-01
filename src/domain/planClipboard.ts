@@ -1,14 +1,12 @@
 import {
   clampVec2ToField,
+  clampVec2ToFieldBox,
+  propFieldHalfExtentM,
   PROP_PLACEMENT_SNAP_M,
   TARGET_PLACEMENT_SNAP_M,
   snapVec2,
 } from './field'
 import type { Prop, Target, Vec2 } from './models'
-
-function propPasteMarginM(p: Prop): number {
-  return Math.max(p.sizeM.x, p.sizeM.y) / 2 + 0.16
-}
 
 /** Центр мас усіх позицій (для вирівнювання вставки). */
 export function centroidOfEntities(targets: readonly Target[], props: readonly Prop[]): Vec2 {
@@ -39,8 +37,12 @@ export function shiftClonesForPaste(
   })
   const nextProps: Prop[] = props.map((p) => {
     const raw = { x: p.position.x + delta.x, y: p.position.y + delta.y }
-    const m = propPasteMarginM(p)
-    const c = clampVec2ToField(snapVec2(raw, PROP_PLACEMENT_SNAP_M), m, fieldWidthM, fieldHeightM)
+    const c = clampVec2ToFieldBox(
+      snapVec2(raw, PROP_PLACEMENT_SNAP_M),
+      propFieldHalfExtentM(p.sizeM, p.rotationRad),
+      fieldWidthM,
+      fieldHeightM,
+    )
     return { ...p, position: c }
   })
   return { targets: nextTargets, props: nextProps }

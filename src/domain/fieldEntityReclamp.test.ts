@@ -28,11 +28,12 @@ describe('reclampTargetsProps', () => {
     expect(targets[0]!.position).toEqual({ x: 29, y: 39 })
   })
 
-  it('clamps prop with size-based margin', () => {
+  it('clamps a prop by its own extent on each axis', () => {
     const { props } = reclampTargetsProps([], [mkShield('s', 29, 38)], 20, 30)
     const p = props[0]!
-    expect(p.position.x).toBeLessThanOrEqual(20 - 0.66)
-    expect(p.position.y).toBeLessThanOrEqual(30 - 0.66)
+    expect(p.position.x).toBeCloseTo(20 - (0.5 + 0.04), 6)
+    // Уздовж тонкої осі щит майже впритул до краю — раніше його відкидало на пів метра.
+    expect(p.position.y).toBeCloseTo(30 - (0.025 + 0.04), 6)
   })
 
   it('removes legacy wall prop', () => {

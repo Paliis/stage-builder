@@ -41,6 +41,8 @@ import { DEFAULT_FIELD_GROUND_COVER_3D, type FieldGroundCover3d } from '../domai
 import {
   clampFieldDimensions,
   clampVec2ToField,
+  clampVec2ToFieldBox,
+  propFieldHalfExtentM,
   DEFAULT_FIELD_HEIGHT_M,
   DEFAULT_FIELD_WIDTH_M,
   GRID_SNAP_M,
@@ -87,20 +89,16 @@ function spawnTargetPosition(s: StageState): Vec2 {
   )
 }
 
+/** Точка «в полі зору» для кнопки без кліку; у межі її заводить clamp у `addProp`. */
 function spawnPropPosition(s: StageState): Vec2 {
   const fw = s.fieldSizeM.x
   const fh = s.fieldSizeM.y
   const step = 1
   const i = s.props.length % 12
-  return clampVec2ToField(
-    {
-      x: fw / 2 + (i - 5) * step * 0.6,
-      y: fh / 2 - Math.min(4, fh / 2 - 2) + Math.floor(i / 6) * step,
-    },
-    2,
-    fw,
-    fh,
-  )
+  return {
+    x: fw / 2 + (i - 5) * step * 0.6,
+    y: fh / 2 - Math.min(4, fh / 2 - 2) + Math.floor(i / 6) * step,
+  }
 }
 
 export type StageState = {
@@ -455,16 +453,19 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set((s) => {
       const fw = s.fieldSizeM.x
       const fh = s.fieldSizeM.y
-      const position = positionHint
-        ? clampVec2ToField(snapVec2(positionHint, PROP_PLACEMENT_SNAP_M), 2, fw, fh)
+      const size = sizeM ?? defaultPropSizeM(type)
+      const raw = positionHint
+        ? snapVec2(positionHint, PROP_PLACEMENT_SNAP_M)
         : spawnPropPosition({ ...s, props: s.props })
+      /** Той самий clamp по осях, що й при перетягуванні: довгу лінію не відкидає від краю. */
+      const position = clampVec2ToFieldBox(raw, propFieldHalfExtentM(size, 0), fw, fh)
       return {
         props: [
           ...s.props,
           {
             id: newId(),
             type,
-            sizeM: sizeM ?? defaultPropSizeM(type),
+            sizeM: size,
             position,
             rotationRad: 0,
           },

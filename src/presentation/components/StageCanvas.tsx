@@ -83,7 +83,7 @@ import {
   GRID_SNAP_M,
   PENALTY_CONTOUR_VERTEX_SNAP_M,
   PENALTY_VERTEX_FIELD_MARGIN_M,
-  rotatedHalfExtentM,
+  propFieldHalfExtentM,
   snapMeters,
   snapVec2,
   PROP_PLACEMENT_SNAP_M,
@@ -4723,8 +4723,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
 
 /** Півгабарити для clamp по осях: довга штрафна лінія має доїжджати до краю поля впоперек своєї осі. */
 function propHalfExtentForMove(sizeM: Prop['sizeM'], rotationRad: number): Vec2 {
-  const half = rotatedHalfExtentM(sizeM, rotationRad)
-  return { x: half.x + PICK_MARGIN_M, y: half.y + PICK_MARGIN_M }
+  return propFieldHalfExtentM(sizeM, rotationRad, PICK_MARGIN_M)
 }
 
 function applyMoveMultiAtWorld(
