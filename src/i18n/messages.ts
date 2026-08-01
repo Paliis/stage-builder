@@ -244,7 +244,9 @@ export type MessageTree = {
     selectionSheetDismiss: string
   }
   briefing: {
-    summary: string
+    /** Bar above the briefing table — the only entry point to the stage PDF. */
+    panelTitle: string
+    panelHint: string
     matchName: string
     logoPdfFpsu: string
     logoPdfIpsc: string
@@ -1555,7 +1557,8 @@ export const ukMessages: MessageTree = {
     selectionSheetDismiss: 'Закрити',
   },
   briefing: {
-    summary: '\u0422\u0435\u043a\u0441\u0442 \u0434\u043b\u044f PDF (\u0442\u0430\u0431\u043b\u0438\u0446\u044f \u0431\u0440\u0438\u0444\u0456\u043d\u0433\u0443)',
+    panelTitle: 'Брифінг вправи',
+    panelHint: 'Текст таблиці, який піде у PDF: мішені, постріли, стартова позиція, процедура.',
     matchName: '\u041d\u0430\u0437\u0432\u0430 \u043c\u0430\u0442\u0447\u0443',
     logoPdfFpsu: '\u041b\u043e\u0433\u043e \u0424\u041f\u0421\u0423 \u0443 PDF',
     logoPdfIpsc: '\u041b\u043e\u0433\u043e IPSC \u0443 PDF',
@@ -2951,7 +2954,8 @@ export const enMessages: MessageTree = {
     selectionSheetDismiss: 'Close',
   },
   briefing: {
-    summary: 'PDF copy (briefing table)',
+    panelTitle: 'Stage briefing',
+    panelHint: 'Table text for the PDF: targets, shots, start position, procedure.',
     matchName: 'Match name',
     logoPdfFpsu: 'FPSU logo on PDF',
     logoPdfIpsc: 'IPSC logo on PDF',

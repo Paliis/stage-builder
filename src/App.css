@@ -2655,11 +2655,84 @@
   background: var(--toolbar-bg);
 }
 
-.app__briefing > summary {
-  cursor: pointer;
-  font-weight: 600;
+/* The PDF lives behind this bar, so it has to read as a step, not as a footnote under the plan. */
+.app__briefing-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.85rem;
+  padding: 0.35rem 0;
+}
+
+.app__briefing-toggle {
+  display: flex;
+  flex: 1 1 18rem;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.35rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
   color: var(--text-h);
-  padding: 0.45rem 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.app__briefing-icon {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.app__briefing-bar-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.app__briefing-bar-title {
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.app__briefing-bar-hint {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.app__briefing-chevron {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--muted);
+  transition: transform 0.15s ease;
+}
+
+.app__briefing-toggle[aria-expanded='true'] .app__briefing-chevron {
+  transform: rotate(180deg);
+}
+
+.app__briefing-bar-export {
+  flex: 0 0 auto;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 30rem) {
+  .app__briefing-bar-export {
+    flex: 1 1 100%;
+  }
+}
+
+/* Author-only fields still blank: the PDF would print gaps. */
+.app__briefing--todo {
+  border-color: var(--accent-border);
+}
+
+.app__briefing--collapsed > :not(.app__briefing-bar) {
+  display: none;
 }
 
 .app__briefing-grid {
@@ -2804,16 +2877,6 @@
 
 .app__btn-autofill:hover {
   filter: brightness(1.06);
-}
-
-.app__briefing-export {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--border);
 }
 
 .app__btn-export {

@@ -3,6 +3,7 @@ import {
   Suspense,
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -61,6 +62,7 @@ import {
   BRIEFING_SCENE_SYNC_POINTS_PER_SCORING_HIT,
   briefingUsesScoringShots,
   defaultStageBriefing,
+  isBriefingIncomplete,
   type BriefingPdfLabels,
 } from './domain/stageBriefing'
 import { StageBuilderToolbar } from './presentation/components/StageBuilderToolbar'
@@ -91,6 +93,8 @@ const StageView3DLazy = lazy(() =>
 const ONBOARDING_LS_KEY = 'stage-builder-onboarding-collapsed'
 const VIEW3D_LS_SHADOWS = 'stage-builder-view3d-shadows'
 const VIEW3D_LS_GRAYSCALE = 'stage-builder-view3d-grayscale'
+/** Absent on the first visit: the briefing panel opens so newcomers see where the PDF text lives. */
+const BRIEFING_PANEL_LS_KEY = 'stage-builder-briefing-collapsed'
 /** Автозбереження в бібліотеку — лише для вправи, вже прив’язаної до запису. */
 const LIBRARY_AUTOSAVE_INTERVAL_MS = 30_000
 
@@ -218,6 +222,16 @@ export default function App({
     }
   })
   const [onboardingShownOnce, setOnboardingShownOnce] = useState(false)
+  const briefingPanelId = useId()
+  const briefingTitleId = useId()
+  const briefingIncomplete = isBriefingIncomplete(briefing)
+  const [briefingOpen, setBriefingOpen] = useState(() => {
+    try {
+      return localStorage.getItem(BRIEFING_PANEL_LS_KEY) !== '1'
+    } catch {
+      return true
+    }
+  })
   const [toolbarDrawerOpen, setToolbarDrawerOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [sharePublishOpen, setSharePublishOpen] = useState(false)
@@ -1146,6 +1160,14 @@ export default function App({
       /* приватний режим */
     }
   }, [view3dGrayscale])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(BRIEFING_PANEL_LS_KEY, briefingOpen ? '0' : '1')
+    } catch {
+      /* приватний режим */
+    }
+  }, [briefingOpen])
 
   useEffect(() => {
     if (!mobileMenuOpen) return
@@ -2083,8 +2105,38 @@ export default function App({
         tree={tree}
       />
 
-      <details className="app__briefing">
-        <summary>{tree.briefing.summary}</summary>
+      <section
+        id={briefingPanelId}
+        className={`app__briefing${briefingOpen ? '' : ' app__briefing--collapsed'}${briefingIncomplete ? ' app__briefing--todo' : ''}`}
+        aria-labelledby={briefingTitleId}
+      >
+        <div className="app__briefing-bar">
+          <button
+            type="button"
+            className="app__briefing-toggle"
+            aria-expanded={briefingOpen}
+            aria-controls={briefingPanelId}
+            onClick={() => setBriefingOpen((v) => !v)}
+          >
+            <svg className="app__briefing-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+            <span className="app__briefing-bar-text">
+              <span className="app__briefing-bar-title" id={briefingTitleId}>
+                {tree.briefing.panelTitle}
+              </span>
+              <span className="app__briefing-bar-hint">{tree.briefing.panelHint}</span>
+            </span>
+            <svg className="app__briefing-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <button
+            type="button"
+            className="app__btn-export app__briefing-bar-export"
+            disabled={pdfBusy}
+            onClick={() => void handleExportPdf()}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
+            {pdfBusy ? tree.briefing.downloadPdfBusy : tree.briefing.downloadPdf}
+          </button>
+        </div>
 
         <div className="app__briefing-autofill">
           <button
@@ -2248,14 +2300,7 @@ export default function App({
             />
           </label>
         </div>
-
-        <div className="app__briefing-export">
-          <button type="button" className="app__btn-export" disabled={pdfBusy} onClick={() => void handleExportPdf()}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
-            {pdfBusy ? tree.briefing.downloadPdfBusy : tree.briefing.downloadPdf}
-          </button>
-        </div>
-      </details>
+      </section>
 
       {standalone ? <SiteFooter /> : null}
 

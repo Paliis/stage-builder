@@ -48,6 +48,14 @@ export function defaultStageBriefing(): StageBriefing {
   }
 }
 
+/**
+ * Fields only the author can fill — the rest of the table has usable defaults. Drives the
+ * «needs attention» accent on the briefing panel so the PDF is not exported with blanks.
+ */
+export function isBriefingIncomplete(b: StageBriefing): boolean {
+  return !b.targetsDescription.trim() || !b.recommendedShots.trim() || !b.startPosition.trim()
+}
+
 export type BriefingPdfLabels = {
   /** Один рядок таблиці PDF: тип вправи + рекомендовані постріли. */
   exerciseTypeAndShots: string
