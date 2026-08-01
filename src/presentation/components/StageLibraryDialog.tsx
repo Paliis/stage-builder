@@ -26,6 +26,8 @@ export type StageLibraryDialogProps = {
   currentStageId: string | null
   stage: StageProjectSnapshot
   briefing: StageBriefing
+  /** Same value as the header field — editing here keeps both in sync. */
+  onStageNameChange: (name: string) => void
   onSaved: (summary: UserStageSummary) => void
   onRenamed: (summary: UserStageSummary) => void
   onOpened: (record: UserStageRecord) => void
@@ -44,6 +46,7 @@ export function StageLibraryDialog({
   currentStageId,
   stage,
   briefing,
+  onStageNameChange,
   onSaved,
   onRenamed,
   onOpened,
@@ -238,13 +241,18 @@ export function StageLibraryDialog({
       ) : (
         <>
           <div className="app__stage-library-save">
-            <p className="app__stage-library-name">
+            <label className="app__stage-library-name">
               <span className="app__stage-library-name-label">{lib.nameLabel}</span>
-              <strong className="app__stage-library-name-value">
-                {stage.name.trim() || DEFAULT_STAGE_NAME}
-              </strong>
+              <input
+                type="text"
+                className="app__stage-library-name-input"
+                value={stage.name}
+                maxLength={200}
+                placeholder={lib.namePlaceholder}
+                onChange={(e) => onStageNameChange(e.target.value)}
+              />
               <span className="app__stage-library-name-hint">{lib.nameFromHeader}</span>
-            </p>
+            </label>
             <div className="app__stage-library-save-actions">
               {currentStageId ? (
                 <button

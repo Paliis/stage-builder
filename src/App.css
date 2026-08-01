@@ -918,10 +918,36 @@
   color: var(--muted);
 }
 
-.app__stage-library-name-value {
-  font-size: 1rem;
+.app__stage-library-name-input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text);
-  overflow-wrap: anywhere;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.app__stage-library-name-input::placeholder {
+  font-weight: 500;
+  color: var(--accent);
+  opacity: 0.75;
+}
+
+.app__stage-library-name-input:placeholder-shown:not(:focus) {
+  border-color: var(--accent-border);
+  border-style: dashed;
+  background: var(--accent-bg);
+}
+
+.app__stage-library-name-input:focus {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent-bg);
+  outline-offset: 0;
 }
 
 .app__stage-library-name-hint {

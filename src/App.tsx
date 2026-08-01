@@ -1613,6 +1613,7 @@ export default function App({
         currentStageId={libraryStageId}
         stage={shareProjectRoot.stage}
         briefing={shareProjectRoot.briefing}
+        onStageNameChange={setStageName}
         onSaved={handleLibrarySaved}
         onRenamed={handleLibraryRenamed}
         onOpened={handleLibraryOpened}
