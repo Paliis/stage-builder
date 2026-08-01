@@ -28,6 +28,8 @@ export type StageLibraryDialogProps = {
   briefing: StageBriefing
   /** Same value as the header field — editing here keeps both in sync. */
   onStageNameChange: (name: string) => void
+  /** Guests sign in through a modal so the unsaved stage stays open behind it. */
+  onRequestSignIn: () => void
   onSaved: (summary: UserStageSummary) => void
   onRenamed: (summary: UserStageSummary) => void
   onOpened: (record: UserStageRecord) => void
@@ -47,6 +49,7 @@ export function StageLibraryDialog({
   stage,
   briefing,
   onStageNameChange,
+  onRequestSignIn,
   onSaved,
   onRenamed,
   onOpened,
@@ -234,9 +237,9 @@ export function StageLibraryDialog({
       ) : !signedIn ? (
         <p className="app__stage-library-notice">
           {lib.signInRequired}{' '}
-          <a href={`/${locale}/account`} target="_blank" rel="noreferrer">
+          <button type="button" className="app__stage-library-signin" onClick={onRequestSignIn}>
             {lib.signInLink}
-          </a>
+          </button>
         </p>
       ) : (
         <>

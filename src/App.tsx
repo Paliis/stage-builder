@@ -74,6 +74,7 @@ import { StageLibraryDialog } from './presentation/components/StageLibraryDialog
 import { RangeDistanceSignDialog } from './presentation/components/RangeDistanceSignDialog'
 import { isSupabaseConfigured } from './lib/supabaseClient'
 import { useSupabaseSession } from './portal/useSupabaseSession'
+import { PortalAuthDialog } from './portal/PortalAuthDialog'
 import { SiteFooter } from './portal/SiteFooter'
 import {
   saveUserStage,
@@ -221,6 +222,7 @@ export default function App({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [sharePublishOpen, setSharePublishOpen] = useState(false)
   const [stageLibraryOpen, setStageLibraryOpen] = useState(false)
+  const [authDialogOpen, setAuthDialogOpen] = useState(false)
   /** Запис у хмарній бібліотеці, з яким зараз пов’язана вправа в редакторі. */
   const [libraryStageId, setLibraryStageId] = useState<string | null>(null)
   const [libraryQuickSaving, setLibraryQuickSaving] = useState(false)
@@ -1614,6 +1616,7 @@ export default function App({
         stage={shareProjectRoot.stage}
         briefing={shareProjectRoot.briefing}
         onStageNameChange={setStageName}
+        onRequestSignIn={() => setAuthDialogOpen(true)}
         onSaved={handleLibrarySaved}
         onRenamed={handleLibraryRenamed}
         onOpened={handleLibraryOpened}
@@ -1622,6 +1625,12 @@ export default function App({
           setStageLibraryOpen(false)
           projectFileInputRef.current?.click()
         }}
+      />
+
+      <PortalAuthDialog
+        open={authDialogOpen}
+        onClose={() => setAuthDialogOpen(false)}
+        lead={tree.library.signInRequired}
       />
 
       <div className="app__view-controls-strip">

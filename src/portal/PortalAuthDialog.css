@@ -1,0 +1,41 @@
+.portal-auth-dialog {
+  width: min(26rem, calc(100vw - 2rem));
+  max-height: min(90dvh, 44rem);
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+  overflow: auto;
+}
+
+.portal-auth-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.portal-auth-dialog__panel {
+  padding: 1.15rem 1.25rem 1rem;
+}
+
+.portal-auth-dialog__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.portal-auth-dialog__lead {
+  margin: 0 0 0.85rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text-muted, #64748b);
+}
+
+.portal-auth-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}

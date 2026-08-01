@@ -14,6 +14,8 @@ type Props = {
   onAfterSignOut?: () => void
   /** On `/…/account` the page already is the sign-in form — hide duplicate header link for guests. */
   suppressGuestSignInLink?: boolean
+  /** When set, guests sign in through a modal instead of navigating to the account page. */
+  onRequestSignIn?: () => void
 }
 
 function ProfileAccountIconSvg() {
@@ -28,7 +30,13 @@ function ProfileAccountIconSvg() {
 }
 
 /** Header cluster: profile icon + sign-out — email only in tooltip / aria. */
-export function PortalHeaderAccount({ locale, p, onAfterSignOut, suppressGuestSignInLink }: Props) {
+export function PortalHeaderAccount({
+  locale,
+  p,
+  onAfterSignOut,
+  suppressGuestSignInLink,
+  onRequestSignIn,
+}: Props) {
   const { loading: sessionLoading, user } = useSupabaseSession()
   const participantAvatarUrl = useParticipantAvatarUrl(user?.id)
 
@@ -58,9 +66,18 @@ export function PortalHeaderAccount({ locale, p, onAfterSignOut, suppressGuestSi
     }
     return (
       <div className="portal-shell__account">
-        <Link to={accountPath} className="portal-shell__account-signin-link">
-          {p.accountHeaderSignIn}
-        </Link>
+        {onRequestSignIn ?
+          <button
+            type="button"
+            className="portal-shell__account-signin-link"
+            onClick={onRequestSignIn}
+          >
+            {p.accountHeaderSignIn}
+          </button>
+        : <Link to={accountPath} className="portal-shell__account-signin-link">
+            {p.accountHeaderSignIn}
+          </Link>
+        }
       </div>
     )
   }

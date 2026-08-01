@@ -14,6 +14,11 @@ type Props = {
   pathnameForRedirect: string
   /** Initial tab when the form mounts (e.g. `?mode=signup` on account page). */
   defaultAuthMode?: 'signin' | 'signup'
+  /**
+   * Set by hosts that must stay on the page (auth dialog): the session is already live, so skip the
+   * reload through `auth/email-callback` and let the host close itself.
+   */
+  onAuthenticated?: () => void
 }
 
 /** Client minimum; align with Supabase Dashboard → Auth password policy if you change it. */
@@ -59,6 +64,7 @@ export function PortalCompactEmailAuth({
   locale,
   pathnameForRedirect,
   defaultAuthMode = 'signin',
+  onAuthenticated,
 }: Props) {
   const fieldId = useId()
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>(() => defaultAuthMode)
@@ -100,6 +106,7 @@ export function PortalCompactEmailAuth({
           setMessage(error.message)
           return
         }
+        onAuthenticated?.()
         return
       }
 
@@ -147,6 +154,11 @@ export function PortalCompactEmailAuth({
         return
       }
       if (data.session) {
+        if (onAuthenticated) {
+          setSignupAwaitingOtp(false)
+          onAuthenticated()
+          return
+        }
         const href = emailRedirectUrl()
         if (href && typeof window !== 'undefined') {
           window.location.assign(href)

@@ -7,6 +7,7 @@ import { getPublicSiteOrigin } from '../seo/publicOriginClient'
 import type { Locale } from '../i18n/messages'
 import { SiteFooter } from './SiteFooter'
 import { isMatchPortalEnabled, isRoHelperEnabled } from './featureFlags'
+import { PortalAuthDialog } from './PortalAuthDialog'
 import { PortalHeaderAccount } from './PortalHeaderAccount'
 import { isStageBuilderPath, stageBuilderPath } from './stageBuilderPath'
 import { roHelperPath } from '../ro-helper/paths'
@@ -41,6 +42,7 @@ export function PortalShell() {
   )
   const [layoutCompact, setLayoutCompact] = useState(false)
   const [navOpen, setNavOpen] = useState(false)
+  const [authOpen, setAuthOpen] = useState(false)
   const navOpenRef = useRef(false)
   navOpenRef.current = navOpen
   const compactHeader = mqCompact || layoutCompact
@@ -109,6 +111,10 @@ export function PortalShell() {
         p={p}
         onAfterSignOut={compactHeader ? () => setNavOpen(false) : undefined}
         suppressGuestSignInLink={pathname === `/${locale}/account`}
+        onRequestSignIn={() => {
+          setNavOpen(false)
+          setAuthOpen(true)
+        }}
       />
       <div className="portal-shell__lang" role="group" aria-label={tree.common.langSwitcher}>
         <button
@@ -219,6 +225,7 @@ export function PortalShell() {
       <main className="portal-shell__main">
         <Outlet />
       </main>
+      <PortalAuthDialog open={authOpen} onClose={() => setAuthOpen(false)} />
       <SiteFooter />
     </div>
   )

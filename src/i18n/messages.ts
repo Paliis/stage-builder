@@ -767,6 +767,9 @@ export type MessageTree = {
     accountHeaderAria: string
     accountHeaderChecking: string
     accountHeaderSignIn: string
+    /** Shared sign-in modal (header, Stage Builder library) — visitor stays on the page. */
+    portalAuthDialogTitle: string
+    portalAuthDialogClose: string
     accountHeaderProfile: string
     /** `aria-label` on header profile icon — include {{email}}. */
     accountHeaderProfileIconAria: string
@@ -2068,6 +2071,8 @@ export const ukMessages: MessageTree = {
     accountHeaderAria: 'Обліковий запис порталу',
     accountHeaderChecking: 'Перевірка сесії…',
     accountHeaderSignIn: 'Увійти',
+    portalAuthDialogTitle: 'Увійдіть або зареєструйтеся',
+    portalAuthDialogClose: 'Закрити',
     accountHeaderProfile: 'Профіль',
     accountHeaderProfileIconAria: 'Обліковий запис. Залогінено як {{email}}',
     accountBadgeParticipantHint: 'Обліковий запис з доступом до кабінету учасника та матчів порталу.',
@@ -3452,6 +3457,8 @@ export const enMessages: MessageTree = {
     accountHeaderAria: 'Portal account',
     accountHeaderChecking: 'Checking session…',
     accountHeaderSignIn: 'Sign in',
+    portalAuthDialogTitle: 'Sign in or register',
+    portalAuthDialogClose: 'Close',
     accountHeaderProfile: 'Account',
     accountHeaderProfileIconAria: 'Account. Signed in as {{email}}',
     accountBadgeParticipantHint: 'Signed-in account with access to participant tools and portal matches.',

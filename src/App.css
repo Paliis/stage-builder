@@ -899,6 +899,17 @@
   color: var(--muted);
 }
 
+.app__stage-library-signin {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .app__stage-library-save {
   display: flex;
   flex-wrap: wrap;

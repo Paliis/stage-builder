@@ -518,6 +518,15 @@ html.portal-shell__nav-drawer-lock .portal-shell__header-strip {
   border-radius: 0.55rem;
 }
 
+/* Guests inside the app shell sign in through a modal, so the link can also be a button. */
+button.portal-shell__account-signin-link {
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
 .portal-shell__account-signin-link:hover {
   background: var(--btn-bg);
   color: var(--accent);
