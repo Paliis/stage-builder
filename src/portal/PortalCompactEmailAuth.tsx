@@ -211,8 +211,7 @@ export function PortalCompactEmailAuth({
     }
   }
 
-  async function handleSendReset(e: FormEvent) {
-    e.preventDefault()
+  async function sendResetEmail() {
     setMessage(null)
     setBusy(true)
     try {
@@ -235,6 +234,11 @@ export function PortalCompactEmailAuth({
     } finally {
       setBusy(false)
     }
+  }
+
+  async function handleSendReset(e: FormEvent) {
+    e.preventDefault()
+    await sendResetEmail()
   }
 
   async function handleVerifyResetOtp(e: FormEvent) {
@@ -367,14 +371,24 @@ export function PortalCompactEmailAuth({
         </form>
         <div className="portal-compact-auth__otp-actions">
           {onOtp ?
-            <button
-              type="button"
-              className="portal-compact-auth__linkish"
-              disabled={busy}
-              onClick={() => setResetStep('email')}
-            >
-              {p.portalCompactAuthOtpChangeEmail}
-            </button>
+            <>
+              <button
+                type="button"
+                className="portal-compact-auth__linkish"
+                disabled={busy}
+                onClick={() => void sendResetEmail()}
+              >
+                {p.portalCompactAuthOtpResend}
+              </button>
+              <button
+                type="button"
+                className="portal-compact-auth__linkish"
+                disabled={busy}
+                onClick={() => setResetStep('email')}
+              >
+                {p.portalCompactAuthOtpChangeEmail}
+              </button>
+            </>
           : null}
           <button
             type="button"

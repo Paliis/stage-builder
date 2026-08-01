@@ -71,7 +71,25 @@
 
 Змінити пароль, уже маючи вхід, можна в кабінеті — розділ «Пароль» на `/{locale}/account`.
 
-## 8. Корисні посилання
+## 8. Чому листи йдуть у спам (стан DNS на 2026-08-01)
+
+Перевірка публічних записів `shooters-tools.com` (DNS хоститься на Vercel, `ns1/ns2.vercel-dns.com`):
+
+| Запис | Стан |
+|-------|------|
+| DKIM `resend._domainkey` | **є** (ключ Resend) |
+| SPF `send.shooters-tools.com` | **є** — `v=spf1 include:amazonses.com ~all` |
+| DMARC `_dmarc.shooters-tools.com` | **немає** |
+
+Бракує саме **DMARC** — без нього Gmail за замовчуванням ставиться до листів підозріло. Додати TXT-запис у Vercel DNS (домен → DNS → Add):
+
+- **Name**: `_dmarc`
+- **Type**: `TXT`
+- **Value**: `v=DMARC1; p=none; rua=mailto:postmaster@shooters-tools.com; fo=1`
+
+`p=none` — режим спостереження: нічого не блокує, лише повідомляє. Далі варто перевірити, що `From` у Supabase SMTP — з верифікованого домену (не `onboarding@resend.dev`).
+
+## 9. Корисні посилання
 
 - [Supabase — Email Templates](https://supabase.com/docs/guides/auth/auth-email-templates)
 - [Supabase — Send emails with custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
