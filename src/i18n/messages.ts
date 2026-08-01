@@ -727,6 +727,18 @@ export type MessageTree = {
     portalCompactAuthSignupSession: string
     /** Address already has an account: Supabase answers signUp with success but sends no email. */
     portalCompactAuthSignupExists: string
+    /** Password recovery: link in the sign-in form → email with a link back to the callback route. */
+    portalCompactAuthForgot: string
+    portalCompactAuthResetLead: string
+    portalCompactAuthResetSubmit: string
+    portalCompactAuthResetSent: string
+    portalCompactAuthResetBack: string
+    accountPasswordHeading: string
+    accountPasswordNewLabel: string
+    accountPasswordRepeatLabel: string
+    accountPasswordSubmit: string
+    accountPasswordSaved: string
+    accountPasswordMismatch: string
     portalCompactAuthSignupConfirm: string
     /** After signUp without session — OTP from email (Supabase `{{ .Token }}`, typically 6 or 8 digits). */
     portalCompactAuthOtpSent: string
@@ -2039,6 +2051,19 @@ export const ukMessages: MessageTree = {
     portalCompactAuthSignupSession: 'Готово: ви ввійшли в обліковий запис.',
     portalCompactAuthSignupExists:
       'Ця адреса вже зареєстрована — листа з кодом не буде. Введіть пароль і увійдіть.',
+    portalCompactAuthForgot: 'Забули пароль?',
+    portalCompactAuthResetLead:
+      'Вкажіть адресу — надішлемо лист із посиланням. За ним ви потрапите в кабінет і зможете задати новий пароль.',
+    portalCompactAuthResetSubmit: 'Надіслати посилання',
+    portalCompactAuthResetSent:
+      'Якщо для цієї адреси є акаунт, лист із посиланням уже в дорозі. Перевірте також теку зі спамом.',
+    portalCompactAuthResetBack: 'Назад до входу',
+    accountPasswordHeading: 'Пароль',
+    accountPasswordNewLabel: 'Новий пароль',
+    accountPasswordRepeatLabel: 'Повторіть пароль',
+    accountPasswordSubmit: 'Зберегти пароль',
+    accountPasswordSaved: 'Пароль змінено.',
+    accountPasswordMismatch: 'Паролі не збігаються.',
     portalCompactAuthSignupConfirm:
       'Обліковий запис створено. Якщо увімкнено підтвердження email — відкрийте лист і перейдіть за посиланням, потім увійдіть.',
     portalCompactAuthOtpSent:
@@ -3434,6 +3459,19 @@ export const enMessages: MessageTree = {
     portalCompactAuthSignupSession: 'You are signed in.',
     portalCompactAuthSignupExists:
       'This address already has an account — no code will arrive. Enter your password to sign in.',
+    portalCompactAuthForgot: 'Forgot your password?',
+    portalCompactAuthResetLead:
+      'Enter your address and we will email you a link. It signs you in so you can set a new password.',
+    portalCompactAuthResetSubmit: 'Send the link',
+    portalCompactAuthResetSent:
+      'If this address has an account, the link is on its way. Check the spam folder too.',
+    portalCompactAuthResetBack: 'Back to sign in',
+    accountPasswordHeading: 'Password',
+    accountPasswordNewLabel: 'New password',
+    accountPasswordRepeatLabel: 'Repeat password',
+    accountPasswordSubmit: 'Save password',
+    accountPasswordSaved: 'Password updated.',
+    accountPasswordMismatch: 'The passwords do not match.',
     portalCompactAuthSignupConfirm:
       'Account created. If email confirmation is enabled, confirm from your inbox before signing in.',
     portalCompactAuthOtpSent:

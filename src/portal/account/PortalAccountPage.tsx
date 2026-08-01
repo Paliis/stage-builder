@@ -10,6 +10,7 @@ import { usePlatformIsAdmin } from '../usePlatformIsAdmin'
 import { useSupabaseSession } from '../useSupabaseSession'
 import { isMatchPortalEnabled } from '../featureFlags'
 import { AccountParticipantHub } from './AccountParticipantHub'
+import { AccountPasswordSection } from './AccountPasswordSection'
 import '../PortalHome.css'
 import '../PortalMatchesUi.css'
 import './PortalAccountPage.css'
@@ -306,6 +307,10 @@ export function PortalAccountPage() {
             </section>
             </div>
           : null}
+
+          <div className="portal-account__card">
+            <AccountPasswordSection p={p} />
+          </div>
 
           <div className="portal-account__session-bar">
             <p className="portal-account__session-email">

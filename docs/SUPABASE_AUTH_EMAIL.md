@@ -63,7 +63,11 @@
 
 Офіційно: [Redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls).
 
-## 7. Корисні посилання
+## 7. Відновлення пароля
+
+Форма входу має «Забули пароль?» → `resetPasswordForEmail` із `redirectTo` на `/{locale}/auth/email-callback`. Отже, в Dashboard потрібні: увімкнений шаблон **Reset password** (з `{{ .ConfirmationURL }}`) і той самий callback у **Redirect URLs**. Лист слід відкривати в **тому самому браузері**, де натиснули «Забули пароль?»: PKCE зберігає `code_verifier` локально, інакше обмін коду впаде. Новий пароль задається в кабінеті — розділ «Пароль» на `/{locale}/account`.
+
+## 8. Корисні посилання
 
 - [Supabase — Email Templates](https://supabase.com/docs/guides/auth/auth-email-templates)
 - [Supabase — Send emails with custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)

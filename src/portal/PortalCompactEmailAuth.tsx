@@ -77,6 +77,8 @@ export function PortalCompactEmailAuth({
   /** SignUp succeeded without session — user must enter OTP from email (`{{ .Token }}`, 6–8 digits). */
   const [signupAwaitingOtp, setSignupAwaitingOtp] = useState(false)
   const [otp, setOtp] = useState('')
+  /** Password recovery: ask for the address, Supabase mails a link back to `auth/email-callback`. */
+  const [resetStep, setResetStep] = useState(false)
 
   const configured = isSupabaseConfigured()
 
@@ -205,6 +207,30 @@ export function PortalCompactEmailAuth({
     }
   }
 
+  async function handleSendReset(e: FormEvent) {
+    e.preventDefault()
+    setMessage(null)
+    setBusy(true)
+    try {
+      const sb = getSupabase()
+      const redirectTo = emailRedirectUrl()
+      const { error } = await sb.auth.resetPasswordForEmail(
+        email.trim(),
+        redirectTo ? { redirectTo } : undefined,
+      )
+      if (error) {
+        setMessage(error.message)
+        return
+      }
+      // Supabase answers the same way for unknown addresses, so the copy must not confirm the account.
+      setMessage(p.portalCompactAuthResetSent)
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : String(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
   function resetOtpStep() {
     setSignupAwaitingOtp(false)
     setOtp('')
@@ -213,6 +239,54 @@ export function PortalCompactEmailAuth({
 
   if (!configured) {
     return <p role="alert">{p.matchesSupabaseUnset}</p>
+  }
+
+  if (resetStep) {
+    return (
+      <div className="portal-compact-auth">
+        <p className="portal-compact-auth__field-hint">{p.portalCompactAuthResetLead}</p>
+        <form className="portal-compact-auth__form" onSubmit={(ev) => void handleSendReset(ev)}>
+          <div className="portal-compact-auth__field">
+            <label className="portal-compact-auth__label" htmlFor={`${fieldId}-reset-email`}>
+              {p.portalCompactAuthEmail}
+            </label>
+            <input
+              id={`${fieldId}-reset-email`}
+              className="portal-compact-auth__input"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(ev) => setEmail(ev.target.value)}
+              required
+              disabled={busy}
+            />
+          </div>
+          <div className="portal-compact-auth__submit-wrap">
+            <button type="submit" className="portal-btn portal-btn--primary portal-btn--block" disabled={busy}>
+              {busy ? '…' : p.portalCompactAuthResetSubmit}
+            </button>
+          </div>
+        </form>
+        <div className="portal-compact-auth__otp-actions">
+          <button
+            type="button"
+            className="portal-compact-auth__linkish"
+            disabled={busy}
+            onClick={() => {
+              setResetStep(false)
+              setMessage(null)
+            }}
+          >
+            {p.portalCompactAuthResetBack}
+          </button>
+        </div>
+        {message ?
+          <p role="status" className="portal-compact-auth__message">
+            {message}
+          </p>
+        : null}
+      </div>
+    )
   }
 
   if (signupAwaitingOtp && authMode === 'signup') {
@@ -355,6 +429,23 @@ export function PortalCompactEmailAuth({
           </button>
         </div>
       </form>
+
+      {authMode === 'signin' ?
+        <div className="portal-compact-auth__otp-actions">
+          <button
+            type="button"
+            className="portal-compact-auth__linkish"
+            disabled={busy}
+            onClick={() => {
+              setResetStep(true)
+              setPassword('')
+              setMessage(null)
+            }}
+          >
+            {p.portalCompactAuthForgot}
+          </button>
+        </div>
+      : null}
 
       {message ?
         <p role="status" className="portal-compact-auth__message">
