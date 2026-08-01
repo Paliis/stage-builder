@@ -79,15 +79,11 @@
 |-------|------|
 | DKIM `resend._domainkey` | **є** (ключ Resend) |
 | SPF `send.shooters-tools.com` | **є** — `v=spf1 include:amazonses.com ~all` |
-| DMARC `_dmarc.shooters-tools.com` | **немає** |
+| DMARC `_dmarc.shooters-tools.com` | **є** — `v=DMARC1; p=none; rua=mailto:postmaster@shooters-tools.com; fo=1` |
 
-Бракує саме **DMARC** — без нього Gmail за замовчуванням ставиться до листів підозріло. Додати TXT-запис у Vercel DNS (домен → DNS → Add):
+DMARC довго бракувало, і без нього Gmail ставився до листів підозріло; запис додано 2026-08-01 через `vercel dns add` (scope `paliis-projects`). `p=none` — режим спостереження: нічого не блокує, лише збирає звіти. Посилити до `quarantine` можна, коли звіти покажуть, що весь легітимний трафік проходить автентифікацію.
 
-- **Name**: `_dmarc`
-- **Type**: `TXT`
-- **Value**: `v=DMARC1; p=none; rua=mailto:postmaster@shooters-tools.com; fo=1`
-
-`p=none` — режим спостереження: нічого не блокує, лише повідомляє. Далі варто перевірити, що `From` у Supabase SMTP — з верифікованого домену (не `onboarding@resend.dev`).
+Якщо листи й далі йдуть у спам, наступне, що варто перевірити: `From` у Supabase SMTP має бути з верифікованого домену (не `onboarding@resend.dev`).
 
 ## 9. Корисні посилання
 
