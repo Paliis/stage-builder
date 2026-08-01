@@ -10,7 +10,7 @@
 
 **Контент-план (усі розділи, таймінг рілсів, тексти FAQ/статей):** [USER_HELP_CONTENT_PLAN.md](./USER_HELP_CONTENT_PLAN.md) · сценарії відео: [content/user-help/videos/scripts/](../content/user-help/videos/scripts/).
 
-**Поточний онбординг у коді:** діалог у `src/App.tsx`, рядки `src/i18n/messages.ts` (`onboardingS1…S6`) — замінюємо **після** затвердження текстів у `content/user-help/`.
+**Поточний онбординг у коді:** діалог у `src/App.tsx`, рядки `src/i18n/messages.ts` (`onboardingS1…S6`). Тексти вже скорочено до 4 тез + 6 коротких кроків під актуальний UI (акаунт, панель брифінгу з кнопкою PDF); повну заміну на матеріали з `content/user-help/` робимо **після** їх затвердження.
 
 ---
 
