@@ -112,11 +112,23 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 0.65rem 1.25rem;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Назва вправи та стан збереження — «документ», окремо від дій. */
+.app__header-doc {
+  display: flex;
+  flex: 1 1 12rem;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
 }
 
 .app__title-heading {
+  flex: 0 0 auto;
   margin: 0;
   font-size: 1.65rem;
   letter-spacing: -0.03em;
@@ -134,14 +146,16 @@
 
 .app__header-actions {
   display: flex;
+  flex: 0 0 auto;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 0.5rem 0.65rem;
 }
 
 .app__header-file-buttons {
-  justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
 }
 
 .app__sr-only {
@@ -1318,9 +1332,10 @@
 }
 
 .app__stage-name {
-  min-width: 8rem;
-  max-width: 16rem;
-  flex: 0 1 12rem;
+  min-width: 0;
+  max-width: 18rem;
+  flex: 1 1 8rem;
+  text-overflow: ellipsis;
   padding: 0.32rem 0.5rem;
   font: inherit;
   font-size: 0.88rem;
@@ -1342,9 +1357,12 @@
 }
 
 .app__library-status {
+  flex: 0 1 auto;
   align-self: center;
   padding: 0 0.15rem;
   font-size: 0.78rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--muted);
 }
@@ -2960,6 +2978,19 @@ button.app__btn-pwa-install {
 .app__stats-float strong {
   font-weight: 700;
   color: var(--text-h);
+}
+
+/* Коли назва, мова та дії перестають вміщатися — назва переїжджає в окремий рядок. */
+@media (max-width: 70rem) {
+  .app__header-doc {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .app__stage-name {
+    flex: 1 1 auto;
+    max-width: none;
+  }
 }
 
 @media (max-width: 52rem) {

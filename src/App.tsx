@@ -1388,6 +1388,27 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                 {tree.app.title}
               </Link>
             </h1>
+            {!readOnly ? (
+              <div className="app__header-doc">
+                <input
+                  type="text"
+                  className="app__stage-name"
+                  value={name}
+                  maxLength={200}
+                  aria-label={tree.library.nameLabel}
+                  title={tree.library.nameLabel}
+                  onChange={(e) => setStageName(e.target.value)}
+                  onBlur={() => {
+                    if (!name.trim()) setStageName(DEFAULT_STAGE_NAME)
+                  }}
+                />
+                {libraryStatusText ? (
+                  <span className="app__library-status" aria-live="polite">
+                    {libraryStatusText}
+                  </span>
+                ) : null}
+              </div>
+            ) : null}
             <div className="app__header-actions">
               <div className="app__lang" role="group" aria-label={tree.common.langSwitcher}>
                 <button
@@ -1415,18 +1436,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               >
                 {!readOnly ? (
                   <>
-                    <input
-                      type="text"
-                      className="app__stage-name"
-                      value={name}
-                      maxLength={200}
-                      aria-label={tree.library.nameLabel}
-                      title={tree.library.nameLabel}
-                      onChange={(e) => setStageName(e.target.value)}
-                      onBlur={() => {
-                        if (!name.trim()) setStageName(DEFAULT_STAGE_NAME)
-                      }}
-                    />
                     <button
                       type="button"
                       className="app__btn-secondary app__btn-secondary--primary"
@@ -1443,11 +1452,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                     >
                       {tree.library.myStages}
                     </button>
-                    {libraryStatusText ? (
-                      <span className="app__library-status" aria-live="polite">
-                        {libraryStatusText}
-                      </span>
-                    ) : null}
                     <button
                       type="button"
                       className="app__btn-secondary"
