@@ -68,22 +68,18 @@
 | Публічний PDF viewer | `src/portal/matches/MatchPublicBriefingsPdfPage.tsx` |
 | Зведення учасників UI | `src/portal/matches/MatchPublicParticipantSummary.tsx` |
 
-## Наступна задача: хмарна бібліотека вправ (SB-CL01) — не почато
+## Хмарна бібліотека вправ (SB-CL01) — baseline у продакшені
 
-Фідбек стрільців: вправу неможливо нормально зберегти. План складено, код **не** починали. Рішення: **хмара основне сховище**, `.stage.json` лишається експортом; бібліотека відкривається **в редакторі**; без логіну «Зберегти» пропонує увійти.
+Вправи зберігаються в акаунті: таблиця `public.user_stages` (own-row RLS, міграція `20260801120000_user_stages.sql`, застосована). `payload jsonb` — той самий конверт, що й `.stage.json`, тому валідацію робить наявний `parseStageProjectJson`; файл лишився **експортом/імпортом**.
 
-Стартові факти (аудит уже зроблено, повторювати не треба):
-
-| Що | Стан |
+| Що | Файл |
 |----|------|
-| Збереження вправи | `saveStageProject` у `src/App.tsx` — `Blob` + `a.download`, без id проєкту в стані |
-| Чернетка | `src/application/sessionDraft.ts`, один ключ `stage-builder-session-draft-v1`, debounce 450 мс |
-| Шери | `shared_stages` (`20260409120000_*`) — RLS без політик, **без owner**, читання лише RPC `fetch_shared_stage` по id |
-| Авторизація в редакторі | **немає** — `src/App.tsx` не торкається Supabase; `/api/publish-share` анонімний |
-| Готове до переюзу | `src/lib/supabaseClient.ts`, `src/portal/useSupabaseSession.ts`, зразок RLS-таблиці `20260510120000_participant_registration_defaults.sql` |
-| Конверт payload | `src/domain/stageProjectFile.ts`, `STAGE_PROJECT_VERSION = 6`, парсер `parseStageProjectJson` |
+| CRUD + парсер рядка | `src/application/userStagesLibrary.ts` |
+| Діалог «Мої вправи» | `src/presentation/components/StageLibraryDialog.tsx` |
+| Кнопки та сесія в редакторі | `src/App.tsx` (`quickSaveToLibrary`, `libraryStageId`) |
+| i18n | секція `library` в `src/i18n/messages.ts` |
 
-Перший крок: міграція `public.user_stages` (`owner_id`, `title`, `weapon_class`, `payload jsonb`, `schema_version`, `created_at/updated_at`, індекс `(owner_id, updated_at desc)`, own-row RLS) + `npx supabase db push --linked --yes`. Далі — CRUD через клієнтський Supabase з RLS (без окремого Vercel API), потім кнопки «Зберегти / Мої вправи / Експорт».
+«Зберегти» оновлює прив’язаний запис, інакше відкриває бібліотеку; імпорт файлу та «Очистити вправу» скидають прив’язку. Не зроблено: автозбереження в хмару, дублювання запису, спільні вправи між користувачами, перенесення `shared_stages` під owner.
 
 ## Беклог UX з того ж фідбеку (діагнози готові)
 
@@ -104,5 +100,5 @@
 ## Перше повідомлення в новому чаті
 
 ```
-Прочитай docs/CHAT_HANDOFF.md. Далі: SB-CL01 — міграція user_stages і хмарне збереження вправ. commit + push main після змін.
+Прочитай docs/CHAT_HANDOFF.md. Далі: UX-беклог редактора (штрафні зони, 3D-навігація, кліки). commit + push main після змін.
 ```

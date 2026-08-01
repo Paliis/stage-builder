@@ -328,6 +328,36 @@ export type MessageTree = {
     loadErrorVersion: string
     fileGroupAria: string
   }
+  library: {
+    title: string
+    save: string
+    saveHint: string
+    myStages: string
+    intro: string
+    nameLabel: string
+    saveAsNew: string
+    update: string
+    saving: string
+    saved: string
+    open: string
+    rename: string
+    renamePrompt: string
+    remove: string
+    deleteConfirm: string
+    openConfirm: string
+    empty: string
+    loading: string
+    signInRequired: string
+    signInLink: string
+    notConfigured: string
+    close: string
+    updatedAt: string
+    listAria: string
+    errorNetwork: string
+    errorInvalidTitle: string
+    errorInvalidPayload: string
+    errorNotFound: string
+  }
   share: {
     loading: string
     invalidId: string
@@ -1589,8 +1619,8 @@ export const ukMessages: MessageTree = {
     dash: '\u2014',
   },
   project: {
-    save: '\u0417\u0431\u0435\u0440\u0435\u0433\u0442\u0438 \u0432\u043f\u0440\u0430\u0432\u0443\u2026',
-    open: '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u0432\u043f\u0440\u0430\u0432\u0443\u2026',
+    save: 'Експорт у файл…',
+    open: 'Імпорт з файлу…',
     clear: '\u041e\u0447\u0438\u0441\u0442\u0438\u0442\u0438 \u0432\u043f\u0440\u0430\u0432\u0443',
     clearAria:
       '\u041e\u0447\u0438\u0441\u0442\u0438\u0442\u0438 \u0432\u043f\u0440\u0430\u0432\u0443: \u0441\u043a\u0438\u043d\u0443\u0442\u0438 \u043f\u043b\u0430\u043d, \u0431\u0440\u0438\u0444\u0456\u043d\u0433 \u0456 \u0447\u0435\u0440\u043d\u0435\u0442\u043a\u0443',
@@ -1601,6 +1631,37 @@ export const ukMessages: MessageTree = {
     loadErrorShape: '\u041d\u0435\u0432\u0456\u0434\u043e\u043c\u0438\u0439 \u0444\u043e\u0440\u043c\u0430\u0442 \u0430\u0431\u043e \u043f\u043e\u0448\u043a\u043e\u0434\u0436\u0435\u043d\u0456 \u0434\u0430\u043d\u0456 \u0432\u043f\u0440\u0430\u0432\u0438.',
     loadErrorVersion: '\u041d\u0435\u043f\u0456\u0434\u0442\u0440\u0438\u043c\u0443\u0432\u0430\u043d\u0430 \u0432\u0435\u0440\u0441\u0456\u044f \u0444\u0430\u0439\u043b\u0443. \u041e\u043d\u043e\u0432\u0456\u0442\u044c Stage Builder.',
     fileGroupAria: '\u0417\u0431\u0435\u0440\u0435\u0436\u0435\u043d\u043d\u044f \u0442\u0430 \u0437\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f \u0444\u0430\u0439\u043b\u0443 \u0432\u043f\u0440\u0430\u0432\u0438',
+  },
+  library: {
+    title: 'Мої вправи',
+    save: 'Зберегти',
+    saveHint: 'Зберегти вправу в акаунті',
+    myStages: 'Мої вправи',
+    intro:
+      'Вправи зберігаються у вашому акаунті й відкриваються з будь-якого пристрою. Файл .stage.json лишається для експорту.',
+    nameLabel: 'Назва вправи',
+    saveAsNew: 'Зберегти як нову',
+    update: 'Оновити збережену',
+    saving: 'Збереження…',
+    saved: 'Збережено',
+    open: 'Відкрити',
+    rename: 'Перейменувати',
+    renamePrompt: 'Нова назва вправи:',
+    remove: 'Видалити',
+    deleteConfirm: 'Видалити «{{title}}» з бібліотеки? Дію не можна скасувати.',
+    openConfirm: 'Відкрити «{{title}}»? Поточну вправу в редакторі буде замінено.',
+    empty: 'У бібліотеці ще немає вправ.',
+    loading: 'Завантаження…',
+    signInRequired: 'Увійдіть в акаунт, щоб зберігати вправи в хмарі.',
+    signInLink: 'Увійти',
+    notConfigured: 'Хмарне збереження недоступне: Supabase не налаштовано.',
+    close: 'Закрити',
+    updatedAt: 'Оновлено {{date}}',
+    listAria: 'Збережені вправи',
+    errorNetwork: 'Не вдалося звʼязатися з сервером. Спробуйте ще раз.',
+    errorInvalidTitle: 'Вкажіть назву вправи.',
+    errorInvalidPayload: 'Дані збереженої вправи пошкоджені.',
+    errorNotFound: 'Вправу не знайдено — можливо, її вже видалено.',
   },
   share: {
     loading: '\u0417\u0430\u0432\u0430\u043d\u0442\u0430\u0436\u0435\u043d\u043d\u044f \u0432\u043f\u0440\u0430\u0432\u0438\u2026',
@@ -2942,8 +3003,8 @@ export const enMessages: MessageTree = {
     dash: '\u2014',
   },
   project: {
-    save: 'Save stage\u2026',
-    open: 'Open stage\u2026',
+    save: 'Export to file\u2026',
+    open: 'Import from file\u2026',
     clear: 'Clear stage',
     clearAria: 'Clear stage: reset plan, briefing, and browser draft',
     clearConfirm:
@@ -2953,6 +3014,37 @@ export const enMessages: MessageTree = {
     loadErrorShape: 'Unknown format or invalid stage data.',
     loadErrorVersion: 'Unsupported file version. Update Stage Builder.',
     fileGroupAria: 'Save and open stage file',
+  },
+  library: {
+    title: 'My stages',
+    save: 'Save',
+    saveHint: 'Save the stage to your account',
+    myStages: 'My stages',
+    intro:
+      'Stages are stored in your account and open on any device. The .stage.json file remains available as an export.',
+    nameLabel: 'Stage name',
+    saveAsNew: 'Save as new',
+    update: 'Update saved stage',
+    saving: 'Saving\u2026',
+    saved: 'Saved',
+    open: 'Open',
+    rename: 'Rename',
+    renamePrompt: 'New stage name:',
+    remove: 'Delete',
+    deleteConfirm: 'Delete “{{title}}” from the library? This cannot be undone.',
+    openConfirm: 'Open “{{title}}”? The stage currently in the editor will be replaced.',
+    empty: 'No saved stages yet.',
+    loading: 'Loading\u2026',
+    signInRequired: 'Sign in to save stages to the cloud.',
+    signInLink: 'Sign in',
+    notConfigured: 'Cloud saving is unavailable: Supabase is not configured.',
+    close: 'Close',
+    updatedAt: 'Updated {{date}}',
+    listAria: 'Saved stages',
+    errorNetwork: 'Could not reach the server. Please try again.',
+    errorInvalidTitle: 'Enter a stage name.',
+    errorInvalidPayload: 'The saved stage data is corrupted.',
+    errorNotFound: 'Stage not found — it may have been deleted.',
   },
   share: {
     loading: 'Loading stage\u2026',

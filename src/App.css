@@ -861,6 +861,120 @@
   justify-content: flex-end;
 }
 
+/* Діалог «Мої вправи» (SB-CL01) */
+.app__stage-library-dialog {
+  max-width: 44rem;
+}
+
+.app__stage-library-intro,
+.app__stage-library-notice {
+  margin: 0 0 0.85rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.app__stage-library-notice {
+  color: var(--muted);
+}
+
+.app__stage-library-save {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.app__stage-library-name {
+  display: flex;
+  flex: 1 1 16rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.app__stage-library-name input {
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.app__stage-library-save-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.app__stage-library-saved {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  color: var(--accent);
+}
+
+.app__stage-library-list {
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 22rem;
+  overflow-y: auto;
+}
+
+.app__stage-library-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.app__stage-library-row.is-current {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.app__stage-library-row-main {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 12rem;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.app__stage-library-row-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.app__stage-library-row-meta {
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.app__stage-library-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.app__stage-library-error {
+  margin: 0.8rem 0 0;
+  font-size: 0.84rem;
+  color: var(--danger, #c0392b);
+}
+
 .app__share-view-banner {
   padding: 0.55rem 1rem;
   text-align: center;

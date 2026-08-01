@@ -69,7 +69,15 @@ import type { CameraMode3D, StageView3DHandle } from './presentation/components/
 import type { WorldViewportRect } from './presentation/lib/viewTransform'
 import { PwaUpdateBanner } from './presentation/components/PwaUpdateBanner'
 import { SharePublishDialog } from './presentation/components/SharePublishDialog'
+import { StageLibraryDialog } from './presentation/components/StageLibraryDialog'
 import { RangeDistanceSignDialog } from './presentation/components/RangeDistanceSignDialog'
+import { isSupabaseConfigured } from './lib/supabaseClient'
+import { useSupabaseSession } from './portal/useSupabaseSession'
+import {
+  saveUserStage,
+  type UserStageRecord,
+  type UserStageSummary,
+} from './application/userStagesLibrary'
 import { usePwaInstall } from './presentation/hooks/usePwaInstall'
 import './App.css'
 
@@ -201,6 +209,12 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
   const [toolbarDrawerOpen, setToolbarDrawerOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [sharePublishOpen, setSharePublishOpen] = useState(false)
+  const [stageLibraryOpen, setStageLibraryOpen] = useState(false)
+  /** Запис у хмарній бібліотеці, з яким зараз пов’язана вправа в редакторі. */
+  const [libraryStageId, setLibraryStageId] = useState<string | null>(null)
+  const [libraryStageTitle, setLibraryStageTitle] = useState('')
+  const [libraryQuickSaving, setLibraryQuickSaving] = useState(false)
+  const [librarySavedFlash, setLibrarySavedFlash] = useState(false)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const [measureToolActive, setMeasureToolActive] = useState(false)
   const [placementMode, setPlacementMode] = useState<PlacementMode>(null)
@@ -494,6 +508,54 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     ],
   )
 
+  const { user: supabaseUser } = useSupabaseSession()
+  const supabaseConfigured = isSupabaseConfigured()
+
+  const handleLibrarySaved = useCallback((summary: UserStageSummary) => {
+    setLibraryStageId(summary.id)
+    setLibraryStageTitle(summary.title)
+  }, [])
+
+  const handleLibraryOpened = useCallback(
+    (record: UserStageRecord) => {
+      replaceStageState(record.project.stage)
+      setBriefing(record.project.briefing)
+      setLibraryStageId(record.id)
+      setLibraryStageTitle(record.title)
+    },
+    [replaceStageState, setBriefing],
+  )
+
+  /** Повторне збереження вже прив’язаного запису; в інших випадках відкриваємо бібліотеку. */
+  const quickSaveToLibrary = useCallback(async () => {
+    if (!supabaseConfigured || !supabaseUser || !libraryStageId) {
+      setStageLibraryOpen(true)
+      return
+    }
+    setLibraryQuickSaving(true)
+    const res = await saveUserStage({
+      id: libraryStageId,
+      title: libraryStageTitle || shareProjectRoot.stage.name,
+      stage: shareProjectRoot.stage,
+      briefing: shareProjectRoot.briefing,
+    })
+    setLibraryQuickSaving(false)
+    if (!res.ok) {
+      setStageLibraryOpen(true)
+      return
+    }
+    handleLibrarySaved(res.data)
+    setLibrarySavedFlash(true)
+    window.setTimeout(() => setLibrarySavedFlash(false), 2000)
+  }, [
+    handleLibrarySaved,
+    libraryStageId,
+    libraryStageTitle,
+    shareProjectRoot,
+    supabaseConfigured,
+    supabaseUser,
+  ])
+
   /** Public origin for share links (matches server `resolvePublicOrigin` / `VITE_SHARE_PUBLIC_ORIGIN`). */
   const sharePublicOrigin = useMemo(() => {
     const env = import.meta.env.VITE_SHARE_PUBLIC_ORIGIN as string | undefined
@@ -552,6 +614,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         }
         replaceStageState(res.data.stage)
         setBriefing(res.data.briefing)
+        setLibraryStageId(null)
+        setLibraryStageTitle('')
       }
       reader.readAsText(f, 'UTF-8')
     },
@@ -575,6 +639,8 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
     setActivationPendingFrom(null)
     setHasPlanClipboard(false)
     internalClipboardRef.current = null
+    setLibraryStageId(null)
+    setLibraryStageTitle('')
   }, [resetSceneToDefaults, setBriefing, t, setMobileMenuOpen, clearPenaltyContourDraft])
 
   const applySceneToBriefing = () => {
@@ -1276,6 +1342,26 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
               >
                 {!readOnly ? (
                   <>
+                    <button
+                      type="button"
+                      className="app__btn-secondary"
+                      title={tree.library.saveHint}
+                      disabled={libraryQuickSaving}
+                      onClick={() => void quickSaveToLibrary()}
+                    >
+                      {libraryQuickSaving
+                        ? tree.library.saving
+                        : librarySavedFlash
+                          ? tree.library.saved
+                          : tree.library.save}
+                    </button>
+                    <button
+                      type="button"
+                      className="app__btn-secondary"
+                      onClick={() => setStageLibraryOpen(true)}
+                    >
+                      {tree.library.myStages}
+                    </button>
                     <button type="button" className="app__btn-secondary" onClick={saveStageProject}>
                       {tree.project.save}
                     </button>
@@ -1323,6 +1409,24 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                   <div className="app__mobile-menu-dropdown">
                     {!readOnly ? (
                       <>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            void quickSaveToLibrary()
+                            setMobileMenuOpen(false)
+                          }}
+                        >
+                          {tree.library.save}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setStageLibraryOpen(true)
+                            setMobileMenuOpen(false)
+                          }}
+                        >
+                          {tree.library.myStages}
+                        </button>
                         <button
                           type="button"
                           onClick={() => {
@@ -1420,6 +1524,20 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         tree={tree}
         locale={locale}
         projectRoot={shareProjectRoot}
+      />
+
+      <StageLibraryDialog
+        open={stageLibraryOpen}
+        onClose={() => setStageLibraryOpen(false)}
+        tree={tree}
+        locale={locale}
+        signedIn={Boolean(supabaseUser)}
+        supabaseConfigured={supabaseConfigured}
+        currentStageId={libraryStageId}
+        stage={shareProjectRoot.stage}
+        briefing={shareProjectRoot.briefing}
+        onSaved={handleLibrarySaved}
+        onOpened={handleLibraryOpened}
       />
 
       <div className="app__view-controls-strip">
