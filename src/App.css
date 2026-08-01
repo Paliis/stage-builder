@@ -969,6 +969,31 @@
   gap: 0.35rem;
 }
 
+.app__stage-library-file {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.app__stage-library-file-hint {
+  margin: 0;
+  flex: 1 1 16rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.app__stage-library-file-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
 .app__stage-library-error {
   margin: 0.8rem 0 0;
   font-size: 0.84rem;
@@ -1288,6 +1313,13 @@
 
 .app__buttons .app__btn-secondary {
   background: var(--btn-secondary-bg);
+}
+
+.app__buttons .app__btn-secondary--primary {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+  font-weight: 600;
 }
 
 /* Кольорова маркування кнопок «додати» в тулбарі (мішені / реквізит). */

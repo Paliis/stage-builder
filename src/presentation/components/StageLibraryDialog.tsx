@@ -28,6 +28,9 @@ export type StageLibraryDialogProps = {
   briefing: StageBriefing
   onSaved: (summary: UserStageSummary) => void
   onOpened: (record: UserStageRecord) => void
+  /** Резервний шлях повз хмару: файл `.stage.json`. */
+  onExportFile: () => void
+  onImportFile: () => void
 }
 
 export function StageLibraryDialog({
@@ -42,6 +45,8 @@ export function StageLibraryDialog({
   briefing,
   onSaved,
   onOpened,
+  onExportFile,
+  onImportFile,
 }: StageLibraryDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const titleId = useId()
@@ -324,6 +329,18 @@ export function StageLibraryDialog({
           {errorText}
         </p>
       ) : null}
+
+      <div className="app__stage-library-file">
+        <p className="app__stage-library-file-hint">{tree.project.hint}</p>
+        <div className="app__stage-library-file-actions">
+          <button type="button" className="app__btn-secondary" onClick={onImportFile}>
+            {tree.project.open}
+          </button>
+          <button type="button" className="app__btn-secondary" onClick={onExportFile}>
+            {tree.project.save}
+          </button>
+        </div>
+      </div>
 
       <div className="app__share-publish-footer">
         <button type="button" className="app__onboarding-cta" onClick={onClose}>

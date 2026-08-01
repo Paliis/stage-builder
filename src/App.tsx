@@ -1344,7 +1344,7 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                   <>
                     <button
                       type="button"
-                      className="app__btn-secondary"
+                      className="app__btn-secondary app__btn-secondary--primary"
                       title={tree.library.saveHint}
                       disabled={libraryQuickSaving}
                       onClick={() => void quickSaveToLibrary()}
@@ -1361,12 +1361,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                       onClick={() => setStageLibraryOpen(true)}
                     >
                       {tree.library.myStages}
-                    </button>
-                    <button type="button" className="app__btn-secondary" onClick={saveStageProject}>
-                      {tree.project.save}
-                    </button>
-                    <button type="button" className="app__btn-secondary" onClick={() => projectFileInputRef.current?.click()}>
-                      {tree.project.open}
                     </button>
                     <button
                       type="button"
@@ -1426,24 +1420,6 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
                           }}
                         >
                           {tree.library.myStages}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            saveStageProject()
-                            setMobileMenuOpen(false)
-                          }}
-                        >
-                          {tree.project.save}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            projectFileInputRef.current?.click()
-                            setMobileMenuOpen(false)
-                          }}
-                        >
-                          {tree.project.open}
                         </button>
                         <button
                           type="button"
@@ -1538,6 +1514,11 @@ export default function App({ shareReadOnly = false, shareViewContext = null }: 
         briefing={shareProjectRoot.briefing}
         onSaved={handleLibrarySaved}
         onOpened={handleLibraryOpened}
+        onExportFile={saveStageProject}
+        onImportFile={() => {
+          setStageLibraryOpen(false)
+          projectFileInputRef.current?.click()
+        }}
       />
 
       <div className="app__view-controls-strip">
