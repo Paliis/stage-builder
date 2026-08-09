@@ -24,7 +24,7 @@
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "Портал як фон; у монтажі поверх коротко з’являються символи чату, таблиці й файлів, які збираються в один Shooters Tools.",
-      "voiceover": "Матч не повинен жити в десятках чатів, таблиць і файлів.",
+      "voiceover": "Не тримайте матч у десятках чатів, таблиць і файлів.",
       "subtitle": "Усе для матчу — в одному місці",
       "motion": "slow_zoom_in",
       "crop_safe": "keep portal product cards and top navigation visible"
@@ -35,7 +35,7 @@
       "duration_sec": 6,
       "capture_status": "ready",
       "action": "Готовий метричний 2D-план вправи з мішенями, поппером, портом і стартом.",
-      "voiceover": "У Stage Builder ідея одразу стає точним планом.",
+      "voiceover": "У Stage Builder задум стає точним планом.",
       "subtitle": "Точний план у метрах",
       "motion": "slow_pan_right",
       "crop_safe": "keep stage canvas center and field-size controls; crop lower briefing fields if needed"
@@ -46,7 +46,7 @@
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "3D-огляд тієї самої вправи; швидкий перехід до наступного кадру з місця стрільця.",
-      "voiceover": "Перевірте сцену ще до побудови на майданчику.",
+      "voiceover": "Перевірте вправу в 3D ще до побудови на майданчику.",
       "subtitle": "Перевірка до побудови",
       "motion": "slow_zoom_in",
       "crop_safe": "keep 3D viewport; crop left palette in 9:16"
@@ -57,7 +57,7 @@
       "duration_sec": 6,
       "capture_status": "ready",
       "action": "3D-камера з реальної стартової позиції дивиться через порт на мішені.",
-      "voiceover": "І подивіться на вправу так, як її побачить стрілець.",
+      "voiceover": "Подивіться на вправу очима стрільця.",
       "subtitle": "3D з місця стрільця",
       "motion": "slow_zoom_in",
       "crop_safe": "center port and targets; toolbar may crop in 9:16"
@@ -68,8 +68,8 @@
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "Заповнений зі сцени брифінг і помітна кнопка завантаження PDF.",
-      "voiceover": "Брифінг і PDF уже готові для команди та учасників.",
-      "subtitle": "Брифінг, PDF і QR",
+      "voiceover": "Схема, брифінг і QR-код — готові для команди та учасників.",
+      "subtitle": "Схема, брифінг і QR-код",
       "motion": "slow_pan_right",
       "crop_safe": "keep briefing title, generated target count and PDF button"
     },
@@ -79,8 +79,8 @@
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "«Мої вправи» з кількома реально збереженими вправами користувача.",
-      "voiceover": "Ваші вправи залишаються у власній бібліотеці.",
-      "subtitle": "Власний архів вправ",
+      "voiceover": "Зберігайте вдалі вправи та відкривайте їх на будь-якому пристрої.",
+      "subtitle": "Ваші збережені вправи",
       "motion": "slow_pan_right",
       "crop_safe": "keep dialog title and at least three stage rows"
     },
@@ -90,7 +90,7 @@
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "Реальний кабінет організатора зі списком подій, статусами, заявками та підключеною онлайн-оплатою.",
-      "voiceover": "Створіть подію і зберіть програму матчу.",
+      "voiceover": "Створіть подію та додайте вправи до програми.",
       "subtitle": "Подія та програма",
       "motion": "slow_zoom_in",
       "crop_safe": "keep matches heading, filters and calendar"
@@ -101,7 +101,7 @@
       "duration_sec": 6,
       "capture_status": "ready",
       "action": "Реальна програма матчу, наповнена готовими вправами Stage Builder.",
-      "voiceover": "Додавайте готові вправи, не створюючи все з нуля.",
+      "voiceover": "Беріть готові вправи зі своєї бібліотеки — не починайте щоразу з нуля.",
       "subtitle": "Готові вправи — одразу в матч",
       "motion": "slow_zoom_in",
       "crop_safe": "keep Stage Builder programme list and quick actions visible"
@@ -112,7 +112,7 @@
       "duration_sec": 6,
       "capture_status": "ready",
       "action": "Реальний матч зі списком заявок/скводами та підтвердженим онлайн-внеском.",
-      "voiceover": "Приймайте заявки, наповнюйте скводи й збирайте внески онлайн.",
+      "voiceover": "Приймайте заявки, розподіляйте стрільців по скводах і збирайте внески онлайн.",
       "subtitle": "Учасники, скводи, оплата",
       "motion": "slow_pan_right",
       "crop_safe": "keep participant rows and paid status; hide personal data"
@@ -123,7 +123,7 @@
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "У картці реального матчу доступне завантаження готового файлу для PractiScore.",
-      "voiceover": "І отримуйте готовий файл матчу для PractiScore.",
+      "voiceover": "Завантажте готовий файл матчу для PractiScore.",
       "subtitle": "Готово для PractiScore",
       "motion": "hold",
       "crop_safe": "keep match title and PractiScore export control"
