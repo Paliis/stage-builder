@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "product": "Stage Builder",
+  "slug": "field-size",
+  "title": "Розмір поля",
+  "goal": "onboarding",
+  "language": "uk",
+  "source_script": "content/user-help/videos/scripts/field-size.md",
+  "target_duration_sec": 35,
+  "aspect_hints": ["16:9", "9:16"],
+  "demo_stage": {
+    "name": "Демо вправи",
+    "field": "20x30",
+    "notes": "Чисте поле без мішеней. Мова UI uk. Без діалогу «Інструкція»."
+  },
+  "brand": {
+    "cta_url": "shooters-tools.com/stage-builder",
+    "end_card_text": "Stage Builder"
+  },
+  "frames": [
+    {
+      "id": "frame_01",
+      "file": "01_title.png",
+      "duration_sec": 3,
+      "action": "Титр на спокійному фоні або перший кадр редактора з великим написом «Розмір поля» (можна зібрати в монтажі без окремого PNG UI).",
+      "voiceover": "Розмір поля — за пів хвилини.",
+      "subtitle": "Розмір поля",
+      "motion": "hold",
+      "crop_safe": "center text; keep margins for 9:16"
+    },
+    {
+      "id": "frame_02",
+      "file": "02_enter_20x30.png",
+      "duration_sec": 7,
+      "action": "Шапка редактора: у полях ширини й довжини введено 20 і 30; план уже 20×30 м.",
+      "voiceover": "Введіть ширину і довжину майданчика в метрах.",
+      "subtitle": "Введіть метри: ширина і довжина",
+      "motion": "slow_zoom_in",
+      "crop_safe": "keep top toolbar and plan center visible"
+    },
+    {
+      "id": "frame_03",
+      "file": "03_preset_open.png",
+      "duration_sec": 6,
+      "action": "Відкритий список пресетів розміру поля біля полів метрів (або вибраний пресет, що дає 20×30).",
+      "voiceover": "Або просто оберіть готовий пресет.",
+      "subtitle": "Або оберіть пресет",
+      "motion": "hold",
+      "crop_safe": "keep field-size controls and presets menu fully visible"
+    },
+    {
+      "id": "frame_04",
+      "file": "04_grid_plan.png",
+      "duration_sec": 8,
+      "action": "План 2D на весь робочий кадр: сітка й лінійки по краю поля 20×30, без мішеней.",
+      "voiceover": "Сітка допоможе ставити мішені рівно.",
+      "subtitle": "Сітка допоможе ставити мішені рівно",
+      "motion": "slow_pan_right",
+      "crop_safe": "keep plan center and edge rulers; toolbar may crop slightly in 9:16"
+    },
+    {
+      "id": "frame_05",
+      "file": "05_zoom.png",
+      "duration_sec": 6,
+      "action": "Той самий план після збільшення масштабу (Ctrl+коліщатко або кнопки ± на пульті навігації).",
+      "voiceover": "Масштаб — утримуйте Ctrl і крутіть коліщатко.",
+      "subtitle": "Масштаб — Ctrl + коліщатко",
+      "motion": "slow_zoom_in",
+      "crop_safe": "keep plan grid readable; show nav pad if visible"
+    },
+    {
+      "id": "frame_06",
+      "file": "06_cta.png",
+      "duration_sec": 5,
+      "action": "Фінальний кадр: логотип / назва Stage Builder і URL (можна end-card у монтажі).",
+      "voiceover": "Stage Builder на shooters-tools.com.",
+      "subtitle": "shooters-tools.com",
+      "motion": "hold",
+      "crop_safe": "center brand and URL"
+    }
+  ],
+  "music_mood": "tech",
+  "notes_for_video_agent": "Склеїти кадри за frames[].duration_sec (сума 35 с). VO українською + burn-in субтитри. Експорт 16:9 і crop 9:16 з crop_safe. Не вигадувати UI, якого немає на PNG."
+}

@@ -28,7 +28,7 @@
 | Шар | Код | Що входить | Хто / де |
 |-----|-----|------------|----------|
 | **T — Text** | `UH-T*` | Markdown, FAQ, статті UK/EN, рев’ю, in-app тексти | `content/user-help/`, `messages.ts` (пізніше) |
-| **V — Video** | `UH-V*` | Сценарії, зйомка, монтаж, субтитри, публікація, нарізка рілсів | OBS / CapCut; **не** залежить від деплою коду |
+| **V — Video** | `UH-V*` | Сценарії, **reel-packs** (скріни+JSON → Відео агент), опційно OBS/CapCut, субтитри, публікація | Pack: [content/user-help/videos/REEL_PACKS_PLAN.md](../content/user-help/videos/REEL_PACKS_PLAN.md); OBS: `RECORDING_GUIDE.md` |
 | **P — Product** | `UH-P*` | `/help`, embed відео, онбординг у App, context hints, footer | `src/`, Vercel |
 
 **Порядок за замовчуванням:** **T** (чернетки готові) → **V** (майстер-відео) → **P** (вбудувати в сайт).  
