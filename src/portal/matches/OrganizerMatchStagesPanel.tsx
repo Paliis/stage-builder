@@ -561,24 +561,25 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         {p.matchOrgStagesHeading}
       </h2>
 
-      <p className="portal-match-org-stages__lead">{p.matchOrgStagesIntro}</p>
-
       <div className="portal-match-org-stages-zone" aria-labelledby="match-stages-zone-sb">
-        <h3 id="match-stages-zone-sb" className="portal-match-org-stages-zone__title">
-          {p.matchOrgStagesZoneSbTitle}
-        </h3>
-        <p className="portal-match-org-stages-zone__intro">
-          {p.matchOrgStagesZoneSbIntro}{' '}
-          <Link to={stageBuilderPath(locale)} target="_blank" rel="noreferrer">
+        <div className="portal-match-org-stages-zone__head">
+          <h3 id="match-stages-zone-sb" className="portal-match-org-stages-zone__title">
+            {p.matchOrgStagesZoneSbTitle}
+          </h3>
+          <Link
+            to={stageBuilderPath(locale)}
+            target="_blank"
+            rel="noreferrer"
+            className="portal-match-org-stages-zone__link"
+          >
             {p.matchOrgStagesOpenEditor}
           </Link>
-        </p>
+        </div>
 
-        <form onSubmit={(e) => void handleAddFromLibrary(e)}>
+        <form className="portal-match-org-stages-field" onSubmit={(e) => void handleAddFromLibrary(e)}>
           <label htmlFor="match-stage-library" className="portal-match-org-stages-field-label">
             {p.matchOrgStagesLibraryLabel}
           </label>
-          <p className="portal-match-org-stages-field-hint">{p.matchOrgStagesLibraryHint}</p>
           <div className="portal-match-org-stages-field-row">
             <select
               id="match-stage-library"
@@ -603,20 +604,20 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
             </select>
             <button
               type="submit"
-              className="portal-btn portal-btn--primary portal-btn--compact"
+              className="portal-btn portal-btn--primary portal-btn--compact portal-match-org-stages-action"
               disabled={stagesBusy || !selectedLibraryId}
             >
               {libraryAddBusy ? p.matchOrgStagesAdding : p.matchOrgStagesLibraryAdd}
             </button>
           </div>
           {libraryLoadError ?
-            <p role="alert" style={{ margin: '0.5rem 0 0', fontSize: '0.86rem', color: '#991b1b' }}>
+            <p className="portal-match-org-stages-alert" role="alert">
               {libraryLoadError}
             </p>
           : null}
         </form>
 
-        <form onSubmit={(e) => void handleAdd(e)} style={{ marginTop: '0.85rem' }}>
+        <form className="portal-match-org-stages-field" onSubmit={(e) => void handleAdd(e)}>
           <label htmlFor="match-stage-paste" className="portal-match-org-stages-field-label">
             {p.matchOrgStagesPasteLabel}
           </label>
@@ -634,7 +635,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
             />
             <button
               type="submit"
-              className="portal-btn portal-btn--secondary portal-btn--compact"
+              className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-stages-action"
               disabled={stagesBusy || !paste.trim()}
             >
               {addBusy ? p.matchOrgStagesAdding : p.matchOrgStagesAdd}
@@ -643,7 +644,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         </form>
 
         {ordered.length > 0 ?
-          <div style={{ marginTop: '0.85rem' }}>
+          <div className="portal-match-org-stages-toolbar">
             <button
               type="button"
               className="portal-btn portal-btn--secondary portal-btn--compact"
@@ -662,26 +663,24 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         <h3 id="match-stages-zone-pdf" className="portal-match-org-stages-zone__title">
           {p.matchOrgStagesZonePdfTitle}
         </h3>
-        <p className="portal-match-org-stages-informer" role="note">
-          {p.matchOrgStagesZonePdfInformer}
-        </p>
+        <p className="portal-match-org-stages-field-hint">{p.matchOrgStagesZonePdfInformer}</p>
 
-        <form onSubmit={(e) => void handleUploadProgrammePdf(e)}>
+        <form className="portal-match-org-stages-field" onSubmit={(e) => void handleUploadProgrammePdf(e)}>
           <label htmlFor="match-programme-pdf" className="portal-match-org-stages-field-label">
             {p.matchOrgProgrammePdfLabel}
           </label>
-          <p className="portal-match-org-stages-field-hint">{p.matchOrgProgrammePdfHint}</p>
-          <div className="portal-match-org-stages-field-row" style={{ alignItems: 'center' }}>
+          <div className="portal-match-org-stages-field-row portal-match-org-stages-field-row--wrap">
             <input
               id="match-programme-pdf"
               type="file"
               accept="application/pdf,.pdf"
+              className="portal-match-org-stages-file"
               disabled={programmePdfBusy || stagesBusy}
               onChange={(e) => setProgrammePdfFile(e.target.files?.[0] ?? null)}
             />
             <button
               type="submit"
-              className="portal-btn portal-btn--primary portal-btn--compact"
+              className="portal-btn portal-btn--primary portal-btn--compact portal-match-org-stages-action"
               disabled={programmePdfBusy || stagesBusy || !programmePdfFile}
             >
               {programmePdfBusy ?
@@ -696,13 +695,13 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
                   href={programmePdfUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="portal-btn portal-btn--secondary portal-btn--compact"
+                  className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-stages-action"
                 >
                   {p.matchOrgProgrammePdfOpen}
                 </a>
                 <button
                   type="button"
-                  className="portal-btn portal-btn--secondary portal-btn--compact"
+                  className="portal-btn portal-btn--secondary portal-btn--compact portal-match-org-stages-action"
                   disabled={programmePdfBusy || stagesBusy}
                   onClick={() => void removeProgrammePdf()}
                 >
@@ -739,18 +738,18 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
             />
           </label>
           {visibleDaysSaving ?
-            <span style={{ fontSize: '0.82rem', opacity: 0.85 }}>{p.matchOrgStagesVisibleDaysSaving}</span>
+            <span className="portal-match-org-stages-meta">{p.matchOrgStagesVisibleDaysSaving}</span>
           : visibleFromPreview ?
-            <span style={{ fontSize: '0.82rem', opacity: 0.9 }}>
+            <span className="portal-match-org-stages-meta">
               {formatTemplate(p.matchOrgStagesVisibleFromPreview, { date: visibleFromPreview })}
             </span>
           : null}
         </div>
-        <p id="match-stages-visible-days-hint" className="portal-match-org-stages-field-hint" style={{ marginTop: '0.65rem' }}>
+        <p id="match-stages-visible-days-hint" className="portal-match-org-stages-field-hint">
           {p.matchOrgStagesVisibleDaysHint}
         </p>
         {visibleDaysError ?
-          <p role="alert" style={{ margin: '0.5rem 0 0', fontSize: '0.86rem', color: '#991b1b' }}>
+          <p className="portal-match-org-stages-alert" role="alert">
             {visibleDaysError}
           </p>
         : null}
