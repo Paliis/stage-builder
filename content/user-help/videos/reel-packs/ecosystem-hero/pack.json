@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "product": "Shooters Tools / Stage Builder",
+  "slug": "ecosystem-hero",
+  "title": "Від вправи до готового матчу",
+  "goal": "product-introduction",
+  "language": "uk",
+  "source_script": "content/user-help/videos/scripts/ecosystem-hero.md",
+  "target_duration_sec": 58,
+  "aspect_hints": ["16:9", "9:16"],
+  "demo_stage": {
+    "name": "Демо вправи",
+    "field": "20x30",
+    "notes": "2× IPSC, 1 поппер, щит з портом, старт; UI українською"
+  },
+  "brand": {
+    "cta_url": "shooters-tools.com",
+    "end_card_text": "Shooters Tools — від вправи до матчу"
+  },
+  "frames": [
+    {
+      "id": "frame_01",
+      "file": "01_portal_ecosystem.png",
+      "duration_sec": 5,
+      "capture_status": "ready",
+      "action": "Портал як фон; у монтажі поверх коротко з’являються символи чату, таблиці й файлів, які збираються в один Shooters Tools.",
+      "voiceover": "Матч не повинен жити в десятках чатів, таблиць і файлів.",
+      "subtitle": "Усе для матчу — в одному місці",
+      "motion": "slow_zoom_in",
+      "crop_safe": "keep portal product cards and top navigation visible"
+    },
+    {
+      "id": "frame_02",
+      "file": "02_stage_2d.png",
+      "duration_sec": 6,
+      "capture_status": "ready",
+      "action": "Готовий метричний 2D-план вправи з мішенями, поппером, портом і стартом.",
+      "voiceover": "У Stage Builder ідея одразу стає точним планом.",
+      "subtitle": "Точний план у метрах",
+      "motion": "slow_pan_right",
+      "crop_safe": "keep stage canvas center and field-size controls; crop lower briefing fields if needed"
+    },
+    {
+      "id": "frame_03",
+      "file": "03_stage_3d.png",
+      "duration_sec": 5,
+      "capture_status": "ready",
+      "action": "3D-огляд тієї самої вправи; швидкий перехід до наступного кадру з місця стрільця.",
+      "voiceover": "Перевірте сцену ще до побудови на майданчику.",
+      "subtitle": "Перевірка до побудови",
+      "motion": "slow_zoom_in",
+      "crop_safe": "keep 3D viewport; crop left palette in 9:16"
+    },
+    {
+      "id": "frame_04",
+      "file": "04_shooter_view.png",
+      "duration_sec": 6,
+      "capture_status": "ready",
+      "action": "3D-камера з реальної стартової позиції дивиться через порт на мішені.",
+      "voiceover": "І подивіться на вправу так, як її побачить стрілець.",
+      "subtitle": "3D з місця стрільця",
+      "motion": "slow_zoom_in",
+      "crop_safe": "center port and targets; toolbar may crop in 9:16"
+    },
+    {
+      "id": "frame_05",
+      "file": "05_briefing_pdf.png",
+      "duration_sec": 5,
+      "capture_status": "ready",
+      "action": "Заповнений зі сцени брифінг і помітна кнопка завантаження PDF.",
+      "voiceover": "Брифінг і PDF уже готові для команди та учасників.",
+      "subtitle": "Брифінг, PDF і QR",
+      "motion": "slow_pan_right",
+      "crop_safe": "keep briefing title, generated target count and PDF button"
+    },
+    {
+      "id": "frame_06",
+      "file": "06_library.png",
+      "duration_sec": 5,
+      "capture_status": "pending-authenticated-ui",
+      "action": "«Мої вправи» з кількома реально збереженими вправами користувача.",
+      "voiceover": "Ваші вправи залишаються у власній бібліотеці.",
+      "subtitle": "Власний архів вправ",
+      "motion": "slow_pan_right",
+      "crop_safe": "keep dialog title and at least three stage rows"
+    },
+    {
+      "id": "frame_07",
+      "file": "06_matches_catalog_teaser.png",
+      "duration_sec": 5,
+      "capture_status": "ready-teaser-only",
+      "action": "Реальний staging-каталог подій; до запуску додати невеликий бейдж «Незабаром». Для релізу замінити на каталог із подіями.",
+      "voiceover": "Створіть подію і зберіть програму матчу.",
+      "subtitle": "Подія та програма",
+      "motion": "slow_zoom_in",
+      "crop_safe": "keep matches heading, filters and calendar"
+    },
+    {
+      "id": "frame_08",
+      "file": "08_library_to_match.png",
+      "duration_sec": 6,
+      "capture_status": "pending-ma-c04",
+      "action": "Реальний релізний UI: організатор обирає збережену вправу зі свого архіву й додає її в програму матчу.",
+      "voiceover": "Додавайте готові вправи, не створюючи все з нуля.",
+      "subtitle": "Готові вправи — одразу в матч",
+      "motion": "slow_zoom_in",
+      "crop_safe": "keep library selector and match programme visible",
+      "release_dependency": "MA-C04"
+    },
+    {
+      "id": "frame_09",
+      "file": "09_participants_payment.png",
+      "duration_sec": 6,
+      "capture_status": "pending-release-data",
+      "action": "Реальний матч зі списком заявок/скводами та підтвердженим онлайн-внеском.",
+      "voiceover": "Приймайте заявки, наповнюйте скводи й збирайте внески онлайн.",
+      "subtitle": "Учасники, скводи, оплата",
+      "motion": "slow_pan_right",
+      "crop_safe": "keep participant rows and paid status; hide personal data"
+    },
+    {
+      "id": "frame_10",
+      "file": "10_practiscore_export.png",
+      "duration_sec": 5,
+      "capture_status": "pending-release-data",
+      "action": "Організатор завантажує готовий файл матчу для PractiScore.",
+      "voiceover": "І отримуйте готовий файл матчу для PractiScore.",
+      "subtitle": "Готово для PractiScore",
+      "motion": "hold",
+      "crop_safe": "keep export control and success state"
+    },
+    {
+      "id": "frame_11",
+      "file": "11_cta.png",
+      "duration_sec": 4,
+      "capture_status": "ready",
+      "action": "Фінальна картка порталу; у монтажі додати центральний бренд-текст і URL.",
+      "voiceover": "Shooters Tools. Від вправи до матчу.",
+      "subtitle": "shooters-tools.com",
+      "motion": "hold",
+      "crop_safe": "center brand; keep URL inside central 9:16 safe zone"
+    }
+  ],
+  "music_mood": "confident-modern-tech",
+  "notes_for_video_agent": "Чернетку можна зібрати з ready-кадрів. Фінальний реліз заборонено експортувати, доки frame_06, frame_08, frame_09 і frame_10 не мають реальних PNG. Темп 3–6 с, VO природний, burn-in субтитри. Експорт 16:9 і 9:16. Не вигадувати UI. До запуску «Матчів» додати «Незабаром» лише до match-кадрів; після запуску прибрати."
+}

@@ -4,7 +4,8 @@
 |------|----------|
 | slug | `view-3d-shooter` |
 | Тривалість | **55 с** |
-| Статус | **ready-for-pack** |
+| Пріоритет | **P2 help** |
+| Статус | **help-script** |
 | Reel pack | *(далі: `../reel-packs/view-3d-shooter/`)* |
 
 ## Таймінг

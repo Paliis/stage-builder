@@ -5,8 +5,8 @@
 | slug | `field-size` |
 | Тривалість | **35 с** |
 | Модуль | stage-builder |
-| Пріоритет | P0 |
-| Статус | **ready-for-pack** (AI assembly) / OBS — опційно |
+| Пріоритет | **P2 help** |
+| Статус | **help-pack-ready** |
 | Reel pack | [../reel-packs/field-size/](../reel-packs/field-size/) |
 
 ## Таймінг

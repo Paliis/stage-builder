@@ -146,46 +146,30 @@
 
 ---
 
-## 4. Відео Stage Builder
+## 4. Продуктові відео
 
-### 4.1. Майстер-гайд (знімати першим)
+Стратегія — **hero-first**: знайомимо з цінністю екосистеми Stage Builder + «Матчі», а не навчаємо окремих кліків.
 
-| slug | Тривалість | Сценарій |
-|------|------------|----------|
-| **`first-stage-full`** | **1:50–2:05** | [scripts/first-stage-full.md](../content/user-help/videos/scripts/first-stage-full.md) |
-
-Повний цикл: поле → мішені → старт → 3D (зона стрільця) → брифінг / PDF → **Мої вправи** (+ файл).
-
-### 4.2. Короткі рілси (нарізка з майстера)
-
-| slug | Уривок | Пріоритет |
-|------|--------|-----------|
-| `field-size` | ~0:10–0:22 | P0 extract |
-| `place-target` | ~0:22–0:52 | P0 extract |
-| `view-3d-shooter` | ~0:52–1:12 | P0 extract |
-| `briefing-pdf` | ~1:12–1:45 | P0 extract |
-| `save-stage-file` | ~1:45–2:05 | P0 extract |
-
-### 4.3. Інші рілси (окрема зйомка за потреби)
+### 4.1. Головна серія
 
 | slug | Тривалість | Пріоритет | Сценарій |
 |------|------------|-----------|----------|
-| `field-size` (standalone) | 35 с | — | застаріло як окрема зйомка; див. extract |
-| `place-target` | 45 с | P0 | [scripts/place-target.md](../content/user-help/videos/scripts/place-target.md) |
-| `view-3d-shooter` | 55 с | P0 | [scripts/view-3d-shooter.md](../content/user-help/videos/scripts/view-3d-shooter.md) |
-| `briefing-pdf` | 55 с | P0 | [scripts/briefing-pdf.md](../content/user-help/videos/scripts/briefing-pdf.md) |
-| `save-stage-file` | 45 с | P0 | [scripts/save-stage-file.md](../content/user-help/videos/scripts/save-stage-file.md) |
-| `shield-and-3d` | 50 с | P1 | [scripts/shield-and-3d.md](../content/user-help/videos/scripts/shield-and-3d.md) |
-| `measure-distance` | 40 с | P1 | [scripts/measure-distance.md](../content/user-help/videos/scripts/measure-distance.md) |
-| `share-link` | 50 с | P2 | [scripts/share-link.md](../content/user-help/videos/scripts/share-link.md) |
-| `plan-tools-overview` | 55 с | P2 | [scripts/plan-tools-overview.md](../content/user-help/videos/scripts/plan-tools-overview.md) |
-| `activations-quick` | 45 с | P2 | [scripts/activations-quick.md](../content/user-help/videos/scripts/activations-quick.md) |
-| `mobile-place-delete` | 40 с | P1 | [scripts/mobile-place-delete.md](../content/user-help/videos/scripts/mobile-place-delete.md) |
-| `open-shared-view` | 35 с | P2 | [scripts/open-shared-view.md](../content/user-help/videos/scripts/open-shared-view.md) |
+| `ecosystem-hero` | 58 с | P0 | [scripts/ecosystem-hero.md](../content/user-help/videos/scripts/ecosystem-hero.md) |
+| `stage-builder-value` | 38 с | P0 | [scripts/stage-builder-value.md](../content/user-help/videos/scripts/stage-builder-value.md) |
+| `match-organizer-flow` | 55 с | P0 | [scripts/match-organizer-flow.md](../content/user-help/videos/scripts/match-organizer-flow.md) |
+| `shooter-event-flow` | 35 с | P1 | [scripts/shooter-event-flow.md](../content/user-help/videos/scripts/shooter-event-flow.md) |
+
+Головний меседж: **«Від ідеї вправи до готового матчу — в одній екосистемі»**. До launch match-кадри можуть мати бейдж «Незабаром»; релізна версія — без нього.
+
+### 4.2. Довідкові мікрогайди (P2 help)
+
+`first-stage-full`, `field-size`, `place-target`, `view-3d-shooter`, `briefing-pdf`, `save-stage-file`, `shield-and-3d`, `measure-distance`, `share-link`, `plan-tools-overview`, `activations-quick`, `mobile-place-delete`, `open-shared-view`.
+
+Вони лишаються для help-центру й точкових відповідей, але не є основною промокампанією.
 
 **Демо-вправа для зйомки (єдина):** поле 20×30 м, 2× IPSC, 1 поппер, щит з портом, старт, назва «Демо UH».
 
-**Оформлення рілсу:** субтитри UK внизу; перший кадр — назва 1 с; CTA останні 3 с: «shooters-tools.com».
+**Оформлення:** динамічні кадри по 2–6 с; один кадр = одна вигода; природний VO; субтитри UK; CTA: «Shooters Tools — від вправи до матчу».
 
 ---
 
@@ -327,3 +311,4 @@
 | 2026-05-21 | Розширено `manifest.json`, структура статей, FAQ UK |
 | 2026-08-09 | Синхрон із продуктом: «Мої вправи», смуга брифінгу, зона стрільця зі старту; оновлено FAQ, таймінги та сценарії P0 |
 | 2026-08-09 | Пайплайн **reel-packs** (скріни + pack.json → Відео агент); перший pack `field-size`; див. `content/user-help/videos/REEL_PACKS_PLAN.md` |
+| 2026-08-09 | Перезапуск відеосерії: product hero **«від вправи до матчу»**, Stage Builder + «Матчі»; вузькі покрокові ролики перенесено в P2 help |

@@ -4,8 +4,8 @@
 |------|----------|
 | slug | `place-target` |
 | Тривалість | **45 с** |
-| Пріоритет | P0 |
-| Статус | **ready-for-pack** |
+| Пріоритет | **P2 help** |
+| Статус | **help-script** |
 | Reel pack | *(створити `../reel-packs/place-target/` за промптом AGENT_PROMPT_REEL_PACK)* |
 
 ## Таймінг

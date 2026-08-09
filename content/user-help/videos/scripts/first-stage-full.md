@@ -5,7 +5,7 @@
 | slug | `first-stage-full` |
 | Тривалість | **110–125 с** (≈1:50–2:05) |
 | Тип | **master** (повний гайд) |
-| Пріоритет | **P0** (знімати першим) |
+| Пріоритет | **P2 help** |
 | Production | [../production/first-stage-full.md](../production/first-stage-full.md) *(файл production може бути WIP)* |
 
 Короткі рілси `field-size`, `place-target`, `view-3d-shooter`, `briefing-pdf`, `save-stage-file` — **нарізка** з цього відео, не окрема зйомка.

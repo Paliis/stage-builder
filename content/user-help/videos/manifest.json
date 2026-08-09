@@ -1,5 +1,5 @@
-﻿{
-  "version": 3,
+{
+  "version": 4,
   "updated": "2026-08-09",
   "scriptsDir": "scripts",
   "demoStage": {
@@ -7,26 +7,70 @@
     "field": "20x30",
     "targets": "2x IPSC, 1 popper, start (ideally 2 starts for switcher)"
   },
-  "strategy": "P0: reel-packs (AI) per REEL_PACKS_PLAN.md — field-size → place-target → view-3d-shooter → briefing-pdf → save-stage-file; then first-stage-full. OBS/CapCut parallel: RECORDING_GUIDE.md.",
+  "strategy": "Hero-first product story: Stage Builder + Matches as one ecosystem. Tutorials remain P2 help.",
   "items": [
+    {
+      "slug": "ecosystem-hero",
+      "durationSec": 58,
+      "priority": "P0",
+      "type": "hero",
+      "module": "ecosystem",
+      "status": "pack-partial-release-dependent",
+      "script": "scripts/ecosystem-hero.md",
+      "reelPack": "reel-packs/ecosystem-hero",
+      "publishedUrl": null,
+      "readyFrames": 7,
+      "totalFrames": 11
+    },
+    {
+      "slug": "stage-builder-value",
+      "durationSec": 38,
+      "priority": "P0",
+      "type": "product-value",
+      "module": "stage-builder",
+      "status": "script",
+      "script": "scripts/stage-builder-value.md",
+      "publishedUrl": null
+    },
+    {
+      "slug": "match-organizer-flow",
+      "durationSec": 55,
+      "priority": "P0",
+      "type": "product-flow",
+      "module": "matches",
+      "status": "script",
+      "script": "scripts/match-organizer-flow.md",
+      "releaseDependency": "MA-C04 and match portal production launch",
+      "publishedUrl": null
+    },
+    {
+      "slug": "shooter-event-flow",
+      "durationSec": 35,
+      "priority": "P1",
+      "type": "product-flow",
+      "module": "matches",
+      "status": "script",
+      "script": "scripts/shooter-event-flow.md",
+      "publishedUrl": null
+    },
     {
       "slug": "first-stage-full",
       "durationSec": 120,
-      "priority": "P0",
-      "type": "master",
+      "priority": "P2",
+      "type": "help-master",
       "module": "stage-builder",
-      "status": "ready-for-pack",
+      "status": "help-script",
       "script": "scripts/first-stage-full.md",
       "publishedUrl": null
     },
     {
       "slug": "field-size",
       "durationSec": 35,
-      "priority": "P0",
-      "type": "extract",
+      "priority": "P2",
+      "type": "help-tutorial",
       "extractFrom": "first-stage-full",
       "module": "stage-builder",
-      "status": "pack-ready",
+      "status": "help-pack-ready",
       "script": "scripts/field-size.md",
       "reelPack": "reel-packs/field-size",
       "publishedUrl": null
@@ -34,109 +78,116 @@
     {
       "slug": "place-target",
       "durationSec": 45,
-      "priority": "P0",
-      "type": "extract",
+      "priority": "P2",
+      "type": "help-tutorial",
       "extractFrom": "first-stage-full",
       "module": "stage-builder",
-      "status": "ready-for-pack",
+      "status": "help-script",
       "script": "scripts/place-target.md",
       "publishedUrl": null
     },
     {
       "slug": "view-3d-shooter",
       "durationSec": 55,
-      "priority": "P0",
-      "type": "extract",
+      "priority": "P2",
+      "type": "help-tutorial",
       "extractFrom": "first-stage-full",
       "module": "stage-builder",
-      "status": "ready-for-pack",
+      "status": "help-script",
       "script": "scripts/view-3d-shooter.md",
       "publishedUrl": null
     },
     {
       "slug": "briefing-pdf",
       "durationSec": 55,
-      "priority": "P0",
-      "type": "extract",
+      "priority": "P2",
+      "type": "help-tutorial",
       "extractFrom": "first-stage-full",
       "module": "stage-builder",
-      "status": "ready-for-pack",
+      "status": "help-script",
       "script": "scripts/briefing-pdf.md",
       "publishedUrl": null
     },
     {
       "slug": "save-stage-file",
       "durationSec": 45,
-      "priority": "P0",
-      "type": "extract",
+      "priority": "P2",
+      "type": "help-tutorial",
       "extractFrom": "first-stage-full",
       "module": "stage-builder",
-      "status": "ready-for-pack",
+      "status": "help-script",
       "script": "scripts/save-stage-file.md",
       "publishedUrl": null
     },
     {
       "slug": "shield-and-3d",
       "durationSec": 50,
-      "priority": "P1",
+      "priority": "P2",
       "module": "stage-builder",
-      "status": "script",
+      "status": "help-script",
       "script": "scripts/shield-and-3d.md",
-      "publishedUrl": null
+      "publishedUrl": null,
+      "type": "help-tutorial"
     },
     {
       "slug": "measure-distance",
       "durationSec": 40,
-      "priority": "P1",
+      "priority": "P2",
       "module": "stage-builder",
-      "status": "script",
+      "status": "help-script",
       "script": "scripts/measure-distance.md",
-      "publishedUrl": null
+      "publishedUrl": null,
+      "type": "help-tutorial"
     },
     {
       "slug": "mobile-place-delete",
       "durationSec": 40,
-      "priority": "P1",
+      "priority": "P2",
       "module": "stage-builder",
-      "status": "script",
+      "status": "help-script",
       "script": "scripts/mobile-place-delete.md",
-      "publishedUrl": null
+      "publishedUrl": null,
+      "type": "help-tutorial"
     },
     {
       "slug": "share-link",
       "durationSec": 50,
       "priority": "P2",
       "module": "stage-builder",
-      "status": "script",
+      "status": "help-script",
       "script": "scripts/share-link.md",
-      "publishedUrl": null
+      "publishedUrl": null,
+      "type": "help-tutorial"
     },
     {
       "slug": "plan-tools-overview",
       "durationSec": 55,
       "priority": "P2",
       "module": "stage-builder",
-      "status": "script",
+      "status": "help-script",
       "script": "scripts/plan-tools-overview.md",
-      "publishedUrl": null
+      "publishedUrl": null,
+      "type": "help-tutorial"
     },
     {
       "slug": "activations-quick",
       "durationSec": 45,
       "priority": "P2",
       "module": "stage-builder",
-      "status": "script",
+      "status": "help-script",
       "script": "scripts/activations-quick.md",
-      "publishedUrl": null
+      "publishedUrl": null,
+      "type": "help-tutorial"
     },
     {
       "slug": "open-shared-view",
       "durationSec": 35,
       "priority": "P2",
       "module": "stage-builder",
-      "status": "script",
+      "status": "help-script",
       "script": "scripts/open-shared-view.md",
-      "publishedUrl": null
+      "publishedUrl": null,
+      "type": "help-tutorial"
     },
     {
       "slug": "matches-shooter-register-full",

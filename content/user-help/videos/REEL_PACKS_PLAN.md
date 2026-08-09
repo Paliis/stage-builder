@@ -1,4 +1,4 @@
-# План запису онбординг-роликів (reel-packs)
+# План продуктових роликів (reel-packs)
 
 **Оновлено:** 2026-08-09  
 **Медіаплан (що знімаємо, передача, рев’ю):** [MEDIA_PLAN.md](./MEDIA_PLAN.md).  
@@ -12,27 +12,23 @@
 
 Промпт для кроку 1: [AGENT_PROMPT_REEL_PACK.md](./AGENT_PROMPT_REEL_PACK.md).
 
-## Порядок зйомки / pack (P0 Stage Builder)
+## Порядок продуктових pack
 
-| # | slug | ~с | Залежність демо-сцени | Pack |
-|---|------|----|------------------------|------|
-| 1 | `field-size` | 35 | чисте поле → 20×30 | [reel-packs/field-size/](./reel-packs/field-size/) |
-| 2 | `place-target` | 45 | після розміру: 2×IPSC, поппер | ще немає |
-| 3 | `view-3d-shooter` | 55 | + старт(и), щит з портом | ще немає |
-| 4 | `briefing-pdf` | 55 | назва «Демо UH», заповнений брифінг | ще немає |
-| 5 | `save-stage-file` | 45 | збереження в «Мої вправи» | ще немає |
-| 6 | `first-stage-full` | 120 | зшивка 1–5 або окремий master-pack | ще немає |
+| # | slug | ~с | Головна вигода | Pack |
+|---|------|----|----------------|------|
+| 1 | `ecosystem-hero` | 58 | від вправи до готового матчу | [reel-packs/ecosystem-hero/](./reel-packs/ecosystem-hero/) |
+| 2 | `stage-builder-value` | 38 | 2D → 3D → PDF → бібліотека | ще немає |
+| 3 | `match-organizer-flow` | 55 | програма, учасники, оплата, PractiScore | після MA-C04 |
+| 4 | `shooter-event-flow` | 35 | знайти, переглянути, зареєструватися, оплатити | після launch |
 
-П1/P2 (`shield-and-3d`, `measure-distance`, …) — після P0.
-
-Матчі / RO Helper — окрема черга (`matches-*`, `ro-helper-search`).
+`field-size`, `place-target` та інші вузькі ролики — P2 help; pack `field-size` зберігається як приклад технічного гайда.
 
 ## Чекліст одного slug
 
 1. Сценарій актуальний: `scripts/<slug>.md`.
-2. У чаті Stage Builder: вставити промпт з `AGENT_PROMPT_REEL_PACK.md` + `SLUG=…` (за замовч. `field-size`).
-3. Отримати `reel-packs/<slug>/` зі статусом `screenshots: ready` або `pending`.
-4. Якщо `pending` — за 2 хв зробити PNG за README пакета, покласти файли з іменами з `pack.json`.
+2. У чаті Stage Builder: вставити промпт з `AGENT_PROMPT_REEL_PACK.md` + `SLUG=…` (за замовч. `ecosystem-hero`).
+3. Отримати `reel-packs/<slug>/` зі статусом `screenshots: ready`, `partial` або `pending`.
+4. Якщо кадр залежить від майбутнього release UI — лишити точний `capture_status`, не вигадувати PNG.
 5. Скопіювати блок «Відео агент» з відповіді → зібрати ролик.
 6. Рев’ю → публікація → `publishedUrl` у `manifest.json`.
 
@@ -48,6 +44,7 @@
 | Статус | Значення |
 |--------|----------|
 | `screenshots: pending` | Є повний `pack.json` + інструкції зйомки; PNG ще немає |
+| `screenshots: partial` | Чернетку можна збирати; фінал чекає release-dependent кадрів |
 | `screenshots: ready` | Усі `file` з `frames[]` лежать у папці |
 | `assembled` | Ролик зібрано у Відео агенті (локально / артефакт) |
 | `published` | Є публічне посилання в `manifest.json` |
