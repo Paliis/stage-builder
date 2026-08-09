@@ -11,7 +11,7 @@
   "items": [
     {
       "slug": "ecosystem-master-160s",
-      "durationSec": 105,
+      "durationSec": 111,
       "priority": "P0",
       "type": "product-master",
       "module": "ecosystem",
@@ -20,9 +20,9 @@
       "reelPack": "reel-packs/ecosystem-master-160s",
       "canon": "docs/PRODUCT_MESSAGING_CANON.md",
       "publishedUrl": null,
-      "readyFrames": 23,
-      "totalFrames": 23,
-      "paceNote": "Compressed −35% from 160s; VO 150–165 wpm; no PII blur"
+      "readyFrames": 21,
+      "totalFrames": 21,
+      "paceNote": "111s; VO 145–160 wpm with logical pauses; normalized canvases; no PII blur"
     },
     {
       "slug": "ecosystem-hero",

@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "product": "Shooters Tools",
   "slug": "ecosystem-master-160s",
   "title": "Від вправи до готового матчу",
@@ -7,12 +7,17 @@
   "language": "uk",
   "source_script": "content/user-help/videos/scripts/ecosystem-master-160s.md",
   "canon": "docs/PRODUCT_MESSAGING_CANON.md",
-  "target_duration_sec": 105,
+  "target_duration_sec": 111,
   "pace": {
-    "vo_wpm": "150-165",
-    "note": "Говорити бадьоро, без розтягування пауз. Між кадрами одного розділу — короткі cuts 0.1–0.2 с, не довгі slow pans."
+    "vo_wpm": "145-160",
+    "sentence_pause_sec": "0.25-0.4",
+    "section_pause_sec": "0.55-0.7",
+    "note": "Не склеювати речення. Начитку кожного нового розділу починати після логічної паузи; VO не переносити через cut без паузи."
   },
-  "aspect_hints": ["16:9", "9:16"],
+  "aspect_hints": [
+    "16:9",
+    "9:16"
+  ],
   "brand": {
     "cta_url": "shooters-tools.com",
     "end_card_text": "Shooters Tools — від задуму вправи до готового матчу"
@@ -25,280 +30,509 @@
     {
       "id": "frame_01",
       "section": 1,
-      "file": "01_portal_events.png",
-      "duration_sec": 9,
+      "file": "normalized/16x9/01_portal_events.jpg",
+      "duration_sec": 11,
       "capture_status": "ready",
       "action": "Головна з подіями. Швидкий montage 1–1.5 с: 3D → картка матчу → скводи.",
-      "voiceover": "Підготовка матчу — це вправи, брифінги, заявки, скводи, оплата і файл для PractiScore. Shooters Tools збирає все це в одному місці.",
+      "voiceover": "Підготовка матчу — це вправи, брифінги, заявки, скводи й оплата. А наприкінці — готовий файл для PractiScore. Shooters Tools збирає все це в одному місці.",
       "subtitle": "Від вправи до готового матчу",
       "motion": "hold",
-      "crop_safe": "keep events cards and Stage Builder product card"
+      "crop_safe": "keep events cards and Stage Builder product card",
+      "source_file": "01_portal_events.png",
+      "file_9x16": "normalized/9x16/01_portal_events.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 9,
+      "voiceover_segments": [
+        {
+          "text": "Підготовка матчу — це вправи, брифінги, заявки, скводи й оплата.",
+          "pause_after_sec": 0.4
+        },
+        {
+          "text": "А наприкінці — готовий файл для PractiScore.",
+          "pause_after_sec": 0.45
+        },
+        {
+          "text": "Shooters Tools збирає все це в одному місці.",
+          "pause_after_sec": 0.7
+        }
+      ]
     },
     {
       "id": "frame_02",
       "section": 2,
-      "file": "02_stage_2d.png",
+      "file": "normalized/16x9/02_stage_2d.jpg",
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "2D-план готової вправи.",
       "voiceover": "У Stage Builder задум швидко стає точним планом із реальними розмірами.",
       "subtitle": "Точний план у метрах",
       "motion": "hold",
-      "crop_safe": "keep stage canvas"
-    },
-    {
-      "id": "frame_03",
-      "section": 2,
-      "file": "03_shooter_3d.png",
-      "duration_sec": 3,
-      "capture_status": "ready",
-      "action": "Швидкий 3D-огляд.",
-      "voiceover": "Розставте мішені й старт — і перевірте вправу в 3D.",
-      "subtitle": "Перевірка в 3D",
-      "motion": "hold",
-      "crop_safe": "keep 3D viewport"
+      "crop_safe": "keep stage canvas",
+      "source_file": "02_stage_2d.png",
+      "file_9x16": "normalized/9x16/02_stage_2d.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 5
     },
     {
       "id": "frame_03b",
       "section": 2,
-      "file": "03b_shooter_view.png",
-      "duration_sec": 4,
+      "file": "normalized/16x9/03b_shooter_view.jpg",
+      "duration_sec": 7,
       "capture_status": "ready",
-      "action": "Погляд стрільця через порти.",
-      "voiceover": "Подивіться на неї очима стрільця.",
-      "subtitle": "3D з місця стрільця",
+      "action": "Наданий користувачем 3D-кадр вправи очима стрільця.",
+      "voiceover": "Розставте мішені й старт. Потім перевірте вправу в 3D — очима стрільця.",
+      "subtitle": "3D очима стрільця",
       "motion": "hold",
-      "crop_safe": "center ports and targets"
+      "crop_safe": "center ports and targets",
+      "source_file": "03b_shooter_view.png",
+      "file_9x16": "normalized/9x16/03b_shooter_view.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 6
     },
     {
       "id": "frame_04",
       "section": 3,
-      "file": "04_briefing_form.png",
+      "file": "normalized/16x9/04_briefing_form.jpg",
       "duration_sec": 6,
       "capture_status": "ready",
       "action": "Брифінг у редакторі.",
       "voiceover": "Дані зі сцени переходять у брифінг. Уточніть старт, процедуру й кути безпеки.",
       "subtitle": "Брифінг із даних вправи",
       "motion": "hold",
-      "crop_safe": "keep briefing fields and PDF button"
+      "crop_safe": "keep briefing fields and PDF button",
+      "source_file": "04_briefing_form.png",
+      "file_9x16": "normalized/9x16/04_briefing_form.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 6
     },
     {
       "id": "frame_05",
       "section": 3,
-      "file": "05_ready_pdf.png",
-      "duration_sec": 6,
+      "file": "normalized/16x9/05_ready_pdf.jpg",
+      "duration_sec": 7,
       "capture_status": "ready",
       "action": "Готовий PDF.",
       "voiceover": "І одразу завантажте PDF зі схемою, логотипами, QR-кодом і умовами вправи.",
       "subtitle": "Готовий PDF",
       "motion": "hold",
-      "crop_safe": "keep logos, QR and scheme"
+      "crop_safe": "keep logos, QR and scheme",
+      "source_file": "05_ready_pdf.png",
+      "file_9x16": "normalized/9x16/05_ready_pdf.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 6
     },
     {
       "id": "frame_06",
       "section": 4,
-      "file": "06_my_stages.png",
+      "file": "normalized/16x9/06_my_stages.jpg",
       "duration_sec": 6,
       "capture_status": "ready",
       "action": "«Мої вправи»: збереження та імпорт/експорт.",
       "voiceover": "Зберігайте вправи в акаунті, відкривайте з іншого пристрою або передавайте файлом.",
       "subtitle": "Ваші вправи під рукою",
       "motion": "hold",
-      "crop_safe": "keep dialog and save actions"
+      "crop_safe": "keep dialog and save actions",
+      "source_file": "06_my_stages.png",
+      "file_9x16": "normalized/9x16/06_my_stages.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 6
     },
     {
       "id": "frame_07",
       "section": 4,
-      "file": "07_share_link.png",
-      "duration_sec": 4,
+      "file": "normalized/16x9/07_share_link.jpg",
+      "duration_sec": 5,
       "capture_status": "ready",
       "action": "Публікація за посиланням.",
       "voiceover": "Або опублікуйте за посиланням.",
       "subtitle": "Файл або посилання",
       "motion": "hold",
-      "crop_safe": "keep share dialog"
+      "crop_safe": "keep share dialog",
+      "source_file": "07_share_link.png",
+      "file_9x16": "normalized/9x16/07_share_link.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 4
     },
     {
       "id": "frame_08",
       "section": 5,
-      "file": "08_org_cabinet.png",
+      "file": "normalized/16x9/08_org_cabinet.jpg",
       "duration_sec": 3,
       "capture_status": "ready",
       "action": "Кабінет організатора.",
       "voiceover": "Станьте організатором і створюйте події у своєму кабінеті.",
       "subtitle": "Кабінет організатора",
       "motion": "hold",
-      "crop_safe": "keep create button and table"
+      "crop_safe": "keep create button and table",
+      "source_file": "08_org_cabinet.png",
+      "file_9x16": "normalized/9x16/08_org_cabinet.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 3
     },
     {
       "id": "frame_08b",
       "section": 5,
-      "file": "08b_monobank.png",
+      "file": "normalized/16x9/08b_monobank.jpg",
       "duration_sec": 3,
       "capture_status": "ready",
       "action": "Monobank без повного токена.",
       "voiceover": "Підключіть оплату через Monobank.",
       "subtitle": "Онлайн-оплата",
       "motion": "hold",
-      "crop_safe": "keep Monobank card"
+      "crop_safe": "keep Monobank card",
+      "source_file": "08b_monobank.png",
+      "file_9x16": "normalized/9x16/08b_monobank.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 3
     },
     {
       "id": "frame_09",
       "section": 5,
-      "file": "09_match_edit_basics.png",
+      "file": "normalized/16x9/09_match_edit_basics.jpg",
       "duration_sec": 3,
       "capture_status": "ready",
       "action": "Основні параметри матчу.",
       "voiceover": "Задайте дату, місце, дисципліну та рівень.",
       "subtitle": "Параметри події",
       "motion": "hold",
-      "crop_safe": "keep form and quick actions"
+      "crop_safe": "keep form and quick actions",
+      "source_file": "09_match_edit_basics.png",
+      "file_9x16": "normalized/9x16/09_match_edit_basics.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 3
     },
     {
       "id": "frame_10",
       "section": 5,
-      "file": "10_match_squads_fees.png",
-      "duration_sec": 3,
+      "file": "normalized/16x9/10_match_squads_fees.jpg",
+      "duration_sec": 4,
       "capture_status": "ready",
       "action": "Скводи та внески.",
       "voiceover": "Налаштуйте скводи, місця, внески й видимість учасників.",
       "subtitle": "Скводи та внески",
       "motion": "hold",
-      "crop_safe": "keep squads and fees"
+      "crop_safe": "keep squads and fees",
+      "source_file": "10_match_squads_fees.png",
+      "file_9x16": "normalized/9x16/10_match_squads_fees.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 3
     },
     {
       "id": "frame_11",
       "section": 6,
-      "file": "11_programme_library_pick.png",
+      "file": "normalized/16x9/11_programme_library_pick.jpg",
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "Вибір вправ із бібліотеки.",
       "voiceover": "Додайте до програми готові вправи зі Stage Builder.",
       "subtitle": "Готові вправи у програмі",
       "motion": "hold",
-      "crop_safe": "keep library dropdown"
+      "crop_safe": "keep library dropdown",
+      "source_file": "11_programme_library_pick.png",
+      "file_9x16": "normalized/9x16/11_programme_library_pick.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 5
     },
     {
       "id": "frame_11b",
       "section": 6,
-      "file": "11b_programme_pdf_visibility.png",
-      "duration_sec": 4,
+      "file": "normalized/16x9/11b_programme_pdf_visibility.jpg",
+      "duration_sec": 5,
       "capture_status": "ready",
       "action": "PDF програми та дата відкриття.",
       "voiceover": "Або один PDF усієї програми — і визначте, коли матеріали побачать стрільці.",
       "subtitle": "Матеріали у потрібний час",
       "motion": "hold",
-      "crop_safe": "keep PDF and visibility days"
+      "crop_safe": "keep PDF and visibility days",
+      "source_file": "11b_programme_pdf_visibility.png",
+      "file_9x16": "normalized/9x16/11b_programme_pdf_visibility.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 4
     },
     {
       "id": "frame_12",
       "section": 7,
-      "file": "12_match_card_cover.png",
+      "file": "normalized/16x9/12_match_card_cover.jpg",
       "duration_sec": 3,
       "capture_status": "ready",
       "action": "Обкладинка картки матчу.",
       "voiceover": "На сторінці матчу — дата, місце, дисципліна й місця.",
       "subtitle": "Сторінка матчу",
       "motion": "hold",
-      "crop_safe": "keep cover and facts"
+      "crop_safe": "keep cover and facts",
+      "source_file": "12_match_card_cover.png",
+      "file_9x16": "normalized/9x16/12_match_card_cover.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 3
     },
     {
       "id": "frame_13",
       "section": 7,
-      "file": "13_match_card_programme.png",
+      "file": "normalized/16x9/13_match_card_programme.jpg",
       "duration_sec": 3,
       "capture_status": "ready",
       "action": "Програма на картці.",
       "voiceover": "Програма вправ і список стрільців — одразу видно.",
       "subtitle": "Програма вправ",
       "motion": "hold",
-      "crop_safe": "keep programme table"
+      "crop_safe": "keep programme table",
+      "source_file": "13_match_card_programme.png",
+      "file_9x16": "normalized/9x16/13_match_card_programme.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 3
     },
     {
       "id": "frame_14",
       "section": 7,
-      "file": "14_match_card_participants.png",
+      "file": "normalized/16x9/14_match_card_participants.jpg",
       "duration_sec": 3,
       "capture_status": "ready",
       "action": "Учасники / реєстрація.",
       "voiceover": "Тут само можна зареєструватися, обрати сквод і сплатити внесок.",
       "subtitle": "Реєстрація на місці",
       "motion": "hold",
-      "crop_safe": "keep participants summary"
+      "crop_safe": "keep participants summary",
+      "source_file": "14_match_card_participants.png",
+      "file_9x16": "normalized/9x16/14_match_card_participants.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 3
     },
     {
       "id": "frame_15",
       "section": 8,
-      "file": "15_roster_table.png",
+      "file": "normalized/16x9/15_roster_table.jpg",
       "duration_sec": 4,
       "capture_status": "ready",
       "action": "Таблиця заявок без блюру.",
       "voiceover": "Усі заявки — у кабінеті організатора: статус, оплата, дивізіон і сквод.",
       "subtitle": "Заявки та оплата",
       "motion": "hold",
-      "crop_safe": "keep status payment squad columns"
+      "crop_safe": "keep status payment squad columns",
+      "source_file": "15_roster_table.png",
+      "file_9x16": "normalized/9x16/15_roster_table.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.2,
+      "base_duration_sec": 4
     },
     {
       "id": "frame_16",
       "section": 8,
-      "file": "16_squad_board.png",
+      "file": "normalized/16x9/16_squad_board.jpg",
       "duration_sec": 5,
       "capture_status": "ready",
       "action": "Дошка скводів; drag до 1 с.",
       "voiceover": "Стрільців швидко розподіляйте по скводах на дошці.",
       "subtitle": "Скводи",
       "motion": "hold",
-      "crop_safe": "keep squad headers"
+      "crop_safe": "keep squad headers",
+      "source_file": "16_squad_board.png",
+      "file_9x16": "normalized/9x16/16_squad_board.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 5
     },
     {
       "id": "frame_17",
       "section": 9,
-      "file": "17_shooter_cabinet.png",
+      "file": "normalized/16x9/17_shooter_cabinet.jpg",
       "duration_sec": 10,
       "capture_status": "ready",
       "action": "Кабінет стрільця без блюру: спочатку реєстрації, потім профіль.",
       "voiceover": "Стрілець один раз заповнює профіль — дані підставляються в заявки й у файл матчу. Усі реєстрації — в одному кабінеті.",
       "subtitle": "Профіль без повторного введення",
       "motion": "quick_pan_down",
-      "crop_safe": "keep registrations then weapon class"
+      "crop_safe": "keep registrations then weapon class",
+      "source_file": "17_shooter_cabinet.png",
+      "file_9x16": "normalized/9x16/17_shooter_cabinet.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 10
     },
     {
       "id": "frame_18",
       "section": 10,
-      "file": "18_practiscore_export.png",
-      "duration_sec": 5,
+      "file": "normalized/16x9/18_practiscore_export.jpg",
+      "duration_sec": 8,
       "capture_status": "ready",
-      "action": "Експорт .psc.",
-      "voiceover": "Коли все готово — завантажте файл для PractiScore.",
+      "action": "Кнопка експорту .psc у наданому користувачем стані редагування матчу.",
+      "voiceover": "Коли все готово — завантажте файл для PractiScore. Без ручного перенесення учасників і параметрів.",
       "subtitle": "Готовий файл для PractiScore",
       "motion": "hold",
-      "crop_safe": "keep PractiScore button"
-    },
-    {
-      "id": "frame_18b",
-      "section": 10,
-      "file": "18b_practiscore_button.png",
-      "duration_sec": 3,
-      "capture_status": "ready",
-      "action": "Деталь кнопки експорту.",
-      "voiceover": "Без ручного перенесення учасників і параметрів.",
-      "subtitle": "Без ручного перенесення",
-      "motion": "hold",
-      "crop_safe": "keep export button"
+      "crop_safe": "keep PractiScore button",
+      "source_file": "18_practiscore_export.png",
+      "file_9x16": "normalized/9x16/18_practiscore_export.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 8
     },
     {
       "id": "frame_19",
       "section": 11,
-      "file": "19_cta.png",
+      "file": "normalized/16x9/19_cta.jpg",
       "duration_sec": 5,
       "capture_status": "ready",
-      "action": "Фінальний CTA.",
+      "action": "Надана користувачем головна Shooters Tools як фінальний CTA.",
       "voiceover": "Shooters Tools — від задуму вправи до готового матчу.",
       "subtitle": "shooters-tools.com",
       "motion": "hold",
-      "crop_safe": "center brand and URL"
+      "crop_safe": "center brand and URL",
+      "source_file": "19_cta.png",
+      "file_9x16": "normalized/9x16/19_cta.jpg",
+      "canvas": {
+        "16:9": "1600x900",
+        "9:16": "900x1600",
+        "fit": "contain",
+        "crop": "none",
+        "stretch": false
+      },
+      "pause_after_sec": 0.6,
+      "base_duration_sec": 5
     }
   ],
   "music_mood": "confident-modern-tech",
-  "notes_for_video_agent": "Скорочена версія ~105 с (−35% від 160 с). Темп VO 150–165 wpm, без довгих пауз. Багатокадрові розділи — короткі cuts, не slow pan. Без блюру персональних даних. Канон змісту зберігати, формулювання VO трохи стиснуті для темпу. PractiScore = готовий файл. Без «Незабаром». Експорт 16:9 і 9:16."
+  "notes_for_video_agent": "Використовуй лише нормалізовані file/file_9x16: усі полотна мають стабільний розмір. Не crop, не stretch, не змінюй масштаб полотна між кадрами. У voiceover_segments паузи обов’язкові; після кожного розділу витримуй pause_after_sec. VO 145–160 wpm, без злипання речень. Багатокадрові розділи — короткі cuts. Без блюру. PractiScore = готовий файл. Без «Незабаром».",
+  "image_normalization": {
+    "16:9": "normalized/16x9/*.jpg — 1600x900",
+    "9:16": "normalized/9x16/*.jpg — 900x1600",
+    "fit": "contain",
+    "crop": "forbidden",
+    "stretch": "forbidden",
+    "source_pngs": "kept beside pack for recrop if needed"
+  }
 }
