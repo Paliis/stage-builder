@@ -1,4 +1,5 @@
 import type { StageProjectFileV1 } from '../../domain/stageProjectFile'
+import { resolveSharePublishedTitle } from '../../domain/sharePublishedTitle'
 
 export type PublishViewShareOk = {
   ok: true
@@ -132,4 +133,18 @@ export function buildLibraryLinkSnapshotMeta(input: {
     source: 'user_library',
     user_stage_id: input.userStageId,
   }
+}
+
+/** Programme label for a library pick: library title first, then briefing/stage name. */
+export function resolveLibraryLinkTitle(input: {
+  libraryTitle: string
+  stageName: string
+  briefingDocumentTitle: string
+}): string {
+  const library = input.libraryTitle.trim()
+  if (library) return library.slice(0, 500)
+  return resolveSharePublishedTitle(
+    { name: input.stageName },
+    { documentTitle: input.briefingDocumentTitle },
+  )
 }

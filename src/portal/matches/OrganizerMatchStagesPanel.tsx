@@ -33,6 +33,7 @@ import {
   isShareAlreadyLinked,
   nextMatchStageSortOrder,
   publishViewShareFromProject,
+  resolveLibraryLinkTitle,
 } from './publishViewShareFromProject'
 
 type Portal = MessageTree['portal']
@@ -334,6 +335,9 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
       return
     }
 
+    const selectedSummary = (libraryRows ?? []).find((r) => r.id === selectedLibraryId)
+    const libraryTitle = (selectedSummary?.title ?? '').trim()
+
     setLibraryAddBusy(true)
     try {
       const loaded = await loadUserStage(selectedLibraryId)
@@ -347,15 +351,25 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
         return
       }
 
+      // Guard against a stale select value if the library list was refreshed mid-click.
+      if (loaded.data.id !== selectedLibraryId) {
+        setAddError(p.matchOrgStagesLibraryLoadError)
+        return
+      }
+
       const published = await publishViewShareFromProject(loaded.data.project, localeCode)
       if (!published.ok) {
         setAddError(mapPublishError(published.error, published.detail))
         return
       }
 
-      const title =
-        resolveSharePublishedTitle(loaded.data.project.stage, loaded.data.project.briefing) ||
-        loaded.data.title
+      // Prefer the library row title the organiser just picked — briefing/stage.name often
+      // differs (rename in «Мої вправи» does not rewrite the payload heading).
+      const title = resolveLibraryLinkTitle({
+        libraryTitle: libraryTitle || loaded.data.title,
+        stageName: loaded.data.project.stage.name,
+        briefingDocumentTitle: loaded.data.project.briefing.documentTitle,
+      })
 
       const ordered = [...(rows ?? [])].sort((a, b) => a.sort_order - b.sort_order)
       if (isShareAlreadyLinked(ordered, published.id)) {

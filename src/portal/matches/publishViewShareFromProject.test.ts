@@ -7,6 +7,7 @@ import {
   isShareAlreadyLinked,
   nextMatchStageSortOrder,
   publishViewShareFromProject,
+  resolveLibraryLinkTitle,
 } from './publishViewShareFromProject'
 
 describe('nextMatchStageSortOrder', () => {
@@ -40,6 +41,28 @@ describe('buildLibraryLinkSnapshotMeta', () => {
       source: 'user_library',
       user_stage_id: '11111111-1111-4111-8111-111111111111',
     })
+  })
+})
+
+describe('resolveLibraryLinkTitle', () => {
+  it('prefers the library title over briefing/stage names', () => {
+    expect(
+      resolveLibraryLinkTitle({
+        libraryTitle: 'Дальні попери 18 пострілів',
+        stageName: 'Довга 20, дальні попери',
+        briefingDocumentTitle: 'Довга 20, дальні попери',
+      }),
+    ).toBe('Дальні попери 18 пострілів')
+  })
+
+  it('falls back to briefing then stage name', () => {
+    expect(
+      resolveLibraryLinkTitle({
+        libraryTitle: '  ',
+        stageName: 'Stage plan',
+        briefingDocumentTitle: 'Briefing heading',
+      }),
+    ).toBe('Briefing heading')
   })
 })
 
