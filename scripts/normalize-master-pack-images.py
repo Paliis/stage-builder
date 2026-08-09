@@ -11,7 +11,6 @@ space, so the video assembler must not crop, stretch, or resize the frame.
 from __future__ import annotations
 
 import json
-import math
 import shutil
 from pathlib import Path
 
@@ -27,13 +26,26 @@ CANVASES = {
     "9x16": (900, 1600),
 }
 
-DURATION_INCREASES = {
-    "frame_01": 2,
-    "frame_03b": 1,
-    "frame_05": 1,
-    "frame_07": 1,
-    "frame_10": 1,
-    "frame_11b": 1,
+DURATION_SEC = {
+    "frame_01": 13,
+    "frame_02": 7,
+    "frame_03b": 11,
+    "frame_04": 9,
+    "frame_05": 6,
+    "frame_06": 9,
+    "frame_07": 6,
+    "frame_08": 7,
+    "frame_08b": 3,
+    "frame_09": 4,
+    "frame_10": 5,
+    "frame_11": 4,
+    "frame_11b": 9,
+    "frame_12": 9,
+    "frame_15": 7,
+    "frame_16": 5,
+    "frame_17": 14,
+    "frame_18": 10,
+    "frame_19": 7,
 }
 
 SECTION_ENDS = {
@@ -43,16 +55,16 @@ SECTION_ENDS = {
     "frame_07",
     "frame_10",
     "frame_11b",
-    "frame_14",
+    "frame_12",
     "frame_16",
     "frame_17",
     "frame_18",
     "frame_19",
 }
 
-REMOVED_OLD_FRAMES = {"frame_03", "frame_18b"}
+REMOVED_FRAMES = {"frame_03", "frame_13", "frame_14", "frame_18b"}
 
-CANONICAL_VOICEOVER = {
+APPROVED_VOICEOVER = {
     "frame_01": (
         "Підготовка матчу завжди складається з багатьох частин: вправ, брифінгів, "
         "заявок, скводів, оплати та підготовки файлу для PractiScore. Портал Shooters "
@@ -100,12 +112,8 @@ CANONICAL_VOICEOVER = {
         "доступними стрільцям."
     ),
     "frame_12": (
-        "На сторінці матчу учасник бачить дату, місце, дисципліну та доступні місця."
-    ),
-    "frame_13": "Тут також видно програму вправ і список стрільців.",
-    "frame_14": (
-        "На цій самій сторінці можна зареєструватися, обрати доступний сквод "
-        "і сплатити внесок."
+        "На сторінці матчу учасник бачить дату, місце, дисципліну та доступні місця. "
+        "Тут можна обрати доступний сквод і сплатити внесок."
     ),
     "frame_15": (
         "Усі заявки надходять до кабінету організатора. Тут видно статус участі, оплату, "
@@ -144,6 +152,8 @@ def prepare_user_only_sources() -> None:
     for obsolete in (
         "03_shooter_3d.png",
         "03c_shooter_view_port.png",
+        "13_match_card_programme.png",
+        "14_match_card_participants.png",
         "18b_practiscore_button.png",
     ):
         path = PACK_DIR / obsolete
@@ -197,7 +207,7 @@ def normalize(source_path: Path, destination: Path, target: tuple[int, int]) -> 
 def main() -> None:
     prepare_user_only_sources()
     pack = json.loads(PACK_PATH.read_text(encoding="utf-8"))
-    frames = [frame for frame in pack["frames"] if frame["id"] not in REMOVED_OLD_FRAMES]
+    frames = [frame for frame in pack["frames"] if frame["id"] not in REMOVED_FRAMES]
     pack["frames"] = frames
 
     shooter_view = next(frame for frame in frames if frame["id"] == "frame_03b")
@@ -217,8 +227,12 @@ def main() -> None:
     end_card["action"] = "Надана користувачем головна Shooters Tools як фінальний CTA."
     end_card["source_file"] = "19_cta.png"
 
+    match_page = next(frame for frame in frames if frame["id"] == "frame_12")
+    match_page["action"] = "Один кадр сторінки матчу: основні дані, вибір скводу й оплата."
+    match_page["subtitle"] = "Сторінка матчу"
+
     for frame in frames:
-        frame["voiceover"] = CANONICAL_VOICEOVER[frame["id"]]
+        frame["voiceover"] = APPROVED_VOICEOVER[frame["id"]]
         current_file = frame["file"]
         source_file = frame.get("source_file", current_file)
         source_path = PACK_DIR / source_file
@@ -243,12 +257,9 @@ def main() -> None:
             "stretch": False,
         }
         frame["pause_after_sec"] = 0.6 if frame["id"] in SECTION_ENDS else 0.2
-        current_base_duration = frame.get("base_duration_sec", frame["duration_sec"])
-        word_count = len(frame["voiceover"].split())
-        narration_duration = math.ceil(word_count / (145 / 60) + 0.5)
-        base_duration = max(current_base_duration, narration_duration)
-        frame["base_duration_sec"] = base_duration
-        frame["duration_sec"] = base_duration + DURATION_INCREASES.get(frame["id"], 0)
+        frame["base_duration_sec"] = DURATION_SEC[frame["id"]]
+        frame["duration_sec"] = DURATION_SEC[frame["id"]]
+        frame.pop("voiceover_continues", None)
 
     intro = next(frame for frame in frames if frame["id"] == "frame_01")
     intro["voiceover_segments"] = [
@@ -271,7 +282,7 @@ def main() -> None:
     pack["version"] = 3
     pack["target_duration_sec"] = sum(frame["duration_sec"] for frame in frames)
     pack["pace"] = {
-        "vo_wpm": "145-160",
+        "vo_wpm": "160-175",
         "sentence_pause_sec": "0.25-0.4",
         "section_pause_sec": "0.55-0.7",
         "note": (
@@ -291,7 +302,7 @@ def main() -> None:
         "Використовуй лише нормалізовані file/file_9x16: усі полотна мають "
         "стабільний розмір. Не crop, не stretch, не змінюй масштаб полотна між кадрами. "
         "У voiceover_segments паузи обов’язкові; після кожного розділу витримуй "
-        "pause_after_sec. VO 145–160 wpm, без злипання речень. Багатокадрові "
+        "pause_after_sec. VO 160–175 wpm, без злипання речень. Багатокадрові "
         "розділи — короткі cuts. Без блюру. PractiScore = готовий файл. "
         "Без «Незабаром»."
     )
