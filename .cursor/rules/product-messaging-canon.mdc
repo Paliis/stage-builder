@@ -1,0 +1,14 @@
+---
+description: Canonical Shooters Tools product messaging for public-facing content
+alwaysApply: true
+---
+
+# Product messaging canon
+
+For product descriptions, publications, video scripts, landing pages, social posts, help content, presentations, and partner materials, use `docs/PRODUCT_MESSAGING_CANON.md` as the source of truth.
+
+- Preserve its product logic, terminology, and human Ukrainian tone.
+- You may shorten or adapt the text to a format, but do not contradict or overstate it.
+- Keep Stage Builder + Matches as one path from stage idea to ready match.
+- Describe PractiScore as a ready file/export, never as two-way synchronization.
+- If shipped behavior changes, update the canon in the same task before publishing new claims.
