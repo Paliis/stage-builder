@@ -78,7 +78,7 @@
 |----|------|---------|--------|-----------|
 | **BL-025** | Match Admin: дані та заявки | Фундамент матчів; MVP shotgun. Див. **MA-A\*** у [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md). | partial | P2 |
 | **BL-026** | Підтвердження заявок і примітка про оплату | **MA-B\*** (B01 done, B02 partial); онлайн — **MA-P\*** | partial | P2 |
-| **BL-027** | Прив’язка вправ Stage Builder до матчу | **MA-C\*** — C01/C02 partial у коді та БД | partial | P2 |
+| **BL-027** | Прив’язка вправ Stage Builder до матчу | **MA-C01/C02** partial; **MA-C04** done (бібліотека → матч) | partial | P2 |
 | **BL-028** | Експорт `.psc` з портала | **MA-D\*** — D01 partial, D03 done | partial | P2 |
 | **BL-033** | Каталог: тип події та рівень PS | **MA-R01** ✓ | **done** | P3 |
 | **BL-034** | Seed демо-матчу | **MA-R02** ✓ | **done** | P3 |

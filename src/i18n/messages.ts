@@ -1092,6 +1092,22 @@ export type MessageTree = {
     matchOrgStagesZoneVisibilityTitle: string
     matchOrgStagesLinkedListHeading: string
     matchOrgStagesOpenEditor: string
+    matchOrgStagesLibraryLabel: string
+    matchOrgStagesLibraryHint: string
+    matchOrgStagesLibraryPlaceholder: string
+    matchOrgStagesLibraryLoading: string
+    matchOrgStagesLibraryEmpty: string
+    matchOrgStagesLibraryUntitled: string
+    matchOrgStagesLibraryAdd: string
+    matchOrgStagesLibraryPickRequired: string
+    matchOrgStagesLibraryNeedSignIn: string
+    matchOrgStagesLibraryUnavailable: string
+    matchOrgStagesLibraryLoadError: string
+    matchOrgStagesLibraryNotFound: string
+    matchOrgStagesLibraryPublishRateLimited: string
+    matchOrgStagesLibraryPublishTooLarge: string
+    matchOrgStagesLibraryPublishNotConfigured: string
+    matchOrgStagesLibraryPublishNetwork: string
     matchOrgStagesPasteLabel: string
     matchOrgStagesPastePlaceholder: string
     matchOrgStagesAdd: string
@@ -2419,18 +2435,35 @@ export const ukMessages: MessageTree = {
       'Три кроки: вправи з Stage Builder, або один PDF програми, і коли показати програму на картці матчу.',
     matchOrgStagesZoneSbTitle: '1. Вправи з Stage Builder',
     matchOrgStagesZoneSbIntro:
-      'Створи вправу в редакторі, опублікуй посилання перегляду (view) і встав його нижче. Назва в програмі збігається з PDF-брифінгом вправи.',
+      'Обери збережену вправу з «Моїх вправ» — ми самі створимо посилання перегляду й додамо її в програму. Або встав уже готове view-посилання. Назва в програмі збігається з PDF-брифінгом вправи.',
     matchOrgStagesZonePdfTitle: '2. PDF-брифінг програми',
     matchOrgStagesZonePdfInformer:
       'Якщо програма лише в PDF (без посилань Stage Builder у списку нижче): збірний файл матчу на сайті формується без окремих вправ — лише зведення та дані про стрільців. Таблиця статистики вправ і блоки «Вправа 1…N» у збірному PDF не з’являться. Потрібні схеми вправ — додай їх у зоні 1.',
     matchOrgStagesZoneVisibilityTitle: '3. Відтермінування публікації',
     matchOrgStagesLinkedListHeading: 'Додані вправи (Stage Builder)',
     matchOrgStagesOpenEditor: 'Відкрити Stage Builder (нова вкладка)',
-    matchOrgStagesPasteLabel: 'Посилання перегляду або id',
+    matchOrgStagesLibraryLabel: 'З «Моїх вправ»',
+    matchOrgStagesLibraryHint:
+      'Додавання публікує snapshot перегляду (як «Поділитися» → view). Далі в програмі можна оновити всі вправи до останніх версій.',
+    matchOrgStagesLibraryPlaceholder: 'Обери вправу…',
+    matchOrgStagesLibraryLoading: 'Завантаження списку…',
+    matchOrgStagesLibraryEmpty: 'Немає збережених вправ — спочатку збережи в Stage Builder',
+    matchOrgStagesLibraryUntitled: 'Без назви',
+    matchOrgStagesLibraryAdd: 'Додати з бібліотеки',
+    matchOrgStagesLibraryPickRequired: 'Обери вправу зі списку «Мої вправи».',
+    matchOrgStagesLibraryNeedSignIn: 'Увійди в акаунт, щоб бачити «Мої вправи».',
+    matchOrgStagesLibraryUnavailable: 'Хмарна бібліотека недоступна в цьому середовищі.',
+    matchOrgStagesLibraryLoadError: 'Не вдалося завантажити «Мої вправи». Спробуй ще раз.',
+    matchOrgStagesLibraryNotFound: 'Цю вправу вже видалено з бібліотеки — онови список.',
+    matchOrgStagesLibraryPublishRateLimited: 'Забагато публікацій сьогодні. Спробуй пізніше або встав готове посилання.',
+    matchOrgStagesLibraryPublishTooLarge: 'Вправа завелика для публікації посилання.',
+    matchOrgStagesLibraryPublishNotConfigured: 'Публікація посилань на сервері не налаштована.',
+    matchOrgStagesLibraryPublishNetwork: 'Мережева помилка під час публікації. Перевір з’єднання.',
+    matchOrgStagesPasteLabel: 'Або посилання перегляду / id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… або s…',
-    matchOrgStagesAdd: 'Додати до події',
+    matchOrgStagesAdd: 'Додати за посиланням',
     matchOrgStagesAdding: 'Додавання…',
-    matchOrgStagesEmpty: 'Ще немає прив’язаних вправ — додай перше посилання перегляду.',
+    matchOrgStagesEmpty: 'Ще немає прив’язаних вправ — додай з «Моїх вправ» або встав посилання перегляду.',
     matchOrgStagesColTitle: 'Назва',
     matchOrgStagesColShareId: 'Share',
     matchOrgStagesColActions: 'Дії',
@@ -3833,18 +3866,35 @@ export const enMessages: MessageTree = {
       'Three steps: Stage Builder exercises, or one programme PDF, and when the programme appears on the public match card.',
     matchOrgStagesZoneSbTitle: '1. Exercises from Stage Builder',
     matchOrgStagesZoneSbIntro:
-      'Create a stage in the editor, publish a view link, and paste it below. The programme title matches the stage briefing PDF.',
+      'Pick a saved stage from My stages—we publish a view snapshot and add it to the programme. Or paste an existing view link. The programme title matches the stage briefing PDF.',
     matchOrgStagesZonePdfTitle: '2. Programme briefing PDF',
     matchOrgStagesZonePdfInformer:
       'If the programme is PDF-only (no Stage Builder links in the list below): the combined match file on the site is built without individual stages—only summaries and shooter data. Stage stats and “Stage 1…N” blocks are omitted. For per-stage diagrams, use zone 1.',
     matchOrgStagesZoneVisibilityTitle: '3. Publication schedule',
     matchOrgStagesLinkedListHeading: 'Linked exercises (Stage Builder)',
     matchOrgStagesOpenEditor: 'Open Stage Builder (new tab)',
-    matchOrgStagesPasteLabel: 'View URL or share id',
+    matchOrgStagesLibraryLabel: 'From My stages',
+    matchOrgStagesLibraryHint:
+      'Adding publishes a view snapshot (same as Share → view). You can later refresh all exercises to the latest versions.',
+    matchOrgStagesLibraryPlaceholder: 'Choose a stage…',
+    matchOrgStagesLibraryLoading: 'Loading list…',
+    matchOrgStagesLibraryEmpty: 'No saved stages—save one in Stage Builder first',
+    matchOrgStagesLibraryUntitled: 'Untitled',
+    matchOrgStagesLibraryAdd: 'Add from library',
+    matchOrgStagesLibraryPickRequired: 'Choose a stage from My stages.',
+    matchOrgStagesLibraryNeedSignIn: 'Sign in to see My stages.',
+    matchOrgStagesLibraryUnavailable: 'Cloud library is not available in this environment.',
+    matchOrgStagesLibraryLoadError: 'Could not load My stages. Try again.',
+    matchOrgStagesLibraryNotFound: 'That stage was removed from the library—refresh the list.',
+    matchOrgStagesLibraryPublishRateLimited: 'Too many publishes today. Try later or paste an existing link.',
+    matchOrgStagesLibraryPublishTooLarge: 'This stage is too large to publish as a link.',
+    matchOrgStagesLibraryPublishNotConfigured: 'Share publish API is not configured on the server.',
+    matchOrgStagesLibraryPublishNetwork: 'Network error while publishing. Check your connection.',
+    matchOrgStagesPasteLabel: 'Or view URL / share id',
     matchOrgStagesPastePlaceholder: 'https://…/v/s… or s…',
-    matchOrgStagesAdd: 'Add to event',
+    matchOrgStagesAdd: 'Add by link',
     matchOrgStagesAdding: 'Adding…',
-    matchOrgStagesEmpty: 'No exercises linked yet—add the first view link.',
+    matchOrgStagesEmpty: 'No exercises linked yet—add from My stages or paste a view link.',
     matchOrgStagesColTitle: 'Title',
     matchOrgStagesColShareId: 'Share',
     matchOrgStagesColActions: 'Actions',

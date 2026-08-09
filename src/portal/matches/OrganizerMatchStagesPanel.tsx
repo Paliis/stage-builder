@@ -1,5 +1,10 @@
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import {
+  listUserStages,
+  loadUserStage,
+  type UserStageSummary,
+} from '../../application/userStagesLibrary'
+import {
   buildProgrammeBriefingStoragePath,
   isAcceptedProgrammeBriefingPdf,
   MATCH_PROGRAMME_BRIEFINGS_BUCKET,
@@ -12,6 +17,7 @@ import type { MessageTree } from '../../i18n/messages'
 import { parseStageProjectJson } from '../../domain/stageProjectFile'
 import { resolveSharePublishedTitle } from '../../domain/sharePublishedTitle'
 import { payloadToProjectText } from '../../share/payloadToProjectText'
+import { weaponClassLabel } from '../shooterProfileCatalog'
 import { stageBuilderPath } from '../stageBuilderPath'
 import { extractShareViewId } from './extractShareViewId'
 import {
@@ -22,6 +28,12 @@ import {
   formatPortalDateShort,
   matchStagesAvailableFromUtcDate,
 } from './matchStagesVisibility'
+import {
+  buildLibraryLinkSnapshotMeta,
+  isShareAlreadyLinked,
+  nextMatchStageSortOrder,
+  publishViewShareFromProject,
+} from './publishViewShareFromProject'
 
 type Portal = MessageTree['portal']
 
@@ -44,8 +56,13 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   const [rows, setRows] = useState<StageLinkRow[] | undefined>(undefined)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [paste, setPaste] = useState('')
+  const [libraryRows, setLibraryRows] = useState<UserStageSummary[] | undefined>(undefined)
+  const [libraryLoadError, setLibraryLoadError] = useState<string | null>(null)
+  const [selectedLibraryId, setSelectedLibraryId] = useState('')
   const [addBusy, setAddBusy] = useState(false)
+  const [libraryAddBusy, setLibraryAddBusy] = useState(false)
   const [addError, setAddError] = useState<string | null>(null)
+  const localeCode = locale === 'uk' ? 'uk' : 'en'
   const [refreshAllBusy, setRefreshAllBusy] = useState(false)
   const [busyById, setBusyById] = useState<Record<string, 'delete' | 'move' | undefined>>({})
   const [startsAtIso, setStartsAtIso] = useState<string | null>(null)
@@ -88,6 +105,26 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   useEffect(() => {
     void reload()
   }, [reload])
+
+  const reloadLibrary = useCallback(async () => {
+    setLibraryLoadError(null)
+    const res = await listUserStages()
+    if (!res.ok) {
+      setLibraryRows([])
+      setLibraryLoadError(
+        res.errorKey === 'notSignedIn' ? p.matchOrgStagesLibraryNeedSignIn
+        : res.errorKey === 'notConfigured' ? p.matchOrgStagesLibraryUnavailable
+        : p.matchOrgStagesLibraryLoadError,
+      )
+      return
+    }
+    setLibraryRows(res.data)
+    setSelectedLibraryId((prev) => (prev && res.data.some((r) => r.id === prev) ? prev : ''))
+  }, [p.matchOrgStagesLibraryLoadError, p.matchOrgStagesLibraryNeedSignIn, p.matchOrgStagesLibraryUnavailable])
+
+  useEffect(() => {
+    void reloadLibrary()
+  }, [reloadLibrary])
 
   const reloadVisibilitySetting = useCallback(async () => {
     setVisibleDaysError(null)
@@ -249,11 +286,9 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
       const shareGroupId = typeof groupIdRaw === 'string' ? groupIdRaw : null
 
       const ordered = [...(rows ?? [])].sort((a, b) => a.sort_order - b.sort_order)
-      const nextOrder =
-        ordered.length === 0 ? 0 : Math.max(...ordered.map((x) => x.sort_order)) + 1
+      const nextOrder = nextMatchStageSortOrder(ordered)
 
-      const exists = ordered.some((x) => x.share_stage_id === shareId)
-      if (exists) {
+      if (isShareAlreadyLinked(ordered, shareId)) {
         setAddError(p.matchOrgStagesDuplicate)
         return
       }
@@ -277,6 +312,76 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
       await reload()
     } finally {
       setAddBusy(false)
+    }
+  }
+
+  const mapPublishError = useCallback(
+    (error: 'rateLimited' | 'tooLarge' | 'notConfigured' | 'network' | 'generic', detail?: string) => {
+      if (error === 'rateLimited') return p.matchOrgStagesLibraryPublishRateLimited
+      if (error === 'tooLarge') return p.matchOrgStagesLibraryPublishTooLarge
+      if (error === 'notConfigured') return p.matchOrgStagesLibraryPublishNotConfigured
+      if (error === 'network') return p.matchOrgStagesLibraryPublishNetwork
+      return detail?.trim() ? detail : p.matchOrgStagesErrorGeneric
+    },
+    [p],
+  )
+
+  const handleAddFromLibrary = async (e: FormEvent) => {
+    e.preventDefault()
+    setAddError(null)
+    if (!selectedLibraryId) {
+      setAddError(p.matchOrgStagesLibraryPickRequired)
+      return
+    }
+
+    setLibraryAddBusy(true)
+    try {
+      const loaded = await loadUserStage(selectedLibraryId)
+      if (!loaded.ok) {
+        setAddError(
+          loaded.errorKey === 'notFound' ? p.matchOrgStagesLibraryNotFound
+          : loaded.errorKey === 'notSignedIn' ? p.matchOrgStagesLibraryNeedSignIn
+          : p.matchOrgStagesLibraryLoadError,
+        )
+        await reloadLibrary()
+        return
+      }
+
+      const published = await publishViewShareFromProject(loaded.data.project, localeCode)
+      if (!published.ok) {
+        setAddError(mapPublishError(published.error, published.detail))
+        return
+      }
+
+      const title =
+        resolveSharePublishedTitle(loaded.data.project.stage, loaded.data.project.briefing) ||
+        loaded.data.title
+
+      const ordered = [...(rows ?? [])].sort((a, b) => a.sort_order - b.sort_order)
+      if (isShareAlreadyLinked(ordered, published.id)) {
+        setAddError(p.matchOrgStagesDuplicate)
+        return
+      }
+
+      const { error: insErr } = await sb.from('match_stage_links').insert({
+        match_id: matchId,
+        sort_order: nextMatchStageSortOrder(ordered),
+        share_stage_id: published.id,
+        share_group_id: published.shareGroupId,
+        snapshot_meta: buildLibraryLinkSnapshotMeta({
+          title,
+          userStageId: loaded.data.id,
+        }),
+      })
+
+      if (insErr) {
+        setAddError(insErr.message)
+        return
+      }
+      setSelectedLibraryId('')
+      await reload()
+    } finally {
+      setLibraryAddBusy(false)
     }
   }
 
@@ -442,6 +547,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
   const displayTitles = programmeListDisplayTitles(ordered, p)
 
   const anyRowBusy = Object.keys(busyById).length > 0
+  const stagesBusy = addBusy || libraryAddBusy
   const visibleDaysParsed = parseVisibleDaysInput(visibleDaysBefore)
   const visibleFromPreview = useMemo(() => {
     if (visibleDaysParsed == null || visibleDaysParsed <= 0 || !startsAtIso) return null
@@ -468,7 +574,49 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
           </Link>
         </p>
 
-        <form onSubmit={(e) => void handleAdd(e)}>
+        <form onSubmit={(e) => void handleAddFromLibrary(e)}>
+          <label htmlFor="match-stage-library" className="portal-match-org-stages-field-label">
+            {p.matchOrgStagesLibraryLabel}
+          </label>
+          <p className="portal-match-org-stages-field-hint">{p.matchOrgStagesLibraryHint}</p>
+          <div className="portal-match-org-stages-field-row">
+            <select
+              id="match-stage-library"
+              className="portal-match-org-stages-text-input"
+              value={selectedLibraryId}
+              onChange={(e) => setSelectedLibraryId(e.target.value)}
+              disabled={stagesBusy || libraryRows === undefined}
+            >
+              <option value="">
+                {libraryRows === undefined ?
+                  p.matchOrgStagesLibraryLoading
+                : libraryRows.length === 0 ?
+                  p.matchOrgStagesLibraryEmpty
+                : p.matchOrgStagesLibraryPlaceholder}
+              </option>
+              {(libraryRows ?? []).map((row) => (
+                <option key={row.id} value={row.id}>
+                  {row.title || p.matchOrgStagesLibraryUntitled} ·{' '}
+                  {weaponClassLabel(row.weaponClass, localeCode)}
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className="portal-btn portal-btn--primary portal-btn--compact"
+              disabled={stagesBusy || !selectedLibraryId}
+            >
+              {libraryAddBusy ? p.matchOrgStagesAdding : p.matchOrgStagesLibraryAdd}
+            </button>
+          </div>
+          {libraryLoadError ?
+            <p role="alert" style={{ margin: '0.5rem 0 0', fontSize: '0.86rem', color: '#991b1b' }}>
+              {libraryLoadError}
+            </p>
+          : null}
+        </form>
+
+        <form onSubmit={(e) => void handleAdd(e)} style={{ marginTop: '0.85rem' }}>
           <label htmlFor="match-stage-paste" className="portal-match-org-stages-field-label">
             {p.matchOrgStagesPasteLabel}
           </label>
@@ -482,12 +630,12 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
               placeholder={p.matchOrgStagesPastePlaceholder}
               autoComplete="off"
               spellCheck={false}
-              disabled={addBusy}
+              disabled={stagesBusy}
             />
             <button
               type="submit"
-              className="portal-btn portal-btn--primary portal-btn--compact"
-              disabled={addBusy || !paste.trim()}
+              className="portal-btn portal-btn--secondary portal-btn--compact"
+              disabled={stagesBusy || !paste.trim()}
             >
               {addBusy ? p.matchOrgStagesAdding : p.matchOrgStagesAdd}
             </button>
@@ -499,7 +647,9 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
             <button
               type="button"
               className="portal-btn portal-btn--secondary portal-btn--compact"
-              disabled={refreshAllBusy || addBusy || programmePdfBusy || anyRowBusy || visibleDaysSaving}
+              disabled={
+                refreshAllBusy || stagesBusy || programmePdfBusy || anyRowBusy || visibleDaysSaving
+              }
               onClick={() => void refreshAllRows()}
             >
               {refreshAllBusy ? p.matchOrgStagesRefreshAllBusy : p.matchOrgStagesRefreshAll}
@@ -526,13 +676,13 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
               id="match-programme-pdf"
               type="file"
               accept="application/pdf,.pdf"
-              disabled={programmePdfBusy || addBusy}
+              disabled={programmePdfBusy || stagesBusy}
               onChange={(e) => setProgrammePdfFile(e.target.files?.[0] ?? null)}
             />
             <button
               type="submit"
               className="portal-btn portal-btn--primary portal-btn--compact"
-              disabled={programmePdfBusy || addBusy || !programmePdfFile}
+              disabled={programmePdfBusy || stagesBusy || !programmePdfFile}
             >
               {programmePdfBusy ?
                 p.matchOrgProgrammePdfUploading
@@ -553,7 +703,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
                 <button
                   type="button"
                   className="portal-btn portal-btn--secondary portal-btn--compact"
-                  disabled={programmePdfBusy || addBusy}
+                  disabled={programmePdfBusy || stagesBusy}
                   onClick={() => void removeProgrammePdf()}
                 >
                   {p.matchOrgProgrammePdfRemove}
@@ -584,7 +734,7 @@ export function OrganizerMatchStagesPanel({ locale, matchId, p }: OrganizerMatch
               }}
               onBlur={() => void saveVisibleDaysBefore(visibleDaysBefore)}
               placeholder={p.matchOrgStagesVisibleDaysPlaceholder}
-              disabled={visibleDaysSaving || addBusy || refreshAllBusy || programmePdfBusy}
+              disabled={visibleDaysSaving || stagesBusy || refreshAllBusy || programmePdfBusy}
               aria-describedby="match-stages-visible-days-hint"
             />
           </label>

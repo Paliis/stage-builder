@@ -52,7 +52,7 @@
 |----|--------|--------|-----|----------|
 | **MA-C01** | Прив’язка вправи до матчу (share `/v/:id`, метадані) | partial | BL-027 | UI **`OrganizerMatchEditPage`**, таблиця **`match_stage_links`**, міграції share group; залишаться стабільні PSC-поля (**MA-C03**) |
 | **MA-C02** | Оновлення прив’язки до останнього view у групі (RPC / кнопка в UI) | partial | BL-027 | RPC **`organizer_refresh_match_stage_link_latest`** + кнопки в UI; регресії / edge cases — за потреби |
-| **MA-C04** | Додати вправу в матч **прямо з «Моїх вправ»**: вибір із `user_stages` в `OrganizerMatchStagesPanel` → авто-публікація view-шеру → запис у `match_stage_links` | idea | — | Зараз організатор вставляє тільки посилання `/v/:id`; бібліотека (`userStagesLibrary.ts`) і `shared_stages` не пов’язані — у шерів немає `owner_id`. Суміжне: розділ «Мої вправи» в кабінеті стрільця |
+| **MA-C04** | Додати вправу в матч **прямо з «Моїх вправ»**: вибір із `user_stages` в `OrganizerMatchStagesPanel` → авто-публікація view-шеру → запис у `match_stage_links` | **done** | BL-027 | UI + `publishViewShareFromProject`; paste `/v/:id` лишився запасним шляхом. Snapshot_meta: `source=user_library`, `user_stage_id`. Суміжне (поза скоупом): розділ «Мої вправи» в кабінеті стрільця |
 | **MA-C03** | Стабільні поля для мапінгу в `match_stages[]` PSC (поппери, папір, тощо) | candidate | BL-027 | Довідник полів і **§8.6** черга кроків 1→7 — [MATCH_EXPORT_PSC_STAGE_FIELDS.md](./MATCH_EXPORT_PSC_STAGE_FIELDS.md), [MATCH_REGISTRATION_AND_PSC_PLAN.md §8.6](./MATCH_REGISTRATION_AND_PSC_PLAN.md#86-покроковий-план-mac03--mad01--mad02-узгоджена-черга); у коді уже `PscStageMetrics` + парсинг share |
 
 ---
@@ -152,6 +152,7 @@
 
 | Дата | Зміни |
 |------|--------|
+| 2026-08-09 | **MA-C04** → **done**: вибір із `user_stages` у `OrganizerMatchStagesPanel`, авто-publish view через `/api/publish-share`, insert у `match_stage_links`; paste `/v/:id` лишився. |
 | 2026-08-01 | **MA-C04** (idea): додавання вправи в матч із хмарної бібліотеки `user_stages` (SB-CL01) замість ручного посилання на шер. |
 | 2026-06-04 | **MA-E01…E03** → **done** на staging: programme stats API, participant summary RPC, briefings PDF + viewer; [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) оновлено під код. |
 | 2026-06-01 | План **MA-E01…E03**: [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) (статистика вправ, дивізіони/класи, збірний PDF). |
