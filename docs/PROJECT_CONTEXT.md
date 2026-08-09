@@ -8,7 +8,7 @@
 
 **Cursor (агент):** правила в `.cursor/rules/` (зокрема `agent-context-budget.mdc` — не перевантажувати чат); індексація без важких артефактів — `.cursorignore`.
 
-**Останнє оновлення документа:** травень 2026 (узгоджено з перебудовою **[PRODUCT.md](./PRODUCT.md)** — портальний контур і додані сценарії винесені в основу огляду).
+**Останнє оновлення документа:** серпень 2026 (хмарна бібліотека **«Мої вправи»**, OTP-автентифікація, зона стрільця в 3D — узгоджено з [PRODUCT.md](./PRODUCT.md) і [FUNCTIONALITY.md](./FUNCTIONALITY.md)).
 
 ---
 
@@ -18,7 +18,7 @@
 |------|----------|
 | **Що за продукт** | **Shooters Tools** — один сайт (**SPA** на **Vercel**): портальна оболонка **`/:locale`** + модулі (див. [PRODUCT.md §A.1](./PRODUCT.md#a1-позиціонування-порталу)) |
 | **Ключові модулі** | **Stage Builder** (`/:locale/stage-builder`), **Матчі** (за env), **RO Helper**, **Hit Factor**, **акаунт**, share **`/v/*`**, **`/e/*`** — зведено в таблиці **PRODUCT §A.1** |
-| **Модуль редактора** | **Stage Builder** — 2D/3D план вправ, брифінг, PDF, `*.stage.json`, PWA (повна поведінка — FUNCTIONALITY) |
+| **Модуль редактора** | **Stage Builder** — 2D/3D план вправ, брифінг, PDF, **«Мої вправи»** (`user_stages`), `*.stage.json`, PWA (повна поведінка — FUNCTIONALITY) |
 | **URL редактора** | **`/:locale/stage-builder`** (усередині `PortalShell`; старий `/stage-builder` — редірект) |
 | **Репозиторій** | GitHub: `Paliis/stage-builder` (приватний npm-пакет не публікується) |
 | **Деплой** | **Prod:** Vercel `stage-builder`, гілка `main` → [shooters-tools.com](https://shooters-tools.com). **Staging:** `stage-builder-staging` → [stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app) (гілка `staging`, **синхронізується з `main`** після кожного push — див. [TECH.md](./TECH.md) § CI). CI — `npm run check` на `main` і `staging` |
@@ -67,8 +67,8 @@
 
 - Мінімум пострілів у UI — **орієнтовна** евристика, не регламент змагання.
 - Кути безпеки на плані — **візуальна підказка**, не юридична перевірка.
-- Синхронізація між пристроями — **файл**, **посилання share**, власні процеси користувача; повноцінного облікового запису «хмара для всіх даних редактора» немає (share — окремий епік BL-001).
-- **Акаунт порталу** (Supabase) потрібен для **реєстрації на матчі** та налаштувань стрільця (**§2.5**); він **не** є хмарним сховищем усіх проєктів **Stage Builder** (див. **PRODUCT §A.9**).
+- **Між пристроями:** після входу — **«Мої вправи»** (`user_stages`, квоти 200 / 512 КБ); без входу — чернетка в браузері; також **файл** `*.stage.json` і **share** (`/v/…`, `/e/…`, BL-001).
+- **Акаунт порталу** (Supabase) потрібен для матчів, профілю й хмарної бібліотеки редактора; деталі й залишки (дубль, спільні вправи) — **PRODUCT §A.9**, [DATA_AND_STORAGE.md](./DATA_AND_STORAGE.md).
 
 ### 2.7. Зворотний зв’язок
 
@@ -132,7 +132,8 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 
 - Зведена таблиця ключів і сценарій після скидання БД — **[DATA_AND_STORAGE.md](./DATA_AND_STORAGE.md)**.
 - **Файл вправи:** `*.stage.json`, версія формату **`STAGE_PROJECT_VERSION`** (зараз **6** у `stageProjectFile.ts`).
-- **Чернетка:** ключ `stage-builder-session-draft-v1` у `localStorage`, debounce ~450 ms.
+- **Чернетка:** ключ `stage-builder-session-draft-v1` у `localStorage`, debounce ~450 ms; прив’язка до запису бібліотеки — `stage-builder-library-stage-id` (див. [DATA_AND_STORAGE.md](./DATA_AND_STORAGE.md)).
+- **«Мої вправи»:** таблиця `user_stages` (RLS), клієнт `userStagesLibrary.ts`; автозбереження ~30 с після першого збереження.
 - **Брифінг:** окремий стор **без** undo (undo лише для сцени).
 
 ### 3.5. Змінні середовища (коротко)

@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-07-31 · **`main`** = **`staging`** (синхрон через CI / `npm run git:sync-staging`) · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
+**Оновлено:** 2026-08-09 · **`main`** = **`staging`** (синхрон через CI / `npm run git:sync-staging`) · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
 
 ## Контекст
 
@@ -142,5 +142,5 @@
 ## Перше повідомлення в новому чаті
 
 ```
-Прочитай docs/CHAT_HANDOFF.md. Далі: UX редактора та 3D (зона стрільця, навігація). commit + push main після змін.
+Прочитай docs/CHAT_HANDOFF.md. Далі: за потреби MA-C04 (бібліотека → матч) або UX/доки. commit + push main після змін.
 ```
