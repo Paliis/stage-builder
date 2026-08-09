@@ -26,7 +26,7 @@
       "type": "extract",
       "extractFrom": "first-stage-full",
       "module": "stage-builder",
-      "status": "pack-pending-screenshots",
+      "status": "pack-ready",
       "script": "scripts/field-size.md",
       "reelPack": "reel-packs/field-size",
       "publishedUrl": null
