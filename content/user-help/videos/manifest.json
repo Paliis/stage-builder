@@ -10,6 +10,20 @@
   "strategy": "Hero-first product story: Stage Builder + Matches as one ecosystem. Tutorials remain P2 help.",
   "items": [
     {
+      "slug": "ecosystem-master-160s",
+      "durationSec": 160,
+      "priority": "P0",
+      "type": "product-master",
+      "module": "ecosystem",
+      "status": "pack-ready",
+      "script": "scripts/ecosystem-master-160s.md",
+      "reelPack": "reel-packs/ecosystem-master-160s",
+      "canon": "docs/PRODUCT_MESSAGING_CANON.md",
+      "publishedUrl": null,
+      "readyFrames": 23,
+      "totalFrames": 23
+    },
+    {
       "slug": "ecosystem-hero",
       "durationSec": 58,
       "priority": "P0",
