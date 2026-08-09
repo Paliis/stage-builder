@@ -11,7 +11,7 @@
   "items": [
     {
       "slug": "ecosystem-master-160s",
-      "durationSec": 111,
+      "durationSec": 172,
       "priority": "P0",
       "type": "product-master",
       "module": "ecosystem",
@@ -22,7 +22,7 @@
       "publishedUrl": null,
       "readyFrames": 21,
       "totalFrames": 21,
-      "paceNote": "111s; VO 145–160 wpm with logical pauses; normalized canvases; no PII blur"
+      "paceNote": "172s canonical VO; 145–160 wpm with logical pauses; normalized canvases; no PII blur"
     },
     {
       "slug": "ecosystem-hero",
