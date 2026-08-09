@@ -18,7 +18,7 @@
 |---|------|----|----------------|------|
 | 1 | `ecosystem-hero` | 58 | від вправи до готового матчу | [reel-packs/ecosystem-hero/](./reel-packs/ecosystem-hero/) |
 | 2 | `stage-builder-value` | 38 | 2D → 3D → PDF → бібліотека | ще немає |
-| 3 | `match-organizer-flow` | 55 | програма, учасники, оплата, PractiScore | після MA-C04 |
+| 3 | `match-organizer-flow` | 55 | програма, учасники, оплата, PractiScore | наступний pack |
 | 4 | `shooter-event-flow` | 35 | знайти, переглянути, зареєструватися, оплатити | після launch |
 
 `field-size`, `place-target` та інші вузькі ролики — P2 help; pack `field-size` зберігається як приклад технічного гайда.

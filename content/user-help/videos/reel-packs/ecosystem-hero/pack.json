@@ -77,7 +77,7 @@
       "id": "frame_06",
       "file": "06_library.png",
       "duration_sec": 5,
-      "capture_status": "pending-authenticated-ui",
+      "capture_status": "ready",
       "action": "«Мої вправи» з кількома реально збереженими вправами користувача.",
       "voiceover": "Ваші вправи залишаються у власній бібліотеці.",
       "subtitle": "Власний архів вправ",
@@ -86,10 +86,10 @@
     },
     {
       "id": "frame_07",
-      "file": "06_matches_catalog_teaser.png",
+      "file": "07_matches_catalog.png",
       "duration_sec": 5,
-      "capture_status": "ready-teaser-only",
-      "action": "Реальний staging-каталог подій; до запуску додати невеликий бейдж «Незабаром». Для релізу замінити на каталог із подіями.",
+      "capture_status": "ready",
+      "action": "Реальний кабінет організатора зі списком подій, статусами, заявками та підключеною онлайн-оплатою.",
       "voiceover": "Створіть подію і зберіть програму матчу.",
       "subtitle": "Подія та програма",
       "motion": "slow_zoom_in",
@@ -99,19 +99,18 @@
       "id": "frame_08",
       "file": "08_library_to_match.png",
       "duration_sec": 6,
-      "capture_status": "pending-ma-c04",
-      "action": "Реальний релізний UI: організатор обирає збережену вправу зі свого архіву й додає її в програму матчу.",
+      "capture_status": "ready",
+      "action": "Реальна програма матчу, наповнена готовими вправами Stage Builder.",
       "voiceover": "Додавайте готові вправи, не створюючи все з нуля.",
       "subtitle": "Готові вправи — одразу в матч",
       "motion": "slow_zoom_in",
-      "crop_safe": "keep library selector and match programme visible",
-      "release_dependency": "MA-C04"
+      "crop_safe": "keep Stage Builder programme list and quick actions visible"
     },
     {
       "id": "frame_09",
       "file": "09_participants_payment.png",
       "duration_sec": 6,
-      "capture_status": "pending-release-data",
+      "capture_status": "ready",
       "action": "Реальний матч зі списком заявок/скводами та підтвердженим онлайн-внеском.",
       "voiceover": "Приймайте заявки, наповнюйте скводи й збирайте внески онлайн.",
       "subtitle": "Учасники, скводи, оплата",
@@ -122,12 +121,12 @@
       "id": "frame_10",
       "file": "10_practiscore_export.png",
       "duration_sec": 5,
-      "capture_status": "pending-release-data",
-      "action": "Організатор завантажує готовий файл матчу для PractiScore.",
+      "capture_status": "ready",
+      "action": "У картці реального матчу доступне завантаження готового файлу для PractiScore.",
       "voiceover": "І отримуйте готовий файл матчу для PractiScore.",
       "subtitle": "Готово для PractiScore",
       "motion": "hold",
-      "crop_safe": "keep export control and success state"
+      "crop_safe": "keep match title and PractiScore export control"
     },
     {
       "id": "frame_11",
@@ -142,5 +141,5 @@
     }
   ],
   "music_mood": "confident-modern-tech",
-  "notes_for_video_agent": "Чернетку можна зібрати з ready-кадрів. Фінальний реліз заборонено експортувати, доки frame_06, frame_08, frame_09 і frame_10 не мають реальних PNG. Темп 3–6 с, VO природний, burn-in субтитри. Експорт 16:9 і 9:16. Не вигадувати UI. До запуску «Матчів» додати «Незабаром» лише до match-кадрів; після запуску прибрати."
+  "notes_for_video_agent": "Усі 11 кадрів знято з реального UI. Темп 3–6 с, VO природний, burn-in субтитри. Експорт 16:9 і 9:16. Match-кадри показувати як чинну частину єдиної екосистеми, без бейджа «Незабаром»."
 }

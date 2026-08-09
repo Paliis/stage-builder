@@ -15,11 +15,11 @@
       "priority": "P0",
       "type": "hero",
       "module": "ecosystem",
-      "status": "pack-partial-release-dependent",
+      "status": "pack-ready",
       "script": "scripts/ecosystem-hero.md",
       "reelPack": "reel-packs/ecosystem-hero",
       "publishedUrl": null,
-      "readyFrames": 7,
+      "readyFrames": 11,
       "totalFrames": 11
     },
     {
@@ -40,7 +40,6 @@
       "module": "matches",
       "status": "script",
       "script": "scripts/match-organizer-flow.md",
-      "releaseDependency": "MA-C04 and match portal production launch",
       "publishedUrl": null
     },
     {

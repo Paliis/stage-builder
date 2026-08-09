@@ -159,7 +159,7 @@
 | `match-organizer-flow` | 55 с | P0 | [scripts/match-organizer-flow.md](../content/user-help/videos/scripts/match-organizer-flow.md) |
 | `shooter-event-flow` | 35 с | P1 | [scripts/shooter-event-flow.md](../content/user-help/videos/scripts/shooter-event-flow.md) |
 
-Головний меседж: **«Від ідеї вправи до готового матчу — в одній екосистемі»**. До launch match-кадри можуть мати бейдж «Незабаром»; релізна версія — без нього.
+Головний меседж: **«Від ідеї вправи до готового матчу — в одній екосистемі»**. У роликах «Матчі» показуються як чинна частина продукту, без бейджа «Незабаром».
 
 ### 4.2. Довідкові мікрогайди (P2 help)
 
