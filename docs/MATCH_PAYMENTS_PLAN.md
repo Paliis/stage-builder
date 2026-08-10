@@ -1,6 +1,6 @@
 # Модуль «Події» — оплата стартових внесків (план)
 
-**Статус:** **Mono MVP реалізовано** на staging ([stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app)); **не** увімкнено на prod (`VITE_ENABLE_MATCH_PORTAL` вимкнено на shooters-tools.com).  
+**Статус:** **Mono MVP реалізовано** на staging ([stage-builder-staging.vercel.app](https://stage-builder-staging.vercel.app)); **не** увімкнено на prod (`VITE_ENABLE_MATCH_PORTAL` вимкнено на shooters-tools.com) — чекліст flip: [MATCH_PORTAL_PRODUCT_PLAN.md §6](./MATCH_PORTAL_PRODUCT_PLAN.md#6-prod-gate-увімкнення-матчів-на-shooters-toolscom).  
 **Беклог:** **[BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md)** → фаза **P** (`MA-P04`…`P06` **done**).  
 **Зв’язок:** фаза B — [MATCH_REGISTRATION_AND_PSC_PLAN.md §4](./MATCH_REGISTRATION_AND_PSC_PLAN.md#фаза-b--підтвердження-реєстрації-й-облік-оплати-без-платіжних-шлюзів); деплой — [TECH.md](./TECH.md); handoff — [CHAT_HANDOFF.md](./CHAT_HANDOFF.md).
 

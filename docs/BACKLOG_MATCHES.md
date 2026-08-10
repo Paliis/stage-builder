@@ -88,7 +88,7 @@
 
 ## Фаза P — онлайн-оплата (Mono MVP на staging)
 
-*Деталі — [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md). **MA-P04…P06** на staging; prod без match portal.*
+*Деталі — [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md). **MA-P04…P06** на staging; prod без match portal до flip — [MATCH_PORTAL_PRODUCT_PLAN.md §6](./MATCH_PORTAL_PRODUCT_PLAN.md#6-prod-gate-увімкнення-матчів-на-shooters-toolscom).*
 
 | ID | Задача | Статус | BL | Примітки |
 |----|--------|--------|-----|----------|
@@ -152,6 +152,7 @@
 
 | Дата | Зміни |
 |------|--------|
+| 2026-08-10 | Посилання на **prod gate** (§6 MATCH_PORTAL_PRODUCT_PLAN); аудит тестів/`tsc` перед публікацією на prod. |
 | 2026-08-09 | **MA-C04** → **done**: вибір із `user_stages` у `OrganizerMatchStagesPanel`, авто-publish view через `/api/publish-share`, insert у `match_stage_links`; paste `/v/:id` лишився. |
 | 2026-08-01 | **MA-C04** (idea): додавання вправи в матч із хмарної бібліотеки `user_stages` (SB-CL01) замість ручного посилання на шер. |
 | 2026-06-04 | **MA-E01…E03** → **done** на staging: programme stats API, participant summary RPC, briefings PDF + viewer; [MATCH_BRIEFINGS_PACKAGE_PLAN.md](./MATCH_BRIEFINGS_PACKAGE_PLAN.md) оновлено під код. |

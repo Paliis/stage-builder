@@ -191,9 +191,10 @@ RLS у Supabase обов’язковий перед production.
 | UI порталу: каталог/календар, публічна картка, реєстрація, кабінет організатора (редагування матчу, скводи, заявки, вправи) | **Є** за `VITE_ENABLE_MATCH_PORTAL` — `src/portal/matches/*`, маршрути в `src/main.tsx`; стандарти кнопок — [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md) |
 | **TypeScript зборка** «дані матчу + payload share → ZIP PSC» | **Є (v1):** `buildPortalPractiscoreZip`, Vitest **`buildPortalPractiscoreZip.test.ts`**; окремого канонічного **`contracts/*.ts`** під документовану схему **немає** — **BL-028** / **MA-D01** лишаються **partial** |
 | **Генерація `.psc` на сервері** (`POST /api/match-export-psc`, bearer Supabase) | **Є (v1)** — **`matchExportPscApiHandler.ts`**, зібраний **`api/match-export-psc.js`**; ітерації сумісності з PS і повнота **`match_stages[]`** — далі (**MA-D01**, **MA-C03**) |
-| Збірний **PDF усіх вправ** (фаза E) | **Немає** |
+| Збірний **PDF усіх вправ** (фаза E) | **Є** — **MA-E01…E03** (`GET /api/match-export-briefings`, programme stats, participant summary); PNG-знімки сцен у PDF — **ні** |
 | Автоматична **регресія** експорту (порівняння ZIP з еталоном у CI) | **Частково** — unit-тести на збірку ZIP; порівняння з **`practiscore-roundtrip-test.psc`** end-to-end у CI — **MA-D02** |
 | Ручний імпорт експорту з порталу у **PractiScore 2** (зафіксована версія застосунку) | **TBD / періодично** при зміні мапера або версії PS |
+| Онлайн-оплата Mono (фаза **P**) | **Є на staging** — **MA-P02**, **MA-P04…P06**; Vault для X-Token — **ні** (**MA-P01** partial) |
 
 ### 8.2 Хвиля A — ітерації після першої версії експорту (BL-028 + фаза D)
 
@@ -214,9 +215,10 @@ RLS у Supabase обов’язковий перед production.
 
 ### 8.4 Хвиля C — після MVP експорту
 
-1. **Фаза E:** збірний PDF вправ (сервер або клієнт) — залежить від стабільного порядку лінків і назв.
+1. ~~**Фаза E:** збірний PDF~~ — **зроблено** (**MA-E01…E03**); опційно — PNG сцен у PDF.
 2. **Фаза F:** поле «результати на PractiScore» (URL); імпорт результатів — лише після дослідження формату.
 3. **Продукт:** рішення щодо multi-discipline (handgun / PCC / …) і монетизації — окремо від технічного релізу shotgun.
+4. **Prod gate:** чекліст увімкнення `VITE_ENABLE_MATCH_PORTAL` на shooters-tools.com — [MATCH_PORTAL_PRODUCT_PLAN.md §6](./MATCH_PORTAL_PRODUCT_PLAN.md#6-prod-gate-увімкнення-матчів-на-shooters-toolscom).
 
 ### 8.5 Checklist (швидко)
 
@@ -225,7 +227,7 @@ RLS у Supabase обов’язковий перед production.
 3. ~~Базовий UI матчів (під прапором)~~ — `src/portal/matches/*`.
 4. ~~**Контракт + серверна генерація `.psc` + кнопка завантаження**~~ — **перша версія:** `POST /api/match-export-psc`, `buildPortalPractiscoreZip`, кнопка на **`/:locale/matches/my/:id`** (**BL-028** залишається відкритим під ітераціями сумісності з PS та метадані вправ із share).
 5. **Автотест + запис версії PS** після першого успішного імпорту.
-6. **PDF bundle (E)** — черга після стабільного експорту.
+6. ~~**PDF bundle (E)**~~ — **MA-E01…E03** на staging (без PNG сцен).
 
 ### 8.6 Покроковий план MA-C03 / MA-D01 / MA-D02 (узгоджена черга)
 
@@ -247,4 +249,4 @@ RLS у Supabase обов’язковий перед production.
 
 *Документ можна грумити разом із [BACKLOG.md](./BACKLOG.md); для трекінгу окремих задач — **BL-025–BL-028**. Останній зріз статусів **MA-\*** — [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md).*
 
-*Історія: 2026-05-06 — §8.1 узгоджено з кодом (`/api/match-export-psc`, `buildPortalPractiscoreZip`, тести); уточнено шлях модуля `src/portal/matches`. 2026-05-06 (друга редакція): §8.2 переформатовано під **вже реалізований** endpoint і наступні ітерації. 2026-05-06 — **§8.6**: покрокова черга MA-C03 / MA-D01 / MA-D02; [MATCH_EXPORT_PSC_STAGE_FIELDS.md](./MATCH_EXPORT_PSC_STAGE_FIELDS.md).*
+*Історія: 2026-08-10 — §8.1/§8.4/§8.5: фаза **E** і Mono на staging зафіксовані як зроблені; посилання на prod gate у [MATCH_PORTAL_PRODUCT_PLAN.md](./MATCH_PORTAL_PRODUCT_PLAN.md). 2026-05-06 — §8.1 узгоджено з кодом (`/api/match-export-psc`, `buildPortalPractiscoreZip`, тести); уточнено шлях модуля `src/portal/matches`. 2026-05-06 (друга редакція): §8.2 переформатовано під **вже реалізований** endpoint і наступні ітерації. 2026-05-06 — **§8.6**: покрокова черга MA-C03 / MA-D01 / MA-D02; [MATCH_EXPORT_PSC_STAGE_FIELDS.md](./MATCH_EXPORT_PSC_STAGE_FIELDS.md).*

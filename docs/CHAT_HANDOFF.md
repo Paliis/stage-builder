@@ -1,6 +1,6 @@
 # Handoff для наступного чату (Stage Builder)
 
-**Оновлено:** 2026-08-09 · **`main`** = **`staging`** (синхрон через CI / `npm run git:sync-staging`) · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md).
+**Оновлено:** 2026-08-10 · **`main`** = **`staging`** (синхрон через CI / `npm run git:sync-staging`) · фаза **E** (MA-E01…E03) на staging · E2E Mono **пройдено** · [MATCH_PAYMENTS_PLAN.md](./MATCH_PAYMENTS_PLAN.md) · **prod gate** — [MATCH_PORTAL_PRODUCT_PLAN.md §6](./MATCH_PORTAL_PRODUCT_PLAN.md#6-prod-gate-увімкнення-матчів-на-shooters-toolscom) (аудит: `tsc` + Vitest матчі/PSC OK; flip прапорця ще не зроблено).
 
 ## Контекст
 

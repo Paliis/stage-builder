@@ -45,7 +45,7 @@
 | **1** | Локально: `npm run build`, тести на browse-utils. | **Деплой:** переконайся, що **Vercel production** зібрана з `main` після merge; **smoke на проді** (твій акаунт / URL) — агент не має доступу до твого прод-роуту. |
 | **2** | Файл seed оновлено (`match` + `L2` для тестового матчу). | Якщо seed-матч **вже** був у БД до зміни — зроби **`UPDATE matches SET …`** у SQL Editor або видали тестовий матч і перезапусти seed. **Хмара:** `npm run supabase:seed:match-all` лише якщо є `supabase link` і дозволено писати в проєкт. |
 | **3–4** | UI каталогу й «Мої матчі». | За великого каталогу (>500 майбутніх матчів) можливі **пагінація / індекси** — поки не потрібно. |
-| **5** | Частково: підтвердження заявок (**MA-B01**), публічний ростер і прив’язка вправ (**MA-B02**, **MA-C01**, **MA-C02** — **partial**); **`.psc`** v1; **збірний PDF брифінгів** (**MA-E01…E03** — **done**, без PNG знімків сцен). | PSC §8.6 (**MA-C03**, **MA-D01**), результати (**MA-F**), поліровка UX — **BL-026**–**BL-028**, [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md). |
+| **5** | Частково: підтвердження заявок (**MA-B01**), публічний ростер і прив’язка вправ (**MA-B02**, **MA-C01**, **MA-C02** — **partial**); **`.psc`** v1; **збірний PDF брифінгів** (**MA-E01…E03** — **done**, без PNG знімків сцен); **Mono** (**MA-P02**, **MA-P04…P06** — **done** на staging); **MA-C04** (вправа з «Моїх вправ»). | PSC §8.6 (**MA-C03**, **MA-D01**), результати (**MA-F**), waitlist (**MA-W***), Vault Mono (**MA-P01**), поліровка UX — **BL-026**–**BL-028**, [MATCH_REGISTRATION_AND_PSC_PLAN.md](./MATCH_REGISTRATION_AND_PSC_PLAN.md). |
 | **6** | §5 у цьому файлі + **підказки в `OrganizerMatchEditPage`** (`matchOrgTaxonomyOptionalLead`, `matchOrgEventKindHint`, `matchOrgPsLevelHint`). | — |
 
 ---
@@ -74,6 +74,7 @@
 | 2026-05-06 | П. **11** (`location_label`, BBCode, [MATCHES_PORTAL_BUTTONS.md](./MATCHES_PORTAL_BUTTONS.md)); §2.1 крок **5** — уточнено **PSC v1** + **MA-D01/C03**. |
 | 2026-05-07 | Оновлено «Що вже зроблено» (каталог організаторів, сповіщення заявок, ростер, прив’язка вправ, rich description); §2.1 крок **5** — частковий прогрес епіку; синхронізація з [BACKLOG.md](./BACKLOG.md) (**BL-025**–**BL-028** **partial**) та [BACKLOG_MATCHES.md](./BACKLOG_MATCHES.md). |
 | 2026-06-04 | П. **12**: фаза **E** (MA-E01…E03) на staging; §2.1 крок **5** — PDF брифінгів зроблено, PSC/результати лишаються. |
+| 2026-08-10 | §2.1 крок **5** — Mono + **MA-C04**; додано **§6 Prod gate** (аудит тестів/`tsc`). |
 
 ---
 
@@ -85,3 +86,40 @@
 - **Рівень PS (`ps_match_level` → у файлі `.psc` ключ `match_level`: `L1`…`L5`)** — це **офіційна шкала рівнів змагань IPSC / PractiScore** (Level I … Level V). Якщо рівень не обраний, у експорт **не** підставляється значення за замовчуванням — так узгоджено з форматом PS.
 
 Якщо не впевнений у рівні — залиш поле порожнім; тип події теж можна не задавати, тоді на публічній картці буде **«не вказано»**.
+
+---
+
+## 6. Prod gate: увімкнення матчів на shooters-tools.com
+
+**Вердикт (2026-08-10):** MVP модуля на **staging** стабільний для демо й E2E (каталог, реєстрація, організатор, PDF, Mono, `.psc` v1). На **prod** маршрути все ще **вимкнені** (`VITE_ENABLE_MATCH_PORTAL` ≠ `1`) — свідомо, за [MATCH_REGISTRATION_AND_PSC_PLAN.md §1.4](./MATCH_REGISTRATION_AND_PSC_PLAN.md).
+
+**Автоперевірки (локально):** `npx tsc -b` OK; Vitest матчі / PSC / оплата — **109** тестів (15+1 файлів) OK.
+
+### Готово для flip прапорця (технічний мінімум)
+
+| # | Що | Статус |
+|---|-----|--------|
+| 1 | Той самий Supabase, що staging; міграції match/payment застосовані | так (shared cloud) |
+| 2 | Код у `main` / синхрон `staging` | так (CI sync) |
+| 3 | API артефакти (`api/match-export-*.js`, payments) зібрані в репо | так |
+| 4 | Staging smoke: реєстрація, roster, вправи, PDF, Mono E2E | так (зафіксовано в [CHAT_HANDOFF.md](./CHAT_HANDOFF.md)) |
+
+### Зробити в момент увімкнення на prod
+
+| # | Дія | Хто |
+|---|-----|-----|
+| 1 | Vercel **production** (проєкт shooters-tools / stage-builder): `VITE_ENABLE_MATCH_PORTAL=1` + redeploy | людина |
+| 2 | Переконатися, що Production env має ті самі `SUPABASE_*` / payment handlers, що staging | людина |
+| 3 | Smoke на [shooters-tools.com](https://shooters-tools.com): `/uk/matches`, картка, заявка, `/matches/my`, експорт `.psc` / PDF | людина |
+| 4 | SEO після flip — [SEO_WHEN_MATCH_PORTAL_ENABLED.md](./SEO_WHEN_MATCH_PORTAL_ENABLED.md) | після релізу |
+
+### Не блокує MVP-реліз, але лишається відкритим
+
+- **MA-C03 / MA-D01 / MA-D02** — повнота / fallback PSC (§8.6).
+- **MA-B02** — поліровка ростера; **MA-A\*** — ще `partial` у беклозі (функціонально на staging є).
+- **MA-P01** — Vault для Mono X-Token (зараз колонка + service role).
+- **MA-W\*** — waitlist / дедлайн hold слота.
+- **MA-F\*** — посилання на результати PS.
+- User-help відео матчів — `ready-for-shoot`, не обов’язково до flip.
+
+**Рекомендація:** увімкнути prod, коли прийнятний **продуктовий** ризик MVP (shotgun + Mono без Vault/waitlist) і пройдено smoke на проді після flip. Технічних блокерів у репо на 2026-08-10 немає.

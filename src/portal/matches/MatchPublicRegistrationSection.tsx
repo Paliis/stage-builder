@@ -662,30 +662,34 @@ export function MatchPublicRegistrationSection({
         return
       }
 
-      const defaultsPayload = isSeminarMinimal ?
-        {
-          user_id: user.id,
-          first_name: firstNameTrim,
-          last_name: lastNameTrim,
-          phone: phoneTrim,
-          region: regionTrim,
-        }
-      : {
-          user_id: user.id,
-          first_name: firstNameTrim,
-          last_name: lastNameTrim,
-          division: div,
-          classification_grade: '',
-          phone: phoneTrim,
-          region: regionTrim,
-          weapon_class: matchWeaponClassId,
-          categories: storedCategories,
-          power_factor: powerFactor,
-        }
-
-      const { error: defErr } = await sb
-        .from('participant_registration_defaults')
-        .upsert(defaultsPayload, { onConflict: 'user_id' })
+      // Separate upserts: a ternary union breaks Supabase Insert excess-property checks.
+      const { error: defErr } =
+        isSeminarMinimal ?
+          await sb.from('participant_registration_defaults').upsert(
+            {
+              user_id: user.id,
+              first_name: firstNameTrim,
+              last_name: lastNameTrim,
+              phone: phoneTrim,
+              region: regionTrim,
+            },
+            { onConflict: 'user_id' },
+          )
+        : await sb.from('participant_registration_defaults').upsert(
+            {
+              user_id: user.id,
+              first_name: firstNameTrim,
+              last_name: lastNameTrim,
+              division: div,
+              classification_grade: '',
+              phone: phoneTrim,
+              region: regionTrim,
+              weapon_class: matchWeaponClassId,
+              categories: storedCategories,
+              power_factor: powerFactor,
+            },
+            { onConflict: 'user_id' },
+          )
       if (defErr) console.warn('participant_registration_defaults upsert:', defErr.message)
 
       closeRegistrationModal()

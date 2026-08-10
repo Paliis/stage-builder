@@ -146,7 +146,7 @@ Share-роути: `noindex`; OG для ботів — Edge **`middleware.ts`** +
 | Supabase (сервер) | `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL` або `VITE_SUPABASE_URL` | `POST /api/publish-share` |
 | Канон URL | `VITE_SHARE_PUBLIC_ORIGIN`, `VITE_PUBLIC_SITE_ORIGIN` | Посилання в API, QR, OG; fallback — `VERCEL_PROJECT_PRODUCTION_URL` + нормалізація legacy |
 | Staging | `VITE_SITE_ENV=staging` (проєкт `stage-builder-staging`) | noindex, title `(staging)`, стрічка в UI |
-| Події на staging | `VITE_ENABLE_MATCH_PORTAL=1` | маршрути `/:locale/matches/*`; prod без прапорця |
+| Події на staging | `VITE_ENABLE_MATCH_PORTAL=1` | маршрути `/:locale/matches/*`; prod без прапорця до flip — [MATCH_PORTAL_PRODUCT_PLAN.md §6](./MATCH_PORTAL_PRODUCT_PLAN.md#6-prod-gate-увімкнення-матчів-на-shooters-toolscom) |
 | Share на staging | `VITE_SHARE_PUBLIC_ORIGIN=https://stage-builder-staging.vercel.app` | канон для копійованих посилань з staging-білду |
 | Аналітика | `VITE_GA_MEASUREMENT_ID` | GA4 (опційно); Vercel Analytics окремо в коді |
 
