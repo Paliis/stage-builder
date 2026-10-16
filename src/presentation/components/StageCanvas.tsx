@@ -3031,7 +3031,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   {
   targets,
   props,
-  onMoveTarget,
+  onMoveTarget: _onMoveTarget,
   onMoveProp,
   onRotateTarget,
   onRotateProp,
@@ -4476,7 +4476,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     }
 
     if (drag.mode === 'moveMulti') {
-      applyMoveMultiAtWorld(drag, w, fw, fh, targets, props, onMoveTarget, onMoveProp)
+      applyMoveMultiAtWorld(drag, w, fw, fh, targets, props)
       return
     }
 
@@ -4487,7 +4487,11 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
     const tgt = targets.find((t) => t.id === drag.id)
     if (drag.kind === 'target') {
       const margin = tgt ? targetFootprintWorld(tgt).boundsR + PICK_MARGIN_M : 1
-      onMoveTarget(drag.id, snapVec2(clampVec2ToField(next, margin, fw, fh), TARGET_PLACEMENT_SNAP_M))
+      useStageStore
+        .getState()
+        .applyPlanEntityMoves([
+          { id: drag.id, position: snapVec2(clampVec2ToField(next, margin, fw, fh), TARGET_PLACEMENT_SNAP_M) },
+        ])
       return
     }
     const half = propHalfExtentForMove(pr?.sizeM ?? { x: 1, y: 1 }, pr?.rotationRad ?? 0)
@@ -4655,7 +4659,7 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const sx = ev.clientX - rect.left
       const sy = ev.clientY - rect.top
       const ww = screenToWorld(sx, sy, transformRef.current)
-      applyMoveMultiAtWorld(drag, ww, fw, fh, targets, props, onMoveTarget, onMoveProp)
+      applyMoveMultiAtWorld(drag, ww, fw, fh, targets, props)
     } else if (drag.mode === 'move') {
       const rect = canvas.getBoundingClientRect()
       const sx = ev.clientX - rect.left
@@ -4666,7 +4670,14 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       const tgt = targets.find((t) => t.id === drag.id)
       if (drag.kind === 'target') {
         const margin = tgt ? targetFootprintWorld(tgt).boundsR + PICK_MARGIN_M : 1
-        onMoveTarget(drag.id, snapVec2(clampVec2ToField(raw, margin, fw, fh), TARGET_PLACEMENT_SNAP_M))
+        useStageStore
+          .getState()
+          .applyPlanEntityMoves([
+            {
+              id: drag.id,
+              position: snapVec2(clampVec2ToField(raw, margin, fw, fh), TARGET_PLACEMENT_SNAP_M),
+            },
+          ])
       } else {
         const half = propHalfExtentForMove(pr?.sizeM ?? { x: 1, y: 1 }, pr?.rotationRad ?? 0)
         onMoveProp(drag.id, snapVec2(clampVec2ToFieldBox(raw, half, fw, fh), PROP_PLACEMENT_SNAP_M))
@@ -4733,8 +4744,6 @@ function applyMoveMultiAtWorld(
   fh: number,
   targets: readonly Target[],
   props: readonly Prop[],
-  onMoveTarget: (id: string, position: Vec2) => void,
-  onMoveProp: (id: string, position: Vec2) => void,
 ): void {
   const rawLeader = {
     x: pointerWorld.x - drag.grabOffset.x,
@@ -4742,20 +4751,23 @@ function applyMoveMultiAtWorld(
   }
   const dx = rawLeader.x - drag.leaderOrig.x
   const dy = rawLeader.y - drag.leaderOrig.y
+  const targetPositions: { id: string; position: Vec2 }[] = []
   for (const o of drag.origTargets) {
     const t = targets.find((x) => x.id === o.id)
     if (!t) continue
     const cand = { x: o.orig.x + dx, y: o.orig.y + dy }
     const margin = targetFootprintWorld({ ...t, position: cand }).boundsR + PICK_MARGIN_M
     const clamped = clampVec2ToField(cand, margin, fw, fh)
-    onMoveTarget(o.id, snapVec2(clamped, TARGET_PLACEMENT_SNAP_M))
+    targetPositions.push({ id: o.id, position: snapVec2(clamped, TARGET_PLACEMENT_SNAP_M) })
   }
+  const propPositions: { id: string; position: Vec2 }[] = []
   for (const o of drag.origProps) {
     const p = props.find((x) => x.id === o.id)
     if (!p) continue
     const cand = { x: o.orig.x + dx, y: o.orig.y + dy }
     const half = propHalfExtentForMove(p.sizeM ?? { x: 1, y: 1 }, p.rotationRad)
     const clamped = clampVec2ToFieldBox(cand, half, fw, fh)
-    onMoveProp(o.id, snapVec2(clamped, PROP_PLACEMENT_SNAP_M))
+    propPositions.push({ id: o.id, position: snapVec2(clamped, PROP_PLACEMENT_SNAP_M) })
   }
+  useStageStore.getState().applyPlanEntityMoves(targetPositions, propPositions)
 }

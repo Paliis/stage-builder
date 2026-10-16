@@ -21,6 +21,8 @@ import {
 import {
   planDimensionsDuplicateUnordered,
   reclampPlanDimensionsToField,
+  shiftPlanDimensionsForTargetMoves,
+  type PlanDimensionTargetMove,
 } from '../domain/planDimensions'
 import {
   clampRangeDistanceSignLabelM,
@@ -144,6 +146,14 @@ export type StageState = {
   addProp: (type: PropType, sizeM?: Vec2, positionHint?: Vec2) => void
   setTargetPosition: (id: string, position: Vec2) => void
   setPropPosition: (id: string, position: Vec2) => void
+  /**
+   * Один крок перетягування на плані: мішені + пропи атомарно; кінці `planDimensions`,
+   * що були біля центрів мішеней до кроку, зсуваються тим самим delta.
+   */
+  applyPlanEntityMoves: (
+    targetPositions: readonly { id: string; position: Vec2 }[],
+    propPositions?: readonly { id: string; position: Vec2 }[],
+  ) => void
   setTargetRotation: (id: string, rotationRad: number) => void
   setTargetType: (id: string, type: TargetType) => void
   setTargetMetalRectSideCm: (id: string, cm: MetalPlateRectSideCm) => void
@@ -482,6 +492,47 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set((s) => ({
       props: s.props.map((x) => (x.id === id ? { ...x, position } : x)),
     })),
+
+  applyPlanEntityMoves: (targetPositions, propPositions = []) =>
+    set((s) => {
+      if (targetPositions.length === 0 && propPositions.length === 0) return s
+
+      const moves: PlanDimensionTargetMove[] = []
+      let targets = s.targets
+      if (targetPositions.length > 0) {
+        const byId = new Map(targetPositions.map((u) => [u.id, u.position]))
+        targets = s.targets.map((t) => {
+          const next = byId.get(t.id)
+          if (!next) return t
+          moves.push({
+            from: t.position,
+            delta: { x: next.x - t.position.x, y: next.y - t.position.y },
+          })
+          return { ...t, position: next }
+        })
+      }
+
+      let props = s.props
+      if (propPositions.length > 0) {
+        const byId = new Map(propPositions.map((u) => [u.id, u.position]))
+        props = s.props.map((p) => {
+          const next = byId.get(p.id)
+          return next ? { ...p, position: next } : p
+        })
+      }
+
+      const planDimensions =
+        moves.length > 0
+          ? shiftPlanDimensionsForTargetMoves(
+              s.planDimensions,
+              moves,
+              s.fieldSizeM.x,
+              s.fieldSizeM.y,
+            )
+          : s.planDimensions
+
+      return { targets, props, planDimensions }
+    }),
 
   setTargetRotation: (id, rotationRad) =>
     set((s) => ({
