@@ -24,6 +24,7 @@ import {
   shiftClonesForPaste,
   type PlanClipboardSnapshot,
 } from './domain/planClipboard'
+import { resolveStageLibraryTitle } from './domain/sharePublishedTitle'
 import { refKey } from './domain/activations'
 import type {
   GongSizeCm,
@@ -644,10 +645,22 @@ export default function App({
         if (Date.now() < autosaveRetryAtRef.current) return
       }
       setLibraryQuickSaving(true)
+      const title = resolveStageLibraryTitle(
+        shareProjectRoot.stage.name,
+        shareProjectRoot.briefing.documentTitle,
+        DEFAULT_STAGE_NAME,
+      )
+      const stageForSave =
+        shareProjectRoot.stage.name.trim() ?
+          shareProjectRoot.stage
+        : { ...shareProjectRoot.stage, name: title }
+      if (!shareProjectRoot.stage.name.trim() && title !== DEFAULT_STAGE_NAME) {
+        setStageName(title)
+      }
       const res = await saveUserStage({
         id: libraryStageId,
-        title: shareProjectRoot.stage.name.trim() || DEFAULT_STAGE_NAME,
-        stage: shareProjectRoot.stage,
+        title,
+        stage: stageForSave,
         briefing: shareProjectRoot.briefing,
       })
       setLibraryQuickSaving(false)
@@ -678,6 +691,7 @@ export default function App({
       handleLibrarySaved,
       libraryQuickSaving,
       libraryStageId,
+      setStageName,
       shareProjectRoot,
       supabaseConfigured,
       supabaseUser,

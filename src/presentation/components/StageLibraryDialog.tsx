@@ -12,6 +12,7 @@ import {
 import { DEFAULT_STAGE_NAME } from '../../application/stageStore'
 import type { StageBriefing } from '../../domain/stageBriefing'
 import type { StageProjectSnapshot } from '../../domain/stageProjectFile'
+import { resolveStageLibraryTitle } from '../../domain/sharePublishedTitle'
 import { formatTemplate } from '../../i18n/format'
 import type { Locale, MessageTree } from '../../i18n/messages'
 
@@ -107,6 +108,11 @@ export function StageLibraryDialog({
     setErrorKey(null)
     setSavedFlash(false)
     d.showModal()
+    // Якщо в шапці порожньо — запропонувати «Заголовок документа» з брифінгу.
+    const doc = briefing.documentTitle.trim()
+    if (!stage.name.trim() && doc) onStageNameChange(doc)
+    // Only on open: do not re-fill while the dialog is already shown.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional open-only prefill
   }, [open])
 
   /** Also runs when a guest signs in through the auth modal without closing this dialog. */
@@ -128,10 +134,13 @@ export function StageLibraryDialog({
     async (id: string | null) => {
       setErrorKey(null)
       setBusy(true)
+      const title = resolveStageLibraryTitle(stage.name, briefing.documentTitle, DEFAULT_STAGE_NAME)
+      const stageForSave = stage.name.trim() ? stage : { ...stage, name: title }
+      if (!stage.name.trim() && title !== DEFAULT_STAGE_NAME) onStageNameChange(title)
       const res = await saveUserStage({
         id,
-        title: stage.name.trim() || DEFAULT_STAGE_NAME,
-        stage,
+        title,
+        stage: stageForSave,
         briefing,
       })
       setBusy(false)
@@ -143,7 +152,7 @@ export function StageLibraryDialog({
       flashSaved()
       void refresh()
     },
-    [briefing, flashSaved, onSaved, refresh, stage],
+    [briefing, flashSaved, onSaved, onStageNameChange, refresh, stage],
   )
 
   const openStage = useCallback(

@@ -10,3 +10,19 @@ export function resolveSharePublishedTitle(stage: StageNamePick, briefing: Brief
   const t = doc || sn || 'Stage'
   return t.slice(0, 500)
 }
+
+/**
+ * Назва для бібліотеки / поля в шапці: спочатку `stage.name`, якщо порожньо —
+ * «Заголовок документа» з брифінгу, інакше `fallback` (напр. DEFAULT_STAGE_NAME).
+ */
+export function resolveStageLibraryTitle(
+  stageName: string,
+  documentTitle: string,
+  fallback: string,
+): string {
+  const sn = stageName.trim()
+  if (sn) return sn.slice(0, 200)
+  const doc = documentTitle.trim()
+  if (doc) return doc.slice(0, 200)
+  return fallback
+}

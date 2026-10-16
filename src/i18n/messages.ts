@@ -1717,7 +1717,8 @@ export const ukMessages: MessageTree = {
     statusSaved: 'Збережено о {{time}}',
     statusUnsaved: 'Є незбережені зміни',
     statusFailed: 'Не вдалося зберегти',
-    nameFromHeader: 'Та сама назва, що в полі вгорі редактора.',
+    nameFromHeader:
+      'Та сама назва, що в полі вгорі. Якщо порожньо — підставимо «Заголовок документа» з брифінгу.',
     open: 'Відкрити',
     rename: 'Перейменувати',
     renamePrompt: 'Нова назва вправи:',
@@ -3151,7 +3152,8 @@ export const enMessages: MessageTree = {
     statusSaved: 'Saved at {{time}}',
     statusUnsaved: 'Unsaved changes',
     statusFailed: 'Could not save',
-    nameFromHeader: 'Same name as the field at the top of the editor.',
+    nameFromHeader:
+      'Same as the name field at the top. If empty, we suggest the briefing document title.',
     open: 'Open',
     rename: 'Rename',
     renamePrompt: 'New stage name:',
