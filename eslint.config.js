@@ -6,7 +6,8 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'api/publish-share.js', 'supabase/functions/**']),
+  // `api/*.js` — зібрані serverless-артефакти (esbuild), не джерело для ESLint.
+  globalIgnores(['dist', 'api/**', 'supabase/functions/**']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

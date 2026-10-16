@@ -30,11 +30,15 @@ function cellCount(n: number): string {
 
 export function MatchPublicParticipantSummary({ matchId, locale, p }: Props) {
   const locUi = locale === 'uk' ? 'uk' : 'en'
-  const [state, setState] = useState<LoadState>({ status: 'idle' })
+  const [state, setState] = useState<LoadState>({ status: 'loading' })
+  const [loadedForMatchId, setLoadedForMatchId] = useState(matchId)
+  if (loadedForMatchId !== matchId) {
+    setLoadedForMatchId(matchId)
+    setState({ status: 'loading' })
+  }
 
   useEffect(() => {
     let cancelled = false
-    setState({ status: 'loading' })
     const sb = getSupabase()
     void sb
       .rpc('fetch_public_match_participant_summary', { p_match_id: matchId })

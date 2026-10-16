@@ -155,7 +155,6 @@ export default function App({
   const props = useStageStore((s) => s.props)
   const addTarget = useStageStore((s) => s.addTarget)
   const addProp = useStageStore((s) => s.addProp)
-  const setTargetPosition = useStageStore((s) => s.setTargetPosition)
   const setPropPosition = useStageStore((s) => s.setPropPosition)
   const setTargetRotation = useStageStore((s) => s.setTargetRotation)
   const setTargetType = useStageStore((s) => s.setTargetType)
@@ -1841,7 +1840,6 @@ export default function App({
                       readOnly={readOnly}
                       targets={targets}
                       props={props}
-                      onMoveTarget={setTargetPosition}
                       onMoveProp={setPropPosition}
                       onRotateTarget={setTargetRotation}
                       onRotateProp={setPropRotation}

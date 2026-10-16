@@ -44,7 +44,6 @@ export function PortalShell() {
   const [navOpen, setNavOpen] = useState(false)
   const [authOpen, setAuthOpen] = useState(false)
   const navOpenRef = useRef(false)
-  navOpenRef.current = navOpen
   const compactHeader = mqCompact || layoutCompact
   /** Editor route: same header, but it must stack above the editor chrome and report its height. */
   const appMode = isStageBuilderPath(pathname)
@@ -52,6 +51,10 @@ export function PortalShell() {
   const goLocale = (next: Locale) => {
     navigate(swapLocaleInPortalPath(pathname, next), { replace: true })
   }
+
+  useEffect(() => {
+    navOpenRef.current = navOpen
+  }, [navOpen])
 
   useEffect(() => {
     const mq = window.matchMedia(HEADER_COMPACT_MQ)

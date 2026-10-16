@@ -65,11 +65,15 @@ export function MatchPublicProgrammePanel({
   const categories = tree.briefing.category
   const locUi = locale === 'uk' ? 'uk' : 'en'
   const colHeaders = programmeStatsTableHeaders(p, locUi)
-  const [stats, setStats] = useState<StatsState>({ status: 'idle' })
+  const [stats, setStats] = useState<StatsState>({ status: 'loading' })
+  const [loadedForMatchId, setLoadedForMatchId] = useState(matchId)
+  if (loadedForMatchId !== matchId) {
+    setLoadedForMatchId(matchId)
+    setStats({ status: 'loading' })
+  }
 
   useEffect(() => {
     let cancelled = false
-    setStats({ status: 'loading' })
 
     const url = `/api/match-programme-stats?matchId=${encodeURIComponent(matchId)}`
     void fetch(url)

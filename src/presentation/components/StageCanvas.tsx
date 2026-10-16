@@ -2954,7 +2954,6 @@ function redraw(
 export type StageCanvasProps = {
   targets: readonly Target[]
   props: readonly Prop[]
-  onMoveTarget: (id: string, position: { x: number; y: number }) => void
   onMoveProp: (id: string, position: { x: number; y: number }) => void
   onRotateTarget: (id: string, rotationRad: number) => void
   onRotateProp: (id: string, rotationRad: number) => void
@@ -3046,7 +3045,6 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
   {
   targets,
   props,
-  onMoveTarget: _onMoveTarget,
   onMoveProp,
   onRotateTarget,
   onRotateProp,
