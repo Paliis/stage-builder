@@ -19,16 +19,18 @@ import { useBriefingStore } from './application/briefingStore'
 import { DEFAULT_STAGE_NAME, useStageStore } from './application/stageStore'
 import { computeMinRounds, countStageTargetUnits } from './domain/computeMinRounds'
 import type { PlacementMode } from './domain/placementMode'
-import { centroidOfEntities, shiftClonesForPaste } from './domain/planClipboard'
+import {
+  centroidOfEntities,
+  shiftClonesForPaste,
+  type PlanClipboardSnapshot,
+} from './domain/planClipboard'
 import { refKey } from './domain/activations'
 import type {
   GongSizeCm,
   MetalPlateRectSideCm,
-  Prop,
   PropType,
   StageCategory,
   StageEntityRef,
-  Target,
   TargetType,
   Vec2,
 } from './domain/models'
@@ -387,7 +389,7 @@ export default function App({
     [selectedSingleTarget, setTargetGongSizeCm],
   )
 
-  const internalClipboardRef = useRef<{ targets: Target[]; props: Prop[] } | null>(null)
+  const internalClipboardRef = useRef<PlanClipboardSnapshot | null>(null)
   const [selectionSheetOpen, setSelectionSheetOpen] = useState(false)
 
   /** Чернетка тексту в полях розміру поля (щоб можна було вводити з клавіатури без миттєвого clamp). */
@@ -1086,7 +1088,12 @@ export default function App({
     void (async () => {
       try {
         await navigator.clipboard.writeText(
-          JSON.stringify({ v: 1, targets: snap.targets, props: snap.props }),
+          JSON.stringify({
+            v: 2,
+            targets: snap.targets,
+            props: snap.props,
+            planDimensions: snap.planDimensions,
+          }),
         )
       } catch {
         /* ignore */
@@ -1111,8 +1118,9 @@ export default function App({
       { x: anchor.x - c.x, y: anchor.y - c.y },
       fieldSizeM.x,
       fieldSizeM.y,
+      clip.planDimensions ?? [],
     )
-    pasteCloneEntities(shifted.targets, shifted.props)
+    pasteCloneEntities(shifted.targets, shifted.props, shifted.planDimensions)
   }, [fieldSizeM.x, fieldSizeM.y, pasteCloneEntities, viewMode])
 
   useEffect(() => {

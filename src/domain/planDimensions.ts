@@ -15,6 +15,17 @@ export type PlanDimensionTargetMove = {
   delta: Vec2
 }
 
+/** Осьовий прямокутник у метрах поля (зона копіювання / рамка). */
+export type WorldAabb = {
+  minX: number
+  maxX: number
+  minY: number
+  maxY: number
+}
+
+/** Частка довжини відрізка всередині AABB має перевищувати це, щоб розмір пішов у буфер. */
+export const PLAN_DIMENSION_COPY_MAJORITY_FRAC = 0.5
+
 export function reclampPlanDimensionsToField(
   dims: readonly PlanDimensionLine[],
   widthM: number,
@@ -83,6 +94,86 @@ function deltaForAttachedEndpoint(
     }
   }
   return best
+}
+
+/** AABB за точками з опційним рівномірним відступом (м). */
+export function worldAabbFromPoints(points: readonly Vec2[], padM = 0): WorldAabb | null {
+  if (points.length === 0) return null
+  let minX = Infinity
+  let maxX = -Infinity
+  let minY = Infinity
+  let maxY = -Infinity
+  for (const p of points) {
+    minX = Math.min(minX, p.x)
+    maxX = Math.max(maxX, p.x)
+    minY = Math.min(minY, p.y)
+    maxY = Math.max(maxY, p.y)
+  }
+  return {
+    minX: minX - padM,
+    maxX: maxX + padM,
+    minY: minY - padM,
+    maxY: maxY + padM,
+  }
+}
+
+/**
+ * Частка довжини відрізка [a→b], що лежить всередині AABB (включно з межею).
+ * Нульова довжина: 1 якщо точка всередині, інакше 0.
+ */
+export function segmentLengthFractionInsideAabb(a: Vec2, b: Vec2, box: WorldAabb): number {
+  const len = Math.hypot(b.x - a.x, b.y - a.y)
+  if (len < 1e-9) {
+    return pointInsideAabb(a, box) ? 1 : 0
+  }
+  const clipped = clipSegmentToAabb(a, b, box)
+  if (!clipped) return 0
+  return Math.hypot(clipped.b.x - clipped.a.x, clipped.b.y - clipped.a.y) / len
+}
+
+/** Розміри, у яких більше ніж `minFrac` довжини потрапляє в зону (типово >½). */
+export function selectPlanDimensionsMajorityInAabb(
+  dims: readonly PlanDimensionLine[],
+  box: WorldAabb,
+  minFrac: number = PLAN_DIMENSION_COPY_MAJORITY_FRAC,
+): PlanDimensionLine[] {
+  return dims.filter((d) => segmentLengthFractionInsideAabb(d.endA, d.endB, box) > minFrac)
+}
+
+function pointInsideAabb(p: Vec2, box: WorldAabb): boolean {
+  return p.x >= box.minX && p.x <= box.maxX && p.y >= box.minY && p.y <= box.maxY
+}
+
+/** Liang–Barsky: відрізок, обрізаний по AABB, або null якщо немає перетину. */
+function clipSegmentToAabb(a: Vec2, b: Vec2, box: WorldAabb): { a: Vec2; b: Vec2 } | null {
+  const dx = b.x - a.x
+  const dy = b.y - a.y
+  let t0 = 0
+  let t1 = 1
+  const edges: [number, number][] = [
+    [-dx, a.x - box.minX],
+    [dx, box.maxX - a.x],
+    [-dy, a.y - box.minY],
+    [dy, box.maxY - a.y],
+  ]
+  for (const [p, q] of edges) {
+    if (Math.abs(p) < 1e-12) {
+      if (q < 0) return null
+      continue
+    }
+    const r = q / p
+    if (p < 0) {
+      if (r > t1) return null
+      if (r > t0) t0 = r
+    } else {
+      if (r < t0) return null
+      if (r < t1) t1 = r
+    }
+  }
+  return {
+    a: { x: a.x + t0 * dx, y: a.y + t0 * dy },
+    b: { x: a.x + t1 * dx, y: a.y + t1 * dy },
+  }
 }
 
 function pointApproxEqual(a: Vec2, b: Vec2): boolean {

@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import {
   PLAN_DIMENSION_TARGET_ATTACH_M,
+  segmentLengthFractionInsideAabb,
+  selectPlanDimensionsMajorityInAabb,
   shiftPlanDimensionsForTargetMoves,
+  worldAabbFromPoints,
 } from './planDimensions'
 
 describe('shiftPlanDimensionsForTargetMoves', () => {
@@ -82,3 +85,28 @@ describe('shiftPlanDimensionsForTargetMoves', () => {
     expect(next[0]!.endB).toEqual({ x: 8, y: 5 })
   })
 })
+
+describe('segmentLengthFractionInsideAabb / majority select', () => {
+  it('returns 1 for a segment fully inside the box', () => {
+    const box = worldAabbFromPoints([
+      { x: 0, y: 0 },
+      { x: 10, y: 10 },
+    ])!
+    expect(segmentLengthFractionInsideAabb({ x: 1, y: 1 }, { x: 2, y: 1 }, box)).toBeCloseTo(1, 6)
+  })
+
+  it('returns ~0.5 when half the segment is clipped', () => {
+    const box = { minX: 0, maxX: 5, minY: -1, maxY: 1 }
+    expect(segmentLengthFractionInsideAabb({ x: 0, y: 0 }, { x: 10, y: 0 }, box)).toBeCloseTo(0.5, 6)
+  })
+
+  it('selects only dimensions with majority inside the zone', () => {
+    const box = { minX: 0, maxX: 5, minY: -1, maxY: 1 }
+    const inside = { id: 'in', endA: { x: 0, y: 0 }, endB: { x: 4, y: 0 } }
+    const half = { id: 'half', endA: { x: 0, y: 0 }, endB: { x: 10, y: 0 } }
+    const outside = { id: 'out', endA: { x: 6, y: 0 }, endB: { x: 9, y: 0 } }
+    const picked = selectPlanDimensionsMajorityInAabb([inside, half, outside], box)
+    expect(picked.map((d) => d.id)).toEqual(['in'])
+  })
+})
+

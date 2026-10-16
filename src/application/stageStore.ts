@@ -163,7 +163,11 @@ export type StageState = {
   removeTarget: (id: string) => void
   removeProp: (id: string) => void
   /** Вставка клонів (нові id); позиції вже зміщені та clamp у полі. */
-  pasteCloneEntities: (targets: Target[], props: Prop[]) => void
+  pasteCloneEntities: (
+    targets: Target[],
+    props: Prop[],
+    planDimensions?: PlanDimensionLine[],
+  ) => void
   /** Порожня сцена, дефолтний розмір поля та ім’я (кнопка «нова вправа»). */
   resetSceneToDefaults: () => void
   /** Додати ребро активації (from → to); ігнорує дублікат або петлю. */
@@ -580,11 +584,22 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       activations: filterActivationsAfterRemoveProp(s.activations, id),
     })),
 
-  pasteCloneEntities: (targets, props) =>
-    set((s) => ({
-      targets: [...s.targets, ...targets.map((t) => ({ ...t, id: newId() }))],
-      props: [...s.props, ...props.map((p) => ({ ...p, id: newId() }))],
-    })),
+  pasteCloneEntities: (targets, props, planDimensions = []) =>
+    set((s) => {
+      const nextDims = [...s.planDimensions]
+      for (const d of planDimensions) {
+        const endA = d.endA
+        const endB = d.endB
+        if (Math.hypot(endB.x - endA.x, endB.y - endA.y) < 1e-6) continue
+        if (nextDims.some((x) => planDimensionsDuplicateUnordered(x, endA, endB))) continue
+        nextDims.push({ id: newId(), endA, endB })
+      }
+      return {
+        targets: [...s.targets, ...targets.map((t) => ({ ...t, id: newId() }))],
+        props: [...s.props, ...props.map((p) => ({ ...p, id: newId() }))],
+        planDimensions: nextDims,
+      }
+    }),
 
   addRangeDistanceSign: (edgePositionYM, labelM) =>
     set((s) => {
