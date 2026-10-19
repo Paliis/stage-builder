@@ -21,8 +21,6 @@ import {
 import {
   planDimensionsDuplicateUnordered,
   reclampPlanDimensionsToField,
-  shiftPlanDimensionsForTargetMoves,
-  type PlanDimensionTargetMove,
 } from '../domain/planDimensions'
 import {
   clampRangeDistanceSignLabelM,
@@ -146,10 +144,7 @@ export type StageState = {
   addProp: (type: PropType, sizeM?: Vec2, positionHint?: Vec2) => void
   setTargetPosition: (id: string, position: Vec2) => void
   setPropPosition: (id: string, position: Vec2) => void
-  /**
-   * Один крок перетягування на плані: мішені + пропи атомарно; кінці `planDimensions`,
-   * що були біля центрів мішеней до кроку, зсуваються тим самим delta.
-   */
+  /** Один крок перетягування на плані: мішені + пропи атомарно (без розмірів). */
   applyPlanEntityMoves: (
     targetPositions: readonly { id: string; position: Vec2 }[],
     propPositions?: readonly { id: string; position: Vec2 }[],
@@ -163,11 +158,7 @@ export type StageState = {
   removeTarget: (id: string) => void
   removeProp: (id: string) => void
   /** Вставка клонів (нові id); позиції вже зміщені та clamp у полі. */
-  pasteCloneEntities: (
-    targets: Target[],
-    props: Prop[],
-    planDimensions?: PlanDimensionLine[],
-  ) => void
+  pasteCloneEntities: (targets: Target[], props: Prop[]) => void
   /** Порожня сцена, дефолтний розмір поля та ім’я (кнопка «нова вправа»). */
   resetSceneToDefaults: () => void
   /** Додати ребро активації (from → to); ігнорує дублікат або петлю. */
@@ -501,18 +492,12 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
     set((s) => {
       if (targetPositions.length === 0 && propPositions.length === 0) return s
 
-      const moves: PlanDimensionTargetMove[] = []
       let targets = s.targets
       if (targetPositions.length > 0) {
         const byId = new Map(targetPositions.map((u) => [u.id, u.position]))
         targets = s.targets.map((t) => {
           const next = byId.get(t.id)
-          if (!next) return t
-          moves.push({
-            from: t.position,
-            delta: { x: next.x - t.position.x, y: next.y - t.position.y },
-          })
-          return { ...t, position: next }
+          return next ? { ...t, position: next } : t
         })
       }
 
@@ -525,17 +510,7 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
         })
       }
 
-      const planDimensions =
-        moves.length > 0
-          ? shiftPlanDimensionsForTargetMoves(
-              s.planDimensions,
-              moves,
-              s.fieldSizeM.x,
-              s.fieldSizeM.y,
-            )
-          : s.planDimensions
-
-      return { targets, props, planDimensions }
+      return { targets, props }
     }),
 
   setTargetRotation: (id, rotationRad) =>
@@ -584,22 +559,11 @@ export const useStageStore = create<StageState>()(temporal((set) => ({
       activations: filterActivationsAfterRemoveProp(s.activations, id),
     })),
 
-  pasteCloneEntities: (targets, props, planDimensions = []) =>
-    set((s) => {
-      const nextDims = [...s.planDimensions]
-      for (const d of planDimensions) {
-        const endA = d.endA
-        const endB = d.endB
-        if (Math.hypot(endB.x - endA.x, endB.y - endA.y) < 1e-6) continue
-        if (nextDims.some((x) => planDimensionsDuplicateUnordered(x, endA, endB))) continue
-        nextDims.push({ id: newId(), endA, endB })
-      }
-      return {
-        targets: [...s.targets, ...targets.map((t) => ({ ...t, id: newId() }))],
-        props: [...s.props, ...props.map((p) => ({ ...p, id: newId() }))],
-        planDimensions: nextDims,
-      }
-    }),
+  pasteCloneEntities: (targets, props) =>
+    set((s) => ({
+      targets: [...s.targets, ...targets.map((t) => ({ ...t, id: newId() }))],
+      props: [...s.props, ...props.map((p) => ({ ...p, id: newId() }))],
+    })),
 
   addRangeDistanceSign: (edgePositionYM, labelM) =>
     set((s) => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { centroidOfEntities, planDimensionsForCopyZone, shiftClonesForPaste } from './planClipboard'
-import type { PlanDimensionLine, Prop, Target } from './models'
+import { centroidOfEntities, shiftClonesForPaste } from './planClipboard'
+import type { Prop, Target } from './models'
 
 function t(id: string, x: number, y: number): Target {
   return {
@@ -46,22 +46,4 @@ describe('shiftClonesForPaste', () => {
     expect(targets[0]!.position.x).toBeLessThanOrEqual(29)
     expect(targets[0]!.position.y).toBeLessThanOrEqual(39)
   })
-
-  it('shifts plan dimensions by the same delta', () => {
-    const dims: PlanDimensionLine[] = [{ id: 'd', endA: { x: 1, y: 1 }, endB: { x: 2, y: 1 } }]
-    const { planDimensions } = shiftClonesForPaste([], [], { x: 3, y: 4 }, 30, 40, dims)
-    expect(planDimensions[0]).toEqual({ id: 'd', endA: { x: 4, y: 5 }, endB: { x: 5, y: 5 } })
-  })
 })
-
-describe('planDimensionsForCopyZone', () => {
-  it('includes a dimension between two selected targets', () => {
-    const dims: PlanDimensionLine[] = [
-      { id: 'between', endA: { x: 2, y: 2 }, endB: { x: 5, y: 2 } },
-      { id: 'far', endA: { x: 20, y: 20 }, endB: { x: 22, y: 20 } },
-    ]
-    const picked = planDimensionsForCopyZone(dims, [t('a', 2, 2), t('b', 5, 2)], [])
-    expect(picked.map((d) => d.id)).toEqual(['between'])
-  })
-})
-

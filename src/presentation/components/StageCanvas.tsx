@@ -91,7 +91,6 @@ import {
 } from '../../domain/field'
 import { ringToClosedPoints, type PenaltyZoneSet } from '../../domain/penaltyZones'
 import { RANGE_DISTANCE_SIGN_PLAN_CENTER_X_M } from '../../domain/rangeDistanceSigns'
-import { planDimensionsForCopyZone } from '../../domain/planClipboard'
 import {
   applyZoomAtWorldPoint,
   buildStageViewTransform,
@@ -192,35 +191,25 @@ function snapshotEntitiesForCopy(
   planSelect: PlanSelectState,
   targets: readonly Target[],
   props: readonly Prop[],
-  planDimensions: readonly PlanDimensionLine[],
-): { targets: Target[]; props: Prop[]; planDimensions: PlanDimensionLine[] } | null {
+): { targets: Target[]; props: Prop[] } | null {
   if (planSelect.mode === 'none' || planSelect.mode === 'penaltyVertex' || planSelect.mode === 'planDimension' || planSelect.mode === 'rangeDistanceSign')
     return null
-  let ts: Target[] = []
-  let ps: Prop[] = []
   if (planSelect.mode === 'single') {
     if (planSelect.kind === 'target') {
       const t = targets.find((x) => x.id === planSelect.id)
-      if (!t) return null
-      ts = [structuredClone(t)]
-    } else {
-      const p = props.find((x) => x.id === planSelect.id)
-      if (!p) return null
-      ps = [structuredClone(p)]
+      return t ? { targets: [structuredClone(t)], props: [] } : null
     }
-  } else {
-    ts = planSelect.targetIds
-      .map((id) => targets.find((t) => t.id === id))
-      .filter((x): x is Target => x !== undefined)
-      .map((t) => structuredClone(t))
-    ps = planSelect.propIds
-      .map((id) => props.find((p) => p.id === id))
-      .filter((x): x is Prop => x !== undefined)
-      .map((p) => structuredClone(p))
-    if (ts.length === 0 && ps.length === 0) return null
+    const p = props.find((x) => x.id === planSelect.id)
+    return p ? { targets: [], props: [structuredClone(p)] } : null
   }
-  const dims = planDimensionsForCopyZone(planDimensions, ts, ps)
-  return { targets: ts, props: ps, planDimensions: dims }
+  const ts = planSelect.targetIds
+    .map((id) => targets.find((t) => t.id === id))
+    .filter((x): x is Target => x !== undefined)
+  const ps = planSelect.propIds
+    .map((id) => props.find((p) => p.id === id))
+    .filter((x): x is Prop => x !== undefined)
+  if (ts.length === 0 && ps.length === 0) return null
+  return { targets: ts.map((t) => structuredClone(t)), props: ps.map((p) => structuredClone(p)) }
 }
 
 type MarqueeDragState = {
@@ -3017,11 +3006,7 @@ export type StageCanvasHandle = {
   /** Скидає точки вимірювання (виклик з App при вимкненні режиму). */
   clearMeasure: () => void
   /** Знімок виділених сутностей для копіювання (глибокі копії). */
-  getSelectionForCopy: () => {
-    targets: Target[]
-    props: Prop[]
-    planDimensions: PlanDimensionLine[]
-  } | null
+  getSelectionForCopy: () => { targets: Target[]; props: Prop[] } | null
   /** Видаляє поточне виділення (те саме, що Delete / Backspace). */
   deleteSelection: () => void
 }
@@ -3481,8 +3466,8 @@ export const StageCanvas = forwardRef<StageCanvasHandle, StageCanvasProps>(funct
       },
       getSelectionForCopy: () => {
         const ps = planSelectRef.current
-        const { targets: ts, props: ps2, planDimensions: dims } = useStageStore.getState()
-        return snapshotEntitiesForCopy(ps, ts, ps2, dims)
+        const { targets: ts, props: ps2 } = useStageStore.getState()
+        return snapshotEntitiesForCopy(ps, ts, ps2)
       },
       deleteSelection: () => {
         performDeleteSelection()

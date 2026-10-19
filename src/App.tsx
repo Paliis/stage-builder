@@ -1101,12 +1101,7 @@ export default function App({
     void (async () => {
       try {
         await navigator.clipboard.writeText(
-          JSON.stringify({
-            v: 2,
-            targets: snap.targets,
-            props: snap.props,
-            planDimensions: snap.planDimensions,
-          }),
+          JSON.stringify({ v: 1, targets: snap.targets, props: snap.props }),
         )
       } catch {
         /* ignore */
@@ -1131,9 +1126,8 @@ export default function App({
       { x: anchor.x - c.x, y: anchor.y - c.y },
       fieldSizeM.x,
       fieldSizeM.y,
-      clip.planDimensions ?? [],
     )
-    pasteCloneEntities(shifted.targets, shifted.props, shifted.planDimensions)
+    pasteCloneEntities(shifted.targets, shifted.props)
   }, [fieldSizeM.x, fieldSizeM.y, pasteCloneEntities, viewMode])
 
   useEffect(() => {
